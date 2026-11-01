@@ -1,6 +1,6 @@
 // Offline cache. Bump VERSION whenever you change any file so phones/iPads pick up the update.
-const VERSION = 'lp-v3';
-const FILES = ['./', 'index.html', 'style.css', 'content.js', 'app.js', 'manifest.webmanifest', 'audio/clips.json',
+const VERSION = 'lp-v4';
+const FILES = ['./', 'index.html', 'style.css', 'content.js', 'app.js', 'manifest.webmanifest', 'audio/clips.json', 'audio/silence.mp3',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', (e) => {
@@ -23,6 +23,7 @@ self.addEventListener('activate', (e) => {
 // app files: network first (so updates show up); voice clips: cache first (they never change)
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
+  if (e.request.headers.has('range')) return; // let the browser stream <audio> itself (iOS needs real 206 responses)
   const url = new URL(e.request.url);
   if (url.pathname.includes('/audio/') && url.pathname.endsWith('.mp3')) {
     e.respondWith(caches.match(e.request).then((hit) => hit || fetch(e.request).then((r) => {

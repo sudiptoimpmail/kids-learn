@@ -312,3 +312,5 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .hint-pic { white-space: nowrap; font-size: min(130px, 30vw); }
 .hint-pic.sm { font-size: min(90px, 22vw); }
 @media (min-width: 700px) { .hint-pic { font-size: min(190px, 22vw); } .hint-pic.sm { font-size: 130px; } }
+
+.big-btn.small { font-size: 18px; padding: 10px 20px; }

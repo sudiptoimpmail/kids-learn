@@ -21,34 +21,75 @@ const maxLevelOf = (id) => (CATEGORIES.find((c) => c.id === id) || {}).maxLevel 
 const clipKey = (t) => t.toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim();
 const splitSentences = (t) => (t.match(/[^.!?]+[.!?]*/g) || []).map((x) => x.trim()).filter((x) => clipKey(x));
 let CLIPS = {};
-fetch('audio/clips.json').then((r) => r.json()).then((j) => (CLIPS = j)).catch(() => {});
+const clipsReady = fetch('audio/clips.json').then((r) => r.json()).then((j) => (CLIPS = j)).catch(() => {});
 let sayToken = 0, actx, curSrc = null;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // let sound play even when the iPhone's silent switch is on (Safari 16.4+)
 try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch {}
 function ctx() {
   actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-  if (actx.state === 'suspended') actx.resume();
+  // iOS can leave the context 'suspended' OR 'interrupted' (app switch, call, system speech)
+  if (actx.state !== 'running') actx.resume().catch(() => {});
   return actx;
 }
+
+// Backup player: a plain <audio> element, unlocked on the first touch.
+const htmlPlayer = new Audio();
+htmlPlayer.preload = 'auto';
+let htmlUnlocked = false;
+
+// Every touch re-wakes audio (iPhone only allows this inside a tap).
+function unlockAudio() {
+  try {
+    const c = ctx();
+    const b = c.createBuffer(1, 1, 22050), s = c.createBufferSource();
+    s.buffer = b; s.connect(c.destination); s.start(0);
+  } catch {}
+  if (!htmlUnlocked) {
+    htmlPlayer.src = 'audio/silence.mp3';
+    const p = htmlPlayer.play();
+    if (p && p.then) p.then(() => { htmlUnlocked = true; }).catch(() => {});
+  }
+}
+['touchstart', 'touchend', 'pointerdown', 'click', 'keydown'].forEach((ev) =>
+  addEventListener(ev, unlockAudio, { capture: true, passive: true }));
+document.addEventListener('visibilitychange', () => { if (!document.hidden && actx) actx.resume().catch(() => {}); });
+
 const bufs = new Map();
 function getBuf(file) {
   if (bufs.has(file)) return bufs.get(file);
-  const p = fetch('audio/' + file).then((r) => r.arrayBuffer())
+  const p = fetch('audio/' + file).then((r) => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
     .then((ab) => new Promise((ok, bad) => ctx().decodeAudioData(ab, ok, bad)));
   bufs.set(file, p); p.catch(() => bufs.delete(file));
   return p;
 }
 function prefetch(text) { if (text) (Array.isArray(text) ? text.map(String) : splitSentences(text)).forEach((p) => { const f = CLIPS[clipKey(p)]; if (f) getBuf(f).catch(() => {}); }); }
-function stopClip() { try { curSrc && curSrc.stop(); } catch {} curSrc = null; }
-function playClip(file) {
-  return new Promise(async (res) => {
+function stopClip() { try { curSrc && curSrc.stop(); } catch {} curSrc = null; try { htmlPlayer.pause(); } catch {} }
+
+function htmlPlay(file) {
+  return new Promise((res) => {
+    let done = false; const fin = () => { if (!done) { done = true; res(); } };
+    htmlPlayer.onended = fin; htmlPlayer.onerror = fin;
+    htmlPlayer.src = 'audio/' + file;
+    const p = htmlPlayer.play(); if (p && p.catch) p.catch(fin);
+    setTimeout(fin, 10000);
+  });
+}
+const lastAudio = { path: '', err: '' };
+async function playClip(file) {
+  const c = ctx();
+  if (c.state !== 'running') { await Promise.race([c.resume().catch(() => {}), sleep(300)]); }
+  if (c.state !== 'running') { lastAudio.path = 'html'; return htmlPlay(file); }
+  let buf;
+  try { buf = await getBuf(file); } catch (e) { lastAudio.path = 'html'; lastAudio.err = String(e); return htmlPlay(file); }
+  return new Promise((res) => {
     let done = false; const fin = () => { if (!done) { done = true; res(); } };
     try {
-      const c = ctx(); const buf = await getBuf(file);
       const src = c.createBufferSource(); src.buffer = buf; src.connect(c.destination);
       src.onended = fin; curSrc = src; src.start();
+      lastAudio.path = 'webaudio';
       setTimeout(fin, buf.duration * 1000 + 400);
-    } catch { fin(); }
+    } catch (e) { lastAudio.err = String(e); htmlPlay(file).then(fin); }
   });
 }
 
@@ -67,8 +108,11 @@ if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged 
 async function say(text, opts = {}) {
   const my = ++sayToken;
   if (!text || !state.voice) return;
-  if (window.speechSynthesis) speechSynthesis.cancel();
+  // only touch system speech if it is actually talking (cancelling it can pause iPhone audio)
+  if (window.speechSynthesis && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel();
   stopClip();
+  if (!Object.keys(CLIPS).length) await Promise.race([clipsReady, sleep(4000)]);
+  if (my !== sayToken) return;
   const parts = Array.isArray(text) ? text.map(String) : splitSentences(text);
   if (Array.isArray(text)) text = text.join(' ');
   const files = parts.map((p) => CLIPS[clipKey(p)]);
@@ -83,7 +127,7 @@ async function say(text, opts = {}) {
 function deviceSay(text, { rate = 0.92, pitch = 1.1 } = {}) {
   return new Promise((res) => {
     if (!('speechSynthesis' in window)) return res();
-    speechSynthesis.cancel();
+    if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     if (voice) u.voice = voice;
     u.lang = 'en-US'; u.rate = rate; u.pitch = pitch;
@@ -342,7 +386,7 @@ $('#grid').addEventListener('click', (e) => {
 });
 $('#hintBtn').onclick = () => { sfx.tap(); showHint(R.qs[R.i]); };
 $('#sayBtn').onclick = () => { sfx.tap(); const q = R.qs[R.i]; say((q.say && q.say.length) ? q.say : q.readQ || q.text.replace(/<[^>]+>/g, '')); };
-$('#quitBtn').onclick = () => { window.speechSynthesis && speechSynthesis.cancel(); clearTimeout(R && R.nudge); renderHome(); show('home'); };
+$('#quitBtn').onclick = () => { sayToken++; stopClip(); clearTimeout(R && R.nudge); renderHome(); show('home'); };
 $('#againBtn').onclick = () => startRound(R.cat.id);
 $('#homeBtn').onclick = () => { renderHome(); show('home'); };
 $('#stickersBtn').onclick = () => { sfx.tap(); renderStickers(); show('stickers'); };
@@ -359,6 +403,12 @@ $('#settingsDone').onclick = () => {
   $$('#levels select').forEach((s) => (state.levels[s.dataset.id] = +s.value));
   save(); renderHome(); show('home');
   say("Let's play!");
+};
+$('#testVoiceBtn').onclick = async () => {
+  const out = $('#voiceStatus');
+  out.textContent = 'Playing…';
+  await say('Excellent! Awesome job!');
+  out.textContent = `Recorded clips: ${Object.keys(CLIPS).length} · audio: ${actx ? actx.state : 'off'} · played via: ${lastAudio.path || '—'}${lastAudio.err ? ' · ' + lastAudio.err : ''}`;
 };
 $('#resetBtn').onclick = () => {
   if (!confirm('Reset all stars, stickers and levels?')) return;
