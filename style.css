@@ -106,7 +106,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 
 /* hint */
 .hint-box { margin-top: 10px; padding: 12px; border-radius: 18px; background: #fff9db; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.hint-box.pop { animation: popin .45s cubic-bezier(.2, 1.6, .4, 1); }
+.hint-box.hint-in { animation: popin .45s cubic-bezier(.2, 1.6, .4, 1); }
 .hint-pic { font-size: 84px; line-height: 1.05; }
 .hint-pic.sm { font-size: 56px; }
 .hint-letters { font-size: 40px; font-weight: 900; letter-spacing: 4px; color: var(--theme); }
@@ -258,3 +258,57 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   #play .hint-btn { grid-area: hint; align-self: start; }
 }
 .hint-box[hidden] { display: none; }
+
+/* base-ten blocks + word-problem hints */
+.b10 { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 4px; max-width: 320px; }
+.b10 .ten { width: 12px; height: 60px; border-radius: 3px; background: repeating-linear-gradient(to bottom, #ff922b 0 5px, #e8590c 5px 6px); box-shadow: 0 2px 0 #0002; }
+.b10 .one { width: 12px; height: 12px; border-radius: 3px; background: #4dabf7; box-shadow: 0 2px 0 #1864ab; position: relative; }
+.b10 .one.crossed { opacity: .35; }
+.b10 .one.crossed::after { content: "✕"; position: absolute; inset: -4px; color: var(--bad); font-weight: 900; font-size: 14px; display: grid; place-items: center; }
+.hint-note.big { font-size: 30px; color: var(--ink); }
+.cmp { display: grid; gap: 6px; }
+.cmp .objs { justify-content: flex-start; }
+@media (min-width: 700px) { .b10 .ten { width: 16px; height: 80px; } .b10 .one { width: 16px; height: 16px; } .hint-note.big { font-size: 40px; } }
+
+/* ---------- bigger pictures (easy to recognize) ---------- */
+.opt-emoji .opt { font-size: 84px; min-height: 132px; }
+.opt-emoji.flag .opt { font-size: 84px; }
+.options.opt-emoji { gap: 10px; }
+.big-emoji { font-size: 150px; }
+.big-flag { font-size: 160px; }
+.hint-pic { font-size: 130px; }
+.hint-pic.sm { font-size: 90px; }
+.shape { width: 190px; height: 190px; }
+.shape.sm { width: 150px; height: 150px; }
+.shape.shape-opt { width: 104px; height: 104px; }
+.opt-svg .opt { min-height: 128px; }
+.opt-card .oe { font-size: 68px; }
+.opt-card .opt { min-height: 136px; }
+.obj { font-size: 36px; }
+@media (max-height: 700px) { .big-emoji, .big-flag { font-size: 120px; } .hint-pic { font-size: 104px; } .opt-emoji .opt { font-size: 70px; min-height: 112px; } }
+@media (min-width: 700px) {
+  .opt-emoji .opt { font-size: 130px; min-height: 190px; }
+  .opt-emoji.flag .opt { font-size: 130px; }
+  .big-emoji { font-size: 220px; } .big-flag { font-size: 240px; }
+  .hint-pic { font-size: 190px; } .hint-pic.sm { font-size: 130px; }
+  .shape { width: 280px; height: 280px; } .shape.sm { width: 210px; height: 210px; } .shape.shape-opt { width: 150px; height: 150px; }
+  .opt-svg .opt { min-height: 180px; }
+  .opt-card .oe { font-size: 96px; } .opt-card .opt { min-height: 190px; }
+  .obj { font-size: 48px; }
+}
+/* keep big pictures inside their buttons on narrow phones */
+.options { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.options.four, .options.two, .options.opt-text, .options.opt-card { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.options.opt-text:not(.four) { grid-template-columns: minmax(0, 1fr); }
+.options.opt-text.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.opt-emoji .opt, .opt-emoji.flag .opt { font-size: min(84px, 20vw); padding: 6px; }
+.opt-emoji.four .opt { font-size: min(96px, 26vw); }
+@media (min-width: 700px) {
+  .options.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .options.opt-text.four, .options.opt-card.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .opt-emoji .opt, .opt-emoji.flag .opt, .opt-emoji.four .opt { font-size: min(130px, 13vw); }
+}
+@media (min-width: 1000px) and (orientation: landscape) { #play .options.four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.hint-pic { white-space: nowrap; font-size: min(130px, 30vw); }
+.hint-pic.sm { font-size: min(90px, 22vw); }
+@media (min-width: 700px) { .hint-pic { font-size: min(190px, 22vw); } .hint-pic.sm { font-size: 130px; } }

@@ -63,7 +63,7 @@ function genWords(list, level, kind) {
   const [w, e] = pick(list);
   const n = numOpts(level) - 1;
   const type = pick(['read', 'read', 'find', 'missing']);
-  const picHint = { html: `<div class="hint-pic">${e}</div>`, say: `It's a picture of ${w}.` };
+  const picHint = { html: `<div class="hint-pic">${e}</div>`, say: 'Look at the picture!' };
 
   if (type === 'read') {
     const others = similarWords(list, w, n, level);
@@ -75,7 +75,7 @@ function genWords(list, level, kind) {
       options: shuffle([[w, e], ...others]).map(([ow, oe]) => ({ v: ow, html: oe })),
       answer: w,
       optClass: 'opt-emoji',
-      hint: { html: `<div class="hint-letters">${w.split('').join(' · ')}</div>`, say: `Sound it out. ${w}` },
+      hint: { html: `<div class="hint-letters">${w.split('').join(' · ')}</div>`, say: 'Sound it out!' },
     };
   }
 
@@ -201,14 +201,19 @@ function genSyllable(level) {
 }
 
 /* ---------------- MATH ---------------- */
+// Levels for Adding / Take Away:
+//  1: within 5   2: within 10   3: within 20
+//  4: two-digit ± one-digit, no regrouping (34 + 5, 47 − 3)
+//  5: two-digit ± one-digit, with regrouping (38 + 7, 52 − 6)
 const THINGS = [['🍎', 'apples'], ['⭐', 'stars'], ['🐞', 'ladybugs'], ['🍓', 'strawberries'], ['🎈', 'balloons'], ['🐟', 'fish'], ['🧁', 'cupcakes'], ['🐥', 'chicks']];
-const NAMES = ['Sam', 'Mia', 'Leo', 'Ava', 'Raj', 'Zoe', 'Ben', 'Lily'];
+const NAMES = ['Mia', 'Leo', 'Ava', 'Sam', 'Zoe', 'Ben'];
 
 function numberOptions(ans, level, min = 0) {
   const set = new Set([ans]);
+  if (level >= 4) { if (ans + 10 >= min) set.add(ans + 10); else if (ans - 10 >= min) set.add(ans - 10); } // classic place-value slip
   const spread = level >= 3 ? 3 : 2;
   let guard = 0;
-  while (set.size < numOpts(level) && guard++ < 50) {
+  while (set.size < numOpts(level) && guard++ < 60) {
     const d = ans + (rand(spread * 2 + 1) - spread);
     if (d >= min && d !== ans) set.add(d);
   }
@@ -221,45 +226,149 @@ function objects(emoji, n, crossFrom = Infinity) {
   return h;
 }
 
-function genAdd(level) {
-  const max = [5, 10, 20][level - 1];
+// base-ten blocks: tall bars are tens, little cubes are ones
+function blocks(n, crossOnes = 0) {
+  const t = Math.floor(n / 10), o = n % 10;
+  let h = '<div class="b10">';
+  for (let i = 0; i < t; i++) h += '<span class="ten"></span>';
+  for (let i = 0; i < o; i++) h += `<span class="one${i >= o - crossOnes ? ' crossed' : ''}"></span>`;
+  return h + '</div>';
+}
+
+// pick numbers for a level
+function addPair(level) {
   let a, b;
-  do { a = rand(Math.min(10, max) + 1); b = rand(Math.min(10, max) + 1); } while (a + b > max || (a === 0 && b === 0) || (level > 1 && (a === 0 || b === 0)));
+  if (level <= 3) {
+    const max = [5, 10, 20][level - 1];
+    do { a = rand(Math.min(10, max) + 1); b = rand(Math.min(10, max) + 1); } while (a + b > max || (a === 0 && b === 0) || (level > 1 && (a === 0 || b === 0)));
+  } else if (level === 4) { // no carry
+    do { a = 10 + rand(89); b = 1 + rand(9); } while ((a % 10) + b > 9);
+  } else { // carry
+    do { a = 10 + rand(80); b = 2 + rand(8); } while ((a % 10) + b < 10);
+  }
+  return [a, b];
+}
+function subPair(level) {
+  let a, b;
+  if (level <= 3) { const max = [5, 10, 15][level - 1]; a = 1 + rand(max); b = level > 1 ? 1 + rand(a) : rand(a + 1); }
+  else if (level === 4) { do { a = 11 + rand(89); b = 1 + rand(9); } while (b > a % 10); } // no borrow
+  else { do { a = 20 + rand(80); b = 2 + rand(8); } while (b <= a % 10); }                 // borrow
+  return [a, b];
+}
+
+function mathHint(op, a, b, e) {
+  if (Math.max(a, b) <= 20) {
+    return op === '+'
+      ? { html: `<div class="objs">${objects(e, a)}</div><div class="plus">+</div><div class="objs">${objects(e, b)}</div>`, say: 'Count them all!' }
+      : { html: `<div class="objs">${objects(e, a, a - b)}</div>`, say: `Cross out ${b}. Count what is left!` };
+  }
+  const o = a % 10;
+  if (op === '+') {
+    if (o + b <= 9) return { html: `${blocks(a)}<div class="plus">+</div>${blocks(b)}<div class="hint-note">Add the ones: ${o} + ${b} = ${o + b}</div>`, say: 'Add the ones first!' };
+    const toTen = 10 - o;
+    return { html: `${blocks(a)}<div class="plus">+</div>${blocks(b)}<div class="hint-note">${a} + ${toTen} = ${a + toTen}<br>${a + toTen} + ${b - toTen} = ${a + b}</div>`, say: 'Make a ten first!' };
+  }
+  if (b <= o) return { html: `${blocks(a, b)}<div class="hint-note">Take away the ones: ${o} − ${b} = ${o - b}</div>`, say: 'Take away the ones first!' };
+  return { html: `${blocks(a)}<div class="hint-note">${a} − ${o} = ${a - o}<br>${a - o} − ${b - o} = ${a - b}</div>`, say: 'Go back to ten first!' };
+}
+
+function genAdd(level) {
+  const [a, b] = addPair(level);
   const ans = a + b;
   const [e, things] = pick(THINGS);
-  const story = level >= 2 && Math.random() < 0.35;
-  const who = pick(NAMES);
-  const text = story ? `${who} has ${a} ${e}. ${who} gets ${b} more. How many now?` : 'Add them up!';
+  const story = (level === 2 || level === 3) && Math.random() < 0.3;
+  const text = story ? `You have ${a} ${e}. You get ${b} more. How many now?` : 'Add them up!';
   return {
     key: `add-${a}-${b}`,
     text,
-    say: story ? `${who} has ${a} ${things}. ${who} gets ${b} more. How many now?` : `What is ${a} plus ${b}?`,
+    say: story ? `You have ${a} ${things}. You get ${b} more. How many now?` : level >= 4 ? ['What is', a, 'plus', `${b}?`] : `What is ${a} plus ${b}?`,
     main: story ? `<div class="story">${text}</div>` : `<div class="equation">${a} + ${b} = <span class="qmark">?</span></div>`,
     options: numberOptions(ans, level),
     answer: ans,
     optClass: 'opt-num',
-    hint: { html: `<div class="objs">${objects(e, a)}</div><div class="plus">+</div><div class="objs">${objects(e, b)}</div>`, say: 'Count them all!' },
+    hint: mathHint('+', a, b, e),
   };
 }
 
 function genSub(level) {
-  const max = [5, 10, 15][level - 1];
-  const a = 1 + rand(max);
-  const b = level > 1 ? 1 + rand(a) : rand(a + 1); // b ≤ a, never negative
+  const [a, b] = subPair(level);
   const ans = a - b;
   const [e, things] = pick(THINGS);
-  const story = level >= 2 && Math.random() < 0.35;
-  const who = pick(NAMES);
-  const text = story ? `${who} has ${a} ${e}. ${b} go away. How many are left?` : 'Take away!';
+  const story = (level === 2 || level === 3) && Math.random() < 0.3;
+  const text = story ? `You have ${a} ${e}. You give away ${b}. How many are left?` : 'Take away!';
   return {
     key: `sub-${a}-${b}`,
     text,
-    say: story ? `${who} has ${a} ${things}. ${b} go away. How many are left?` : `What is ${a} minus ${b}?`,
+    say: story ? `You have ${a} ${things}. You give away ${b}. How many are left?` : level >= 4 ? ['What is', a, 'minus', `${b}?`] : `What is ${a} minus ${b}?`,
     main: story ? `<div class="story">${text}</div>` : `<div class="equation">${a} − ${b} = <span class="qmark">?</span></div>`,
     options: numberOptions(ans, level),
     answer: ans,
     optClass: 'opt-num',
-    hint: { html: `<div class="objs">${objects(e, a, a - b)}</div>`, say: `Cross out ${b}. Count what is left!` },
+    hint: mathHint('−', a, b, e),
+  };
+}
+
+/* ---------------- WORD PROBLEMS ---------------- */
+// Each template is a list of spoken pieces. Pieces are recorded once each
+// ("Mia has", "apples.", numbers…) so any combination plays in the same voice.
+// Levels: 1 within 10 · 2 within 20 · 3 two-digit ± one-digit · 4 "how many more" · 5 two steps
+const WP_ITEMS = [
+  ['🍎', 'apples', 'food'], ['🍪', 'cookies', 'food'], ['🍓', 'strawberries', 'food'], ['🧁', 'cupcakes', 'food'],
+  ['🎈', 'balloons', 'fly'], ['🐦', 'birds', 'fly'], ['🦋', 'butterflies', 'fly'],
+  ['🖍️', 'crayons', 'toy'], ['🚗', 'toy cars', 'toy'], ['🐚', 'shells', 'toy'], ['⭐', 'stickers', 'toy'],
+];
+const WP = {
+  add: [
+    (n, a, b, t) => [`${n} has`, a, `${t}.`, `${n} gets`, b, 'more.', 'How many now?'],
+    (n, a, b, t) => ['There are', a, `${t} in a box.`, 'You put in', b, 'more.', 'How many are in the box?'],
+    (n, a, b, t) => [`${n} found`, a, `${t}.`, `Then ${n} found`, b, 'more.', 'How many in all?'],
+  ],
+  sub: {
+    food: [(n, a, b, t) => [`${n} has`, a, `${t}.`, `${n} eats`, `${b}.`, 'How many are left?']],
+    fly: [(n, a, b, t) => ['There are', a, `${t}.`, b, 'fly away.', 'How many are left?']],
+    toy: [(n, a, b, t) => [`${n} has`, a, `${t}.`, `${n} gives`, b, 'to a friend.', 'How many are left?']],
+  },
+};
+
+function wpNumbers(level, op) {
+  if (level === 1) return op === '+' ? addPair(2) : subPair(2);
+  if (level === 2) return op === '+' ? addPair(3) : (() => { const a = 11 + rand(10); return [a, 1 + rand(9)]; })();
+  return op === '+' ? addPair(4 + rand(2)) : subPair(4 + rand(2));
+}
+
+function genWordProblem(level) {
+  const n = pick(NAMES);
+  const [e, t, kind] = pick(WP_ITEMS);
+  let parts, ans, hint, key;
+  if (level === 4 && Math.random() < 0.6) {
+    // comparison: how many more?
+    const m = pick(NAMES.filter((x) => x !== n));
+    const big = 5 + rand(16), small = 1 + rand(big - 1);
+    parts = [`${n} has`, big, `${t}.`, `${m} has`, small, `${t}.`, `How many more does ${n} have?`];
+    ans = big - small; key = `wp-cmp-${big}-${small}`;
+    hint = { html: `<div class="cmp"><div class="objs">${objects(e, big, small)}</div><div class="objs">${objects(e, small)}</div></div><div class="hint-note">Match them up. Count the extra ones!</div>`, say: 'Match them up. Count the extra ones!' };
+  } else if (level === 5 && Math.random() < 0.6) {
+    // two steps: start, get some, give some
+    let a, b, c;
+    do { a = 3 + rand(10); b = 1 + rand(9); c = 1 + rand(9); } while (c > a + b || a + b > 20);
+    parts = [`${n} has`, a, `${t}.`, `${n} gets`, b, 'more.', `Then ${n} gives away`, `${c}.`, 'How many are left?'];
+    ans = a + b - c; key = `wp-two-${a}-${b}-${c}`;
+    hint = { html: `<div class="hint-note">Step 1: ${a} + ${b} = ${a + b}<br>Step 2: ${a + b} − ${c} = ?</div>`, say: 'Add first. Then take away.' };
+  } else {
+    const op = Math.random() < 0.5 ? '+' : '−';
+    const lv = Math.min(level, 3);
+    const [a, b] = wpNumbers(lv, op);
+    parts = op === '+' ? pick(WP.add)(n, a, b, t) : pick(WP.sub[kind])(n, a, b, t);
+    ans = op === '+' ? a + b : a - b; key = `wp-${op}-${a}-${b}`;
+    hint = mathHint(op, a, b, e);
+    hint = { html: `<div class="hint-note big">${a} ${op} ${b} = ?</div>${hint.html}`, say: op === '+' ? 'It is an adding problem!' : 'It is a take away problem!' };
+  }
+  const text = parts.map(String).join(' ').replace(new RegExp(`\\b${t}\\b`, 'g'), `${t} ${e}`);
+  return {
+    key, text: '📝 Read the story', say: parts,
+    main: `<div class="story">${text}</div>`,
+    options: numberOptions(ans, Math.max(level, 2)),
+    answer: ans, optClass: 'opt-num', hint,
   };
 }
 
@@ -565,6 +674,7 @@ function genFlags(level) {
   const pool = FLAGS.filter((f) => f[4] <= level);
   const f = pick(pool);
   const [name, flag, clue, clueText] = f;
+  const the = /^(United|Netherlands)/.test(name) ? 'the ' : '';
   const others = sample(pool, numOpts(level) - 1, [f]);
   const hint = { html: `<div class="hint-pic">${clue}</div>`, say: `This country has ${clueText}.` };
   if (Math.random() < 0.5) {
@@ -576,7 +686,7 @@ function genFlags(level) {
     };
   }
   return {
-    key: `flag-f-${name}`, text: `Find the flag of ${name}!`, say: `Find the flag of ${name}!`,
+    key: `flag-f-${name}`, text: `Find the flag of ${the}${name}!`, say: `Find the flag of ${the}${name}!`,
     main: `<div class="word sm">${name}</div>`,
     options: shuffle([f, ...others]).map((o) => ({ v: o[0], html: o[1] })),
     answer: name, optClass: 'opt-emoji flag', hint,
@@ -670,8 +780,9 @@ const CATEGORIES = [
   { id: 'w4', title: 'Big Words', sub: 'frog · cake · star', icon: '🐸', color: '#69db7c', gen: (l) => genWords(W4, l, 'w4') },
   { id: 'sent', title: 'Sentences', sub: 'read & answer', icon: '📖', color: '#74c0fc', gen: genSentence },
   { id: 'syl', title: 'Clap It!', sub: 'syllables', icon: '👏', color: '#ffd43b', gen: genSyllable },
-  { id: 'add', title: 'Adding', sub: '2 + 3 = ?', icon: '➕', color: '#b197fc', gen: genAdd },
-  { id: 'sub', title: 'Take Away', sub: '5 − 2 = ?', icon: '➖', color: '#f783ac', gen: genSub },
+  { id: 'add', title: 'Adding', sub: '2 + 3 · 34 + 5', icon: '➕', color: '#b197fc', gen: genAdd, maxLevel: 5 },
+  { id: 'sub', title: 'Take Away', sub: '5 − 2 · 47 − 3', icon: '➖', color: '#f783ac', gen: genSub, maxLevel: 5 },
+  { id: 'story', title: 'Word Problems', sub: 'math stories', icon: '📝', color: '#4c6ef5', gen: genWordProblem, maxLevel: 5 },
   { id: 'shape2', title: 'Shapes', sub: 'flat shapes', icon: '🔺', color: '#ffa94d', gen: genShape2 },
   { id: 'shape3', title: '3D Shapes', sub: 'cube · cone', icon: '🧊', color: '#3bc9db', gen: genShape3 },
   { id: 'jobs', title: 'Jobs', sub: 'who helps us?', icon: '🧑‍🚒', color: '#ff922b', gen: genJobs },

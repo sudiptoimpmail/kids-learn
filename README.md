@@ -9,7 +9,8 @@ A flash-card learning game for a 5-year-old, built as an installable iPhone web 
 | 🐸 Big Words | 4-letter words, same three card types |
 | 📖 Sentences | Read a short sentence, answer a question |
 | 👏 Clap It! | Syllable counting |
-| ➕ Adding / ➖ Take Away | Sums and differences, plus little story problems |
+| ➕ Adding / ➖ Take Away | 5 levels: within 5 → within 10 → within 20 → two-digit ± one-digit → with regrouping (38 + 7, 52 − 6). Hints use base-ten blocks and "make a ten" steps |
+| 📝 Word Problems | 5 levels: within 10 → within 20 → two-digit → "how many more?" → two-step stories |
 | 🔺 Shapes | 2D shapes, finding shapes, counting sides |
 | 🧊 3D Shapes | Cube, sphere, cylinder, cone, pyramid, prism; flat vs solid; real-life objects |
 | 🧑‍🚒 Jobs | Who does what |
@@ -17,7 +18,7 @@ A flash-card learning game for a 5-year-old, built as an installable iPhone web 
 | 🗺️ World Map | Name the highlighted continent, tap a continent, where animals live |
 | 🎲 Mix It Up | A bit of everything |
 
-**How it plays:** 10 cards per round. Pictures/clues stay hidden behind **💡 Hint** and appear only when she taps it or after a wrong answer. Right answers get a spoken "Excellent!" / "Awesome job!", confetti and a bouncing emoji; 3 in a row shows a streak. Each finished round earns stars and a new sticker. Each game has 3 levels and moves up automatically after a great round (grown-ups can change levels in ⚙️).
+**How it plays:** 10 cards per round. Pictures/clues stay hidden behind **💡 Hint** and appear only when she taps it or after a wrong answer. Right answers get a spoken "Excellent!" / "Awesome job!", confetti and a bouncing emoji; 3 in a row shows a streak. Each finished round earns stars and a new sticker. Each game has 3 levels (math games have 5) and moves up automatically after a great round (grown-ups can change levels in ⚙️).
 
 ## Turn on hosting (one time)
 Repo **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main` / `(root)` → Save**.
@@ -28,7 +29,9 @@ After a minute the app is live at https://sudiptoimpmail.github.io/kids-learn/
 2. Tap **Share** → **Add to Home Screen**.
 3. Open it from the home screen — it runs full-screen and works offline.
 
-Make sure the ringer/silent switch is off so the voice can be heard.
+## Voice
+Every word, question and praise is pre-recorded in a natural voice (`audio/`, made with the open-source Kokoro TTS model, voice `af_heart`), so it sounds the same on every device and works offline.
+If a phrase has no recording, the app falls back to the best voice installed on the device. For a better fallback on iPhone/iPad: **Settings → Accessibility → Spoken Content → Voices → English → download "Ava (Premium)" or "Zoe (Premium)"**.
 
 ## Edit content
 All words, sentences, jobs, flags, etc. live in `content.js` — add rows to the arrays. After changing files, bump `VERSION` in `sw.js` so installed copies update.

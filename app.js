@@ -13,20 +13,76 @@ const state = Object.assign(
 );
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
 const levelOf = (id) => state.levels[id] || 1;
+const maxLevelOf = (id) => (CATEGORIES.find((c) => c.id === id) || {}).maxLevel || 3;
 
 /* ---------- voice ---------- */
+// 1) Pre-recorded natural voice clips (audio/*.mp3, listed in audio/clips.json), sentence by sentence.
+// 2) Fallback: the best voice installed on the device (Premium/Enhanced first).
+const clipKey = (t) => t.toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim();
+const splitSentences = (t) => (t.match(/[^.!?]+[.!?]*/g) || []).map((x) => x.trim()).filter((x) => clipKey(x));
+let CLIPS = {};
+fetch('audio/clips.json').then((r) => r.json()).then((j) => (CLIPS = j)).catch(() => {});
+let sayToken = 0, actx, curSrc = null;
+// let sound play even when the iPhone's silent switch is on (Safari 16.4+)
+try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch {}
+function ctx() {
+  actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+  if (actx.state === 'suspended') actx.resume();
+  return actx;
+}
+const bufs = new Map();
+function getBuf(file) {
+  if (bufs.has(file)) return bufs.get(file);
+  const p = fetch('audio/' + file).then((r) => r.arrayBuffer())
+    .then((ab) => new Promise((ok, bad) => ctx().decodeAudioData(ab, ok, bad)));
+  bufs.set(file, p); p.catch(() => bufs.delete(file));
+  return p;
+}
+function prefetch(text) { if (text) (Array.isArray(text) ? text.map(String) : splitSentences(text)).forEach((p) => { const f = CLIPS[clipKey(p)]; if (f) getBuf(f).catch(() => {}); }); }
+function stopClip() { try { curSrc && curSrc.stop(); } catch {} curSrc = null; }
+function playClip(file) {
+  return new Promise(async (res) => {
+    let done = false; const fin = () => { if (!done) { done = true; res(); } };
+    try {
+      const c = ctx(); const buf = await getBuf(file);
+      const src = c.createBufferSource(); src.buffer = buf; src.connect(c.destination);
+      src.onended = fin; curSrc = src; src.start();
+      setTimeout(fin, buf.duration * 1000 + 400);
+    } catch { fin(); }
+  });
+}
+
 let voice = null;
 function pickVoice() {
   if (!('speechSynthesis' in window)) return;
-  const vs = speechSynthesis.getVoices();
-  voice = vs.find((v) => /Samantha|Ava|Allison|Karen/i.test(v.name) && v.lang.startsWith('en'))
-    || vs.find((v) => v.lang === 'en-US') || vs.find((v) => v.lang.startsWith('en')) || null;
+  const en = speechSynthesis.getVoices().filter((v) => /^en[-_](US|GB|AU|IE|CA)/i.test(v.lang));
+  const score = (v) => (/premium/i.test(v.name) ? 100 : 0) + (/enhanced|neural|natural/i.test(v.name) ? 60 : 0)
+    + (/Ava|Zoe|Samantha|Allison|Nicky|Evan|Serena|Karen|Google US English/i.test(v.name) ? 20 : 0)
+    + (/Novelty|Bells|Bubbles|Boing|Whisper|Zarvox|Trinoids|Albert|Bahh|Jester|Organ|Cellos|Superstar|Wobble|Bad News|Good News|Eddy|Flo|Grandma|Grandpa|Reed|Rocko|Sandy|Shelley/i.test(v.name) ? -200 : 0)
+    + (v.lang === 'en-US' ? 5 : 0);
+  voice = en.sort((a, b) => score(b) - score(a))[0] || null;
 }
 if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
 
-function say(text, { rate = 0.92, pitch = 1.15 } = {}) {
+async function say(text, opts = {}) {
+  const my = ++sayToken;
+  if (!text || !state.voice) return;
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  stopClip();
+  const parts = Array.isArray(text) ? text.map(String) : splitSentences(text);
+  if (Array.isArray(text)) text = text.join(' ');
+  const files = parts.map((p) => CLIPS[clipKey(p)]);
+  if (parts.length && files.every(Boolean)) {
+    say.current = null;
+    for (const f of files) { if (my !== sayToken) return; await playClip(f); }
+    return;
+  }
+  return deviceSay(text, opts);
+}
+
+function deviceSay(text, { rate = 0.92, pitch = 1.1 } = {}) {
   return new Promise((res) => {
-    if (!text || !state.voice || !('speechSynthesis' in window)) return res();
+    if (!('speechSynthesis' in window)) return res();
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     if (voice) u.voice = voice;
@@ -41,11 +97,9 @@ function say(text, { rate = 0.92, pitch = 1.15 } = {}) {
 }
 
 /* ---------- little sound effects (no files needed) ---------- */
-let actx;
 function tone(freqs, { dur = 0.12, type = 'sine', gap = 0.09, vol = 0.18 } = {}) {
   try {
-    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-    if (actx.state === 'suspended') actx.resume();
+    ctx();
     freqs.forEach((f, i) => {
       const o = actx.createOscillator(), g = actx.createGain();
       const t = actx.currentTime + i * gap;
@@ -155,6 +209,8 @@ function renderQ() {
   clearTimeout(R.nudge);
   R.nudge = setTimeout(() => !q.hintShown && $('#hintBtn').classList.add('glow'), 12000);
   setTimeout(() => say(q.say || ''), 250);
+  const nq = R.qs[R.i + 1]; if (nq) { prefetch(nq.say); nq.hint && prefetch(nq.hint.say); }
+  q.hint && prefetch(q.hint.say);
 }
 
 function showHint(q, auto = false) {
@@ -163,7 +219,7 @@ function showHint(q, auto = false) {
   const box = $('#hintBox');
   box.innerHTML = q.hint.html || '';
   box.hidden = !q.hint.html;
-  box.classList.remove('pop'); void box.offsetWidth; box.classList.add('pop');
+  box.classList.remove('hint-in'); void box.offsetWidth; box.classList.add('hint-in');
   $('#hintBtn').classList.remove('glow');
   if (!auto) speakHint(q);
 }
@@ -171,7 +227,7 @@ function showHint(q, auto = false) {
 function speakHint(q) {
   const h = q.hint;
   if (h.karaoke) return karaoke(h.say);
-  say(h.say, { rate: h.slow ? 0.7 : 0.9 });
+  say(h.say, { rate: h.slow ? 0.7 : 0.9, slow: h.slow });
 }
 
 // read a sentence aloud, lighting up each word
@@ -179,7 +235,7 @@ async function karaoke(text) {
   const spans = $$('.sw');
   const light = (k) => spans.forEach((s, j) => s.classList.toggle('lit', j === k));
   let i = 0, gotBoundary = false;
-  const p = say(text, { rate: 0.75 });
+  const p = say(text, { rate: 0.75, slow: true });
   const u = say.current;
   if (u) u._onWord = (ev) => { if (ev.name && ev.name !== 'word') return; gotBoundary = true; light(i++); };
   // fallback: step through words on a timer if the voice gives no word events
@@ -232,7 +288,8 @@ function celebrate(first) {
     (R.streak >= 3 ? `<div class="pop-streak">🔥 ${R.streak} in a row!</div>` : '');
   pop.classList.remove('show'); void pop.offsetWidth; pop.classList.add('show');
   confetti(first ? 110 : 50);
-  say(R.streak >= 3 && R.streak % 3 === 0 ? `${withName} ${R.streak} in a row!` : withName, { pitch: 1.3, rate: 1 });
+  // spoken praise uses the recorded voice; the name is shown on screen
+  say(R.streak >= 3 && R.streak % 3 === 0 ? `${phrase} ${R.streak} in a row!` : phrase, { pitch: 1.3, rate: 1 });
 }
 
 function next() {
@@ -253,7 +310,7 @@ function finish() {
   let levelMsg = '';
   if (id !== 'mix') {
     const lv = levelOf(id);
-    if (m <= 1 && lv < 3) { state.levels[id] = lv + 1; levelMsg = `⬆️ Level up! Now level ${lv + 1}`; }
+    if (m <= 1 && lv < maxLevelOf(id)) { state.levels[id] = lv + 1; levelMsg = `⬆️ Level up! Now level ${lv + 1}`; }
     else if (m >= 8 && lv > 1) { state.levels[id] = lv - 1; }
   }
   // sticker
@@ -269,8 +326,7 @@ function finish() {
   $('#resSticker').innerHTML = sticker ? `<div class="new-sticker">${sticker}</div><div>New sticker!</div>` : '<div>You have every sticker! 🏆</div>';
   show('result');
   sfx.win(); confetti(160, 0.3); setTimeout(() => confetti(120, 0.5), 600);
-  const nm = state.name ? `, ${state.name}` : '';
-  say(`${stars === 3 ? 'Wow! Awesome job' : stars === 2 ? 'Great job' : 'Good try'}${nm}! You got ${R.firstTry} stars.${levelMsg ? ' Level up!' : ''}${sticker ? ' And a new sticker!' : ''}`);
+  say(`${stars === 3 ? 'Wow! Awesome job!' : stars === 2 ? 'Great job!' : 'Good try!'} You got ${R.firstTry} stars.${levelMsg ? ' Level up!' : ''}${sticker ? ' And a new sticker!' : ''}`);
 }
 
 function renderStickers() {
@@ -285,7 +341,7 @@ $('#grid').addEventListener('click', (e) => {
   sfx.tap(); startRound(t.dataset.cat);
 });
 $('#hintBtn').onclick = () => { sfx.tap(); showHint(R.qs[R.i]); };
-$('#sayBtn').onclick = () => { sfx.tap(); const q = R.qs[R.i]; say(q.say || q.readQ || q.text.replace(/<[^>]+>/g, '')); };
+$('#sayBtn').onclick = () => { sfx.tap(); const q = R.qs[R.i]; say((q.say && q.say.length) ? q.say : q.readQ || q.text.replace(/<[^>]+>/g, '')); };
 $('#quitBtn').onclick = () => { window.speechSynthesis && speechSynthesis.cancel(); clearTimeout(R && R.nudge); renderHome(); show('home'); };
 $('#againBtn').onclick = () => startRound(R.cat.id);
 $('#homeBtn').onclick = () => { renderHome(); show('home'); };
@@ -294,7 +350,7 @@ $('#stickersBack').onclick = () => show('home');
 $('#settingsBtn').onclick = () => {
   $('#nameInput').value = state.name; $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
-    `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${[1, 2, 3].map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
+    `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
   show('settings');
 };
 $('#settingsDone').onclick = () => {
@@ -302,7 +358,7 @@ $('#settingsDone').onclick = () => {
   state.voice = $('#voiceToggle').checked;
   $$('#levels select').forEach((s) => (state.levels[s.dataset.id] = +s.value));
   save(); renderHome(); show('home');
-  if (state.name) say(`Hi, ${state.name}! Let's play!`);
+  say("Let's play!");
 };
 $('#resetBtn').onclick = () => {
   if (!confirm('Reset all stars, stickers and levels?')) return;
@@ -310,7 +366,7 @@ $('#resetBtn').onclick = () => {
 };
 $('#startBtn').onclick = () => {
   // first tap unlocks audio on iPhone
-  tone([1, 1], { vol: 0.001 }); say(state.name ? `Hi, ${state.name}! Pick a game!` : 'Hi! Pick a game!');
+  tone([1, 1], { vol: 0.001 }); say('Hi! Pick a game!');
   $('#splash').classList.add('gone');
 };
 
