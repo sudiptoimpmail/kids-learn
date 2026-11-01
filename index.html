@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Learn &amp; Play</title>
+  <meta name="description" content="Flash-card learning games for little ones: reading, math, shapes, jobs, flags and maps.">
+  <meta name="theme-color" content="#7c5cff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Learn & Play">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <!-- tap-to-start (unlocks sound on iPhone) -->
+  <div id="splash">
+    <div class="splash-in">
+      <div class="splash-emoji">🦄</div>
+      <h1>Learn &amp; Play</h1>
+      <button id="startBtn" class="big-btn">▶︎ Let's Play!</button>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <section id="home" class="screen active">
+    <header class="top">
+      <div>
+        <div id="hello" class="hello">Hi there!</div>
+        <div class="sub">What do you want to learn?</div>
+      </div>
+      <button id="settingsBtn" class="icon-btn" aria-label="Grown-up settings">⚙️</button>
+    </header>
+    <div class="score-row">
+      <div class="chip">⭐ <b id="starCount">0</b></div>
+      <button id="stickersBtn" class="chip btn">🦄 <b id="stickerCount">0</b> stickers ›</button>
+    </div>
+    <div id="grid" class="grid"></div>
+  </section>
+
+  <!-- PLAY -->
+  <section id="play" class="screen">
+    <header class="play-top">
+      <button id="quitBtn" class="icon-btn" aria-label="Back home">🏠</button>
+      <div id="playTitle" class="play-title"></div>
+      <button id="sayBtn" class="icon-btn" aria-label="Say it again">🔊</button>
+    </header>
+    <div id="progress" class="progress"></div>
+    <div class="card">
+      <div id="qText" class="q-text"></div>
+      <div id="qMain" class="q-main"></div>
+      <div id="hintBox" class="hint-box" hidden></div>
+    </div>
+    <div id="options" class="options"></div>
+    <button id="hintBtn" class="hint-btn">💡 Hint</button>
+    <div id="pop" class="pop" aria-live="polite"></div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result" class="screen">
+    <div class="result">
+      <div class="trophy">🏆</div>
+      <h2 id="resTitle"></h2>
+      <div id="resStars" class="res-stars"></div>
+      <div id="resScore" class="res-score"></div>
+      <div id="resLevel" class="res-level"></div>
+      <div id="resSticker" class="res-sticker"></div>
+      <div class="res-btns">
+        <button id="againBtn" class="big-btn">🔁 Play again</button>
+        <button id="homeBtn" class="big-btn alt">🏠 Home</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STICKERS -->
+  <section id="stickers" class="screen">
+    <header class="play-top">
+      <button id="stickersBack" class="icon-btn" aria-label="Back">‹</button>
+      <div class="play-title">My Sticker Book</div>
+      <span class="icon-btn ghost"></span>
+    </header>
+    <p id="stickerNote" class="note"></p>
+    <div id="stickerGrid" class="sticker-grid"></div>
+  </section>
+
+  <!-- SETTINGS (for grown-ups) -->
+  <section id="settings" class="screen">
+    <header class="play-top">
+      <span class="icon-btn ghost"></span>
+      <div class="play-title">Grown-up Settings</div>
+      <span class="icon-btn ghost"></span>
+    </header>
+    <div class="panel">
+      <label class="field">Child's name (said in praise)
+        <input id="nameInput" maxlength="20" autocomplete="off" placeholder="e.g. Maya">
+      </label>
+      <label class="field row">Voice &amp; sounds <input id="voiceToggle" type="checkbox"></label>
+      <div class="field">Level for each game <small>(goes up automatically after a great round)</small></div>
+      <div id="levels" class="levels"></div>
+      <button id="settingsDone" class="big-btn">Save</button>
+      <button id="resetBtn" class="link-btn">Reset all progress</button>
+      <p class="note small">Everything is saved only on this phone. No accounts, no ads, no tracking.</p>
+    </div>
+  </section>
+
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
