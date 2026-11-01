@@ -19,8 +19,12 @@ A flash-card learning game for a 5-year-old, built as an installable iPhone web 
 
 **How it plays:** 10 cards per round. Pictures/clues stay hidden behind **💡 Hint** and appear only when she taps it or after a wrong answer. Right answers get a spoken "Excellent!" / "Awesome job!", confetti and a bouncing emoji; 3 in a row shows a streak. Each finished round earns stars and a new sticker. Each game has 3 levels and moves up automatically after a great round (grown-ups can change levels in ⚙️).
 
-## Install on iPhone
-1. Open the GitHub Pages link in **Safari**.
+## Turn on hosting (one time)
+Repo **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main` / `(root)` → Save**.
+After a minute the app is live at https://sudiptoimpmail.github.io/kids-learn/
+
+## Install on iPhone / iPad
+1. Open https://sudiptoimpmail.github.io/kids-learn/ in **Safari**.
 2. Tap **Share** → **Add to Home Screen**.
 3. Open it from the home screen — it runs full-screen and works offline.
 
