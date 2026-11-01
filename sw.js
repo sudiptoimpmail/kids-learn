@@ -1,5 +1,5 @@
 // Offline cache. Bump VERSION whenever you change any file so phones/iPads pick up the update.
-const VERSION = 'lp-v2';
+const VERSION = 'lp-v3';
 const FILES = ['./', 'index.html', 'style.css', 'content.js', 'app.js', 'manifest.webmanifest', 'audio/clips.json',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 
