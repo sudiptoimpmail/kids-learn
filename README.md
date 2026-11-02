@@ -7,6 +7,7 @@ A flash-card learning game for a 5-year-old, built as an installable iPhone web 
 |---|---|
 | 🐱 Little Words | CVC words — read the word → tap the picture, listen → tap the word, missing vowel |
 | 🐸 Big Words | 4-letter words, same three card types |
+| 🔤 Spell It | See the picture, hear the word, then drag (or tap) letter tiles into the blanks. Extra decoy letters. Level 1: 1–2 missing letters in 3-letter words · Level 2: whole 3-letter words or 2 blanks in 4-letter words · Level 3: whole 4-letter words with look-alike decoys (b/d, m/n). Tap a placed letter to send it back; wrong letters bounce out and one correct letter is given |
 | 📖 Sentences | Read a short sentence, answer a question |
 | 👏 Clap It! | Syllable counting |
 | ➕ Adding / ➖ Take Away | 5 levels: within 5 → within 10 → within 20 → two-digit ± one-digit → with regrouping (38 + 7, 52 − 6). Hints use base-ten blocks and "make a ten" steps |

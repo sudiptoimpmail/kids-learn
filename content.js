@@ -116,6 +116,60 @@ function genWords(list, level, kind) {
   };
 }
 
+/* ---------------- SPELLING ---------------- */
+// Only words whose picture is unmistakable.
+const SPELL3 = ['cat', 'dog', 'pig', 'hen', 'bat', 'bus', 'sun', 'cup', 'bed', 'box', 'fox', 'hat', 'map', 'pen', 'web', 'bug',
+  'van', 'leg', 'bag', 'cap', 'can', 'pan', 'nut', 'jet', 'pin', 'tub', 'hug', 'log', 'rat', 'net'];
+const SPELL4 = ['frog', 'duck', 'fish', 'crab', 'drum', 'bell', 'cake', 'kite', 'moon', 'star', 'ship', 'milk', 'sock', 'tree',
+  'bird', 'lion', 'bear', 'ball', 'book', 'boat', 'corn', 'door', 'hand', 'lamp', 'ring', 'rose', 'shoe', 'snow', 'gift',
+  'lock', 'nose', 'foot', 'king', 'goat', 'deer', 'swan', 'seal', 'pear', 'bone', 'tent', 'bike', 'leaf', 'nest', 'soap'];
+const EMOJI_OF = Object.fromEntries(W3.concat(W4));
+const LOOKALIKE = { b: 'dp', d: 'bp', p: 'bq', q: 'p', m: 'n', n: 'mu', u: 'n', i: 'l', l: 'i', e: 'a', a: 'eo', o: 'a', s: 'z', c: 'k', k: 'c' };
+
+function genSpell(level) {
+  let word, nBlank, nExtra;
+  const r = Math.random();
+  if (level === 1) { word = pick(SPELL3); nBlank = r < 0.5 ? 1 : 2; nExtra = 2; }
+  else if (level === 2) {
+    if (r < 0.5) { word = pick(SPELL3); nBlank = 3; nExtra = 3; }
+    else { word = pick(SPELL4); nBlank = 2; nExtra = 3; }
+  } else { word = pick(SPELL4); nBlank = r < 0.75 ? 4 : 3; nExtra = 4; }
+  const letters = word.split('');
+  // which letters are blanks (vowels first when only one or two, they are the tricky part)
+  const idx = letters.map((_, i) => i);
+  let blanks;
+  if (nBlank >= letters.length) blanks = idx;
+  else {
+    const vow = shuffle(idx.filter((i) => VOWELS.includes(letters[i])));
+    const rest = shuffle(idx.filter((i) => !VOWELS.includes(letters[i])));
+    const order = Math.random() < 0.6 ? vow.concat(rest) : shuffle(idx);
+    blanks = order.slice(0, nBlank).sort((a, b) => a - b);
+  }
+  const need = blanks.map((i) => letters[i]);
+  // decoys: look-alike letters at level 3, otherwise random letters not in the word
+  const pool = [];
+  if (level >= 3) need.forEach((l) => (LOOKALIKE[l] || '').split('').forEach((x) => pool.push(x)));
+  'abcdefghijklmnoprstuvwyz'.split('').forEach((x) => pool.push(x));
+  const extras = [];
+  for (const x of shuffle(pool.slice(0, level >= 3 ? 6 : 0)).concat(shuffle(pool.slice(level >= 3 ? 6 : 0)))) {
+    if (extras.length >= nExtra) break;
+    if (!word.includes(x) && !extras.includes(x)) extras.push(x);
+  }
+  const full = blanks.length === letters.length;
+  return {
+    key: `spell-${word}-${blanks.join('')}`,
+    text: full ? 'Spell the word!' : 'Fill in the missing letters!',
+    say: [full ? 'Spell the word.' : 'Fill in the missing letters.', word],
+    speak: word,
+    main: `<div class="spell-pic">${EMOJI_OF[word]}</div><button class="mini-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`,
+    options: [],
+    answer: word,
+    optClass: 'spell-tray',
+    spell: { word, blanks, tiles: shuffle(need.concat(extras)) },
+    hint: { html: '', say: word, slow: true },
+  };
+}
+
 /* ---------------- SENTENCES ---------------- */
 const SENTENCES = [
   ['The cat is on the mat.', 'Where is the cat?', ['on the mat', 'in the box', 'in the bed']],
@@ -778,6 +832,7 @@ function genMaps(level) {
 const CATEGORIES = [
   { id: 'cvc', title: 'Little Words', sub: 'cat · dog · sun', icon: '🐱', color: '#ff8787', gen: (l) => genWords(W3, l, 'cvc') },
   { id: 'w4', title: 'Big Words', sub: 'frog · cake · star', icon: '🐸', color: '#69db7c', gen: (l) => genWords(W4, l, 'w4') },
+  { id: 'spell', title: 'Spell It', sub: 'drag the letters', icon: '🔤', color: '#20c997', gen: genSpell },
   { id: 'sent', title: 'Sentences', sub: 'read & answer', icon: '📖', color: '#74c0fc', gen: genSentence },
   { id: 'syl', title: 'Clap It!', sub: 'syllables', icon: '👏', color: '#ffd43b', gen: genSyllable },
   { id: 'add', title: 'Adding', sub: '2 + 3 · 34 + 5', icon: '➕', color: '#b197fc', gen: genAdd, maxLevel: 5 },

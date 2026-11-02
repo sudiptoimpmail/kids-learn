@@ -314,3 +314,32 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 @media (min-width: 700px) { .hint-pic { font-size: min(190px, 22vw); } .hint-pic.sm { font-size: 130px; } }
 
 .big-btn.small { font-size: 18px; padding: 10px 20px; }
+
+/* ---------- Spell It ---------- */
+.spell-pic { font-size: min(140px, 34vw); line-height: 1.05; }
+.spell-row { display: flex; gap: 10px; justify-content: center; margin-top: 6px; }
+.slot { width: 62px; height: 74px; border-radius: 16px; display: grid; place-items: center; font-size: 46px; font-weight: 900;
+  background: #f3f0fa; box-shadow: inset 0 -5px 0 #ddd4ee; color: var(--ink); transition: background .15s, transform .15s; }
+.slot[data-i]:not(.full) { background: #fff; box-shadow: inset 0 0 0 3px var(--theme), inset 0 -6px 0 color-mix(in srgb, var(--theme) 35%, #fff); }
+.slot.fixed { background: none; box-shadow: none; }
+.slot.full { background: #fff3bf; box-shadow: inset 0 -5px 0 #fcc419; }
+.slot.given { background: #d3f9d8; box-shadow: inset 0 -5px 0 #69db7c; }
+.slot.over { transform: scale(1.12); background: color-mix(in srgb, var(--theme) 25%, #fff); }
+.slot.drop-in { animation: bounce .35s; }
+.slot.bad { background: #ffe3e3; box-shadow: inset 0 -5px 0 #ff8787; color: var(--bad); animation: shake .45s; }
+.slot.win { background: var(--good); color: #fff; box-shadow: inset 0 -5px 0 #1f7a2e; animation: bounce .6s both; }
+.options.spell-tray { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 20px; }
+.tile-l { width: 68px; height: 72px; border-radius: 18px; background: #fff; font-size: 44px; font-weight: 900; color: var(--ink);
+  box-shadow: 0 6px 0 #e3dcef; touch-action: none; animation: rise .35s ease both; display: grid; place-items: center; }
+.tile-l.used { visibility: hidden; }
+.tile-l.lifting { opacity: .25; }
+.tile-l.glow-l { animation: wiggle .45s 2; background: #fff3bf; }
+.tile-l.ghost { position: fixed; z-index: 60; pointer-events: none; animation: none; transform: scale(1.15) rotate(-4deg);
+  box-shadow: 0 14px 24px #0003; }
+@media (min-width: 700px) {
+  .spell-pic { font-size: 200px; }
+  .slot { width: 92px; height: 108px; font-size: 68px; border-radius: 22px; }
+  .spell-row { gap: 14px; }
+  .tile-l { width: 98px; height: 104px; font-size: 64px; border-radius: 24px; }
+  .options.spell-tray { gap: 16px; }
+}

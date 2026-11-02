@@ -247,6 +247,7 @@ function renderQ() {
   opts.className = 'options ' + (q.optClass || '') + (q.options.length === 4 ? ' four' : '') + (q.options.length === 2 ? ' two' : '');
   opts.innerHTML = q.options.map((o) => `<button class="opt" data-v="${String(o.v).replace(/"/g, '&quot;')}">${o.html}</button>`).join('');
   [...opts.children].forEach((b, k) => { b.style.animationDelay = `${k * 60}ms`; b.onclick = () => choose(q, q.options[k].v, b); });
+  if (q.spell) renderSpell(q);
   if (q.tap) $$('#qMain [data-val]').forEach((g) => { if (g.dataset.val) g.onclick = () => choose(q, g.dataset.val, g); });
   $$('[data-speak]', $('#qMain')).forEach((b) => (b.onclick = () => { sfx.tap(); say(b.dataset.speak, { rate: 0.8 }); }));
   // nudge the hint after a while, but never show the picture by itself
@@ -258,6 +259,7 @@ function renderQ() {
 }
 
 function showHint(q, auto = false) {
+  if (q.spell) { spellHint(q); $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
   if (!q.hint || q.hintShown) { if (q.hint) speakHint(q); return; }
   q.hintShown = true;
   const box = $('#hintBox');
@@ -294,6 +296,127 @@ async function karaoke(text) {
   }, 450);
   await p; clearTimeout(timer); clearTimeout(karaoke.t);
   setTimeout(() => light(-1), 400);
+}
+
+/* ---------- spelling: drag or tap letters into the blanks ---------- */
+function renderSpell(q) {
+  const { word, blanks, tiles } = q.spell;
+  q.slots = {};                       // blank index -> tile id
+  const row = document.createElement('div');
+  row.className = 'spell-row';
+  row.innerHTML = word.split('').map((c, i) => blanks.includes(i)
+    ? `<div class="slot" data-i="${i}"></div>`
+    : `<div class="slot fixed">${c}</div>`).join('');
+  $('#qMain').appendChild(row);
+  const tray = $('#options');
+  tray.innerHTML = tiles.map((l, k) => `<button class="tile-l" data-id="${k}" data-l="${l}" style="animation-delay:${k * 50}ms">${l}</button>`).join('');
+  $$('.tile-l', tray).forEach((t) => t.addEventListener('pointerdown', (e) => dragStart(e, q, t)));
+  $$('.slot[data-i]', row).forEach((sl) => (sl.onclick = () => {
+    if (R.locked) return;
+    const id = q.slots[sl.dataset.i]; if (id == null) return;
+    sfx.tap(); unplace(q, +sl.dataset.i);
+  }));
+}
+const tileEl = (id) => $(`.tile-l[data-id="${id}"]`);
+const slotEl = (i) => $(`.slot[data-i="${i}"]`);
+function place(q, i, id) {
+  const old = q.slots[i]; if (old != null) unplace(q, i);
+  const t = tileEl(id); if (!t) return;
+  q.slots[i] = id; t.classList.add('used');
+  const sl = slotEl(i); sl.textContent = t.dataset.l; sl.classList.add('full'); sl.classList.remove('bad');
+  sl.classList.remove('drop-in'); void sl.offsetWidth; sl.classList.add('drop-in');
+  checkSpell(q);
+}
+function unplace(q, i) {
+  const id = q.slots[i]; if (id == null) return;
+  delete q.slots[i];
+  const t = tileEl(id); if (t) t.classList.remove('used');
+  const sl = slotEl(i); sl.textContent = ''; sl.classList.remove('full', 'bad', 'given');
+}
+const firstEmpty = (q) => q.spell.blanks.find((i) => q.slots[i] == null);
+
+let drag = null;
+function dragStart(e, q, t) {
+  if (R.locked || t.classList.contains('used')) return;
+  e.preventDefault();
+  const r = t.getBoundingClientRect();
+  const ghost = t.cloneNode(true);
+  ghost.className = 'tile-l ghost';
+  Object.assign(ghost.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
+  document.body.appendChild(ghost);
+  drag = { q, t, ghost, x0: e.clientX, y0: e.clientY, dx: e.clientX - r.left, dy: e.clientY - r.top, moved: false, id: e.pointerId };
+  t.classList.add('lifting');
+  sfx.tap();
+}
+addEventListener('pointermove', (e) => {
+  if (!drag || e.pointerId !== drag.id) return;
+  if (Math.hypot(e.clientX - drag.x0, e.clientY - drag.y0) > 8) drag.moved = true;
+  drag.ghost.style.left = e.clientX - drag.dx + 'px';
+  drag.ghost.style.top = e.clientY - drag.dy + 'px';
+  $$('.slot.over').forEach((s) => s.classList.remove('over'));
+  const over = slotUnder(e.clientX, e.clientY); if (over) over.classList.add('over');
+}, { passive: true });
+function slotUnder(x, y) {
+  // generous target: nearest blank within 70px of the finger
+  let best = null, bd = 70;
+  $$('.slot[data-i]').forEach((s) => {
+    const r = s.getBoundingClientRect();
+    const d = Math.hypot(x - (r.left + r.width / 2), y - (r.top + r.height / 2));
+    if (d < bd) { bd = d; best = s; }
+  });
+  return best;
+}
+function dragEnd(e) {
+  if (!drag || (e.pointerId != null && e.pointerId !== drag.id)) return;
+  const { q, t, ghost, moved } = drag; drag = null;
+  ghost.remove(); t.classList.remove('lifting');
+  $$('.slot.over').forEach((s) => s.classList.remove('over'));
+  if (R.locked) return;
+  const id = +t.dataset.id;
+  if (!moved) { const i = firstEmpty(q); if (i != null) place(q, i, id); return; }   // a tap fills the next blank
+  const sl = slotUnder(e.clientX, e.clientY);
+  if (sl) place(q, +sl.dataset.i, id);
+}
+addEventListener('pointerup', dragEnd);
+addEventListener('pointercancel', dragEnd);
+
+function checkSpell(q) {
+  const { word, blanks } = q.spell;
+  if (blanks.some((i) => q.slots[i] == null)) return;
+  R.locked = true;
+  const wrong = blanks.filter((i) => tileEl(q.slots[i]).dataset.l !== word[i]);
+  setTimeout(() => {
+    if (!wrong.length) {
+      clearTimeout(R.nudge);
+      const first = q.tries === 0;
+      q.ok = first;
+      if (first) { R.firstTry++; R.streak++; R.best = Math.max(R.best, R.streak); } else R.streak = 0;
+      $$('.slot').forEach((s, k) => { s.classList.add('win'); s.style.animationDelay = `${k * 90}ms`; });
+      celebrate(first);
+      setTimeout(next, first ? 2000 : 1700);
+      return;
+    }
+    q.tries++; R.mistakes++; R.streak = 0;
+    wrong.forEach((i) => slotEl(i).classList.add('bad'));
+    sfx.no();
+    const oops = ['Oops! Try again.', 'Almost! Try again.', 'Not quite. You can do it!'][Math.min(q.tries - 1, 2)];
+    setTimeout(() => {
+      wrong.forEach((i) => unplace(q, i));
+      R.locked = false;
+      if (q.tries === 1) spellHint(q);         // first miss: one correct letter is given
+      say(oops).then(() => say(q.spell.word));
+    }, 800);
+  }, 250);
+}
+function spellHint(q) {
+  if (R.locked) return;
+  q.hintShown = true;
+  const { word } = q.spell;
+  const i = firstEmpty(q); if (i == null) return;
+  const t = $$('.tile-l').find((x) => !x.classList.contains('used') && x.dataset.l === word[i]);
+  if (!t) return;
+  t.classList.add('glow-l'); setTimeout(() => t.classList.remove('glow-l'), 900);
+  setTimeout(() => { place(q, i, +t.dataset.id); const sl = slotEl(i); sl && sl.classList.add('given'); }, 500);
 }
 
 const PRAISE = ['Excellent!', 'Awesome job!', 'Great work!', 'You did it!', 'Super star!', 'Fantastic!', 'Way to go!', 'Amazing!', 'Wonderful!', 'Brilliant!'];
