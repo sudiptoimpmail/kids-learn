@@ -502,10 +502,77 @@ function renderStickers() {
   $('#stickerNote').textContent = `${state.stickers.length} of ${STICKERS.length} — finish a game to win a new one!`;
 }
 
+/* ---------- Word Wonders: learn cards ---------- */
+const L = { list: [], i: 0 };
+function openLearn() {
+  L.list = vocabPool(levelOf('vocab'));
+  if (L.i >= L.list.length) L.i = 0;
+  document.body.style.setProperty('--theme', '#f59f00');
+  show('learn');
+  renderLearn(true);
+}
+function renderLearn(speak) {
+  const v = L.list[L.i];
+  const [word, pic, , example, talk] = v;
+  state.vocabSeen = state.vocabSeen || {};
+  const seen = state.vocabSeen[word];
+  state.vocabSeen[word] = true; save();
+  $('#learnPos').textContent = `${L.i + 1} of ${L.list.length}`;
+  const ex = example.replace(new RegExp(`\\b(${word}\\w*)`, 'i'), '<b>$1</b>');
+  $('#learnCard').innerHTML = `
+    ${seen ? '<span class="seen">✓ seen</span>' : '<span class="seen new">✨ new word</span>'}
+    <div class="learn-pic">${pic}</div>
+    <button class="learn-word" data-part="word">${word}</button>
+    <button class="learn-line meaning" data-part="meaning"><span class="lbl">🔊 What it means</span><span class="txt">${vocabMeaning(v)}</span></button>
+    <button class="learn-line example" data-part="example"><span class="lbl">🔊 Example</span><span class="txt">${ex}</span></button>
+    <button class="learn-line talk" data-part="talk"><span class="lbl">🗣️ Talk together</span><span class="txt">${talk}</span></button>`;
+  const card = $('#learnCard');
+  card.classList.remove('flip-in'); void card.offsetWidth; card.classList.add('flip-in');
+  $$('[data-part]', card).forEach((b) => (b.onclick = () => { sfx.tap(); speakPart(v, b.dataset.part); }));
+  [L.i + 1, L.i - 1].forEach((k) => { const n = L.list[k]; if (n) prefetch([n[0], vocabMeaning(n), n[3]]); });
+  if (speak) setTimeout(() => readCard(v), 350);
+}
+function speakPart(v, part) {
+  const t = { word: v[0], meaning: vocabMeaning(v), example: v[3], talk: v[4] }[part];
+  lightPart(part); say([t]).then(() => lightPart(null));
+}
+function lightPart(part) { $$('#learnCard [data-part]').forEach((b) => b.classList.toggle('reading', b.dataset.part === part)); }
+async function readCard(v) {
+  const my = L.i;
+  for (const part of ['word', 'meaning', 'example']) {
+    if (L.i !== my || !$('#learn').classList.contains('active')) return;
+    lightPart(part);
+    await say([{ word: v[0], meaning: vocabMeaning(v), example: v[3] }[part]]);
+  }
+  lightPart(null);
+}
+function learnGo(d) {
+  const n = L.i + d; if (n < 0 || n >= L.list.length) { sfx.no(); return; }
+  sfx.tap(); L.i = n; renderLearn(true);
+}
+$('#learnPrev').onclick = () => learnGo(-1);
+$('#learnNext').onclick = () => learnGo(1);
+$('#learnHear').onclick = () => { sfx.tap(); readCard(L.list[L.i]); };
+$('#learnHome').onclick = () => { sayToken++; stopClip(); renderHome(); show('home'); };
+$('#learnQuiz').onclick = $('#learnQuiz2').onclick = () => { sfx.tap(); startRound('vocab'); };
+// swipe left / right on the card
+(() => {
+  let x0 = null, y0 = 0;
+  const c = $('#learnCard');
+  c.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+  c.addEventListener('touchend', (e) => {
+    if (x0 == null) return;
+    const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) learnGo(dx < 0 ? 1 : -1);
+  }, { passive: true });
+})();
+
 /* ---------- wire up ---------- */
 $('#grid').addEventListener('click', (e) => {
   const t = e.target.closest('.tile'); if (!t) return;
-  sfx.tap(); startRound(t.dataset.cat);
+  sfx.tap();
+  if (t.dataset.cat === 'vocab') return openLearn();
+  startRound(t.dataset.cat);
 });
 $('#hintBtn').onclick = () => { sfx.tap(); showHint(R.qs[R.i]); };
 $('#sayBtn').onclick = () => { sfx.tap(); const q = R.qs[R.i]; say((q.say && q.say.length) ? q.say : q.readQ || q.text.replace(/<[^>]+>/g, '')); };

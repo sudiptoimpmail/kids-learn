@@ -828,11 +828,101 @@ function genMaps(level) {
   };
 }
 
+/* ---------------- VOCABULARY (Word Wonders) ---------------- */
+// [word, picture, meaning (finishes "X means ..."), example sentence, talk-together question, group]
+// Words in the same group are never offered as choices together.
+const VOCAB = [
+  ['enormous', '🐘', 'very, very big', 'An elephant is enormous.', 'What else is enormous?', 'big'],
+  ['tiny', '🐜', 'very, very small', 'An ant is tiny.', 'Can you find something tiny?', 'small'],
+  ['brave', '🦸', 'not giving up, even when you feel scared', 'The firefighter was brave.', 'When were you brave?'],
+  ['curious', '🧐', 'wanting to know more', 'The curious cat peeked into the box.', 'What are you curious about?'],
+  ['gentle', '🐣', 'soft and careful', 'Be gentle with the baby chick.', 'How do you pet a puppy gently?'],
+  ['delicious', '😋', 'it tastes really yummy', 'This pizza is delicious!', 'What food is delicious to you?'],
+  ['exhausted', '😴', 'very, very tired', 'After the long walk, I was exhausted.', 'What makes you exhausted?', 'tired'],
+  ['giggle', '🤭', 'a small, silly laugh', 'The baby began to giggle.', 'What makes you giggle?'],
+  ['whisper', '🤫', 'talking very quietly', 'We whisper in the library.', 'Can you whisper your name?', 'quiet'],
+  ['shiver', '🥶', 'shaking because you are cold', 'I shiver in the snow.', 'When do you shiver?', 'cold'],
+  ['sparkle', '✨', 'to shine with tiny bits of light', 'The stars sparkle at night.', 'What things sparkle?'],
+  ['fragile', '🥚', 'easy to break', 'Eggs are fragile, so hold them carefully.', 'What else is fragile?'],
+  ['cozy', '🛌', 'warm, soft and comfy', 'My bed is so cozy.', 'What is cozy in our house?'],
+  ['grumpy', '😠', 'in a bad mood', 'The grumpy bear did not want to play.', 'What makes you grumpy?', 'mad'],
+  ['nibble', '🐰', 'to take tiny bites', 'The bunny likes to nibble carrots.', 'Can you nibble like a bunny?', 'eat'],
+  ['cheerful', '😊', 'happy and bright', 'Grandma is always cheerful.', 'What makes you cheerful?', 'happy'],
+  ['swift', '🐆', 'very fast', 'The cheetah is swift.', 'What other animal is swift?', 'fast'],
+  ['sticky', '🍯', 'things stay stuck to it', 'Honey is sticky.', 'What else is sticky?'],
+  ['noisy', '📢', 'very loud', 'The drums are noisy.', 'What is noisy?', 'loud'],
+  ['tidy', '🧹', 'neat and clean', 'Please keep your room tidy.', 'How can we make your room tidy?', 'neat'],
+  ['timid', '🐭', 'shy and a little scared', 'The timid mouse hid in its hole.', 'Do you ever feel timid?', 'scared'],
+  ['furious', '😡', 'very, very angry', 'The dragon was furious.', 'What can you do when you feel furious?', 'mad'],
+  ['soar', '🦅', 'to fly high in the sky', 'The eagle can soar over the mountains.', 'What else can soar?'],
+  ['drowsy', '🥱', 'sleepy', 'I feel drowsy at bedtime.', 'When do you feel drowsy?', 'tired'],
+  ['gobble', '🦃', 'to eat very fast', 'The hungry dog gobbled his food.', 'Should we gobble our food?', 'eat'],
+  ['scurry', '🐁', 'to run with quick, tiny steps', 'The mouse scurried under the bed.', 'Can you scurry across the room?', 'fast'],
+  ['gloomy', '🌧️', 'dark and sad looking', 'It is a gloomy, rainy day.', 'What do you like to do on a gloomy day?'],
+  ['ancient', '🏛️', 'very, very old', 'The dinosaurs lived in ancient times.', 'What is something ancient?'],
+  ['fierce', '🦁', 'strong and scary', 'The lion has a fierce roar.', 'What animal is fierce?'],
+  ['hollow', '🪵', 'empty inside', 'The owl lives in a hollow tree.', 'What else is hollow?'],
+  ['delighted', '🥰', 'very, very happy', 'I was delighted with my present.', 'When were you delighted?', 'happy'],
+  ['pounce', '🐈', 'to jump on something quickly', 'The cat will pounce on the toy.', 'Can you pounce like a cat?'],
+  ['feast', '🍽️', 'a big, special meal', 'We had a feast on my birthday.', 'What would you eat at a feast?', 'eat'],
+  ['vanish', '🪄', 'to disappear so you cannot see it', 'The magician made the coin vanish.', 'What would you make vanish?'],
+  ['chilly', '🌬️', 'a little bit cold', 'It is chilly outside, so wear a jacket.', 'What do we wear when it is chilly?', 'cold'],
+  ['scorching', '🔥', 'very, very hot', 'The sand is scorching in summer.', 'What is scorching?'],
+  ['soggy', '🥣', 'wet and mushy', 'My cereal got soggy.', 'What gets soggy?'],
+  ['sturdy', '🧱', 'strong and hard to break', 'The brick house is sturdy.', 'What is sturdy?'],
+  ['explore', '🧭', 'to look around a new place', 'Let us explore the forest!', 'Where would you like to explore?'],
+  ['imagine', '💭', 'to make a picture in your mind', 'Imagine that you can fly!', 'What do you like to imagine?'],
+  ['silent', '🤐', 'no sound at all', 'The room was silent.', 'Can you be silent for five seconds?', 'quiet'],
+  ['generous', '🎁', 'happy to share and give', 'Mia was generous and shared her snack.', 'How can you be generous?'],
+  ['polite', '🙏', 'using kind words like please and thank you', 'It is polite to say thank you.', 'What polite words do you know?'],
+  ['patient', '⏳', 'able to wait calmly', 'Be patient, the cookies are baking.', 'When do you need to be patient?'],
+  ['marvelous', '🌈', 'wonderful and amazing', 'What a marvelous rainbow!', 'What is marvelous to you?'],
+  ['puzzled', '🤔', 'not sure, a little mixed up', 'I was puzzled by the riddle.', 'What makes you puzzled?'],
+  ['frightened', '😱', 'very scared', 'The kitten was frightened of the thunder.', 'What helps when you feel frightened?', 'scared'],
+  ['proud', '🏅', 'happy about something you did well', 'I am proud of my drawing.', 'What are you proud of?', 'happy'],
+  ['dangerous', '⚠️', 'something that could hurt you', 'Fire is dangerous.', 'What is dangerous?'],
+  ['blossom', '🌸', 'a flower on a tree or plant', 'The tree is full of pink blossoms.', 'Where do you see blossoms?'],
+  ['harvest', '🌽', 'to pick food when it is ready', 'Farmers harvest corn in the fall.', 'What would you like to harvest?'],
+  ['hibernate', '🐻', 'to sleep all winter long', 'Bears hibernate in winter.', 'Would you like to hibernate?'],
+  ['nocturnal', '🦉', 'awake at night and asleep in the day', 'Owls are nocturnal.', 'What other animals are nocturnal?'],
+  ['predator', '🦈', 'an animal that hunts other animals', 'A shark is a predator.', 'What other predators do you know?'],
+  ['migrate', '🦆', 'to move far away when the seasons change', 'Some birds migrate south for the winter.', 'Where would you migrate?'],
+];
+const vocabMeaning = (v) => `${v[0][0].toUpperCase() + v[0].slice(1)} means ${v[2]}.`;
+const vocabPool = (level) => VOCAB.slice(0, [20, 40, VOCAB.length][level - 1]);
+
+function vocabDistractors(v, pool, n) {
+  return sample(pool.filter((x) => x !== v && (!v[5] || x[5] !== v[5])), n);
+}
+
+function genVocab(level) {
+  const pool = vocabPool(level);
+  const v = pick(pool);
+  const [word, pic, gloss] = v;
+  const others = vocabDistractors(v, pool, numOpts(level) - 1);
+  const meaningHint = { html: `<div class="hint-note">${vocabMeaning(v)}</div>`, say: vocabMeaning(v) };
+  if (Math.random() < 0.5) {
+    return {
+      key: `voc-pic-${word}`, text: `Which picture shows <b>${word}</b>?`, say: `Which picture shows ${word}?`,
+      main: `<div class="word sm">${word}</div><button class="mini-speaker" data-speak="${word}">🔊</button>`,
+      options: shuffle([v, ...others]).map((o) => ({ v: o[0], html: o[1] })),
+      answer: word, optClass: 'opt-emoji', hint: meaningHint,
+    };
+  }
+  return {
+    key: `voc-word-${word}`, text: `Which word means <b>${gloss}</b>?`, say: `Which word means ${gloss}?`,
+    main: `<div class="big-emoji muted">💬</div>`,
+    options: shuffle([v, ...others]).map((o) => ({ v: o[0], html: o[0] })),
+    answer: word, optClass: 'opt-text', hint: { html: `<div class="hint-pic">${pic}</div>`, say: 'Look at the picture!' },
+  };
+}
+
 /* ---------------- CATEGORIES ---------------- */
 const CATEGORIES = [
   { id: 'cvc', title: 'Little Words', sub: 'cat · dog · sun', icon: '🐱', color: '#ff8787', gen: (l) => genWords(W3, l, 'cvc') },
   { id: 'w4', title: 'Big Words', sub: 'frog · cake · star', icon: '🐸', color: '#69db7c', gen: (l) => genWords(W4, l, 'w4') },
   { id: 'spell', title: 'Spell It', sub: 'drag the letters', icon: '🔤', color: '#20c997', gen: genSpell },
+  { id: 'vocab', title: 'Word Wonders', sub: 'learn new words', icon: '🌟', color: '#f59f00', gen: genVocab, learn: true },
   { id: 'sent', title: 'Sentences', sub: 'read & answer', icon: '📖', color: '#74c0fc', gen: genSentence },
   { id: 'syl', title: 'Clap It!', sub: 'syllables', icon: '👏', color: '#ffd43b', gen: genSyllable },
   { id: 'add', title: 'Adding', sub: '2 + 3 · 34 + 5', icon: '➕', color: '#b197fc', gen: genAdd, maxLevel: 5 },

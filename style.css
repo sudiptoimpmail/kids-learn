@@ -343,3 +343,46 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   .tile-l { width: 98px; height: 104px; font-size: 64px; border-radius: 24px; }
   .options.spell-tray { gap: 16px; }
 }
+
+/* ---------- Word Wonders ---------- */
+.learn-count { text-align: center; font-weight: 800; color: var(--soft); margin: 10px 0 8px; }
+.learn-card { display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
+.learn-card.flip-in { animation: rise .35s ease; }
+.learn-card .seen { position: absolute; top: 12px; right: 14px; font-size: 13px; font-weight: 800; color: var(--good); }
+.learn-card .seen.new { color: #e67700; }
+.learn-pic { font-size: min(150px, 36vw); line-height: 1.05; margin-top: 6px; }
+.learn-word { font-size: 52px; font-weight: 900; color: var(--theme); letter-spacing: 1px; padding: 0 16px; border-radius: 16px; }
+.learn-line { width: 100%; text-align: left; background: #fff9db; border-radius: 18px; padding: 12px 14px; font-size: 21px;
+  font-weight: 700; line-height: 1.35; display: flex; flex-direction: column; gap: 3px; transition: background .2s, transform .2s; }
+.learn-line .lbl { font-size: 13px; font-weight: 900; color: var(--soft); text-transform: uppercase; letter-spacing: .5px; }
+.learn-line.example { background: #e7f5ff; }
+.learn-line.talk { background: #f3f0ff; }
+.learn-line b { color: var(--theme); }
+[data-part].reading { transform: scale(1.03); box-shadow: 0 0 0 4px #ffd43b; }
+.learn-word.reading { box-shadow: none; background: #fff3bf; }
+.learn-nav { display: flex; justify-content: center; align-items: center; gap: 18px; margin: 16px 0 8px; }
+.nav-btn { width: 76px; height: 76px; border-radius: 50%; background: #fff; font-size: 30px; font-weight: 900; color: var(--theme);
+  box-shadow: 0 6px 0 #e3dcef; }
+.nav-btn.hear { width: 92px; height: 92px; font-size: 40px; background: var(--theme); box-shadow: 0 6px 0 color-mix(in srgb, var(--theme) 65%, #000); }
+.nav-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #0002; }
+.quiz-wide { margin: 6px auto 0; font-size: 20px; padding: 14px 24px; }
+@media (min-width: 700px) {
+  .learn-pic { font-size: 210px; } .learn-word { font-size: 76px; }
+  .learn-line { font-size: 28px; padding: 16px 20px; } .learn-line .lbl { font-size: 16px; }
+  .nav-btn { width: 96px; height: 96px; font-size: 38px; } .nav-btn.hear { width: 116px; height: 116px; font-size: 52px; }
+  .learn-card { max-width: 760px; margin: 0 auto; width: 100%; }
+}
+@media (min-width: 1000px) and (orientation: landscape) {
+  #learn.active { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto 1fr auto; column-gap: 28px;
+    grid-template-areas: "top top" "count count" "card nav" "card quiz"; }
+  #learn .play-top { grid-area: top; } #learn .learn-count { grid-area: count; }
+  #learn .learn-card { grid-area: card; align-self: start; }
+  #learn .learn-nav { grid-area: nav; align-self: end; } #learn .quiz-wide { grid-area: quiz; align-self: start; }
+}
+.learn-line .txt { display: block; }
+@media (min-width: 1000px) and (orientation: landscape) {
+  #learn.active { grid-template-rows: auto auto 1fr 1fr; }
+  #learn .learn-pic { font-size: 140px; } #learn .learn-word { font-size: 60px; }
+  #learn .learn-line { font-size: 24px; padding: 12px 18px; }
+  #learn .learn-nav { align-self: end; margin-bottom: 20px; }
+}

@@ -8,6 +8,7 @@ A flash-card learning game for a 5-year-old, built as an installable iPhone web 
 | 🐱 Little Words | CVC words — read the word → tap the picture, listen → tap the word, missing vowel |
 | 🐸 Big Words | 4-letter words, same three card types |
 | 🔤 Spell It | See the picture, hear the word, then drag (or tap) letter tiles into the blanks. Extra decoy letters. Level 1: 1–2 missing letters in 3-letter words · Level 2: whole 3-letter words or 2 blanks in 4-letter words · Level 3: whole 4-letter words with look-alike decoys (b/d, m/n). Tap a placed letter to send it back; wrong letters bounce out and one correct letter is given |
+| 🌟 Word Wonders | 55 new vocabulary words (enormous, curious, fragile, nocturnal…). **Learn** cards: picture + the voice reads the word, a kid-friendly meaning and an example; tap any line to hear it again; swipe or ◀ ▶ to move; a **Talk together** question for parent and child. **🎯 Quiz**: pick the picture for a word, or the word for a meaning. Level 1 = first 20 words, 2 = 40, 3 = all |
 | 📖 Sentences | Read a short sentence, answer a question |
 | 👏 Clap It! | Syllable counting |
 | ➕ Adding / ➖ Take Away | 5 levels: within 5 → within 10 → within 20 → two-digit ± one-digit → with regrouping (38 + 7, 52 − 6). Hints use base-ten blocks and "make a ten" steps |
@@ -35,6 +36,6 @@ Every word, question and praise is pre-recorded in a natural voice (`audio/`, ma
 If a phrase has no recording, the app falls back to the best voice installed on the device. For a better fallback on iPhone/iPad: **Settings → Accessibility → Spoken Content → Voices → English → download "Ava (Premium)" or "Zoe (Premium)"**.
 
 ## Edit content
-All words, sentences, jobs, flags, etc. live in `content.js` — add rows to the arrays. After changing files, bump `VERSION` in `sw.js` so installed copies update.
+All words, sentences, vocabulary (`VOCAB`), jobs, flags, etc. live in `content.js` — add rows to the arrays. After changing files, bump `VERSION` in `sw.js` so installed copies update.
 
 Progress is stored only on the device (localStorage). No accounts, ads or tracking.
