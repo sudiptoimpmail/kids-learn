@@ -15,7 +15,7 @@ const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } c
 const levelOf = (id) => state.levels[id] || 1;
 const maxLevelOf = (id) => (CATEGORIES.find((c) => c.id === id) || {}).maxLevel || 3;
 const gameMax = maxLevelOf;
-const OPTIONAL = { clock: 'optClock' };  // off unless a parent turns them on in Settings
+const OPTIONAL = { clock: 'optClock', anatomy: 'optAnatomy' };  // off unless a parent turns them on in Settings
 const visibleGames = () => CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
   && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
 // auto level-up stops at the top of the child's grade (unless all games are shown)
@@ -269,9 +269,14 @@ function renderQ() {
   q.hint && prefetch(q.hint.say);
 }
 
+function removeOneWrong(q) {
+  const wrong = [...$('#options').children].filter((b) => !b.disabled && String(b.dataset.v) !== String(q.answer));
+  if (wrong.length > 1) { const b = pick(wrong); b.classList.add('wrong'); b.disabled = true; }
+}
 function showHint(q, auto = false) {
   if (q.match) { matchHint(q); $('#hintBtn').classList.remove('glow'); return; }
   if (q.spell) { spellHint(q); $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
+  if (q.hint && q.hint.remove) { if (!q.hintShown || auto === false) removeOneWrong(q); q.hintShown = true; $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
   if (!q.hint || q.hintShown) { if (q.hint) speakHint(q); return; }
   q.hintShown = true;
   const box = $('#hintBox');
@@ -646,6 +651,12 @@ $('#againBtn').onclick = () => startRound(R.cat.id);
 $('#homeBtn').onclick = () => { renderHome(); show('home'); };
 $('#stickersBtn').onclick = () => { sfx.tap(); renderStickers(); show('stickers'); };
 $('#stickersBack').onclick = () => show('home');
+function syncPlayMode() {
+  const hourly = $('#playMode').value === 'hourly';
+  $$('.hourly-only').forEach((x) => (x.hidden = !hourly));
+  $$('.rounds-only').forEach((x) => (x.hidden = hourly));
+}
+$('#playMode').onchange = syncPlayMode;
 function renderGrades() {
   $('#gradeBtns').innerHTML = Object.entries(GRADES).map(([k, g]) =>
     `<button class="grade-btn ${state.grade === k ? 'on' : ''}" data-g="${k}">${g.label}</button>`).join('');
@@ -658,7 +669,7 @@ function renderGrades() {
 $('#gradeChip').onclick = () => $('#settingsBtn').onclick();
 $('#settingsBtn').onclick = () => {
   renderGrades();
-  $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#voiceToggle').checked = state.voice;
+  $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
   show('settings');
@@ -668,7 +679,7 @@ $('#settingsDone').onclick = () => {
   state.voice = $('#voiceToggle').checked;
   state.showAll = $('#showAll').checked;
   state.optClock = $('#optClock').checked;
-  state.roundsPerPlay = +$('#roundsPerPlay').value; state.playMinutes = +$('#playMinutes').value; state.playAlways = $('#playAlways').checked;
+  state.roundsPerPlay = +$('#roundsPerPlay').value; state.playMinutes = +$('#playMinutes').value; state.playAlways = $('#playAlways').checked; state.optAnatomy = $('#optAnatomy').checked; state.playMode = $('#playMode').value; state.playPerHour = +$('#playPerHour').value;
   $$('#levels select').forEach((s) => (state.levels[s.dataset.id] = +s.value));
   save(); renderHome(); show('home');
   say("Let's play!");

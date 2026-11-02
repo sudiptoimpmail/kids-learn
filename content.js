@@ -943,6 +943,245 @@ function genMatch(level) {
   };
 }
 
+/* ---------------- MULTIPLE-CHOICE FACT QUESTIONS ---------------- */
+// [level, question, right answer, wrong answers...]  (hint removes one wrong answer)
+function mcQuestion(prefix, row, level) {
+  const [, q, ans, ...wrong] = row;
+  const n = Math.min(numOpts(level) - 1, wrong.length);
+  const opts = shuffle([ans, ...sample(wrong, n)]);
+  return {
+    key: `${prefix}-${q}`, text: q, say: q, main: '', mainClass: 'empty',
+    options: opts.map((o) => ({ v: o, html: o })), answer: ans,
+    optClass: opts.some((o) => o.length > 14) ? 'opt-text' : 'opt-text four-ok',
+    hint: { html: '', say: 'Think about it!', remove: true },
+  };
+}
+const pickLevelled = (rows, level) => {
+  const pool = rows.filter((r) => r[0] <= level);
+  const exact = pool.filter((r) => r[0] === level);
+  return pick(exact.length && Math.random() < 0.7 ? exact : pool);
+};
+
+/* ---------------- BODY PARTS (outside) ---------------- */
+// Clothed child figure; every tappable part is a <g data-val="...">.
+function bodySVG(highlight) {
+  const skin = '#ffd8b5', shirt = '#4dabf7', shorts = '#845ef7';
+  const P = (name, inner) => `<g data-val="${name}" class="bp${highlight === name ? ' hl' : ''}">${inner}</g>`;
+  const hit = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="transparent"/>`;
+  return `<svg viewBox="0 0 200 310" class="body-fig">
+    ${P('ears', `<ellipse cx="66" cy="64" rx="8" ry="11" fill="${skin}" stroke="#c8906a" stroke-width="1.5"/><ellipse cx="134" cy="64" rx="8" ry="11" fill="${skin}" stroke="#c8906a" stroke-width="1.5"/>`)}
+    ${P('neck', `<rect x="91" y="90" width="18" height="16" fill="${skin}"/>`)}
+    ${P('head', `<circle cx="100" cy="62" r="32" fill="${skin}" stroke="#c8906a" stroke-width="1.5"/>`)}
+    ${P('hair', `<path d="M68 60Q66 22 100 22Q134 22 132 60Q124 38 100 38Q76 38 68 60Z" fill="#6b4226"/>`)}
+    ${P('eyebrows', `${hit(78, 44, 44, 10)}<path d="M82 51q7-5 14 0M104 51q7-5 14 0" stroke="#6b4226" stroke-width="3" fill="none" stroke-linecap="round"/>`)}
+    ${P('eyes', `${hit(78, 54, 44, 16)}<ellipse cx="89" cy="62" rx="6.5" ry="7" fill="#fff"/><circle cx="89" cy="63" r="3.6" fill="#2b2140"/><ellipse cx="111" cy="62" rx="6.5" ry="7" fill="#fff"/><circle cx="111" cy="63" r="3.6" fill="#2b2140"/>`)}
+    ${P('cheeks', `<circle cx="80" cy="76" r="6" fill="#ffa8a8" opacity=".8"/><circle cx="120" cy="76" r="6" fill="#ffa8a8" opacity=".8"/>`)}
+    ${P('nose', `${hit(93, 66, 14, 13)}<ellipse cx="100" cy="73" rx="4" ry="5" fill="#f4b183"/>`)}
+    ${P('mouth', `${hit(88, 78, 24, 10)}<path d="M90 81q10 8 20 0" stroke="#c92a2a" stroke-width="3" fill="#ff8787" stroke-linecap="round"/>`)}
+    ${P('chin', `${hit(90, 88, 20, 6)}`)}
+    ${P('arms', `<rect x="46" y="112" width="15" height="40" rx="7" fill="${shirt}"/><rect x="47" y="158" width="13" height="32" rx="6" fill="${skin}"/><rect x="139" y="112" width="15" height="40" rx="7" fill="${shirt}"/><rect x="140" y="158" width="13" height="32" rx="6" fill="${skin}"/>`)}
+    ${P('elbows', `<circle cx="53.5" cy="155" r="7.5" fill="${skin}" stroke="#c8906a"/><circle cx="146.5" cy="155" r="7.5" fill="${skin}" stroke="#c8906a"/>`)}
+    ${P('wrists', `<rect x="46" y="188" width="15" height="7" rx="3" fill="#ffc9a3" stroke="#c8906a"/><rect x="139" y="188" width="15" height="7" rx="3" fill="#ffc9a3" stroke="#c8906a"/>`)}
+    ${P('hands', `<circle cx="53.5" cy="204" r="10" fill="${skin}" stroke="#c8906a"/><circle cx="146.5" cy="204" r="10" fill="${skin}" stroke="#c8906a"/>`)}
+    ${P('chest', `<path d="M62 106h76l-4 30H66z" fill="${shirt}"/>`)}
+    ${P('tummy', `<path d="M66 136h68l-4 44H70z" fill="#74c0fc"/><circle cx="100" cy="160" r="2" fill="#1971c2"/>`)}
+    ${P('shoulders', `<circle cx="62" cy="112" r="11" fill="#339af0"/><circle cx="138" cy="112" r="11" fill="#339af0"/>`)}
+    <rect x="70" y="178" width="60" height="30" rx="5" fill="${shorts}"/>
+    ${P('legs', `<rect x="75" y="206" width="20" height="34" rx="8" fill="${skin}"/><rect x="105" y="206" width="20" height="34" rx="8" fill="${skin}"/><rect x="76" y="252" width="18" height="28" rx="7" fill="${skin}"/><rect x="106" y="252" width="18" height="28" rx="7" fill="${skin}"/>`)}
+    ${P('knees', `<circle cx="85" cy="246" r="9" fill="#ffc9a3" stroke="#c8906a"/><circle cx="115" cy="246" r="9" fill="#ffc9a3" stroke="#c8906a"/>`)}
+    ${P('ankles', `<rect x="77" y="278" width="16" height="7" rx="3" fill="#ffc9a3" stroke="#c8906a"/><rect x="107" y="278" width="16" height="7" rx="3" fill="#ffc9a3" stroke="#c8906a"/>`)}
+    ${P('feet', `<ellipse cx="80" cy="294" rx="16" ry="8" fill="#f03e3e"/><ellipse cx="120" cy="294" rx="16" ry="8" fill="#f03e3e"/>`)}
+  </svg>`;
+}
+// [name, level, picture] — picture used for "find the picture" cards
+const BODY_PARTS = [
+  ['hair', 1], ['eyes', 1, '👀'], ['ears', 1, '👂'], ['nose', 1, '👃'], ['mouth', 1, '👄'], ['hands', 1, '✋'], ['feet', 1, '🦶'],
+  ['tummy', 1], ['arms', 1, '💪'], ['legs', 1, '🦵'], ['head', 1],
+  ['neck', 2], ['shoulders', 2], ['elbows', 2], ['knees', 2], ['chin', 2], ['chest', 2],
+  ['eyebrows', 3], ['cheeks', 3], ['wrists', 3], ['ankles', 3],
+];
+const BODY_FN = [
+  [1, 'What do you see with?', 'eyes 👀', 'ears 👂', 'feet 🦶', 'elbows'],
+  [1, 'What do you hear with?', 'ears 👂', 'eyes 👀', 'nose 👃', 'knees'],
+  [1, 'What do you smell with?', 'nose 👃', 'hands ✋', 'ears 👂', 'feet 🦶'],
+  [1, 'What do you taste with?', 'tongue 👅', 'nose 👃', 'hair', 'elbows'],
+  [1, 'What do you walk with?', 'feet 🦶', 'hands ✋', 'ears 👂', 'nose 👃'],
+  [1, 'Where do you wear shoes?', 'on your feet 🦶', 'on your head', 'on your hands ✋'],
+  [1, 'Where do you wear a hat?', 'on your head', 'on your feet 🦶', 'on your knees'],
+  [2, 'Where do you wear mittens?', 'on your hands ✋', 'on your feet 🦶', 'on your nose 👃'],
+  [2, 'How many fingers are on one hand?', '5', '4', '10', '2'],
+  [2, 'How many eyes do you have?', '2', '1', '3', '4'],
+  [2, 'What do you chew food with?', 'teeth 🦷', 'ears 👂', 'eyebrows', 'elbows'],
+  [2, 'What bends in the middle of your arm?', 'elbow', 'knee', 'neck', 'chin'],
+  [2, 'What bends in the middle of your leg?', 'knee', 'elbow', 'wrist', 'nose'],
+  [2, 'What turns your head left and right?', 'neck', 'knee', 'ankle', 'cheek'],
+  [3, 'How many toes are on two feet?', '10', '5', '8', '20'],
+  [3, 'Where do you wear a watch?', 'on your wrist', 'on your ankle', 'on your knee', 'on your neck'],
+  [3, 'What joins your foot to your leg?', 'ankle', 'wrist', 'elbow', 'shoulder'],
+  [3, 'What covers your whole body?', 'skin', 'hair', 'shirt', 'nails'],
+  [3, 'Which part grows above your eyes?', 'eyebrows', 'cheeks', 'chin', 'lips'],
+  [3, 'What do you use to feel if something is soft?', 'fingers', 'ears 👂', 'eyebrows', 'teeth 🦷'],
+];
+function genBody(level) {
+  const parts = BODY_PARTS.filter((p) => p[1] <= level);
+  const exact = parts.filter((p) => p[1] === level);
+  const t = Math.random();
+  if (level >= 2 && t < 0.4) return mcQuestion('body-fn', pickLevelled(BODY_FN, level), level);
+  if (level === 1 && t < 0.3) {
+    const withPic = parts.filter((p) => p[2]);
+    const p = pick(withPic);
+    const others = sample(withPic, numOpts(level) - 1, [p]);
+    return {
+      key: `body-pic-${p[0]}`, text: `Find the picture of <b>${p[0]}</b>!`, say: ['Find the picture of', p[0]],
+      main: '', mainClass: 'empty', options: shuffle([p, ...others]).map((o) => ({ v: o[0], html: o[2] })),
+      answer: p[0], optClass: 'opt-emoji', hint: { html: bodySVG(p[0]), say: 'Look at the picture!' },
+    };
+  }
+  const p = pick(exact.length && Math.random() < 0.6 ? exact : parts);
+  const word = p[0];
+  return {
+    key: `body-tap-${word}`, text: `Tap the <b>${word}</b>!`, say: ['Tap the', `${word}!`],
+    main: bodySVG(), mainClass: 'body-main', tap: true, options: [], answer: word, optClass: '',
+    hint: { html: `<div class="hint-mini">${bodySVG(word)}</div>`, say: 'Look for the part that is glowing!' },
+  };
+}
+
+/* ---------------- GENERAL KNOWLEDGE ---------------- */
+// Levels: 1 Pre-K · 2 Kindergarten · 3 1st grade · 4 2nd grade
+const GK = [
+  [1, 'Which animal says moo?', '🐮 cow', '🐶 dog', '🐱 cat', '🐷 pig'],
+  [1, 'Which animal says woof?', '🐶 dog', '🐮 cow', '🦆 duck', '🐑 sheep'],
+  [1, 'Which animal says quack?', '🦆 duck', '🐷 pig', '🐱 cat', '🐴 horse'],
+  [1, 'Which animal says baa?', '🐑 sheep', '🐶 dog', '🐮 cow', '🐸 frog'],
+  [1, 'Which animal says oink?', '🐷 pig', '🐑 sheep', '🦁 lion', '🐔 hen'],
+  [1, 'Which animal says meow?', '🐱 cat', '🐮 cow', '🐶 dog', '🦆 duck'],
+  [1, 'What do you use when it rains?', '☂️ umbrella', '🕶️ sunglasses', '🩳 shorts', '🪁 kite'],
+  [1, 'What do you wear when it snows?', '🧤 mittens', '🩴 flip-flops', '🕶️ sunglasses', '🩳 shorts'],
+  [1, 'What color is grass?', '🟢 green', '🔵 blue', '🟣 purple', '🔴 red'],
+  [1, 'What color is a banana?', '🟡 yellow', '🔵 blue', '🟢 green', '⚫ black'],
+  [1, 'Where does a fish live?', '🌊 in water', '🌳 in a tree', '🏜️ in the desert', '🪺 in a nest'],
+  [1, 'Where does a bird live?', '🪺 in a nest', '🌊 in water', '🕳️ in a hole', '🏠 in a car'],
+  [1, 'What do bees make?', '🍯 honey', '🥛 milk', '🧀 cheese', '🍞 bread'],
+  [1, 'What do we use to brush our teeth?', '🪥 toothbrush', '🧹 broom', '🍴 fork', '🖍️ crayon'],
+  [1, 'Which one is hot?', '🔥 fire', '🧊 ice', '❄️ snow', '🍦 ice cream'],
+  [1, 'Which one can fly?', '✈️ airplane', '🚗 car', '🚂 train', '🚲 bike'],
+  [1, 'Which one is a fruit?', '🍎 apple', '🍞 bread', '🧀 cheese', '🥚 egg'],
+  [1, 'When do we see the moon and stars?', '🌙 at night', '☀️ in the morning', '🍽️ at lunch'],
+  [1, 'What should you do at a red light?', '🛑 stop', '🏃 go fast', '💃 dance'],
+  [2, 'How many days are in a week?', '7', '5', '10', '12'],
+  [2, 'Which day comes after Monday?', 'Tuesday', 'Sunday', 'Friday', 'Saturday'],
+  [2, 'Which season is the coldest?', '❄️ winter', '☀️ summer', '🌸 spring', '🍂 fall'],
+  [2, 'In which season do leaves fall off trees?', '🍂 fall', '☀️ summer', '🌸 spring', '❄️ winter'],
+  [2, 'Which season is the hottest?', '☀️ summer', '❄️ winter', '🍂 fall', '🌸 spring'],
+  [2, 'A baby cat is called a…', 'kitten', 'puppy', 'calf', 'chick'],
+  [2, 'A baby dog is called a…', 'puppy', 'kitten', 'lamb', 'cub'],
+  [2, 'A baby cow is called a…', 'calf', 'foal', 'chick', 'kitten'],
+  [2, 'A baby frog is called a…', 'tadpole', 'lamb', 'cub', 'puppy'],
+  [2, 'Milk comes from a…', '🐮 cow', '🐔 chicken', '🐟 fish', '🐝 bee'],
+  [2, 'Eggs come from a…', '🐔 chicken', '🐮 cow', '🐷 pig', '🐴 horse'],
+  [2, 'Which one is a vegetable?', '🥕 carrot', '🍎 apple', '🍌 banana', '🍇 grapes'],
+  [2, 'Which one is a living thing?', '🌳 tree', '🪨 rock', '🧸 teddy bear', '🚗 car'],
+  [2, 'What do plants need to grow?', '💧☀️ water and sun', '🍬 candy', '📺 TV', '🧦 socks'],
+  [2, 'What is frozen water called?', '🧊 ice', '💨 steam', '🫧 bubbles', '🌧️ rain'],
+  [2, 'Which animal has a long trunk?', '🐘 elephant', '🦒 giraffe', '🐻 bear', '🐯 tiger'],
+  [2, 'Which animal has black and white stripes?', '🦓 zebra', '🐘 elephant', '🐻 bear', '🐸 frog'],
+  [2, 'How many legs does a spider have?', '8', '6', '4', '10'],
+  [2, 'What number do you call in an emergency?', '911', '123', '411', '100'],
+  [3, 'How many months are in a year?', '12', '7', '10', '24'],
+  [3, 'Which month comes after January?', 'February', 'March', 'December', 'June'],
+  [3, 'Which planet do we live on?', '🌍 Earth', '🔴 Mars', '🪐 Saturn', '🌙 the Moon'],
+  [3, 'What is the closest star to Earth?', '☀️ the Sun', '🌙 the Moon', '⭐ the North Star', '🪐 Saturn'],
+  [3, 'What does a caterpillar turn into?', '🦋 a butterfly', '🐝 a bee', '🐦 a bird', '🐞 a ladybug'],
+  [3, 'Which part of a plant drinks water from the soil?', 'the roots', 'the flower', 'the leaves', 'the fruit'],
+  [3, 'Water turns into steam when it gets…', '🔥 very hot', '🧊 very cold', '💨 windy', '🌙 dark'],
+  [3, 'Which animal lays eggs?', '🐢 turtle', '🐮 cow', '🐶 dog', '🐴 horse'],
+  [3, 'How many legs does an insect have?', '6', '8', '4', '10'],
+  [3, 'Which sea animal has eight arms?', '🐙 octopus', '🦀 crab', '🐟 fish', '🐬 dolphin'],
+  [3, 'Which tool tells us how hot or cold it is?', '🌡️ thermometer', '⏰ clock', '📏 ruler', '⚖️ scale'],
+  [3, 'What is the biggest animal in the world?', '🐋 blue whale', '🐘 elephant', '🦒 giraffe', '🦈 shark'],
+  [3, 'Which animal is the tallest?', '🦒 giraffe', '🐘 elephant', '🐴 horse', '🦁 lion'],
+  [3, 'A baby kangaroo is called a…', 'joey', 'cub', 'chick', 'kitten'],
+  [3, 'Which one is a solid?', '🧊 ice', '💧 water', '💨 air', '🧃 juice'],
+  [3, 'Which one is a source of light?', '💡 a lamp', '🪨 a rock', '📖 a book', '🧦 a sock'],
+  [4, 'How many continents are there?', '7', '5', '10', '3'],
+  [4, 'What is the largest ocean?', 'the Pacific Ocean', 'the Atlantic Ocean', 'the Indian Ocean', 'the Arctic Ocean'],
+  [4, 'Which planet is the biggest?', '🪐 Jupiter', '🌍 Earth', '🔴 Mars', '☿ Mercury'],
+  [4, 'Which planet is called the Red Planet?', '🔴 Mars', '🌍 Earth', '🪐 Saturn', '🔵 Neptune'],
+  [4, 'How many planets are in our solar system?', '8', '5', '12', '3'],
+  [4, 'What pulls things down to the ground?', 'gravity', 'wind', 'magnets', 'light'],
+  [4, 'What do magnets stick to?', '🔩 iron and steel', '🪵 wood', '🧻 paper', '🧱 brick'],
+  [4, 'Which animal is a mammal?', '🐬 dolphin', '🦈 shark', '🐊 alligator', '🐍 snake'],
+  [4, 'Animals that eat only plants are called…', 'herbivores', 'carnivores', 'omnivores', 'astronauts'],
+  [4, 'The sun rises in the…', 'east', 'west', 'north', 'south'],
+  [4, 'What is the capital of the United States?', 'Washington, D.C.', 'New York City', 'Chicago', 'Los Angeles'],
+  [4, 'Which animal changes color to hide?', '🦎 chameleon', '🐻 bear', '🐶 dog', '🦒 giraffe'],
+  [4, 'What are the three states of water?', 'solid, liquid, gas', 'hot, cold, warm', 'red, blue, green', 'big, small, tiny'],
+  [4, 'Which bird cannot fly?', '🐧 penguin', '🦅 eagle', '🦜 parrot', '🦉 owl'],
+  [4, 'A scientist who studies dinosaurs is called a…', 'paleontologist', 'astronaut', 'chef', 'pilot'],
+  [4, 'What do bees carry from flower to flower?', 'pollen', 'water', 'rocks', 'sand'],
+];
+const genGK = (level) => mcQuestion('gk', pickLevelled(GK, level), level);
+
+/* ---------------- INSIDE MY BODY (optional) ---------------- */
+function organSVG(highlight) {
+  const O = (name, inner) => `<g data-val="${name}" class="org${highlight === name ? ' hl' : ''}">${inner}</g>`;
+  return `<svg viewBox="0 0 200 300" class="organ-fig">
+    <path d="M100 8c-30 0-46 22-46 46s14 40 30 46v10c-32 6-50 22-54 46v120h140V156c-4-24-22-40-54-46v-10c16-6 30-22 30-46S130 8 100 8z" fill="#fff0e6" stroke="#e8b796" stroke-width="2"/>
+    ${O('brain', `<path d="M70 50c-6-18 12-30 24-24c6-10 26-8 30 4c16-2 22 16 12 24c6 12-8 22-18 16c-6 8-24 8-30 0c-12 6-26-6-18-20z" fill="#f9a8c8" stroke="#d6336c" stroke-width="2"/><path d="M88 40q6 6 0 12M108 36q-4 8 4 14M120 52q-8 0-8 8" stroke="#d6336c" stroke-width="1.6" fill="none"/>`)}
+    ${O('lungs', `<path d="M92 128c-24-2-34 22-34 48c0 14 6 20 16 18c12-2 18-10 18-22z" fill="#ffc9c9" stroke="#e03131" stroke-width="2"/><path d="M108 128c24-2 34 22 34 48c0 14-6 20-16 18c-12-2-18-10-18-22z" fill="#ffc9c9" stroke="#e03131" stroke-width="2"/>`)}
+    ${O('heart', `<path d="M110 162c-4-10-18-8-18 2c0 10 12 16 18 22c6-6 18-12 18-22c0-10-14-12-18-2z" fill="#e03131" stroke="#a51111" stroke-width="2"/>`)}
+    ${O('stomach', `<path d="M118 200c18-4 26 10 20 24c-6 14-26 14-36 6c-8-6-2-14 6-12c8 2 14-2 10-10z" fill="#ffd8a8" stroke="#e8590c" stroke-width="2"/>`)}
+    ${O('intestines', `<path d="M70 236h60v40H70z" fill="#ffe8cc" stroke="#d9480f" stroke-width="2" rx="10"/><path d="M76 246h46M122 246q6 6 0 10H78q-6 4 0 10h44" stroke="#d9480f" stroke-width="2" fill="none"/>`)}
+    <path d="M100 100v12" stroke="#e8b796" stroke-width="4"/>
+  </svg>`;
+}
+const ORGANS = [['brain', 1], ['heart', 1], ['lungs', 1], ['stomach', 1], ['intestines', 2]];
+const ANATOMY = [
+  [1, 'Which part helps you think?', '🧠 brain', '🫀 heart', 'stomach', '🦴 bones'],
+  [1, 'Which part pumps blood around your body?', '🫀 heart', '🧠 brain', '🫁 lungs', 'stomach'],
+  [1, 'Which part helps you breathe?', '🫁 lungs', '🫀 heart', 'stomach', '🦴 bones'],
+  [1, 'Where does food go after you swallow it?', 'stomach', '🧠 brain', '🫁 lungs', '👂 ears'],
+  [1, 'What holds your body up, like a frame?', '🦴 bones', '🫁 lungs', '💇 hair', '👅 tongue'],
+  [1, 'What helps your body move?', '💪 muscles', '💇 hair', '💅 nails', '👂 ears'],
+  [2, 'What protects your brain?', 'your skull', 'your ribs', 'your knees', 'your hair'],
+  [2, 'What protects your heart and lungs?', 'your ribs', 'your skull', 'your elbows', 'your toes'],
+  [2, 'When you run, your heart beats…', 'faster', 'slower', 'not at all', 'backwards'],
+  [2, 'How many lungs do you have?', '2', '1', '4', '10'],
+  [2, 'Which part tastes your food?', '👅 tongue', '👂 ears', '👃 nose', '🦶 feet'],
+  [2, 'Teeth help us…', 'chew food', 'hear sounds', 'see colors', 'grow hair'],
+  [2, 'What carries blood around your body?', 'blood vessels', 'bones', 'hair', 'nails'],
+  [2, 'Food goes from your stomach into your…', 'intestines', 'lungs', 'brain', 'ears'],
+  [3, 'What is the biggest organ of your body?', 'skin', 'heart', 'brain', 'stomach'],
+  [3, 'About how many bones does a grown-up have?', '206', '26', '1,000', '6'],
+  [3, 'Air goes in your nose and down into your…', '🫁 lungs', 'stomach', '🫀 heart', 'bones'],
+  [3, 'Which food helps build strong bones?', '🥛 milk', '🍬 candy', '🥤 soda', '🍟 fries'],
+  [3, 'Your brain sends messages to your body through…', 'nerves', 'hair', 'nails', 'teeth'],
+  [3, 'What helps your muscles grow strong?', 'exercise and good food', 'watching TV', 'eating candy', 'staying up late'],
+  [3, 'Why does your body need sleep?', 'to rest and grow', 'to get hungry', 'to grow hair longer', 'to make noise'],
+  [3, 'What keeps germs away from your hands?', '🧼 washing with soap', 'shaking them', 'clapping', 'hiding them'],
+];
+function genAnatomy(level) {
+  const t = Math.random();
+  const organs = ORGANS.filter((o) => o[1] <= Math.min(level + 1, 2));
+  if (t < 0.25) {
+    const o = pick(organs)[0];
+    return {
+      key: `ana-tap-${o}`, text: `Tap the <b>${o}</b>!`, say: ['Tap the', `${o}!`], main: organSVG(), mainClass: 'body-main', tap: true,
+      options: [], answer: o, optClass: '', hint: { html: `<div class="hint-mini">${organSVG(o)}</div>`, say: 'Look for the part that is glowing!' },
+    };
+  }
+  if (t < 0.45) {
+    const o = pick(organs)[0];
+    const others = sample(ORGANS.map((x) => x[0]), numOpts(level) - 1, [o]);
+    return {
+      key: `ana-name-${o}`, text: 'What is the glowing part called?', say: 'What is the glowing part called?',
+      main: organSVG(o), mainClass: 'body-main', options: shuffle([o, ...others]).map((x) => ({ v: x, html: x })),
+      answer: o, optClass: 'opt-text two-col', hint: { html: '', say: 'Think about it!', remove: true },
+    };
+  }
+  return mcQuestion('ana', pickLevelled(ANATOMY, level), level);
+}
+
 /* ---------------- 2D SHAPES ---------------- */
 function regular(n, r = 42, cx = 50, cy = 52, rotDeg = -90) {
   const pts = [];
@@ -1453,6 +1692,9 @@ const CATEGORIES = [
   { id: 'clock', title: 'Clock', sub: 'tell the time', icon: '🕐', color: '#7950f2', gen: genClock, maxLevel: 4 },
   { id: 'shape2', title: 'Shapes', sub: 'flat shapes', icon: '🔺', color: '#ffa94d', gen: genShape2 },
   { id: 'shape3', title: '3D Shapes', sub: 'cube · cone', icon: '🧊', color: '#3bc9db', gen: genShape3 },
+  { id: 'body', title: 'Body Parts', sub: 'nose · knees · elbows', icon: '🙋', color: '#ff8787', gen: genBody },
+  { id: 'gk', title: 'Did You Know?', sub: 'general knowledge', icon: '💡', color: '#fab005', gen: genGK, maxLevel: 4 },
+  { id: 'anatomy', title: 'Inside My Body', sub: 'heart · lungs · brain', icon: '🫀', color: '#e64980', gen: genAnatomy },
   { id: 'jobs', title: 'Jobs', sub: 'who helps us?', icon: '🧑‍🚒', color: '#ff922b', gen: genJobs },
   { id: 'flags', title: 'Flags', sub: 'countries', icon: '🚩', color: '#ff6b6b', gen: genFlags },
   { id: 'maps', title: 'World Map', sub: 'continents', icon: '🗺️', color: '#38d9a9', gen: genMaps },
@@ -1464,13 +1706,13 @@ const CATEGORIES = [
 // Roughly follows Common Core: time to the hour/half hour in 1st, 5 minutes in 2nd;
 // multiplication/division start as equal groups and sharing in 2nd.
 const GRADES = {
-  prek: { label: 'Pre-K', g: { match: '1-1', cvc: '1-1', sight: '1-1', spell: '1-1', vocab: '1-1', syl: '1-1', add: '1-1', sub: '1-1', cmp: '1-1',
+  prek: { label: 'Pre-K', g: { body: '1-1', gk: '1-1', anatomy: '1-1', match: '1-1', cvc: '1-1', sight: '1-1', spell: '1-1', vocab: '1-1', syl: '1-1', add: '1-1', sub: '1-1', cmp: '1-1',
     shape2: '1-1', shape3: '1-1', jobs: '1-1', flags: '1-1', maps: '1-1' } },
-  k: { label: 'Kindergarten', g: { match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-1', sent: '1-1', syl: '1-2', add: '1-2',
+  k: { label: 'Kindergarten', g: { body: '1-2', gk: '1-2', anatomy: '1-1', match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-1', sent: '1-1', syl: '1-2', add: '1-2',
     sub: '1-2', story: '1-1', cmp: '1-2', shape2: '1-2', shape3: '1-1', jobs: '1-2', flags: '1-2', maps: '1-2' } },
-  g1: { label: '1st Grade', g: { match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '1-2', syl: '2-3', add: '3-4',
+  g1: { label: '1st Grade', g: { body: '2-3', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '1-2', syl: '2-3', add: '3-4',
     sub: '3-4', story: '2-3', cmp: '2-4', clock: '1-2', shape2: '2-3', shape3: '1-2', jobs: '2-3', flags: '2-3', maps: '2-3' } },
-  g2: { label: '2nd Grade', g: { match: '3-5', cvc: '3-3', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-3', sent: '2-3', syl: '3-3', add: '4-5',
+  g2: { label: '2nd Grade', g: { body: '3-3', gk: '3-4', anatomy: '2-3', match: '3-5', cvc: '3-3', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-3', sent: '2-3', syl: '3-3', add: '4-5',
     sub: '4-5', story: '3-5', cmp: '4-5', mul: '1-3', div: '1-2', clock: '2-4', shape2: '3-3', shape3: '2-2', jobs: '3-3', flags: '3-3', maps: '3-3' } },
 };
 const gradeRange = (grade, id) => { const r = GRADES[grade] && GRADES[grade].g[id]; return r ? r.split('-').map(Number) : null; };

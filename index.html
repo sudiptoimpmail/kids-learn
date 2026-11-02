@@ -142,10 +142,13 @@
         <div id="gradeBtns" class="grade-btns"></div>
       </div>
       <div class="field">🎮 Play Zone
-        <label class="lvrow">Rounds to earn play time<select id="roundsPerPlay"><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
-        <label class="lvrow">Minutes of play<select id="playMinutes"><option>2</option><option>3</option><option>5</option><option>10</option></select></label>
+        <label class="lvrow">Play time rule<select id="playMode"><option value="rounds">Earn by rounds</option><option value="hourly">Minutes every hour</option></select></label>
+        <label class="lvrow hourly-only">Minutes of play per hour<select id="playPerHour"><option>10</option><option selected>15</option><option>20</option><option>30</option></select></label>
+        <label class="lvrow rounds-only">Rounds to earn play time<select id="roundsPerPlay"><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
+        <label class="lvrow rounds-only">Minutes of play<select id="playMinutes"><option>2</option><option>3</option><option>5</option><option>10</option></select></label>
         <label class="lvrow">Always open (no limit)<input id="playAlways" type="checkbox"></label>
       </div>
+      <label class="field row">🫀 Inside My Body <small>(optional — heart, lungs, brain…)</small><input id="optAnatomy" type="checkbox"></label>
       <label class="field row">🕐 Clock game <small>(optional — telling time)</small><input id="optClock" type="checkbox"></label>
       <label class="field row">Show all games <small>(even ones above this grade)</small><input id="showAll" type="checkbox"></label>
       <label class="field">Child's name (said in praise)

@@ -21,6 +21,9 @@ A flash-card learning game for Pre-K through 2nd grade, built as an installable 
 | ✖️ Multiply | Equal groups with pictures → ×2 ×5 ×10 → up to 5×5 → up to 10×10 → missing factor and story problems. Dot-array hints |
 | ➗ Divide | Share equally with pictures → ÷2 ÷5 ÷10 → within 25 → within 100 → story problems |
 | 🕐 Clock (optional) | Hidden by default — turn on in ⚙️ → Clock game. Read an analog clock or pick the clock for a time: o'clock → half past → quarter past/to → 5 minutes |
+| 🙋 Body Parts | Tap the part on a friendly, fully-clothed kid drawing (nose, knees, elbows…), find the picture, and what each part does. Level 1 big parts → 2 neck, shoulders, elbows, knees, chin → 3 eyebrows, cheeks, wrists, ankles |
+| 💡 Did You Know? | General knowledge for every grade, 4 levels: animal sounds & colors → seasons, days, baby animals, 911 → planets, plants, months → continents, magnets, states of water. 💡 Hint removes a wrong answer |
+| 🫀 Inside My Body (optional) | Off by default — turn on in ⚙️. Brain, heart, lungs, stomach, intestines on a simple diagram (tap it / name the glowing part), then what bones, ribs and skull protect, and healthy habits |
 | 🔺 Shapes | 2D shapes, finding shapes, counting sides |
 | 🧊 3D Shapes | Cube, sphere, cylinder, cone, pyramid, prism; flat vs solid; real-life objects |
 | 🧑‍🚒 Jobs | Who does what |
@@ -33,7 +36,7 @@ A flash-card learning game for Pre-K through 2nd grade, built as an installable 
 **Reading hints** break words into syllables (al · li · ga · tor, in colors, read aloud slowly); one-syllable words split into sound chunks (c · at, fr · og). Sentence hints show every long word broken into syllables while the voice reads along.
 
 ## 🎮 Play Zone (reward games)
-Every **2 finished learning rounds** earn a **3-minute play break** (both adjustable in ⚙️, or set "Always open"). A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
+Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (default: every 2 finished learning rounds earn a 3-minute break) or **Minutes every hour** (free play for up to 15 minutes in each clock hour — only time actually spent playing counts). Or set "Always open". A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
 
 | Game | Notes |
 |---|---|
@@ -43,6 +46,7 @@ Every **2 finished learning rounds** earn a **3-minute play break** (both adjust
 | 🖍️ Coloring Book | 12 pictures in 3 levels — finishing pictures unlocks harder ones |
 | 🔴 Connect Four | vs the robot |
 | 🔢 Sudoku | Pictures, Numbers, or **Word Sudoku** (letters of a spelling word). Level 1 4×4 with 4 blanks → level 5 6×6 with 20 blanks; every 2 wins makes it harder. Every puzzle has exactly one solution. 💡 Hint fills a square |
+| 🤸 Silly Moves | Roll the dice → act it out for 10 seconds: hop like a bunny, walk like a robot, make your silliest face… 40 moves |
 | 🧩 Picture Puzzle | Swap tiles to rebuild a picture: 2×2 → 3×3 → 4×4. Uses her own colored pictures when she has them |
 
 ## Turn on hosting (one time)

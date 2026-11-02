@@ -4,13 +4,21 @@
    ========================================================= */
 
 /* ---------- unlock rules ---------- */
-// Every N finished learning rounds earns one play break of M minutes.
+// Two rules a parent can pick in Settings:
+//  'rounds' (default): every N finished learning rounds earns a play break of M minutes
+//  'hourly': free play for up to K minutes in each clock hour (e.g. 15 min per hour)
 const roundsPerPlay = () => state.roundsPerPlay || 2;
 const playMinutes = () => state.playMinutes || 3;
-const playOpen = () => !!state.playAlways || (state.playUntil || 0) > Date.now();
+const hourlyMode = () => state.playMode === 'hourly';
+const perHour = () => state.playPerHour || 15;
+const hourKey = () => { const d = new Date(); return `${d.toDateString()} ${d.getHours()}`; };
+const usedThisHour = () => (state.playUsed && state.playUsed.h === hourKey() ? state.playUsed.ms : 0);
+const hourLeftMs = () => Math.max(0, perHour() * 60000 - usedThisHour());
+const playOpen = () => !!state.playAlways || (hourlyMode() ? hourLeftMs() > 0 : (state.playUntil || 0) > Date.now());
 
 // called from finish() in app.js; returns true when a new play break was earned
 function earnPlay() {
+  if (hourlyMode()) return false;
   state.roundsSincePlay = (state.roundsSincePlay || 0) + 1;
   if (state.roundsSincePlay >= roundsPerPlay()) {
     state.roundsSincePlay = 0;
@@ -22,39 +30,44 @@ function earnPlay() {
   return false;
 }
 
+const nextHourLabel = () => { const d = new Date(); d.setHours(d.getHours() + 1, 0, 0, 0); return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); };
 function playStatus() {
   if (state.playAlways) return { open: true, text: 'Always open' };
+  if (hourlyMode()) {
+    return hourLeftMs() > 0 ? { open: true, text: `${fmtLeft()} of play left this hour` } : { open: false, text: `Play again at ${nextHourLabel()}` };
+  }
   if (playOpen()) return { open: true, text: `${fmtLeft()} left` };
   if (state.playPasses > 0) return { open: true, ready: true, text: `Ready! ${playMinutes()} min of play` };
   const left = roundsPerPlay() - (state.roundsSincePlay || 0);
   return { open: false, text: `Finish ${left} more round${left === 1 ? '' : 's'} to play` };
 }
 const fmtLeft = () => {
-  const s = Math.max(0, Math.round(((state.playUntil || 0) - Date.now()) / 1000));
+  const ms = hourlyMode() ? hourLeftMs() : (state.playUntil || 0) - Date.now();
+  const s = Math.max(0, Math.round(ms / 1000));
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 };
 
 function renderPlayBanner() {
   const st = playStatus();
-  const done = roundsPerPlay() - (state.roundsSincePlay || 0);
-  const dots = Array.from({ length: roundsPerPlay() }, (_, i) => `<i class="${i < (state.roundsSincePlay || 0) ? 'on' : ''}"></i>`).join('');
+  const dots = hourlyMode() ? '<span class="pb-wait">⏳</span>'
+    : Array.from({ length: roundsPerPlay() }, (_, i) => `<i class="${i < (state.roundsSincePlay || 0) ? 'on' : ''}"></i>`).join('');
   $('#playBanner').className = 'play-banner' + (st.open ? ' open' : '');
   $('#playBanner').innerHTML = `<span class="pb-icon">${st.open ? '🎮' : '🔒'}</span>
     <span class="pb-txt"><b>Play Zone</b><small>${st.text}</small></span>
     ${st.open ? '<span class="pb-go">Play ▶</span>' : `<span class="pb-dots">${dots}</span>`}`;
-  void done;
 }
 
 function openPlayZone() {
   if (!playOpen()) {
-    if (state.playPasses > 0) {
+    if (!hourlyMode() && state.playPasses > 0) {
       state.playPasses--;
       state.playUntil = Date.now() + playMinutes() * 60000;
       save();
       say('You earned play time!');
     } else {
       sfx.no();
-      say(`Finish ${roundsPerPlay() - (state.roundsSincePlay || 0)} more round${roundsPerPlay() - (state.roundsSincePlay || 0) === 1 ? '' : 's'} to play.`);
+      if (hourlyMode()) say('Play time is all used up for now. Let us learn!');
+      else say(`Finish ${roundsPerPlay() - (state.roundsSincePlay || 0)} more round${roundsPerPlay() - (state.roundsSincePlay || 0) === 1 ? '' : 's'} to play.`);
       return;
     }
   }
@@ -64,13 +77,23 @@ function openPlayZone() {
 }
 
 /* ---------- play timer ---------- */
-let playTimer = 0;
+let playTimer = 0, lastTick = 0;
 function startPlayTimer() {
   clearInterval(playTimer);
+  lastTick = Date.now();
   const tick = () => {
+    const inPlay = ['playzone', 'game'].some((id) => $('#' + id).classList.contains('active'));
+    const now = Date.now();
+    // hourly mode: count only time actually spent in the Play Zone
+    if (hourlyMode() && inPlay && !document.hidden) {
+      const h = hourKey();
+      if (!state.playUsed || state.playUsed.h !== h) state.playUsed = { h, ms: 0 };
+      state.playUsed.ms += Math.min(now - lastTick, 5000);
+      save();
+    }
+    lastTick = now;
     const txt = state.playAlways ? '∞' : fmtLeft();
     $$('.play-clock').forEach((el) => (el.textContent = `⏱ ${txt}`));
-    const inPlay = ['playzone', 'game'].some((id) => $('#' + id).classList.contains('active'));
     if (!inPlay) { clearInterval(playTimer); return; }
     if (!playOpen()) { clearInterval(playTimer); timeUp(); }
   };
@@ -80,6 +103,7 @@ function startPlayTimer() {
 function timeUp() {
   stopGame();
   $('#timeUp').hidden = false;
+  $('#timeUp p').textContent = hourlyMode() ? `More play time at ${nextHourLabel()}. Let's learn some more!` : "Let's learn some more — then play again!";
   sfx.win();
   say("Time's up! Let's learn some more!");
 }
@@ -94,6 +118,7 @@ const GAMES = [
   { id: 'c4', title: 'Connect Four', icon: '🔴', color: '#845ef7', start: startC4 },
   { id: 'sudoku', title: 'Sudoku', icon: '🔢', color: '#20c997', start: startSudokuMenu },
   { id: 'puzzle', title: 'Picture Puzzle', icon: '🧩', color: '#fab005', start: startPuzzleMenu },
+  { id: 'moves', title: 'Silly Moves', icon: '🤸', color: '#12b886', start: startMoves },
 ];
 $('#pzGrid').innerHTML = GAMES.map((g) =>
   `<button class="tile pz-tile" data-game="${g.id}" style="--c:${g.color}"><span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`).join('');
@@ -719,6 +744,66 @@ function startPuzzle(p) {
     }
   });
   draw();
+}
+
+
+/* ======================= SILLY MOVES ======================= */
+// Roll the dice → a move to act out for 10 seconds. Get up and wiggle!
+const MOVES = [
+  ['🐰', 'Hop like a bunny!'], ['🐸', 'Jump like a frog!'], ['🐧', 'Waddle like a penguin!'], ['🐘', 'Stomp like an elephant!'],
+  ['🐍', 'Wiggle like a snake!'], ['🐦', 'Flap your wings like a bird!'], ['🦁', 'Roar like a lion!'], ['🐒', 'Swing your arms like a monkey!'],
+  ['🐴', 'Gallop like a horse!'], ['🦀', 'Walk sideways like a crab!'], ['🐝', 'Buzz around like a bee!'], ['🦒', 'Stretch up tall like a giraffe!'],
+  ['🐟', 'Swim like a fish!'], ['🦋', 'Flutter like a butterfly!'], ['🦩', 'Stand on one leg like a flamingo!'], ['🦘', 'Bounce like a kangaroo!'],
+  ['🐢', 'Move super slow like a turtle!'], ['🐶', 'Wag your tail like a happy puppy!'],
+  ['🤖', 'Walk like a robot!'], ['🦸', 'Fly like a superhero!'], ['🩰', 'Twirl like a ballerina!'], ['🧑‍🍳', 'Stir a giant pot like a chef!'],
+  ['🏎️', 'Drive a race car!'], ['🥁', 'Play pretend drums!'], ['🗽', 'Freeze like a statue!'], ['🧑‍🚀', 'Bounce like an astronaut on the moon!'],
+  ['🎤', 'Dance like a pop star!'], ['🧑‍🚒', 'Spray water like a firefighter!'], ['🎺', 'March in place like a band!'],
+  ['🤪', 'Make your silliest face!'], ['🍮', 'Wiggle like jelly!'], ['🌀', 'Spin around slowly three times!'],
+  ['🏴‍☠️', 'Laugh like a pirate!'], ['🌳', 'Sway like a tree in the wind!'], ['🐭', 'Tiptoe like a mouse!'], ['🫨', 'Shake your sillies out!'],
+  ['🤗', 'Give yourself a big hug!'], ['🦶', 'Touch your toes!'], ['👏', 'Clap ten times!'], ['😂', 'Do your biggest laugh!'],
+];
+function startMoves() {
+  const area = $('#gameArea');
+  let timer = 0, spin = 0;
+  const done = state.movesDone || 0;
+  area.innerHTML = `<div class="g-msg">Roll the dice and do the move! <small class="mv-count">${done ? `⭐ ${done} moves done` : ''}</small></div>
+    <div class="mv-card"><div class="mv-emoji">🎲</div><div class="mv-text">Tap Roll!</div><svg class="mv-ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54"/></svg></div>
+    <button class="big-btn mv-roll">🎲 Roll!</button>`;
+  say('Roll the dice!');
+  const card = $('.mv-card', area), em = $('.mv-emoji', area), tx = $('.mv-text', area), btn = $('.mv-roll', area), ring = $('.mv-ring circle', area);
+  const cleanup = () => { clearInterval(timer); clearInterval(spin); };
+  gameCleanup = cleanup;
+  btn.onclick = () => {
+    if (btn.disabled) return;
+    btn.disabled = true; sfx.tap();
+    const m = pick(MOVES);
+    let k = 0;
+    card.classList.remove('go', 'done');
+    tx.textContent = '…';
+    spin = setInterval(() => { em.textContent = pick(MOVES)[0]; tone([300 + (k++ % 6) * 80], { dur: 0.03, vol: 0.06 }); }, 90);
+    setTimeout(() => {
+      clearInterval(spin);
+      em.textContent = m[0]; tx.textContent = m[1];
+      card.classList.add('go');
+      say(m[1]);
+      let left = 10;
+      ring.style.strokeDashoffset = '0';
+      const total = 10;
+      timer = setInterval(() => {
+        left--;
+        ring.style.strokeDashoffset = String(339 * (1 - left / total));
+        if (left > 0 && left <= 3) tone([660], { dur: 0.05, vol: 0.08 });
+        if (left <= 0) {
+          clearInterval(timer);
+          card.classList.remove('go'); card.classList.add('done');
+          state.movesDone = (state.movesDone || 0) + 1; save();
+          $('.mv-count', area).textContent = `⭐ ${state.movesDone} moves done`;
+          gameWin(pick(['Great moves!', 'Awesome job!', 'You are so silly!', 'Fantastic!']));
+          btn.disabled = false; btn.textContent = '🎲 Roll again!';
+        }
+      }, 1000);
+    }, 1300);
+  };
 }
 
 $('#playBanner').onclick = () => { sfx.tap(); openPlayZone(); };
