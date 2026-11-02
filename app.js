@@ -14,6 +14,10 @@ const state = Object.assign(
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
 const levelOf = (id) => state.levels[id] || 1;
 const maxLevelOf = (id) => (CATEGORIES.find((c) => c.id === id) || {}).maxLevel || 3;
+const gameMax = maxLevelOf;
+const visibleGames = () => CATEGORIES.filter((c) => !state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id));
+// auto level-up stops at the top of the child's grade (unless all games are shown)
+const levelCap = (id) => { const r = state.grade && !state.showAll && gradeRange(state.grade, id); return r ? r[1] : gameMax(id); };
 
 /* ---------- voice ---------- */
 // 1) Pre-recorded natural voice clips (audio/*.mp3, listed in audio/clips.json), sentence by sentence.
@@ -198,7 +202,9 @@ function renderHome() {
   $('#hello').textContent = state.name ? `Hi, ${state.name}!` : 'Hi there!';
   $('#starCount').textContent = state.stars;
   $('#stickerCount').textContent = state.stickers.length;
-  $('#grid').innerHTML = CATEGORIES.map((c) => {
+  $('#gradeLabel').textContent = state.grade ? GRADES[state.grade].label : 'Pick grade';
+  $('#gradeChip').classList.toggle('pulse', !state.grade);
+  $('#grid').innerHTML = visibleGames().map((c) => {
     const best = state.best[c.id] || 0;
     const lv = c.id === 'mix' ? '' : `<span class="lv">Lv ${levelOf(c.id)}</span>`;
     return `<button class="tile" data-cat="${c.id}" style="--c:${c.color}">
@@ -212,7 +218,7 @@ let R = null; // current round
 
 function startRound(catId) {
   const cat = CATEGORIES.find((c) => c.id === catId);
-  const real = CATEGORIES.filter((c) => c.gen);
+  const real = visibleGames().filter((c) => c.gen);
   const qs = [], seen = new Set();
   let guard = 0;
   while (qs.length < ROUND && guard++ < 400) {
@@ -304,6 +310,7 @@ function renderSpell(q) {
   q.slots = {};                       // blank index -> tile id
   const row = document.createElement('div');
   row.className = 'spell-row';
+  row.style.setProperty('--n', word.length);
   row.innerHTML = word.split('').map((c, i) => blanks.includes(i)
     ? `<div class="slot" data-i="${i}"></div>`
     : `<div class="slot fixed">${c}</div>`).join('');
@@ -477,7 +484,7 @@ function finish() {
   let levelMsg = '';
   if (id !== 'mix') {
     const lv = levelOf(id);
-    if (m <= 1 && lv < maxLevelOf(id)) { state.levels[id] = lv + 1; levelMsg = `⬆️ Level up! Now level ${lv + 1}`; }
+    if (m <= 1 && lv < levelCap(id)) { state.levels[id] = lv + 1; levelMsg = `⬆️ Level up! Now level ${lv + 1}`; }
     else if (m >= 8 && lv > 1) { state.levels[id] = lv - 1; }
   }
   // sticker
@@ -581,8 +588,19 @@ $('#againBtn').onclick = () => startRound(R.cat.id);
 $('#homeBtn').onclick = () => { renderHome(); show('home'); };
 $('#stickersBtn').onclick = () => { sfx.tap(); renderStickers(); show('stickers'); };
 $('#stickersBack').onclick = () => show('home');
+function renderGrades() {
+  $('#gradeBtns').innerHTML = Object.entries(GRADES).map(([k, g]) =>
+    `<button class="grade-btn ${state.grade === k ? 'on' : ''}" data-g="${k}">${g.label}</button>`).join('');
+  $$('#gradeBtns .grade-btn').forEach((b) => (b.onclick = () => {
+    sfx.tap(); state.grade = b.dataset.g; state.levels = {}; Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = +r.split('-')[0])); save();
+    renderGrades();
+    $$('#levels select').forEach((sel) => (sel.value = levelOf(sel.dataset.id)));
+  }));
+}
+$('#gradeChip').onclick = () => $('#settingsBtn').onclick();
 $('#settingsBtn').onclick = () => {
-  $('#nameInput').value = state.name; $('#voiceToggle').checked = state.voice;
+  renderGrades();
+  $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
   show('settings');
@@ -590,6 +608,7 @@ $('#settingsBtn').onclick = () => {
 $('#settingsDone').onclick = () => {
   state.name = $('#nameInput').value.trim().slice(0, 20);
   state.voice = $('#voiceToggle').checked;
+  state.showAll = $('#showAll').checked;
   $$('#levels select').forEach((s) => (state.levels[s.dataset.id] = +s.value));
   save(); renderHome(); show('home');
   say("Let's play!");

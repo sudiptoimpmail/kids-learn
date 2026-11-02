@@ -26,16 +26,18 @@ const PALETTE = [
 ];
 
 /* ---------------- WORDS ---------------- */
+// Picture words by length. Pre-K/K: 3 letters · K/1st: 4 · 1st/2nd: 5 · 2nd: 6+
 const W3 = [
   ['cat', '🐱'], ['dog', '🐶'], ['pig', '🐷'], ['hen', '🐔'], ['bat', '🦇'], ['bus', '🚌'],
-  ['sun', '☀️'], ['cup', '☕'], ['bed', '🛏️'], ['box', '📦'], ['fox', '🦊'], ['hat', '🎩'],
+  ['sun', '☀️'], ['cup', '🥤'], ['bed', '🛏️'], ['box', '📦'], ['fox', '🦊'], ['hat', '🎩'],
   ['map', '🗺️'], ['pen', '🖊️'], ['pot', '🍲'], ['rat', '🐀'], ['web', '🕸️'], ['bug', '🐛'],
   ['net', '🥅'], ['van', '🚐'], ['log', '🪵'], ['leg', '🦵'], ['bag', '👜'], ['cap', '🧢'],
   ['can', '🥫'], ['kid', '🧒'], ['man', '👨'], ['pan', '🍳'], ['ram', '🐏'], ['nut', '🥜'],
   ['six', '6️⃣'], ['ten', '🔟'], ['jet', '🛩️'], ['lip', '👄'], ['pin', '📌'], ['hut', '🛖'],
   ['tub', '🛁'], ['red', '🔴'], ['sad', '😢'], ['wet', '💦'], ['hug', '🤗'], ['mud', '🟤'],
+  ['ant', '🐜'], ['pie', '🥧'], ['key', '🔑'], ['mug', '☕'], ['fly', '🪰'], ['bee', '🐝'],
+  ['boy', '👦'], ['toy', '🧸'], ['owl', '🦉'], ['run', '🏃'], ['hot', '🥵'], ['see', '👀'],
 ];
-
 const W4 = [
   ['frog', '🐸'], ['duck', '🦆'], ['fish', '🐟'], ['crab', '🦀'], ['drum', '🥁'], ['bell', '🔔'],
   ['cake', '🍰'], ['kite', '🪁'], ['moon', '🌙'], ['star', '⭐'], ['ship', '🚢'], ['milk', '🥛'],
@@ -45,7 +47,22 @@ const W4 = [
   ['gift', '🎁'], ['lock', '🔒'], ['nose', '👃'], ['foot', '🦶'], ['king', '🤴'], ['goat', '🐐'],
   ['deer', '🦌'], ['swan', '🦢'], ['seal', '🦭'], ['sled', '🛷'], ['pear', '🍐'], ['bone', '🦴'],
   ['tent', '⛺'], ['bike', '🚲'], ['home', '🏠'], ['leaf', '🍃'], ['nest', '🪺'], ['soap', '🧼'],
+  ['mask', '🎭'], ['coin', '🪙'], ['vase', '🏺'], ['girl', '👧'], ['wolf', '🐺'], ['wing', '🪽'],
+  ['food', '🍱'], ['blue', '🔵'], ['pink', '🩷'], ['stop', '🛑'], ['cold', '🥶'], ['tube', '🧪'],
 ];
+const W5 = [
+  ['truck', '🚚'], ['tiger', '🐯'], ['brick', '🧱'], ['puppy', '🐶'], ['nurse', '🧑‍⚕️'], ['brush', '🪥'],
+  ['woman', '👩'], ['green', '🟢'], ['white', '⚪'], ['black', '⚫'], ['brown', '🟤'], ['yo-yo', '🪀'],
+  ['apple', '🍎'], ['bread', '🍞'], ['clock', '🕰️'], ['train', '🚆'], ['sheep', '🐑'], ['zebra', '🦓'],
+  ['robot', '🤖'], ['pizza', '🍕'], ['shirt', '👕'], ['chair', '🪑'], ['snake', '🐍'], ['horse', '🐴'],
+];
+const WL = [
+  ['orange', '🍊'], ['anchor', '⚓'], ['mother', '👩‍👧'], ['father', '👨‍👧'], ['sister', '👭'], ['brother', '👬'],
+  ['alligator', '🐊'], ['yellow', '🟡'], ['purple', '🟣'], ['rabbit', '🐰'], ['monkey', '🐵'], ['turtle', '🐢'],
+  ['rocket', '🚀'], ['pencil', '✏️'], ['spider', '🕷️'], ['flower', '🌸'], ['banana', '🍌'], ['carrot', '🥕'],
+  ['castle', '🏰'], ['penguin', '🐧'], ['balloon', '🎈'], ['dragon', '🐉'],
+];
+const bigWordList = (level) => (level <= 3 ? W4 : level === 4 ? W5 : W5.concat(WL));
 
 const VOWELS = ['a', 'e', 'i', 'o', 'u'];
 const CONS = 'bcdfghjklmnprstvwz'.split('');
@@ -97,7 +114,7 @@ function genWords(list, level, kind) {
   // missing letter
   let pos;
   if (w.length === 3) pos = 1; // CVC: the vowel
-  else pos = rand(w.length);
+  else { do { pos = rand(w.length); } while (!/[a-z]/.test(w[pos])); }
   const letter = w[pos];
   const pool = (VOWELS.includes(letter) ? VOWELS : CONS).filter((l) => l !== letter);
   const opts = shuffle([letter, ...sample(pool, n)]);
@@ -116,24 +133,127 @@ function genWords(list, level, kind) {
   };
 }
 
+/* ---------------- SIGHT WORDS ---------------- */
+// [word, kind, level]  kind is used to pick distractors that do NOT fit a sentence
+const SIGHT = [
+  ['I', 'pron', 1], ['see', 'verb', 1], ['go', 'verb', 1], ['up', 'prep', 1], ['no', 'misc', 1], ['yes', 'misc', 1],
+  ['he', 'pron', 1], ['she', 'pron', 1], ['like', 'verb', 1], ['big', 'adj', 1], ['run', 'verb', 1], ['fun', 'adj', 1],
+  ['stop', 'verb', 1], ['the', 'misc', 1],
+  ['down', 'prep', 2], ['here', 'prep', 2], ['all', 'misc', 2], ['some', 'misc', 2], ['went', 'verb', 2], ['away', 'prep', 2],
+  ['make', 'verb', 2], ['take', 'verb', 2], ['good', 'adj', 2], ['bad', 'adj', 2], ['happy', 'adj', 2], ['sad', 'adj', 2],
+  ['hot', 'adj', 2], ['cold', 'adj', 2], ['not', 'misc', 2], ['but', 'misc', 2], ['same', 'adj', 2], ['we', 'pron', 2],
+  ['from', 'prep', 3], ['over', 'prep', 3], ['under', 'prep', 3], ['write', 'verb', 3], ['wrong', 'adj', 3],
+  ['smell', 'verb', 3], ['touch', 'verb', 3], ['crawl', 'verb', 3], ['ride', 'verb', 3], ['chew', 'verb', 3],
+  ['huge', 'adj', 3], ['rude', 'adj', 3], ['heat', 'noun', 3], ['hang', 'verb', 3], ['exit', 'noun', 3],
+];
+const SIGHT_KIND = Object.fromEntries(SIGHT.map(([w, k]) => [w.toLowerCase(), k]));
+// [sentence with ___, answer, level]
+const FILL = [
+  ['I ___ my dog.', 'like', 1], ['I can ___ the moon.', 'see', 1], ['Look ___ at the sky!', 'up', 1],
+  ['___ is my brother.', 'He', 1], ['___ is my sister.', 'She', 1], ['Red means ___.', 'stop', 1],
+  ['Green means ___.', 'go', 1], ['An elephant is ___.', 'big', 1], ['I can ___ fast.', 'run', 1],
+  ['The party was so much ___!', 'fun', 1], ['Is it a cat? ___, it is!', 'Yes', 1], ['___, it is not a dog.', 'No', 1],
+  ['Mom and I ___ to the park.', 'went', 2], ['The cat ran ___.', 'away', 2], ['Come ___ and sit with me.', 'here', 2],
+  ['Can you ___ a cake?', 'make', 2], ['Please ___ one cookie.', 'take', 2], ['You did a ___ job!', 'good', 2],
+  ['I am ___ on my birthday.', 'happy', 2], ['He is ___ because he lost his toy.', 'sad', 2], ['The sun is ___.', 'hot', 2],
+  ['Ice is very ___.', 'cold', 2], ['Can I have ___ juice?', 'some', 2], ['We have the ___ shoes!', 'same', 2],
+  ['Sit ___ on the rug.', 'down', 2], ['Did you eat ___ your peas?', 'all', 2], ['A fish can ___ walk.', 'not', 2],
+  ['I like milk, ___ I do not like tea.', 'but', 2], ['___ like to play together.', 'We', 2],
+  ['I got a gift ___ Grandma.', 'from', 3], ['The bird flew ___ the tree.', 'over', 3], ['The cat hid ___ the bed.', 'under', 3],
+  ['I like to ___ my bike.', 'ride', 3], ['A baby can ___ on the floor.', 'crawl', 3], ['I can ___ my name.', 'write', 3],
+  ['I ___ the flowers with my nose.', 'smell', 3], ['Do not ___ the hot stove.', 'touch', 3], ['A whale is ___.', 'huge', 3],
+  ['It is ___ to grab toys.', 'rude', 3], ['___ your food with your mouth closed.', 'Chew', 3], ['That answer is ___. Try again!', 'wrong', 3],
+  ['Please ___ your coat on the hook.', 'hang', 3], ['The fire gives off ___.', 'heat', 3], ['Go out the ___ door.', 'exit', 3],
+];
+const fillFull = (f) => f[0].replace('___', f[1]);
+const OPPOSITES = [['up', 'down'], ['over', 'under'], ['yes', 'no'], ['hot', 'cold'], ['happy', 'sad'], ['good', 'bad'],
+  ['go', 'stop'], ['he', 'she'], ['boy', 'girl'], ['man', 'woman'], ['mother', 'father'], ['sister', 'brother'],
+  ['huge', 'tiny'], ['take', 'give'], ['right', 'wrong']];
+const cap = (w) => w[0].toUpperCase() + w.slice(1);
+const firstLetterHint = (w) => ({ html: `<div class="hint-letters">${w[0]}<span class="faint">${'_'.repeat(w.length - 1)}</span></div>`, say: 'It starts with this letter!' });
+
+function genSight(level) {
+  const lv = Math.min(level, 3);
+  const pool = SIGHT.filter((s) => s[2] <= lv).map((s) => s[0]);
+  const n = numOpts(level) - 1;
+  const types = level === 1 ? ['tap', 'tap', 'fill'] : level === 2 ? ['tap', 'fill', 'fill'] : ['tap', 'fill', 'fill', 'opp'];
+  const type = pick(types);
+  if (type === 'fill') {
+    const fl = FILL.filter((f) => f[2] <= lv);
+    const f = pick(fl.filter((x) => x[2] === lv).length && Math.random() < 0.7 ? fl.filter((x) => x[2] === lv) : fl);
+    const [sent, ans] = f;
+    const atStart = sent.startsWith('___');
+    const kind = SIGHT_KIND[ans.toLowerCase()];
+    const wrong = sample(pool.filter((w) => SIGHT_KIND[w.toLowerCase()] !== kind && w.toLowerCase() !== ans.toLowerCase()), n);
+    const show = (w) => (atStart ? cap(w) : w === 'I' ? 'I' : w.toLowerCase());
+    return {
+      key: `sight-fill-${sent}`, text: 'Which word fits?', say: 'Which word fits?',
+      main: `<div class="sentence">${sent.replace('___', '<span class="blank wide">___</span>')}</div>`,
+      options: shuffle([ans, ...wrong]).map((w) => ({ v: show(w), html: show(w) })),
+      answer: show(ans), optClass: 'opt-word', fill: true, hint: firstLetterHint(ans.toLowerCase()),
+    };
+  }
+  if (type === 'opp') {
+    const pair = shuffle(pick(OPPOSITES));
+    const others = sample(OPPOSITES.flat().filter((w) => !pair.includes(w)), n);
+    return {
+      key: `sight-opp-${pair[0]}`, text: `What is the opposite of <b>${pair[0]}</b>?`, say: ['What is the opposite of', `${pair[0]}?`],
+      main: `<div class="word sm">${pair[0]}</div>`,
+      options: shuffle([pair[1], ...others]).map((w) => ({ v: w, html: w })),
+      answer: pair[1], optClass: 'opt-word', hint: firstLetterHint(pair[1]),
+    };
+  }
+  const w = pick(pool);
+  const look = (x) => (x[0].toLowerCase() === w[0].toLowerCase() ? 2 : 0) + (x.length === w.length ? 1 : 0) + Math.random();
+  const others = (level >= 3 ? pool.filter((x) => x !== w).sort((a, b) => look(b) - look(a)) : shuffle(pool.filter((x) => x !== w))).slice(0, n);
+  return {
+    key: `sight-tap-${w}`, text: 'Listen. Tap the word!', say: ['Find the word.', w], speak: w,
+    main: `<button class="big-speaker" data-speak="${w}" aria-label="Hear the word">🔊</button>`,
+    options: shuffle([w, ...others]).map((x) => ({ v: x, html: x })),
+    answer: w, optClass: 'opt-word', hint: firstLetterHint(w.toLowerCase()),
+  };
+}
+
 /* ---------------- SPELLING ---------------- */
 // Only words whose picture is unmistakable.
 const SPELL3 = ['cat', 'dog', 'pig', 'hen', 'bat', 'bus', 'sun', 'cup', 'bed', 'box', 'fox', 'hat', 'map', 'pen', 'web', 'bug',
-  'van', 'leg', 'bag', 'cap', 'can', 'pan', 'nut', 'jet', 'pin', 'tub', 'hug', 'log', 'rat', 'net'];
+  'van', 'leg', 'bag', 'cap', 'can', 'pan', 'nut', 'jet', 'pin', 'tub', 'log', 'rat', 'net',
+  'ant', 'pie', 'key', 'mug', 'fly', 'bee', 'boy', 'toy', 'owl', 'red'];
 const SPELL4 = ['frog', 'duck', 'fish', 'crab', 'drum', 'bell', 'cake', 'kite', 'moon', 'star', 'ship', 'milk', 'sock', 'tree',
   'bird', 'lion', 'bear', 'ball', 'book', 'boat', 'corn', 'door', 'hand', 'lamp', 'ring', 'rose', 'shoe', 'snow', 'gift',
-  'lock', 'nose', 'foot', 'king', 'goat', 'deer', 'swan', 'seal', 'pear', 'bone', 'tent', 'bike', 'leaf', 'nest', 'soap'];
-const EMOJI_OF = Object.fromEntries(W3.concat(W4));
+  'lock', 'nose', 'foot', 'king', 'goat', 'deer', 'swan', 'seal', 'pear', 'bone', 'tent', 'bike', 'leaf', 'nest', 'soap',
+  'mask', 'coin', 'vase', 'girl', 'wolf', 'wing', 'food', 'blue', 'pink', 'stop'];
+const SPELL5 = ['truck', 'tiger', 'brick', 'puppy', 'nurse', 'brush', 'woman', 'green', 'white', 'black', 'brown', 'apple',
+  'bread', 'clock', 'train', 'sheep', 'zebra', 'robot', 'pizza', 'shirt', 'chair', 'snake', 'horse'];
+const SPELLL = ['orange', 'anchor', 'mother', 'father', 'sister', 'brother', 'yellow', 'purple', 'rabbit', 'monkey', 'turtle',
+  'rocket', 'pencil', 'spider', 'flower', 'banana', 'carrot', 'castle', 'alligator'];
+const EMOJI_OF = Object.fromEntries(W3.concat(W4, W5, WL));
 const LOOKALIKE = { b: 'dp', d: 'bp', p: 'bq', q: 'p', m: 'n', n: 'mu', u: 'n', i: 'l', l: 'i', e: 'a', a: 'eo', o: 'a', s: 'z', c: 'k', k: 'c' };
 
+// Levels: 1 Pre-K · 2 K · 3 K/1st · 4 1st · 5 2nd
 function genSpell(level) {
-  let word, nBlank, nExtra;
+  let word, nBlank, nExtra, mode = 'pic', sentence = null;
   const r = Math.random();
   if (level === 1) { word = pick(SPELL3); nBlank = r < 0.5 ? 1 : 2; nExtra = 2; }
   else if (level === 2) {
     if (r < 0.5) { word = pick(SPELL3); nBlank = 3; nExtra = 3; }
     else { word = pick(SPELL4); nBlank = 2; nExtra = 3; }
-  } else { word = pick(SPELL4); nBlank = r < 0.75 ? 4 : 3; nExtra = 4; }
+  } else if (level === 3) { word = pick(SPELL4); nBlank = r < 0.75 ? 4 : 3; nExtra = 4; }
+  else if (level === 4) {
+    if (r < 0.4) { word = pick(SPELL5); nBlank = 2 + rand(2); nExtra = 4; }
+    else if (r < 0.7) { mode = 'listen'; }
+    else { mode = 'sentence'; }
+    nExtra = 4;
+  } else {
+    if (r < 0.35) { word = pick(SPELL5); nBlank = 5; nExtra = 4; }
+    else if (r < 0.7) { word = pick(SPELLL); nBlank = Math.ceil(word.length / 2); nExtra = 4; }
+    else { mode = 'sentence'; nExtra = 5; }
+  }
+  if (mode === 'listen') { word = pick(SIGHT.filter((x) => x[2] <= 3 && x[0].length >= 3))[0].toLowerCase(); nBlank = word.length; }
+  if (mode === 'sentence') {
+    const f = pick(FILL.filter((x) => x[2] >= (level === 4 ? 1 : 2) && x[1].length >= 3));
+    word = f[1].toLowerCase(); nBlank = word.length; sentence = f;
+  }
   const letters = word.split('');
   // which letters are blanks (vowels first when only one or two, they are the tricky part)
   const idx = letters.map((_, i) => i);
@@ -146,27 +266,39 @@ function genSpell(level) {
     blanks = order.slice(0, nBlank).sort((a, b) => a - b);
   }
   const need = blanks.map((i) => letters[i]);
-  // decoys: look-alike letters at level 3, otherwise random letters not in the word
+  // decoys: look-alike letters from level 3, otherwise random letters not in the word
   const pool = [];
   if (level >= 3) need.forEach((l) => (LOOKALIKE[l] || '').split('').forEach((x) => pool.push(x)));
+  const nLook = pool.length;
   'abcdefghijklmnoprstuvwyz'.split('').forEach((x) => pool.push(x));
   const extras = [];
-  for (const x of shuffle(pool.slice(0, level >= 3 ? 6 : 0)).concat(shuffle(pool.slice(level >= 3 ? 6 : 0)))) {
+  for (const x of shuffle(pool.slice(0, nLook)).concat(shuffle(pool.slice(nLook)))) {
     if (extras.length >= nExtra) break;
     if (!word.includes(x) && !extras.includes(x)) extras.push(x);
   }
   const full = blanks.length === letters.length;
+  let text, say, main;
+  if (mode === 'sentence') {
+    text = 'Spell the missing word!';
+    say = ['Spell the missing word.', fillFull(sentence)];
+    main = `<div class="sentence">${sentence[0].replace('___', '<span class="blank wide">___</span>')}</div><button class="mini-speaker" data-speak="${fillFull(sentence)}">🔊</button>`;
+  } else if (mode === 'listen') {
+    text = 'Listen and spell!';
+    say = ['Listen and spell.', word];
+    main = `<button class="big-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`;
+  } else {
+    text = full ? 'Spell the word!' : 'Fill in the missing letters!';
+    say = [full ? 'Spell the word.' : 'Fill in the missing letters.', word];
+    main = `<div class="spell-pic">${EMOJI_OF[word]}</div><button class="mini-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`;
+  }
   return {
     key: `spell-${word}-${blanks.join('')}`,
-    text: full ? 'Spell the word!' : 'Fill in the missing letters!',
-    say: [full ? 'Spell the word.' : 'Fill in the missing letters.', word],
-    speak: word,
-    main: `<div class="spell-pic">${EMOJI_OF[word]}</div><button class="mini-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`,
+    text, say, speak: word, main,
     options: [],
     answer: word,
     optClass: 'spell-tray',
     spell: { word, blanks, tiles: shuffle(need.concat(extras)) },
-    hint: { html: '', say: word, slow: true },
+    hint: { html: '', say: sentence ? fillFull(sentence) : word, slow: true },
   };
 }
 
@@ -181,7 +313,7 @@ const SENTENCES = [
   ['A fox sat on a log.', 'Who sat on a log?', ['a fox 🦊', 'a cat 🐱', 'a hen 🐔']],
   ['I can see six ducks.', 'How many ducks?', ['6', '3', '10']],
   ['The frog can jump.', 'What can the frog do?', ['jump', 'sing', 'cook']],
-  ['Mom has a blue cup.', 'What does Mom have?', ['a cup ☕', 'a hat 🎩', 'a bag 👜']],
+  ['Mom has a blue cup.', 'What does Mom have?', ['a cup 🥤', 'a hat 🎩', 'a bag 👜']],
   ['The bus is big and yellow.', 'What color is the bus?', ['yellow 🟡', 'pink 🩷', 'black ⚫']],
   ['Ben fed the fish.', 'What did Ben feed?', ['the fish 🐟', 'the dog 🐶', 'the cat 🐱']],
   ['The bug is on the rug.', 'Where is the bug?', ['on the rug', 'on the bed', 'in the cup']],
@@ -198,10 +330,46 @@ const SENTENCES = [
   ['The ball is under the bed.', 'Where is the ball?', ['under the bed', 'on the tree', 'in the sun']],
   ['I brush my teeth at night.', 'What do I brush?', ['my teeth 🦷', 'the dog 🐶', 'my shoe 👟']],
   ['The big bear ate a fish.', 'What did the bear eat?', ['a fish 🐟', 'a cake 🍰', 'a hat 🎩']],
+  ['The ant is on a leaf.', 'Where is the ant?', ['on a leaf 🍃', 'in a cup 🥤', 'on a bus 🚌']],
+  ['The owl can see at night.', 'When can the owl see?', ['at night 🌙', 'at lunch 🥪', 'in the bath 🛁']],
+  ['A bee is on the pink flower.', 'What color is the flower?', ['pink 🩷', 'blue 🔵', 'black ⚫']],
+  ['The boy and the girl ride a bike.', 'What do they ride?', ['a bike 🚲', 'a boat ⛵', 'a truck 🚚']],
+  ['My mother has a red mug.', 'What does Mother have?', ['a mug ☕', 'a key 🔑', 'a coin 🪙']],
+  ['The wolf ran up the hill.', 'Who ran up the hill?', ['the wolf 🐺', 'the fox 🦊', 'the crab 🦀']],
+  ['Dad put the key in the box.', 'Where is the key?', ['in the box 📦', 'under the bed 🛏️', 'on the boat ⛵']],
+  ['The puppy likes to chew a bone.', 'What does the puppy chew?', ['a bone 🦴', 'a coin 🪙', 'a vase 🏺']],
+  ['The tiger is huge and orange.', 'What color is the tiger?', ['orange 🟠', 'green 🟢', 'purple 🟣']],
+  ['A crab went under a rock.', 'Where did the crab go?', ['under a rock', 'over a tree', 'up a hill']],
+  ['My brother and sister went to the park.', 'Where did they go?', ['the park 🌳', 'the shop 🏪', 'the ship 🚢']],
+  ['The truck is big, but the bike is small.', 'What is small?', ['the bike 🚲', 'the truck 🚚', 'the ship 🚢']],
+  ['The nurse helps sick kids.', 'Who helps sick kids?', ['the nurse 🧑‍⚕️', 'the king 🤴', 'the wolf 🐺']],
+  ['The king has a gold coin.', 'What does the king have?', ['a coin 🪙', 'a mask 🎭', 'a pie 🥧']],
+  ['The fish swims by the ship.', 'What swims by the ship?', ['the fish 🐟', 'the fly 🪰', 'the owl 🦉']],
+  ['I smell a hot apple pie.', 'What do I smell?', ['a pie 🥧', 'a sock 🧦', 'a drum 🥁']],
+  ['Stop at the red light. Go at the green light.', 'When do we go?', ['at the green light 🟢', 'at the red light 🔴', 'at night 🌙']],
+  ['The alligator has a long tail and sharp teeth.', 'Who has sharp teeth?', ['the alligator 🐊', 'the bee 🐝', 'the yo-yo 🪀']],
+  ['Do not touch the stove. It is hot!', 'Why not touch the stove?', ['it is hot 🔥', 'it is cold 🧊', 'it is wet 💦']],
+  ['The baby can crawl, but she can not walk yet.', 'What can the baby do?', ['crawl 👶', 'run 🏃', 'ride a bike 🚲']],
+  ['It is rude to take a toy from a friend.', 'What is rude?', ['taking a toy from a friend', 'sharing a toy', 'saying thank you']],
+  ['I write my name with a blue pen.', 'What color is the pen?', ['blue 🔵', 'pink 🩷', 'brown 🟤']],
+  ['The boat has a big anchor.', 'What does the boat have?', ['an anchor ⚓', 'a wing 🪽', 'a vase 🏺']],
+  ['A bird can fly, but a fish can not.', 'Who can fly?', ['a bird 🐦', 'a fish 🐟', 'a crab 🦀']],
+  ['Hang your coat by the door.', 'Where do you hang your coat?', ['by the door 🚪', 'in the tub 🛁', 'on the truck 🚚']],
+  ['The orange is in the yellow bowl.', 'What is in the bowl?', ['an orange 🍊', 'a key 🔑', 'a brick 🧱']],
+  ['Father made a pie for all of us.', 'Who made the pie?', ['Father', 'the king', 'the nurse']],
+  ['The man and the woman like to read.', 'What do they like to do?', ['read 📖', 'swim 🏊', 'cook 🍳']],
+  ['The yo-yo goes up and down.', 'How does the yo-yo go?', ['up and down', 'over and under', 'in and out']],
+  ['The little brown mouse ran away from the cat.', 'Who ran away?', ['the mouse 🐭', 'the cat 🐱', 'the dog 🐶']],
+  ['We went to the farm and saw a goat, a pig and a hen.', 'Which animal did we NOT see?', ['a tiger 🐯', 'a goat 🐐', 'a pig 🐷']],
+  ['Tom was sad because it rained, but then he saw a rainbow.', 'What made Tom happy?', ['a rainbow 🌈', 'the rain 🌧️', 'his shoe 👟']],
 ];
+// level by length: 1 = up to 5 words, 2 = up to 8 words, 3 = longer / two sentences
+const sentLevel = (s) => { const n = s.split(' ').length; return n <= 5 ? 1 : n <= 8 && !/[.!?] [A-Z]/.test(s) ? 2 : 3; };
 
 function genSentence(level) {
-  const [s, q, opts] = pick(SENTENCES);
+  const pool = SENTENCES.filter((x) => sentLevel(x[0]) <= level);
+  const exact = pool.filter((x) => sentLevel(x[0]) === level);
+  const [s, q, opts] = pick(exact.length && Math.random() < 0.7 ? exact : pool);
   const words = s.split(' ').map((w, i) => `<span class="sw" data-i="${i}">${w}</span>`).join(' ');
   return {
     key: `sent-${s}`,
@@ -423,6 +591,195 @@ function genWordProblem(level) {
     main: `<div class="story">${text}</div>`,
     options: numberOptions(ans, Math.max(level, 2)),
     answer: ans, optClass: 'opt-num', hint,
+  };
+}
+
+/* ---------------- COMPARE  > < = ---------------- */
+// 1 more/fewer with pictures · 2 numbers to 10 · 3 to 20 · 4 two-digit · 5 sums and differences
+const SIGN_OPTS = [{ v: '>', html: '&gt;<small>greater</small>' }, { v: '<', html: '&lt;<small>less</small>' }, { v: '=', html: '=<small>equal</small>' }];
+const signOf = (a, b) => (a > b ? '>' : a < b ? '<' : '=');
+const gator = { html: '<div class="hint-pic sm">🐊</div><div class="hint-note">The alligator mouth opens to the bigger number!<br>7 &gt; 3 &nbsp; · &nbsp; 3 &lt; 7</div>', say: 'The alligator mouth opens to the bigger number!' };
+
+function genCompare(level) {
+  if (level === 1) {
+    const [e] = pick(THINGS);
+    let a, b; do { a = 1 + rand(8); b = 1 + rand(8); } while (a === b);
+    const more = Math.random() < 0.6;
+    const ans = (more ? a > b : a < b) ? 'A' : 'B';
+    return {
+      key: `cmp1-${a}-${b}-${more}`, text: more ? 'Which group has <b>more</b>?' : 'Which group has <b>fewer</b>?',
+      say: more ? 'Which group has more?' : 'Which group has fewer?',
+      main: `<div class="big-emoji muted">⚖️</div>`,
+      options: [{ v: 'A', html: `<div class="objs small">${objects(e, a)}</div>` }, { v: 'B', html: `<div class="objs small">${objects(e, b)}</div>` }],
+      answer: ans, optClass: 'opt-card two groups-opt',
+      hint: { html: `<div class="hint-note big">${a} and ${b}</div>`, say: 'Count each group!' },
+    };
+  }
+  let a, b, la = '', lb = '';
+  if (level === 2) { a = rand(11); b = rand(11); }
+  else if (level === 3) { a = rand(21); b = rand(21); }
+  else if (level === 4) {
+    a = 10 + rand(90);
+    const t = rand(3);  // same tens, same ones, or anything
+    b = t === 0 ? Math.floor(a / 10) * 10 + rand(10) : t === 1 ? (1 + rand(9)) * 10 + (a % 10) : 10 + rand(90);
+  } else {
+    const x = 1 + rand(10), y = 1 + rand(10);
+    const op = Math.random() < 0.5 ? '+' : '−';
+    const [p, q] = op === '+' ? [x, y] : [Math.max(x, y), Math.min(x, y)];
+    a = op === '+' ? p + q : p - q; la = `${p} ${op} ${q}`;
+    b = a + (rand(5) - 2); if (b < 0) b = 0;
+    if (Math.random() < 0.3) { const u = 1 + rand(8), v = rand(6); lb = `${u} + ${v}`; b = u + v; }
+  }
+  if (level <= 3 && Math.random() < 0.15) b = a; // sometimes equal
+  return {
+    key: `cmp-${la || a}-${lb || b}`, text: 'Which sign goes in the box?', say: 'Which sign goes in the box?',
+    main: `<div class="equation cmp-eq">${la || a} <span class="qmark box">?</span> ${lb || b}</div>`,
+    options: SIGN_OPTS, answer: signOf(a, b), optClass: 'opt-num signs', hint: gator,
+  };
+}
+
+/* ---------------- MULTIPLY ---------------- */
+// 1 equal groups (pictures) · 2 ×2 ×5 ×10 · 3 up to 5×5 · 4 up to 10×10 · 5 missing factor & stories
+function groupsHTML(e, g, each) {
+  return `<div class="groups">${Array.from({ length: g }, () => `<div class="grp">${objects(e, each)}</div>`).join('')}</div>`;
+}
+function arrayHTML(r, c) {
+  return `<div class="arr" style="grid-template-columns:repeat(${c},1fr)">${'<i></i>'.repeat(r * c)}</div>`;
+}
+const skipCount = (b, n) => Array.from({ length: n }, (_, i) => b * (i + 1)).join(', ');
+const BAGS = [['bags', '👜'], ['boxes', '📦'], ['plates', '🍽️'], ['baskets', '🧺']];
+
+function genMul(level) {
+  const [e, things] = pick(THINGS);
+  if (level === 1) {
+    const g = 2 + rand(3), each = 2 + rand(4);
+    return {
+      key: `mul1-${g}-${each}`, text: `${g} groups of ${each}. How many in all?`, say: [`${g}`, 'groups of', `${each}.`, 'How many in all?'],
+      main: groupsHTML(e, g, each), options: numberOptions(g * each, 2), answer: g * each, optClass: 'opt-num',
+      hint: { html: `<div class="hint-note big">Count by ${each}s:<br>${skipCount(each, g)}</div>`, say: 'Count by groups!' },
+    };
+  }
+  let a, b;
+  if (level === 2) { a = pick([2, 5, 10]); b = 1 + rand(10); }
+  else if (level === 3) { a = 1 + rand(5); b = 1 + rand(5); }
+  else { a = 2 + rand(9); b = 1 + rand(10); }
+  if (Math.random() < 0.5) [a, b] = [b, a];
+  const c = a * b;
+  const hint = { html: `${a * b <= 50 ? arrayHTML(a, b) : ''}<div class="hint-note big">Count by ${b}s:<br>${skipCount(b, Math.min(a, 10))}</div>`, say: 'Count by groups!' };
+  if (level === 5 && Math.random() < 0.5) {
+    if (Math.random() < 0.5) {
+      const [bag, be] = pick(BAGS);
+      const ga = 2 + rand(5), gb = 2 + rand(6);
+      return {
+        key: `mul5s-${ga}-${gb}-${bag}`, text: '📝 Read the story',
+        say: ['There are', `${ga}`, `${bag}.`, 'Each one has', `${gb}`, `${things}.`, 'How many in all?'],
+        main: `<div class="story">There are ${ga} ${bag} ${be}.<br>Each one has ${gb} ${things} ${e}.<br>How many ${things} in all?</div>`,
+        options: numberOptions(ga * gb, 4), answer: ga * gb, optClass: 'opt-num',
+        hint: { html: groupsHTML(e, ga, gb), say: 'Count by groups!' },
+      };
+    }
+    return {
+      key: `mul5m-${a}-${b}`, text: 'What number is missing?', say: ['What times', `${b}`, 'makes', `${c}?`],
+      main: `<div class="equation"><span class="qmark">?</span> × ${b} = ${c}</div>`,
+      options: numberOptions(a, 4, 1), answer: a, optClass: 'opt-num',
+      hint: { html: `<div class="hint-note big">Count by ${b}s to ${c}:<br>${skipCount(b, a)}</div>`, say: 'Count by groups!' },
+    };
+  }
+  return {
+    key: `mul-${a}-${b}`, text: 'Multiply!', say: ['What is', `${a}`, 'times', `${b}?`],
+    main: `<div class="equation">${a} × ${b} = <span class="qmark">?</span></div>`,
+    options: numberOptions(c, Math.max(level, 3)), answer: c, optClass: 'opt-num', hint,
+  };
+}
+
+/* ---------------- DIVIDE ---------------- */
+// 1 share equally (pictures) · 2 ÷2 ÷5 ÷10 · 3 within 25 · 4 within 100 · 5 missing number & stories
+function genDiv(level) {
+  const [e, things] = pick(THINGS);
+  if (level === 1) {
+    const friends = 2 + rand(2), each = 1 + rand(4), total = friends * each;
+    return {
+      key: `div1-${total}-${friends}`, text: `Share with ${friends} friends. How many each?`,
+      say: ['Share', `${total}`, `${things}`, 'with', `${friends}`, 'friends.', 'How many does each friend get?'],
+      main: `<div class="objs">${objects(e, total)}</div><div class="friends">${'🧒'.repeat(friends)}</div>`,
+      options: numberOptions(each, 2, 1), answer: each, optClass: 'opt-num',
+      hint: { html: groupsHTML(e, friends, each), say: 'Give one to each friend, again and again!' },
+    };
+  }
+  let b, q;
+  if (level === 2) { b = pick([2, 5, 10]); q = 1 + rand(10); }
+  else if (level === 3) { b = 1 + rand(5); q = 1 + rand(5); }
+  else { b = 2 + rand(9); q = 1 + rand(10); }
+  const c = b * q;
+  const hint = { html: `${c <= 40 ? arrayHTML(q, b) : ''}<div class="hint-note big">Think: ${b} × ? = ${c}</div>`, say: ['What times', `${b}`, 'makes', `${c}?`] };
+  if (level === 5 && Math.random() < 0.5) {
+    const [bag, be] = pick(BAGS);
+    return {
+      key: `div5s-${c}-${b}-${bag}`, text: '📝 Read the story',
+      say: ['There are', `${c}`, `${things}.`, 'Put them in', `${b}`, `${bag}.`, 'The same in each.', 'How many in each one?'],
+      main: `<div class="story">${c} ${things} ${e}<br>go into ${b} ${bag} ${be},<br>the same in each.<br>How many in each?</div>`,
+      options: numberOptions(q, 4, 1), answer: q, optClass: 'opt-num', hint,
+    };
+  }
+  return {
+    key: `div-${c}-${b}`, text: 'Divide!', say: ['What is', `${c}`, 'divided by', `${b}?`],
+    main: `<div class="equation">${c} ÷ ${b} = <span class="qmark">?</span></div>`,
+    options: numberOptions(q, Math.max(level, 3), 0), answer: q, optClass: 'opt-num', hint,
+  };
+}
+
+/* ---------------- CLOCK ---------------- */
+// 1 o'clock · 2 half past · 3 quarter past / to · 4 five minutes
+function clockSVG(h, m, cls = 'clock') {
+  const ha = ((h % 12) + m / 60) * 30, ma = m * 6;
+  let nums = '';
+  for (let i = 1; i <= 12; i++) {
+    const a = (i * 30 - 90) * Math.PI / 180;
+    nums += `<text x="${50 + 37 * Math.cos(a)}" y="${50 + 37 * Math.sin(a) + 4.2}" text-anchor="middle" font-size="12" font-weight="800" fill="#2b2140">${i}</text>`;
+  }
+  let ticks = '';
+  for (let i = 0; i < 60; i++) {
+    const a = (i * 6 - 90) * Math.PI / 180, r1 = i % 5 ? 45 : 43;
+    ticks += `<line x1="${50 + r1 * Math.cos(a)}" y1="${50 + r1 * Math.sin(a)}" x2="${50 + 47 * Math.cos(a)}" y2="${50 + 47 * Math.sin(a)}" stroke="#b9b0cc" stroke-width="${i % 5 ? .6 : 1.4}"/>`;
+  }
+  return `<svg viewBox="0 0 100 100" class="${cls}"><circle cx="50" cy="50" r="48" fill="#fff" stroke="#7c5cff" stroke-width="3"/>${ticks}${nums}
+    <line x1="50" y1="50" x2="50" y2="25" stroke="#2b2140" stroke-width="5" stroke-linecap="round" transform="rotate(${ha} 50 50)"/>
+    <line x1="50" y1="50" x2="50" y2="12" stroke="#ff6b6b" stroke-width="3" stroke-linecap="round" transform="rotate(${ma} 50 50)"/>
+    <circle cx="50" cy="50" r="3.5" fill="#2b2140"/></svg>`;
+}
+const timeStr = (h, m) => `${h}:${String(m).padStart(2, '0')}`;
+function randTime(level) {
+  const h = 1 + rand(12);
+  const mins = level === 1 ? [0] : level === 2 ? [0, 30] : level === 3 ? [0, 15, 30, 45] : Array.from({ length: 12 }, (_, i) => i * 5);
+  return [h, pick(mins)];
+}
+function genClock(level) {
+  const [h, m] = randTime(level);
+  const ans = timeStr(h, m);
+  const set = new Set([ans]);
+  // common mix-ups: hands swapped, hour off by one, other minutes
+  const swapped = m % 5 === 0 && m > 0 ? timeStr(m / 5, (h % 12) * 5) : null;
+  if (swapped && level >= 3) set.add(swapped);
+  let guard = 0;
+  while (set.size < numOpts(level) && guard++ < 50) {
+    const [h2, m2] = randTime(level);
+    const near = Math.random() < 0.5 ? timeStr(((h + (Math.random() < 0.5 ? 0 : rand(3) - 1) + 11) % 12) + 1, m2) : timeStr(h2, m);
+    set.add(near);
+  }
+  const opts = shuffle([...set]);
+  const hint = { html: `<div class="hint-note">🔵 Short hand = hour<br>🔴 Long hand = minutes</div>`, say: 'The short hand shows the hour. The long hand shows the minutes.' };
+  if (level >= 2 && Math.random() < 0.4) {
+    return {
+      key: `clock-pick-${ans}`, text: `Which clock shows <b>${ans}</b>?`, say: 'Which clock shows this time?',
+      main: `<div class="digital">${ans}</div>`,
+      options: opts.map((t) => { const [hh, mm] = t.split(':').map(Number); return { v: t, html: clockSVG(hh, mm, 'clock small') }; }),
+      answer: ans, optClass: 'opt-svg', hint,
+    };
+  }
+  return {
+    key: `clock-read-${ans}`, text: 'What time is it?', say: 'What time is it?',
+    main: clockSVG(h, m),
+    options: opts.map((t) => ({ v: t, html: t })), answer: ans, optClass: 'opt-num clock-opts', hint,
   };
 }
 
@@ -919,15 +1276,20 @@ function genVocab(level) {
 
 /* ---------------- CATEGORIES ---------------- */
 const CATEGORIES = [
-  { id: 'cvc', title: 'Little Words', sub: 'cat · dog · sun', icon: '🐱', color: '#ff8787', gen: (l) => genWords(W3, l, 'cvc') },
-  { id: 'w4', title: 'Big Words', sub: 'frog · cake · star', icon: '🐸', color: '#69db7c', gen: (l) => genWords(W4, l, 'w4') },
-  { id: 'spell', title: 'Spell It', sub: 'drag the letters', icon: '🔤', color: '#20c997', gen: genSpell },
+  { id: 'cvc', title: 'Little Words', sub: 'cat · ant · bee', icon: '🐱', color: '#ff8787', gen: (l) => genWords(W3, l, 'cvc') },
+  { id: 'w4', title: 'Big Words', sub: 'frog · truck · tiger', icon: '🐸', color: '#69db7c', gen: (l) => genWords(bigWordList(l), l, 'w4'), maxLevel: 5 },
+  { id: 'sight', title: 'Sight Words', sub: 'he · she · went', icon: '👀', color: '#e64980', gen: genSight, maxLevel: 4 },
+  { id: 'spell', title: 'Spell It', sub: 'drag the letters', icon: '🔤', color: '#20c997', gen: genSpell, maxLevel: 5 },
   { id: 'vocab', title: 'Word Wonders', sub: 'learn new words', icon: '🌟', color: '#f59f00', gen: genVocab, learn: true },
   { id: 'sent', title: 'Sentences', sub: 'read & answer', icon: '📖', color: '#74c0fc', gen: genSentence },
   { id: 'syl', title: 'Clap It!', sub: 'syllables', icon: '👏', color: '#ffd43b', gen: genSyllable },
   { id: 'add', title: 'Adding', sub: '2 + 3 · 34 + 5', icon: '➕', color: '#b197fc', gen: genAdd, maxLevel: 5 },
   { id: 'sub', title: 'Take Away', sub: '5 − 2 · 47 − 3', icon: '➖', color: '#f783ac', gen: genSub, maxLevel: 5 },
   { id: 'story', title: 'Word Problems', sub: 'math stories', icon: '📝', color: '#4c6ef5', gen: genWordProblem, maxLevel: 5 },
+  { id: 'cmp', title: 'Compare', sub: '7 > 3 · 2 < 9', icon: '🐊', color: '#40c057', gen: genCompare, maxLevel: 5 },
+  { id: 'mul', title: 'Multiply', sub: '3 × 4 = ?', icon: '✖️', color: '#fa5252', gen: genMul, maxLevel: 5 },
+  { id: 'div', title: 'Divide', sub: 'share equally', icon: '➗', color: '#15aabf', gen: genDiv, maxLevel: 5 },
+  { id: 'clock', title: 'Clock', sub: 'tell the time', icon: '🕐', color: '#7950f2', gen: genClock, maxLevel: 4 },
   { id: 'shape2', title: 'Shapes', sub: 'flat shapes', icon: '🔺', color: '#ffa94d', gen: genShape2 },
   { id: 'shape3', title: '3D Shapes', sub: 'cube · cone', icon: '🧊', color: '#3bc9db', gen: genShape3 },
   { id: 'jobs', title: 'Jobs', sub: 'who helps us?', icon: '🧑‍🚒', color: '#ff922b', gen: genJobs },
@@ -935,6 +1297,22 @@ const CATEGORIES = [
   { id: 'maps', title: 'World Map', sub: 'continents', icon: '🗺️', color: '#38d9a9', gen: genMaps },
   { id: 'mix', title: 'Mix It Up!', sub: 'a bit of all', icon: '🎲', color: '#845ef7', gen: null },
 ];
+
+// Which games each grade sees, and the level range inside that grade ("start-max").
+// Games not listed are hidden for that grade (unless "Show all games" is on).
+// Roughly follows Common Core: time to the hour/half hour in 1st, 5 minutes in 2nd;
+// multiplication/division start as equal groups and sharing in 2nd.
+const GRADES = {
+  prek: { label: 'Pre-K', g: { cvc: '1-1', sight: '1-1', spell: '1-1', vocab: '1-1', syl: '1-1', add: '1-1', sub: '1-1', cmp: '1-1',
+    shape2: '1-1', shape3: '1-1', jobs: '1-1', flags: '1-1', maps: '1-1' } },
+  k: { label: 'Kindergarten', g: { cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-1', sent: '1-1', syl: '1-2', add: '1-2',
+    sub: '1-2', story: '1-1', cmp: '1-2', shape2: '1-2', shape3: '1-1', jobs: '1-2', flags: '1-2', maps: '1-2' } },
+  g1: { label: '1st Grade', g: { cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '1-2', syl: '2-3', add: '3-4',
+    sub: '3-4', story: '2-3', cmp: '2-4', clock: '1-2', shape2: '2-3', shape3: '1-2', jobs: '2-3', flags: '2-3', maps: '2-3' } },
+  g2: { label: '2nd Grade', g: { cvc: '3-3', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-3', sent: '2-3', syl: '3-3', add: '4-5',
+    sub: '4-5', story: '3-5', cmp: '4-5', mul: '1-3', div: '1-2', clock: '2-4', shape2: '3-3', shape3: '2-2', jobs: '3-3', flags: '3-3', maps: '3-3' } },
+};
+const gradeRange = (grade, id) => { const r = GRADES[grade] && GRADES[grade].g[id]; return r ? r.split('-').map(Number) : null; };
 
 const STICKERS = ['🦄', '🐶', '🐱', '🐼', '🦊', '🐯', '🐸', '🐵', '🦁', '🐨', '🐰', '🐻', '🐷', '🐮', '🐙', '🦋',
   '🐬', '🦖', '🐳', '🦩', '🦉', '🐢', '🐝', '🐞', '🌈', '🚀', '🍩', '🍓', '🍦', '🎈', '🌻', '🌟',

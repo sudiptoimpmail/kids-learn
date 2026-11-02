@@ -386,3 +386,59 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   #learn .learn-line { font-size: 24px; padding: 12px 18px; }
   #learn .learn-nav { align-self: end; margin-bottom: 20px; }
 }
+
+/* ---------- grade picker ---------- */
+.score-row { flex-wrap: wrap; }
+.grade-chip { color: #e8590c; }
+.grade-btns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.grade-btn { padding: 12px; border-radius: 14px; background: #f3f0fa; font-weight: 900; font-size: 17px; }
+.grade-btn.on { background: #7c5cff; color: #fff; box-shadow: 0 4px 0 #5a3fd1; }
+
+/* ---------- sight words ---------- */
+.blank.wide { min-width: 2.6em; text-align: center; border-bottom-width: 4px; }
+.hint-letters .faint { opacity: .3; letter-spacing: 6px; margin-left: 4px; }
+
+/* ---------- compare ---------- */
+.cmp-eq .box { display: inline-grid; place-items: center; width: 1.2em; height: 1.1em; border: 5px dashed var(--theme); border-radius: 14px; font-size: .8em; vertical-align: middle; }
+.cmp-eq .box.filled { border-style: solid; border-color: var(--good); }
+.options.signs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.signs .opt { font-size: 54px; }
+.objs.small .obj { font-size: 26px; }
+.groups-opt .opt { min-height: 150px; }
+
+/* ---------- multiply / divide ---------- */
+.groups { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.grp { border: 3px dashed #b197fc; border-radius: 22px; padding: 6px 8px; display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; max-width: 130px; background: #f8f5ff; }
+.grp .obj { font-size: 28px; }
+.arr { display: grid; gap: 5px; margin: 4px auto; max-width: 300px; }
+.arr i { width: 18px; height: 18px; border-radius: 50%; background: #ff922b; box-shadow: 0 2px 0 #d9480f; display: block; }
+.friends { font-size: 44px; letter-spacing: 6px; margin-top: 6px; }
+
+/* ---------- clock ---------- */
+.clock { width: 220px; height: 220px; filter: drop-shadow(0 6px 0 #0000000f); }
+.clock.small { width: 100%; max-width: 120px; height: auto; }
+.digital { font-size: 72px; font-weight: 900; font-variant-numeric: tabular-nums; background: #2b2140; color: #69db7c; padding: 4px 26px; border-radius: 18px; letter-spacing: 2px; }
+.clock-opts .opt { font-size: 38px; }
+@media (min-width: 700px) {
+  .clock { width: 320px; height: 320px; } .clock.small { max-width: 170px; }
+  .digital { font-size: 100px; } .clock-opts .opt { font-size: 52px; }
+  .grp .obj { font-size: 40px; } .grp { max-width: 190px; } .arr i { width: 26px; height: 26px; }
+  .signs .opt { font-size: 76px; } .objs.small .obj { font-size: 36px; } .friends { font-size: 64px; }
+  .grade-btns { grid-template-columns: repeat(4, 1fr); }
+}
+/* letter boxes shrink so long words (alligator) fit on any screen */
+.spell-row { gap: 8px; }
+.spell-row .slot { width: min(62px, calc((100vw - 76px - (var(--n) - 1) * 8px) / var(--n)));
+  height: calc(min(62px, calc((100vw - 76px - (var(--n) - 1) * 8px) / var(--n))) * 1.2);
+  font-size: calc(min(62px, calc((100vw - 76px - (var(--n) - 1) * 8px) / var(--n))) * .74); }
+@media (min-width: 700px) {
+  .spell-row .slot { width: min(92px, calc((min(100vw, 980px) - 140px - (var(--n) - 1) * 12px) / var(--n)));
+    height: calc(min(92px, calc((min(100vw, 980px) - 140px - (var(--n) - 1) * 12px) / var(--n))) * 1.17);
+    font-size: calc(min(92px, calc((min(100vw, 980px) - 140px - (var(--n) - 1) * 12px) / var(--n))) * .74); }
+}
+@media (min-width: 1000px) and (orientation: landscape) {
+  .spell-row .slot { width: min(80px, calc((600px - (var(--n) - 1) * 10px) / var(--n))); height: calc(min(80px, calc((600px - (var(--n) - 1) * 10px) / var(--n))) * 1.17);
+    font-size: calc(min(80px, calc((600px - (var(--n) - 1) * 10px) / var(--n))) * .74); }
+}
+.field.row small { display: block; font-weight: 600; color: var(--soft); }
+.grade-chip.pulse { animation: wiggle 1.2s ease-in-out infinite; }

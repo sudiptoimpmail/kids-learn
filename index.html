@@ -38,6 +38,7 @@
     </header>
     <div class="score-row">
       <div class="chip">⭐ <b id="starCount">0</b></div>
+      <button id="gradeChip" class="chip btn grade-chip">🎓 <b id="gradeLabel">Grade</b></button>
       <button id="stickersBtn" class="chip btn">🦄 <b id="stickerCount">0</b> stickers ›</button>
     </div>
     <div id="grid" class="grid"></div>
@@ -113,6 +114,10 @@
       <span class="icon-btn ghost"></span>
     </header>
     <div class="panel">
+      <div class="field">Grade <small>(sets every game to the right starting level)</small>
+        <div id="gradeBtns" class="grade-btns"></div>
+      </div>
+      <label class="field row">Show all games <small>(even ones above this grade)</small><input id="showAll" type="checkbox"></label>
       <label class="field">Child's name (said in praise)
         <input id="nameInput" maxlength="20" autocomplete="off" placeholder="e.g. Maya">
       </label>
