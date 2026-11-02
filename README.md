@@ -13,6 +13,7 @@ A flash-card learning game for Pre-K through 2nd grade, built as an installable 
 | 🔤 Spell It | See the picture, hear the word, then drag (or tap) letter tiles into the blanks. Extra decoy letters. Level 1: 1–2 missing letters in 3-letter words · Level 2: whole 3-letter words or 2 blanks in 4-letter words · Level 3: whole 4-letter words with look-alike decoys (b/d, m/n) · Level 4: 5-letter words, listen-and-spell sight words (no picture), spell the missing word in a sentence · Level 5: whole 5-letter and long words. Tap a placed letter to send it back; wrong letters bounce out and one correct letter is given |
 | 🌟 Word Wonders | 55 new vocabulary words (enormous, curious, fragile, nocturnal…). **Learn** cards: picture + the voice reads the word, a kid-friendly meaning and an example; tap any line to hear it again; swipe or ◀ ▶ to move; a **Talk together** question for parent and child. **🎯 Quiz**: pick the picture for a word, or the word for a meaning. Level 1 = first 20 words, 2 = 40, 3 = all |
 | 📖 Sentences | 60 sentences in 3 levels by length: read it, then answer a question |
+| 🔗 Match It | Two columns, tap a left item then its partner: word ↔ picture, number ↔ picture count, problem ↔ answer (3 pairs at Pre-K up to 5 pairs with long words and × ÷ in 2nd). Lines join the matches. 5 boards per round |
 | 👏 Clap It! | Syllable counting |
 | ➕ Adding / ➖ Take Away | 5 levels: within 5 → within 10 → within 20 → two-digit ± one-digit → with regrouping (38 + 7, 52 − 6). Hints use base-ten blocks and "make a ten" steps |
 | 📝 Word Problems | 5 levels: within 10 → within 20 → two-digit → "how many more?" → two-step stories |
@@ -28,6 +29,21 @@ A flash-card learning game for Pre-K through 2nd grade, built as an installable 
 | 🎲 Mix It Up | A bit of everything |
 
 **How it plays:** 10 cards per round. Pictures/clues stay hidden behind **💡 Hint** and appear only when she taps it or after a wrong answer. Right answers get a spoken "Excellent!" / "Awesome job!", confetti and a bouncing emoji; 3 in a row shows a streak. Each finished round earns stars and a new sticker. Each game has 3 levels (math games have 5) and moves up automatically after a great round (grown-ups can change levels in ⚙️).
+
+**Reading hints** break words into syllables (al · li · ga · tor, in colors, read aloud slowly); one-syllable words split into sound chunks (c · at, fr · og). Sentence hints show every long word broken into syllables while the voice reads along.
+
+## 🎮 Play Zone (reward games)
+Every **2 finished learning rounds** earn a **3-minute play break** (both adjustable in ⚙️, or set "Always open"). A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
+
+| Game | Notes |
+|---|---|
+| ⭕ Tic-Tac-Toe | 🦄 vs a friendly 🤖 that sometimes misses a block |
+| 🃏 Memory Match | 3 pairs → 4 → 6 → 8 as she plays more |
+| 🎈 Pop the Balloons | 30 seconds, ⭐ balloons are worth 3 |
+| 🖍️ Coloring Book | 12 pictures in 3 levels — finishing pictures unlocks harder ones |
+| 🔴 Connect Four | vs the robot |
+| 🔢 Sudoku | Pictures, Numbers, or **Word Sudoku** (letters of a spelling word). Level 1 4×4 with 4 blanks → level 5 6×6 with 20 blanks; every 2 wins makes it harder. Every puzzle has exactly one solution. 💡 Hint fills a square |
+| 🧩 Picture Puzzle | Swap tiles to rebuild a picture: 2×2 → 3×3 → 4×4. Uses her own colored pictures when she has them |
 
 ## Turn on hosting (one time)
 Repo **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main` / `(root)` → Save**.

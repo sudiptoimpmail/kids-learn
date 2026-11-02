@@ -67,6 +67,96 @@ const bigWordList = (level) => (level <= 3 ? W4 : level === 4 ? W5 : W5.concat(W
 const VOWELS = ['a', 'e', 'i', 'o', 'u'];
 const CONS = 'bcdfghjklmnprstvwz'.split('');
 
+/* ---------------- SYLLABLES for reading hints ---------------- */
+// Kid-friendly splitter: vowel groups, silent e, consonant+le, keeps digraphs (sh, ch, th, ck...) together.
+const SYL_FIX = { orange: 'or-ange', away: 'a-way', lion: 'li-on', 'yo-yo': 'yo-yo', every: 'ev-er-y', animal: 'an-i-mal',
+  elephant: 'el-e-phant', giraffe: 'gi-raffe', alligator: 'al-li-ga-tor', zebra: 'ze-bra', hello: 'hel-lo', video: 'vid-e-o',
+  idea: 'i-de-a', ocean: 'o-cean', people: 'peo-ple', water: 'wa-ter', over: 'o-ver', under: 'un-der', baby: 'ba-by',
+  lady: 'la-dy', tiny: 'ti-ny', pony: 'po-ny', seven: 'sev-en', river: 'riv-er', woman: 'wom-an', robot: 'ro-bot',
+  gentle: 'gen-tle', tiger: 'ti-ger', spider: 'spi-der', even: 'e-ven', open: 'o-pen', cozy: 'co-zy', many: 'man-y',
+  pizza: 'piz-za', penguin: 'pen-guin', dinosaur: 'di-no-saur', umbrella: 'um-brel-la', computer: 'com-pu-ter',
+  television: 'tel-e-vi-sion', avocado: 'av-o-ca-do', tomato: 'to-ma-to', kangaroo: 'kan-ga-roo', helicopter: 'hel-i-cop-ter',
+  watermelon: 'wa-ter-mel-on', caterpillar: 'cat-er-pil-lar', octopus: 'oc-to-pus', ladybug: 'la-dy-bug', strawberry: 'straw-ber-ry',
+  butterfly: 'but-ter-fly', banana: 'ba-na-na', cookie: 'cook-ie', monkey: 'mon-key', flower: 'flow-er', birthday: 'birth-day',
+  rainbow: 'rain-bow', frightened: 'fright-ened', generous: 'gen-er-ous', marvelous: 'mar-vel-ous', predator: 'pred-a-tor', because: 'be-cause', grandma: 'grand-ma', magician: 'ma-gi-cian', library: 'li-brar-y', delicious: 'de-li-cious' };
+const V = 'aeiou';
+const DIGRAPH = ['ch', 'sh', 'th', 'ph', 'wh', 'ck', 'gh', 'qu'];
+const BLEND = ['bl', 'br', 'cl', 'cr', 'dr', 'fl', 'fr', 'gl', 'gr', 'pl', 'pr', 'sl', 'tr', 'sc', 'sk', 'sm', 'sn', 'sp', 'st', 'sw', 'tw'];
+const BREAK_PAIRS = ['io', 'ia', 'eo', 'iu', 'uo'];
+function syllables(word) {
+  const w = word.toLowerCase();
+  if (SYL_FIX[w]) return SYL_FIX[w].split('-');
+  if (!/^[a-z]+$/.test(w) || w.length <= 3) return [w];
+  const isV = (i) => {
+    const c = w[i]; if (!c) return false;
+    if (V.includes(c)) return !(c === 'u' && w[i - 1] === 'q');
+    const nextV = !!w[i + 1] && V.includes(w[i + 1]);
+    if (c === 'y') return i > 0 && !nextV;
+    if (c === 'w') return i > 0 && V.includes(w[i - 1]) && !nextV;
+    return false;
+  };
+  // vowel groups as [start, end)
+  let groups = [];
+  for (let i = 0; i < w.length; i++) {
+    if (!isV(i)) continue;
+    const g = groups[groups.length - 1];
+    if (g && g[1] === i && !BREAK_PAIRS.includes(w[i - 1] + w[i])) g[1] = i + 1; else groups.push([i, i + 1]);
+  }
+  // consonant + le at the end is its own syllable (ap-ple, tur-tle)
+  const le = /[^aeiouy]les?$/.test(w) && groups.length >= 2;
+  if (!le) {
+    const last = groups[groups.length - 1];
+    if (groups.length > 1 && last[0] === w.length - 1 && w.endsWith('e')) groups.pop();                    // silent e
+    else if (groups.length > 1 && /[^aeiou]e[sd]$/.test(w) && last[0] === w.length - 2 && !/(t|d)ed$|(s|x|z|ch|sh|c|g)es$/.test(w)) groups.pop();
+  }
+  if (groups.length <= 1) return [w];
+  const cuts = [];
+  for (let k = 0; k < groups.length - 1; k++) {
+    const a = groups[k][1], b = groups[k + 1][0];           // consonant cluster w[a..b)
+    if (le && k === groups.length - 2) { cuts.push(w[b - 2] === 'k' && w[b - 3] === 'c' ? b - 2 : b - 2); continue; }  // split before the consonant of "Cle"
+    const cl = w.slice(a, b);
+    if (cl.length === 0) cuts.push(a);
+    else if (cl.length === 1) cuts.push(cl === 'x' ? b : a);
+    else {
+      // break the cluster into units, keeping digraphs together
+      const units = []; let i = 0;
+      while (i < cl.length) { const two = cl.slice(i, i + 2); if (DIGRAPH.includes(two)) { units.push(two); i += 2; } else { units.push(cl[i]); i++; } }
+      if (units.length === 1) cuts.push(units[0] === 'ck' ? b : a);
+      else {
+        const lastTwo = units.slice(-2).join('');
+        let keep = units.length >= 3 && BLEND.includes(lastTwo) ? units.length - 2 : units.length - 1;
+        if (units.length === 2 && units[0] === 'ck') keep = 1;
+        cuts.push(a + units.slice(0, keep).join('').length);
+      }
+    }
+  }
+  const out = []; let prev = 0;
+  for (const c of cuts) { out.push(w.slice(prev, c)); prev = c; }
+  out.push(w.slice(prev));
+  return out.filter(Boolean);
+}
+// one-syllable words: onset · rime (c · at, fr · og) so a child can sound them out
+function soundChunks(word) {
+  const w = word.toLowerCase();
+  const m = w.match(/^([^aeiouy]*)(.*)$/);
+  return m[1] && m[2] ? [m[1], m[2]] : [w];
+}
+const sylHTML = (parts) => parts.map((p, i) => `<span class="sy s${i % 4}">${p}</span>`).join('<i class="sy-dot">·</i>');
+function readingHint(word) {
+  const sy = syllables(word);
+  if (sy.length > 1) return { html: `<div class="hint-syl">${sylHTML(sy)}</div><div class="hint-note">${sy.length} parts — say each part!</div>`, say: sy.join(', '), slow: true };
+  return { html: `<div class="hint-syl">${sylHTML(soundChunks(word))}</div>`, say: 'Sound it out!' };
+}
+function sentenceSylHTML(sentence) {
+  return sentence.split(' ').map((tok) => {
+    const m = tok.match(/^([^A-Za-z]*)([A-Za-z]+)(.*)$/);
+    if (!m) return tok;
+    const sy = syllables(m[2]);
+    const cased = sy.map((p, i) => (i === 0 && /[A-Z]/.test(m[2][0]) ? p[0].toUpperCase() + p.slice(1) : p));
+    return m[1] + (sy.length > 1 ? `<span class="syw">${sylHTML(cased)}</span>` : m[2]) + m[3];
+  }).join(' ');
+}
+
 // words that look alike come first as distractors at higher levels
 function similarWords(list, word, n, level) {
   const others = list.filter(([w]) => w !== word);
@@ -88,11 +178,11 @@ function genWords(list, level, kind) {
       key: `${kind}-read-${w}`,
       text: 'Read the word. Tap the picture!',
       say: 'Read the word, and tap the picture!',
-      main: `<div class="word">${w}</div>`,
+      main: `<div class="word" style="font-size:min(var(--wfs), ${Math.floor(125 / w.length)}vw)">${w}</div>`,
       options: shuffle([[w, e], ...others]).map(([ow, oe]) => ({ v: ow, html: oe })),
       answer: w,
       optClass: 'opt-emoji',
-      hint: { html: `<div class="hint-letters">${w.split('').join(' · ')}</div>`, say: 'Sound it out!' },
+      hint: readingHint(w),
     };
   }
 
@@ -124,7 +214,7 @@ function genWords(list, level, kind) {
     text: 'Which letter is missing?',
     say: `Which letter is missing? ${w}.`,
     speak: w,
-    main: `<div class="word">${shown}</div>`,
+    main: `<div class="word" style="font-size:min(var(--wfs), ${Math.floor(125 / w.length)}vw)">${shown}</div>`,
     options: opts.map((l) => ({ v: l, html: l })),
     answer: letter,
     optClass: 'opt-letter',
@@ -380,7 +470,7 @@ function genSentence(level) {
     options: shuffle(opts).map((o) => ({ v: o, html: o })),
     answer: opts[0],
     optClass: 'opt-text',
-    hint: { html: '<div class="hint-note">👂 Listen and follow along</div>', say: s, karaoke: true },
+    hint: { html: `<div class="hint-sent">${sentenceSylHTML(s)}</div><div class="hint-note">👂 Listen and follow along</div>`, say: s, karaoke: true },
   };
 }
 
@@ -801,6 +891,55 @@ function genClock(level) {
     key: `clock-read-${ans}`, text: 'What time is it?', say: 'What time is it?',
     main: clockSVG(h, m),
     options: opts.map((t) => ({ v: t, html: t })), answer: ans, optClass: 'opt-num clock-opts', hint,
+  };
+}
+
+/* ---------------- MATCH IT (two columns) ---------------- */
+// Reading: word ↔ picture · Math: number ↔ picture count, problem ↔ answer
+function uniqPairs(make, n) {
+  const out = [], seenL = new Set(), seenR = new Set();
+  let guard = 0;
+  while (out.length < n && guard++ < 300) {
+    const [l, r, lv, rv] = make();
+    if (seenL.has(lv) || seenR.has(rv)) continue;
+    seenL.add(lv); seenR.add(rv); out.push([l, r]);
+  }
+  return out;
+}
+function genMatch(level) {
+  const n = level === 1 ? 3 : level <= 3 ? 4 : 5;
+  const reading = Math.random() < 0.5;
+  let pairs, text, say, kind;
+  if (reading) {
+    const list = level === 1 ? W3 : level === 2 ? W4 : level === 3 ? W5 : level === 4 ? W5.concat(WL) : WL;
+    pairs = sample(list, n).map(([w, e]) => [`<span class="m-word">${w}</span>`, `<span class="m-pic">${e}</span>`]);
+    text = 'Match each word to its picture!'; say = 'Match each word to its picture!'; kind = 'read';
+  } else {
+    const [e] = pick(THINGS);
+    let make;
+    if (level === 1 || (level === 2 && Math.random() < 0.4)) {
+      const max = level === 1 ? 5 : 10;
+      make = () => { const k = 1 + rand(max); return [`<span class="m-num">${k}</span>`, `<span class="m-objs">${objects(e, k)}</span>`, k, k]; };
+      text = 'Match each number to its picture!'; say = 'Match each number to its picture!';
+    } else {
+      make = () => {
+        let a, b, op, v;
+        if (level === 2) { [a, b] = addPair(2); op = '+'; v = a + b; }
+        else if (level === 3) { if (Math.random() < 0.5) { [a, b] = addPair(3); op = '+'; v = a + b; } else { [a, b] = subPair(3); op = '−'; v = a - b; } }
+        else if (level === 4) { if (Math.random() < 0.5) { [a, b] = addPair(4 + rand(2)); op = '+'; v = a + b; } else { a = pick([2, 5, 10]); b = 1 + rand(10); op = '×'; v = a * b; } }
+        else { if (Math.random() < 0.6) { a = 1 + rand(5); b = 1 + rand(10); op = '×'; v = a * b; } else { b = 2 + rand(4); v = 1 + rand(5); a = b * v; op = '÷'; } }
+        return [`<span class="m-eq">${a} ${op} ${b}</span>`, `<span class="m-num">${v}</span>`, `${a}${op}${b}`, v];
+      };
+      text = 'Match each problem to its answer!'; say = 'Match each problem to its answer!';
+    }
+    pairs = uniqPairs(make, n); kind = 'math';
+  }
+  const left = pairs.map((p, i) => ({ id: i, html: p[0] }));
+  const right = shuffle(pairs.map((p, i) => ({ id: i, html: p[1] })));
+  return {
+    key: `match-${kind}-${pairs.map((p) => p[0]).join('')}`, text, say, main: '', mainClass: 'empty', options: [], answer: 'all',
+    optClass: 'match-area', match: { left: shuffle(left), right, kind },
+    hint: { html: '', say: 'Look carefully, and try again!' },
   };
 }
 
@@ -1303,6 +1442,7 @@ const CATEGORIES = [
   { id: 'spell', title: 'Spell It', sub: 'drag the letters', icon: '🔤', color: '#20c997', gen: genSpell, maxLevel: 5 },
   { id: 'vocab', title: 'Word Wonders', sub: 'learn new words', icon: '🌟', color: '#f59f00', gen: genVocab, learn: true },
   { id: 'sent', title: 'Sentences', sub: 'read & answer', icon: '📖', color: '#74c0fc', gen: genSentence },
+  { id: 'match', title: 'Match It', sub: 'word ↔ picture · 3+2 ↔ 5', icon: '🔗', color: '#5c7cfa', gen: genMatch, maxLevel: 5, roundLen: 5 },
   { id: 'syl', title: 'Clap It!', sub: 'syllables', icon: '👏', color: '#ffd43b', gen: genSyllable },
   { id: 'add', title: 'Adding', sub: '2 + 3 · 34 + 5', icon: '➕', color: '#b197fc', gen: genAdd, maxLevel: 5 },
   { id: 'sub', title: 'Take Away', sub: '5 − 2 · 47 − 3', icon: '➖', color: '#f783ac', gen: genSub, maxLevel: 5 },
@@ -1324,13 +1464,13 @@ const CATEGORIES = [
 // Roughly follows Common Core: time to the hour/half hour in 1st, 5 minutes in 2nd;
 // multiplication/division start as equal groups and sharing in 2nd.
 const GRADES = {
-  prek: { label: 'Pre-K', g: { cvc: '1-1', sight: '1-1', spell: '1-1', vocab: '1-1', syl: '1-1', add: '1-1', sub: '1-1', cmp: '1-1',
+  prek: { label: 'Pre-K', g: { match: '1-1', cvc: '1-1', sight: '1-1', spell: '1-1', vocab: '1-1', syl: '1-1', add: '1-1', sub: '1-1', cmp: '1-1',
     shape2: '1-1', shape3: '1-1', jobs: '1-1', flags: '1-1', maps: '1-1' } },
-  k: { label: 'Kindergarten', g: { cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-1', sent: '1-1', syl: '1-2', add: '1-2',
+  k: { label: 'Kindergarten', g: { match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-1', sent: '1-1', syl: '1-2', add: '1-2',
     sub: '1-2', story: '1-1', cmp: '1-2', shape2: '1-2', shape3: '1-1', jobs: '1-2', flags: '1-2', maps: '1-2' } },
-  g1: { label: '1st Grade', g: { cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '1-2', syl: '2-3', add: '3-4',
+  g1: { label: '1st Grade', g: { match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '1-2', syl: '2-3', add: '3-4',
     sub: '3-4', story: '2-3', cmp: '2-4', clock: '1-2', shape2: '2-3', shape3: '1-2', jobs: '2-3', flags: '2-3', maps: '2-3' } },
-  g2: { label: '2nd Grade', g: { cvc: '3-3', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-3', sent: '2-3', syl: '3-3', add: '4-5',
+  g2: { label: '2nd Grade', g: { match: '3-5', cvc: '3-3', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-3', sent: '2-3', syl: '3-3', add: '4-5',
     sub: '4-5', story: '3-5', cmp: '4-5', mul: '1-3', div: '1-2', clock: '2-4', shape2: '3-3', shape3: '2-2', jobs: '3-3', flags: '3-3', maps: '3-3' } },
 };
 const gradeRange = (grade, id) => { const r = GRADES[grade] && GRADES[grade].g[id]; return r ? r.split('-').map(Number) : null; };

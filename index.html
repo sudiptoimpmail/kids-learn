@@ -41,6 +41,7 @@
       <button id="gradeChip" class="chip btn grade-chip">🎓 <b id="gradeLabel">Grade</b></button>
       <button id="stickersBtn" class="chip btn">🦄 <b id="stickerCount">0</b> stickers ›</button>
     </div>
+    <button id="playBanner" class="play-banner"></button>
     <div id="grid" class="grid"></div>
   </section>
 
@@ -72,6 +73,7 @@
       <div id="resLevel" class="res-level"></div>
       <div id="resSticker" class="res-sticker"></div>
       <div class="res-btns">
+        <button id="playEarned" class="big-btn play-earned" hidden>🎮 Play time! Let's go!</button>
         <button id="againBtn" class="big-btn">🔁 Play again</button>
         <button id="homeBtn" class="big-btn alt">🏠 Home</button>
       </div>
@@ -95,6 +97,28 @@
     <button id="learnQuiz2" class="big-btn alt quiz-wide">🎯 Quiz me on these words</button>
   </section>
 
+  <!-- PLAY ZONE -->
+  <section id="playzone" class="screen">
+    <header class="play-top">
+      <button id="pzHome" class="icon-btn" aria-label="Back home">🏠</button>
+      <div class="play-title">🎮 Play Zone</div>
+      <span class="play-clock chip"></span>
+    </header>
+    <div id="pzGrid" class="grid pz-grid"></div>
+  </section>
+  <section id="game" class="screen">
+    <header class="play-top">
+      <button id="gameBack" class="icon-btn" aria-label="Back to games">‹</button>
+      <div id="gameTitle" class="play-title"></div>
+      <span class="play-clock chip"></span>
+    </header>
+    <div id="gameArea" class="game-area"></div>
+  </section>
+  <div id="timeUp" class="time-up" hidden>
+    <div class="tu-box"><div class="tu-emoji">⏰</div><h2>Play time is over!</h2><p>Let's learn some more — then play again!</p>
+      <button id="timeUpBtn" class="big-btn">📚 Let's learn!</button></div>
+  </div>
+
   <!-- STICKERS -->
   <section id="stickers" class="screen">
     <header class="play-top">
@@ -117,6 +141,11 @@
       <div class="field">Grade <small>(sets every game to the right starting level)</small>
         <div id="gradeBtns" class="grade-btns"></div>
       </div>
+      <div class="field">🎮 Play Zone
+        <label class="lvrow">Rounds to earn play time<select id="roundsPerPlay"><option>1</option><option>2</option><option>3</option><option>4</option></select></label>
+        <label class="lvrow">Minutes of play<select id="playMinutes"><option>2</option><option>3</option><option>5</option><option>10</option></select></label>
+        <label class="lvrow">Always open (no limit)<input id="playAlways" type="checkbox"></label>
+      </div>
       <label class="field row">🕐 Clock game <small>(optional — telling time)</small><input id="optClock" type="checkbox"></label>
       <label class="field row">Show all games <small>(even ones above this grade)</small><input id="showAll" type="checkbox"></label>
       <label class="field">Child's name (said in praise)
@@ -135,5 +164,6 @@
 
   <script src="content.js"></script>
   <script src="app.js"></script>
+  <script src="games.js"></script>
 </body>
 </html>

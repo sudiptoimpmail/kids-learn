@@ -206,6 +206,7 @@ function renderHome() {
   $('#stickerCount').textContent = state.stickers.length;
   $('#gradeLabel').textContent = state.grade ? GRADES[state.grade].label : 'Pick grade';
   $('#gradeChip').classList.toggle('pulse', !state.grade);
+  if (typeof renderPlayBanner === 'function') renderPlayBanner();
   $('#grid').innerHTML = visibleGames().map((c) => {
     const best = state.best[c.id] || 0;
     const lv = c.id === 'mix' ? '' : `<span class="lv">Lv ${levelOf(c.id)}</span>`;
@@ -223,7 +224,8 @@ function startRound(catId) {
   const real = visibleGames().filter((c) => c.gen);
   const qs = [], seen = new Set();
   let guard = 0;
-  while (qs.length < ROUND && guard++ < 400) {
+  const N = cat.roundLen || ROUND;
+  while (qs.length < N && guard++ < 400) {
     const c = cat.gen ? cat : real[Math.floor(Math.random() * real.length)];
     const q = c.gen(levelOf(c.id));
     if (seen.has(q.key) && guard < 300) continue;
@@ -256,6 +258,7 @@ function renderQ() {
   opts.innerHTML = q.options.map((o) => `<button class="opt" data-v="${String(o.v).replace(/"/g, '&quot;')}">${o.html}</button>`).join('');
   [...opts.children].forEach((b, k) => { b.style.animationDelay = `${k * 60}ms`; b.onclick = () => choose(q, q.options[k].v, b); });
   if (q.spell) renderSpell(q);
+  if (q.match) renderMatch(q);
   if (q.tap) $$('#qMain [data-val]').forEach((g) => { if (g.dataset.val) g.onclick = () => choose(q, g.dataset.val, g); });
   $$('[data-speak]', $('#qMain')).forEach((b) => (b.onclick = () => { sfx.tap(); say(b.dataset.speak, { rate: 0.8 }); }));
   // nudge the hint after a while, but never show the picture by itself
@@ -267,6 +270,7 @@ function renderQ() {
 }
 
 function showHint(q, auto = false) {
+  if (q.match) { matchHint(q); $('#hintBtn').classList.remove('glow'); return; }
   if (q.spell) { spellHint(q); $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
   if (!q.hint || q.hintShown) { if (q.hint) speakHint(q); return; }
   q.hintShown = true;
@@ -428,6 +432,56 @@ function spellHint(q) {
   setTimeout(() => { place(q, i, +t.dataset.id); const sl = slotEl(i); sl && sl.classList.add('given'); }, 500);
 }
 
+/* ---------- Match It: tap left, then tap its partner on the right ---------- */
+function renderMatch(q) {
+  const { left, right } = q.match;
+  q.done = new Set(); q.selL = null;
+  const box = $('#options');
+  box.innerHTML = `<div class="m-cols"><div class="m-col">${left.map((x) => `<button class="m-item L" data-id="${x.id}">${x.html}</button>`).join('')}</div>
+    <svg class="m-lines"></svg>
+    <div class="m-col">${right.map((x) => `<button class="m-item R" data-id="${x.id}">${x.html}</button>`).join('')}</div></div>`;
+  $$('.m-item.L', box).forEach((b) => (b.onclick = () => {
+    if (R.locked || b.classList.contains('ok')) return;
+    $$('.m-item.L', box).forEach((x) => x.classList.remove('sel')); b.classList.add('sel'); q.selL = +b.dataset.id; sfx.tap();
+  }));
+  $$('.m-item.R', box).forEach((b) => (b.onclick = () => {
+    if (R.locked || b.classList.contains('ok')) return;
+    if (q.selL == null) { b.classList.add('nudge'); setTimeout(() => b.classList.remove('nudge'), 400); return; }
+    const L = $(`.m-item.L[data-id="${q.selL}"]`, box);
+    if (+b.dataset.id === q.selL) {
+      L.classList.remove('sel'); L.classList.add('ok'); b.classList.add('ok'); drawLine(L, b, true);
+      q.done.add(q.selL); q.selL = null; sfx.yes();
+      if (q.done.size === left.length) matchDone(q);
+    } else {
+      q.tries++; R.mistakes++; R.streak = 0; sfx.no();
+      b.classList.add('bad'); L.classList.add('bad');
+      setTimeout(() => { b.classList.remove('bad'); L.classList.remove('bad'); }, 500);
+      if (q.tries === 2) say('Look carefully, and try again!');
+    }
+  }));
+}
+function drawLine(a, b, ok) {
+  const svg = $('.m-lines'); if (!svg) return;
+  const s = svg.getBoundingClientRect(), ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+  const x1 = ra.right - s.left, y1 = ra.top + ra.height / 2 - s.top, x2 = rb.left - s.left, y2 = rb.top + rb.height / 2 - s.top;
+  svg.insertAdjacentHTML('beforeend', `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${ok ? 'ok' : ''}"/>`);
+}
+function matchDone(q) {
+  R.locked = true; clearTimeout(R.nudge);
+  const first = q.tries === 0;
+  q.ok = first;
+  if (first) { R.firstTry++; R.streak++; R.best = Math.max(R.best, R.streak); } else R.streak = 0;
+  setTimeout(() => { celebrate(first); setTimeout(next, first ? 2000 : 1700); }, 300);
+}
+function matchHint(q) {
+  if (R.locked) return;
+  const id = q.match.left.map((x) => x.id).find((i) => !q.done.has(i)); if (id == null) return;
+  const L = $(`.m-item.L[data-id="${id}"]`), Rr = $(`.m-item.R[data-id="${id}"]`);
+  $$('.m-item.L').forEach((x) => x.classList.remove('sel')); L.classList.add('sel'); q.selL = id;
+  Rr.classList.add('glow-l'); setTimeout(() => Rr.classList.remove('glow-l'), 1200);
+  say('Look carefully, and try again!');
+}
+
 const PRAISE = ['Excellent!', 'Awesome job!', 'Great work!', 'You did it!', 'Super star!', 'Fantastic!', 'Way to go!', 'Amazing!', 'Wonderful!', 'Brilliant!'];
 const POPS = ['🌟', '🎉', '🦄', '🌈', '🥳', '💖', '🚀', '👏', '🏆', '😻'];
 
@@ -489,6 +543,7 @@ function finish() {
     if (m <= 1 && lv < levelCap(id)) { state.levels[id] = lv + 1; levelMsg = `⬆️ Level up! Now level ${lv + 1}`; }
     else if (m >= 8 && lv > 1) { state.levels[id] = lv - 1; }
   }
+  const earned = earnPlay();
   // sticker
   const left = STICKERS.filter((s) => !state.stickers.includes(s));
   const sticker = left.length ? left[Math.floor(Math.random() * left.length)] : null;
@@ -500,9 +555,10 @@ function finish() {
   $('#resScore').textContent = `${R.firstTry} out of ${R.qs.length} right on the first try`;
   $('#resLevel').textContent = levelMsg;
   $('#resSticker').innerHTML = sticker ? `<div class="new-sticker">${sticker}</div><div>New sticker!</div>` : '<div>You have every sticker! 🏆</div>';
+  $('#playEarned').hidden = !earned;
   show('result');
   sfx.win(); confetti(160, 0.3); setTimeout(() => confetti(120, 0.5), 600);
-  say(`${stars === 3 ? 'Wow! Awesome job!' : stars === 2 ? 'Great job!' : 'Good try!'} You got ${R.firstTry} stars.${levelMsg ? ' Level up!' : ''}${sticker ? ' And a new sticker!' : ''}`);
+  say(`${stars === 3 ? 'Wow! Awesome job!' : stars === 2 ? 'Great job!' : 'Good try!'} You got ${R.firstTry} stars.${levelMsg ? ' Level up!' : ''}${sticker ? ' And a new sticker!' : ''}${earned ? ' You earned play time!' : ''}`);
 }
 
 function renderStickers() {
@@ -602,7 +658,7 @@ function renderGrades() {
 $('#gradeChip').onclick = () => $('#settingsBtn').onclick();
 $('#settingsBtn').onclick = () => {
   renderGrades();
-  $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#voiceToggle').checked = state.voice;
+  $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
   show('settings');
@@ -612,6 +668,7 @@ $('#settingsDone').onclick = () => {
   state.voice = $('#voiceToggle').checked;
   state.showAll = $('#showAll').checked;
   state.optClock = $('#optClock').checked;
+  state.roundsPerPlay = +$('#roundsPerPlay').value; state.playMinutes = +$('#playMinutes').value; state.playAlways = $('#playAlways').checked;
   $$('#levels select').forEach((s) => (state.levels[s.dataset.id] = +s.value));
   save(); renderHome(); show('home');
   say("Let's play!");
