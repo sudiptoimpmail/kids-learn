@@ -15,7 +15,9 @@ const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } c
 const levelOf = (id) => state.levels[id] || 1;
 const maxLevelOf = (id) => (CATEGORIES.find((c) => c.id === id) || {}).maxLevel || 3;
 const gameMax = maxLevelOf;
-const visibleGames = () => CATEGORIES.filter((c) => !state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id));
+const OPTIONAL = { clock: 'optClock' };  // off unless a parent turns them on in Settings
+const visibleGames = () => CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
+  && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
 // auto level-up stops at the top of the child's grade (unless all games are shown)
 const levelCap = (id) => { const r = state.grade && !state.showAll && gradeRange(state.grade, id); return r ? r[1] : gameMax(id); };
 
@@ -600,7 +602,7 @@ function renderGrades() {
 $('#gradeChip').onclick = () => $('#settingsBtn').onclick();
 $('#settingsBtn').onclick = () => {
   renderGrades();
-  $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#voiceToggle').checked = state.voice;
+  $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
   show('settings');
@@ -609,6 +611,7 @@ $('#settingsDone').onclick = () => {
   state.name = $('#nameInput').value.trim().slice(0, 20);
   state.voice = $('#voiceToggle').checked;
   state.showAll = $('#showAll').checked;
+  state.optClock = $('#optClock').checked;
   $$('#levels select').forEach((s) => (state.levels[s.dataset.id] = +s.value));
   save(); renderHome(); show('home');
   say("Let's play!");
