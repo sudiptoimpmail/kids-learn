@@ -595,12 +595,33 @@ function genWordProblem(level) {
 }
 
 /* ---------------- COMPARE  > < = ---------------- */
-// 1 more/fewer with pictures · 2 numbers to 10 · 3 to 20 · 4 two-digit · 5 sums and differences
+// 1 more/fewer + picture vs picture with signs · 2 pictures and numbers to 10 · 3 to 20 · 4 two-digit · 5 sums and differences
 const SIGN_OPTS = [{ v: '>', html: '&gt;<small>greater</small>' }, { v: '<', html: '&lt;<small>less</small>' }, { v: '=', html: '=<small>equal</small>' }];
 const signOf = (a, b) => (a > b ? '>' : a < b ? '<' : '=');
 const gator = { html: '<div class="hint-pic sm">🐊</div><div class="hint-note">The alligator mouth opens to the bigger number!<br>7 &gt; 3 &nbsp; · &nbsp; 3 &lt; 7</div>', say: 'The alligator mouth opens to the bigger number!' };
 
+// two picture groups with the sign box between them; counts shown under each group
+function genComparePics(level) {
+  const [e] = pick(THINGS);
+  const max = level <= 1 ? 6 : 10;
+  let a = 1 + rand(max), b = 1 + rand(max);
+  if (Math.random() < 0.15) b = a;
+  const showNums = level >= 2 || Math.random() < 0.5;
+  const grp = (n) => `<div class="pgrp"><div class="objs small">${objects(e, n)}</div>${showNums ? `<b>${n}</b>` : ''}</div>`;
+  return {
+    key: `cmpp-${a}-${b}`, text: 'Count the pictures. Which sign goes in the box?', say: ['Count the pictures.', 'Which sign goes in the box?'],
+    main: `<div class="pcmp">${grp(a)}<span class="qmark box">?</span>${grp(b)}</div>`,
+    options: SIGN_OPTS, answer: signOf(a, b), optClass: 'opt-num signs',
+    hint: {
+      html: `<div class="hint-pic sm">🐊</div><div class="hint-note">${a} ${a === b ? 'is the same as' : a > b ? 'is more than' : 'is less than'} ${b}<br>The mouth opens to the bigger group!<br><span class="sign-key">&gt; greater · &lt; less · = equal</span></div>`,
+      say: 'The alligator mouth opens to the bigger group!',
+    },
+  };
+}
+
 function genCompare(level) {
+  // picture comparisons teach what the signs mean: often early, now and then later
+  if (Math.random() < (level === 1 ? 0.5 : level === 2 ? 0.45 : 0.15)) return genComparePics(level);
   if (level === 1) {
     const [e] = pick(THINGS);
     let a, b; do { a = 1 + rand(8); b = 1 + rand(8); } while (a === b);

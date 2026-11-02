@@ -16,7 +16,7 @@ A flash-card learning game for Pre-K through 2nd grade, built as an installable 
 | 👏 Clap It! | Syllable counting |
 | ➕ Adding / ➖ Take Away | 5 levels: within 5 → within 10 → within 20 → two-digit ± one-digit → with regrouping (38 + 7, 52 − 6). Hints use base-ten blocks and "make a ten" steps |
 | 📝 Word Problems | 5 levels: within 10 → within 20 → two-digit → "how many more?" → two-step stories |
-| 🐊 Compare | > < = : which group has more/fewer → numbers to 10 → to 20 → two-digit → sums and differences |
+| 🐊 Compare | > < = : which group has more/fewer, and picture vs picture with the sign box between (counts shown under each group) → pictures and numbers to 10 → to 20 → two-digit → sums and differences |
 | ✖️ Multiply | Equal groups with pictures → ×2 ×5 ×10 → up to 5×5 → up to 10×10 → missing factor and story problems. Dot-array hints |
 | ➗ Divide | Share equally with pictures → ÷2 ÷5 ÷10 → within 25 → within 100 → story problems |
 | 🕐 Clock | Read an analog clock or pick the clock for a time: o'clock → half past → quarter past/to → 5 minutes |

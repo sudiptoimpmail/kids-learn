@@ -442,3 +442,17 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 }
 .field.row small { display: block; font-weight: 600; color: var(--soft); }
 .grade-chip.pulse { animation: wiggle 1.2s ease-in-out infinite; }
+
+/* picture vs picture compare */
+.pcmp { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; }
+.pgrp { flex: 1 1 0; max-width: 150px; min-height: 110px; background: #f8f5ff; border: 3px dashed #b2f2bb; border-radius: 20px; padding: 8px 6px;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 4px; }
+.pgrp .objs { gap: 1px; }
+.pgrp b { font-size: 34px; line-height: 1; color: var(--ink); }
+.pcmp .box { font-size: 46px; width: 64px; height: 64px; display: grid; place-items: center; border: 5px dashed var(--theme); border-radius: 16px; flex: none; font-weight: 900; }
+.pcmp .box.filled { border-style: solid; border-color: var(--good); color: var(--good); }
+.sign-key { font-size: 16px; color: var(--soft); }
+@media (min-width: 700px) {
+  .pgrp { max-width: 240px; min-height: 160px; } .pgrp b { font-size: 48px; }
+  .pcmp .box { width: 92px; height: 92px; font-size: 64px; } .pcmp { gap: 20px; }
+}
