@@ -671,3 +671,15 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .wm-hole.bonk { animation: bounce .3s; background: radial-gradient(ellipse at 50% 70%, #fcc419 55%, #7b5137 56%); }
 .wm-hole.oops { animation: shake .3s; background: radial-gradient(ellipse at 50% 70%, #ff8787 55%, #7b5137 56%); }
 @media (min-width: 700px) { .wm-field { width: 540px; } .wm-pop { font-size: 96px; } .g-lv { font-size: 16px; } }
+
+/* ---------- Rolling Ball 3D ---------- */
+.b3-wrap { position: relative; width: 100%; }
+.b3-cv { width: 100%; border-radius: 22px; }
+.b3-hud { position: absolute; top: 10px; left: 12px; right: 12px; display: flex; gap: 10px; align-items: center; pointer-events: none; }
+.b3-bar { flex: 1; height: 12px; background: #ffffff99; border-radius: 99px; overflow: hidden; box-shadow: inset 0 0 0 2px #fff; }
+.b3-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #40c057, #fcc419); border-radius: 99px; }
+.b3-gems { background: #fff; border-radius: 99px; padding: 4px 10px; font-weight: 900; font-size: 16px; }
+.b3-msg { position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%); background: #fff; padding: 10px 20px; border-radius: 99px; font-weight: 900; font-size: 22px; box-shadow: 0 6px 0 #0002; animation: popin .3s; pointer-events: none; }
+.b3-msg[hidden] { display: none; }
+#gameTitle { white-space: nowrap; font-size: clamp(16px, 5.2vw, 28px); overflow: hidden; text-overflow: ellipsis; }
+.b3-msg { white-space: nowrap; }

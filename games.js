@@ -118,13 +118,15 @@ const GAMES = [
   { id: 'c4', title: 'Connect Four', icon: '🔴', color: '#845ef7', start: startC4 },
   { id: 'sudoku', title: 'Sudoku', icon: '🔢', color: '#20c997', start: startSudokuMenu },
   { id: 'puzzle', title: 'Picture Puzzle', icon: '🧩', color: '#fab005', start: startPuzzleMenu },
-  { id: 'ball', title: 'Rolling Ball', icon: '🔵', color: '#339af0', start: startBall, max: 8 },
+  { id: 'ball', title: 'Rolling Ball 3D', icon: '🔵', color: '#339af0', start: startBall },
+  { id: 'maze', title: 'Ball Maze', icon: '🟫', color: '#c0874f', start: startBallMaze },
   { id: 'whack', title: 'Whack-a-Mole', icon: '🐹', color: '#a9734a', start: startWhack, max: 5 },
   { id: 'moves', title: 'Silly Moves', icon: '🤸', color: '#12b886', start: startMoves },
 ];
 // level per game; winning moves you up (needWins wins per level)
-const GAME_MAX = { ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, whack: 5 };
+const GAME_MAX = { ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
 function GL(id) {
+  if (id === 'maze' && state.gameLv && state.gameLv.maze == null && state.gameLv.ball > 1 && !state.ball3d) { state.gameLv.maze = state.gameLv.ball; state.gameLv.ball = 1; state.ball3d = true; }
   if (id === 'sudoku') return sdkLevel();
   if (id === 'color') return colorLevel();
   return (state.gameLv && state.gameLv[id]) || 1;
@@ -278,7 +280,7 @@ function startPop() {
   const lv = GL('pop');
   const target = [8, 12, 15, 18, 22][lv - 1];
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Pop ${target} balloons! <b class="pop-score">0</b> 🎈 · <span class="pop-time">30</span>s</div><div class="cv-wrap"><canvas class="game-cv pop-cv"></canvas></div>`;
+  area.innerHTML = `<div class="g-msg">Pop ${target} balloons! <b class="pop-score">0</b> 🎈 · <span class="pop-time">30</span>s <small class="pop-speed">Speed 🐢</small></div><div class="cv-wrap"><canvas class="game-cv pop-cv"></canvas></div>`;
   say('Pop the balloons!');
   const cv = $('.pop-cv', area);
   let { c, w, h } = fitCanvas(cv);
@@ -289,7 +291,7 @@ function startPop() {
     const r = (lv <= 2 ? 40 : lv <= 4 ? 34 : 30) + Math.random() * 10;
     const star = Math.random() < 0.1;
     balloons.push({ x: r + Math.random() * (w - 2 * r), y: h + r, r, color: star ? '#fcc419' : pick(colors),
-      vy: (45 + lv * 16) * (0.8 + Math.random() * 0.45) + elapsed * 1.5, wob: Math.random() * 6, star });
+      vy: (55 + lv * 20) * (0.85 + Math.random() * 0.4) * Math.min(2.6, 1 + score * 0.06) + elapsed * 1.5, wob: Math.random() * 6, star });
   }
   function draw() {
     c.clearRect(0, 0, w, h);
@@ -313,7 +315,7 @@ function startPop() {
     const left = Math.max(0, 30 - elapsed);
     $('.pop-time', area).textContent = Math.ceil(left);
     spawnIn -= dt;
-    if (spawnIn <= 0) { spawn(); spawnIn = Math.max(0.35, (1.05 - lv * 0.1) - elapsed * 0.01); }
+    if (spawnIn <= 0) { spawn(); spawnIn = Math.max(0.22, (1.0 - lv * 0.1) - elapsed * 0.01 - score * 0.015); }
     for (const b of balloons) { b.y -= b.vy * dt; b.wob += dt * 2; }
     for (let k = balloons.length - 1; k >= 0; k--) if (balloons[k].y < -balloons[k].r * 3) balloons.splice(k, 1);
     for (const p of bits) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 300 * dt; p.life -= dt * 2; }
@@ -332,6 +334,7 @@ function startPop() {
       if (Math.hypot((x - bx) / 1.0, (y - b.y) / 1.15) < b.r * 1.25) {     // generous for little fingers
         balloons.splice(k, 1);
         score += b.star ? 3 : 1; $('.pop-score', area).textContent = score;
+        $('.pop-speed', area).textContent = 'Speed ' + (score < 6 ? '🐢' : score < 12 ? '🐇' : score < 20 ? '🐆' : '🚀');
         for (let n = 0; n < 12; n++) { const a = Math.random() * 6.3; bits.push({ x: bx, y: b.y, vx: Math.cos(a) * 160, vy: Math.sin(a) * 160, life: 1, color: b.color }); }
         tone([b.star ? 1200 : 650 + Math.random() * 350, 280], { dur: 0.05, type: 'square', gap: 0.04, vol: 0.12 });
         return;
@@ -404,7 +407,17 @@ function startWhack() {
   gameCleanup = () => { alive = false; clearInterval(tick); up.forEach((m) => clearTimeout(m.timer)); };
 }
 
-/* ======================= ROLLING BALL ======================= */
+/* ======================= ROLLING BALL 3D (loads ball3d.js + three.js only when opened) ======================= */
+function webglOK() { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } }
+async function startBall() {
+  const area = $('#gameArea');
+  if (!webglOK()) return startBallMaze();
+  area.innerHTML = '<div class="g-msg">Getting the ball ready… 🔵</div>';
+  try { const m = await import('./ball3d.js'); if ($('#game').classList.contains('active')) m.start(); }
+  catch (e) { console.warn(e); startBallMaze(); }
+}
+
+/* ======================= BALL MAZE (2D) ======================= */
 // Steer the ball to the flag. Drag your finger (the ball rolls toward it) or tilt the phone.
 // Board is 10 × 14 units. Walls are [x, y, w, h]; holes send you back to the start.
 const MAZES = [
@@ -418,8 +431,8 @@ const MAZES = [
   { start: [1, 13], goal: [1, 1.3], walls: [[0, 2.6, 8, 0.6], [2, 5.2, 8, 0.6], [0, 7.8, 8, 0.6], [2, 10.4, 8, 0.6]],
     holes: [[5, 1.3], [5, 6.5], [3, 9.1], [6, 12.2], [9, 4]], stars: [[9, 9.1], [1, 6.5], [9, 1.3]] },
 ];
-function startBall() {
-  const lv = GL('ball'), M = MAZES[lv - 1];
+function startBallMaze() {
+  const lv = GL('maze'), M = MAZES[lv - 1];
   const area = $('#gameArea');
   area.innerHTML = `<div class="g-msg">Roll the ball to the flag! 🚩<small>Drag your finger — the ball follows. ${M.holes.length ? 'Watch out for holes!' : ''}</small></div>
     <div class="cv-wrap"><canvas class="game-cv ball-cv"></canvas></div>
@@ -514,9 +527,9 @@ function startBall() {
   function win() {
     won = true;
     const got = stars.filter((s) => s.got).length;
-    const up = gameLevelUp('ball', 1);
+    const up = gameLevelUp('maze', 1);
     gameWin(pick(['You did it!', 'Awesome job!', 'Fantastic!']));
-    setTimeout(() => { alive = false; endPanel(`You reached the flag!<br><small>⭐ ${got} of ${stars.length} stars</small>`, '🔵', startBall, up); }, 900);
+    setTimeout(() => { alive = false; endPanel(`You reached the flag!<br><small>⭐ ${got} of ${stars.length} stars</small>`, '🟫', startBallMaze, up); }, 900);
   }
   const onResize = () => { ({ c, w, h } = fitCanvas(cv, 380)); u = Math.min(w / 10, h / 14); ox = (w - u * 10) / 2; oy = (h - u * 14) / 2; };
   addEventListener('resize', onResize);

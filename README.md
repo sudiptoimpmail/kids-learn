@@ -42,13 +42,14 @@ Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (defau
 |---|---|
 | ⭕ Tic-Tac-Toe | 🦄 vs 🤖 — 3 levels, the robot gets more careful (2 wins per level) |
 | 🃏 Memory Match | 5 levels: 3 → 4 → 6 → 8 → 10 pairs |
-| 🎈 Pop the Balloons | 30 seconds, 5 levels (faster, smaller balloons); pop the target number to level up; ⭐ balloons are worth 3 |
+| 🎈 Pop the Balloons | 30 seconds, 5 levels (faster, smaller balloons) — balloons also speed up with every pop (🐢 → 🐇 → 🐆 → 🚀); pop the target number to level up; ⭐ balloons are worth 3 |
 | 🖍️ Coloring Book | 12 pictures in 3 levels — finishing pictures unlocks harder ones |
 | 🔴 Connect Four | vs the robot — 3 levels |
 | 🔢 Sudoku | Pictures, Numbers, or **Word Sudoku** (letters of a spelling word). Level 1 4×4 with 4 blanks → level 5 6×6 with 20 blanks; every 2 wins makes it harder. Every puzzle has exactly one solution. 💡 Hint fills a square |
 | 🤸 Silly Moves | Roll the dice → act it out for 10 seconds: hop like a bunny, walk like a robot, make your silliest face… 40 moves |
 | 🧩 Picture Puzzle | Swap tiles to rebuild a picture — 5 levels: 2×2 → 3×3 → 4×4 → 5×5 → 6×6. Uses her own colored pictures when she has them |
-| 🔵 Rolling Ball | Drag a finger (the ball rolls toward it) or tilt the phone to roll the ball to the 🚩 — 8 mazes: open field → walls → zig-zags → holes to avoid; collect ⭐ |
+| 🔵 Rolling Ball 3D | 3D sky-track runner (like mobile rolling games, built with three.js): the ball rolls forward on its own — drag left/right or tilt to steer, tap to jump. 8 levels: faster, longer, more gaps, red blocks, jump gaps from level 3, sliding purple blocks from level 6. Collect 💎, checkpoints every 15 rows, every track has a guaranteed safe path |
+| 🟫 Ball Maze | The original top-down maze: drag or tilt to roll to the 🚩 — 8 mazes with walls and holes |
 | 🐹 Whack-a-Mole | 30 seconds, 5 levels (faster moles, more at once, don't tap the 🌸 from level 3) |
 
 ## Turn on hosting (one time)
@@ -66,5 +67,7 @@ If a phrase has no recording, the app falls back to the best voice installed on 
 
 ## Edit content
 All words, sentences, vocabulary (`VOCAB`), jobs, flags, etc. live in `content.js` — add rows to the arrays. After changing files, bump `VERSION` in `sw.js` so installed copies update.
+
+three.js (MIT license) is bundled in `vendor/` so the 3D game works offline.
 
 Progress is stored only on the device (localStorage). No accounts, ads or tracking.

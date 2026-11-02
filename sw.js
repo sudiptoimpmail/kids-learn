@@ -1,6 +1,6 @@
 // Offline cache. Bump VERSION whenever you change any file so phones/iPads pick up the update.
-const VERSION = 'lp-v12';
-const FILES = ['./', 'index.html', 'style.css', 'content.js', 'app.js', 'games.js', 'manifest.webmanifest', 'audio/clips.json', 'audio/silence.mp3',
+const VERSION = 'lp-v13';
+const FILES = ['./', 'index.html', 'style.css', 'content.js', 'app.js', 'games.js', 'ball3d.js', 'vendor/three.module.min.js', 'manifest.webmanifest', 'audio/clips.json', 'audio/silence.mp3',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', (e) => {
