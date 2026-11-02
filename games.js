@@ -118,25 +118,47 @@ const GAMES = [
   { id: 'c4', title: 'Connect Four', icon: '🔴', color: '#845ef7', start: startC4 },
   { id: 'sudoku', title: 'Sudoku', icon: '🔢', color: '#20c997', start: startSudokuMenu },
   { id: 'puzzle', title: 'Picture Puzzle', icon: '🧩', color: '#fab005', start: startPuzzleMenu },
+  { id: 'ball', title: 'Rolling Ball', icon: '🔵', color: '#339af0', start: startBall, max: 8 },
+  { id: 'whack', title: 'Whack-a-Mole', icon: '🐹', color: '#a9734a', start: startWhack, max: 5 },
   { id: 'moves', title: 'Silly Moves', icon: '🤸', color: '#12b886', start: startMoves },
 ];
-$('#pzGrid').innerHTML = GAMES.map((g) =>
-  `<button class="tile pz-tile" data-game="${g.id}" style="--c:${g.color}"><span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`).join('');
+// level per game; winning moves you up (needWins wins per level)
+const GAME_MAX = { ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, whack: 5 };
+function GL(id) {
+  if (id === 'sudoku') return sdkLevel();
+  if (id === 'color') return colorLevel();
+  return (state.gameLv && state.gameLv[id]) || 1;
+}
+function gameLevelUp(id, needWins = 1) {
+  state.gameLv = state.gameLv || {}; state.gameWins = state.gameWins || {};
+  state.gameWins[id] = (state.gameWins[id] || 0) + 1;
+  const lv = GL(id);
+  let up = false;
+  if (lv < (GAME_MAX[id] || 1) && state.gameWins[id] % needWins === 0) { state.gameLv[id] = lv + 1; up = true; }
+  save(); renderPZ();
+  return up;
+}
+const lvBadge = (id) => (GAME_MAX[id] || id === 'sudoku' || id === 'color' ? `<span class="lv">Lv ${GL(id)}</span>` : '');
+function renderPZ() {
+  $('#pzGrid').innerHTML = GAMES.map((g) =>
+    `<button class="tile pz-tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`).join('');
+}
+
 $('#pzGrid').addEventListener('click', (e) => {
   const t = e.target.closest('[data-game]'); if (!t) return;
   sfx.tap(); openGame(t.dataset.game);
 });
 $('#pzHome').onclick = () => { sayToken++; stopClip(); renderHome(); show('home'); };
-$('#gameBack').onclick = () => { stopGame(); show('playzone'); startPlayTimer(); };
+$('#gameBack').onclick = () => { stopGame(); renderPZ(); show('playzone'); startPlayTimer(); };
 
 let curGame = null, gameCleanup = null, gameCleanupPanel = null;
 function openGame(id) {
   const g = GAMES.find((x) => x.id === id);
   curGame = g;
   document.body.style.setProperty('--theme', g.color);
-  $('#gameTitle').textContent = `${g.icon} ${g.title}`;
+  $('#gameTitle').innerHTML = `${g.icon} ${g.title}${GAME_MAX[id] || id === 'sudoku' || id === 'color' ? ` <small class="g-lv">Lv ${GL(id)}</small>` : ''}`;
   $('#gameArea').innerHTML = '';
-  $('#gameArea').className = 'game-area ' + id;
+  $('#gameArea').className = 'game-area g-' + id;
   show('game');
   startPlayTimer();
   g.start();
@@ -147,12 +169,13 @@ function gameWin(text = 'You win!') {
   sfx.win(); confetti(140, 0.35); setTimeout(() => confetti(90, 0.5), 500);
   say(text);
 }
-function endPanel(title, emoji, again) {
+function endPanel(title, emoji, again, levelUp = false) {
+  if (levelUp) title += `<div class="ep-up">⬆️ Level up! Now level ${GL(curGame.id)}</div>`;
   const d = document.createElement('div');
   d.className = 'end-panel';
   d.innerHTML = `<div class="ep-card"><div class="ep-emoji">${emoji}</div><div class="ep-title">${title}</div>
     <div class="ep-btns"><button class="big-btn" data-a="again">🔁 Again</button><button class="big-btn alt" data-a="menu">🎮 Games</button></div></div>`;
-  d.querySelector('[data-a="again"]').onclick = () => { sfx.tap(); if (playOpen()) again(); else timeUp(); };
+  d.querySelector('[data-a="again"]').onclick = () => { sfx.tap(); if (playOpen()) { openGame(curGame.id); } else timeUp(); };
   d.querySelector('[data-a="menu"]').onclick = () => { sfx.tap(); $('#gameBack').onclick(); };
   $('#gameArea').appendChild(d);
   gameCleanupPanel = d;
@@ -174,7 +197,7 @@ function startTTT() {
     const w = winner();
     if (w) {
       over = true; w.forEach((i) => cells[i].classList.add('win'));
-      if (b[w[0]] === ME) { gameWin('You win!'); setTimeout(() => endPanel('You win!', '🏆', startTTT), 1300); }
+      if (b[w[0]] === ME) { const up = gameLevelUp('ttt', 2); gameWin('You win!'); setTimeout(() => endPanel('You win!', '🏆', startTTT, up), 1300); }
       else { say('Good game! Try again!'); setTimeout(() => endPanel('Robot wins this time!', '🤖', startTTT), 1300); }
       return true;
     }
@@ -185,9 +208,11 @@ function startTTT() {
     const free = b.map((v, i) => (v ? null : i)).filter((v) => v != null);
     const findLine = (who) => { for (const l of LINES3) { const vals = l.map((i) => b[i]); if (vals.filter((v) => v === who).length === 2 && vals.includes(null)) return l[vals.indexOf(null)]; } return null; };
     // friendly robot: always takes a win, blocks most of the time, otherwise plays loosely
-    let m = findLine(BOT);
-    if (m == null && Math.random() < 0.7) m = findLine(ME);
-    if (m == null && b[4] == null && Math.random() < 0.5) m = 4;
+    const lv = GL('ttt');   // 1: playful robot · 2: blocks sometimes · 3: careful robot
+    let m = Math.random() < [0.5, 0.9, 1][lv - 1] ? findLine(BOT) : null;
+    if (m == null && Math.random() < [0.15, 0.6, 0.95][lv - 1]) m = findLine(ME);
+    if (m == null && b[4] == null && Math.random() < [0.2, 0.5, 0.9][lv - 1]) m = 4;
+    if (m == null && lv === 3) { const corners = [0, 2, 6, 8].filter((i) => !b[i]); if (corners.length) m = pick(corners); }
     if (m == null) m = free[Math.floor(Math.random() * free.length)];
     put(m, BOT); sfx.tap();
   }
@@ -203,13 +228,12 @@ function startTTT() {
 /* ======================= MEMORY MATCH ======================= */
 const MEM_FACES = ['🐶', '🐱', '🦊', '🐸', '🐼', '🦁', '🐵', '🐰', '🐙', '🦋', '🍓', '🍩', '🚀', '🌈', '⭐', '🎈'];
 function startMemory() {
-  const plays = state.memPlays || 0;
-  const pairs = plays < 2 ? 3 : plays < 5 ? 4 : plays < 9 ? 6 : 8;
+  const pairs = [3, 4, 6, 8, 10][GL('memory') - 1];
   const faces = shuffle(MEM_FACES).slice(0, pairs);
   const deck = shuffle(faces.concat(faces));
   let open = [], found = 0, moves = 0, lock = false;
   const area = $('#gameArea');
-  const cols = deck.length <= 6 ? 3 : 4;
+  const cols = deck.length <= 6 ? 3 : deck.length === 20 ? 5 : 4;
   area.innerHTML = `<div class="g-msg">Find the matching pairs! <span class="mem-moves"></span></div>
     <div class="mem-board" style="grid-template-columns:repeat(${cols},1fr)">${deck.map((f, i) =>
       `<button class="mem-card" data-i="${i}"><span class="back">❓</span><span class="front">${f}</span></button>`).join('')}</div>`;
@@ -225,9 +249,9 @@ function startMemory() {
       setTimeout(() => {
         cards[a].classList.add('done'); cards[b].classList.add('done'); sfx.yes(); found++;
         if (found === pairs) {
-          state.memPlays = plays + 1; save();
+          const up = gameLevelUp('memory', 1);
           gameWin(pick(['Awesome job!', 'You did it!', 'Amazing!']));
-          setTimeout(() => endPanel(`All pairs in ${moves} tries!`, '🧠', startMemory), 1300);
+          setTimeout(() => endPanel(`All pairs in ${moves} tries!`, '🧠', startMemory, up), 1300);
         }
       }, 350);
     } else {
@@ -238,63 +262,266 @@ function startMemory() {
 }
 
 /* ======================= POP THE BALLOONS ======================= */
+// Canvas game: one touch handler on the canvas, hit-test by position.
+// Level 1 slow & big … level 5 fast & smaller. Reach the target to level up.
+function fitCanvas(cv, minH = 360) {
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  const w = cv.parentElement.clientWidth;
+  const top = cv.getBoundingClientRect().top;
+  const h = Math.max(minH, Math.min(innerHeight - top - 20, w * 1.6));
+  cv.style.width = w + 'px'; cv.style.height = h + 'px';
+  cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+  const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0);
+  return { c, w, h };
+}
 function startPop() {
+  const lv = GL('pop');
+  const target = [8, 12, 15, 18, 22][lv - 1];
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Pop the balloons! <b class="pop-score">0</b> 🎈 · <span class="pop-time">30</span>s</div><div class="pop-sky"></div>`;
+  area.innerHTML = `<div class="g-msg">Pop ${target} balloons! <b class="pop-score">0</b> 🎈 · <span class="pop-time">30</span>s</div><div class="cv-wrap"><canvas class="game-cv pop-cv"></canvas></div>`;
   say('Pop the balloons!');
-  const sky = $('.pop-sky', area);
+  const cv = $('.pop-cv', area);
+  let { c, w, h } = fitCanvas(cv);
   const colors = ['#ff6b6b', '#ffd43b', '#51cf66', '#4dabf7', '#cc5de8', '#ff922b', '#f783ac', '#20c997'];
-  let score = 0, t0 = performance.now(), raf = 0, spawnT = 0, alive = true;
-  const balloons = [];
-  function spawn(now) {
-    const el = document.createElement('button');
-    el.className = 'balloon';
-    const c = colors[Math.floor(Math.random() * colors.length)];
-    const size = 64 + Math.random() * 30;
-    el.style.setProperty('--b', c); el.style.width = size + 'px'; el.style.height = size * 1.2 + 'px';
-    const W = sky.clientWidth;
-    const x = Math.random() * (W - size);
-    const elapsed = (now - t0) / 1000;
-    const speed = 55 + Math.random() * 40 + elapsed * 3.5; // px/sec, a bit faster over time
-    const star = Math.random() < 0.12;
-    if (star) el.innerHTML = '<span>⭐</span>';
-    sky.appendChild(el);
-    const o = { el, x, y: sky.clientHeight + 10, speed, wob: Math.random() * 6, star };
-    el.style.transform = `translate(${x}px, ${o.y}px)`;
-    el.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
-      if (el.classList.contains('popped')) return;
-      el.classList.add('popped');
-      score += star ? 3 : 1; $('.pop-score').textContent = score;
-      tone([star ? 1200 : 700 + Math.random() * 300, 300], { dur: 0.05, type: 'square', gap: 0.04, vol: 0.12 });
-      if (star) confetti(30, (o.y + 40) / innerHeight);
-      setTimeout(() => el.remove(), 250);
-    });
-    balloons.push(o);
+  const balloons = [], bits = [];
+  let score = 0, alive = true, raf = 0, last = 0, elapsed = 0, spawnIn = 0;
+  function spawn() {
+    const r = (lv <= 2 ? 40 : lv <= 4 ? 34 : 30) + Math.random() * 10;
+    const star = Math.random() < 0.1;
+    balloons.push({ x: r + Math.random() * (w - 2 * r), y: h + r, r, color: star ? '#fcc419' : pick(colors),
+      vy: (45 + lv * 16) * (0.8 + Math.random() * 0.45) + elapsed * 1.5, wob: Math.random() * 6, star });
   }
-  function frame(now) {
-    if (!alive) return;
-    const left = Math.max(0, 30 - (now - t0) / 1000);
-    $('.pop-time').textContent = Math.ceil(left);
-    if (now - spawnT > Math.max(380, 900 - (now - t0) / 40)) { spawn(now); spawnT = now; }
-    const dt = 1 / 60;
-    for (const o of balloons) {
-      o.y -= o.speed * dt; o.wob += dt * 2;
-      o.el.style.transform = `translate(${o.x + Math.sin(o.wob) * 10}px, ${o.y}px)`;
-      if (o.y < -150) o.el.remove();
+  function draw() {
+    c.clearRect(0, 0, w, h);
+    const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#a5d8ff'); g.addColorStop(1, '#e7f5ff');
+    c.fillStyle = g; c.fillRect(0, 0, w, h);
+    for (const b of balloons) {
+      const x = b.x + Math.sin(b.wob) * 8;
+      c.strokeStyle = '#8889'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x, b.y + b.r * 1.15); c.quadraticCurveTo(x - 6, b.y + b.r * 1.6, x + 2, b.y + b.r * 2.1); c.stroke();
+      c.fillStyle = b.color; c.beginPath(); c.ellipse(x, b.y, b.r, b.r * 1.15, 0, 0, Math.PI * 2); c.fill();
+      c.beginPath(); c.moveTo(x - 5, b.y + b.r * 1.15 + 5); c.lineTo(x + 5, b.y + b.r * 1.15 + 5); c.lineTo(x, b.y + b.r * 1.1); c.fill();
+      c.fillStyle = '#ffffff88'; c.beginPath(); c.ellipse(x - b.r * 0.35, b.y - b.r * 0.4, b.r * 0.18, b.r * 0.3, -0.5, 0, Math.PI * 2); c.fill();
+      if (b.star) { c.font = `${b.r}px system-ui`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('⭐', x, b.y + 2); }
     }
-    if (left <= 0) return finishPop();
+    for (const p of bits) { c.globalAlpha = Math.max(0, p.life); c.fillStyle = p.color; c.beginPath(); c.arc(p.x, p.y, 4, 0, 7); c.fill(); }
+    c.globalAlpha = 1;
+  }
+  function frame(t) {
+    if (!alive) return;
+    const dt = last ? Math.min(0.05, (t - last) / 1000) : 0; last = t;
+    elapsed += dt;
+    const left = Math.max(0, 30 - elapsed);
+    $('.pop-time', area).textContent = Math.ceil(left);
+    spawnIn -= dt;
+    if (spawnIn <= 0) { spawn(); spawnIn = Math.max(0.35, (1.05 - lv * 0.1) - elapsed * 0.01); }
+    for (const b of balloons) { b.y -= b.vy * dt; b.wob += dt * 2; }
+    for (let k = balloons.length - 1; k >= 0; k--) if (balloons[k].y < -balloons[k].r * 3) balloons.splice(k, 1);
+    for (const p of bits) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 300 * dt; p.life -= dt * 2; }
+    for (let k = bits.length - 1; k >= 0; k--) if (bits[k].life <= 0) bits.splice(k, 1);
+    draw();
+    if (left <= 0) return finish();
     raf = requestAnimationFrame(frame);
   }
-  function finishPop() {
+  function hit(e) {
+    e.preventDefault();
+    if (!alive) return;
+    const r = cv.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    for (let k = balloons.length - 1; k >= 0; k--) {
+      const b = balloons[k], bx = b.x + Math.sin(b.wob) * 8;
+      if (Math.hypot((x - bx) / 1.0, (y - b.y) / 1.15) < b.r * 1.25) {     // generous for little fingers
+        balloons.splice(k, 1);
+        score += b.star ? 3 : 1; $('.pop-score', area).textContent = score;
+        for (let n = 0; n < 12; n++) { const a = Math.random() * 6.3; bits.push({ x: bx, y: b.y, vx: Math.cos(a) * 160, vy: Math.sin(a) * 160, life: 1, color: b.color }); }
+        tone([b.star ? 1200 : 650 + Math.random() * 350, 280], { dur: 0.05, type: 'square', gap: 0.04, vol: 0.12 });
+        return;
+      }
+    }
+  }
+  cv.addEventListener('pointerdown', hit);
+  const onResize = () => { ({ c, w, h } = fitCanvas(cv)); };
+  addEventListener('resize', onResize);
+  function finish() {
     alive = false; cancelAnimationFrame(raf);
-    sky.innerHTML = '';
-    state.popBest = Math.max(state.popBest || 0, score); save();
-    gameWin(score >= 15 ? 'Amazing!' : 'Great job!');
-    endPanel(`You popped ${score} balloons!<br><small>Best: ${state.popBest}</small>`, '🎈', startPop);
+    state.popBest = Math.max(state.popBest || 0, score);
+    const won = score >= target;
+    const up = won ? gameLevelUp('pop', 1) : (save(), false);
+    gameWin(won ? 'Amazing!' : 'Great job!');
+    endPanel(`You popped ${score} balloons!${won ? '' : `<br><small>Pop ${target} to reach the next level</small>`}<br><small>Best: ${state.popBest}</small>`, '🎈', startPop, up);
   }
   raf = requestAnimationFrame(frame);
-  gameCleanup = () => { alive = false; cancelAnimationFrame(raf); };
+  gameCleanup = () => { alive = false; cancelAnimationFrame(raf); removeEventListener('resize', onResize); };
+}
+
+/* ======================= WHACK-A-MOLE ======================= */
+// Moles pop up; tap them before they hide. Faster each level; from level 3, don't tap the 🌸.
+function startWhack() {
+  const lv = GL('whack');
+  const target = [8, 11, 14, 16, 18][lv - 1];
+  const upMs = [1800, 1450, 1200, 1000, 850][lv - 1];
+  const area = $('#gameArea');
+  area.innerHTML = `<div class="g-msg">Tap ${target} moles! <b class="wm-score">0</b> 🐹 · <span class="wm-time">30</span>s${lv >= 3 ? '<small>Don\'t tap the 🌸!</small>' : ''}</div>
+    <div class="wm-field">${Array.from({ length: 9 }, (_, i) => `<button class="wm-hole" data-i="${i}"><span class="wm-pop"></span></button>`).join('')}</div>`;
+  say('Tap the moles!');
+  const holes = $$('.wm-hole', area);
+  let score = 0, alive = true, t0 = Date.now(), tick = 0;
+  const up = new Map();
+  function popUp() {
+    const free = holes.map((_, i) => i).filter((i) => !up.has(i));
+    if (!free.length) return;
+    const i = pick(free);
+    const flower = lv >= 3 && Math.random() < 0.2;
+    const el = holes[i].querySelector('.wm-pop');
+    el.textContent = flower ? '🌸' : pick(['🐹', '🐹', '🐹', '🦔', '🐭']);
+    holes[i].classList.add('up');
+    const timer = setTimeout(() => { holes[i].classList.remove('up'); up.delete(i); }, upMs * (0.8 + Math.random() * 0.4));
+    up.set(i, { timer, flower });
+  }
+  holes.forEach((h, i) => h.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    const m = up.get(i); if (!m || !alive) return;
+    clearTimeout(m.timer); up.delete(i);
+    h.classList.remove('up'); h.classList.add(m.flower ? 'oops' : 'bonk');
+    setTimeout(() => h.classList.remove('bonk', 'oops'), 300);
+    if (m.flower) { score = Math.max(0, score - 1); sfx.no(); } else { score++; tone([520, 780], { dur: 0.05, gap: 0.05, vol: 0.12, type: 'square' }); }
+    $('.wm-score', area).textContent = score;
+  }));
+  tick = setInterval(() => {
+    const left = Math.max(0, 30 - Math.floor((Date.now() - t0) / 1000));
+    $('.wm-time', area).textContent = left;
+    if (left <= 0) return finish();
+    if (Math.random() < 0.75) popUp();
+    if (lv >= 4 && Math.random() < 0.35) popUp();
+  }, Math.round(upMs * 0.55));
+  function finish() {
+    alive = false; clearInterval(tick); up.forEach((m) => clearTimeout(m.timer)); up.clear();
+    holes.forEach((h) => h.classList.remove('up'));
+    const won = score >= target;
+    const lvUp = won ? gameLevelUp('whack', 1) : false;
+    gameWin(won ? 'Awesome job!' : 'Great job!');
+    endPanel(`You got ${score} moles!${won ? '' : `<br><small>Get ${target} to reach the next level</small>`}`, '🐹', startWhack, lvUp);
+  }
+  gameCleanup = () => { alive = false; clearInterval(tick); up.forEach((m) => clearTimeout(m.timer)); };
+}
+
+/* ======================= ROLLING BALL ======================= */
+// Steer the ball to the flag. Drag your finger (the ball rolls toward it) or tilt the phone.
+// Board is 10 × 14 units. Walls are [x, y, w, h]; holes send you back to the start.
+const MAZES = [
+  { start: [5, 12], goal: [5, 2], walls: [], holes: [], stars: [[3, 7], [7, 7]] },
+  { start: [5, 12], goal: [5, 2], walls: [[0, 6.8, 7, 0.6]], holes: [], stars: [[8.5, 7.1]] },
+  { start: [1.6, 12.4], goal: [8.4, 1.6], walls: [[3, 4.4, 7, 0.6], [0, 9, 7, 0.6]], holes: [], stars: [[8.5, 11], [1.5, 6.7]] },
+  { start: [1.6, 12.4], goal: [8.4, 1.6], walls: [[3, 4.4, 7, 0.6], [0, 9, 7, 0.6]], holes: [[5, 6.8], [4.5, 11.3]], stars: [[8.5, 7], [1.5, 2.5]] },
+  { start: [1.5, 12.8], goal: [1.5, 1.4], walls: [[0, 3.4, 7.6, 0.6], [2.4, 6.9, 7.6, 0.6], [0, 10.4, 7.6, 0.6]], holes: [[8.6, 5.2], [1.2, 8.7], [5, 12.4]], stars: [[8.6, 12.5], [8.6, 1.5]] },
+  { start: [1.2, 12.8], goal: [8.8, 1.3], walls: [[2.4, 0, 0.6, 10], [4.9, 4, 0.6, 10], [7.4, 0, 0.6, 10]], holes: [[3.7, 6], [6.2, 3], [1.2, 5]], stars: [[3.7, 1.5], [6.2, 12.5]] },
+  { start: [1.2, 12.8], goal: [8.8, 1.3], walls: [[2.4, 0, 0.6, 10.4], [4.9, 3.6, 0.6, 10.4], [7.4, 0, 0.6, 10.4]], holes: [[3.7, 5], [3.7, 9], [6.2, 2.5], [6.2, 7], [8.8, 8]], stars: [[3.7, 12.6], [6.2, 1.3]] },
+  { start: [1, 13], goal: [1, 1.3], walls: [[0, 2.6, 8, 0.6], [2, 5.2, 8, 0.6], [0, 7.8, 8, 0.6], [2, 10.4, 8, 0.6]],
+    holes: [[5, 1.3], [5, 6.5], [3, 9.1], [6, 12.2], [9, 4]], stars: [[9, 9.1], [1, 6.5], [9, 1.3]] },
+];
+function startBall() {
+  const lv = GL('ball'), M = MAZES[lv - 1];
+  const area = $('#gameArea');
+  area.innerHTML = `<div class="g-msg">Roll the ball to the flag! 🚩<small>Drag your finger — the ball follows. ${M.holes.length ? 'Watch out for holes!' : ''}</small></div>
+    <div class="cv-wrap"><canvas class="game-cv ball-cv"></canvas></div>
+    <div class="color-btns"><button class="big-btn alt small" data-a="tilt">📱 Tilt to play</button></div>`;
+  say(M.holes.length ? ['Roll the ball to the flag!', 'Watch out for holes!'] : 'Roll the ball to the flag!');
+  const cv = $('.ball-cv', area);
+  let { c, w, h } = fitCanvas(cv, 380);
+  let u = Math.min(w / 10, h / 14);        // pixels per unit
+  let ox = (w - u * 10) / 2, oy = (h - u * 14) / 2;
+  const R = 0.42;                           // ball radius (units)
+  const ball = { x: M.start[0], y: M.start[1], vx: 0, vy: 0, s: 1 };
+  const stars = M.stars.map((p) => ({ x: p[0], y: p[1], got: false }));
+  let finger = null, tilt = null, alive = true, raf = 0, last = 0, falling = 0, won = false;
+  const toUnits = (e) => { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left - ox) / u, y: (e.clientY - r.top - oy) / u }; };
+  cv.addEventListener('pointerdown', (e) => { e.preventDefault(); cv.setPointerCapture && cv.setPointerCapture(e.pointerId); finger = toUnits(e); });
+  cv.addEventListener('pointermove', (e) => { if (finger) finger = toUnits(e); });
+  const lift = () => (finger = null);
+  cv.addEventListener('pointerup', lift); cv.addEventListener('pointercancel', lift);
+  const onTilt = (e) => { tilt = { x: Math.max(-30, Math.min(30, e.gamma || 0)) / 30, y: Math.max(-30, Math.min(30, (e.beta || 0) - 20)) / 30 }; };
+  area.querySelector('[data-a="tilt"]').onclick = async (ev) => {
+    try {
+      if (window.DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        const r = await DeviceOrientationEvent.requestPermission(); if (r !== 'granted') return;
+      }
+      addEventListener('deviceorientation', onTilt);
+      ev.target.textContent = '📱 Tilting on!'; ev.target.disabled = true;
+    } catch { }
+  };
+  const walls = M.walls.concat([[-1, -1, 12, 1], [-1, 14, 12, 1], [-1, -1, 1, 16], [10, -1, 1, 16]]);
+  function collide() {
+    for (const [x, y, ww, hh] of walls) {
+      const cx = Math.max(x, Math.min(ball.x, x + ww)), cy = Math.max(y, Math.min(ball.y, y + hh));
+      const dx = ball.x - cx, dy = ball.y - cy, d = Math.hypot(dx, dy);
+      if (d < R) {
+        const nx = d ? dx / d : 0, ny = d ? dy / d : -1;
+        ball.x = cx + nx * R; ball.y = cy + ny * R;
+        const vn = ball.vx * nx + ball.vy * ny;
+        if (vn < 0) { ball.vx -= 1.4 * vn * nx; ball.vy -= 1.4 * vn * ny; if (vn < -3) tone([180], { dur: 0.03, vol: 0.06 }); }
+      }
+    }
+  }
+  function step(dt) {
+    if (won) return;
+    if (falling) {
+      ball.s -= dt * 2.5;
+      if (ball.s <= 0) { falling = 0; ball.x = M.start[0]; ball.y = M.start[1]; ball.vx = ball.vy = 0; ball.s = 1; }
+      return;
+    }
+    let ax = 0, ay = 0;
+    if (finger) { ax = (finger.x - ball.x) * 9; ay = (finger.y - ball.y) * 9; }
+    else if (tilt) { ax = tilt.x * 22; ay = tilt.y * 22; }
+    const amax = 30, am = Math.hypot(ax, ay); if (am > amax) { ax *= amax / am; ay *= amax / am; }
+    ball.vx = (ball.vx + ax * dt) * (1 - 2.2 * dt); ball.vy = (ball.vy + ay * dt) * (1 - 2.2 * dt);
+    const vmax = 9, vm = Math.hypot(ball.vx, ball.vy); if (vm > vmax) { ball.vx *= vmax / vm; ball.vy *= vmax / vm; }
+    // small sub-steps so the ball never slips through a thin wall
+    const n = Math.ceil(vm * dt / 0.15) || 1;
+    for (let k = 0; k < n; k++) { ball.x += ball.vx * dt / n; ball.y += ball.vy * dt / n; collide(); }
+    for (const s of stars) if (!s.got && Math.hypot(s.x - ball.x, s.y - ball.y) < 0.75) { s.got = true; tone([880, 1320], { dur: 0.06, gap: 0.06, vol: 0.1 }); }
+    for (const [hx, hy] of M.holes) if (Math.hypot(hx - ball.x, hy - ball.y) < 0.45) { falling = 1; sfx.no(); say('Oops! Try again.'); }
+    if (Math.hypot(M.goal[0] - ball.x, M.goal[1] - ball.y) < 0.6) win();
+  }
+  function draw() {
+    c.clearRect(0, 0, w, h);
+    c.fillStyle = '#f3d9b1'; c.fillRect(ox, oy, u * 10, u * 14);
+    c.strokeStyle = '#e0bd8a'; c.lineWidth = 1;
+    for (let k = 1; k < 14; k++) { c.beginPath(); c.moveTo(ox, oy + k * u); c.lineTo(ox + u * 10, oy + k * u); c.stroke(); }
+    c.fillStyle = '#8d5a2b';
+    for (const [x, y, ww, hh] of M.walls) { c.beginPath(); c.roundRect ? c.roundRect(ox + x * u, oy + y * u, ww * u, hh * u, 4) : c.rect(ox + x * u, oy + y * u, ww * u, hh * u); c.fill(); }
+    for (const [hx, hy] of M.holes) { c.fillStyle = '#2b2140'; c.beginPath(); c.arc(ox + hx * u, oy + hy * u, u * 0.5, 0, 7); c.fill(); c.strokeStyle = '#5c4033'; c.lineWidth = 3; c.stroke(); }
+    // goal
+    const gx = ox + M.goal[0] * u, gy = oy + M.goal[1] * u;
+    c.fillStyle = '#69db7c'; c.beginPath(); c.arc(gx, gy, u * 0.62, 0, 7); c.fill();
+    c.strokeStyle = '#2f9e44'; c.lineWidth = 3; c.stroke();
+    c.font = `${u * 0.9}px system-ui`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('🚩', gx + u * 0.15, gy - u * 0.15);
+    for (const s of stars) if (!s.got) c.fillText('⭐', ox + s.x * u, oy + s.y * u);
+    if (finger) { c.fillStyle = '#ffffff66'; c.beginPath(); c.arc(ox + finger.x * u, oy + finger.y * u, u * 0.45, 0, 7); c.fill(); }
+    // ball
+    const bx = ox + ball.x * u, by = oy + ball.y * u, br = R * u * ball.s;
+    if (br > 0) {
+      const g = c.createRadialGradient(bx - br * 0.35, by - br * 0.35, br * 0.1, bx, by, br);
+      g.addColorStop(0, '#d0ebff'); g.addColorStop(0.4, '#4dabf7'); g.addColorStop(1, '#1864ab');
+      c.fillStyle = '#0003'; c.beginPath(); c.ellipse(bx + 3, by + 4, br, br * 0.9, 0, 0, 7); c.fill();
+      c.fillStyle = g; c.beginPath(); c.arc(bx, by, br, 0, 7); c.fill();
+    }
+  }
+  function frame(t) {
+    if (!alive) return;
+    const dt = last ? Math.min(0.033, (t - last) / 1000) : 0; last = t;
+    step(dt); draw();
+    raf = requestAnimationFrame(frame);
+  }
+  function win() {
+    won = true;
+    const got = stars.filter((s) => s.got).length;
+    const up = gameLevelUp('ball', 1);
+    gameWin(pick(['You did it!', 'Awesome job!', 'Fantastic!']));
+    setTimeout(() => { alive = false; endPanel(`You reached the flag!<br><small>⭐ ${got} of ${stars.length} stars</small>`, '🔵', startBall, up); }, 900);
+  }
+  const onResize = () => { ({ c, w, h } = fitCanvas(cv, 380)); u = Math.min(w / 10, h / 14); ox = (w - u * 10) / 2; oy = (h - u * 14) / 2; };
+  addEventListener('resize', onResize);
+  raf = requestAnimationFrame(frame);
+  gameCleanup = () => { alive = false; cancelAnimationFrame(raf); removeEventListener('resize', onResize); removeEventListener('deviceorientation', onTilt); };
 }
 
 /* ======================= CONNECT FOUR ======================= */
@@ -330,7 +557,7 @@ function startC4() {
     const line = lineAt(r, c, who);
     if (line) {
       over = true; line.forEach(([rr, cc]) => cell(rr, cc).classList.add('win'));
-      if (who === ME) { gameWin('You win!'); setTimeout(() => endPanel('Four in a row! You win!', '🏆', startC4), 1400); }
+      if (who === ME) { const up = gameLevelUp('c4', 2); gameWin('You win!'); setTimeout(() => endPanel('Four in a row! You win!', '🏆', startC4, up), 1400); }
       else { say('Good game! Try again!'); setTimeout(() => endPanel('Robot got four this time!', '🤖', startC4), 1400); }
       return true;
     }
@@ -340,8 +567,9 @@ function startC4() {
   function botCol() {
     const cols = [...Array(C7).keys()].filter((c) => dropRow(c) >= 0);
     const tryWin = (who) => cols.find((c) => { const r = dropRow(c); g[r][c] = who; const w = lineAt(r, c, who); g[r][c] = 0; return w; });
-    let c = tryWin(BOT);
-    if (c == null && Math.random() < 0.75) c = tryWin(ME);   // usually blocks, sometimes misses (it's a kid's game)
+    const lv = GL('c4');   // 1: playful robot · 2: blocks often · 3: careful robot
+    let c = Math.random() < [0.6, 0.95, 1][lv - 1] ? tryWin(BOT) : null;
+    if (c == null && Math.random() < [0.35, 0.75, 0.95][lv - 1]) c = tryWin(ME);
     if (c == null) {
       // avoid giving the child an easy setup only half the time; prefer the middle
       const weights = cols.map((cc) => 4 - Math.abs(3 - cc) + Math.random() * 3);
@@ -697,7 +925,7 @@ function puzzleFills(p) {
   if (mine && Object.keys(mine).length > 2) return mine;
   const f = {}; for (let k = 0; k < 40; k++) f[k] = AUTO_FILL[k % AUTO_FILL.length]; return f;
 }
-const puzzleSize = () => { const n = state.puzzleWins || 0; return n < 3 ? 2 : n < 7 ? 3 : 4; };
+const puzzleSize = () => GL('puzzle') + 1;   // level 1 = 2×2 … level 5 = 6×6
 
 function startPuzzleMenu() {
   const area = $('#gameArea');
@@ -737,10 +965,9 @@ function startPuzzle(p) {
     pickA = null; draw();
     if (order.every((v, j) => v === j)) {
       board.classList.add('solved');
-      const before = n;
-      state.puzzleWins = (state.puzzleWins || 0) + 1; save();
+      const up = gameLevelUp('puzzle', 1);
       gameWin(pick(['Awesome job!', 'You did it!', 'Fantastic!']));
-      setTimeout(() => endPanel(puzzleSize() > before ? `You did it! Next: ${puzzleSize()}×${puzzleSize()} puzzles` : 'You did it!', '🧩', startPuzzleMenu), 1300);
+      setTimeout(() => endPanel(up ? `You did it! Next: ${puzzleSize()}×${puzzleSize()} puzzles` : 'You did it!', '🧩', startPuzzleMenu, up), 1300);
     }
   });
   draw();
@@ -809,3 +1036,4 @@ function startMoves() {
 $('#playBanner').onclick = () => { sfx.tap(); openPlayZone(); };
 $('#playEarned').onclick = () => { sfx.tap(); openPlayZone(); };
 renderPlayBanner();
+renderPZ();

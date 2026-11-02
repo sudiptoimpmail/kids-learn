@@ -36,18 +36,20 @@ A flash-card learning game for Pre-K through 2nd grade, built as an installable 
 **Reading hints** break words into syllables (al · li · ga · tor, in colors, read aloud slowly); one-syllable words split into sound chunks (c · at, fr · og). Sentence hints show every long word broken into syllables while the voice reads along.
 
 ## 🎮 Play Zone (reward games)
-Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (default: every 2 finished learning rounds earn a 3-minute break) or **Minutes every hour** (free play for up to 15 minutes in each clock hour — only time actually spent playing counts). Or set "Always open". A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
+Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (default: every 2 finished learning rounds earn a 3-minute break) or **Minutes every hour** (free play for up to 15 minutes in each clock hour — only time actually spent playing counts). Or set "Always open". Every game shows its **level** (badge on the tile) and winning moves her up. A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
 
 | Game | Notes |
 |---|---|
-| ⭕ Tic-Tac-Toe | 🦄 vs a friendly 🤖 that sometimes misses a block |
-| 🃏 Memory Match | 3 pairs → 4 → 6 → 8 as she plays more |
-| 🎈 Pop the Balloons | 30 seconds, ⭐ balloons are worth 3 |
+| ⭕ Tic-Tac-Toe | 🦄 vs 🤖 — 3 levels, the robot gets more careful (2 wins per level) |
+| 🃏 Memory Match | 5 levels: 3 → 4 → 6 → 8 → 10 pairs |
+| 🎈 Pop the Balloons | 30 seconds, 5 levels (faster, smaller balloons); pop the target number to level up; ⭐ balloons are worth 3 |
 | 🖍️ Coloring Book | 12 pictures in 3 levels — finishing pictures unlocks harder ones |
-| 🔴 Connect Four | vs the robot |
+| 🔴 Connect Four | vs the robot — 3 levels |
 | 🔢 Sudoku | Pictures, Numbers, or **Word Sudoku** (letters of a spelling word). Level 1 4×4 with 4 blanks → level 5 6×6 with 20 blanks; every 2 wins makes it harder. Every puzzle has exactly one solution. 💡 Hint fills a square |
 | 🤸 Silly Moves | Roll the dice → act it out for 10 seconds: hop like a bunny, walk like a robot, make your silliest face… 40 moves |
-| 🧩 Picture Puzzle | Swap tiles to rebuild a picture: 2×2 → 3×3 → 4×4. Uses her own colored pictures when she has them |
+| 🧩 Picture Puzzle | Swap tiles to rebuild a picture — 5 levels: 2×2 → 3×3 → 4×4 → 5×5 → 6×6. Uses her own colored pictures when she has them |
+| 🔵 Rolling Ball | Drag a finger (the ball rolls toward it) or tilt the phone to roll the ball to the 🚩 — 8 mazes: open field → walls → zig-zags → holes to avoid; collect ⭐ |
+| 🐹 Whack-a-Mole | 30 seconds, 5 levels (faster moles, more at once, don't tap the 🌸 from level 3) |
 
 ## Turn on hosting (one time)
 Repo **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main` / `(root)` → Save**.

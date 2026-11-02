@@ -652,3 +652,22 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
   .body-fig, .organ-fig { width: 320px; } .hint-mini .body-fig, .hint-mini .organ-fig { width: 170px; }
   .mv-card { width: 440px; } .mv-text { font-size: 34px; } .mv-emoji { font-size: 160px; }
 }
+
+/* ---------- game levels ---------- */
+.pz-tile .lv { color: var(--c); }
+.g-lv { font-size: 13px; background: #fff3bf; color: #e67700; padding: 3px 8px; border-radius: 999px; vertical-align: middle; }
+.ep-up { margin-top: 8px; font-size: 20px; color: #2f9e44; }
+
+/* ---------- canvas games ---------- */
+.cv-wrap { width: 100%; display: flex; justify-content: center; }
+.game-cv { display: block; border-radius: 22px; touch-action: none; box-shadow: 0 6px 0 #0000001a; }
+.ball-cv { background: #e9d3b0; }
+
+/* ---------- whack-a-mole ---------- */
+.wm-field { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; width: min(380px, 92vw); padding: 16px; background: #8ce99a; border-radius: 26px; box-shadow: 0 8px 0 #51cf66; }
+.wm-hole { aspect-ratio: 1; border-radius: 50%; background: radial-gradient(ellipse at 50% 70%, #5c3d2e 55%, #7b5137 56%); position: relative; overflow: hidden; touch-action: none; }
+.wm-pop { position: absolute; left: 0; right: 0; bottom: -80%; font-size: min(64px, 15vw); transition: bottom .16s ease-out; pointer-events: none; }
+.wm-hole.up .wm-pop { bottom: 8%; }
+.wm-hole.bonk { animation: bounce .3s; background: radial-gradient(ellipse at 50% 70%, #fcc419 55%, #7b5137 56%); }
+.wm-hole.oops { animation: shake .3s; background: radial-gradient(ellipse at 50% 70%, #ff8787 55%, #7b5137 56%); }
+@media (min-width: 700px) { .wm-field { width: 540px; } .wm-pop { font-size: 96px; } .g-lv { font-size: 16px; } }
