@@ -255,7 +255,7 @@ async function mountBody3D(q) {
   if (R.qs[R.i] !== q) return;                     // moved on while loading
   dropBody3D();
   B3D.view = B3D.mod.mount(host, {
-    layer: q.body3d.layer, highlight: q.body3d.highlight || null, tappable: q.body3d.tappable,
+    layer: q.body3d.layer, highlight: q.body3d.highlight || null, focus: q.answer, tappable: q.body3d.tappable,
     onTap: q.body3d.tap ? (names) => { if (R.locked) return; const el = document.createElement('i'); choose(q, names.includes(q.answer) ? q.answer : names[0], el); } : null,
   });
 }

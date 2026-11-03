@@ -1128,8 +1128,9 @@ const INNER = [
   ['kidneys', 'organs', 3], ['jaw', 'bones', 3], ['collarbone', 'bones', 3], ['hip bone', 'bones', 3], ['thigh bone', 'bones', 3], ['kneecap', 'bones', 3], ['shin bone', 'bones', 3],
   ['arteries', 'vessels', 3], ['veins', 'vessels', 3],
   ['arm bone', 'bones', 4], ['forearm bones', 'bones', 4], ['hand bones', 'bones', 4], ['foot bones', 'bones', 4],
+  ['shoulder blade', 'bones', 4], ['bladder', 'organs', 4], ['pancreas', 'organs', 4],
 ];
-const INNER_LABEL = { spine: 'backbone (spine)', 'thigh bone': 'thigh bone (femur)', 'shin bone': 'shin bone (tibia)', 'hip bone': 'hip bone (pelvis)', 'arm bone': 'arm bone (humerus)', skull: 'skull', arteries: 'arteries (red)', veins: 'veins (blue)' };
+const INNER_LABEL = { spine: 'backbone (spine)', 'thigh bone': 'thigh bone (femur)', 'shin bone': 'shin bone (tibia)', 'hip bone': 'hip bone (pelvis)', 'arm bone': 'arm bone (humerus)', 'shoulder blade': 'shoulder blade (scapula)', skull: 'skull', arteries: 'arteries (red)', veins: 'veins (blue)' };
 const innerName = (n, level) => (level >= 3 && INNER_LABEL[n] ? INNER_LABEL[n] : n === 'spine' ? 'backbone' : n);
 const ANATOMY_MORE = [
   [3, 'Which tubes carry blood away from the heart?', 'arteries', 'veins', 'nerves', 'bones'],

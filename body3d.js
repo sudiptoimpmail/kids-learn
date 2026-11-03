@@ -1,222 +1,284 @@
 /* =========================================================
    3D body for "Body Parts" and "Inside My Body"
-   A friendly kid figure built from smooth shapes, with layers:
-     skin (clothes on) · bones (x-ray) · organs · vessels (arteries & veins)
-   Drag to spin, tap to choose. Every part has a big invisible tap zone,
-   and a tap that misses still picks the nearest part on screen.
+   A real human anatomy model (open-anatomy-3d: BodyParts3D, HuBMAP, MakeHuman — CC BY 4.0),
+   prepared for kids: the outside wears a t-shirt, shorts and shoes; reproductive anatomy is left out.
+   Layers: skin (clothes on) · organs · bones · vessels (arteries & veins), seen through an x-ray skin.
+   Drag to spin, tap to choose. The camera zooms to the part being asked about, and taps are generous.
    ========================================================= */
 import * as THREE from './vendor/three.module.min.js';
+import { GLTFLoader } from './vendor/GLTFLoader.js';
+import { MeshoptDecoder } from './vendor/meshopt_decoder.module.js';
 
-let R = null;                 // the one shared renderer/scene (reused between questions)
+export const ATTRIBUTION = '3D anatomy: BodyParts3D © The Database Center for Life Science (CC BY 4.0); Human Reference Atlas, HuBMAP (CC BY 4.0); body: MakeHuman (CC0); modified by open-anatomy-3d (CC BY 4.0) and for this app (clothes, lungs, parts removed).';
+
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const copyT = (o, m) => { o.position.copy(m.position); o.quaternion.copy(m.quaternion); o.scale.copy(m.scale); };
+let R = null, loading = null;
 
-function build() {
-  const canvas = document.createElement('canvas');
-  canvas.className = 'b3d-cv';
+// mesh name → the part name used by the questions
+const MESH_PART = {
+  brain: 'brain', cerebellum: 'brain', brainstem: 'brain', heart: 'heart',
+  lung_l: 'lungs', lung_r: 'lungs', airway_l: 'lungs', airway_r: 'lungs', bronchi: 'lungs', trachea: 'lungs',
+  stomach: 'stomach', esophagus: 'stomach', liver: 'liver', gallbladder: 'liver', small_intestine: 'intestines', colon: 'intestines',
+  kidney_l: 'kidneys', kidney_r: 'kidneys', bladder: 'bladder', pancreas: 'pancreas', spleen: 'spleen',
+  skull: 'skull', mandible: 'jaw', teeth: 'jaw', spine_cervical: 'spine', spine_thoracic: 'spine', spine_lumbar: 'spine',
+  ribs_l: 'ribs', ribs_r: 'ribs', sternum: 'ribs', clavicle_l: 'collarbone', clavicle_r: 'collarbone', scapula_l: 'shoulder blade', scapula_r: 'shoulder blade',
+  pelvis: 'hip bone', femur_l: 'thigh bone', femur_r: 'thigh bone', patella_l: 'kneecap', patella_r: 'kneecap', lower_leg_l: 'shin bone', lower_leg_r: 'shin bone',
+  humerus_l: 'arm bone', humerus_r: 'arm bone', forearm_l: 'forearm bones', forearm_r: 'forearm bones', hand_l: 'hand bones', hand_r: 'hand bones', foot_l: 'foot bones', foot_r: 'foot bones',
+  pulmonary_vessels: 'lung vessels',
+};
+const vesselPart = (n) => (/^(veins|vena)/.test(n) ? 'veins' : /^(arter|aorta|carotid|coronary)/.test(n) ? 'arteries' : null);
+const LOOK = {   // [color, roughness, clearcoat, opacity]
+  brain: ['#eba8aa', 0.55, 0.35], cerebellum: ['#d98d96', 0.55, 0.35], brainstem: ['#e0aa9c', 0.6, 0.3], heart: ['#a51d2a', 0.42, 0.8],
+  lung_l: ['#f2a0ad', 0.75, 0.2, 0.84], lung_r: ['#f2a0ad', 0.75, 0.2, 0.84], airway_l: ['#c96b82', 0.6, 0.2], airway_r: ['#c96b82', 0.6, 0.2],
+  bronchi: ['#ead2c4', 0.6, 0.3], trachea: ['#ead2c4', 0.6, 0.3], stomach: ['#e98f98', 0.5, 0.6], esophagus: ['#d77c88', 0.5, 0.5],
+  liver: ['#7a1e22', 0.4, 0.85], gallbladder: ['#5b8a3a', 0.4, 0.8], small_intestine: ['#f2a493', 0.5, 0.6], colon: ['#d98a72', 0.55, 0.5],
+  kidney_l: ['#8a2a2c', 0.45, 0.7], kidney_r: ['#8a2a2c', 0.45, 0.7], bladder: ['#e8c271', 0.5, 0.5], pancreas: ['#f0c07a', 0.6, 0.4], spleen: ['#6e2346', 0.45, 0.6],
+  teeth: ['#fbfaf2', 0.3, 0.6], pulmonary_vessels: ['#8f52c4', 0.45, 0.5],
+};
+const BONE = ['#eee3c8', 0.55, 0.15], ART = ['#d42b2b', 0.4, 0.6], VEIN = ['#2f62d6', 0.4, 0.6];
+const CLOTHES = { shirt: '#4dabf7', shorts: '#7048e8', shoes: '#f03e3e', hair: '#4a2a17' };
+const PARENT = { eyes: 'head', ears: 'head', nose: 'head', mouth: 'head', chin: 'head', cheeks: 'head', eyebrows: 'head', hair: 'head',
+  fingers: 'hands', wrists: 'arms', elbows: 'arms', knees: 'legs', ankles: 'legs', shoulders: 'arms' };
+const FACE = new Set(['head', 'hair', 'eyes', 'ears', 'nose', 'mouth', 'chin', 'cheeks', 'eyebrows', 'skull', 'jaw', 'brain']);
+const TORSO = new Set(['neck', 'shoulders', 'chest', 'tummy', 'heart', 'lungs', 'stomach', 'liver', 'intestines', 'kidneys', 'ribs', 'spine', 'collarbone', 'hip bone']);
+
+function eyeTexture() {
+  const c = document.createElement('canvas'); c.width = 256; c.height = 128;
+  const g = c.getContext('2d');
+  g.fillStyle = '#f6f3ee'; g.fillRect(0, 0, 256, 128);
+  const cx = 64, cy = 64;
+  const ir = g.createRadialGradient(cx, cy, 2, cx, cy, 22); ir.addColorStop(0, '#2a1608'); ir.addColorStop(0.35, '#3d230d'); ir.addColorStop(0.8, '#7a4a20'); ir.addColorStop(1, '#3a210c');
+  g.fillStyle = ir; g.beginPath(); g.ellipse(cx, cy, 13, 22, 0, 0, Math.PI * 2); g.fill();
+  g.fillStyle = '#080808'; g.beginPath(); g.ellipse(cx, cy, 5.5, 9.5, 0, 0, Math.PI * 2); g.fill();
+  g.fillStyle = '#ffffffdd'; g.beginPath(); g.ellipse(cx - 4, cy - 7, 2.5, 4, 0, 0, Math.PI * 2); g.fill();
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+function ponytail() {
+  const curve = new THREE.CatmullRomCurve3([V(0, 1.575, -0.085), V(0, 1.555, -0.125), V(0, 1.49, -0.14), V(0.004, 1.42, -0.125), V(0.006, 1.37, -0.11)]);
+  const N = 40, M = 14, pos = [], idx = [];
+  const fr = curve.computeFrenetFrames(N, false);
+  for (let i = 0; i <= N; i++) {
+    const t = i / N, p = curve.getPointAt(t), r = 0.026 * (t < 0.12 ? 0.7 + t * 2.5 : 1 - 0.75 * Math.pow((t - 0.12) / 0.88, 1.4));
+    for (let j = 0; j <= M; j++) {
+      const a = j / M * Math.PI * 2, n = fr.normals[i].clone().multiplyScalar(Math.cos(a)).add(fr.binormals[i].clone().multiplyScalar(Math.sin(a)));
+      pos.push(p.x + n.x * r, p.y + n.y * r, p.z + n.z * r);
+    }
+  }
+  for (let i = 0; i < N; i++) for (let j = 0; j < M; j++) { const a = i * (M + 1) + j, b = a + M + 1; idx.push(a, b, a + 1, b, b + 1, a + 1); }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); g.computeVertexNormals();
+  return g;
+}
+// see-through "x-ray" skin: bright at the edges, clear in the middle
+const ghostMat = () => new THREE.ShaderMaterial({
+  transparent: true, depthWrite: false,
+  uniforms: { col: { value: new THREE.Color('#8fd3ff') } },
+  vertexShader: 'varying vec3 vN; varying vec3 vV; void main(){ vec4 mv = modelViewMatrix * vec4(position,1.0); vN = normalize(normalMatrix*normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix*mv; }',
+  fragmentShader: 'uniform vec3 col; varying vec3 vN; varying vec3 vV; void main(){ float f = 1.0 - abs(dot(normalize(vN), normalize(vV))); gl_FragColor = vec4(col, 0.05 + 0.55*pow(f, 2.2)); }',
+});
+
+async function build() {
+  const gltf = await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync(new URL('./vendor/body.glb', import.meta.url).href);
+  const canvas = document.createElement('canvas'); canvas.className = 'b3d-cv';
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(28, 0.7, 0.1, 50);
-  camera.position.set(0, 2.1, 9.2); camera.lookAt(0, 2.05, 0);
-  scene.add(new THREE.HemisphereLight('#ffffff', '#8a7f99', 1.25));
-  const key = new THREE.DirectionalLight('#ffffff', 1.5); key.position.set(3, 6, 5); scene.add(key);
-  const rim = new THREE.DirectionalLight('#b4d3ff', 0.7); rim.position.set(-4, 3, -4); scene.add(rim);
+  const camera = new THREE.PerspectiveCamera(26, 0.7, 0.05, 20);
+  scene.add(new THREE.HemisphereLight('#ffffff', '#6b6080', 1.5));
+  const key = new THREE.DirectionalLight('#fff6ec', 2.2); key.position.set(1.5, 3, 3); scene.add(key);
+  const fill = new THREE.DirectionalLight('#dbe9ff', 0.9); fill.position.set(-2, 1, 2); scene.add(fill);
+  const rim = new THREE.DirectionalLight('#bfe0ff', 1.0); rim.position.set(-1, 2, -3); scene.add(rim);
 
   const body = new THREE.Group(); scene.add(body);
-  const parts = {};           // name → { meshes:[], proxy, center, layer, parent }
-  const layers = { skin: new THREE.Group(), bones: new THREE.Group(), organs: new THREE.Group(), vessels: new THREE.Group() };
-  Object.values(layers).forEach((g) => body.add(g));
-  const M = (color, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.55, metalness: 0.02, ...extra });
-  const SKIN = '#f5c6a0', SHIRT = '#4dabf7', SHORTS = '#7950f2', SHOE = '#f03e3e', BONE = '#fff4dc';
-  const add = (name, layer, mesh, opt = {}) => {
-    layers[layer].add(mesh);
-    const p = parts[name] || (parts[name] = { meshes: [], layer, parent: opt.parent || null, centers: [] });
-    p.meshes.push(mesh);
-    mesh.userData.part = name;
-    const c = new THREE.Vector3(); mesh.getWorldPosition(c); p.centers.push(c);
-    // big invisible tap zone around small parts
-    const hr = opt.hit || 0;
-    if (hr) { const h = new THREE.Mesh(new THREE.SphereGeometry(hr, 10, 8), new THREE.MeshBasicMaterial()); h.visible = false; h.position.copy(mesh.position); h.userData.part = name; h.userData.proxy = true; layers[layer].add(h); p.meshes.push(h); }
-    return mesh;
-  };
-  const sph = (r, color, pos, scale) => { const m = new THREE.Mesh(new THREE.SphereGeometry(r, 32, 24), M(color)); m.position.copy(pos); if (scale) m.scale.set(...scale); return m; };
-  const limb = (a, b, r, color) => {      // a capsule from point a to point b
-    const len = a.distanceTo(b), m = new THREE.Mesh(new THREE.CapsuleGeometry(r, Math.max(0.01, len), 8, 20), M(color));
-    m.position.copy(a).add(b).multiplyScalar(0.5);
-    m.quaternion.setFromUnitVectors(V(0, 1, 0), b.clone().sub(a).normalize());
-    return m;
-  };
-  const tube = (pts, r, color) => new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 48, r, 8, false), M(color, { roughness: 0.4 }));
-
-  /* ---------------- skin layer: the kid ---------------- */
-  const head = V(0, 3.42, 0);
-  add('head', 'skin', sph(0.46, SKIN, head));
-  const hair = new THREE.Mesh(new THREE.SphereGeometry(0.49, 32, 16, 0, Math.PI * 2, 0, Math.PI * 0.5), M('#6b4226')); hair.position.copy(head).add(V(0, 0.02, -0.03)); hair.rotation.x = -0.25;
-  add('hair', 'skin', hair, { parent: 'head', hit: 0.0 });
-  for (const s of [-1, 1]) {
-    add('eyes', 'skin', sph(0.075, '#ffffff', V(s * 0.16, 3.47, 0.4)), { parent: 'head', hit: 0.17 });
-    add('eyes', 'skin', sph(0.045, '#2b2140', V(s * 0.16, 3.47, 0.465)), { parent: 'head' });
-    const brow = limb(V(s * 0.08, 3.6, 0.42), V(s * 0.24, 3.61, 0.39), 0.022, '#6b4226'); add('eyebrows', 'skin', brow, { parent: 'head', hit: 0.13 });
-    add('ears', 'skin', sph(0.1, SKIN, V(s * 0.47, 3.42, 0), [0.6, 1, 0.9]), { parent: 'head', hit: 0.2 });
-    add('cheeks', 'skin', sph(0.08, '#ffa8a8', V(s * 0.25, 3.32, 0.37), [1, 0.8, 0.5]), { parent: 'head', hit: 0.14 });
+  const layers = {}; const parts = {}; const skinMeshes = []; let ghost = null;
+  const partNames = gltf.scene.userData.parts || [];
+  const addPart = (name, mesh, layer) => { const p = parts[name] || (parts[name] = { meshes: [], layer, center: null }); p.meshes.push(mesh); mesh.userData.part = name; };
+  for (const g of [...gltf.scene.children]) {
+    const lname = { outside: 'skin', skeleton: 'bones', organs: 'organs', vessels: 'vessels' }[g.name.replace(/_\d+$/, '')];
+    if (!lname) continue;
+    layers[lname] = g; body.add(g);
+    for (const m of [...g.children]) {
+      if (!m.isMesh) continue;
+      m.name = m.name.replace(/_\d+$/, '');   // the loader adds _1 to names it has seen before
+      if (!m.geometry.getAttribute('normal')) m.geometry.computeVertexNormals();
+      if (lname === 'skin') {
+        const lab = m.geometry.getAttribute('_part');
+        if (m.name === 'skin') {
+          // skin tone with rosy lips and cheeks, dark eyebrows
+          const n = m.geometry.getAttribute('position').count, col = new Float32Array(n * 3);
+          const base = new THREE.Color('#e9b994'), tint = { mouth: ['#c9746f', 0.75], cheeks: ['#eda593', 0.45], eyebrows: ['#6b4428', 0.55] }, c = new THREE.Color();
+          for (let i = 0; i < n; i++) { const t = tint[partNames[lab ? lab.getX(i) : 0]]; c.copy(base); if (t) c.lerp(new THREE.Color(t[0]), t[1]); col.set([c.r, c.g, c.b], i * 3); }
+          m.geometry.setAttribute('color', new THREE.BufferAttribute(col, 3));
+          m.material = new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: 0.62, sheen: 0.4, sheenColor: new THREE.Color('#ffcfb8') });
+          ghost = new THREE.Mesh(m.geometry, ghostMat()); ghost.visible = false; copyT(ghost, m); body.add(ghost);
+        } else {
+          m.material = new THREE.MeshStandardMaterial({ color: CLOTHES[m.name] || '#999', roughness: m.name === 'hair' ? 0.5 : 0.85, side: THREE.DoubleSide });
+        }
+        skinMeshes.push(m);
+        continue;
+      }
+      const look = LOOK[m.name] || (lname === 'bones' ? BONE : vesselPart(m.name) === 'veins' ? VEIN : vesselPart(m.name) === 'arteries' ? ART : ['#c88', 0.6, 0.3]);
+      m.material = new THREE.MeshPhysicalMaterial({ color: look[0], roughness: look[1], clearcoat: look[2] || 0, clearcoatRoughness: 0.35,
+        transparent: !!look[3], opacity: look[3] || 1, depthWrite: !look[3] });
+      if (look[3]) m.renderOrder = 2;
+      const pn = MESH_PART[m.name] || vesselPart(m.name);
+      if (pn) addPart(pn, m, lname);
+    }
   }
-  add('nose', 'skin', sph(0.06, '#f4b183', V(0, 3.37, 0.47)), { parent: 'head', hit: 0.13 });
-  const mouth = new THREE.Mesh(new THREE.TorusGeometry(0.11, 0.025, 8, 24, Math.PI), M('#e03131')); mouth.position.set(0, 3.25, 0.43); mouth.rotation.z = Math.PI; add('mouth', 'skin', mouth, { parent: 'head', hit: 0.14 });
-  add('chin', 'skin', sph(0.09, SKIN, V(0, 3.06, 0.33), [1, 0.6, 0.6]), { parent: 'head', hit: 0.14 });
-  add('neck', 'skin', limb(V(0, 2.92, 0), V(0, 3.06, 0), 0.13, SKIN), { hit: 0.18 });
-  add('chest', 'skin', limb(V(0, 2.55, 0), V(0, 2.72, 0), 0.4, SHIRT));
-  add('tummy', 'skin', limb(V(0, 2.08, 0), V(0, 2.28, 0), 0.38, '#74c0fc'));
-  add('tummy', 'skin', sph(0.025, '#1971c2', V(0, 2.12, 0.38)));
-  add('hips', 'skin', limb(V(-0.12, 1.82, 0), V(0.12, 1.82, 0), 0.36, SHORTS));
-  const sh = [], el = [], wr = [], hd = [];
-  for (const s of [-1, 1]) {
-    const S = V(s * 0.5, 2.82, 0), E = V(s * 0.6, 2.27, 0.03), W = V(s * 0.64, 1.75, 0.07), H = V(s * 0.66, 1.58, 0.09);
-    sh.push(S); el.push(E); wr.push(W); hd.push(H);
-    add('shoulders', 'skin', sph(0.17, '#339af0', S), { hit: 0.22 });
-    add('arms', 'skin', limb(S, E.clone().add(V(0, 0.08, 0)), 0.12, SHIRT), { hit: 0 });
-    add('arms', 'skin', limb(E, W, 0.1, SKIN));
-    add('elbows', 'skin', sph(0.115, '#f0b98f', E), { parent: 'arms', hit: 0.2 });
-    const wrist = new THREE.Mesh(new THREE.TorusGeometry(0.095, 0.03, 8, 20), M('#e8a77c')); wrist.position.copy(W); wrist.rotation.x = Math.PI / 2;
-    add('wrists', 'skin', wrist, { parent: 'arms', hit: 0.16 });
-    add('hands', 'skin', sph(0.13, SKIN, H, [0.8, 1.05, 0.6]), { parent: 'arms', hit: 0.2 });
-    for (let f = 0; f < 4; f++) add('fingers', 'skin', limb(V(s * (0.6 + f * 0.04), 1.48, 0.1), V(s * (0.6 + f * 0.045), 1.36, 0.11), 0.022, SKIN), { parent: 'hands', hit: f === 1 ? 0.12 : 0 });
-    add('fingers', 'skin', limb(V(s * 0.56, 1.6, 0.14), V(s * 0.52, 1.52, 0.17), 0.026, SKIN), { parent: 'hands' });
-    const Hp = V(s * 0.2, 1.7, 0), K = V(s * 0.21, 0.98, 0.03), A = V(s * 0.21, 0.3, 0);
-    add('legs', 'skin', limb(Hp, K.clone().add(V(0, 0.08, 0)), 0.15, SKIN));
-    add('legs', 'skin', limb(Hp, Hp.clone().add(V(0, -0.22, 0)), 0.17, SHORTS));
-    add('knees', 'skin', sph(0.14, '#f0b98f', K), { parent: 'legs', hit: 0.22 });
-    add('legs', 'skin', limb(K, A, 0.12, SKIN));
-    add('ankles', 'skin', sph(0.09, '#e8a77c', A), { parent: 'legs', hit: 0.16 });
-    add('feet', 'skin', sph(0.15, SHOE, V(s * 0.22, 0.13, 0.12), [0.95, 0.6, 1.6]), { hit: 0.22 });
+  // eyeballs and a ponytail on the outside
+  const eyeTex = eyeTexture();
+  for (const e of gltf.scene.userData.eyes || []) {
+    const s = new THREE.Mesh(new THREE.SphereGeometry(e.r * 0.94, 32, 20), new THREE.MeshPhysicalMaterial({ map: eyeTex, roughness: 0.15, clearcoat: 1 }));
+    s.position.set(e.c[0], e.c[1], e.c[2] + 0.001); s.rotation.y = e.c[0] > 0 ? 0.12 : -0.12; s.name = 'eye'; layers.skin.add(s); skinMeshes.push(s);
   }
+  const tail = new THREE.Mesh(ponytail(), new THREE.MeshStandardMaterial({ color: CLOTHES.hair, roughness: 0.5 })); tail.name = 'ponytail'; layers.skin.add(tail); skinMeshes.push(tail);
+  const tie = new THREE.Mesh(new THREE.TorusGeometry(0.017, 0.006, 10, 24), new THREE.MeshStandardMaterial({ color: '#f783ac', roughness: 0.4 }));
+  tie.position.set(0, 1.556, -0.124); tie.rotation.x = 1.1; layers.skin.add(tie);
+  // the heart also shows with the blood vessels
+  const heart2 = parts.heart && parts.heart.meshes[0].clone(); if (heart2) { heart2.userData = {}; layers.vessels.add(heart2); }
 
-  /* ---------------- bones (x-ray) ---------------- */
-  const B = (r) => M(BONE, { roughness: 0.45 });
-  add('skull', 'bones', sph(0.39, BONE, V(0, 3.46, 0.0), [1, 1.05, 1.05]));
-  const jaw = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.05, 10, 24, Math.PI), B()); jaw.position.set(0, 3.18, 0.12); jaw.rotation.set(Math.PI / 2 + 0.3, 0, Math.PI); add('jaw', 'bones', jaw, { hit: 0.18 });
-  for (let k = 0; k < 14; k++) add('spine', 'bones', new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.07, 12), B()).translateY(1.78 + k * 0.095).translateZ(-0.2), { hit: k % 3 ? 0 : 0.12 });
-  for (let k = 0; k < 6; k++) {
-    const rib = new THREE.Mesh(new THREE.TorusGeometry(0.3 - Math.abs(k - 2) * 0.012, 0.022, 8, 32, Math.PI * 1.55), B());
-    rib.position.set(0, 2.82 - k * 0.11, -0.05); rib.rotation.set(Math.PI / 2, 0, Math.PI * 0.725); rib.scale.set(1.15, 0.8, 1);
-    add('ribs', 'bones', rib, { hit: k === 2 ? 0.3 : 0 });
-  }
-  for (const s of [-1, 1]) {
-    add('collarbone', 'bones', limb(V(s * 0.06, 2.93, 0.12), V(s * 0.46, 2.88, 0.02), 0.03, BONE), { hit: 0.12 });
-    add('arm bone', 'bones', limb(sh[s < 0 ? 0 : 1], el[s < 0 ? 0 : 1], 0.045, BONE), { hit: 0.14 });
-    add('forearm bones', 'bones', limb(el[s < 0 ? 0 : 1], wr[s < 0 ? 0 : 1].clone().add(V(-0.025 * s, 0, 0)), 0.03, BONE), { hit: 0.12 });
-    add('forearm bones', 'bones', limb(el[s < 0 ? 0 : 1].clone().add(V(0.03 * s, 0, 0)), wr[s < 0 ? 0 : 1].clone().add(V(0.03 * s, 0, 0)), 0.026, BONE));
-    for (let f = 0; f < 4; f++) add('hand bones', 'bones', limb(V(s * (0.6 + f * 0.04), 1.66, 0.09), V(s * (0.6 + f * 0.045), 1.38, 0.11), 0.016, BONE), { hit: f === 1 ? 0.14 : 0 });
-    const Hp = V(s * 0.2, 1.72, 0), K = V(s * 0.21, 0.98, 0.03);
-    add('thigh bone', 'bones', limb(Hp, K.clone().add(V(0, 0.06, 0)), 0.05, BONE), { hit: 0.14 });
-    add('kneecap', 'bones', sph(0.065, BONE, K.clone().add(V(0, 0, 0.1))), { hit: 0.14 });
-    add('shin bone', 'bones', limb(K.clone().add(V(0, -0.06, 0)), V(s * 0.21, 0.32, 0), 0.045, BONE), { hit: 0.14 });
-    add('shin bone', 'bones', limb(K.clone().add(V(s * 0.06, -0.08, -0.02)), V(s * 0.26, 0.33, -0.02), 0.022, BONE));
-    for (let f = 0; f < 3; f++) add('foot bones', 'bones', limb(V(s * (0.17 + f * 0.04), 0.2, -0.02), V(s * (0.17 + f * 0.04), 0.1, 0.3), 0.02, BONE), { hit: f === 1 ? 0.14 : 0 });
-  }
-  const pelvis = new THREE.Mesh(new THREE.TorusGeometry(0.25, 0.06, 10, 28), B()); pelvis.position.set(0, 1.8, -0.02); pelvis.rotation.x = Math.PI / 2.4; pelvis.scale.set(1.2, 1, 0.7);
-  add('hip bone', 'bones', pelvis, { hit: 0.3 });
-
-  /* ---------------- organs ---------------- */
-  const brain = sph(0.34, '#f9a8c8', V(0, 3.52, 0)); brain.scale.set(1, 0.85, 1.05); add('brain', 'organs', brain, { hit: 0.3 });
-  for (const s of [-1, 1]) add('lungs', 'organs', sph(0.2, '#ff8fa3', V(s * 0.19, 2.6, -0.02), [0.8, 1.45, 0.8]), { hit: 0.25 });
-  const heart = new THREE.Group();
-  heart.add(sph(0.1, '#e03131', V(-0.06, 0.04, 0)), sph(0.1, '#e03131', V(0.06, 0.04, 0)));
-  const tip = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.2, 20), M('#e03131')); tip.rotation.z = Math.PI; tip.position.y = -0.08; heart.add(tip);
-  heart.position.set(0.06, 2.5, 0.16); heart.rotation.z = -0.3; add('heart', 'organs', heart, { hit: 0.2 });
-  const liver = sph(0.2, '#a0522d', V(-0.17, 2.22, 0.07)); liver.scale.set(1.3, 0.6, 0.8); add('liver', 'organs', liver, { hit: 0.22 });
-  const stomach = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.08, 12, 24, Math.PI * 1.3), M('#ffa94d')); stomach.position.set(0.15, 2.2, 0.12); stomach.rotation.z = 1.2; add('stomach', 'organs', stomach, { hit: 0.22 });
-  const gut = new THREE.Mesh(new THREE.TorusKnotGeometry(0.15, 0.045, 80, 10, 2, 5), M('#ffc078')); gut.position.set(0, 1.92, 0.1); gut.scale.set(1.15, 0.9, 0.6); add('intestines', 'organs', gut, { hit: 0.26 });
-  for (const s of [-1, 1]) add('kidneys', 'organs', sph(0.08, '#c2255c', V(s * 0.17, 2.12, -0.22), [0.7, 1.2, 0.6]), { hit: 0.16 });
-
-  /* ---------------- vessels: arteries (red, from the heart) & veins (blue, back to the heart) ---------------- */
-  const H0 = V(0.06, 2.5, 0.16);
-  const path = (dx) => [
-    [H0, V(dx, 2.75, 0.1), V(dx * 0.6, 3.05, 0.05), V(dx * 0.8, 3.35, 0.2)],
-    [H0, V(0.3 + dx, 2.8, 0.05), V(0.58 + dx, 2.3, 0.1), V(0.64 + dx, 1.7, 0.12)],
-    [H0, V(-0.3 + dx, 2.8, 0.05), V(-0.58 + dx, 2.3, 0.1), V(-0.64 + dx, 1.7, 0.12)],
-    [H0, V(dx, 2.0, 0.05), V(0.2 + dx, 1.6, 0.08), V(0.22 + dx, 0.95, 0.1), V(0.22 + dx, 0.3, 0.06)],
-    [H0, V(dx, 2.0, 0.05), V(-0.2 + dx, 1.6, 0.08), V(-0.22 + dx, 0.95, 0.1), V(-0.22 + dx, 0.3, 0.06)],
-  ];
-  path(0.04).forEach((p, i) => add('arteries', 'vessels', tube(p, 0.028, '#e03131'), { hit: i === 3 ? 0.22 : 0 }));
-  path(-0.05).forEach((p, i) => add('veins', 'vessels', tube(p.map((v) => v.clone().add(V(-0.04, 0, -0.03))), 0.026, '#1c7ed6'), { hit: i === 4 ? 0.22 : 0 }));
-  layers.vessels.add(heart.clone());
-
-  // centers (for nearest-part tapping and highlighting)
+  // part centers (for labels / framing)
   scene.updateMatrixWorld(true);
+  // centers (for labels / framing / tests); a left-right pair uses the one on the right of the screen
   for (const p of Object.values(parts)) {
-    p.centers = p.meshes.filter((m) => !m.userData.proxy).map((m) => { const b = new THREE.Box3().setFromObject(m); return b.getCenter(new THREE.Vector3()); });
+    const left = p.meshes.filter((m) => /_l$/.test(m.name)), use = left.length && left.length < p.meshes.length ? left : p.meshes;
+    const b = new THREE.Box3(); use.forEach((m) => b.expandByObject(m)); p.center = b.getCenter(new THREE.Vector3());
   }
-  // remember original materials so we can fade/glow them
-  body.traverse((o) => { if (o.isMesh && o.material && !o.userData.proxy) o.userData.base = { color: o.material.color.clone(), op: 1 }; });
-  return { renderer, canvas, scene, camera, body, layers, parts };
+  // outside parts from the per-vertex labels
+  const sums = {};
+  for (const m of skinMeshes) {
+    const lab = m.geometry.getAttribute('_part'), pos = m.geometry.getAttribute('position'); if (!lab) continue;
+    m.updateMatrix(); const q = new THREE.Vector3();
+    for (let i = 0; i < lab.count; i += 2) { const n = partNames[lab.getX(i)]; q.fromBufferAttribute(pos, i).applyMatrix4(m.matrix); const k = n + (q.x > 0.012 ? '+' : q.x < -0.012 ? '-' : '0'); const s = sums[k] || (sums[k] = [0, 0, 0, 0]); s[0] += q.x; s[1] += q.y; s[2] += q.z; s[3]++; }
+  }
+  for (const n of partNames) {
+    const r = sums[n + '+'], l = sums[n + '-'], m0 = sums[n + '0'];
+    const tot = (r ? r[3] : 0) + (l ? l[3] : 0) + (m0 ? m0[3] : 0); if (!tot || parts[n]) continue;
+    let s;
+    if (r && l && r[3] > tot * 0.25 && l[3] > tot * 0.25) s = r;           // a pair: use one side
+    else { s = [0, 0, 0, 0]; for (const t of [r, l, m0]) if (t) for (let i = 0; i < 4; i++) s[i] += t[i]; }
+    parts[n] = { meshes: [], layer: 'skin', center: V(s[0] / s[3], s[1] / s[3], s[2] / s[3]) };
+  }
+  if (parts.eyes) parts.eyes.center.z += 0.01;
+  if (parts.hair) parts.hair.center.set(0, 1.605, 0.03);   // the top of the head, where a finger would go
+  return { renderer, canvas, scene, camera, body, layers, parts, skinMeshes, ghost, partNames, overlay: null, cam: { y: 0.83, h: 1.8, ty: 0.83, th: 1.8 } };
 }
 
-function setLayer(view, layer) {
-  const { layers } = R;
-  // skin always shows; inner layers make the skin see-through like an x-ray
-  for (const [name, g] of Object.entries(layers)) {
-    g.visible = name === 'skin' || name === layer || (layer === 'vessels' && name === 'organs' && false);
-    g.traverse((o) => {
-      if (!o.isMesh || o.userData.proxy) return;
-      const xray = name === 'skin' && layer !== 'skin';
-      if (o.material.transparent !== xray) o.material.needsUpdate = true;
-      o.material.transparent = xray; o.material.opacity = xray ? 0.13 : 1; o.material.depthWrite = !xray;
-    });
-  }
-  view.layer = layer;
+/* ---------- glow: inner parts pulse orange; outside parts get an orange patch over the real surface ---------- */
+function clearGlow() {
+  if (R.overlay) { R.overlay.forEach((o) => { o.parent && o.parent.remove(o); o.geometry.dispose(); }); R.overlay = null; }
+  for (const p of Object.values(R.parts)) for (const m of p.meshes) { m.material.emissive && m.material.emissive.set('#000'); }
+  for (const l of ['organs', 'bones', 'vessels']) R.layers[l] && R.layers[l].traverse((o) => {
+    if (o.isMesh && o.userData.fade) { o.material.opacity = o.userData.fade[0]; o.material.transparent = o.userData.fade[1]; o.material.depthWrite = o.userData.fade[2]; o.userData.fade = null; o.material.needsUpdate = true; }
+  });
+  R.glowing = null;
 }
 function glow(name) {
-  for (const p of Object.values(R.parts)) for (const m of p.meshes) {
-    if (m.userData.proxy) continue;
-    m.traverse((o) => { if (o.isMesh && o.material && o.material.emissive) o.material.emissive.set(name && o.userData.part === name || (name && m.userData.part === name) ? '#ff9f1c' : '#000000'); });
-  }
+  clearGlow();
+  if (!name) return;
   R.glowing = name;
+  const p = R.parts[name];
+  if (p && p.layer !== 'skin') {
+    for (const m of p.meshes) m.material.emissive.set('#ff8c1a');
+    // fade the other parts so a hidden one (like the kidneys) can be seen
+    R.layers[p.layer].traverse((o) => {
+      if (!o.isMesh || o.userData.part === name || o.userData.fade) return;
+      o.userData.fade = [o.material.opacity, o.material.transparent, o.material.depthWrite];
+      o.material.transparent = true; o.material.opacity = 0.22; o.material.depthWrite = false; o.material.needsUpdate = true;
+    });
+    return;
+  }
+  const want = new Set([name]); for (const [c, par] of Object.entries(PARENT)) if (par === name) want.add(c);
+  const ids = new Set(R.partNames.map((n, i) => (want.has(n) ? i : -1)).filter((i) => i >= 0));
+  R.overlay = [];
+  const mat = new THREE.MeshBasicMaterial({ color: '#ffa21f', transparent: true, opacity: 0.6, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -4, side: THREE.DoubleSide });
+  for (const m of R.skinMeshes) {
+    const lab = m.geometry.getAttribute('_part');
+    if (!lab) { if ((name === 'eyes' && m.name === 'eye') || ((name === 'hair' || name === 'head') && m.name === 'ponytail')) { const o = new THREE.Mesh(m.geometry, mat); copyT(o, m); o.scale.multiplyScalar(1.03); m.parent.add(o); R.overlay.push(o); } continue; }
+    const idx = m.geometry.index.array, keep = [];
+    for (let t = 0; t < idx.length; t += 3) if (ids.has(lab.getX(idx[t])) || ids.has(lab.getX(idx[t + 1])) || ids.has(lab.getX(idx[t + 2]))) keep.push(idx[t], idx[t + 1], idx[t + 2]);
+    if (!keep.length) continue;
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', m.geometry.getAttribute('position')); g.setIndex(keep);
+    const o = new THREE.Mesh(g, mat); copyT(o, m); m.parent.add(o); R.overlay.push(o);
+  }
 }
 
-// opts: { layer, highlight, tappable:[names], onTap(namesHit), label }
+function frameFor(name, layer) {
+  if (FACE.has(name)) return [1.5, 0.36];
+  if (layer === 'organs' && !name) return [1.2, 0.95];
+  if (layer === 'organs' || TORSO.has(name)) return [1.15, 0.8];
+  return [0.83, 1.8];
+}
+function setLayer(view, layer) {
+  view.layer = layer;
+  const x = layer !== 'skin';
+  for (const m of R.skinMeshes) m.visible = !x;
+  R.layers.skin.traverse((o) => { if (o !== R.layers.skin && !R.skinMeshes.includes(o) && o.isMesh) o.visible = !x; });
+  R.ghost.visible = x;
+  for (const l of ['organs', 'bones', 'vessels']) R.layers[l].visible = l === layer;
+  view.host.classList.toggle('xray', x);
+}
+
+// opts: { layer, highlight, focus, tappable:[names], onTap(namesHit) }
 export function mount(host, opts = {}) {
-  if (!R) R = build();
-  const view = { alive: true };
+  const view = { alive: true, host, layer: opts.layer || 'skin', pending: [] };
+  if (!host.querySelector('.b3d-loading')) host.innerHTML = '<div class="b3d-loading">🧍 Getting ready…</div>';
+  const ready = (R ? Promise.resolve(R) : (loading = loading || build().then((r) => (R = r)))).then(() => { if (view.alive) start(view, host, opts); });
+  ready.catch((e) => { console.warn(e); loading = null; if (view.alive) host.innerHTML = '<div class="b3d-loading">3D body could not load. Try again soon!</div>'; });
+  // calls that come before the model is ready are queued
+  view.highlight = (n) => view.pending.push(['highlight', n]);
+  view.reveal = (r) => view.pending.push(['reveal', r]);
+  view.layerTo = (l) => view.pending.push(['layerTo', l]);
+  view.dispose = () => { view.alive = false; };
+  window.__b3dReady = ready;
+  return view;
+}
+
+function start(view, host, opts) {
   host.innerHTML = '';
   host.appendChild(R.canvas);
   const lab = document.createElement('div'); lab.className = 'b3d-label'; lab.hidden = true; host.appendChild(lab);
-  const tools = document.createElement('div'); tools.className = 'b3d-tools';
-  tools.innerHTML = '<span>👆 Drag to spin</span>';
-  host.appendChild(tools);
+  const tools = document.createElement('div'); tools.className = 'b3d-tools'; tools.innerHTML = '<span>👆 Drag to spin</span>'; host.appendChild(tools);
+  const credit = document.createElement('div'); credit.className = 'b3d-credit'; credit.textContent = '3D: BodyParts3D/DBCLS · HuBMAP · MakeHuman · CC BY 4.0'; host.appendChild(credit);
   const size = () => { const w = host.clientWidth, h = Math.round(Math.min(w * 1.25, innerHeight * 0.52)); R.renderer.setSize(w, h, true); R.camera.aspect = w / h; R.camera.updateProjectionMatrix(); };
   size();
   setLayer(view, opts.layer || 'skin');
   glow(opts.highlight || null);
+  const fr = frameFor(opts.focus || opts.highlight || '', view.layer);
+  R.cam.ty = fr[0]; R.cam.th = fr[1]; R.cam.y = fr[0]; R.cam.h = fr[1];
   R.body.rotation.y = 0;
-  let spin = 0, drag = null;
   const tappable = new Set(opts.tappable || []);
   const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
-  function pickAt(cx, cy) {
+  function namesAt(cx, cy) {
     const r = R.canvas.getBoundingClientRect();
     ndc.set(((cx - r.left) / r.width) * 2 - 1, -((cy - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(ndc, R.camera);
-    const groups = [R.layers[view.layer]].concat(view.layer === 'skin' ? [] : [R.layers.skin]);
-    const hits = ray.intersectObjects(groups, true).map((h) => h.object.userData.part || (h.object.parent && h.object.parent.userData.part)).filter(Boolean);
-    let names = [...new Set(hits)].filter((n) => !tappable.size || tappable.has(n) || tappable.has(R.parts[n] && R.parts[n].parent));
-    // generous: also anything whose center is within ~48px of the finger
-    const near = [];
-    for (const [n, p] of Object.entries(R.parts)) {
-      if (R.parts[n].layer !== view.layer && !(view.layer !== 'skin' && false)) continue;
-      if (tappable.size && !tappable.has(n)) continue;
-      for (const c of p.centers) {
-        const v = c.clone().applyAxisAngle(V(0, 1, 0), R.body.rotation.y).project(R.camera);
-        const px = (v.x + 1) / 2 * r.width + r.left, py = (1 - v.y) / 2 * r.height + r.top;
-        const d = Math.hypot(px - cx, py - cy);
-        if (d < 48) near.push([d, n]);
+    const out = [];
+    if (view.layer === 'skin') {
+      const h = ray.intersectObjects(R.skinMeshes, false)[0];
+      if (h) {
+        if (h.object.name === 'eye') out.push('eyes');
+        else if (h.object.name === 'ponytail') out.push('hair');
+        else { const la = h.object.geometry.getAttribute('_part'); if (la) out.push(R.partNames[la.getX(h.face.a)], R.partNames[la.getX(h.face.b)], R.partNames[la.getX(h.face.c)]); }
       }
+    } else {
+      for (const h of ray.intersectObjects([R.layers[view.layer]], true)) if (h.object.userData.part) out.push(h.object.userData.part);
     }
-    near.sort((a, b) => a[0] - b[0]);
-    names = [...new Set(names.concat(near.map((x) => x[1])))];
-    // a tap on an eye also counts as the head, a tap on a knee also counts as the leg
-    const withParents = [];
-    for (const n of names) { withParents.push(n); let p = R.parts[n] && R.parts[n].parent; while (p) { withParents.push(p); p = R.parts[p] && R.parts[p].parent; } }
-    return [...new Set(withParents)];
+    return out;
   }
+  function pickAt(cx, cy) {
+    let names = namesAt(cx, cy);
+    // a little ring of extra taps around the finger, wider if the finger missed everything
+    const rads = names.length ? [16] : [16, 30, 46];
+    for (const rad of rads) for (let k = 0; k < 8; k++) names = names.concat(namesAt(cx + Math.cos(k * Math.PI / 4) * rad, cy + Math.sin(k * Math.PI / 4) * rad));
+    const withParents = [];
+    for (const n of names) { if (!n || n === 'body') continue; withParents.push(n); let p = PARENT[n]; while (p) { withParents.push(p); p = PARENT[p]; } }
+    let res = [...new Set(withParents)];
+    if (tappable.size) res = res.filter((n) => tappable.has(n)).concat(res.filter((n) => !tappable.has(n)));
+    return res;
+  }
+  let drag = null;
   const onDown = (e) => { e.preventDefault(); drag = { x: e.clientX, y: e.clientY, rot: R.body.rotation.y, moved: 0 }; R.canvas.setPointerCapture && R.canvas.setPointerCapture(e.pointerId); };
   const onMove = (e) => { if (!drag) return; const dx = e.clientX - drag.x; drag.moved = Math.max(drag.moved, Math.abs(dx)); R.body.rotation.y = drag.rot + dx / 90; };
   const onUp = (e) => {
@@ -226,39 +288,49 @@ export function mount(host, opts = {}) {
   R.canvas.addEventListener('pointerdown', onDown); R.canvas.addEventListener('pointermove', onMove);
   R.canvas.addEventListener('pointerup', onUp); R.canvas.addEventListener('pointercancel', () => (drag = null));
   let raf = 0, t = 0, last = 0;
+  const placeCam = () => {
+    const c = R.cam, dist = c.h / 2 / Math.tan(THREE.MathUtils.degToRad(R.camera.fov / 2)) * 1.08;
+    R.camera.position.set(0, c.y + c.h * 0.04, dist); R.camera.lookAt(0, c.y, 0);
+  };
   const loop = (now) => {
     if (!view.alive) return;
     const dt = last ? Math.min(0.05, (now - last) / 1000) : 0; last = now; t += dt;
-    if (R.glowing) {           // pulse the glowing part
-      const k = 0.55 + 0.45 * Math.sin(t * 5);
-      for (const m of (R.parts[R.glowing] || { meshes: [] }).meshes) m.traverse((o) => { if (o.isMesh && o.material && o.material.emissive) o.material.emissiveIntensity = k; });
+    const c = R.cam, k = 1 - Math.exp(-dt * 4); c.y += (c.ty - c.y) * k; c.h += (c.th - c.h) * k; placeCam();
+    if (R.glowing) {
+      const s = 0.5 + 0.5 * Math.sin(t * 5);
+      if (R.overlay) R.overlay.forEach((o) => (o.material.opacity = 0.35 + 0.5 * s));
+      const p = R.parts[R.glowing]; if (p && p.layer !== 'skin') p.meshes.forEach((m) => (m.material.emissiveIntensity = 0.25 + 0.75 * s));
     }
-    if (spin) { R.body.rotation.y += spin * dt; }
     if (view.label) {
-      const c = view.label.c.clone().applyAxisAngle(V(0, 1, 0), R.body.rotation.y).project(R.camera);
-      lab.style.left = `${(c.x + 1) / 2 * 100}%`; lab.style.top = `${(1 - c.y) / 2 * 100}%`;
+      const v = view.label.c.clone().applyAxisAngle(V(0, 1, 0), R.body.rotation.y).project(R.camera);
+      lab.style.left = `${(v.x + 1) / 2 * 100}%`; lab.style.top = `${Math.max(12, (1 - v.y) / 2 * 100)}%`;
     }
     R.renderer.render(R.scene, R.camera);
     raf = requestAnimationFrame(loop);
   };
+  placeCam();
   raf = requestAnimationFrame(loop);
   addEventListener('resize', size);
 
-  view.highlight = (name) => glow(name);
+  view.highlight = (name) => { glow(name); const f = frameFor(name, view.layer); R.cam.ty = f[0]; R.cam.th = f[1]; };
   view.layerTo = (layer) => setLayer(view, layer);
-  // show what is inside: switch to an inner layer, glow a part and float a label on it
+  // show what is inside: switch to an inner layer, glow the part and float a label on it
   view.reveal = ({ layer, part, text }) => {
     setLayer(view, layer); glow(part);
     const p = R.parts[part];
-    if (p && p.centers.length) { view.label = { c: p.centers[0] }; lab.textContent = text; lab.hidden = false; }
+    const f = frameFor(part, layer); R.cam.ty = f[0]; R.cam.th = f[1];
+    if (p && p.center) { view.label = { c: p.center }; lab.textContent = text; lab.hidden = false; }
   };
   view.dispose = () => {
     view.alive = false; cancelAnimationFrame(raf); removeEventListener('resize', size);
     R.canvas.removeEventListener('pointerdown', onDown); R.canvas.removeEventListener('pointermove', onMove); R.canvas.removeEventListener('pointerup', onUp);
-    glow(null);
+    clearGlow();
     if (R.canvas.parentNode) R.canvas.parentNode.removeChild(R.canvas);
   };
+  view.pickAt = pickAt;
+  for (const [fn, arg] of view.pending) view[fn](arg);
+  view.pending = [];
   window.__b3dParts = R.parts;   // used by automated tests
-  return view;
+  window.__b3dView = view; window.__b3dCam = R.camera;
 }
 export const partNames = () => (R ? Object.keys(R.parts) : []);

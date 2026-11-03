@@ -730,6 +730,17 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 @media (min-width: 700px) { .ic3d { width: 80px; height: 80px; } }
 
 /* ---------- pinball ---------- */
+.pb-dmd { width: 100%; background: #120c06; border-radius: 14px; padding: 8px 14px 6px; box-shadow: inset 0 0 0 3px #2b1d0f, 0 4px 0 #0003;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; color: #ff9f1c; text-shadow: 0 0 6px #ff7b00aa;
+  background-image: radial-gradient(#ffffff0d 1px, transparent 1.2px); background-size: 4px 4px; }
+.pb-dmd-top { display: flex; justify-content: space-between; align-items: baseline; }
+.pb-dmd .pb-score { font-size: 30px; font-weight: 900; color: #ffb347; letter-spacing: 2px; }
+.pb-balls { font-size: 14px; letter-spacing: 2px; }
+.pb-dmd-msg { font-size: 15px; font-weight: 800; letter-spacing: 1px; min-height: 20px; text-align: center; }
+.pb-dmd-msg.blink { animation: dmdblink .9s; }
+@keyframes dmdblink { 0%, 30%, 60% { opacity: 1; } 15%, 45% { opacity: .2; } }
+.pb-dmd-bot { display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; opacity: .85; }
+.pb-mult { color: #ffe066; }
 .pb-hud { display: flex; gap: 10px; align-items: center; justify-content: space-between; width: 100%; font-weight: 900; }
 .pb-score { font-size: 28px; color: var(--theme); min-width: 70px; }
 .pb-skin { background: #fff; border-radius: 99px; padding: 3px 10px; font-size: 14px; }
@@ -761,6 +772,9 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .q-main.b3d-main { min-height: 0; margin: 4px 0 0; }
 .b3d-host { position: relative; width: 100%; max-width: 520px; margin: 0 auto; border-radius: 20px; overflow: hidden;
   background: radial-gradient(circle at 50% 35%, #ffffff, #e7f5ff 60%, #d0ebff); }
+.b3d-host.xray { background: radial-gradient(circle at 50% 35%, #1d3a5c, #0b1a2e 70%, #060e1a); }
+.b3d-host.xray .b3d-tools { background: #ffffff22; color: #cfe6ff; }
+.b3d-credit { position: absolute; right: 8px; bottom: 6px; font-size: 8px; color: #8aa0b8; pointer-events: none; max-width: 55%; text-align: right; }
 .b3d-cv { display: block; width: 100%; touch-action: none; }
 .b3d-loading { padding: 80px 0; font-weight: 800; color: var(--soft); }
 .b3d-tools { position: absolute; left: 10px; bottom: 8px; font-size: 12px; font-weight: 800; color: var(--soft); background: #ffffffcc; border-radius: 99px; padding: 3px 10px; pointer-events: none; }

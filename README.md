@@ -23,9 +23,9 @@ A flash-card learning game for Pre-K through 3rd grade, built as an installable 
 | ✖️ Multiply | Equal groups with pictures → ×2 ×5 ×10 → up to 5×5 → up to 10×10 → missing factor and story problems. Dot-array hints |
 | ➗ Divide | Share equally with pictures → ÷2 ÷5 ÷10 → within 25 → within 100 → story problems |
 | 🕐 Clock (optional) | Hidden by default — turn on in ⚙️ → Clock game. Read an analog clock or pick the clock for a time: o'clock → half past → quarter past/to → 5 minutes |
-| 🙋 Body Parts | **3D kid** (spin with a finger) — tap the part (big tap zones; tapping near a part counts; tapping an eye also counts as the head). Level 1 big parts → 2 neck, shoulders, elbows, knees, chin, fingers → 3 eyebrows, cheeks, wrists, ankles. From level 2 a right answer shows **what's inside** with an x-ray ("Inside your knee is your kneecap!"). Falls back to a 2D drawing on devices without 3D |
+| 🙋 Body Parts | **Realistic 3D person** in a t-shirt, shorts and shoes (spin with a finger). The camera zooms in on the face for eyes, nose, eyebrows… Tap the part (tapping near a part counts; tapping an eye also counts as the head). Level 1 big parts → 2 neck, shoulders, elbows, knees, chin, fingers → 3 eyebrows, cheeks, wrists, ankles. From level 2 a right answer shows **what's inside** with an x-ray ("Inside your knee is your kneecap!"). Falls back to a 2D drawing on devices without 3D |
 | 💡 Did You Know? | General knowledge for every grade, 4 levels: animal sounds & colors → seasons, days, baby animals, 911 → planets, plants, months → continents, magnets, states of water. 💡 Hint removes a wrong answer |
-| 🫀 Inside My Body (optional) | Off by default — turn on in ⚙️. 3D x-ray body with layers. 4 levels: brain, heart, lungs, stomach → liver, intestines, skull, ribs, backbone → kidneys, jaw, collarbone, hip bone, thigh bone (femur), kneecap, shin bone, **arteries (red) & veins (blue)** → arm/forearm/hand/foot bones and more science facts |
+| 🫀 Inside My Body (optional) | Off by default — turn on in ⚙️. **Realistic 3D anatomy** (real brain, heart, lungs, liver, intestines, kidneys, skeleton, arteries and veins) inside a see-through x-ray body. Hidden parts (like the kidneys) show up when the others fade. 4 levels: brain, heart, lungs, stomach → liver, intestines, skull, ribs, backbone → kidneys, jaw, collarbone, hip bone, thigh bone (femur), kneecap, shin bone, **arteries (red) & veins (blue)** → arm/forearm/hand/foot bones, shoulder blade, bladder, pancreas and more science facts |
 | 🔺 Shapes | 2D shapes, finding shapes, counting sides |
 | 🧊 3D Shapes | Cube, sphere, cylinder, cone, pyramid, prism; flat vs solid; real-life objects |
 | 🧑‍🚒 Jobs | Who does what |
@@ -49,7 +49,7 @@ Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (defau
 | 🎈 Pop the Balloons | 30 seconds, 5 levels (faster, smaller balloons) — balloons also speed up with every pop (🐢 → 🐇 → 🐆 → 🚀); pop the target number to level up; ⭐ balloons are worth 3 |
 | 🖍️ Coloring Book | 81 pictures, none locked: Scenes, Seasons & Cartoons (flower vase, pumpkin night, Christmas tree, beach, mountain lake, farm, under the sea, robot, super kitty…), then Easy → Medium → Tricky → Expert mandalas. 👀 Peek shows the original colors |
 | ✏️ Draw & Copy | Trace a dark guide → a faint guide → copy simple pictures → copy detailed ones. Colors, brush sizes, eraser, undo; drawings saved in 🖼️ My drawings |
-| 🎯 3D Pinball | Flippers (tap left/right or the big buttons), bumpers, slingshots, rollover lights, ball saver. Random skin every game (Space, Ocean, Candy, Jungle, Dino, Ice). 5 levels with higher target scores |
+| 🎯 3D Pinball | A real-looking machine: wood cabinet, chrome rails, glossy playfield, dot-matrix score display. **6 different tables** (a random one each game, or 🎰 New table): Space Station, Pirate Cove, Candy Carnival, Jungle Temple, Dino Volcano, Ice Castle — each with its own layout of pop bumpers, **ramps** the ball rides up and around, drop-target banks, spinners, saucers that catch and kick the ball, stand-up targets and rollover lanes. Every hit shows its points (+100, +750 RAMP…); lighting all lanes raises the multiplier (up to ×5). Ball saver, auto-nudge if the ball ever stops. 5 levels with higher target scores |
 | 🔴 Connect Four | vs the robot — 3 levels |
 | 🔢 Sudoku | Pictures, Numbers, or **Word Sudoku** (letters of a spelling word). Level 1 4×4 with 4 blanks → level 5 6×6 with 20 blanks; every 2 wins makes it harder. Every puzzle has exactly one solution. 💡 Hint fills a square |
 | 🤸 Silly Moves | Roll the dice → act it out for 10 seconds: hop like a bunny, walk like a robot, make your silliest face… 40 moves |
@@ -79,6 +79,15 @@ If a phrase has no recording, the app falls back to the best voice installed on 
 
 ## Edit content
 All words, sentences, vocabulary (`VOCAB`), jobs, flags, etc. live in `content.js` — add rows to the arrays. After changing files, bump `VERSION` in `sw.js` so installed copies update.
+
+3D body model: BodyParts3D © The Database Center for Life Science, Human Reference Atlas (HuBMAP) — CC BY 4.0; body shape MakeHuman (CC0); via [open-anatomy-3d](https://github.com/MervinR07/open-anatomy-3d) (CC BY 4.0). Changed for this app: clothes and hair added, lung surfaces made from the airway model, reproductive and other parts removed (`vendor/body.glb`). The credit is shown under the 3D view and in ⚙️.
+
+## Licenses (for selling the app later)
+Everything bundled allows commercial use. What each one asks:
+- **MIT / Apache / CC0 / public domain** (no conditions beyond keeping notices): three.js and its loaders, meshoptimizer decoder, Kokoro voice model (Apache 2.0), MakeHuman body, Natural Earth map shapes.
+- **CC BY 4.0** (keep the credit): the 3D anatomy model.
+- **CC BY-SA 4.0** (keep the credit; pictures made *from* this art must also be shared under CC BY-SA): OpenMoji art used in coloring pages and landmarks.
+- **ODbL** (credit; share-alike for the data): world-countries region names.
 
 three.js (MIT license) is bundled in `vendor/` so the 3D games work offline. World map: Natural Earth (public domain) via world-atlas; regions from world-countries (ODbL). Coloring/landmark art: [OpenMoji](https://openmoji.org) (CC BY-SA 4.0) plus original drawings. To show real photos of landmarks, add them as `img/landmarks/<id>.jpg` (ids in `landmarks.js`).
 
