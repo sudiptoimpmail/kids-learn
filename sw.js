@@ -1,5 +1,5 @@
 // Offline cache. Bump VERSION whenever you change any file so phones/iPads pick up the update.
-const VERSION = 'lp-v17';
+const VERSION = 'lp-v18';
 const FILES = ['./', 'index.html', 'style.css', 'content.js', 'app.js', 'games.js', 'ball3d.js', 'pinball3d.js', 'geo.js', 'art.js', 'landmarks.js', 'scenes.js', 'body3d.js', 'vendor/three.module.min.js', 'vendor/GLTFLoader.js', 'vendor/BufferGeometryUtils.js', 'vendor/meshopt_decoder.module.js', 'vendor/RoomEnvironment.js', 'vendor/body.glb', 'manifest.webmanifest', 'audio/clips.json', 'audio/silence.mp3',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 
