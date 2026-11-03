@@ -9,12 +9,13 @@ A flash-card learning game for Pre-K through 3rd grade, built as an installable 
 ## Games
 | Game | What it practices |
 |---|---|
+| ✍️ Letters & Numbers (Pre-K, K) | Trace **A–Z, a–z and 1–20** with a finger on writing lines. The voice says "A. A is for apple" with a picture (numbers show that many things). Trace most of the gray letter to earn a star and go on; ✏️ hides the guide to write on your own. |
 | 🐱 Little Words | 3-letter words (cat, ant, bee, key, owl…) — read the word → tap the picture, listen → tap the word, missing vowel |
 | 🐸 Big Words | Levels 1–3: 4-letter words (crab, lamp, wolf, coin…) · 4: 5-letter (truck, tiger, puppy, brick…) · 5: long words (alligator, anchor, orange, mother…) |
 | 👀 Sight Words | he, she, like, went, from, take, make, over, under, write… Listen → tap the word, fill the missing word in a sentence, and opposites (up/down, hot/cold) from level 3 |
 | 🔤 Spell It | See the picture, hear the word, then drag (or tap) letter tiles into the blanks. Extra decoy letters. Level 1: 1–2 missing letters in 3-letter words · Level 2: whole 3-letter words or 2 blanks in 4-letter words · Level 3: whole 4-letter words with look-alike decoys (b/d, m/n) · Level 4: 5-letter words, listen-and-spell sight words (no picture), spell the missing word in a sentence · Level 5: whole 5-letter and long words. Tap a placed letter to send it back; wrong letters bounce out and one correct letter is given |
 | 🌟 Word Wonders | 55 new vocabulary words (enormous, curious, fragile, nocturnal…). **Learn** cards: picture + the voice reads the word, a kid-friendly meaning and an example; tap any line to hear it again; swipe or ◀ ▶ to move; a **Talk together** question for parent and child. **🎯 Quiz**: pick the picture for a word, or the word for a meaning. Level 1 = first 20 words, 2 = 40, 3 = all |
-| 📖 Read & Answer | 80+ texts in 5 levels: short sentences → 1st-grade 2–3 sentence stories → 2nd-grade short stories → 3rd-grade passages (bees, the moon, frogs' life cycle, volcanoes) with "why" and "what will happen next" questions |
+| 📖 Read & Answer | 280+ texts with 370+ questions in 6 levels: short sentences → longer sentences → 1st-grade 2–3 sentence stories → 2nd-grade short stories → 3rd-grade passages → 3rd-grade challenge stories (6–8 sentences). Most stories have 2–3 different questions. Questions seen in the last few rounds are not asked again while fresh ones are left (this works in every game) |
 | 🔗 Match It | Two columns, tap a left item then its partner: word ↔ picture, number ↔ picture count, problem ↔ answer (3 pairs at Pre-K up to 5 pairs with long words and × ÷ in 2nd). Lines join the matches. 5 boards per round |
 | 👏 Clap It! | Syllable counting |
 | ➕ Adding / ➖ Take Away | 5 levels: within 5 → within 10 → within 20 → two-digit ± one-digit → with regrouping (38 + 7, 52 − 6). Hints use base-ten blocks and "make a ten" steps |
@@ -47,7 +48,7 @@ Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (defau
 | ⭕ Tic-Tac-Toe | 🦄 vs 🤖 — 3 levels, the robot gets more careful (2 wins per level) |
 | 🃏 Memory Match | 5 levels: 3 → 4 → 6 → 8 → 10 pairs |
 | 🎈 Pop the Balloons | 30 seconds, 5 levels (faster, smaller balloons) — balloons also speed up with every pop (🐢 → 🐇 → 🐆 → 🚀); pop the target number to level up; ⭐ balloons are worth 3 |
-| 🖍️ Coloring Book | 81 pictures, none locked: Scenes, Seasons & Cartoons (flower vase, pumpkin night, Christmas tree, beach, mountain lake, farm, under the sea, robot, super kitty…), then Easy → Medium → Tricky → Expert mandalas. 👀 Peek shows the original colors |
+| 🖍️ Coloring Book | Big picture with a slim color strip (a color column on iPad). **Pinch to zoom** (or ＋ －) and drag to move around tiny parts. 81 pictures, none locked: Scenes, Seasons & Cartoons (flower vase, pumpkin night, Christmas tree, beach, mountain lake, farm, under the sea, robot, super kitty…), then Easy → Medium → Tricky → Expert mandalas. 👀 Peek shows the original colors |
 | ✏️ Draw & Copy | Trace a dark guide → a faint guide → copy simple pictures → copy detailed ones. Colors, brush sizes, eraser, undo; drawings saved in 🖼️ My drawings |
 | 🎯 3D Pinball | A real-looking machine: wood cabinet, chrome rails, glossy playfield, dot-matrix score display. **6 different tables** (a random one each game, or 🎰 New table): Space Station, Pirate Cove, Candy Carnival, Jungle Temple, Dino Volcano, Ice Castle — each with its own layout of pop bumpers, **ramps** the ball rides up and around, drop-target banks, spinners, saucers that catch and kick the ball, stand-up targets and rollover lanes. Every hit shows its points (+100, +750 RAMP…); lighting all lanes raises the multiplier (up to ×5). Ball saver, auto-nudge if the ball ever stops. 5 levels with higher target scores |
 | 🔴 Connect Four | vs the robot — 3 levels |
@@ -61,8 +62,14 @@ Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (defau
 ## Looks
 ⚙️ → **Look**: 🌈 Rainbow, 🦄 Unicorn, 🦖 Dino, 🚀 Space, 🐬 Ocean, ⚽ Sports, 🏎️ Race Cars, 🦁 Jungle — changes the colors, the splash screen and the mascot. Game tiles have glossy 3D-style icons.
 
+## Grown-up PIN
+⚙️ asks for a 4-digit PIN (you make one the first time). Forgot it? Tap **Forgot PIN?** and answer a grown-up multiplication question to make a new one. Change it any time in ⚙️.
+
+## Backup
+⚙️ → **Save a backup** downloads a small file with all progress; **Load a backup** brings it back (on this or another device).
+
 ## Hidden test mode
-In ⚙️, **tap the "Grown-up Settings" title 5 times** to show 🧪 Test mode: the right answer is outlined, ⏭ skips a card, 🏁 ends the round, every game is shown, the Play Zone is always open, and a line shows voice clips / 3D support / screen size.
+In ⚙️, **tap the "Grown-up Settings" title 5 times** to show 🧪 Test mode: the right answer is outlined, ⏮ ⏭ step back and forward through cards, 🏁 ends the round, every game is shown, the Play Zone is always open, and a line shows voice clips / 3D support / screen size. The **Question browser** opens any game at any level with 30 cards to flip through (it never changes her levels or stars).
 
 ## Turn on hosting (one time)
 Repo **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main` / `(root)` → Save**.
@@ -92,3 +99,6 @@ Everything bundled allows commercial use. What each one asks:
 three.js (MIT license) is bundled in `vendor/` so the 3D games work offline. World map: Natural Earth (public domain) via world-atlas; regions from world-countries (ODbL). Coloring/landmark art: [OpenMoji](https://openmoji.org) (CC BY-SA 4.0) plus original drawings. To show real photos of landmarks, add them as `img/landmarks/<id>.jpg` (ids in `landmarks.js`).
 
 Progress is stored only on the device (localStorage). No accounts, ads or tracking.
+
+## Plans
+The grade-by-grade plan (what each grade sees and ideas to add) and the launch architecture (native app storage, accounts, subscriptions) are in [docs/launch-architecture.md](docs/launch-architecture.md).

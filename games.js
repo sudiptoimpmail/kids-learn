@@ -822,19 +822,58 @@ function startColorPicker() {
   $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startColoring(ALL_PICS.find((p) => p.id === b.dataset.p)); }));
 }
 
+// pinch (two fingers) to zoom, drag with one finger when zoomed in; taps still go through
+function zoomable(view, inner) {
+  let s = 1, x = 0, y = 0, last = 0;
+  const pts = new Map(); let start = null;
+  const apply = () => {
+    const w = view.clientWidth, h = view.clientHeight;
+    x = Math.min(0, Math.max(w - w * s, x)); y = Math.min(0, Math.max(h - h * s, y));
+    inner.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+    view.classList.toggle('zoomed', s > 1.01);
+  };
+  const zoomAt = (ns, cx, cy) => { ns = Math.min(4, Math.max(1, ns)); x = cx - (cx - x) * ns / s; y = cy - (cy - y) * ns / s; s = ns; apply(); };
+  const local = (e) => { const r = view.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  view.addEventListener('pointerdown', (e) => {
+    pts.set(e.pointerId, local(e));
+    if (pts.size === 2) { const [a, b] = [...pts.values()]; start = { d: Math.hypot(a[0] - b[0], a[1] - b[1]), s, mx: (a[0] + b[0]) / 2, my: (a[1] + b[1]) / 2, x, y }; }
+    else if (pts.size === 1) start = { px: local(e), x, y, moved: 0 };
+  });
+  view.addEventListener('pointermove', (e) => {
+    if (!pts.has(e.pointerId) || !start) return;
+    pts.set(e.pointerId, local(e));
+    if (pts.size >= 2 && start.d) {
+      const [a, b] = [...pts.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]);
+      const ns = Math.min(4, Math.max(1, start.s * d / start.d));
+      const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+      x = mx - (start.mx - start.x) * ns / start.s; y = my - (start.my - start.y) * ns / start.s; s = ns; apply(); last = Date.now();
+    } else if (pts.size === 1 && start.px && s > 1.01) {
+      const p = local(e), dx = p[0] - start.px[0], dy = p[1] - start.px[1];
+      if (Math.hypot(dx, dy) > 8) { x = start.x + dx; y = start.y + dy; apply(); last = Date.now(); }
+    }
+  });
+  const up = (e) => { pts.delete(e.pointerId); if (pts.size === 1) { const p = [...pts.values()][0]; start = { px: p, x, y }; } else if (!pts.size) start = null; };
+  view.addEventListener('pointerup', up); view.addEventListener('pointercancel', up);
+  view.addEventListener('wheel', (e) => { e.preventDefault(); const [cx, cy] = local(e); zoomAt(s * (e.deltaY < 0 ? 1.15 : 1 / 1.15), cx, cy); }, { passive: false });
+  return { by: (k) => zoomAt(s * k, view.clientWidth / 2, view.clientHeight / 2), busy: () => Date.now() - last < 250 || pts.size > 1 };
+}
 function startColoring(p) {
   state.art = state.art || {};
   const fills = state.art[p.id] = state.art[p.id] || {};
   let cur = PALETTE_C[0];
   const area = $('#gameArea');
-  area.innerHTML = `<div class="color-wrap">${picSVG(p, fills, 'big')}</div>
-    <div class="palette">${PALETTE_C.map((c, i) => `<button class="sw-c ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}" aria-label="color">${c === '#ffffff' ? '🧽' : ''}</button>`).join('')}</div>
+  area.innerHTML = `<div class="color-stage"><div class="color-wrap cz-view"><div class="cz-inner">${picSVG(p, fills, 'big')}</div>
+      <div class="cz-btns"><button data-z="in" aria-label="Zoom in">＋</button><button data-z="out" aria-label="Zoom out">－</button></div></div>
+    <div class="palette">${PALETTE_C.map((c, i) => `<button class="sw-c ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}" aria-label="color">${c === '#ffffff' ? '🧽' : ''}</button>`).join('')}</div></div>
     <div class="color-btns"><button class="big-btn alt small" data-a="pics">🖼️ Pictures</button>${p.orig ? '<button class="big-btn alt small" data-a="peek">👀 Peek</button>' : ''}<button class="big-btn small" data-a="done">✅ I'm done!</button></div>`;
   say('Pick a color, then tap the picture.');
   $$('.sw-c', area).forEach((b) => (b.onclick = () => {
     $$('.sw-c', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); cur = b.dataset.c; sfx.tap();
   }));
+  const zoom = zoomable($('.cz-view', area), $('.cz-inner', area));
+  $$('[data-z]', area).forEach((b) => (b.onclick = () => { sfx.tap(); zoom.by(b.dataset.z === 'in' ? 1.5 : 1 / 1.5); }));
   $$('.color-wrap .r', area).forEach((r) => (r.onclick = () => {
+    if (zoom.busy()) return;          // that was a pinch or a drag, not a tap
     r.style.fill = cur; fills[r.dataset.k] = cur; save();
     r.classList.remove('splash'); void r.getBoundingClientRect(); r.classList.add('splash');
     tone([500 + Math.random() * 400], { dur: 0.05, vol: 0.08 });

@@ -482,14 +482,19 @@ const SENTENCES = [
 // level: given (4th item) or by length: 1 = up to 5 words, 2 = up to 8 words, 3 = longer / two sentences
 const sentLevel = (x) => { if (typeof x !== 'string') return x[3] || sentLevel(x[0]); const n = x.split(' ').length; return n <= 5 ? 1 : n <= 8 && !/[.!?] [A-Z]/.test(x) ? 2 : 3; };
 
+// every reading item as [text, [[question, options], ...], level]
+const READING = () => READING.all || (READING.all = SENTENCES.map((x) => [x[0], [[x[1], x[2]]], sentLevel(x)])
+  .concat(PATTERN_SENTENCES.map((x) => [x[0], [[x[1], x[2]]], x[3]]), STORIES.map((x) => [x[1], x[2], x[0]])));
 function genSentence(level) {
-  const pool = SENTENCES.filter((x) => sentLevel(x) <= level);
-  const exact = pool.filter((x) => sentLevel(x) === level);
-  const [s, q, opts] = pick(exact.length && Math.random() < 0.7 ? exact : pool);
+  const all = READING();
+  // mostly this level, sometimes one level easier for a quick win
+  const exact = all.filter((x) => x[2] === level), near = all.filter((x) => x[2] === level - 1);
+  const [s, qs] = pick(exact.length && (Math.random() < 0.8 || !near.length) ? exact : near.length ? near : all.filter((x) => x[2] <= level));
+  const [q, opts] = pick(qs);
   const words = s.split(' ').map((w, i) => `<span class="sw" data-i="${i}">${w}</span>`).join(' ');
   const long = s.length > 120 ? ' passage' : s.length > 60 ? ' long' : '';
   return {
-    key: `sent-${s}`,
+    key: `sent-${s}`, qkey: q,
     text: q,
     say: '',  // she reads the sentence herself
     readQ: q,
@@ -1896,12 +1901,13 @@ function genVocab(level) {
 
 /* ---------------- CATEGORIES ---------------- */
 const CATEGORIES = [
+  { id: 'trace', title: 'Letters & Numbers', sub: 'trace A–Z · a–z · 1–20', icon: '✍️', color: '#f76707', trace: true },
   { id: 'cvc', title: 'Little Words', sub: 'cat · ant · bee', icon: '🐱', color: '#ff8787', gen: (l) => genWords(W3, l, 'cvc') },
   { id: 'w4', title: 'Big Words', sub: 'frog · truck · tiger', icon: '🐸', color: '#69db7c', gen: (l) => genWords(bigWordList(l), l, 'w4'), maxLevel: 5 },
   { id: 'sight', title: 'Sight Words', sub: 'he · she · went', icon: '👀', color: '#e64980', gen: genSight, maxLevel: 4 },
   { id: 'spell', title: 'Spell It', sub: 'drag the letters', icon: '🔤', color: '#20c997', gen: genSpell, maxLevel: 5 },
   { id: 'vocab', title: 'Word Wonders', sub: 'learn new words', icon: '🌟', color: '#f59f00', gen: genVocab, learn: true },
-  { id: 'sent', title: 'Read & Answer', sub: 'sentences & stories', icon: '📖', color: '#74c0fc', gen: genSentence, maxLevel: 5 },
+  { id: 'sent', title: 'Read & Answer', sub: 'sentences & stories', icon: '📖', color: '#74c0fc', gen: genSentence, maxLevel: 6 },
   { id: 'match', title: 'Match It', sub: 'word ↔ picture · 3+2 ↔ 5', icon: '🔗', color: '#5c7cfa', gen: genMatch, maxLevel: 5, roundLen: 5 },
   { id: 'syl', title: 'Clap It!', sub: 'syllables', icon: '👏', color: '#ffd43b', gen: genSyllable },
   { id: 'add', title: 'Adding', sub: '2 + 3 · 34 + 5', icon: '➕', color: '#b197fc', gen: genAdd, maxLevel: 5 },
@@ -1929,16 +1935,16 @@ const CATEGORIES = [
 // Roughly follows Common Core: time to the hour/half hour in 1st, 5 minutes in 2nd;
 // multiplication/division start as equal groups and sharing in 2nd.
 const GRADES = {
-  prek: { label: 'Pre-K', g: { animals: '1-1', places: '1-1', body: '1-1', gk: '1-1', anatomy: '1-1', match: '1-1', cvc: '1-1', sight: '1-1', spell: '1-1', vocab: '1-1', syl: '1-1', add: '1-1', sub: '1-1', cmp: '1-1',
+  prek: { label: 'Pre-K', g: { trace: '1-1', animals: '1-1', places: '1-1', body: '1-1', gk: '1-1', anatomy: '1-1', match: '1-1', cvc: '1-1', sight: '1-1', spell: '1-1', vocab: '1-1', syl: '1-1', add: '1-1', sub: '1-1', cmp: '1-1',
     shape2: '1-1', shape3: '1-1', jobs: '1-1', flags: '1-1', maps: '1-1' } },
-  k: { label: 'Kindergarten', g: { animals: '1-2', places: '1-1', body: '1-2', gk: '1-2', anatomy: '1-1', match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-1', sent: '1-2', syl: '1-2', add: '1-2',
+  k: { label: 'Kindergarten', g: { trace: '1-1', animals: '1-2', places: '1-1', body: '1-2', gk: '1-2', anatomy: '1-1', match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-1', sent: '1-2', syl: '1-2', add: '1-2',
     sub: '1-2', story: '1-1', cmp: '1-2', shape2: '1-2', shape3: '1-1', jobs: '1-2', flags: '1-2', maps: '1-2' } },
   g1: { label: '1st Grade', g: { animals: '1-2', places: '1-2', body: '2-3', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '2-3', syl: '2-3', add: '3-4',
     sub: '3-4', story: '2-3', cmp: '2-4', clock: '1-2', shape2: '2-3', shape3: '1-2', jobs: '2-3', flags: '2-3', maps: '2-3' } },
   g2: { label: '2nd Grade', g: { animals: '2-3', places: '2-3', body: '3-3', gk: '3-4', anatomy: '2-3', match: '3-5', cvc: '3-3', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-3', sent: '3-4', syl: '3-3', add: '4-5',
     sub: '4-5', story: '3-5', cmp: '4-5', mul: '1-3', div: '1-2', clock: '2-4', shape2: '3-3', shape3: '2-2', jobs: '3-3', flags: '3-3', maps: '3-3' } },
   g3: { label: '3rd Grade', g: { animals: '3-3', places: '3-3', body: '3-3', gk: '4-4', anatomy: '3-4', match: '4-5', cvc: '3-3', w4: '5-5', sight: '4-4', spell: '5-5',
-    vocab: '3-3', sent: '4-5', syl: '3-3', add: '5-5', sub: '5-5', story: '4-5', cmp: '5-5', mul: '3-5', div: '2-5', clock: '3-4', shape2: '3-3', shape3: '3-3', jobs: '3-3', flags: '3-3', maps: '3-3' } },
+    vocab: '3-3', sent: '4-6', syl: '3-3', add: '5-5', sub: '5-5', story: '4-5', cmp: '5-5', mul: '3-5', div: '2-5', clock: '3-4', shape2: '3-3', shape3: '3-3', jobs: '3-3', flags: '3-3', maps: '3-3' } },
 };
 const gradeRange = (grade, id) => { const r = GRADES[grade] && GRADES[grade].g[id]; return r ? r.split('-').map(Number) : null; };
 

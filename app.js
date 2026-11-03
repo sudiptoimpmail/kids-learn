@@ -7,11 +7,8 @@ const ROUND = 10;
 const KEY = 'learnplay.v1';
 
 /* ---------- saved progress ---------- */
-const state = Object.assign(
-  { name: '', voice: true, stars: 0, stickers: [], levels: {}, best: {} },
-  (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } })()
-);
-const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
+const state = Object.assign({ name: '', voice: true, stars: 0, stickers: [], levels: {}, best: {} }, Store.load());
+const save = () => Store.save(state);   // storage.js decides where it goes (web now, native app later)
 const levelOf = (id) => state.levels[id] || 1;
 const maxLevelOf = (id) => (CATEGORIES.find((c) => c.id === id) || {}).maxLevel || 3;
 const gameMax = maxLevelOf;
@@ -209,7 +206,7 @@ function renderHome() {
   if (typeof renderPlayBanner === 'function') renderPlayBanner();
   $('#grid').innerHTML = visibleGames().map((c) => {
     const best = state.best[c.id] || 0;
-    const lv = c.id === 'mix' ? '' : `<span class="lv">Lv ${levelOf(c.id)}</span>`;
+    const lv = c.id === 'mix' || c.trace ? '' : `<span class="lv">Lv ${levelOf(c.id)}</span>`;
     return `<button class="tile" data-cat="${c.id}" style="--c:${c.color}">
       ${lv}<span class="ti">${c.icon}</span><span class="tt">${c.title}</span><span class="ts">${c.sub}</span>
       <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
@@ -219,19 +216,24 @@ function renderHome() {
 /* ---------- a round ---------- */
 let R = null; // current round
 
-function startRound(catId) {
+function startRound(catId, count, browse = false) {
   const cat = CATEGORIES.find((c) => c.id === catId);
   const real = visibleGames().filter((c) => c.gen);
   const qs = [], seen = new Set();
   let guard = 0;
-  const N = cat.roundLen || ROUND;
-  while (qs.length < N && guard++ < 400) {
+  const N = count || cat.roundLen || ROUND;
+  // questions seen in the last few rounds are skipped while there are fresh ones to ask
+  state.recent = state.recent || {};
+  const recent = new Set(state.recent[cat.id] || []);
+  while (qs.length < N && guard++ < 600) {
     const c = cat.gen ? cat : real[Math.floor(Math.random() * real.length)];
     const q = c.gen(levelOf(c.id));
-    if (seen.has(q.key) && guard < 300) continue;
+    if (seen.has(q.key) && guard < 500) continue;
+    if (!browse && recent.has(q.key) && guard < 350) continue;
     seen.add(q.key); q.cat = c; qs.push(q);
   }
-  R = { cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0 };
+  if (!browse) { state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60); save(); }
+  R = { cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse };
   $('#playTitle').textContent = `${cat.icon} ${cat.title}`;
   document.body.style.setProperty('--theme', cat.color);
   show('play');
@@ -559,6 +561,7 @@ function next() {
 }
 
 function finish() {
+  if (R.browse) { dropBody3D(); renderHome(); show('home'); return; }   // the test browser does not change levels or stars
   dropBody3D();
   renderProgress();
   const m = R.mistakes;
@@ -742,6 +745,7 @@ $('#grid').addEventListener('click', (e) => {
   const t = e.target.closest('.tile'); if (!t) return;
   sfx.tap();
   if (t.dataset.cat === 'vocab') return openLearn();
+  if (t.dataset.cat === 'trace') return openTrace();
   startRound(t.dataset.cat);
 });
 $('#hintBtn').onclick = () => { sfx.tap(); showHint(R.qs[R.i]); };
@@ -768,13 +772,79 @@ function renderGrades() {
   }));
 }
 $('#gradeChip').onclick = () => $('#settingsBtn').onclick();
-$('#settingsBtn').onclick = () => {
+$('#settingsBtn').onclick = () => askPin(openSettings);
+function openSettings() {
   renderGrades(); renderThemes(); $('#testMode').checked = !!state.testMode; $('#testSection').hidden = !state.testMode;
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
+  renderTestBrowser();
   show('settings');
+}
+
+/* ---------- grown-up PIN (asked before Settings) ---------- */
+const pinHash = (p) => { let h = 5381; for (const ch of 'lp:' + p) h = ((h * 33) ^ ch.charCodeAt(0)) >>> 0; return h.toString(36); };
+function askPin(onOk, change = false) {
+  const sheet = $('#pinSheet'); let typed = '', first = null;
+  const mode = () => (!state.pinHash || change ? (first ? 'confirm' : 'new') : 'check');
+  const paint = () => {
+    $('#pinTitle').textContent = mode() === 'check' ? '🔒 Grown-ups only' : mode() === 'new' ? '🔒 Make a grown-up PIN' : '🔒 Type it again';
+    $('#pinNote').textContent = mode() === 'check' ? 'Type your 4-digit PIN.' : mode() === 'new' ? 'Pick 4 numbers. You will need them to open Settings.' : 'Type the same 4 numbers.';
+    $$('#pinDots i').forEach((d, k) => d.classList.toggle('on', k < typed.length));
+    $('#pinForgotBtn').hidden = mode() !== 'check'; $('#pinForgot').hidden = true;
+  };
+  const close = () => { sheet.hidden = true; $('#pinPad').onclick = null; };
+  const shake = () => { const b = $('.pin-box'); b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); sfx.no(); };
+  $('#pinPad').onclick = (e) => {
+    const b = e.target.closest('button'); if (!b) return; const k = b.dataset.k; sfx.tap();
+    if (k === '✕') return close();
+    if (k === '⌫') { typed = typed.slice(0, -1); return paint(); }
+    if (typed.length >= 4) return;
+    typed += k; paint();
+    if (typed.length < 4) return;
+    setTimeout(() => {
+      const m = mode();
+      if (m === 'check') { if (pinHash(typed) === state.pinHash) { close(); onOk(); } else { typed = ''; shake(); paint(); } }
+      else if (m === 'new') { first = typed; typed = ''; paint(); }
+      else if (typed === first) { state.pinHash = pinHash(typed); save(); close(); sfx.yes(); onOk(); }
+      else { first = null; typed = ''; shake(); paint(); }
+    }, 150);
+  };
+  // forgot: a grown-up math question resets the PIN
+  $('#pinForgotBtn').onclick = () => {
+    const a = 12 + Math.floor(Math.random() * 8), b = 6 + Math.floor(Math.random() * 4), ans = a * b;
+    const opts = shuffle([ans, ans + a, ans - b, ans + 10]);
+    $('#pinForgot').innerHTML = `<p>To make a new PIN, answer: <b>${a} × ${b} = ?</b></p><div class="pin-ans">${opts.map((o) => `<button data-v="${o}">${o}</button>`).join('')}</div>`;
+    $('#pinForgot').hidden = false;
+    $$('#pinForgot [data-v]').forEach((x) => (x.onclick = () => { if (+x.dataset.v === ans) { state.pinHash = ''; save(); typed = ''; first = null; paint(); } else { shake(); $('#pinForgot').hidden = true; } }));
+  };
+  typed = ''; paint(); sheet.hidden = false;
+}
+$('#backupBtn').onclick = () => {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([Store.exportJSON()], { type: 'application/json' }));
+  a.download = `learn-and-play-backup-${new Date().toISOString().slice(0, 10)}.json`; a.click();
 };
+$('#restoreFile').onchange = async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  try { Store.importJSON(await f.text()); alertNote('Backup loaded!'); setTimeout(() => location.reload(), 600); } catch { alertNote('That file is not a Learn & Play backup.'); }
+};
+const alertNote = (t) => { $('#voiceStatus').textContent = t; };
+$('#pinChange').onclick = () => { sfx.tap(); askPin(() => say('PIN saved!'), true); };
+
+/* ---------- test mode: open any game at any level and step through its cards ---------- */
+function renderTestBrowser() {
+  const sel = $('#tbGame'); if (!sel) return;
+  sel.innerHTML = CATEGORIES.filter((c) => c.gen).map((c) => `<option value="${c.id}">${c.icon} ${c.title}</option>`).join('');
+  const lv = () => { $('#tbLevel').innerHTML = Array.from({ length: maxLevelOf(sel.value) }, (_, k) => `<option>${k + 1}</option>`).join(''); };
+  sel.onchange = lv; lv();
+}
+$('#tbGo').onclick = () => {
+  const id = $('#tbGame').value, lv = +$('#tbLevel').value;
+  const keep = state.levels[id]; state.levels[id] = lv;
+  startRound(id, 30, true);
+  state.levels[id] = keep;
+};
+$('#prevBtn').onclick = () => { if (!R || R.i === 0) return; R.i--; R.locked = false; renderQ(); };
 $('#settingsDone').onclick = () => {
   state.name = $('#nameInput').value.trim().slice(0, 20);
   state.voice = $('#voiceToggle').checked;
