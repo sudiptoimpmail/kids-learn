@@ -820,3 +820,6 @@ body.test-mode .test-only { display: inline-block; }
 body.test-mode .opt[data-ok] { outline: 3px dashed #2f9e44; outline-offset: -6px; }
 .test-ans { font-size: 12px; color: #2f9e44; font-weight: 800; }
 body.test-mode .prog-row { flex-wrap: wrap; }
+/* animal choices: big picture with the name under it */
+.ani-opt { display: flex; flex-direction: column; align-items: center; gap: 2px; line-height: 1.1; }
+.ani-e { font-size: 44px; }

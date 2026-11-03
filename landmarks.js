@@ -6,6 +6,20 @@
 const LM_SKY = '<rect x="0" y="0" width="120" height="120" fill="#cfe9ff"/>';
 const LMO = 'stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"';
 const LM_DRAW = {
+  towerbridge: `<rect width="120" height="120" fill="#dbe4ff"/><path d="M0 92 H120 V120 H0 Z" fill="#4dabf7"/>
+    <path d="M0 76 H120 V82 H0 Z" fill="#74c0fc" ${LMO}/><path d="M38 40 H82 V46 H38 Z" fill="#74c0fc" ${LMO}/>
+    ${[26, 74].map((x) => `<path d="M${x} 104 V34 L${x + 4} 22 L${x + 10} 16 L${x + 16} 22 L${x + 20} 34 V104 Z" fill="#e9d8a6" ${LMO}/><rect x="${x + 6}" y="44" width="8" height="12" rx="4" fill="#4dabf7" ${LMO}/><rect x="${x + 6}" y="62" width="8" height="10" rx="4" fill="#4dabf7" ${LMO}/>`).join('')}
+    <path d="M0 60 Q14 70 26 76 M46 76 Q60 66 74 76 M94 76 Q106 70 120 60" stroke="#1c7ed6" stroke-width="2.5" fill="none"/>`,
+  chichen: `<rect width="120" height="120" fill="#d0ebff"/><path d="M0 96 H120 V120 H0 Z" fill="#8ce99a"/>
+    ${[0, 1, 2, 3, 4, 5].map((k) => `<rect x="${14 + k * 8}" y="${88 - k * 11}" width="${92 - k * 16}" height="11" fill="${k % 2 ? '#e9c46a' : '#d4a373'}" ${LMO}/>`).join('')}
+    <path d="M52 99 L56 33 H64 L68 99 Z" fill="#c08552" ${LMO}/><rect x="50" y="22" width="20" height="12" fill="#bc6c25" ${LMO}/>`,
+  sphinx: `<rect width="120" height="120" fill="#fff3bf"/><path d="M0 92 H120 V120 H0 Z" fill="#ffd8a8"/><path d="M78 92 L98 52 L118 92 Z" fill="#f4c27a" ${LMO}/>
+    <path d="M10 92 V78 Q10 70 22 70 H58 V56 Q58 40 70 40 Q82 40 82 56 V72 L86 78 V92 Z" fill="#e0a85b" ${LMO}/>
+    <path d="M62 44 Q70 30 78 44 L80 62 L60 62 Z" fill="#4dabf7" ${LMO}/><circle cx="67" cy="54" r="1.6" fill="#2b2140"/><circle cx="74" cy="54" r="1.6" fill="#2b2140"/>
+    <path d="M10 88 H40" stroke="#2b2140" stroke-width="1.4"/>`,
+  stonehenge: `<rect width="120" height="120" fill="#dbe4ff"/><path d="M0 84 Q60 74 120 84 V120 H0 Z" fill="#8ce99a"/>
+    ${[[10, 54], [32, 50], [56, 48], [80, 50], [102, 54]].map(([x, y]) => `<rect x="${x}" y="${y}" width="11" height="${90 - y}" rx="2" fill="#adb5bd" ${LMO}/>`).join('')}
+    <rect x="8" y="46" width="35" height="9" rx="2" fill="#ced4da" ${LMO}/><rect x="54" y="40" width="37" height="9" rx="2" fill="#ced4da" ${LMO}/>`,
   cntower: `${LM_SKY}<rect x="0" y="96" width="120" height="24" fill="#8ce99a"/>
     ${[[8, 80, 14, 16], [24, 70, 12, 26], [80, 74, 14, 22], [96, 84, 16, 12], [36, 86, 10, 10], [70, 82, 9, 14]].map(([x, y, w, h]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#adb5bd" ${LMO}/>`).join('')}
     <path d="M56 98 L58.5 44 L61.5 44 L64 98 Z" fill="#dee2e6" ${LMO}/>
@@ -93,10 +107,10 @@ const LANDMARKS = [
   ['cntower', 'CN Tower', 'Canada', 'Toronto', 1, 'draw'],
   ['niagara', 'Niagara Falls', 'Canada', 'between Canada and the United States', 1, 'draw'],
   ['greatwall', 'Great Wall of China', 'China', 'northern China', 1, 'draw'],
-  ['bigben', 'Big Ben', 'United Kingdom', 'London', 2, 'draw'],
-  ['opera', 'Sydney Opera House', 'Australia', 'Sydney', 2, 'draw'],
-  ['fuji', 'Mount Fuji', 'Japan', 'near Tokyo', 2, 'om'],
-  ['colosseum', 'Colosseum', 'Italy', 'Rome', 2, 'draw'],
+  ['bigben', 'Big Ben', 'United Kingdom', 'London', 1, 'draw'],
+  ['opera', 'Sydney Opera House', 'Australia', 'Sydney', 1, 'draw'],
+  ['fuji', 'Mount Fuji', 'Japan', 'near Tokyo', 1, 'om'],
+  ['colosseum', 'Colosseum', 'Italy', 'Rome', 1, 'draw'],
   ['christ', 'Christ the Redeemer', 'Brazil', 'Rio de Janeiro', 2, 'draw'],
   ['goldengate', 'Golden Gate Bridge', 'United States', 'San Francisco', 2, 'draw'],
   ['machupicchu', 'Machu Picchu', 'Peru', 'the Andes mountains', 3, 'draw'],
@@ -104,10 +118,41 @@ const LANDMARKS = [
   ['stbasil', "Saint Basil's Cathedral", 'Russia', 'Moscow', 3, 'draw'],
   ['brandenburg', 'Brandenburg Gate', 'Germany', 'Berlin', 3, 'draw'],
   ['tokyo', 'Tokyo Tower', 'Japan', 'Tokyo', 3, 'om'],
+  ['amazon', 'Amazon Rainforest', 'Brazil', 'northern Brazil', 1, 'emoji', '🦜🌳🐒', '#b2f2bb'],
+  ['grandcanyon', 'Grand Canyon', 'United States', 'Arizona', 1, 'emoji', '🏜️', '#ffd8a8'],
+  ['uluru', 'Uluru', 'Australia', 'the middle of Australia', 2, 'emoji', '🪨', '#ffc9a0'],
+  ['reef', 'Great Barrier Reef', 'Australia', 'the coast of Queensland', 1, 'emoji', '🐠🪸🐢', '#99e9f2'],
+  ['parthenon', 'Parthenon', 'Greece', 'Athens', 2, 'emoji', '🏛️', '#d0ebff'],
+  ['neuschwanstein', 'Neuschwanstein Castle', 'Germany', 'Bavaria', 2, 'emoji', '🏰', '#d3f9d8'],
+  ['venice', 'Canals of Venice', 'Italy', 'Venice', 2, 'emoji', '🛶', '#a5d8ff'],
+  ['chichen', 'Chichen Itza', 'Mexico', 'Yucatan', 2, 'draw'],
+  ['sphinx', 'Great Sphinx', 'Egypt', 'Giza, near Cairo', 2, 'draw'],
+  ['himeji', 'Himeji Castle', 'Japan', 'Himeji', 3, 'emoji', '🌸🏯🌸', '#ffdeeb'],
+  ['forbidden', 'Forbidden City', 'China', 'Beijing', 3, 'emoji', '🏮🏯🏮', '#ffe3e3'],
+  ['hagia', 'Hagia Sophia', 'Turkey', 'Istanbul', 3, 'emoji', '🕌', '#d0ebff'],
+  ['cappadocia', 'Balloons of Cappadocia', 'Turkey', 'Cappadocia', 3, 'emoji', '🎈🎈🎈', '#ffe8cc'],
+  ['sagrada', 'Sagrada Familia', 'Spain', 'Barcelona', 3, 'emoji', '⛪', '#fff3bf'],
+  ['stonehenge', 'Stonehenge', 'United Kingdom', 'England', 3, 'draw'],
+  ['towerbridge', 'Tower Bridge', 'United Kingdom', 'London', 3, 'draw'],
+  ['safari', 'Maasai Mara', 'Kenya', 'southern Kenya', 3, 'emoji', '🦓🦁🦒', '#ffec99'],
+  ['tablemtn', 'Table Mountain', 'South Africa', 'Cape Town', 3, 'emoji', '⛰️', '#c5f6fa'],
+  ['borobudur', 'Borobudur Temple', 'Indonesia', 'Java', 3, 'emoji', '🛕', '#e6fcf5'],
+  ['milford', 'Milford Sound', 'New Zealand', 'the South Island', 3, 'emoji', '🏞️', '#d3f9d8'],
+  ['iguazu', 'Iguazu Falls', 'Argentina', 'between Argentina and Brazil', 3, 'emoji', '🌈💦', '#c3fae8'],
 ];
+// places that are in two countries: never offer the other one as a wrong answer
+// how to say "Where is the …?" for each place
+const LM_NO_THE = new Set(['uluru', 'fuji', 'machupicchu', 'bigben', 'hagia', 'milford', 'tablemtn', 'chichen', 'stonehenge', 'stbasil', 'christ', 'neuschwanstein', 'himeji', 'tokyo']);
+const LM_PLURAL = new Set(['niagara', 'iguazu', 'venice', 'cappadocia']);
+const lmWhere = (id, name) => `Where ${LM_PLURAL.has(id) ? 'are' : 'is'} ${LM_NO_THE.has(id) ? '' : 'the '}${name}?`;
+const LM_ALSO = { niagara: ['United States'], amazon: ['Peru'], iguazu: ['Brazil'] };
 function landmarkArt(id, cls = '') {
   const L = LANDMARKS.find((x) => x[0] === id);
-  const svg = L[5] === 'om'
+  const svg = L[5] === 'emoji'
+    ? `<svg viewBox="0 0 120 120" class="lm-art ${cls}"><defs><linearGradient id="sky-${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e7f5ff"/><stop offset="1" stop-color="${L[7]}"/></linearGradient></defs>
+      <rect x="0" y="0" width="120" height="120" fill="url(#sky-${id})"/><circle cx="98" cy="20" r="9" fill="#ffe066"/>
+      <text x="60" y="78" font-size="${[64, 64, 46, 34][Math.min(3, [...L[6].replace(/\uFE0F/g, '')].length)]}" text-anchor="middle" dominant-baseline="middle">${L[6]}</text></svg>`
+    : L[5] === 'om'
     ? `<svg viewBox="0 0 72 72" class="lm-art ${cls}"><rect x="0" y="0" width="72" height="72" fill="#cfe9ff"/>${OM_LAND[id]}</svg>`
     : `<svg viewBox="0 0 120 120" class="lm-art ${cls}">${LM_DRAW[id]}</svg>`;
   // a real photo, if one has been added to img/landmarks/, replaces the drawing
@@ -120,9 +165,14 @@ const WORLD_ANIMALS = [
   ['panda', '🐼', 'China', 'country', 1], ['kangaroo', '🦘', 'Australia', 'country', 1], ['koala', '🐨', 'Australia', 'country', 1],
   ['lion', '🦁', 'Africa', 'continent', 1], ['giraffe', '🦒', 'Africa', 'continent', 1], ['zebra', '🦓', 'Africa', 'continent', 1],
   ['polar bear', '🐻‍❄️', 'Canada', 'country', 1], ['penguin', '🐧', 'Antarctica', 'continent', 1], ['tiger', '🐯', 'India', 'country', 1],
-  ['bald eagle', '🦅', 'United States', 'country', 2], ['anaconda', '🐍', 'Brazil', 'country', 2], ['sloth', '🦥', 'South America', 'continent', 2],
-  ['camel', '🐪', 'Egypt', 'country', 2], ['gorilla', '🦍', 'Africa', 'continent', 2], ['hippo', '🦛', 'Africa', 'continent', 2],
-  ['moose', '🫎', 'Canada', 'country', 2], ['African elephant', '🐘', 'Africa', 'continent', 2],
+  ['bald eagle', '🦅', 'United States', 'country', 1], ['anaconda', '🐍', 'Brazil', 'country', 2], ['sloth', '🦥', 'South America', 'continent', 2],
+  ['camel', '🐪', 'Egypt', 'country', 1], ['gorilla', '🦍', 'Africa', 'continent', 1], ['hippo', '🦛', 'Africa', 'continent', 1],
+  ['moose', '🫎', 'Canada', 'country', 2], ['African elephant', '🐘', 'Africa', 'continent', 1],
   ['llama', '🦙', 'Peru', 'country', 3], ['macaw parrot', '🦜', 'Brazil', 'country', 3], ['orangutan', '🦧', 'Indonesia', 'country', 3],
   ['Komodo dragon', '🦎', 'Indonesia', 'country', 3], ['bison', '🦬', 'United States', 'country', 3], ['beaver', '🦫', 'Canada', 'country', 3],
+  ['peacock', '🦚', 'India', 'country', 1], ['alligator', '🐊', 'United States', 'country', 1], ['cheetah', '🐆', 'Africa', 'continent', 2],
+  ['rhino', '🦏', 'Africa', 'continent', 2], ['wild turkey', '🦃', 'United States', 'country', 2], ['monkey', '🐒', 'South America', 'continent', 1],
+  ['crocodile', '🐊', 'Africa', 'continent', 3], ['jaguar', '🐆', 'Brazil', 'country', 3], ['reindeer', '🦌', 'Russia', 'country', 3],
+  ['hedgehog', '🦔', 'Europe', 'continent', 3], ['water buffalo', '🐃', 'Asia', 'continent', 3], ['Asian elephant', '🐘', 'India', 'country', 3],
+  ['red fox', '🦊', 'Europe', 'continent', 3], ['flamingo', '🦩', 'Africa', 'continent', 3], ['snowy owl', '🦉', 'Canada', 'country', 3],
 ];

@@ -360,7 +360,7 @@ const tileEl = (id) => $(`.tile-l[data-id="${id}"]`);
 const slotEl = (i) => $(`.slot[data-i="${i}"]`);
 function place(q, i, id) {
   const old = q.slots[i]; if (old != null) unplace(q, i);
-  const t = tileEl(id); if (!t) return;
+  const t = tileEl(id), sl0 = slotEl(i); if (!t || !sl0 || R.qs[R.i] !== q) return;   // the card may have changed meanwhile
   q.slots[i] = id; t.classList.add('used');
   const sl = slotEl(i); sl.textContent = t.dataset.l; sl.classList.add('full'); sl.classList.remove('bad');
   sl.classList.remove('drop-in'); void sl.offsetWidth; sl.classList.add('drop-in');
@@ -436,7 +436,7 @@ function checkSpell(q) {
       return;
     }
     q.tries++; R.mistakes++; R.streak = 0;
-    wrong.forEach((i) => slotEl(i).classList.add('bad'));
+    wrong.forEach((i) => { const el = slotEl(i); if (el) el.classList.add('bad'); });
     sfx.no();
     const oops = ['Oops! Try again.', 'Almost! Try again.', 'Not quite. You can do it!'][Math.min(q.tries - 1, 2)];
     setTimeout(() => {

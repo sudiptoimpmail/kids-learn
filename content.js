@@ -1639,6 +1639,10 @@ const LAND_COLORS = { 'North America': '#69db7c', 'South America': '#ffd43b', Eu
 const COUNTRY_FLAG = { 'United States': '🇺🇸', Canada: '🇨🇦', Brazil: '🇧🇷', Russia: '🇷🇺', China: '🇨🇳', Australia: '🇦🇺', India: '🇮🇳', 'United Kingdom': '🇬🇧',
   France: '🇫🇷', Germany: '🇩🇪', Italy: '🇮🇹', Japan: '🇯🇵', Mexico: '🇲🇽', Egypt: '🇪🇬', Spain: '🇪🇸', Argentina: '🇦🇷', 'South Africa': '🇿🇦', Peru: '🇵🇪',
   Kenya: '🇰🇪', 'New Zealand': '🇳🇿', Turkey: '🇹🇷', Greece: '🇬🇷', Indonesia: '🇮🇩' };
+const CAPITAL = { 'United States': 'Washington, D.C.', Canada: 'Ottawa', Brazil: 'Brasília', Russia: 'Moscow', China: 'Beijing', Australia: 'Canberra', India: 'New Delhi',
+  'United Kingdom': 'London', France: 'Paris', Germany: 'Berlin', Italy: 'Rome', Japan: 'Tokyo', Mexico: 'Mexico City', Egypt: 'Cairo', Spain: 'Madrid',
+  Argentina: 'Buenos Aires', Peru: 'Lima', Kenya: 'Nairobi', 'New Zealand': 'Wellington', Turkey: 'Ankara', Greece: 'Athens' };
+const theC = (n) => (/^(United|Netherlands)/.test(n) ? 'the ' : '') + n;   // "the United States"
 const SMALL_COUNTRIES = ['United Kingdom', 'Japan', 'Italy', 'Greece', 'New Zealand', 'Germany', 'France', 'Spain', 'Kenya', 'Turkey', 'Peru'];
 const famousCountries = (level) => GEO.countries.filter((c) => c.f && c.f <= level).map((c) => c.n);
 const countryOf = (name) => GEO.countries.find((c) => c.n === name);
@@ -1677,7 +1681,8 @@ function genMaps(level) {
   const conts = Object.keys(CONT).filter((n) => CONT[n].level <= level);
   const countries = famousCountries(level);
   const n = numOpts(level) - 1;
-  const types = level === 1 ? ['cname', 'ctap', 'kname', 'kname'] : ['cname', 'ctap', 'kname', 'kname', 'ktap', 'ktap'];
+  const types = level === 1 ? ['cname', 'ctap', 'kname', 'kname', 'kcont'] : level === 2 ? ['cname', 'ctap', 'kname', 'kname', 'ktap', 'ktap', 'kcont', 'kcont']
+    : ['cname', 'kname', 'kname', 'ktap', 'ktap', 'kcont', 'capital', 'capital', 'capital'];
   const type = pick(types);
   if (type === 'cname' || type === 'ctap') {
     const c = pick(conts);
@@ -1691,6 +1696,26 @@ function genMaps(level) {
     };
   }
   const exact = countries.filter((x) => countryOf(x).f === level);
+  if (type === 'capital') {
+    const withCap = countries.filter((x) => CAPITAL[x]);
+    const k = pick(withCap);
+    return {
+      key: `map-cap-${k}`, text: `What is the capital city of <b>${theC(k)}</b>? ${COUNTRY_FLAG[k] || ''}`, say: ['What is the capital city of', `${theC(k)}?`],
+      main: worldSVG({ hl: k, level }), mainClass: 'map-main',
+      options: shuffle([k, ...sample(withCap, n, [k])]).map((x) => ({ v: x, html: CAPITAL[x] })), answer: k, optClass: 'opt-text',
+      hint: { html: '', say: 'The capital is where the country is run from!', remove: true },
+    };
+  }
+  if (type === 'kcont') {
+    const ok = countries.filter((x) => !['Russia', 'Turkey', 'Egypt'].includes(x));
+    const k = pick(ok), c = countryOf(k).c;
+    return {
+      key: `map-kcont-${k}`, text: `Which continent is <b>${theC(k)}</b> in? ${COUNTRY_FLAG[k] || ''}`, say: ['Which continent is', theC(k), 'in?'],
+      main: worldSVG({ hl: k, level }), mainClass: 'map-main',
+      options: shuffle([c, ...sample(conts.filter((x) => x !== 'Antarctica'), n, [c])]).map((x) => ({ v: x, html: `${CONT[x].e} ${x}` })), answer: c, optClass: 'opt-text',
+      hint: contHint(c),
+    };
+  }
   const k = pick(exact.length && Math.random() < 0.6 ? exact : countries);
   if (type === 'ktap') return {
     key: `map-ktap-${k}`, text: `Tap on <b>${k}</b>!`, say: ['Can you tap on', `${k}?`], main: worldSVG({ tap: 'country', level }), mainClass: 'map-main',
@@ -1706,12 +1731,35 @@ function genMaps(level) {
 // choices that would also be right are never offered (e.g. polar bears live in Russia too)
 const ANIMAL_ALSO = { 'polar bear': ['Russia', 'United States'], tiger: ['China', 'Russia', 'Indonesia'], 'bald eagle': ['Canada'], anaconda: ['Peru'],
   camel: ['India', 'Australia', 'China'], moose: ['United States', 'Russia'], llama: ['Argentina'], 'macaw parrot': ['Peru', 'Mexico'], bison: ['Canada'],
-  beaver: ['United States'], lion: ['Asia'], penguin: ['South America', 'Africa', 'Australia'], sloth: ['North America'], panda: [], kangaroo: [], koala: [] };
+  beaver: ['United States'], lion: ['Asia'], penguin: ['South America', 'Africa', 'Australia'], sloth: ['North America'], panda: [], kangaroo: [], koala: [],
+  peacock: [], alligator: ['China'], cheetah: ['Asia'], rhino: ['Asia'], 'wild turkey': ['Mexico', 'Canada'], monkey: ['Africa', 'Asia', 'North America'],
+  crocodile: ['Asia', 'Australia', 'North America', 'South America'], jaguar: ['Mexico', 'Peru', 'Argentina'], reindeer: ['Canada', 'United States'],
+  hedgehog: ['Africa', 'Asia'], 'water buffalo': ['Australia'], 'Asian elephant': ['China', 'Indonesia'], 'red fox': ['Asia', 'North America', 'Africa', 'Australia'],
+  flamingo: ['South America', 'North America', 'Asia', 'Europe'], 'snowy owl': ['Russia', 'United States'], gorilla: [], hippo: [], zebra: [], giraffe: [], 'African elephant': [] };
+// does this animal live in this place? (a country, or a continent)
+function livesIn(a, place) {
+  const [name, , ans, kind] = a, also = ANIMAL_ALSO[name] || [];
+  if (place === ans || also.includes(place)) return true;
+  if (CONT[place]) return (kind === 'country' && countryOf(ans).c === place) || also.some((x) => countryOf(x) && countryOf(x).c === place);
+  return kind === 'continent' && countryOf(place) && (countryOf(place).c === ans || also.includes(countryOf(place).c));
+}
 function genAnimals(level) {
   const pool = WORLD_ANIMALS.filter((a) => a[4] <= level);
   const exact = pool.filter((a) => a[4] === level);
-  const [name, emoji, ans, kind] = pick(exact.length && Math.random() < 0.6 ? exact : pool);
+  const A = pick(exact.length && Math.random() < 0.6 ? exact : pool);
+  const [name, emoji, ans, kind] = A;
   const also = ANIMAL_ALSO[name] || [];
+  // the other way round: which animal lives here?
+  if (Math.random() < 0.35) {
+    const wrong = sample(pool.filter((b) => b[0] !== name && b[1] !== emoji && !livesIn(b, ans)), numOpts(level) - 1);
+    const map = kind === 'country' ? worldSVG({ hl: ans, level: 3 }) : worldSVG({ mode: 'cont', hl: ans });
+    return {
+      key: `ani-which-${name}`, text: `Which animal lives in <b>${theC(ans)}</b>? ${COUNTRY_FLAG[ans] || ''}`, say: ['Which animal lives in', `${theC(ans)}?`],
+      main: `<div class="hint-map">${map}</div>`, mainClass: 'map-main',
+      options: shuffle([A, ...wrong]).map((b) => ({ v: b[0], html: `<span class="ani-opt"><span class="ani-e">${b[1]}</span>${b[0]}</span>` })), answer: name, optClass: 'opt-text two-col',
+      hint: { html: '', say: 'Think about where each animal lives!', remove: true },
+    };
+  }
   const choices = kind === 'country' ? famousCountries(Math.max(level, 2)) : Object.keys(CONT);
   const wrong = sample(choices.filter((x) => x !== ans && !also.includes(x)), numOpts(level) - 1);
   const map = kind === 'country' ? worldSVG({ hl: ans, level: 3 }) : worldSVG({ mode: 'cont', hl: ans });
@@ -1731,11 +1779,11 @@ function genPlaces(level) {
   const [id, name, country, city] = L;
   const n = numOpts(level) - 1;
   const mapHint = { html: `<div class="hint-map">${worldSVG({ hl: country, level: 3 })}</div><div class="hint-note">📍 ${city}</div>`, say: 'Look at the orange place on the map!' };
-  const type = level === 1 ? 'where' : pick(['where', 'where', 'which', 'name']);
+  const type = pick(['where', 'where', 'which', 'name']);
   if (type === 'which') {
-    const others = sample(LANDMARKS.filter((x) => x[2] !== country), n);
+    const others = sample(LANDMARKS.filter((x) => x[2] !== country && !(LM_ALSO[x[0]] || []).includes(country) && x[4] <= Math.max(level, 2)), n);
     return {
-      key: `lm-which-${id}`, text: `Which one is in <b>${country}</b>? ${COUNTRY_FLAG[country] || ''}`, say: ['Which one is in', `${country}?`],
+      key: `lm-which-${id}`, text: `Which one is in <b>${theC(country)}</b>? ${COUNTRY_FLAG[country] || ''}`, say: ['Which one is in', `${theC(country)}?`],
       main: '', mainClass: 'empty', options: shuffle([L, ...others]).map((x) => ({ v: x[0], html: landmarkArt(x[0], 'small') })), answer: id,
       optClass: 'opt-svg lm-opts', hint: mapHint,
     };
@@ -1748,10 +1796,10 @@ function genPlaces(level) {
       optClass: 'opt-text', hint: { html: `<div class="hint-note">📍 ${city}, ${country} ${COUNTRY_FLAG[country] || ''}</div>`, say: 'Think about where it is!' },
     };
   }
-  const not = id === 'niagara' ? ['United States'] : [];
+  const not = LM_ALSO[id] || [];
   const wrong = sample(famousCountries(Math.max(level, 2)).filter((x) => x !== country && !not.includes(x)), n);
   return {
-    key: `lm-where-${id}`, text: `Where is the <b>${name}</b>?`, say: `Where is the ${name}?`,
+    key: `lm-where-${id}`, text: lmWhere(id, `<b>${name}</b>`), say: lmWhere(id, name),
     main: landmarkArt(id), mainClass: 'lm-main', options: shuffle([country, ...wrong]).map((x) => ({ v: x, html: `${COUNTRY_FLAG[x] || ''} ${x}` })), answer: country,
     optClass: 'opt-text', hint: mapHint,
   };
