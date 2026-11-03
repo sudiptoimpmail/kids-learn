@@ -21,7 +21,7 @@
   <!-- tap-to-start (unlocks sound on iPhone) -->
   <div id="splash">
     <div class="splash-in">
-      <div class="splash-emoji">🦄</div>
+      <div class="splash-emoji" id="mascot">🦄</div>
       <h1>Learn &amp; Play</h1>
       <button id="startBtn" class="big-btn">▶︎ Let's Play!</button>
     </div>
@@ -39,7 +39,7 @@
     <div class="score-row">
       <div class="chip">⭐ <b id="starCount">0</b></div>
       <button id="gradeChip" class="chip btn grade-chip">🎓 <b id="gradeLabel">Grade</b></button>
-      <button id="stickersBtn" class="chip btn">🦄 <b id="stickerCount">0</b> stickers ›</button>
+      <button id="stickersBtn" class="chip btn">🏅 <b id="stickerCount">0</b> stickers ›</button>
     </div>
     <button id="playBanner" class="play-banner"></button>
     <div id="grid" class="grid"></div>
@@ -52,7 +52,7 @@
       <div id="playTitle" class="play-title"></div>
       <button id="sayBtn" class="icon-btn" aria-label="Say it again">🔊</button>
     </header>
-    <div class="prog-row"><div id="progress" class="progress"></div><button id="diffBtn" class="diff-btn" aria-label="Grown-ups: press and hold to change difficulty">🎚️ <span id="diffLv"></span></button></div>
+    <div class="prog-row"><div id="progress" class="progress"></div><button id="skipBtn" class="diff-btn test-only" aria-label="Test: skip">⏭</button><button id="endBtn" class="diff-btn test-only" aria-label="Test: end round">🏁</button><button id="diffBtn" class="diff-btn" aria-label="Grown-ups: press and hold to change difficulty">🎚️ <span id="diffLv"></span></button></div>
     <div class="card">
       <div id="qText" class="q-text"></div>
       <div id="qMain" class="q-main"></div>
@@ -142,10 +142,13 @@
   <section id="settings" class="screen">
     <header class="play-top">
       <span class="icon-btn ghost"></span>
-      <div class="play-title">Grown-up Settings</div>
+      <div class="play-title" id="settingsTitle">Grown-up Settings</div>
       <span class="icon-btn ghost"></span>
     </header>
     <div class="panel">
+      <div class="field">Look <small>(colors and mascot for the app)</small>
+        <div id="themeBtns" class="grade-btns theme-btns"></div>
+      </div>
       <div class="field">Grade <small>(sets every game to the right starting level)</small>
         <div id="gradeBtns" class="grade-btns"></div>
       </div>
@@ -167,6 +170,10 @@
       <p id="voiceStatus" class="note small"></p>
       <div class="field">Level for each game <small>(goes up automatically after a great round)</small></div>
       <div id="levels" class="levels"></div>
+      <div id="testSection" class="test-box" hidden>
+        <label class="field row">🧪 Test mode <small>(shows answers, skip buttons, every game, play zone always open)</small><input id="testMode" type="checkbox"></label>
+        <div id="testInfo" class="note small"></div>
+      </div>
       <button id="settingsDone" class="big-btn">Save</button>
       <button id="resetBtn" class="link-btn">Reset all progress</button>
       <p class="note small">Pictures include art from <a href="https://openmoji.org" target="_blank" rel="noopener">OpenMoji</a> (CC BY-SA 4.0). Map: Natural Earth. 3D: three.js.</p>

@@ -1050,6 +1050,7 @@ const BODY_FN = [
   [3, 'What do you use to feel if something is soft?', 'fingers', 'ears 👂', 'eyebrows', 'teeth 🦷'],
 ];
 function genBody(level) {
+  if (HAS3D) return genBody3D(level);
   const parts = BODY_PARTS.filter((p) => p[1] <= level);
   const exact = parts.filter((p) => p[1] === level);
   const t = Math.random();
@@ -1070,6 +1071,97 @@ function genBody(level) {
     key: `body-tap-${word}`, text: `Tap the <b>${word}</b>!`, say: ['Tap the', `${word}!`],
     main: bodySVG(), mainClass: 'body-main', tap: true, options: [], answer: word, optClass: '',
     hint: { html: `<div class="hint-mini">${bodySVG(word)}</div>`, say: 'Look for the part that is glowing!' },
+  };
+}
+
+/* ---------------- 3D BODY questions (used when the device can show 3D) ---------------- */
+const HAS3D = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
+// body part → what is inside it (shown after a right answer from level 2)
+const INSIDE = {
+  head: ['bones', 'skull', 'Inside your head is your skull. It keeps your brain safe!'],
+  hair: ['bones', 'skull', 'Under your hair is your skull!'],
+  chest: ['bones', 'ribs', 'Inside your chest, your ribs protect your heart and lungs!'],
+  tummy: ['organs', 'stomach', 'Inside your tummy is your stomach!'],
+  arms: ['bones', 'arm bone', 'Inside your arm is your arm bone!'],
+  legs: ['bones', 'thigh bone', 'Inside your leg is your thigh bone, the longest bone!'],
+  knees: ['bones', 'kneecap', 'Inside your knee is your kneecap!'],
+  hands: ['bones', 'hand bones', 'Your hand has lots of little bones!'],
+  fingers: ['bones', 'hand bones', 'Each finger has tiny bones inside!'],
+  feet: ['bones', 'foot bones', 'Your foot has lots of little bones!'],
+  neck: ['bones', 'spine', 'Your backbone goes up through your neck!'],
+  shoulders: ['bones', 'collarbone', 'Your collarbone goes to your shoulder!'],
+  chin: ['bones', 'jaw', 'Inside your chin is your jaw bone!'],
+  mouth: ['bones', 'jaw', 'Your jaw helps your mouth open and close!'],
+  elbows: ['bones', 'forearm bones', 'Your elbow is where your arm bones meet!'],
+  wrists: ['bones', 'hand bones', 'Your wrist joins your arm to your hand bones!'],
+  ankles: ['bones', 'foot bones', 'Your ankle joins your leg to your foot bones!'],
+};
+const BODY3_PARTS = [['hair', 1], ['head', 1], ['eyes', 1], ['ears', 1], ['nose', 1], ['mouth', 1], ['hands', 1], ['feet', 1], ['tummy', 1], ['arms', 1], ['legs', 1],
+  ['neck', 2], ['shoulders', 2], ['elbows', 2], ['knees', 2], ['chin', 2], ['chest', 2], ['fingers', 2],
+  ['eyebrows', 3], ['cheeks', 3], ['wrists', 3], ['ankles', 3]];
+function genBody3D(level) {
+  const parts = BODY3_PARTS.filter((p) => p[1] <= level);
+  const exact = parts.filter((p) => p[1] === level);
+  const t = Math.random();
+  if (level >= 2 && t < 0.3) return mcQuestion('body-fn', pickLevelled(BODY_FN, level), level);
+  const name = pick(exact.length && Math.random() < 0.6 ? exact : parts)[0];
+  const ins = level >= 2 && INSIDE[name];
+  const reveal = ins ? { layer: ins[0], part: ins[1], text: ins[2] } : null;
+  if (level >= 2 && t < 0.5) {
+    const others = sample(parts.map((p) => p[0]), numOpts(level) - 1, [name]);
+    return {
+      key: `body3-name-${name}`, text: 'What is the glowing part called?', say: 'What is the glowing part called?', main: '', mainClass: 'b3d-main',
+      body3d: { layer: 'skin', highlight: name }, reveal, options: shuffle([name, ...others]).map((x) => ({ v: x, html: x })), answer: name, optClass: 'opt-text two-col',
+      hint: { html: '', say: 'Think about it!', remove: true },
+    };
+  }
+  return {
+    key: `body3-tap-${name}`, text: `Tap the <b>${name}</b>!`, say: ['Tap the', `${name}!`], main: '', mainClass: 'b3d-main',
+    body3d: { layer: 'skin', tap: true, tappable: BODY3_PARTS.map((p) => p[0]) }, reveal, options: [], answer: name, optClass: '',
+    hint: { html: '', say: 'Look for the part that is glowing!', glow: true },
+  };
+}
+// Inside My Body: 1 organs · 2 more organs + big bones · 3 bone names + blood vessels · 4 more bones and science
+const INNER = [
+  ['brain', 'organs', 1], ['heart', 'organs', 1], ['lungs', 'organs', 1], ['stomach', 'organs', 1],
+  ['liver', 'organs', 2], ['intestines', 'organs', 2], ['skull', 'bones', 2], ['ribs', 'bones', 2], ['spine', 'bones', 2],
+  ['kidneys', 'organs', 3], ['jaw', 'bones', 3], ['collarbone', 'bones', 3], ['hip bone', 'bones', 3], ['thigh bone', 'bones', 3], ['kneecap', 'bones', 3], ['shin bone', 'bones', 3],
+  ['arteries', 'vessels', 3], ['veins', 'vessels', 3],
+  ['arm bone', 'bones', 4], ['forearm bones', 'bones', 4], ['hand bones', 'bones', 4], ['foot bones', 'bones', 4],
+];
+const INNER_LABEL = { spine: 'backbone (spine)', 'thigh bone': 'thigh bone (femur)', 'shin bone': 'shin bone (tibia)', 'hip bone': 'hip bone (pelvis)', 'arm bone': 'arm bone (humerus)', skull: 'skull', arteries: 'arteries (red)', veins: 'veins (blue)' };
+const innerName = (n, level) => (level >= 3 && INNER_LABEL[n] ? INNER_LABEL[n] : n === 'spine' ? 'backbone' : n);
+const ANATOMY_MORE = [
+  [3, 'Which tubes carry blood away from the heart?', 'arteries', 'veins', 'nerves', 'bones'],
+  [3, 'Which tubes bring blood back to the heart?', 'veins', 'arteries', 'muscles', 'ribs'],
+  [3, 'What is another name for your backbone?', 'spine', 'skull', 'pelvis', 'kneecap'],
+  [3, 'Which bone protects the front of your knee?', 'kneecap', 'skull', 'collarbone', 'jaw'],
+  [4, 'What is the longest bone in your body?', 'thigh bone (femur)', 'kneecap', 'jaw', 'a rib'],
+  [4, 'Which organs clean your blood?', 'kidneys', 'lungs', 'ears', 'teeth'],
+  [4, 'Which organ helps clean your blood and stores energy?', 'liver', 'heart', 'brain', 'lungs'],
+  [4, 'Which bone in your head can move?', 'your jaw', 'your skull top', 'your ear', 'your nose'],
+  [4, 'Where does your body make new blood cells?', 'inside your bones', 'in your hair', 'in your nails', 'in your ears'],
+  [4, 'Your heart is a strong…', 'muscle', 'bone', 'tooth', 'hair'],
+];
+function genAnatomy3D(level) {
+  const pool = INNER.filter((x) => x[2] <= level);
+  const exact = pool.filter((x) => x[2] === level);
+  const t = Math.random();
+  if (t < 0.3) return mcQuestion('ana', pickLevelled(ANATOMY.concat(ANATOMY_MORE), Math.min(level, 4)), level);
+  const [name, layer] = pick(exact.length && Math.random() < 0.6 ? exact : pool);
+  const shown = innerName(name, level);
+  if (t < 0.55) {
+    const others = sample(pool.filter((x) => x[1] === layer || pool.filter((y) => y[1] === layer).length < 4).map((x) => x[0]), numOpts(level) - 1, [name]);
+    return {
+      key: `ana3-name-${name}`, text: 'What is the glowing part called?', say: 'What is the glowing part called?', main: '', mainClass: 'b3d-main',
+      body3d: { layer, highlight: name }, options: shuffle([name, ...others]).map((x) => ({ v: x, html: innerName(x, level) })), answer: name,
+      optClass: 'opt-text two-col', hint: { html: '', say: 'Think about it!', remove: true },
+    };
+  }
+  return {
+    key: `ana3-tap-${name}`, text: `Tap the <b>${shown}</b>!`, say: ['Tap the', `${name}!`], main: '', mainClass: 'b3d-main',
+    body3d: { layer, tap: true, tappable: INNER.filter((x) => x[1] === layer).map((x) => x[0]) }, options: [], answer: name, optClass: '',
+    hint: { html: '', say: 'Look for the part that is glowing!', glow: true },
   };
 }
 
@@ -1188,6 +1280,7 @@ const ANATOMY = [
   [3, 'What keeps germs away from your hands?', '🧼 washing with soap', 'shaking them', 'clapping', 'hiding them'],
 ];
 function genAnatomy(level) {
+  if (HAS3D) return genAnatomy3D(level);
   const t = Math.random();
   const organs = ORGANS.filter((o) => o[1] <= Math.min(level + 1, 2));
   if (t < 0.25) {
@@ -1773,7 +1866,7 @@ const CATEGORIES = [
   { id: 'shape3', title: '3D Shapes', sub: 'cube · cone', icon: '🧊', color: '#3bc9db', gen: genShape3 },
   { id: 'body', title: 'Body Parts', sub: 'nose · knees · elbows', icon: '🙋', color: '#ff8787', gen: genBody },
   { id: 'gk', title: 'Did You Know?', sub: 'general knowledge', icon: '💡', color: '#fab005', gen: genGK, maxLevel: 4 },
-  { id: 'anatomy', title: 'Inside My Body', sub: 'heart · lungs · brain', icon: '🫀', color: '#e64980', gen: genAnatomy },
+  { id: 'anatomy', title: 'Inside My Body', sub: 'organs · bones · veins', icon: '🫀', color: '#e64980', gen: genAnatomy, maxLevel: 4 },
   { id: 'jobs', title: 'Jobs', sub: 'who helps us?', icon: '🧑‍🚒', color: '#ff922b', gen: genJobs },
   { id: 'flags', title: 'Flags', sub: 'countries', icon: '🚩', color: '#ff6b6b', gen: genFlags },
   { id: 'animals', title: 'Animals of the World', sub: 'where do they live?', icon: '🐼', color: '#2f9e44', gen: genAnimals },
@@ -1795,7 +1888,7 @@ const GRADES = {
     sub: '3-4', story: '2-3', cmp: '2-4', clock: '1-2', shape2: '2-3', shape3: '1-2', jobs: '2-3', flags: '2-3', maps: '2-3' } },
   g2: { label: '2nd Grade', g: { animals: '2-3', places: '2-3', body: '3-3', gk: '3-4', anatomy: '2-3', match: '3-5', cvc: '3-3', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-3', sent: '3-4', syl: '3-3', add: '4-5',
     sub: '4-5', story: '3-5', cmp: '4-5', mul: '1-3', div: '1-2', clock: '2-4', shape2: '3-3', shape3: '2-2', jobs: '3-3', flags: '3-3', maps: '3-3' } },
-  g3: { label: '3rd Grade', g: { animals: '3-3', places: '3-3', body: '3-3', gk: '4-4', anatomy: '3-3', match: '4-5', cvc: '3-3', w4: '5-5', sight: '4-4', spell: '5-5',
+  g3: { label: '3rd Grade', g: { animals: '3-3', places: '3-3', body: '3-3', gk: '4-4', anatomy: '3-4', match: '4-5', cvc: '3-3', w4: '5-5', sight: '4-4', spell: '5-5',
     vocab: '3-3', sent: '4-5', syl: '3-3', add: '5-5', sub: '5-5', story: '4-5', cmp: '5-5', mul: '3-5', div: '2-5', clock: '3-4', shape2: '3-3', shape3: '3-3', jobs: '3-3', flags: '3-3', maps: '3-3' } },
 };
 const gradeRange = (grade, id) => { const r = GRADES[grade] && GRADES[grade].g[id]; return r ? r.split('-').map(Number) : null; };

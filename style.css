@@ -756,3 +756,53 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .prog-row .progress { gap: 4px; flex-wrap: nowrap; }
 .prog-row .dot { width: 22px; height: 22px; font-size: 12px; flex: none; }
 @media (min-width: 700px) { .prog-row .dot { width: 32px; height: 32px; font-size: 16px; } }
+
+/* ---------- 3D body ---------- */
+.q-main.b3d-main { min-height: 0; margin: 4px 0 0; }
+.b3d-host { position: relative; width: 100%; max-width: 520px; margin: 0 auto; border-radius: 20px; overflow: hidden;
+  background: radial-gradient(circle at 50% 35%, #ffffff, #e7f5ff 60%, #d0ebff); }
+.b3d-cv { display: block; width: 100%; touch-action: none; }
+.b3d-loading { padding: 80px 0; font-weight: 800; color: var(--soft); }
+.b3d-tools { position: absolute; left: 10px; bottom: 8px; font-size: 12px; font-weight: 800; color: var(--soft); background: #ffffffcc; border-radius: 99px; padding: 3px 10px; pointer-events: none; }
+.b3d-label { position: absolute; transform: translate(-50%, -130%); background: #fff; border-radius: 14px; padding: 6px 10px; font-weight: 900; font-size: 14px;
+  max-width: 220px; box-shadow: 0 6px 16px #0003; pointer-events: none; animation: popin .35s; }
+.b3d-label::after { content: ""; position: absolute; left: 50%; bottom: -7px; border: 7px solid transparent; border-top-color: #fff; border-bottom: 0; transform: translateX(-50%); }
+
+/* ================= THEMES ================= */
+body.theme-rainbow { --bg: #fff8ec; background-image: radial-gradient(circle at 12% 8%, #ffe3e3 0 120px, transparent 121px), radial-gradient(circle at 92% 28%, #e3f3ff 0 140px, transparent 141px), radial-gradient(circle at 18% 96%, #e7ffe3 0 160px, transparent 161px), radial-gradient(circle at 95% 92%, #fff3bf 0 110px, transparent 111px); }
+body.theme-unicorn { --bg: #fff0f8; background-image: radial-gradient(circle at 15% 10%, #ffd6ec 0 130px, transparent 131px), radial-gradient(circle at 90% 30%, #eadcff 0 140px, transparent 141px), radial-gradient(circle at 20% 95%, #ffe8f5 0 160px, transparent 161px); }
+body.theme-dino { --bg: #f1fbe8; background-image: radial-gradient(circle at 12% 8%, #c3f0a8 0 130px, transparent 131px), radial-gradient(circle at 92% 30%, #ffe0b2 0 140px, transparent 141px), radial-gradient(circle at 18% 96%, #b2f2bb 0 170px, transparent 171px); }
+body.theme-space { --bg: #eef0ff; background-image: radial-gradient(circle at 12% 8%, #d0d7ff 0 130px, transparent 131px), radial-gradient(circle at 90% 30%, #c5f6fa 0 120px, transparent 121px), radial-gradient(circle at 20% 95%, #e5dbff 0 170px, transparent 171px), radial-gradient(#a5b4fc 1.2px, transparent 1.6px); background-size: auto, auto, auto, 26px 26px; }
+body.theme-ocean { --bg: #e8fbff; background-image: radial-gradient(circle at 12% 8%, #c5f6fa 0 130px, transparent 131px), radial-gradient(circle at 90% 30%, #a5d8ff 0 120px, transparent 121px), radial-gradient(circle at 20% 95%, #99e9f2 0 170px, transparent 171px); }
+body.theme-sports { --bg: #eefcf1; background-image: radial-gradient(circle at 12% 8%, #b2f2bb 0 130px, transparent 131px), radial-gradient(circle at 90% 30%, #d0ebff 0 130px, transparent 131px), radial-gradient(circle at 20% 95%, #ffec99 0 160px, transparent 161px), repeating-linear-gradient(90deg, transparent 0 60px, #ffffff55 60px 62px); }
+body.theme-cars { --bg: #f4f5f7; background-image: radial-gradient(circle at 12% 8%, #ffc9c9 0 130px, transparent 131px), radial-gradient(circle at 90% 30%, #d0ebff 0 130px, transparent 131px), radial-gradient(circle at 20% 95%, #ffec99 0 160px, transparent 161px), repeating-linear-gradient(45deg, transparent 0 22px, #e9ecef 22px 24px); }
+body.theme-jungle { --bg: #f3fbe9; background-image: radial-gradient(circle at 12% 8%, #d8f5a2 0 130px, transparent 131px), radial-gradient(circle at 90% 30%, #ffe8cc 0 130px, transparent 131px), radial-gradient(circle at 20% 95%, #c0eb75 0 170px, transparent 171px); }
+body.theme-dino #splash { background: linear-gradient(160deg, #2f9e44, #94d82d 60%, #ffa94d); }
+body.theme-space #splash { background: linear-gradient(160deg, #1b1f4a, #4c6ef5 60%, #22b8cf); }
+body.theme-ocean #splash { background: linear-gradient(160deg, #0b7285, #22b8cf 60%, #74c0fc); }
+body.theme-sports #splash { background: linear-gradient(160deg, #1971c2, #2f9e44 60%, #fab005); }
+body.theme-cars #splash { background: linear-gradient(160deg, #c92a2a, #f76707 60%, #fab005); }
+body.theme-jungle #splash { background: linear-gradient(160deg, #2b8a3e, #66a80f 60%, #f59f00); }
+body.theme-rainbow #splash { background: linear-gradient(160deg, #f03e3e, #f59f00 30%, #40c057 55%, #339af0 80%, #7048e8); }
+.theme-btns { grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 700px) { .theme-btns { grid-template-columns: repeat(4, 1fr); } }
+
+/* ================= 3D-style tiles ================= */
+.tile { background: linear-gradient(165deg, color-mix(in srgb, var(--c) 70%, #fff) 0%, var(--c) 45%, color-mix(in srgb, var(--c) 85%, #000) 100%); }
+.tile::before { content: ""; position: absolute; left: 6%; right: 6%; top: 4px; height: 38%; border-radius: 22px 22px 60% 60% / 22px 22px 30% 30%;
+  background: linear-gradient(#ffffff70, #ffffff00); pointer-events: none; }
+.tile .ti { display: grid; place-items: center; width: 74px; height: 74px; border-radius: 24px; position: relative;
+  background: radial-gradient(circle at 32% 26%, #ffffffcc, #ffffff40 45%, #ffffff10 70%);
+  box-shadow: inset 0 -6px 10px #0000002a, inset 0 4px 6px #ffffff90, 0 6px 10px #00000026;
+  transform: perspective(240px) rotateX(10deg); filter: drop-shadow(0 4px 0 #0000002e); }
+.pz-tile .ti { margin: 0 auto; }
+.tile:active .ti { transform: perspective(240px) rotateX(0deg) scale(.96); }
+@media (min-width: 700px) { .tile .ti { width: 92px; height: 92px; } }
+
+/* ================= test mode ================= */
+.test-box { border: 2px dashed #f59f00; border-radius: 16px; padding: 10px; background: #fff9db; }
+.test-box[hidden], .test-only { display: none; }
+body.test-mode .test-only { display: inline-block; }
+body.test-mode .opt[data-ok] { outline: 3px dashed #2f9e44; outline-offset: -6px; }
+.test-ans { font-size: 12px; color: #2f9e44; font-weight: 800; }
+body.test-mode .prog-row { flex-wrap: wrap; }

@@ -14,7 +14,7 @@ const perHour = () => state.playPerHour || 15;
 const hourKey = () => { const d = new Date(); return `${d.toDateString()} ${d.getHours()}`; };
 const usedThisHour = () => (state.playUsed && state.playUsed.h === hourKey() ? state.playUsed.ms : 0);
 const hourLeftMs = () => Math.max(0, perHour() * 60000 - usedThisHour());
-const playOpen = () => !!state.playAlways || (hourlyMode() ? hourLeftMs() > 0 : (state.playUntil || 0) > Date.now());
+const playOpen = () => !!state.playAlways || !!state.testMode || (hourlyMode() ? hourLeftMs() > 0 : (state.playUntil || 0) > Date.now());
 
 // called from finish() in app.js; returns true when a new play break was earned
 function earnPlay() {

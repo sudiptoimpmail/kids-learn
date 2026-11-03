@@ -16,7 +16,7 @@ const levelOf = (id) => state.levels[id] || 1;
 const maxLevelOf = (id) => (CATEGORIES.find((c) => c.id === id) || {}).maxLevel || 3;
 const gameMax = maxLevelOf;
 const OPTIONAL = { clock: 'optClock', anatomy: 'optAnatomy' };  // off unless a parent turns them on in Settings
-const visibleGames = () => CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
+const visibleGames = () => state.testMode ? CATEGORIES.slice() : CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
   && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
 // auto level-up stops at the top of the child's grade (unless all games are shown)
 const levelCap = (id) => { const r = state.grade && !state.showAll && gradeRange(state.grade, id); return r ? r[1] : gameMax(id); };
@@ -201,7 +201,7 @@ function show(id) {
 }
 
 function renderHome() {
-  $('#hello').textContent = state.name ? `Hi, ${state.name}!` : 'Hi there!';
+  $('#hello').textContent = state.name ? `Hi, ${state.name}!` : 'Hi there!' + ' ' + ((THEMES[state.theme] || THEMES.rainbow).mascot);
   $('#starCount').textContent = state.stars;
   $('#stickerCount').textContent = state.stickers.length;
   $('#gradeLabel').textContent = state.grade ? GRADES[state.grade].label : 'Pick grade';
@@ -245,7 +245,23 @@ function renderProgress() {
     `<span class="dot ${i < R.i ? (q.ok ? 'ok' : 'meh') : i === R.i ? 'now' : ''}">${i < R.i ? (q.ok ? '⭐' : '✔︎') : ''}</span>`).join('');
 }
 
+/* ---------- 3D body view (loaded only when a body question appears) ---------- */
+const B3D = { view: null, mod: null };
+function dropBody3D() { if (B3D.view) { B3D.view.dispose(); B3D.view = null; } }
+async function mountBody3D(q) {
+  const host = document.createElement('div'); host.className = 'b3d-host'; host.innerHTML = '<div class="b3d-loading">🧍 Getting ready…</div>';
+  $('#qMain').appendChild(host);
+  try { B3D.mod = B3D.mod || await import('./body3d.js'); } catch (e) { host.innerHTML = '<div class="hint-note">3D is not available.</div>'; return; }
+  if (R.qs[R.i] !== q) return;                     // moved on while loading
+  dropBody3D();
+  B3D.view = B3D.mod.mount(host, {
+    layer: q.body3d.layer, highlight: q.body3d.highlight || null, tappable: q.body3d.tappable,
+    onTap: q.body3d.tap ? (names) => { if (R.locked) return; const el = document.createElement('i'); choose(q, names.includes(q.answer) ? q.answer : names[0], el); } : null,
+  });
+}
+
 function renderQ() {
+  dropBody3D();
   const q = R.qs[R.i];
   q.tries = 0; q.hintShown = false; R.locked = false;
   renderProgress();
@@ -258,8 +274,10 @@ function renderQ() {
   const opts = $('#options');
   opts.className = 'options ' + (q.optClass || '') + (q.options.length === 4 ? ' four' : '') + (q.options.length === 2 ? ' two' : '');
   opts.innerHTML = q.options.map((o) => `<button class="opt" data-v="${String(o.v).replace(/"/g, '&quot;')}">${o.html}</button>`).join('');
-  [...opts.children].forEach((b, k) => { b.style.animationDelay = `${k * 60}ms`; b.onclick = () => choose(q, q.options[k].v, b); });
+  [...opts.children].forEach((b, k) => { b.style.animationDelay = `${k * 60}ms`; b.onclick = () => choose(q, q.options[k].v, b); if (state.testMode && String(q.options[k].v) === String(q.answer)) b.dataset.ok = '1'; });
+  if (state.testMode) $('#qText').insertAdjacentHTML('beforeend', `<div class="test-ans">🧪 ${String(q.answer)}</div>`);
   if (q.spell) renderSpell(q);
+  if (q.body3d) mountBody3D(q);
   if (q.match) renderMatch(q);
   if (q.tap) $$('#qMain [data-val]').forEach((g) => { if (g.dataset.val) g.onclick = () => choose(q, g.dataset.val, g); });
   $$('[data-speak]', $('#qMain')).forEach((b) => (b.onclick = () => { sfx.tap(); say(b.dataset.speak, { rate: 0.8 }); }));
@@ -276,6 +294,7 @@ function removeOneWrong(q) {
   if (wrong.length > 1) { const b = pick(wrong); b.classList.add('wrong'); b.disabled = true; }
 }
 function showHint(q, auto = false) {
+  if (q.hint && q.hint.glow && B3D.view) { B3D.view.highlight(q.answer); q.hintShown = true; $('#hintBtn').classList.remove('glow'); speakHint(q); return; }
   if (q.match) { matchHint(q); $('#hintBtn').classList.remove('glow'); return; }
   if (q.spell) { spellHint(q); $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
   if (q.hint && q.hint.remove) { if (!q.hintShown || auto === false) removeOneWrong(q); q.hintShown = true; $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
@@ -503,7 +522,10 @@ function choose(q, v, el) {
     if (q.fill) { const b = $('.blank'); if (b) { b.textContent = q.answer; b.classList.add('filled'); } }
     $$('.qmark').forEach((m) => { m.textContent = q.answer; m.classList.add('filled'); });
     celebrate(first);
-    setTimeout(next, first ? 1900 : 1600);
+    if (q.reveal && B3D.view) {
+      setTimeout(() => { if (B3D.view) { B3D.view.reveal(q.reveal); say(q.reveal.text); } }, 1200);
+      setTimeout(next, 4600);
+    } else setTimeout(next, first ? 1900 : 1600);
   } else {
     q.tries++; R.mistakes++; R.streak = 0;
     el.classList.add('wrong'); el.disabled = true;
@@ -537,6 +559,7 @@ function next() {
 }
 
 function finish() {
+  dropBody3D();
   renderProgress();
   const m = R.mistakes;
   const stars = m <= 2 ? 3 : m <= 5 ? 2 : 1;
@@ -676,6 +699,44 @@ $('#diffCancel').onclick = () => ($('#diffSheet').hidden = true);
   b.addEventListener('pointerdown', down); ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => b.addEventListener(ev, up));
 })();
 
+/* ---------- looks: themes with a mascot (unicorn, dino, space, ocean, sports, rainbow) ---------- */
+const THEMES = {
+  rainbow: { label: '🌈 Rainbow', mascot: '🌈' }, unicorn: { label: '🦄 Unicorn', mascot: '🦄' }, dino: { label: '🦖 Dino', mascot: '🦖' },
+  space: { label: '🚀 Space', mascot: '🚀' }, ocean: { label: '🐬 Ocean', mascot: '🐬' }, sports: { label: '⚽ Sports', mascot: '⚽' },
+  cars: { label: '🏎️ Race Cars', mascot: '🏎️' }, jungle: { label: '🦁 Jungle', mascot: '🦁' },
+};
+function applyTheme() {
+  const t = THEMES[state.theme] ? state.theme : 'rainbow';
+  document.body.className = document.body.className.replace(/\btheme-\w+/g, '').trim() + ' theme-' + t;
+  $('#mascot').textContent = THEMES[t].mascot;
+  document.body.classList.toggle('test-mode', !!state.testMode);
+}
+function renderThemes() {
+  $('#themeBtns').innerHTML = Object.entries(THEMES).map(([k, t]) => `<button class="grade-btn ${(state.theme || 'rainbow') === k ? 'on' : ''}" data-t="${k}">${t.label}</button>`).join('');
+  $$('#themeBtns .grade-btn').forEach((b) => (b.onclick = () => { sfx.tap(); state.theme = b.dataset.t; save(); applyTheme(); renderThemes(); }));
+}
+
+/* ---------- hidden test mode: tap the Settings title 5 times ---------- */
+(() => {
+  let taps = 0, t = 0;
+  $('#settingsTitle').addEventListener('click', () => {
+    taps++; clearTimeout(t); t = setTimeout(() => (taps = 0), 1500);
+    if (taps >= 5) { taps = 0; $('#testSection').hidden = false; sfx.yes(); renderTestInfo(); }
+  });
+})();
+function renderTestInfo() {
+  const clips = Object.keys(CLIPS).length;
+  const gl = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
+  $('#testInfo').textContent = `Voice clips: ${clips} · 3D: ${gl ? 'yes' : 'no'} · Grade: ${state.grade || 'none'} · Screen: ${innerWidth}×${innerHeight}`;
+}
+$('#testMode').onchange = () => { state.testMode = $('#testMode').checked; save(); applyTheme(); };
+// skip: count the card as right and move on · end: jump to the results
+$('#skipBtn').onclick = () => {
+  const q = R.qs[R.i]; if (R.locked) return;
+  R.locked = true; q.ok = true; R.firstTry++; clearTimeout(R.nudge); next();
+};
+$('#endBtn').onclick = () => { R.i = R.qs.length - 1; R.locked = true; next(); };
+
 /* ---------- wire up ---------- */
 $('#grid').addEventListener('click', (e) => {
   const t = e.target.closest('.tile'); if (!t) return;
@@ -685,7 +746,8 @@ $('#grid').addEventListener('click', (e) => {
 });
 $('#hintBtn').onclick = () => { sfx.tap(); showHint(R.qs[R.i]); };
 $('#sayBtn').onclick = () => { sfx.tap(); const q = R.qs[R.i]; say((q.say && q.say.length) ? q.say : q.readQ || q.text.replace(/<[^>]+>/g, '')); };
-$('#quitBtn').onclick = () => { sayToken++; stopClip(); clearTimeout(R && R.nudge); renderHome(); show('home'); };
+$('#quitBtn').onclick = () => {
+  dropBody3D(); sayToken++; stopClip(); clearTimeout(R && R.nudge); renderHome(); show('home'); };
 $('#againBtn').onclick = () => startRound(R.cat.id);
 $('#homeBtn').onclick = () => { renderHome(); show('home'); };
 $('#stickersBtn').onclick = () => { sfx.tap(); renderStickers(); show('stickers'); };
@@ -707,7 +769,7 @@ function renderGrades() {
 }
 $('#gradeChip').onclick = () => $('#settingsBtn').onclick();
 $('#settingsBtn').onclick = () => {
-  renderGrades();
+  renderGrades(); renderThemes(); $('#testMode').checked = !!state.testMode; $('#testSection').hidden = !state.testMode;
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
@@ -739,5 +801,6 @@ $('#startBtn').onclick = () => {
   $('#splash').classList.add('gone');
 };
 
+applyTheme();
 renderHome();
 if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});

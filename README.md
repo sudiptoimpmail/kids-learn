@@ -23,9 +23,9 @@ A flash-card learning game for Pre-K through 3rd grade, built as an installable 
 | ✖️ Multiply | Equal groups with pictures → ×2 ×5 ×10 → up to 5×5 → up to 10×10 → missing factor and story problems. Dot-array hints |
 | ➗ Divide | Share equally with pictures → ÷2 ÷5 ÷10 → within 25 → within 100 → story problems |
 | 🕐 Clock (optional) | Hidden by default — turn on in ⚙️ → Clock game. Read an analog clock or pick the clock for a time: o'clock → half past → quarter past/to → 5 minutes |
-| 🙋 Body Parts | Tap the part on a friendly, fully-clothed kid drawing (nose, knees, elbows…), find the picture, and what each part does. Level 1 big parts → 2 neck, shoulders, elbows, knees, chin → 3 eyebrows, cheeks, wrists, ankles |
+| 🙋 Body Parts | **3D kid** (spin with a finger) — tap the part (big tap zones; tapping near a part counts; tapping an eye also counts as the head). Level 1 big parts → 2 neck, shoulders, elbows, knees, chin, fingers → 3 eyebrows, cheeks, wrists, ankles. From level 2 a right answer shows **what's inside** with an x-ray ("Inside your knee is your kneecap!"). Falls back to a 2D drawing on devices without 3D |
 | 💡 Did You Know? | General knowledge for every grade, 4 levels: animal sounds & colors → seasons, days, baby animals, 911 → planets, plants, months → continents, magnets, states of water. 💡 Hint removes a wrong answer |
-| 🫀 Inside My Body (optional) | Off by default — turn on in ⚙️. Brain, heart, lungs, stomach, intestines on a simple diagram (tap it / name the glowing part), then what bones, ribs and skull protect, and healthy habits |
+| 🫀 Inside My Body (optional) | Off by default — turn on in ⚙️. 3D x-ray body with layers. 4 levels: brain, heart, lungs, stomach → liver, intestines, skull, ribs, backbone → kidneys, jaw, collarbone, hip bone, thigh bone (femur), kneecap, shin bone, **arteries (red) & veins (blue)** → arm/forearm/hand/foot bones and more science facts |
 | 🔺 Shapes | 2D shapes, finding shapes, counting sides |
 | 🧊 3D Shapes | Cube, sphere, cylinder, cone, pyramid, prism; flat vs solid; real-life objects |
 | 🧑‍🚒 Jobs | Who does what |
@@ -57,6 +57,12 @@ Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (defau
 | 🔵 Rolling Ball 3D | 3D sky-track runner (like mobile rolling games, built with three.js): the ball rolls forward on its own — drag left/right or tilt to steer, tap to jump. 8 levels: faster, longer, more gaps, red blocks, jump gaps from level 3, **ramps that fly you over a broken bridge** (level 2+) **or a waterfall canyon** (level 4+), narrow plank bridges (level 5+), sliding purple blocks (level 6+). Collect 💎, checkpoints every 15 rows, every track has a guaranteed safe path |
 | 🟫 Ball Maze | The original top-down maze: drag or tilt to roll to the 🚩 — 8 mazes with walls and holes |
 | 🐹 Whack-a-Mole | 30 seconds, 5 levels (faster moles, more at once, don't tap the 🌸 from level 3) |
+
+## Looks
+⚙️ → **Look**: 🌈 Rainbow, 🦄 Unicorn, 🦖 Dino, 🚀 Space, 🐬 Ocean, ⚽ Sports, 🏎️ Race Cars, 🦁 Jungle — changes the colors, the splash screen and the mascot. Game tiles have glossy 3D-style icons.
+
+## Hidden test mode
+In ⚙️, **tap the "Grown-up Settings" title 5 times** to show 🧪 Test mode: the right answer is outlined, ⏭ skips a card, 🏁 ends the round, every game is shown, the Play Zone is always open, and a line shows voice clips / 3D support / screen size.
 
 ## Turn on hosting (one time)
 Repo **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main` / `(root)` → Save**.
