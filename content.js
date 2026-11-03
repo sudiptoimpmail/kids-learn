@@ -452,21 +452,48 @@ const SENTENCES = [
   ['The little brown mouse ran away from the cat.', 'Who ran away?', ['the mouse 🐭', 'the cat 🐱', 'the dog 🐶']],
   ['We went to the farm and saw a goat, a pig and a hen.', 'Which animal did we NOT see?', ['a tiger 🐯', 'a goat 🐐', 'a pig 🐷']],
   ['Tom was sad because it rained, but then he saw a rainbow.', 'What made Tom happy?', ['a rainbow 🌈', 'the rain 🌧️', 'his shoe 👟']],
+  // ---- 1st grade (level 3): two or three short sentences
+  ['Max has a red kite. He takes it to the park. The kite flies up high.', 'Where does Max take his kite?', ['to the park 🌳', 'to school 🏫', 'to the beach 🏖️'], 3],
+  ['The cat sat by the door. She wanted to go out. Mom let her out to play.', 'What did the cat want?', ['to go out', 'to eat', 'to sleep'], 3],
+  ['It was a hot day. Lily and Sam got ice cream. Lily got pink and Sam got brown.', 'What color was Sam\'s ice cream?', ['brown 🟤', 'pink 🩷', 'green 🟢'], 3],
+  ['A little seed was in the dirt. The rain fell and the sun came out. Soon a flower grew.', 'What grew from the seed?', ['a flower 🌸', 'a tree 🌳', 'a carrot 🥕'], 3],
+  ['Ben lost his hat. He looked under the bed. He found it in his bag!', 'Where was the hat?', ['in his bag 👜', 'under the bed 🛏️', 'on the dog 🐶'], 3],
+  ['The duck swam in the pond. It saw a fish. The fish swam away fast.', 'What did the duck see?', ['a fish 🐟', 'a frog 🐸', 'a boat ⛵'], 3],
+  // ---- 2nd grade (level 4): short stories, 3 – 4 sentences
+  ['Mia wanted to bake a cake for Dad. She mixed eggs, milk and flour. Then she put the cake in the oven. Dad smiled when he saw it.', 'Why did Mia bake a cake?', ['for Dad', 'for her teacher', 'for her dog'], 4],
+  ['The class went on a trip to the zoo. They saw lions, monkeys and a tall giraffe. The monkeys were the funniest. Everyone laughed at them.', 'Which animals were the funniest?', ['the monkeys 🐒', 'the lions 🦁', 'the giraffe 🦒'], 4],
+  ['Leo planted a bean in a cup. He gave it water every day. After one week, a green sprout came up. Leo was very proud.', 'What did Leo give the bean every day?', ['water 💧', 'milk 🥛', 'candy 🍬'], 4],
+  ['It started to snow in the morning. Ava put on her coat, hat and mittens. She built a big snowman with a carrot nose. Then she went inside for hot cocoa.', 'What did Ava use for the snowman\'s nose?', ['a carrot 🥕', 'a button', 'a rock 🪨'], 4],
+  ['Tom saw a little bird on the ground. Its wing was hurt. Tom and his mom took it to the vet. The vet helped the bird get better.', 'Who helped the bird get better?', ['the vet', 'the teacher', 'the bus driver'], 4],
+  ['Zoe likes to read at night. She reads in bed with a lamp. Her favorite books are about space. One day she wants to be an astronaut.', 'What does Zoe want to be?', ['an astronaut 🧑‍🚀', 'a chef 🧑‍🍳', 'a farmer 🧑‍🌾'], 4],
+  ['The wind was very strong. It blew the leaves off the trees. Sam\'s kite flew higher than ever. It was a great day for kites.', 'Why did the kite fly so high?', ['the wind was strong', 'it was raining', 'it was night'], 4],
+  ['Grandpa has a garden. He grows tomatoes, beans and corn. In summer, we help him pick the vegetables. Then we eat them for dinner.', 'When do they help Grandpa pick vegetables?', ['in summer ☀️', 'in winter ❄️', 'at night 🌙'], 4],
+  // ---- 3rd grade (level 5): passages, 4 – 6 sentences, some "why" and "what will happen" questions
+  ['Bees are busy insects. They fly from flower to flower to collect nectar. Back at the hive, they turn the nectar into honey. Bees also help plants grow by carrying pollen. Without bees, many fruits would not grow.', 'Why are bees important for fruit?', ['they carry pollen', 'they eat the fruit', 'they make the rain'], 5],
+  ['Emma practiced the piano every day after school. At first, the songs were hard and she made many mistakes. She did not give up. By the end of the year, she played a song at the school concert. Everyone clapped loudly.', 'What lesson does this story teach?', ['keep practicing and do not give up', 'piano is easy', 'concerts are boring'], 5],
+  ['The moon does not make its own light. It reflects light from the sun. As the moon moves around Earth, we see different shapes. Sometimes it looks round and full. Other times it looks like a thin smile.', 'Where does the moon get its light?', ['from the sun ☀️', 'from stars ⭐', 'from lamps 💡'], 5],
+  ['Jake forgot his lunch at home. At lunchtime, his tummy was rumbling. His friend Ali shared half of his sandwich. Jake said thank you and smiled. The next day, Jake brought cookies for Ali.', 'Why did Jake bring cookies for Ali?', ['to thank him for sharing', 'because he was hungry', 'because it was his birthday'], 5],
+  ['Frogs start their lives as tiny eggs in the water. The eggs hatch into tadpoles that have tails and swim like fish. Slowly, the tadpoles grow legs and lose their tails. Then they hop onto land as frogs. This change is called a life cycle.', 'What does a tadpole grow into?', ['a frog 🐸', 'a fish 🐟', 'a turtle 🐢'], 5],
+  ['Dark clouds filled the sky. The wind began to blow hard. Maya saw a flash of lightning far away. She quickly grabbed her toys from the yard. Then she ran inside and closed the door.', 'What do you think is about to happen?', ['a storm ⛈️', 'a sunny picnic ☀️', 'a snow day ❄️'], 5],
+  ['Penguins are birds, but they cannot fly. Their wings work like flippers to help them swim. Some penguins can swim very fast to catch fish. They live mostly in cold places in the south. Their black and white feathers keep them warm.', 'How do penguins use their wings?', ['to swim', 'to fly', 'to dig'], 5],
+  ['Noah wanted a new bike, so he saved his money. He did chores like feeding the dog and raking leaves. Every week he put coins in his piggy bank. After three months, he counted his money. He finally had enough for the bike!', 'How did Noah get enough money?', ['he saved money from chores', 'he found it', 'he won a prize'], 5],
+  ['A volcano is a mountain with an opening at the top. Deep under the ground, rock is so hot that it melts. When a volcano erupts, the hot melted rock comes out. It is called lava. When lava cools, it turns into new rock.', 'What is lava?', ['hot melted rock 🌋', 'cold water 💧', 'soft sand'], 5],
 ];
-// level by length: 1 = up to 5 words, 2 = up to 8 words, 3 = longer / two sentences
-const sentLevel = (s) => { const n = s.split(' ').length; return n <= 5 ? 1 : n <= 8 && !/[.!?] [A-Z]/.test(s) ? 2 : 3; };
+// level: given (4th item) or by length: 1 = up to 5 words, 2 = up to 8 words, 3 = longer / two sentences
+const sentLevel = (x) => { if (typeof x !== 'string') return x[3] || sentLevel(x[0]); const n = x.split(' ').length; return n <= 5 ? 1 : n <= 8 && !/[.!?] [A-Z]/.test(x) ? 2 : 3; };
 
 function genSentence(level) {
-  const pool = SENTENCES.filter((x) => sentLevel(x[0]) <= level);
-  const exact = pool.filter((x) => sentLevel(x[0]) === level);
+  const pool = SENTENCES.filter((x) => sentLevel(x) <= level);
+  const exact = pool.filter((x) => sentLevel(x) === level);
   const [s, q, opts] = pick(exact.length && Math.random() < 0.7 ? exact : pool);
   const words = s.split(' ').map((w, i) => `<span class="sw" data-i="${i}">${w}</span>`).join(' ');
+  const long = s.length > 120 ? ' passage' : s.length > 60 ? ' long' : '';
   return {
     key: `sent-${s}`,
     text: q,
     say: '',  // she reads the sentence herself
     readQ: q,
-    main: `<div class="sentence">${words}</div><div class="question-line">${q}</div>`,
+    main: `<div class="sentence${long}">${words}</div><div class="question-line">${q}</div>`,
     options: shuffle(opts).map((o) => ({ v: o, html: o })),
     answer: opts[0],
     optClass: 'opt-text',
@@ -1503,84 +1530,136 @@ function genFlags(level) {
   };
 }
 
-/* ---------------- WORLD MAP ---------------- */
-// very simplified continents, [lon, lat] points (kid-friendly, not to scale)
-const LAND = {
-  'North America': [
-    [[-168, 66], [-156, 71], [-130, 70], [-110, 73], [-90, 72], [-78, 70], [-64, 60], [-56, 52], [-66, 44], [-70, 41], [-76, 35], [-81, 31], [-80, 25], [-83, 29], [-90, 30], [-97, 26], [-97, 21], [-90, 21], [-87, 16], [-83, 10], [-78, 8], [-80, 7], [-86, 11], [-92, 15], [-105, 20], [-110, 24], [-117, 32], [-124, 40], [-125, 49], [-135, 58], [-150, 60], [-158, 57], [-165, 60]],
-    [[-55, 60], [-42, 60], [-20, 70], [-20, 80], [-40, 83], [-65, 80], [-70, 77], [-55, 70]],
-  ],
-  'South America': [[[-78, 8], [-72, 12], [-62, 11], [-50, 2], [-35, -5], [-39, -15], [-48, -25], [-58, -35], [-65, -42], [-68, -52], [-72, -54], [-74, -45], [-72, -30], [-71, -18], [-80, -5], [-80, 1]]],
-  Europe: [
-    [[-10, 36], [-9, 43], [-2, 44], [-5, 48], [0, 50], [5, 53], [8, 57], [5, 62], [15, 69], [25, 71], [40, 68], [45, 66], [60, 68], [60, 55], [50, 47], [40, 45], [30, 45], [28, 41], [22, 38], [18, 40], [12, 44], [15, 40], [10, 38], [3, 42], [-2, 37]],
-    [[-6, 50], [1, 51], [2, 53], [-2, 57], [-5, 58], [-6, 55], [-3, 54], [-5, 52]],
-  ],
-  Africa: [
-    [[-17, 15], [-17, 21], [-13, 28], [-6, 36], [10, 37], [20, 32], [32, 31], [34, 28], [43, 12], [51, 12], [48, 4], [40, -5], [40, -15], [35, -25], [32, -29], [20, -35], [17, -29], [12, -17], [13, -5], [9, 4], [-5, 5], [-13, 8]],
-    [[44, -25], [47, -25], [50, -15], [49, -12], [44, -17]],
-  ],
-  Asia: [
-    [[27, 41], [40, 45], [50, 47], [60, 55], [60, 68], [70, 73], [100, 77], [130, 72], [160, 70], [180, 66], [180, 62], [163, 58], [155, 51], [142, 52], [140, 45], [130, 42], [127, 35], [122, 30], [120, 24], [110, 20], [108, 12], [104, 10], [100, 13], [98, 8], [103, 2], [100, 7], [98, 16], [94, 17], [90, 22], [87, 21], [80, 15], [78, 8], [73, 18], [70, 22], [62, 25], [57, 25], [59, 22], [52, 16], [43, 12], [39, 20], [35, 28], [35, 33], [36, 36], [27, 37]],
-    [[130, 31], [135, 34], [140, 36], [142, 40], [141, 45], [144, 44], [140, 41], [136, 37], [131, 34]],
-    [[95, 5], [105, -6], [115, -8], [125, -8], [120, -2], [118, 5], [110, 2], [104, 1]],
-  ],
-  Australia: [
-    [[114, -22], [122, -18], [130, -12], [137, -12], [136, -16], [142, -11], [146, -19], [153, -25], [150, -37], [141, -38], [135, -35], [129, -32], [116, -35], [114, -28]],
-    [[131, -1], [141, -3], [150, -10], [141, -9], [135, -4]],
-    [[172, -35], [178, -38], [174, -41], [167, -46], [171, -44]],
-  ],
-  Antarctica: [[[-180, -72], [-120, -74], [-60, -64], [-30, -77], [0, -70], [60, -67], [120, -66], [180, -70], [180, -88], [-180, -88]]],
-};
+/* ---------------- WORLD MAP (real country shapes) ---------------- */
+// GEO comes from geo.js (Natural Earth borders). Famous countries carry f = level 1/2/3.
 const CONT = {
-  'North America': { e: '🦅🦬', clue: 'bald eagles and bison live here. We live here too!', animal: ['bald eagles', '🦅'], level: 1 },
-  'South America': { e: '🦜🦙', clue: 'the Amazon rainforest, parrots and llamas are here.', animal: ['llamas', '🦙'], level: 1 },
-  Europe: { e: '🏰🥐', clue: 'it has old castles and the Eiffel Tower.', animal: ['hedgehogs', '🦔'], level: 2 },
-  Africa: { e: '🦁🦒', clue: 'lions, giraffes and zebras live here.', animal: ['giraffes', '🦒'], level: 1 },
-  Asia: { e: '🐼🐘', clue: 'pandas and elephants live here. It is the biggest!', animal: ['pandas', '🐼'], level: 1 },
-  Australia: { e: '🦘🐨', clue: 'kangaroos and koalas live here.', animal: ['kangaroos', '🦘'], level: 1 },
-  Antarctica: { e: '🐧❄️', clue: 'it is covered in ice. Penguins live here. Brrr!', animal: ['penguins', '🐧'], level: 1 },
+  'North America': { e: '🦅🦬', clue: 'bald eagles and bison live here. We live here too!', level: 1 },
+  'South America': { e: '🦜🦙', clue: 'the Amazon rainforest, parrots and llamas are here.', level: 1 },
+  Europe: { e: '🏰🥐', clue: 'it has old castles and the Eiffel Tower.', level: 2 },
+  Africa: { e: '🦁🦒', clue: 'lions, giraffes and zebras live here.', level: 1 },
+  Asia: { e: '🐼🐘', clue: 'pandas and elephants live here. It is the biggest!', level: 1 },
+  Australia: { e: '🦘🐨', clue: 'kangaroos and koalas live here.', level: 1 },
+  Antarctica: { e: '🐧❄️', clue: 'it is covered in ice. Penguins live here. Brrr!', level: 1 },
 };
 const LAND_COLORS = { 'North America': '#69db7c', 'South America': '#ffd43b', Europe: '#da77f2', Africa: '#ffa94d', Asia: '#ff8787', Australia: '#4dabf7', Antarctica: '#e9ecef' };
+const COUNTRY_FLAG = { 'United States': '🇺🇸', Canada: '🇨🇦', Brazil: '🇧🇷', Russia: '🇷🇺', China: '🇨🇳', Australia: '🇦🇺', India: '🇮🇳', 'United Kingdom': '🇬🇧',
+  France: '🇫🇷', Germany: '🇩🇪', Italy: '🇮🇹', Japan: '🇯🇵', Mexico: '🇲🇽', Egypt: '🇪🇬', Spain: '🇪🇸', Argentina: '🇦🇷', 'South Africa': '🇿🇦', Peru: '🇵🇪',
+  Kenya: '🇰🇪', 'New Zealand': '🇳🇿', Turkey: '🇹🇷', Greece: '🇬🇷', Indonesia: '🇮🇩' };
+const SMALL_COUNTRIES = ['United Kingdom', 'Japan', 'Italy', 'Greece', 'New Zealand', 'Germany', 'France', 'Spain', 'Kenya', 'Turkey', 'Peru'];
+const famousCountries = (level) => GEO.countries.filter((c) => c.f && c.f <= level).map((c) => c.n);
+const countryOf = (name) => GEO.countries.find((c) => c.n === name);
 
-function mapSVG(highlight, tapMode) {
-  const path = (poly) => 'M' + poly.map(([lo, la]) => `${(lo + 180).toFixed(1)},${(90 - la).toFixed(1)}`).join('L') + 'Z';
-  let g = '';
-  for (const [name, polys] of Object.entries(LAND)) {
-    const fill = tapMode ? LAND_COLORS[name] : name === highlight ? '#ff6b00' : '#cfe3b4';
-    const extra = !tapMode && name === highlight ? ' class="hl"' : '';
-    g += `<g data-val="${tapMode ? name : ''}" fill="${fill}" stroke="#fff" stroke-width="1"${extra}>${polys.map((p) => `<path d="${path(p)}"/>`).join('')}</g>`;
+// draw the world. mode 'cont' colors continents; mode 'country' shows countries.
+// hl = continent or country to glow orange; tap = 'cont' | 'country' makes it tappable
+function worldSVG({ mode = 'country', hl = null, tap = null, level = 3 } = {}) {
+  const famous = new Set(famousCountries(level));
+  let body = '';
+  if (tap === 'cont' || mode === 'cont') {
+    for (const cont of Object.keys(LAND_COLORS)) {
+      const paths = GEO.countries.filter((c) => c.c === cont).map((c) => `<path d="${c.d}"/>`).join('');
+      const fill = tap ? LAND_COLORS[cont] : cont === hl ? '#ff6b00' : '#cfe8b4';
+      body += `<g data-val="${tap ? cont : ''}" fill="${fill}" class="${!tap && cont === hl ? 'hl' : ''}">${paths}</g>`;
+    }
+  } else {
+    for (const c of GEO.countries) {
+      const isHl = c.n === hl, fam = famous.has(c.n);
+      const fill = isHl ? '#ff6b00' : fam ? '#b2e3a0' : '#e3f0d6';
+      body += `<path d="${c.d}" fill="${fill}" ${tap && fam ? `data-val="${c.n}"` : ''} class="${isHl ? 'hl' : ''}"/>`;
+    }
+    // small countries get a circle so they are easy to see and to tap
+    for (const c of GEO.countries) {
+      if (!SMALL_COUNTRIES.includes(c.n)) continue;
+      if (c.n === hl) body += `<circle cx="${c.x}" cy="${c.y}" r="7" class="ring"/>`;
+      if (tap && famous.has(c.n)) body += `<circle cx="${c.x}" cy="${c.y}" r="6" fill="transparent" data-val="${c.n}"/>`;
+    }
   }
-  return `<svg viewBox="0 8 360 164" class="map${tapMode ? ' tappable' : ''}"><rect x="0" y="8" width="360" height="164" rx="10" fill="#a5d8ff"/>${g}</svg>`;
+  return `<svg viewBox="0 0 ${GEO.W} ${GEO.H}" class="map real${tap ? ' tappable' : ''}"><rect x="0" y="0" width="${GEO.W}" height="${GEO.H}" rx="10" fill="#a5d8ff"/>
+    <g stroke="#ffffff" stroke-width=".35" stroke-linejoin="round">${body}</g></svg>`;
 }
+const flagHint = (name) => ({ html: `<div class="hint-pic">${COUNTRY_FLAG[name] || '🗺️'}</div><div class="hint-note">This is its flag!</div>`, say: 'Here is its flag!' });
+const contHint = (c) => ({ html: `<div class="hint-pic">${CONT[c].e}</div>`, say: `Hint: ${CONT[c].clue}` });
 
 function genMaps(level) {
-  const names = Object.keys(CONT).filter((n) => CONT[n].level <= level);
-  const c = pick(names);
-  const others = sample(names, numOpts(level) - 1, [c]);
-  const type = pick(['name', 'name', 'tap', 'animal']);
-  if (type === 'tap') {
+  const conts = Object.keys(CONT).filter((n) => CONT[n].level <= level);
+  const countries = famousCountries(level);
+  const n = numOpts(level) - 1;
+  const types = level === 1 ? ['cname', 'ctap', 'kname', 'kname'] : ['cname', 'ctap', 'kname', 'kname', 'ktap', 'ktap'];
+  const type = pick(types);
+  if (type === 'cname' || type === 'ctap') {
+    const c = pick(conts);
+    if (type === 'ctap') return {
+      key: `map-ctap-${c}`, text: `Tap on <b>${c}</b>!`, say: `Can you tap on ${c}?`, main: worldSVG({ mode: 'cont', tap: 'cont' }), mainClass: 'map-main',
+      tap: true, options: [], answer: c, optClass: '', hint: contHint(c),
+    };
     return {
-      key: `map-tap-${c}`, text: `Tap on ${c}!`, say: `Can you tap on ${c}?`,
-      main: mapSVG(null, true), tap: true, options: [], answer: c, optClass: '',
-      hint: { html: `<div class="hint-pic">${CONT[c].e}</div>`, say: `Hint: ${CONT[c].clue}` },
+      key: `map-cname-${c}`, text: 'Which continent is orange?', say: 'Which continent is orange?', main: worldSVG({ mode: 'cont', hl: c }), mainClass: 'map-main',
+      options: shuffle([c, ...sample(conts, n, [c])]).map((x) => ({ v: x, html: x })), answer: c, optClass: 'opt-text', hint: contHint(c),
     };
   }
-  if (type === 'animal') {
-    const [an, ae] = CONT[c].animal;
-    return {
-      key: `map-ani-${c}`, text: `Where do ${an} live? ${ae}`, say: `Where do ${an} live?`,
-      main: `<div class="big-emoji">${ae}</div>`,
-      options: shuffle([c, ...others]).map((x) => ({ v: x, html: x })),
-      answer: c, optClass: 'opt-text',
-      hint: { html: mapSVG(c, false), say: 'Look at the orange place on the map!' },
-    };
-  }
+  const exact = countries.filter((x) => countryOf(x).f === level);
+  const k = pick(exact.length && Math.random() < 0.6 ? exact : countries);
+  if (type === 'ktap') return {
+    key: `map-ktap-${k}`, text: `Tap on <b>${k}</b>!`, say: ['Can you tap on', `${k}?`], main: worldSVG({ tap: 'country', level }), mainClass: 'map-main',
+    tap: true, options: [], answer: k, optClass: '', hint: flagHint(k),
+  };
   return {
-    key: `map-name-${c}`, text: 'Which continent is orange?', say: 'Which continent is orange?',
-    main: mapSVG(c, false),
-    options: shuffle([c, ...others]).map((x) => ({ v: x, html: x })),
-    answer: c, optClass: 'opt-text',
-    hint: { html: `<div class="hint-pic">${CONT[c].e}</div>`, say: `Hint: ${CONT[c].clue}` },
+    key: `map-kname-${k}`, text: 'Which country is orange?', say: 'Which country is orange?', main: worldSVG({ hl: k, level }), mainClass: 'map-main',
+    options: shuffle([k, ...sample(countries, n, [k])]).map((x) => ({ v: x, html: `${COUNTRY_FLAG[x] || ''} ${x}` })), answer: k, optClass: 'opt-text', hint: flagHint(k),
+  };
+}
+
+/* ---------------- ANIMALS OF THE WORLD ---------------- */
+// choices that would also be right are never offered (e.g. polar bears live in Russia too)
+const ANIMAL_ALSO = { 'polar bear': ['Russia', 'United States'], tiger: ['China', 'Russia', 'Indonesia'], 'bald eagle': ['Canada'], anaconda: ['Peru'],
+  camel: ['India', 'Australia', 'China'], moose: ['United States', 'Russia'], llama: ['Argentina'], 'macaw parrot': ['Peru', 'Mexico'], bison: ['Canada'],
+  beaver: ['United States'], lion: ['Asia'], penguin: ['South America', 'Africa', 'Australia'], sloth: ['North America'], panda: [], kangaroo: [], koala: [] };
+function genAnimals(level) {
+  const pool = WORLD_ANIMALS.filter((a) => a[4] <= level);
+  const exact = pool.filter((a) => a[4] === level);
+  const [name, emoji, ans, kind] = pick(exact.length && Math.random() < 0.6 ? exact : pool);
+  const also = ANIMAL_ALSO[name] || [];
+  const choices = kind === 'country' ? famousCountries(Math.max(level, 2)) : Object.keys(CONT);
+  const wrong = sample(choices.filter((x) => x !== ans && !also.includes(x)), numOpts(level) - 1);
+  const map = kind === 'country' ? worldSVG({ hl: ans, level: 3 }) : worldSVG({ mode: 'cont', hl: ans });
+  return {
+    key: `ani-${name}`, text: `Where does the <b>${name}</b> live?`, say: `Where does the ${name} live?`,
+    main: `<div class="big-emoji">${emoji}</div>`,
+    options: shuffle([ans, ...wrong]).map((x) => ({ v: x, html: `${COUNTRY_FLAG[x] || (CONT[x] ? '🌍' : '')} ${x}` })), answer: ans, optClass: 'opt-text',
+    hint: { html: `<div class="hint-map">${map}</div>`, say: 'Look at the orange place on the map!' },
+  };
+}
+
+/* ---------------- FAMOUS PLACES ---------------- */
+function genPlaces(level) {
+  const pool = LANDMARKS.filter((l) => l[4] <= level);
+  const exact = pool.filter((l) => l[4] === level);
+  const L = pick(exact.length && Math.random() < 0.6 ? exact : pool);
+  const [id, name, country, city] = L;
+  const n = numOpts(level) - 1;
+  const mapHint = { html: `<div class="hint-map">${worldSVG({ hl: country, level: 3 })}</div><div class="hint-note">📍 ${city}</div>`, say: 'Look at the orange place on the map!' };
+  const type = level === 1 ? 'where' : pick(['where', 'where', 'which', 'name']);
+  if (type === 'which') {
+    const others = sample(LANDMARKS.filter((x) => x[2] !== country), n);
+    return {
+      key: `lm-which-${id}`, text: `Which one is in <b>${country}</b>? ${COUNTRY_FLAG[country] || ''}`, say: ['Which one is in', `${country}?`],
+      main: '', mainClass: 'empty', options: shuffle([L, ...others]).map((x) => ({ v: x[0], html: landmarkArt(x[0], 'small') })), answer: id,
+      optClass: 'opt-svg lm-opts', hint: mapHint,
+    };
+  }
+  if (type === 'name') {
+    const others = sample(pool.filter((x) => x[0] !== id), n);
+    return {
+      key: `lm-name-${id}`, text: 'What is this famous place called?', say: 'What is this famous place called?',
+      main: landmarkArt(id), mainClass: 'lm-main', options: shuffle([L, ...others]).map((x) => ({ v: x[0], html: x[1] })), answer: id,
+      optClass: 'opt-text', hint: { html: `<div class="hint-note">📍 ${city}, ${country} ${COUNTRY_FLAG[country] || ''}</div>`, say: 'Think about where it is!' },
+    };
+  }
+  const not = id === 'niagara' ? ['United States'] : [];
+  const wrong = sample(famousCountries(Math.max(level, 2)).filter((x) => x !== country && !not.includes(x)), n);
+  return {
+    key: `lm-where-${id}`, text: `Where is the <b>${name}</b>?`, say: `Where is the ${name}?`,
+    main: landmarkArt(id), mainClass: 'lm-main', options: shuffle([country, ...wrong]).map((x) => ({ v: x, html: `${COUNTRY_FLAG[x] || ''} ${x}` })), answer: country,
+    optClass: 'opt-text', hint: mapHint,
   };
 }
 
@@ -1680,7 +1759,7 @@ const CATEGORIES = [
   { id: 'sight', title: 'Sight Words', sub: 'he · she · went', icon: '👀', color: '#e64980', gen: genSight, maxLevel: 4 },
   { id: 'spell', title: 'Spell It', sub: 'drag the letters', icon: '🔤', color: '#20c997', gen: genSpell, maxLevel: 5 },
   { id: 'vocab', title: 'Word Wonders', sub: 'learn new words', icon: '🌟', color: '#f59f00', gen: genVocab, learn: true },
-  { id: 'sent', title: 'Sentences', sub: 'read & answer', icon: '📖', color: '#74c0fc', gen: genSentence },
+  { id: 'sent', title: 'Read & Answer', sub: 'sentences & stories', icon: '📖', color: '#74c0fc', gen: genSentence, maxLevel: 5 },
   { id: 'match', title: 'Match It', sub: 'word ↔ picture · 3+2 ↔ 5', icon: '🔗', color: '#5c7cfa', gen: genMatch, maxLevel: 5, roundLen: 5 },
   { id: 'syl', title: 'Clap It!', sub: 'syllables', icon: '👏', color: '#ffd43b', gen: genSyllable },
   { id: 'add', title: 'Adding', sub: '2 + 3 · 34 + 5', icon: '➕', color: '#b197fc', gen: genAdd, maxLevel: 5 },
@@ -1697,7 +1776,9 @@ const CATEGORIES = [
   { id: 'anatomy', title: 'Inside My Body', sub: 'heart · lungs · brain', icon: '🫀', color: '#e64980', gen: genAnatomy },
   { id: 'jobs', title: 'Jobs', sub: 'who helps us?', icon: '🧑‍🚒', color: '#ff922b', gen: genJobs },
   { id: 'flags', title: 'Flags', sub: 'countries', icon: '🚩', color: '#ff6b6b', gen: genFlags },
-  { id: 'maps', title: 'World Map', sub: 'continents', icon: '🗺️', color: '#38d9a9', gen: genMaps },
+  { id: 'animals', title: 'Animals of the World', sub: 'where do they live?', icon: '🐼', color: '#2f9e44', gen: genAnimals },
+  { id: 'places', title: 'Famous Places', sub: 'landmarks', icon: '🗽', color: '#1c7ed6', gen: genPlaces },
+  { id: 'maps', title: 'World Map', sub: 'continents & countries', icon: '🗺️', color: '#38d9a9', gen: genMaps },
   { id: 'mix', title: 'Mix It Up!', sub: 'a bit of all', icon: '🎲', color: '#845ef7', gen: null },
 ];
 
@@ -1706,14 +1787,16 @@ const CATEGORIES = [
 // Roughly follows Common Core: time to the hour/half hour in 1st, 5 minutes in 2nd;
 // multiplication/division start as equal groups and sharing in 2nd.
 const GRADES = {
-  prek: { label: 'Pre-K', g: { body: '1-1', gk: '1-1', anatomy: '1-1', match: '1-1', cvc: '1-1', sight: '1-1', spell: '1-1', vocab: '1-1', syl: '1-1', add: '1-1', sub: '1-1', cmp: '1-1',
+  prek: { label: 'Pre-K', g: { animals: '1-1', places: '1-1', body: '1-1', gk: '1-1', anatomy: '1-1', match: '1-1', cvc: '1-1', sight: '1-1', spell: '1-1', vocab: '1-1', syl: '1-1', add: '1-1', sub: '1-1', cmp: '1-1',
     shape2: '1-1', shape3: '1-1', jobs: '1-1', flags: '1-1', maps: '1-1' } },
-  k: { label: 'Kindergarten', g: { body: '1-2', gk: '1-2', anatomy: '1-1', match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-1', sent: '1-1', syl: '1-2', add: '1-2',
+  k: { label: 'Kindergarten', g: { animals: '1-2', places: '1-1', body: '1-2', gk: '1-2', anatomy: '1-1', match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-1', sent: '1-2', syl: '1-2', add: '1-2',
     sub: '1-2', story: '1-1', cmp: '1-2', shape2: '1-2', shape3: '1-1', jobs: '1-2', flags: '1-2', maps: '1-2' } },
-  g1: { label: '1st Grade', g: { body: '2-3', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '1-2', syl: '2-3', add: '3-4',
+  g1: { label: '1st Grade', g: { animals: '1-2', places: '1-2', body: '2-3', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '2-3', syl: '2-3', add: '3-4',
     sub: '3-4', story: '2-3', cmp: '2-4', clock: '1-2', shape2: '2-3', shape3: '1-2', jobs: '2-3', flags: '2-3', maps: '2-3' } },
-  g2: { label: '2nd Grade', g: { body: '3-3', gk: '3-4', anatomy: '2-3', match: '3-5', cvc: '3-3', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-3', sent: '2-3', syl: '3-3', add: '4-5',
+  g2: { label: '2nd Grade', g: { animals: '2-3', places: '2-3', body: '3-3', gk: '3-4', anatomy: '2-3', match: '3-5', cvc: '3-3', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-3', sent: '3-4', syl: '3-3', add: '4-5',
     sub: '4-5', story: '3-5', cmp: '4-5', mul: '1-3', div: '1-2', clock: '2-4', shape2: '3-3', shape3: '2-2', jobs: '3-3', flags: '3-3', maps: '3-3' } },
+  g3: { label: '3rd Grade', g: { animals: '3-3', places: '3-3', body: '3-3', gk: '4-4', anatomy: '3-3', match: '4-5', cvc: '3-3', w4: '5-5', sight: '4-4', spell: '5-5',
+    vocab: '3-3', sent: '4-5', syl: '3-3', add: '5-5', sub: '5-5', story: '4-5', cmp: '5-5', mul: '3-5', div: '2-5', clock: '3-4', shape2: '3-3', shape3: '3-3', jobs: '3-3', flags: '3-3', maps: '3-3' } },
 };
 const gradeRange = (grade, id) => { const r = GRADES[grade] && GRADES[grade].g[id]; return r ? r.split('-').map(Number) : null; };
 

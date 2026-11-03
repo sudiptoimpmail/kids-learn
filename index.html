@@ -52,7 +52,7 @@
       <div id="playTitle" class="play-title"></div>
       <button id="sayBtn" class="icon-btn" aria-label="Say it again">🔊</button>
     </header>
-    <div id="progress" class="progress"></div>
+    <div class="prog-row"><div id="progress" class="progress"></div><button id="diffBtn" class="diff-btn" aria-label="Grown-ups: press and hold to change difficulty">🎚️ <span id="diffLv"></span></button></div>
     <div class="card">
       <div id="qText" class="q-text"></div>
       <div id="qMain" class="q-main"></div>
@@ -119,6 +119,14 @@
       <button id="timeUpBtn" class="big-btn">📚 Let's learn!</button></div>
   </div>
 
+  <div id="diffSheet" class="time-up" hidden>
+    <div class="tu-box diff-box"><h2>🎚️ Difficulty</h2><p id="diffName"></p>
+      <div class="diff-row"><span>Easier</span><input id="diffRange" type="range" min="1" max="5" step="1"><span>Harder</span></div>
+      <b id="diffVal"></b><small id="diffGrade" class="note"></small>
+      <div class="res-btns"><button id="diffApply" class="big-btn">✅ Use this level</button><button id="diffCancel" class="big-btn alt">Cancel</button></div>
+      <small class="note">For grown-ups. Levels also move up and down by themselves as she plays.</small></div>
+  </div>
+
   <!-- STICKERS -->
   <section id="stickers" class="screen">
     <header class="play-top">
@@ -161,12 +169,17 @@
       <div id="levels" class="levels"></div>
       <button id="settingsDone" class="big-btn">Save</button>
       <button id="resetBtn" class="link-btn">Reset all progress</button>
+      <p class="note small">Pictures include art from <a href="https://openmoji.org" target="_blank" rel="noopener">OpenMoji</a> (CC BY-SA 4.0). Map: Natural Earth. 3D: three.js.</p>
       <p class="note small">Everything is saved only on this phone. No accounts, no ads, no tracking.</p>
     </div>
   </section>
 
+  <script src="geo.js"></script>
+  <script src="art.js"></script>
+  <script src="landmarks.js"></script>
   <script src="content.js"></script>
   <script src="app.js"></script>
+  <script src="scenes.js"></script>
   <script src="games.js"></script>
 </body>
 </html>

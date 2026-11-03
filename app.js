@@ -239,6 +239,8 @@ function startRound(catId) {
 }
 
 function renderProgress() {
+  $('#diffLv').textContent = R.cat.id === 'mix' ? '' : `Lv ${levelOf(R.cat.id)}`;
+  $('#diffBtn').hidden = R.cat.id === 'mix';
   $('#progress').innerHTML = R.qs.map((q, i) =>
     `<span class="dot ${i < R.i ? (q.ok ? 'ok' : 'meh') : i === R.i ? 'now' : ''}">${i < R.i ? (q.ok ? '⭐' : '✔︎') : ''}</span>`).join('');
 }
@@ -545,8 +547,18 @@ function finish() {
   let levelMsg = '';
   if (id !== 'mix') {
     const lv = levelOf(id);
-    if (m <= 1 && lv < levelCap(id)) { state.levels[id] = lv + 1; levelMsg = `⬆️ Level up! Now level ${lv + 1}`; }
-    else if (m >= 8 && lv > 1) { state.levels[id] = lv - 1; }
+    // progress decides: great rounds move up (past her grade too, after two great rounds in a row),
+    // hard rounds move back down — even below her grade's starting level
+    state.good = state.good || {};
+    if (m <= 1) {
+      state.good[id] = (state.good[id] || 0) + 1;
+      if (lv < levelCap(id)) { state.levels[id] = lv + 1; state.good[id] = 0; levelMsg = `⬆️ Level up! Now level ${lv + 1}`; }
+      else if (lv < gameMax(id) && state.good[id] >= 2) { state.levels[id] = lv + 1; state.good[id] = 0; levelMsg = `🚀 Super! Trying a harder level: ${lv + 1}`; }
+      else if (lv < gameMax(id)) levelMsg = '⭐ One more great round unlocks a harder level!';
+    } else {
+      state.good[id] = 0;
+      if (m >= 7 && lv > 1) { state.levels[id] = lv - 1; levelMsg = `🙂 Let's practice level ${lv - 1} a bit more`; }
+    }
   }
   const earned = earnPlay();
   // sticker
@@ -635,6 +647,33 @@ $('#learnQuiz').onclick = $('#learnQuiz2').onclick = () => { sfx.tap(); startRou
     const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0; x0 = null;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) learnGo(dx < 0 ? 1 : -1);
   }, { passive: true });
+})();
+
+/* ---------- grown-up difficulty slider (press and hold so little fingers don't change it) ---------- */
+function gradeHintFor(id, lv) {
+  const g = Object.entries(GRADES).filter(([k]) => { const r = gradeRange(k, id); return r && lv >= r[0] && lv <= r[1]; }).map(([, v]) => v.label);
+  return g.length ? `Typical for: ${g.join(', ')}` : '';
+}
+function openDiff() {
+  if (!R || R.cat.id === 'mix') return;
+  const id = R.cat.id, max = gameMax(id);
+  const sl = $('#diffRange');
+  sl.max = max; sl.value = levelOf(id);
+  const upd = () => { $('#diffVal').textContent = `Level ${sl.value} of ${max}`; $('#diffGrade').textContent = gradeHintFor(id, +sl.value); };
+  sl.oninput = upd; upd();
+  $('#diffName').textContent = `${R.cat.icon} ${R.cat.title}`;
+  $('#diffSheet').hidden = false;
+}
+$('#diffApply').onclick = () => {
+  const id = R.cat.id; state.levels[id] = +$('#diffRange').value; state.good && (state.good[id] = 0); save();
+  $('#diffSheet').hidden = true; startRound(id);
+};
+$('#diffCancel').onclick = () => ($('#diffSheet').hidden = true);
+(() => {
+  const b = $('#diffBtn'); let t = 0;
+  const down = (e) => { e.preventDefault(); b.classList.add('holding'); t = setTimeout(() => { b.classList.remove('holding'); openDiff(); }, 800); };
+  const up = () => { if (t) { clearTimeout(t); t = 0; } if (b.classList.contains('holding')) { b.classList.remove('holding'); b.classList.add('nudge'); setTimeout(() => b.classList.remove('nudge'), 500); } };
+  b.addEventListener('pointerdown', down); ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => b.addEventListener(ev, up));
 })();
 
 /* ---------- wire up ---------- */

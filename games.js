@@ -110,6 +110,10 @@ function timeUp() {
 $('#timeUpBtn').onclick = () => { $('#timeUp').hidden = true; renderHome(); show('home'); };
 
 /* ---------- Play Zone screen ---------- */
+const BALL_ICON = `<svg viewBox="0 0 64 64" class="ic3d"><defs><radialGradient id="bi" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#e7f5ff"/><stop offset=".35" stop-color="#4dabf7"/><stop offset="1" stop-color="#1864ab"/></radialGradient></defs>
+  <path d="M10 62 L24 20 H40 L54 62 Z" fill="#ffd166"/><path d="M17.5 40 H46.5 M14 51 H50 M21 29 H43" stroke="#ff8fab" stroke-width="3"/><path d="M10 62 L24 20 M54 62 L40 20" stroke="#e8590c" stroke-width="2"/>
+  <ellipse cx="32" cy="50" rx="11" ry="3.5" fill="#0003"/><circle cx="32" cy="36" r="13" fill="url(#bi)"/><path d="M22 31 a11 11 0 0 1 6 -6" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".8"/>
+  <path d="M48 12 l2 4 4 .5 -3 2.8 .8 4 -3.8 -2 -3.8 2 .8 -4 -3 -2.8 4 -.5z" fill="#fcc419"/></svg>`;
 const GAMES = [
   { id: 'ttt', title: 'Tic-Tac-Toe', icon: '⭕', color: '#ff6b6b', start: startTTT },
   { id: 'memory', title: 'Memory Match', icon: '🃏', color: '#4dabf7', start: startMemory },
@@ -118,13 +122,15 @@ const GAMES = [
   { id: 'c4', title: 'Connect Four', icon: '🔴', color: '#845ef7', start: startC4 },
   { id: 'sudoku', title: 'Sudoku', icon: '🔢', color: '#20c997', start: startSudokuMenu },
   { id: 'puzzle', title: 'Picture Puzzle', icon: '🧩', color: '#fab005', start: startPuzzleMenu },
-  { id: 'ball', title: 'Rolling Ball 3D', icon: '🔵', color: '#339af0', start: startBall },
+  { id: 'ball', title: 'Rolling Ball 3D', icon: BALL_ICON, color: '#339af0', start: startBall },
+  { id: 'pinball', title: '3D Pinball', icon: '🎯', color: '#7048e8', start: startPinball },
   { id: 'maze', title: 'Ball Maze', icon: '🟫', color: '#c0874f', start: startBallMaze },
   { id: 'whack', title: 'Whack-a-Mole', icon: '🐹', color: '#a9734a', start: startWhack, max: 5 },
+  { id: 'draw', title: 'Draw & Copy', icon: '✏️', color: '#e8590c', start: startDraw },
   { id: 'moves', title: 'Silly Moves', icon: '🤸', color: '#12b886', start: startMoves },
 ];
 // level per game; winning moves you up (needWins wins per level)
-const GAME_MAX = { ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
+const GAME_MAX = { pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
 function GL(id) {
   if (id === 'maze' && state.gameLv && state.gameLv.maze == null && state.gameLv.ball > 1 && !state.ball3d) { state.gameLv.maze = state.gameLv.ball; state.gameLv.ball = 1; state.ball3d = true; }
   if (id === 'sudoku') return sdkLevel();
@@ -140,7 +146,7 @@ function gameLevelUp(id, needWins = 1) {
   save(); renderPZ();
   return up;
 }
-const lvBadge = (id) => (GAME_MAX[id] || id === 'sudoku' || id === 'color' ? `<span class="lv">Lv ${GL(id)}</span>` : '');
+const lvBadge = (id) => (GAME_MAX[id] || id === 'sudoku' ? `<span class="lv">Lv ${GL(id)}</span>` : '');
 function renderPZ() {
   $('#pzGrid').innerHTML = GAMES.map((g) =>
     `<button class="tile pz-tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`).join('');
@@ -158,7 +164,7 @@ function openGame(id) {
   const g = GAMES.find((x) => x.id === id);
   curGame = g;
   document.body.style.setProperty('--theme', g.color);
-  $('#gameTitle').innerHTML = `${g.icon} ${g.title}${GAME_MAX[id] || id === 'sudoku' || id === 'color' ? ` <small class="g-lv">Lv ${GL(id)}</small>` : ''}`;
+  $('#gameTitle').innerHTML = `${g.icon === BALL_ICON ? '🔵' : g.icon} ${g.title}${GAME_MAX[id] || id === 'sudoku' ? ` <small class="g-lv">Lv ${GL(id)}</small>` : ''}`;
   $('#gameArea').innerHTML = '';
   $('#gameArea').className = 'game-area g-' + id;
   show('game');
@@ -415,6 +421,14 @@ async function startBall() {
   area.innerHTML = '<div class="g-msg">Getting the ball ready… 🔵</div>';
   try { const m = await import('./ball3d.js'); if ($('#game').classList.contains('active')) m.start(); }
   catch (e) { console.warn(e); startBallMaze(); }
+}
+
+async function startPinball() {
+  const area = $('#gameArea');
+  if (!webglOK()) { area.innerHTML = '<div class="g-msg">Pinball needs 3D graphics, which this device does not have.</div>'; return; }
+  area.innerHTML = '<div class="g-msg">Setting up the table… 🎯</div>';
+  try { const m = await import('./pinball3d.js'); if ($('#game').classList.contains('active')) m.start(); }
+  catch (e) { console.warn(e); area.innerHTML = '<div class="g-msg">Oops, pinball could not start.</div>'; }
 }
 
 /* ======================= BALL MAZE (2D) ======================= */
@@ -734,29 +748,78 @@ const PICS = [
     <g class="ln"><circle cx="86" cy="73" r="3" fill="#2b2140"/><circle cx="114" cy="73" r="3" fill="#2b2140"/>
       <path d="M100 95q-6 8-12 4M100 95q6 8 12 4M70 92h-22M70 98l-20 6M130 92h22M130 98l20 6M28 152q12 4 24 16M30 166q10-12 22-14M56 160q12 0 14-14" fill="none"/></g>` },
 ];
-const PALETTE_C = ['#ff6b6b', '#ff922b', '#ffd43b', '#94d82d', '#40c057', '#20c997', '#4dabf7', '#4c6ef5', '#9775fa', '#f783ac', '#a0522d', '#868e96', '#2b2140', '#ffffff'];
-const colorLevel = () => { const n = (state.colored || []).length; return n < 3 ? 1 : n < 7 ? 2 : 3; };
+const PALETTE_C = ['#ff6b6b', '#ff922b', '#ffd43b', '#94d82d', '#40c057', '#20c997', '#4dabf7', '#4c6ef5', '#9775fa', '#f783ac', '#ffc9de', '#a0522d', '#868e96', '#2b2140', '#ffffff'];
+
+// ---- generated mandalas & patterns: the "expert" pages (20 – 70 parts)
+function mandalaSVG(rings, petals, seed) {
+  let out = '<rect class="r" x="0" y="0" width="200" height="200"/>';
+  const cx = 100, cy = 100;
+  for (let i = rings; i >= 1; i--) {
+    const R = 12 + i * (84 / rings), r0 = 12 + (i - 1) * (84 / rings);
+    const n = petals + (i % 2 ? 0 : seed % 3 ? petals : 0);
+    const off = i % 2 ? 0 : 180 / n;
+    if ((i + seed) % 3 === 0) {          // ring of round beads
+      out += `<circle class="r" cx="${cx}" cy="${cy}" r="${R}"/>`;
+      for (let k = 0; k < n; k++) { const a = ((360 / n) * k + off) * Math.PI / 180, m = (R + r0) / 2; out += `<circle class="r" cx="${(cx + m * Math.cos(a)).toFixed(1)}" cy="${(cy + m * Math.sin(a)).toFixed(1)}" r="${((R - r0) * 0.38).toFixed(1)}"/>`; }
+    } else {                              // ring of pointed petals
+      for (let k = 0; k < n; k++) {
+        const a = ((360 / n) * k + off) * Math.PI / 180, w = Math.PI / n * (seed % 2 ? 0.95 : 0.8);
+        const p = (ang, rad) => `${(cx + rad * Math.cos(ang)).toFixed(1)} ${(cy + rad * Math.sin(ang)).toFixed(1)}`;
+        out += `<path class="r" d="M${p(a - w, r0)} Q${p(a - w, R)} ${p(a, R)} Q${p(a + w, R)} ${p(a + w, r0)} Z"/>`;
+      }
+    }
+  }
+  out += `<circle class="r" cx="${cx}" cy="${cy}" r="12"/><circle class="r" cx="${cx}" cy="${cy}" r="5"/>`;
+  return out;
+}
+function scalesSVG(rows) {               // fish-scale pattern
+  let out = '<rect class="r" x="0" y="0" width="200" height="200"/>';
+  const s = 200 / rows;
+  for (let r = rows; r >= -1; r--) for (let c = -1; c <= rows; c++) {
+    const x = c * s + (r % 2 ? s / 2 : 0), y = r * s * 0.75;
+    out += `<path class="r" d="M${x.toFixed(1)} ${y.toFixed(1)}a${(s / 2).toFixed(1)} ${(s / 2).toFixed(1)} 0 0 0 ${s.toFixed(1)} 0z"/>`;
+  }
+  return out;
+}
+const GEN_PAGES = [
+  { id: 'mand1', name: 'Flower Mandala', svg: () => mandalaSVG(3, 6, 1) },
+  { id: 'mand2', name: 'Sun Mandala', svg: () => mandalaSVG(4, 8, 2) },
+  { id: 'scale1', name: 'Fish Scales', svg: () => scalesSVG(6) },
+  { id: 'mand3', name: 'Star Mandala', svg: () => mandalaSVG(5, 8, 3) },
+  { id: 'mand4', name: 'Snowflake Mandala', svg: () => mandalaSVG(5, 12, 4) },
+  { id: 'scale2', name: 'Dragon Scales', svg: () => scalesSVG(8) },
+  { id: 'mand5', name: 'Magic Mandala', svg: () => mandalaSVG(6, 10, 5) },
+  { id: 'mand6', name: 'Royal Mandala', svg: () => mandalaSVG(7, 12, 7) },
+];
+// every coloring page in one list, simplest first (no locks — she can pick any)
+const countParts = (svg) => (svg.match(/class="r"/g) || []).length;
+const ALL_PICS = [
+  ...PICS.map((p) => ({ ...p, vb: 200 })),
+  ...OM_PAGES.map((p) => ({ id: p.id, name: p.name, vb: 72, om: true, orig: p.o,
+    svg: () => `<rect class="r bg" x="-4" y="-4" width="80" height="80"/>${p.c}<g class="oml">${p.l}</g>` })),
+  ...GEN_PAGES.map((p) => ({ ...p, vb: 200 })),
+  ...SCENE_PAGES.map((p) => ({ ...p, vb: 200, scene: true })),
+].map((p) => ({ ...p, n: countParts(p.svg()) })).sort((a, b) => a.n - b.n);
+const COLOR_GROUPS = [['⭐ Easy', 0, 5], ['⭐⭐ Medium', 6, 10], ['⭐⭐⭐ Tricky', 11, 19], ['🏆 Expert', 20, 999]];
+const colorLevel = () => 1;
 
 function picSVG(p, fills = {}, cls = '') {
   let k = 0;
-  const body = p.svg().replace(/class="r"/g, () => `class="r" data-k="${k}" style="fill:${fills[k++] || '#fff'}"`);
-  return `<svg viewBox="0 0 200 200" class="pic ${cls}">${body}</svg>`;
+  const body = p.svg().replace(/class="r( bg)?"/g, (m, bg) => `class="r${bg || ''}" data-k="${k}" style="fill:${fills[k++] || '#fff'}"`);
+  return `<svg viewBox="0 0 ${p.vb} ${p.vb}" class="pic ${p.om ? 'om' : ''} ${cls}">${body}</svg>`;
 }
 
 function startColorPicker() {
-  const lv = colorLevel();
   const done = state.colored || [];
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Pick a picture to color!</div><div class="pic-grid">${PICS.map((p) => {
-    const locked = p.level > lv;
-    return `<button class="pic-pick ${locked ? 'locked' : ''}" data-p="${p.id}">${picSVG(p, (state.art || {})[p.id])}
-      <span>${locked ? '🔒' : done.includes(p.id) ? '⭐ ' : ''}${p.name}</span></button>`;
-  }).join('')}</div><div class="note small">Color more pictures to unlock harder ones!</div>`;
+  area.innerHTML = `<div class="g-msg">Pick a picture to color! <small>${ALL_PICS.length} pictures · ⭐ = colored</small></div>` +
+    [['🌟 Scenes, Seasons & Cartoons', -1, -1], ...COLOR_GROUPS].map(([label, lo, hi]) => {
+      const list = lo < 0 ? ALL_PICS.filter((p) => p.scene) : ALL_PICS.filter((p) => !p.scene && p.n >= lo && p.n <= hi);
+      return list.length ? `<div class="pic-group">${label}</div><div class="pic-grid">${list.map((p) =>
+        `<button class="pic-pick" data-p="${p.id}">${picSVG(p, (state.art || {})[p.id])}<span>${done.includes(p.id) ? '⭐ ' : ''}${p.name}</span></button>`).join('')}</div>` : '';
+    }).join('');
   say('Pick a picture to color!');
-  $$('.pic-pick', area).forEach((b) => (b.onclick = () => {
-    if (b.classList.contains('locked')) { sfx.no(); say('Color more pictures to unlock this one!'); return; }
-    sfx.tap(); startColoring(PICS.find((p) => p.id === b.dataset.p));
-  }));
+  $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startColoring(ALL_PICS.find((p) => p.id === b.dataset.p)); }));
 }
 
 function startColoring(p) {
@@ -766,25 +829,30 @@ function startColoring(p) {
   const area = $('#gameArea');
   area.innerHTML = `<div class="color-wrap">${picSVG(p, fills, 'big')}</div>
     <div class="palette">${PALETTE_C.map((c, i) => `<button class="sw-c ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}" aria-label="color">${c === '#ffffff' ? '🧽' : ''}</button>`).join('')}</div>
-    <div class="color-btns"><button class="big-btn alt small" data-a="pics">🖼️ Pictures</button><button class="big-btn small" data-a="done">✅ I'm done!</button></div>`;
+    <div class="color-btns"><button class="big-btn alt small" data-a="pics">🖼️ Pictures</button>${p.orig ? '<button class="big-btn alt small" data-a="peek">👀 Peek</button>' : ''}<button class="big-btn small" data-a="done">✅ I'm done!</button></div>`;
   say('Pick a color, then tap the picture.');
   $$('.sw-c', area).forEach((b) => (b.onclick = () => {
     $$('.sw-c', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); cur = b.dataset.c; sfx.tap();
   }));
-  $$('.r', area).forEach((r) => (r.onclick = () => {
+  $$('.color-wrap .r', area).forEach((r) => (r.onclick = () => {
     r.style.fill = cur; fills[r.dataset.k] = cur; save();
     r.classList.remove('splash'); void r.getBoundingClientRect(); r.classList.add('splash');
     tone([500 + Math.random() * 400], { dur: 0.05, vol: 0.08 });
   }));
+  const peek = area.querySelector('[data-a="peek"]');
+  if (peek) peek.onclick = () => {          // show the original colors for 2 seconds
+    sfx.tap();
+    const regs = $$('.color-wrap .r:not(.bg)', area);
+    regs.forEach((r, i) => { r.dataset.was = r.style.fill; r.style.fill = p.orig[i] || '#fff'; });
+    setTimeout(() => regs.forEach((r) => (r.style.fill = r.dataset.was)), 2000);
+  };
   area.querySelector('[data-a="pics"]').onclick = () => { sfx.tap(); startColorPicker(); };
   area.querySelector('[data-a="done"]').onclick = () => {
-    const before = colorLevel();
     state.colored = state.colored || [];
     if (!state.colored.includes(p.id)) state.colored.push(p.id);
     save();
     gameWin('Beautiful picture!');
-    const unlocked = colorLevel() > before;
-    endPanel(unlocked ? 'Beautiful! New pictures unlocked! 🔓' : 'Beautiful picture!', '🎨', startColorPicker);
+    endPanel('Beautiful picture!', '🎨', startColorPicker);
   };
 }
 
@@ -936,6 +1004,7 @@ const AUTO_FILL = ['#d0ebff', '#ffd43b', '#ff8787', '#69db7c', '#4dabf7', '#ffa9
 function puzzleFills(p) {
   const mine = (state.art || {})[p.id];
   if (mine && Object.keys(mine).length > 2) return mine;
+  if (p.orig) { const f = { 0: '#d0ebff' }; p.orig.forEach((c, i) => (f[i + 1] = c)); return f; }
   const f = {}; for (let k = 0; k < 40; k++) f[k] = AUTO_FILL[k % AUTO_FILL.length]; return f;
 }
 const puzzleSize = () => GL('puzzle') + 1;   // level 1 = 2×2 … level 5 = 6×6
@@ -943,25 +1012,26 @@ const puzzleSize = () => GL('puzzle') + 1;   // level 1 = 2×2 … level 5 = 6×
 function startPuzzleMenu() {
   const area = $('#gameArea');
   const size = puzzleSize();
-  area.innerHTML = `<div class="g-msg">Pick a picture · ${size}×${size} puzzle</div><div class="pic-grid">${PICS.map((p) =>
+  const PUZ = ALL_PICS.filter((p) => p.orig || !p.om);
+  area.innerHTML = `<div class="g-msg">Pick a picture · ${size}×${size} puzzle</div><div class="pic-grid">${PUZ.map((p) =>
     `<button class="pic-pick" data-p="${p.id}">${picSVG(p, puzzleFills(p))}<span>${p.name}</span></button>`).join('')}</div>`;
   say('Pick a picture!');
-  $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startPuzzle(PICS.find((p) => p.id === b.dataset.p)); }));
+  $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startPuzzle(ALL_PICS.find((p) => p.id === b.dataset.p)); }));
 }
 
 function startPuzzle(p) {
-  const n = puzzleSize(), N = n * n, part = 200 / n;
+  const n = puzzleSize(), N = n * n, VB = p.vb || 200, part = VB / n;
   const fills = puzzleFills(p);
   let k = 0;
-  const body = p.svg().replace(/class="r"/g, () => `class="r" style="fill:${fills[k++] || '#fff'}"`);
+  const body = p.svg().replace(/class="r( bg)?"/g, () => `class="r" style="fill:${fills[k++] || '#fff'}"`);
   let order;
   do { order = shuffle([...Array(N).keys()]); } while (order.every((v, i) => v === i));
   let pickA = null;
   const area = $('#gameArea');
-  const tileSVG = (t) => `<svg viewBox="${(t % n) * part} ${Math.floor(t / n) * part} ${part} ${part}" class="pic">${body}</svg>`;
+  const tileSVG = (t) => `<svg viewBox="${(t % n) * part} ${Math.floor(t / n) * part} ${part} ${part}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`;
   area.innerHTML = `<div class="g-msg">Put the picture back together!</div>
     <div class="pz-wrap"><div class="pz-board" style="grid-template-columns:repeat(${n},1fr)"></div>
-    <div class="pz-peek"><svg viewBox="0 0 200 200" class="pic">${body}</svg><small>Look!</small></div></div>`;
+    <div class="pz-peek"><svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg><small>Look!</small></div></div>`;
   say('Put the picture back together!');
   const board = $('.pz-board', area);
   function draw() {
@@ -1044,6 +1114,104 @@ function startMoves() {
       }, 1000);
     }, 1300);
   };
+}
+
+
+/* ======================= DRAW & COPY ======================= */
+// Level 1: trace a dark guide · 2: trace a faint guide · 3: copy simple pictures · 4: copy detailed pictures
+const SIMPLE_REFS = [
+  ['Sun', '<circle cx="100" cy="100" r="38"/><path d="M100 20v28M100 152v28M20 100h28M152 100h28M44 44l20 20M136 136l20 20M156 44l-20 20M64 136l-20 20"/>'],
+  ['Heart', '<path d="M100 165C40 120 25 90 40 62c15-28 50-25 60 0c10-25 45-28 60 0c15 28 0 58-60 103z"/>'],
+  ['Star', `<polygon points="${st(100, 105, 75, 32)}"/>`],
+  ['House', '<path d="M45 95v75h110V95M30 100l70-60l70 60M88 170v-40h24v40"/>'],
+  ['Smiley', '<circle cx="100" cy="100" r="70"/><circle cx="76" cy="84" r="7"/><circle cx="124" cy="84" r="7"/><path d="M68 118q32 32 64 0"/>'],
+  ['Fish', '<path d="M40 100q50-55 100 0q-50 55-100 0zM140 100l35-28v56z"/><circle cx="65" cy="95" r="5"/>'],
+  ['Flower', '<circle cx="100" cy="80" r="16"/><circle cx="100" cy="46" r="18"/><circle cx="134" cy="80" r="18"/><circle cx="100" cy="114" r="18"/><circle cx="66" cy="80" r="18"/><path d="M100 132v55M100 165q-25-15-35 0M100 160q25-15 35 0"/>'],
+  ['Tree', '<path d="M88 180v-45h24v45M100 25L45 105h110z"/>'],
+  ['Balloon', '<ellipse cx="100" cy="80" rx="45" ry="55"/><path d="M100 135q-12 25 5 50"/>'],
+  ['Cloud', `<path d="${cloud(60, 130, 2.2)}"/>`],
+  ['Boat', '<path d="M35 125h130l-20 35H55zM100 125V40l45 70h-45"/>'],
+  ['Cat Face', '<circle cx="100" cy="105" r="55"/><path d="M58 75l-8-45l35 25M142 75l8-45l-35 25"/><circle cx="80" cy="100" r="6"/><circle cx="120" cy="100" r="6"/><path d="M92 120l8 6l8-6M60 115h-25M60 125h-25M140 115h25M140 125h25"/>'],
+];
+function drawRefs(lv) {
+  if (lv === 1) return SIMPLE_REFS.map(([name, d]) => ({ name, svg: `<svg viewBox="0 0 200 200" class="ref-svg"><g fill="none" stroke="#2b2140" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">${d}</g></svg>` }));
+  const pool = lv === 2 ? OM_PAGES.filter((p) => p.n <= 6) : lv === 3 ? OM_PAGES.filter((p) => p.n >= 4 && p.n <= 10) : OM_PAGES.filter((p) => p.n >= 9);
+  return pool.map((p) => ({ name: p.name, svg: `<svg viewBox="0 0 72 72" class="ref-svg om-ref">${p.l}</svg>` }));
+}
+const INK = ['#2b2140', '#ff6b6b', '#ff922b', '#fcc419', '#40c057', '#20c997', '#4dabf7', '#7950f2', '#f783ac', '#a0522d'];
+
+function startDraw(refIndex) {
+  const lv = GL('draw');
+  const refs = drawRefs(lv);
+  const ref = refs[refIndex != null ? refIndex % refs.length : Math.floor(Math.random() * refs.length)];
+  const trace = lv <= 2;
+  const area = $('#gameArea');
+  area.innerHTML = `<div class="dr-top"><div class="dr-ref">${ref.svg}<small>${ref.name}</small></div>
+      <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>${trace ? 'Follow the gray lines with your finger.' : 'Look at the picture and draw your own!'}</small></div></div>
+    <div class="dr-pad">${trace ? `<div class="dr-guide" style="opacity:${lv === 1 ? 0.32 : 0.14}">${ref.svg}</div>` : ''}<canvas class="dr-cv"></canvas></div>
+    <div class="dr-tools">${INK.map((c, i) => `<button class="dr-ink ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}"></button>`).join('')}
+      <button class="dr-size" data-s="6">•</button><button class="dr-size on" data-s="12">●</button><button class="dr-size" data-s="22">⬤</button>
+      <button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>
+    <div class="color-btns"><button class="big-btn alt small" data-a="new">🔄 New picture</button><button class="big-btn alt small" data-a="gallery">🖼️ My drawings</button><button class="big-btn small" data-a="done">✅ I'm done!</button></div>`;
+  say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
+  const cv = $('.dr-cv', area), pad = $('.dr-pad', area);
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  const W = pad.clientWidth;
+  cv.width = cv.height = Math.round(W * dpr); cv.style.width = cv.style.height = W + 'px';
+  const c = cv.getContext('2d'); c.scale(dpr, dpr); c.lineCap = c.lineJoin = 'round';
+  let color = INK[0], size = 12, erase = false, strokes = [], cur = null;
+  const redraw = () => {
+    c.clearRect(0, 0, W, W);
+    for (const s of strokes) paint(s);
+  };
+  function paint(s) {
+    c.globalCompositeOperation = s.erase ? 'destination-out' : 'source-over';
+    c.strokeStyle = s.color; c.fillStyle = s.color; c.lineWidth = s.size;
+    const p = s.pts;
+    if (p.length === 1) { c.beginPath(); c.arc(p[0][0], p[0][1], s.size / 2, 0, 7); c.fill(); }
+    else {
+      c.beginPath(); c.moveTo(p[0][0], p[0][1]);
+      for (let i = 1; i < p.length - 1; i++) { const mx = (p[i][0] + p[i + 1][0]) / 2, my = (p[i][1] + p[i + 1][1]) / 2; c.quadraticCurveTo(p[i][0], p[i][1], mx, my); }
+      c.lineTo(p[p.length - 1][0], p[p.length - 1][1]); c.stroke();
+    }
+    c.globalCompositeOperation = 'source-over';
+  }
+  const pt = (e) => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * (W / r.width), (e.clientY - r.top) * (W / r.height)]; };
+  cv.addEventListener('pointerdown', (e) => { e.preventDefault(); cv.setPointerCapture && cv.setPointerCapture(e.pointerId); cur = { color, size: erase ? size * 2 : size, erase, pts: [pt(e)] }; strokes.push(cur); paint(cur); });
+  cv.addEventListener('pointermove', (e) => {
+    if (!cur) return;
+    const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
+    for (const ev of evs) cur.pts.push(pt(ev));
+    redrawLast();
+  });
+  const end = () => { cur = null; };
+  cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+  function redrawLast() { redraw(); }
+  $$('.dr-ink', area).forEach((b) => (b.onclick = () => { $$('.dr-ink', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); color = b.dataset.c; erase = false; $('[data-t="erase"]', area).classList.remove('on'); sfx.tap(); }));
+  $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; sfx.tap(); }));
+  $('[data-t="erase"]', area).onclick = (e) => { erase = !erase; e.currentTarget.classList.toggle('on', erase); sfx.tap(); };
+  $('[data-t="undo"]', area).onclick = () => { strokes.pop(); redraw(); sfx.tap(); };
+  $('[data-t="clear"]', area).onclick = () => { strokes = []; redraw(); sfx.tap(); };
+  area.querySelector('[data-a="new"]').onclick = () => { sfx.tap(); startDraw(); };
+  area.querySelector('[data-a="gallery"]').onclick = () => { sfx.tap(); drawGallery(); };
+  area.querySelector('[data-a="done"]').onclick = () => {
+    if (!strokes.length) { say('Draw something first!'); return; }
+    // save a small copy on a white background
+    const t = document.createElement('canvas'); t.width = t.height = 240;
+    const tc = t.getContext('2d'); tc.fillStyle = '#fff'; tc.fillRect(0, 0, 240, 240); tc.drawImage(cv, 0, 0, 240, 240);
+    state.drawings = [{ img: t.toDataURL('image/jpeg', 0.7), name: ref.name }, ...(state.drawings || [])].slice(0, 12);
+    const up = gameLevelUp('draw', 3);
+    gameWin(pick(['Beautiful drawing!', 'What a great drawing!', 'Awesome job!']));
+    endPanel(`What a great ${ref.name}!${up ? '' : '<br><small>Saved in My drawings 🖼️</small>'}`, '🎨', () => startDraw(), up);
+  };
+}
+function drawGallery() {
+  const area = $('#gameArea');
+  const list = state.drawings || [];
+  area.innerHTML = `<div class="g-msg">🖼️ My drawings <small>${list.length ? 'Your last ' + list.length + ' drawings' : 'Finish a drawing to see it here!'}</small></div>
+    <div class="dr-gal">${list.map((d) => `<figure><img src="${d.img}" alt=""><figcaption>${d.name}</figcaption></figure>`).join('')}</div>
+    <div class="color-btns"><button class="big-btn small" data-a="back">✏️ Draw more</button></div>`;
+  area.querySelector('[data-a="back"]').onclick = () => { sfx.tap(); startDraw(); };
 }
 
 $('#playBanner').onclick = () => { sfx.tap(); openPlayZone(); };
