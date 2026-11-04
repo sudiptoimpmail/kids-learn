@@ -73,7 +73,7 @@ function genNumSense(level) {
   }
   if (level >= 3 && t < 0.75) {
     const k = Math.random();
-    if (k < 0.3) { const v = 100 + rand(300); return nsQ(`blocks3-${v}`, 'Count hundreds, tens and ones.', ['Count hundreds, tens and ones.'], nsBlocks(v), v, [v + 10, v - 10, v + 100, v - 100, v + 1].filter((x) => x > 0), n); }
+    if (k < 0.3) { const v = 100 + rand(300); return nsQ(`blocks3-${v}`, 'Count hundreds, tens and ones.', ['How many?'], nsBlocks(v), v, [v + 10, v - 10, v + 100, v - 100, v + 1].filter((x) => x > 0), n); }
     if (k < 0.55) { const v = 101 + rand(898), r = Math.round(v / 100) * 100; return nsQ(`r100-${v}`, `Round <b>${v}</b> to the nearest hundred.`, ['Round to the nearest hundred.'], `<div class="ns-big">${v}</div>`, r, [r + 100, r - 100, Math.round(v / 10) * 10, Math.floor(v / 100) * 100 === r ? r + 100 : Math.floor(v / 100) * 100].filter((x) => x >= 0), n); }
     if (k < 0.75) {
       const v = 100 + rand(900), s = String(v), i = pick([0, 1, 2].filter((j) => s[j] !== '0')), val = +s[i] * [100, 10, 1][i];
@@ -97,7 +97,7 @@ function genNumSense(level) {
   // Previously roughly 20% of high-level questions fell through to the toddler pool.
   if (level >= 3) {
     const v = 101 + rand(299);
-    return nsQ(`blocks3-${v}`, 'Count hundreds, tens and ones.', ['Count hundreds, tens and ones.'],
+    return nsQ(`blocks3-${v}`, 'Count hundreds, tens and ones.', ['How many?'],
       nsBlocks(v), v, [v + 10, v - 10, v + 100, v - 100, v + 1].filter((x) => x > 0), n);
   }
   if (level >= 2) {
@@ -108,7 +108,7 @@ function genNumSense(level) {
   // level 1
   const k = Math.random();
   if (k < 0.35) { const v = 1 + rand(30); return nsQ(`eo-${v}`, `Is <b>${v}</b> even or odd?`, ['Is it even or odd?'], `<div class="ns-big">${v}</div><div class="ns-dots">${'●'.repeat(Math.min(v, 30))}</div>`, v % 2 ? 'odd' : 'even', ['even', 'odd'], 1, 'opt-text'); }
-  if (k < 0.7) { const v = 10 + rand(30); return nsQ(`blocks-${v}`, 'Count the tens and ones.', ['Count the tens and ones.'], nsBlocks(v), v, [v + 10, v - 10, v + 1, v - 1, +String(v).split('').reverse().join('')].filter((x) => x > 0), n); }
+  if (k < 0.7) { const v = 10 + rand(30); return nsQ(`blocks-${v}`, 'Count the tens and ones.', ['How many?'], nsBlocks(v), v, [v + 10, v - 10, v + 1, v - 1, +String(v).split('').reverse().join('')].filter((x) => x > 0), n); }
   const step = pick([2, 5, 10]), start = step * rand(6), seq = Array.from({ length: 5 }, (_, i) => start + i * step), miss = 1 + rand(3);
   return nsQ(`skip-${step}-${start}-${miss}`, `Count by ${step}s. What number is missing?`, ['What number is missing?'],
     `<div class="think-pattern">${seq.map((x, i) => `<span${i === miss ? ' class="think-missing"' : ''}>${i === miss ? '?' : x}</span>`).join('')}</div>`, seq[miss], [seq[miss] + 1, seq[miss] - 1, seq[miss] + step, seq[miss] - step].filter((x) => x >= 0), n);
