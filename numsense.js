@@ -9,11 +9,16 @@
    ========================================================= */
 const NS_COLORS = ['#ff6b6b', '#4dabf7', '#51cf66', '#fcc419', '#b197fc', '#ff922b'];
 function nsBlocks(n) {
-  const h = Math.floor(n / 100), t = Math.floor(n / 10) % 10, o = n % 10;
-  const flat = () => `<svg viewBox="0 0 50 50" class="ns-flat"><rect width="50" height="50" fill="#74c0fc" stroke="#1971c2"/>${Array.from({ length: 9 }, (_, i) => `<path d="M${(i + 1) * 5} 0V50M0 ${(i + 1) * 5}H50" stroke="#1971c2" stroke-width=".5"/>`).join('')}</svg>`;
-  const rod = () => `<svg viewBox="0 0 6 50" class="ns-rod"><rect width="6" height="50" fill="#ffa94d" stroke="#d9480f"/>${Array.from({ length: 9 }, (_, i) => `<path d="M0 ${(i + 1) * 5}H6" stroke="#d9480f" stroke-width=".5"/>`).join('')}</svg>`;
-  const cube = () => '<svg viewBox="0 0 6 6" class="ns-cube"><rect width="6" height="6" fill="#69db7c" stroke="#2b8a3e"/></svg>';
-  return `<div class="ns-blocks">${Array.from({ length: h }, flat).join('')}${Array.from({ length: t }, rod).join('')}<span class="ns-ones">${Array.from({ length: o }, cube).join('')}</span></div>`;
+  // Base-ten manipulatives, not dozens of individual counters. A rod is ten,
+  // a flat is one hundred, and only the remaining 0–9 ones are separate cubes.
+  const hundreds = Math.floor(n / 100), tens = Math.floor(n / 10) % 10, ones = n % 10;
+  const group = (name, count, cls) => count ? `<div class="ns-block-row ${name}" aria-hidden="true">${Array.from({ length: count }, () => `<span class="${cls}"></span>`).join('')}</div>` : '';
+  return `<div class="ns-blocks" role="img" aria-label="Base-ten counting blocks: blue flats are hundreds, orange rods are tens and green cubes are ones.">
+    ${group('ns-hundreds', hundreds, 'ns-flat')}
+    ${group('ns-tens', tens, 'ns-rod')}
+    ${group('ns-ones', ones, 'ns-cube')}
+    <small class="ns-block-key">Blue flat = 100 · Orange stick = 10 · Green cube = 1</small>
+  </div>`;
 }
 function nsPie(parts, shaded, bar) {
   const col = pick(NS_COLORS);
@@ -68,7 +73,7 @@ function genNumSense(level) {
   }
   if (level >= 3 && t < 0.75) {
     const k = Math.random();
-    if (k < 0.3) { const v = 100 + rand(900); return nsQ(`blocks3-${v}`, 'How many?', ['How many?'], nsBlocks(v), v, [v + 10, v - 10, v + 100, v - 100, v + 1].filter((x) => x > 0), n); }
+    if (k < 0.3) { const v = 100 + rand(300); return nsQ(`blocks3-${v}`, 'Count hundreds, tens and ones.', ['Count hundreds, tens and ones.'], nsBlocks(v), v, [v + 10, v - 10, v + 100, v - 100, v + 1].filter((x) => x > 0), n); }
     if (k < 0.55) { const v = 101 + rand(898), r = Math.round(v / 100) * 100; return nsQ(`r100-${v}`, `Round <b>${v}</b> to the nearest hundred.`, ['Round to the nearest hundred.'], `<div class="ns-big">${v}</div>`, r, [r + 100, r - 100, Math.round(v / 10) * 10, Math.floor(v / 100) * 100 === r ? r + 100 : Math.floor(v / 100) * 100].filter((x) => x >= 0), n); }
     if (k < 0.75) {
       const v = 100 + rand(900), s = String(v), i = pick([0, 1, 2].filter((j) => s[j] !== '0')), val = +s[i] * [100, 10, 1][i];
@@ -91,7 +96,7 @@ function genNumSense(level) {
   // level 1
   const k = Math.random();
   if (k < 0.35) { const v = 1 + rand(30); return nsQ(`eo-${v}`, `Is <b>${v}</b> even or odd?`, ['Is it even or odd?'], `<div class="ns-big">${v}</div><div class="ns-dots">${'●'.repeat(Math.min(v, 30))}</div>`, v % 2 ? 'odd' : 'even', ['even', 'odd'], 1, 'opt-text'); }
-  if (k < 0.7) { const v = 11 + rand(89); return nsQ(`blocks-${v}`, 'How many?', ['How many?'], nsBlocks(v), v, [v + 10, v - 10, v + 1, v - 1, +String(v).split('').reverse().join('')].filter((x) => x > 0), n); }
+  if (k < 0.7) { const v = 10 + rand(30); return nsQ(`blocks-${v}`, 'Count the tens and ones.', ['Count the tens and ones.'], nsBlocks(v), v, [v + 10, v - 10, v + 1, v - 1, +String(v).split('').reverse().join('')].filter((x) => x > 0), n); }
   const step = pick([2, 5, 10]), start = step * rand(6), seq = Array.from({ length: 5 }, (_, i) => start + i * step), miss = 1 + rand(3);
   return nsQ(`skip-${step}-${start}-${miss}`, `Count by ${step}s. What number is missing?`, ['What number is missing?'],
     `<div class="think-pattern">${seq.map((x, i) => `<span${i === miss ? ' class="think-missing"' : ''}>${i === miss ? '?' : x}</span>`).join('')}</div>`, seq[miss], [seq[miss] + 1, seq[miss] - 1, seq[miss] + step, seq[miss] - step].filter((x) => x >= 0), n);
