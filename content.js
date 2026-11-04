@@ -38,6 +38,11 @@ const W3 = [
   ['ant', '🐜'], ['pie', '🥧'], ['key', '🔑'], ['mug', '☕'], ['fly', '🪰'], ['bee', '🐝'],
   ['boy', '👦'], ['toy', '🧸'], ['owl', '🦉'], ['run', '🏃'], ['hot', '🥵'], ['see', '👀'],
 ];
+// Share a vetted, prerecorded picture word inventory across reading and spelling.
+// Do not silently treat all three-letter spellings as regular CVC phonics.
+for (const entry of EARLY_READY_PICTURE_WORDS) if (!W3.some(([w]) => w === entry[0])) W3.push(entry);
+const isSimpleCVC = (word) => /^[bcdfghjklmnprstv][aeiou][bcdfghjklmnprstv]$/.test(word)
+  && !new Set(['car', 'son', 'gel']).has(word);
 const W4 = [
   ['frog', '🐸'], ['duck', '🦆'], ['fish', '🐟'], ['crab', '🦀'], ['drum', '🥁'], ['bell', '🔔'],
   ['cake', '🍰'], ['kite', '🪁'], ['moon', '🌙'], ['star', '⭐'], ['ship', '🚢'], ['milk', '🥛'],
@@ -167,13 +172,16 @@ function similarWords(list, word, n, level) {
 }
 
 function genWords(list, level, kind) {
-  const [w, e] = pick(list);
+  const pool = kind === 'cvc' && level <= 1 ? list.filter(([w]) => isSimpleCVC(w)) : list;
+  const [w, e] = pick(pool);
   const n = numOpts(level) - 1;
   // workbook-style variety: read → picture, picture → word, listen → word, missing letter, unscramble
   const clear = !(typeof PHON_SKIP !== 'undefined' && PHON_SKIP.has(w));      // the picture can only mean this word
   // little words from level 2 on: now and then a whole word search or picture crossword as one card
   const puzzles = kind === 'cvc' && level >= 2 && typeof mountWordSearch === 'function' ? ['wsearch', 'xword'] : [];
-  const type = pick(clear ? ['read', 'pic', 'find', 'missing', 'missing', 'scramble', ...puzzles] : ['read', 'find', 'missing']);
+  const modes = clear ? ['read', 'pic', 'find', 'missing', 'missing', 'scramble', ...puzzles] : ['read', 'find', 'missing'];
+  // Vowel teams and irregular three-letter words are not short-vowel CVC cards.
+  const type = pick(kind === 'cvc' && !isSimpleCVC(w) ? modes.filter((m) => m !== 'missing') : modes);
   if (type === 'wsearch') return { key: `${kind}-ws-${rand(1e6)}`, text: 'Find the hidden words!', say: ['Find the hidden words!', 'Drag your finger across the letters.'],
     main: '', mainClass: 'puzzle-main', options: [], answer: 'done', optClass: 'spell-tray',
     puzzle: { kind: 'wsearch', size: level >= 3 ? 6 : 5, count: level >= 3 ? 3 : 2, down: level >= 3 }, hint: { html: '', say: '' } };
@@ -235,7 +243,7 @@ function genWords(list, level, kind) {
 
   // missing letter
   let pos;
-  if (w.length === 3) pos = level <= 1 ? 1 : pick([0, 1, 1, 2]); // CVC: the vowel first; later also the first or last letter
+  if (w.length === 3 && isSimpleCVC(w)) pos = level <= 1 ? 1 : pick([0, 1, 1, 2]); // regular CVC only
   else { do { pos = rand(w.length); } while (!/[a-z]/.test(w[pos])); }
   const letter = w[pos];
   const pool = (VOWELS.includes(letter) ? VOWELS : CONS).filter((l) => l !== letter);
@@ -342,6 +350,7 @@ function genSight(level) {
 const SPELL3 = ['cat', 'dog', 'pig', 'hen', 'bat', 'bus', 'sun', 'cup', 'bed', 'box', 'fox', 'hat', 'map', 'pen', 'web', 'bug',
   'van', 'leg', 'bag', 'cap', 'can', 'pan', 'nut', 'jet', 'pin', 'tub', 'log', 'rat', 'net',
   'ant', 'pie', 'key', 'mug', 'fly', 'bee', 'boy', 'toy', 'owl', 'red'];
+for (const [word] of EARLY_READY_PICTURE_WORDS) if (!SPELL3.includes(word)) SPELL3.push(word);
 const SPELL4 = ['frog', 'duck', 'fish', 'crab', 'drum', 'bell', 'cake', 'kite', 'moon', 'star', 'ship', 'milk', 'sock', 'tree',
   'bird', 'lion', 'bear', 'ball', 'book', 'boat', 'corn', 'door', 'hand', 'lamp', 'ring', 'rose', 'shoe', 'snow', 'gift',
   'lock', 'nose', 'foot', 'king', 'goat', 'deer', 'swan', 'seal', 'pear', 'bone', 'tent', 'bike', 'leaf', 'nest', 'soap',
@@ -357,7 +366,7 @@ const LOOKALIKE = { b: 'dp', d: 'bp', p: 'bq', q: 'p', m: 'n', n: 'mu', u: 'n', 
 function genSpell(level) {
   let word, nBlank, nExtra, mode = 'pic', sentence = null;
   const r = Math.random();
-  if (level === 1) { word = pick(SPELL3); nBlank = r < 0.5 ? 1 : 2; nExtra = 2; }
+  if (level === 1) { word = pick(SPELL3.filter(isSimpleCVC)); nBlank = r < 0.5 ? 1 : 2; nExtra = 2; }
   else if (level === 2) {
     if (r < 0.5) { word = pick(SPELL3); nBlank = 3; nExtra = 3; }
     else { word = pick(SPELL4); nBlank = 2; nExtra = 3; }
