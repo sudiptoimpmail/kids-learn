@@ -216,7 +216,7 @@ function startPathMaze() {
   cv.style.height = h + 'px'; cv.height = Math.round(h * dpr); c.setTransform(dpr, 0, 0, dpr, 0, 0);
   const ox = (w - cell * cols) / 2, oy = (h - cell * rows) / 2;
   const zoom = zoomable($('.pm-view', area), $('.pm-inner', area), { oneFingerPan: false });
-  $('[data-z]', area).forEach((b) => (b.onclick = () => b.dataset.z === 'reset' ? zoom.reset() : zoom.by(b.dataset.z === 'in' ? 1.5 : 1 / 1.5));
+  $('[data-z]', area).forEach((b) => (b.onclick = () => b.dataset.z === 'reset' ? zoom.reset() : zoom.by(b.dataset.z === 'in' ? 1.5 : 1 / 1.5)));
   const mid = ([x, y]) => [ox + (x + 0.5) * cell, oy + (y + 0.5) * cell];
   let path = [start], drawing = false, done = false, hint = null;
   const session = gameSession;
