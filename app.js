@@ -776,7 +776,7 @@ function finish() {
   $('#questNext').hidden = !qn;
   if (qn) {
     const nextI = qn.steps.findIndex((x) => !x.done);
-    $('#questNext').textContent = nextI < 0 ? '🎁 Open your quest gift!' : '🗺️ Next quest step ▶';
+    $('#questNext').textContent = nextI < 0 ? '🎁 Open' : '🗺️ Next ▶';
     $('#questNext').onclick = () => { sfx.tap(); if (nextI < 0) { renderHome(); show('home'); openQuestGift(); } else startQuestStep(nextI); };
   }
   $('#againBtn').hidden = !!qn;

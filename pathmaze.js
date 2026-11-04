@@ -45,7 +45,7 @@ function startPathMaze() {
   const area = $('#gameArea');
   area.innerHTML = `<div class="g-msg">${hero} → ${goalE} ${line}<small>Put your finger on ${hero} and draw the way.</small></div>
     <div class="cv-wrap"><canvas class="game-cv pm-cv"></canvas></div>
-    <div class="color-btns"><button class="big-btn alt small" data-a="hint">💡 Show me</button><button class="big-btn alt small" data-a="new">🔄 New maze</button></div>`;
+    <div class="color-btns"><button class="big-btn alt small ico" data-a="hint" aria-label="Show me">💡 Hint</button><button class="big-btn alt small ico" data-a="new" aria-label="New maze">🔄 New</button></div>`;
   say([line, 'Draw the way with your finger!']);
   const cv = $('.pm-cv', area);
   const fit = fitCanvas(cv, 360), c = fit.c, w = fit.w;

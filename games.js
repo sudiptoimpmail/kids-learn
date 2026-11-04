@@ -218,7 +218,7 @@ function endPanel(title, emoji, again, levelUp = false) {
   const d = document.createElement('div');
   d.className = 'end-panel';
   d.innerHTML = `<div class="ep-card"><div class="ep-emoji">${emoji}</div><div class="ep-title">${title}</div>
-    <div class="ep-btns"><button class="big-btn" data-a="again">🔁 Again</button><button class="big-btn alt" data-a="menu">${brainMode ? '🏠 Home' : '🎮 Games'}</button></div></div>`;
+    <div class="ep-btns"><button class="big-btn ico" data-a="again" aria-label="Again">🔁 Again</button><button class="big-btn alt ico" data-a="menu" aria-label="${brainMode ? 'Home' : 'Games'}">${brainMode ? '🏠 Home' : '🎮 Games'}</button></div></div>`;
   d.querySelector('[data-a="again"]').onclick = () => { sfx.tap(); if (brainMode || playOpen()) { openGame(curGame.id); } else timeUp(); };
   d.querySelector('[data-a="menu"]').onclick = () => { sfx.tap(); $('#gameBack').onclick(); };
   $('#gameArea').appendChild(d);
@@ -488,7 +488,7 @@ function startBallMaze() {
   const area = $('#gameArea');
   area.innerHTML = `<div class="g-msg">Roll the ball to the flag! 🚩<small>Drag your finger — the ball follows. ${M.holes.length ? 'Watch out for holes!' : ''}</small></div>
     <div class="cv-wrap"><canvas class="game-cv ball-cv"></canvas></div>
-    <div class="color-btns"><button class="big-btn alt small" data-a="tilt">📱 Tilt to play</button></div>`;
+    <div class="color-btns"><button class="big-btn alt small ico" data-a="tilt" aria-label="Tilt to play">📱 Tilt</button></div>`;
   say(M.holes.length ? ['Roll the ball to the flag!', 'Watch out for holes!'] : 'Roll the ball to the flag!');
   const cv = $('.ball-cv', area);
   let { c, w, h } = fitCanvas(cv, 380);
@@ -510,7 +510,7 @@ function startBallMaze() {
         const r = await DeviceOrientationEvent.requestPermission(); if (r !== 'granted') return;
       }
       addEventListener('deviceorientation', onTilt);
-      ev.target.textContent = '📱 Tilting on!'; ev.target.disabled = true;
+      ev.target.textContent = '📱 On'; ev.target.disabled = true;
     } catch { }
   };
   const walls = M.walls.concat([[-1, -1, 12, 1], [-1, 14, 12, 1], [-1, -1, 1, 16], [10, -1, 1, 16]]);
@@ -903,7 +903,7 @@ function startColoring(p) {
   area.innerHTML = `<div class="color-stage"><div class="color-wrap cz-view"><div class="cz-inner">${picSVG(p, fills, 'big')}</div>
       <div class="cz-btns"><button data-z="in" aria-label="Zoom in">＋</button><button data-z="out" aria-label="Zoom out">－</button></div></div>
     <div class="palette">${PALETTE_C.map((c, i) => `<button class="sw-c ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}" aria-label="color">${c === '#ffffff' ? '🧽' : ''}</button>`).join('')}</div></div>
-    <div class="color-btns"><button class="big-btn alt small" data-a="pics">🖼️ Pictures</button>${p.orig ? '<button class="big-btn alt small" data-a="peek">👀 Peek</button>' : ''}<button class="big-btn small" data-a="done">✅ I'm done!</button></div>`;
+    <div class="color-btns"><button class="big-btn alt small ico" data-a="pics" aria-label="Pictures">🖼️ Pictures</button>${p.orig ? '<button class="big-btn alt small ico" data-a="peek" aria-label="Peek">👀 Peek</button>' : ''}<button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
   say('Pick a color, then tap the picture.');
   $$('.sw-c', area).forEach((b) => (b.onclick = () => {
     $$('.sw-c', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); cur = b.dataset.c; sfx.tap();
@@ -1019,7 +1019,7 @@ function startSudoku(mode) {
     <div class="sdk-board n${n} ${mode}" style="grid-template-columns:repeat(${n},1fr)">${cur.flatMap((row, r) => row.map((v, c) =>
       `<button class="sdk-cell ${given[r][c] ? 'given' : ''} ${c % bc === bc - 1 && c < n - 1 ? 'br' : ''} ${r % 2 === 1 && r < n - 1 ? 'bb' : ''}" data-r="${r}" data-c="${c}">${v != null ? syms[v] : ''}</button>`)).join('')}</div>
     <div class="sdk-pad">${syms.map((sy, i) => `<button class="sdk-key" data-v="${i}">${sy}</button>`).join('')}<button class="sdk-key erase" data-v="x">⌫</button></div>
-    <div class="color-btns"><button class="big-btn alt small" data-a="hint">💡 Hint</button><button class="big-btn alt small" data-a="menu">🔄 New</button></div>`;
+    <div class="color-btns"><button class="big-btn alt small ico" data-a="hint" aria-label="Hint">💡 Hint</button><button class="big-btn alt small ico" data-a="menu" aria-label="New">🔄 New</button></div>`;
   say(word ? ['Each row and column gets every letter of', word] : 'Fill the empty boxes!');
   const cellEl = (r, c) => $(`.sdk-cell[data-r="${r}"][data-c="${c}"]`, area);
   $$('[data-speak]', area).forEach((b) => (b.onclick = () => say(b.dataset.speak)));
@@ -1114,7 +1114,7 @@ function startPuzzle(p) {
   area.innerHTML = `<div class="g-msg">Put the picture back together!</div>
     <div class="pz-wrap"><div class="pz-board" style="grid-template-columns:repeat(${n},1fr)"></div>
     <div class="pz-peek"><svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg><small>Look!</small></div></div>
-    <div class="color-btns"><button class="big-btn alt small" data-a="restart">🔄 Restart</button><button class="big-btn alt small" data-a="pictures">🖼️ Pictures</button></div>`;
+    <div class="color-btns"><button class="big-btn alt small ico" data-a="restart" aria-label="Restart">🔄 Restart</button><button class="big-btn alt small ico" data-a="pictures" aria-label="Pictures">🖼️ Pictures</button></div>`;
   say('Put the picture back together!');
   const board = $('.pz-board', area);
   function draw() {
@@ -1164,7 +1164,7 @@ function startMoves() {
   const done = state.movesDone || 0;
   area.innerHTML = `<div class="g-msg">Roll the dice and do the move! <small class="mv-count">${done ? `⭐ ${done} moves done` : ''}</small></div>
     <div class="mv-card"><div class="mv-emoji">🎲</div><div class="mv-text">Tap Roll!</div><svg class="mv-ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54"/></svg></div>
-    <button class="big-btn mv-roll">🎲 Roll!</button>`;
+    <button class="big-btn ico mv-roll" aria-label="Roll">🎲 Roll</button>`;
   say('Roll the dice!');
   const card = $('.mv-card', area), em = $('.mv-emoji', area), tx = $('.mv-text', area), btn = $('.mv-roll', area), ring = $('.mv-ring circle', area);
   const cleanup = () => { clearInterval(timer); clearInterval(spin); };
@@ -1195,7 +1195,7 @@ function startMoves() {
           state.movesDone = (state.movesDone || 0) + 1; save();
           $('.mv-count', area).textContent = `⭐ ${state.movesDone} moves done`;
           gameWin(pick(['Great moves!', 'Awesome job!', 'You are so silly!', 'Fantastic!']));
-          btn.disabled = false; btn.textContent = '🎲 Roll again!';
+          btn.disabled = false; btn.textContent = '🎲 Roll';
         }
       }, 1000);
     }, 1300);
@@ -1238,7 +1238,7 @@ function startDraw(refIndex) {
     <div class="dr-tools">${INK.map((c, i) => `<button class="dr-ink ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}"></button>`).join('')}
       <button class="dr-size" data-s="6">•</button><button class="dr-size on" data-s="12">●</button><button class="dr-size" data-s="22">⬤</button>
       <button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>
-    <div class="color-btns"><button class="big-btn alt small" data-a="new">🔄 New picture</button><button class="big-btn alt small" data-a="gallery">🖼️ My drawings</button><button class="big-btn small" data-a="done">✅ I'm done!</button></div>`;
+    <div class="color-btns"><button class="big-btn alt small ico" data-a="new" aria-label="New picture">🔄 New</button><button class="big-btn alt small ico" data-a="gallery" aria-label="My drawings">🖼️ Mine</button><button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
   say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
   const cv = $('.dr-cv', area), pad = $('.dr-pad', area);
   const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -1296,7 +1296,7 @@ function drawGallery() {
   const list = state.drawings || [];
   area.innerHTML = `<div class="g-msg">🖼️ My drawings <small>${list.length ? 'Your last ' + list.length + ' drawings' : 'Finish a drawing to see it here!'}</small></div>
     <div class="dr-gal">${list.map((d) => `<figure><img src="${d.img}" alt=""><figcaption>${d.name}</figcaption></figure>`).join('')}</div>
-    <div class="color-btns"><button class="big-btn small" data-a="back">✏️ Draw more</button></div>`;
+    <div class="color-btns"><button class="big-btn small ico" data-a="back" aria-label="Draw more">✏️ Draw</button></div>`;
   area.querySelector('[data-a="back"]').onclick = () => { sfx.tap(); startDraw(); };
 }
 
