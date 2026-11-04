@@ -191,6 +191,40 @@ function step() {
   raf = parts.length ? requestAnimationFrame(step) : (cx.clearRect(0, 0, cv.width, cv.height), 0);
 }
 
+/* Browser pinch on Home/Settings can accidentally enlarge navigation.
+   Keep OS accessibility zoom available; allow native pinch on question/game screens. */
+const isNavigationScreen = () => ['home', 'settings'].some((id) => $('#' + id).classList.contains('active'));
+document.addEventListener('touchmove', (e) => {
+  if (isNavigationScreen() && e.touches.length >= 2) e.preventDefault();
+}, { passive: false });
+for (const type of ['gesturestart', 'gesturechange']) {
+  document.addEventListener(type, (e) => { if (isNavigationScreen()) e.preventDefault(); }, { passive: false });
+}
+document.addEventListener('wheel', (e) => {
+  if (isNavigationScreen() && e.ctrlKey) e.preventDefault();
+}, { passive: false });
+
+let questionZoom = 1, questionBaseWidth = 0;
+function setQuestionZoom(value = 1) {
+  const inner = $('#qZoomInner'), space = $('#qZoomSpace'), view = $('.q-zoom-view');
+  if (!inner || !space || !view) return;
+  questionZoom = Math.max(1, Math.min(4, value));
+  if (questionZoom <= 1) {
+    inner.style.transform = ''; inner.style.width = '';
+    space.style.width = ''; space.style.height = '';
+    questionBaseWidth = 0; view.scrollTo(0, 0);
+    return;
+  }
+  if (!questionBaseWidth) questionBaseWidth = inner.offsetWidth;
+  inner.style.width = questionBaseWidth + 'px';
+  inner.style.transform = `scale(${questionZoom})`;
+  space.style.width = Math.round(questionBaseWidth * questionZoom) + 'px';
+  space.style.height = Math.round(inner.offsetHeight * questionZoom) + 'px';
+}
+$('#qZoomIn').onclick = () => setQuestionZoom(questionZoom * 1.4);
+$('#qZoomOut').onclick = () => setQuestionZoom(questionZoom / 1.4);
+$('#qZoomReset').onclick = () => setQuestionZoom(1);
+
 /* ---------- screens ---------- */
 let homeScrollY = 0;
 function show(id) {
@@ -288,6 +322,7 @@ async function mountBody3D(q) {
 }
 
 function renderQ() {
+  setQuestionZoom(1);
   // A prior answer's recording or feedback must never appear on an unanswered card.
   sayToken++; stopClip(); $('#pop').classList.remove('show'); $('#pop').replaceChildren();
   dropBody3D();
