@@ -20,12 +20,6 @@ const { chromium } = require('playwright');
     assert.equal(await page.locator('#splash').evaluate(x => x.classList.contains('gone')), true,
       'splash reappeared after reload and would require a second tap');
 
-    const result = await page.evaluate(async () => {
-      state.voice = false; state.grade = 'g1'; state.country = 'ca'; state.dailyGoal = 15;
-      state.stars = 40; save();
-      document.querySelector('#resetBtn').click(); // confirmation stubbed below in test setup
-      return {country: state.country,goal:state.dailyGoal,stars:state.stars};
-    });
     // The reset button requires a user confirmation. Explicitly test it separately.
     const settings = await page.evaluate(() => {
       const original = window.confirm; window.confirm = () => true;
