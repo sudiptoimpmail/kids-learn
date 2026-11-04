@@ -188,6 +188,13 @@ function step() {
   raf = parts.length ? requestAnimationFrame(step) : (cx.clearRect(0, 0, cv.width, cv.height), 0);
 }
 
+/* Keep accidental page pinch/expansion off the navigation screens; preserve
+   one-finger scrolling, system accessibility zoom and question-page zoom. */
+const onNavigationScreen = () => ['home', 'settings'].some((id) => $('#' + id)?.classList.contains('active'));
+document.addEventListener('gesturestart', (e) => { if (onNavigationScreen()) e.preventDefault(); }, { passive: false });
+document.addEventListener('touchmove', (e) => { if (onNavigationScreen() && e.touches.length > 1) e.preventDefault(); }, { passive: false });
+document.addEventListener('wheel', (e) => { if (onNavigationScreen() && e.ctrlKey) e.preventDefault(); }, { passive: false });
+
 /* ---------- screens ---------- */
 let homeScrollY = 0;
 function show(id) {
@@ -285,7 +292,17 @@ async function mountBody3D(q) {
   });
 }
 
+let questionZoom = null;
+function ensureQuestionZoom() {
+  if (questionZoom || typeof zoomable !== 'function') return;
+  questionZoom = zoomable($('#qZoomView'), $('#qZoomInner'));
+  $('#qZoomIn').onclick = () => questionZoom.by(1.4);
+  $('#qZoomOut').onclick = () => questionZoom.by(1 / 1.4);
+  $('#qZoomReset').onclick = () => questionZoom.reset();
+}
 function renderQ() {
+  ensureQuestionZoom();
+  if (questionZoom) questionZoom.reset();
   // A prior answer's recording or feedback must never appear on an unanswered card.
   sayToken++; stopClip(); $('#pop').classList.remove('show'); $('#pop').replaceChildren();
   dropBody3D();
