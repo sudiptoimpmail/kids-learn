@@ -485,6 +485,19 @@ const sentLevel = (x) => { if (typeof x !== 'string') return x[3] || sentLevel(x
 // every reading item as [text, [[question, options], ...], level]
 const READING = () => READING.all || (READING.all = SENTENCES.map((x) => [x[0], [[x[1], x[2]]], sentLevel(x)])
   .concat(PATTERN_SENTENCES.map((x) => [x[0], [[x[1], x[2]]], x[3]]), STORIES.map((x) => [x[1], x[2], x[0]])));
+// words that never point to an answer on their own
+const HINT_SKIP = new Set('a an the is are was were be to of and or in on at it its i you he she we they my his her their this that what who where when why how which do does did can has have had will with for from by so but not one some many much'.split(' '));
+const HINT_NUMS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+const plainWords = (t) => String(t).toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').split(/\s+/).filter(Boolean)
+  .map((w) => (/^\d+$/.test(w) && HINT_NUMS[+w] ? HINT_NUMS[+w] : w.replace(/'s$/, '')));
+// which words of the sentence to light up for the hint: the answer's own words if the sentence has them,
+// otherwise the question's words, so the child knows where to look (the hint never reads the answer out)
+function sentenceHintMarks(s, q, answer) {
+  const sw = s.split(' ').map((w) => plainWords(w)[0] || '');
+  const find = (src) => { const want = new Set(plainWords(src).filter((w) => !HINT_SKIP.has(w))); return sw.map((w, i) => (w && (want.has(w) || want.has(w.replace(/s$/, ''))) ? i : -1)).filter((i) => i >= 0); };
+  const a = find(answer);
+  return a.length ? a : find(q);
+}
 function genSentence(level) {
   const all = READING();
   // mostly this level, sometimes one level easier for a quick win
@@ -493,16 +506,19 @@ function genSentence(level) {
   const [q, opts] = pick(qs);
   const words = s.split(' ').map((w, i) => `<span class="sw" data-i="${i}">${w}</span>`).join(' ');
   const long = s.length > 120 ? ' passage' : s.length > 60 ? ' long' : '';
+  const marks = sentenceHintMarks(s, q, opts[0]);
   return {
     key: `sent-${s}`, qkey: q,
-    text: q,
+    text: '📖 Read, then answer',     // the question is shown once, under the sentence
     say: '',  // she reads the sentence herself
     readQ: q,
     main: `<div class="sentence${long}">${words}</div><div class="question-line">${q}</div>`,
     options: shuffle(opts).map((o) => ({ v: o, html: o })),
     answer: opts[0],
     optClass: 'opt-text',
-    hint: { html: `<div class="hint-sent">${sentenceSylHTML(s)}</div><div class="hint-note">👂 Listen and follow along</div>`, say: s, karaoke: true },
+    // the hint points to the right words; it does not read the sentence (or the answer) out loud
+    hint: marks.length ? { html: '<div class="hint-note">👀 Look at the yellow words. Read them!</div>', say: ['Look at the yellow words.', 'Read them!'], mark: marks }
+      : { html: '<div class="hint-note">👀 Read the sentence again, slowly.</div>', say: ['Read the sentence again, slowly.'] },
   };
 }
 

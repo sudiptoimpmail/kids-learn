@@ -84,6 +84,7 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .sentence { font-size: 30px; font-weight: 800; line-height: 1.45; }
 .sw { padding: 0 3px; border-radius: 8px; transition: background .15s; }
 .sw.lit { background: #ffe066; }
+.sw.mark { background: #ffe066; box-shadow: 0 3px 0 #fab005; }
 .question-line { font-size: 20px; font-weight: 800; color: var(--theme); }
 .big-emoji { font-size: 110px; line-height: 1.05; }
 .big-emoji.muted { opacity: .35; font-size: 80px; }
@@ -896,6 +897,7 @@ body.test-mode .prog-row { flex-wrap: wrap; }
 /* ---------- children (profiles) ---------- */
 header.top { align-items: center; }
 .top-txt { flex: 1; min-width: 0; }
+#homeDashBtn { margin-right: 6px; }
 .kid-btn { width: 58px; height: 58px; border-radius: 50%; background: #fff; font-size: 34px; box-shadow: 0 4px 0 #0001; flex: 0 0 auto; margin-right: 10px; position: relative; }
 .kid-btn.many::after { content: '⇄'; position: absolute; right: -4px; bottom: -4px; font-size: 13px; background: var(--theme, #8f6bff); color: #fff; border-radius: 99px; padding: 1px 5px; }
 .who-box { width: min(440px, 94vw); }
@@ -954,7 +956,7 @@ header.top { align-items: center; }
 .ph-tiles.ph-tiles { touch-action: none; }
 .ph-tiles .ph-t.joined { margin: 0 -6px; }
 .ph-blend-go { margin-top: 12px; padding: 8px 22px; border-radius: 99px; background: #7950f2; color: #fff; font-weight: 900; font-size: 18px; box-shadow: 0 4px 0 #0002; }
-.ph-letters.tap { cursor: pointer; } .ph-letters.bounce { animation: popin .4s; }
+.ph-letters.tap { cursor: pointer; background: #f3f0ff; border-radius: 22px; padding: 2px 22px; box-shadow: 0 5px 0 #d0bfff; } .ph-letters.bounce { animation: popin .4s; }
 .ph-tip { display: block; color: var(--soft); font-weight: 800; }
 
 /* ---------- Today's Quest ---------- */
@@ -968,7 +970,8 @@ header.top { align-items: center; }
 .quest-steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
 .quest-step { position: relative; min-height: 104px; border-radius: 20px; background: var(--c); color: #fff; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end;
   padding: 10px 12px; text-align: left; box-shadow: inset 0 -40px 40px -20px #0003, 0 5px 0 #0003; overflow: hidden; }
-.quest-step .qs-ico { position: absolute; right: 8px; top: 6px; font-size: 46px; filter: drop-shadow(0 4px 4px #0003); }
+.quest-step .qs-ico { align-self: flex-end; margin-bottom: auto; font-size: 40px; line-height: 1; filter: drop-shadow(0 4px 4px #0003); }
+.quest-step .qs-t { overflow-wrap: anywhere; }
 .quest-step .qs-t { font-weight: 900; font-size: 17px; line-height: 1.1; } .quest-step .qs-why { font-weight: 800; font-size: 12px; opacity: .9; }
 .quest-step.done { filter: saturate(.55); } .quest-step.done .qs-ico { opacity: .55; }
 .quest-step .qs-ok { position: absolute; left: 10px; top: 8px; width: 30px; height: 30px; border-radius: 50%; background: #40c057; display: grid; place-items: center; font-weight: 900; box-shadow: 0 3px 0 #0002; }
@@ -980,6 +983,6 @@ header.top { align-items: center; }
 .gift-open { font-size: 80px; animation: popin .6s cubic-bezier(.2, 1.6, .4, 1); }
 .gift-items { display: flex; gap: 12px; justify-content: center; font-weight: 900; font-size: 18px; margin: 6px 0; align-items: center; }
 .gift-items .gs { font-size: 44px; }
-@media (min-width: 700px) { .quest-steps { grid-template-columns: repeat(3, 1fr); } .quest-step { min-height: 140px; } .quest-step .qs-ico { font-size: 64px; } }
+@media (min-width: 700px) { .quest-steps { grid-template-columns: repeat(3, 1fr); } .quest-step { min-height: 140px; } .quest-step .qs-ico { font-size: 56px; } }
 .quest-head { flex-wrap: wrap; gap: 6px; } .quest-head b { white-space: nowrap; }
 @media (max-width: 420px) { .quest-checks i { width: 20px; height: 20px; font-size: 11px; } .quest-head b { font-size: 20px; } }

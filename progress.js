@@ -113,7 +113,9 @@ function dailyGoalReached() {
 }
 
 /* ---------- grown-ups: progress dashboard ---------- */
-function openDashboard() {
+let dashFrom = 'settings';   // where ‹ goes back to
+function openDashboard(from = 'settings') {
+  dashFrom = from;
   renderDashboard();
   show('dash');
 }
@@ -177,9 +179,11 @@ function renderDashboard() {
   $('#dashSummary').innerHTML = lines.map((l) => `<p>${l}</p>`).join('');
   $('#dashGoal').value = String(goal);
 }
-$('#dashBack').onclick = () => { sfx.tap(); openSettings(); };
+$('#dashBack').onclick = () => { sfx.tap(); if (dashFrom === 'home') { renderHome(); show('home'); } else openSettings(); };
+// straight from the home screen, behind the grown-up PIN like Settings
+$('#homeDashBtn').onclick = () => { sfx.tap(); askPin(() => openDashboard('home')); };
 $('#dashGoal').onchange = () => { state.dailyGoal = +$('#dashGoal').value; save(); renderDashboard(); };
-$('#dashBtn').onclick = () => { sfx.tap(); openDashboard(); };
+$('#dashBtn').onclick = () => { sfx.tap(); openDashboard('settings'); };
 
 /* =========================================================
    🗺️ Today's Quest: a short, guided mix for each day (about 10–12 minutes)

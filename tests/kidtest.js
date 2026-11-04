@@ -12,7 +12,7 @@ const S = require('path').join(__dirname, 'out/');
   // add a second child through Settings
   await p.evaluate(() => { openSettings(); document.querySelector('#kidChips [data-add]').click(); });
   await p.waitForTimeout(200);
-  await p.evaluate(() => { document.getElementById('nameInput').value = 'Arjun'; document.querySelector('#gradeBtns [data-g="g2"]').click(); document.querySelector('#avatarRow [data-a="🦖"]').click(); document.getElementById('settingsDone').click(); });
+  await p.evaluate(() => { document.getElementById('nameInput').value = 'Arjun'; document.querySelector('#gradeBtns [data-g="g2"]').click(); document.querySelector('#avatarRow [data-a="🦖"]').click(); document.getElementById('settingsBack').click(); });
   log(await p.evaluate(() => ({ now: state.name, grade: state.grade, stars: state.stars, add: state.levels.add, avatar: state.avatar, pin: state.pinHash, mode: state.playMode, kids: Store.kids().map(k => k.name + k.avatar) })));
   // play a bit as Arjun, then switch back
   await p.evaluate(() => { state.stars = 5; save(); });

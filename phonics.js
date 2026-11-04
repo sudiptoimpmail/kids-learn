@@ -47,7 +47,8 @@ function wireBlend(q) {
   const tiles = $$('.ph-tiles .ph-t'); if (!tiles.length) return;
   const lit = (i) => tiles.forEach((t, k) => t.classList.toggle('on', k === i));
   const playOne = (i) => { lit(i); return say([soundClip(q.blend[i])]).then(() => lit(-1)); };
-  tiles.forEach((t, i) => (t.onclick = (e) => { e.stopPropagation(); playOne(i); }));
+  // keyboard only: a finger or mouse tap is handled on pointerdown below (the row captures the pointer, so taps never reach a tile's click)
+  tiles.forEach((t, i) => (t.onclick = (e) => { e.stopPropagation(); if (e.detail === 0) playOne(i); }));
   let blending = false;
   const blendAll = async () => {
     if (blending) return; blending = true;
@@ -58,18 +59,25 @@ function wireBlend(q) {
   const go = $('.ph-blend-go'); if (go) go.onclick = (e) => { e.stopPropagation(); blendAll(); };
   // slide across the tiles: each tile sounds as the finger reaches it
   const row = $('.ph-tiles'); let seen = -1;
-  row.onpointerdown = (e) => { seen = -1; row.setPointerCapture && row.setPointerCapture(e.pointerId); };
+  const tileAt = (x) => tiles.findIndex((t) => { const r = t.getBoundingClientRect(); return x >= r.left && x <= r.right; });
+  row.onpointerdown = (e) => {
+    seen = tileAt(e.clientX);
+    if (seen >= 0) playOne(seen);          // a tap on a letter says its sound
+    try { row.setPointerCapture(e.pointerId); } catch {}
+  };
   row.onpointermove = (e) => {
     if (!e.buttons && e.pointerType === 'mouse') return;
-    const i = tiles.findIndex((t) => { const r = t.getBoundingClientRect(); return e.clientX >= r.left && e.clientX <= r.right; });
+    const i = tileAt(e.clientX);
     if (i > seen) { seen = i; lit(i); say([soundClip(q.blend[i])]); if (i === tiles.length - 1) setTimeout(() => { lit(-1); say([q.answer]); }, 450); }
   };
 }
 // a big letter you can tap to hear its sound
-function wireLetter(q) { const el = $('.ph-letters'); if (el && q.letterSound) el.onclick = () => { el.classList.remove('bounce'); void el.offsetWidth; el.classList.add('bounce'); say([soundClip(q.letterSound)]); }; }
+function wireLetter(q) { const el = $('#qMain .ph-letters'); if (el && q.letterSound) el.onclick = () => { el.classList.remove('bounce'); void el.offsetWidth; el.classList.add('bounce'); say([soundClip(q.letterSound)]); }; }
 const picOpt = (x) => ({ v: x[0], html: x[1] });
 const namesHint = (opts, say) => ({ html: `<div class="hint-note">${opts.map((o) => `${o[1]} ${o[0]}`).join(' · ')}</div>`, say: [say, ...opts.map((o) => o[0])] });
 const firstLetter = (w) => w[0];
+// the big letter on the card: a real button, so a tap always works (iPad Safari is unreliable with taps on plain text)
+const tapLetter = (l, label = `${l.toUpperCase()} ${l}`) => `<button class="ph-letters tap" aria-label="Hear the sound">${label}</button><small class="ph-tip">👆 tap the letter to hear its sound</small>`;
 
 function genPhonics(level) {
   const P = phonData(), n = numOpts(Math.min(level, 2)) - 1;
@@ -81,7 +89,7 @@ function genPhonics(level) {
     const opts = shuffle([right, ...wrong]);
     return {
       key: `ph-blend-${b}-${right[0]}`, text: `Which picture starts with <b>${b}</b>?`, say: ['Which picture starts with', `${b.toUpperCase().split('').join(' ')}?`],
-      main: `<div class="ph-letters">${b}</div>`, mainClass: 'ph-main', options: opts.map(picOpt), answer: right[0], optClass: 'opt-emoji',
+      main: LETTER_SOUNDS[b] ? tapLetter(b, b) : `<div class="ph-letters">${b}</div>`, mainClass: 'ph-main', options: opts.map(picOpt), answer: right[0], optClass: 'opt-emoji', letterSound: LETTER_SOUNDS[b] ? b : undefined,
       hint: namesHint(opts, 'Say each picture. Listen to the start!'),
     };
   }
@@ -121,7 +129,7 @@ function genPhonics(level) {
       const opts = shuffle([right, ...wrong]);
       return {
         key: `ph-end-${L}-${right[0]}`, text: `Which picture ends with <b>${L}</b>?`, say: ['Which picture ends with', `${L.toUpperCase()}?`],
-        main: `<div class="ph-letters">${L.toUpperCase()} ${L}</div>`, mainClass: 'ph-main', options: opts.map(picOpt), answer: right[0], optClass: 'opt-emoji',
+        main: tapLetter(L), mainClass: 'ph-main', options: opts.map(picOpt), answer: right[0], optClass: 'opt-emoji', letterSound: L,
         hint: namesHint(opts, 'Say each picture. Listen to the end!'),
       };
     }
@@ -143,7 +151,7 @@ function genPhonics(level) {
   const opts = shuffle([right, ...wrong]);
   return {
     key: `ph-first-${L}-${right[0]}`, text: `Which picture starts with <b>${L.toUpperCase()}</b>?`, say: ['Which picture starts with', `${L.toUpperCase()}?`],
-    main: `<div class="ph-letters tap">${L.toUpperCase()} ${L}</div><small class="ph-tip">👆 tap the letter to hear its sound</small>`, mainClass: 'ph-main', options: opts.map(picOpt), answer: right[0], optClass: 'opt-emoji',
+    main: tapLetter(L), mainClass: 'ph-main', options: opts.map(picOpt), answer: right[0], optClass: 'opt-emoji',
     letterSound: L, hint: { html: namesHint(opts, '').html, say: [`${L.toUpperCase()} says`, soundClip(L), 'Listen to the start of each picture!', ...opts.map((o) => o[0])] },
   };
 }

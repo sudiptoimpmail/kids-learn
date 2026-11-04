@@ -95,6 +95,25 @@ function renderTrace(speak) {
   // the letter's middle line (skeleton): every part of it must be traced, so no stroke can be skipped
   const skel = thin(mask, M), skelPts = [];
   for (let p = 0; p < M * M; p++) if (skel[p]) skelPts.push(p);
+  // split the middle line into its strokes (pieces between crossings). Every stroke must be traced on its own:
+  // the overall share is not enough, e.g. an A drawn as a tent (no crossbar) still covers most of the line.
+  const nbrs = (p) => { const x = p % M, y = (p / M) | 0, out = []; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { if (!dx && !dy) continue; const X = x + dx, Y = y + dy; if (X >= 0 && Y >= 0 && X < M && Y < M && skel[Y * M + X]) out.push(Y * M + X); } return out; };
+  // a crossing: going round the 8 neighbours, the line is entered 3 or more separate times
+  // (counting plain neighbours would also flag every step of a slanted line)
+  const RING = [[-1, -1], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0]];
+  const on = (x, y) => x >= 0 && y >= 0 && x < M && y < M && !!skel[y * M + x];
+  const crossings = (p) => { const x = p % M, y = (p / M) | 0; let n = 0; for (let k = 0; k < 8; k++) { const [ax, ay] = RING[k], [bx, by] = RING[(k + 1) % 8]; if (!on(x + ax, y + ay) && on(x + bx, y + by)) n++; } return n; };
+  const joints = skelPts.filter((p) => crossings(p) >= 3);
+  const nearJoint = (p) => joints.some((j) => Math.hypot(j % M - p % M, ((j / M) | 0) - ((p / M) | 0)) <= 6);
+  const branches = [], seen = new Set(joints);
+  for (const p0 of skelPts) {
+    if (seen.has(p0)) continue;
+    const comp = [], todo = [p0]; seen.add(p0);
+    while (todo.length) { const p = todo.pop(); comp.push(p); for (const q of nbrs(p)) if (!seen.has(q)) { seen.add(q); todo.push(q); } }
+    // only the part away from the crossings: near a crossing, ink on the other stroke already touches it
+    const own = comp.filter((p) => !nearJoint(p));
+    if (own.length >= 5) branches.push(own);
+  }
   const drawGuide = (missing) => {
     g.clearRect(0, 0, W, W);
     g.strokeStyle = '#a5d8ff'; g.lineWidth = 2;
@@ -143,7 +162,9 @@ function renderTrace(speak) {
     const missing = skelPts.filter((p) => { const x = p % M, y = (p / M) | 0; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) if (inkAt(x + dx, y + dy)) return false; return true; });
     const cover = skelPts.length ? 1 - missing.length / skelPts.length : hit / mcount, stray = ink2 ? out / ink2 : 0;
     $("#trMeter").style.width = `${Math.min(100, Math.round(cover / 0.92 * 100))}%`;
-    if (cover >= 0.92 && stray < 0.45) { drawGuide(null); win(); }
+    const miss = new Set(missing);
+    const allStrokes = branches.every((b) => b.filter((p) => !miss.has(p)).length >= 0.75 * b.length);
+    if (cover >= 0.92 && allStrokes && stray < 0.45) { drawGuide(null); win(); }
     else if (stray > 0.6 && ink2 > 200) { say('Try to stay on the gray letter!'); }
     else if (cover >= 0.3) drawGuide(missing);          // show the parts that still need tracing
   }
@@ -165,7 +186,8 @@ function renderTrace(speak) {
   $('#trClear').onclick = () => { sfx.tap(); strokes = []; finished = false; redraw(); drawGuide(null); $('#trMeter').style.width = '0%'; };
   $('#trMeter').style.width = '0%';
   if (speak) say(spoken.split('. ').map((x, k, a) => (k < a.length - 1 ? x + '.' : x)));
-  window.__trace = { it, check, skelPts: () => skelPts.map((p) => [(p % M + 0.5) * W / M, (((p / M) | 0) + 0.5) * W / M]), strokesSet: (s) => { strokes = s; redraw(); check(); } };   // used by automated tests
+  const toXY = (p) => [(p % M + 0.5) * W / M, (((p / M) | 0) + 0.5) * W / M];
+  window.__trace = { it, check, skelPts: () => skelPts.map(toXY), branches: () => branches.map((b) => b.map(toXY)), strokesSet: (s) => { strokes = s; redraw(); check(); } };   // used by automated tests
 }
 $('#trHome').onclick = () => { sfx.tap(); stopClip(); TR.quest = null;   // leaving ends the quest's tracing session (unfinished)
   renderHome(); show('home'); };

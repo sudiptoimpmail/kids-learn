@@ -332,6 +332,7 @@ function showHint(q, auto = false) {
   if (q.hint && q.hint.remove) { if (!q.hintShown || auto === false) removeOneWrong(q); q.hintShown = true; $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
   if (!q.hint || q.hintShown) { if (q.hint) speakHint(q); return; }
   q.hintShown = true;
+  if (q.hint.mark) $$('#qMain .sw').forEach((w, i) => w.classList.toggle('mark', q.hint.mark.includes(i)));
   const box = $('#hintBox');
   box.innerHTML = q.hint.html || '';
   box.hidden = !q.hint.html;
@@ -905,11 +906,13 @@ function collectSettings() {
   $$('#levels select').forEach((s) => (state.levels[s.dataset.id] = +s.value));
   save();
 }
-$('#settingsDone').onclick = () => {
-  collectSettings(); applyTheme(); renderHome(); show('home');
+// every change saves right away (no Save button); typing the name saves a moment after the last key
+$('#settings').addEventListener('change', (e) => { if (e.target.id !== 'restoreFile' && e.target.id !== 'testMode' && e.target.closest('label, select, input')) { collectSettings(); applyTheme(); } });
+$('#nameInput').addEventListener('input', () => { clearTimeout(collectSettings.t); const kid = Store.activeId(); collectSettings.t = setTimeout(() => { if (kid === Store.activeId()) collectSettings(); }, 400); });
+$('#settingsBack').onclick = () => {
+  clearTimeout(collectSettings.t); collectSettings(); applyTheme(); renderHome(); show('home');
   say("Let's play!");
 };
-$('#settingsBack').onclick = () => $('#settingsDone').click();
 
 /* ---------- children (profiles): picker on the home screen, add / edit / remove in Settings ---------- */
 function switchKid(id) {
