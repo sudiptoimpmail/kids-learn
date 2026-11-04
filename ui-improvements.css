@@ -1,0 +1,36 @@
+/* Child-first information architecture and accessible navigation. */
+.learning-catalog { display: flex; flex-direction: column; gap: 20px; }
+.catalog-section { min-width: 0; }
+.catalog-section h2 { margin: 4px 6px 12px; font-size: 21px; font-weight: 900; }
+.catalog-section .grid { align-items: stretch; }
+.brain-banner { display: flex; width: 100%; align-items: center; gap: 12px; padding: 15px 18px;
+  background: #ede9fe; color: #42217d; border-radius: 22px; text-align: left;
+  margin: 0 0 18px; box-shadow: 0 5px 0 #d0bfff; }
+.brain-banner > span:first-child { font-size: 42px; }
+.brain-banner b { font-size: 23px; font-weight: 900; }
+.brain-banner small { font-size: 14px; color: #5f3dc4; font-weight: 800; }
+.brain-banner > span:last-child { margin-left: auto; font-size: 26px; }
+.settings-top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 15; padding: 5px 0 10px; background: var(--bg); }
+button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+  outline: 4px solid #1c7ed6; outline-offset: 3px;
+}
+.think-pattern { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; margin: 10px auto; }
+.think-pattern span { min-width: 45px; min-height: 55px; border-radius: 12px; padding: 5px;
+  background: #f3f0ff; display: grid; place-items: center; font-size: clamp(29px, 7vw, 54px); font-weight: 900; }
+.think-pattern .think-missing { border: 3px dashed #7950f2; color: #7950f2; }
+.think-symbol { font-size: 84px; }
+@media (max-width: 420px) {
+  .brain-banner { flex-wrap: wrap; }
+  .brain-banner small { width: 100%; padding-left: 52px; }
+  .think-pattern { gap: 4px; }
+  .think-pattern span { min-width: 36px; min-height: 44px; }
+  .catalog-section .tile { min-height: 142px; }
+}
+@media (min-width: 700px) {
+  .catalog-section h2 { font-size: 28px; }
+  .brain-banner { padding: 18px 24px; }
+  .think-pattern span { min-width: 68px; min-height: 74px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brain-banner, .catalog-section .tile { transition: none; }
+}
