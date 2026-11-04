@@ -1,0 +1,35 @@
+name: Browser regression
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - feature/age-aware-learning-navigation
+
+jobs:
+  browser-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install JavaScript test dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium and system libraries
+        run: npx playwright install --with-deps chromium
+      - name: Validate JavaScript syntax
+        run: npm run check
+      - name: Browser regression tests
+        run: npm test
+        env:
+          CHROME_BIN: ${{ github.workspace }}/node_modules/playwright/.local-browsers/chromium/chrome-linux/chrome
+      - name: Upload browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-screenshots
+          path: tests/out/
+          if-no-files-found: ignore
