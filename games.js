@@ -137,7 +137,7 @@ const GAMES = [
   { id: 'moves', title: 'Silly Moves', icon: '🤸', color: '#12b886', start: startMoves },
 ];
 // level per game; winning moves you up (needWins wins per level)
-const GAME_MAX = { path: 7, pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
+const GAME_MAX = { path: 12, pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
 // Brain Teasers: puzzle games shown with the thinking lessons on the home screen.
 // They are learning, so they never need earned play time (Tic-Tac-Toe and Ball Maze stay in the Play Zone).
 const BRAIN_GAME_IDS = new Set(['path', 'memory', 'puzzle', 'sudoku', 'c4']);
@@ -159,6 +159,10 @@ function GL(id) {
   if (id === 'maze' && state.gameLv && state.gameLv.maze == null && state.gameLv.ball > 1 && !state.ball3d) { state.gameLv.maze = state.gameLv.ball; state.gameLv.ball = 1; state.ball3d = true; }
   if (id === 'sudoku') return sdkLevel();
   if (id === 'color') return colorLevel();
+  if (id === 'path') {
+    const start = { prek: 1, k: 2, g1: 5, g2: 8, g3: 10 }[state.grade] || 1;
+    return Math.min(GAME_MAX.path, Math.max(start, (state.gameLv && state.gameLv.path) || 1));
+  }
   return (state.gameLv && state.gameLv[id]) || 1;
 }
 function gameLevelUp(id, needWins = 1) {
@@ -861,7 +865,7 @@ function startColorPicker() {
 }
 
 // pinch (two fingers) to zoom, drag with one finger when zoomed in; taps still go through
-function zoomable(view, inner) {
+function zoomable(view, inner, { oneFingerPan = true } = {}) {
   let s = 1, x = 0, y = 0, last = 0;
   const pts = new Map(); let start = null;
   const apply = () => {
@@ -885,7 +889,7 @@ function zoomable(view, inner) {
       const ns = Math.min(4, Math.max(1, start.s * d / start.d));
       const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
       x = mx - (start.mx - start.x) * ns / start.s; y = my - (start.my - start.y) * ns / start.s; s = ns; apply(); last = Date.now();
-    } else if (pts.size === 1 && start.px && s > 1.01) {
+    } else if (oneFingerPan && pts.size === 1 && start.px && s > 1.01) {
       const p = local(e), dx = p[0] - start.px[0], dy = p[1] - start.px[1];
       if (Math.hypot(dx, dy) > 8) { x = start.x + dx; y = start.y + dy; apply(); last = Date.now(); }
     }
@@ -893,7 +897,7 @@ function zoomable(view, inner) {
   const up = (e) => { pts.delete(e.pointerId); if (pts.size === 1) { const p = [...pts.values()][0]; start = { px: p, x, y }; } else if (!pts.size) start = null; };
   view.addEventListener('pointerup', up); view.addEventListener('pointercancel', up);
   view.addEventListener('wheel', (e) => { e.preventDefault(); const [cx, cy] = local(e); zoomAt(s * (e.deltaY < 0 ? 1.15 : 1 / 1.15), cx, cy); }, { passive: false });
-  return { by: (k) => zoomAt(s * k, view.clientWidth / 2, view.clientHeight / 2), busy: () => Date.now() - last < 250 || pts.size > 1 };
+  return { by: (k) => zoomAt(s * k, view.clientWidth / 2, view.clientHeight / 2), reset: () => { s = 1; x = y = 0; apply(); }, busy: () => Date.now() - last < 250 || pts.size > 1 };
 }
 function startColoring(p) {
   state.art = state.art || {};
