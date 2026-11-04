@@ -74,7 +74,7 @@ function openPlayZone() {
   brainMode = false;
   renderPZ();
   $('#pzTitle').textContent = '🎮 Play Zone';
-  $('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = false));
+  $$('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = false));
   document.body.style.setProperty('--theme', '#ff6bb5');
   show('playzone');
   startPlayTimer();
@@ -148,7 +148,7 @@ function openBrainGames() {
   clearInterval(playTimer);
   renderPZ();
   $('#pzTitle').textContent = '🧠 Brain Games';
-  $('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = true));
+  $$('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = true));
   document.body.style.setProperty('--theme', '#7950f2');
   show('playzone');
 }
