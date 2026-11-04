@@ -38,6 +38,7 @@ const Store = {
     r.device = dev; r.profiles[r.active] = kid;
   },
   save(state) {
+    if (Store.frozen) return;          // a backup was just loaded and the app is reloading: don't write over it
     Store.absorb(state);
     const r = Store.root; r.schema = SCHEMA; r.savedAt = Date.now();
     const json = JSON.stringify(r);
@@ -77,6 +78,10 @@ const Store = {
       if (!AVATARS.includes(p.avatar)) p.avatar = '🦄';
       for (const k of ['levels', 'best', 'recent', 'traced', 'stats']) if (p[k] != null && (typeof p[k] !== 'object' || Array.isArray(p[k]))) delete p[k];
       if (!Array.isArray(p.stickers)) p.stickers = [];
+      const obj = (v) => v && typeof v === 'object' && !Array.isArray(v);
+      if (p.stats != null) { if (!obj(p.stats)) delete p.stats; else { if (!obj(p.stats.days)) p.stats.days = {}; if (!obj(p.stats.skills)) p.stats.skills = {}; } }
+      if (p.quest != null && !(obj(p.quest) && Array.isArray(p.quest.steps) && p.quest.steps.every((x) => obj(x) && typeof x.cat === 'string'))) delete p.quest;
+      if (p.levels) for (const [k, v] of Object.entries(p.levels)) if (!(Number.isInteger(v) && v >= 1 && v <= 9)) delete p.levels[k];
       if (typeof p.stars !== 'number' || !(p.stars >= 0)) p.stars = 0;
     }
     d.order = (Array.isArray(d.order) ? d.order : Object.keys(d.profiles)).filter((id, i, a) => d.profiles[id] && a.indexOf(id) === i).slice(0, MAX_KIDS);
@@ -128,7 +133,7 @@ const Store = {
         if (!value) return;
         const theirs = JSON.parse(value);
         if (Store.loadedAt == null) { try { Store.loadedAt = (JSON.parse(localStorage.getItem(STORE_KEY)) || {}).savedAt || 0; } catch { Store.loadedAt = 0; } }
-        if ((theirs.savedAt || 0) > Store.loadedAt) { localStorage.setItem(STORE_KEY, value); location.reload(); await new Promise(() => {}); }
+        if ((theirs.savedAt || 0) > Store.loadedAt) { Store.frozen = true; localStorage.setItem(STORE_KEY, value); location.reload(); await new Promise(() => {}); }
       } catch {}
     })();
   },
@@ -139,6 +144,7 @@ const Store = {
     // only a real Learn & Play backup: an object with the fields the app saves
     if (typeof d !== 'object' || !d || Array.isArray(d) || !('profiles' in d || 'levels' in d || 'stars' in d) || text.length > 5e6) throw new Error('not a backup');
     const m = Store.migrate(d); m.savedAt = Date.now();
+    Store.frozen = true;
     localStorage.setItem(STORE_KEY, JSON.stringify(m));
   },
 };

@@ -173,8 +173,12 @@ function openGame(id) {
   gameStart = Date.now();
   g.start();
 }
-function stopGame() { gameSession++; if (gameStart) { logPlay((Date.now() - gameStart) / 1000); gameStart = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
-let gameStart = 0;   // when the current Play Zone game began (for the grown-ups' play-time numbers)
+function stopGame() { gameSession++; if (gameStart) { playActive += Date.now() - gameStart; gameStart = 0; } if (playActive) { logPlay(playActive / 1000); playActive = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
+let gameStart = 0, playActive = 0;   // play time for the grown-ups' numbers: only while the app is on screen
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && gameStart) { playActive += Date.now() - gameStart; gameStart = 0; }
+  else if (!document.hidden && curGame && $('#game').classList.contains('active') && !gameStart) gameStart = Date.now();
+});
 // a timer that is dropped if the child has left the game (so no old "You win!" panel pops up later)
 let gameSession = 0;
 function later(fn, ms) { const s = gameSession; return setTimeout(() => { if (s === gameSession) fn(); }, ms); }

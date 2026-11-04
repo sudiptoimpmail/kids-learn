@@ -228,7 +228,7 @@ function renderHome() {
 /* ---------- a round ---------- */
 let R = null; // current round
 
-function startRound(catId, count, browse = false) {
+function startRound(catId, count, browse = false, atLevel = null) {
   const cat = CATEGORIES.find((c) => c.id === catId);
   const real = visibleGames().filter((c) => c.gen);
   const qs = [], seen = new Set();
@@ -239,13 +239,13 @@ function startRound(catId, count, browse = false) {
   const recent = new Set(state.recent[cat.id] || []);
   while (qs.length < N && guard++ < 600) {
     const c = cat.gen ? cat : real[Math.floor(Math.random() * real.length)];
-    const q = c.gen(levelOf(c.id));
+    const q = c.gen(atLevel || levelOf(c.id));
     if (seen.has(q.key) && guard < 500) continue;
     if (!browse && recent.has(q.key) && guard < 350) continue;
-    seen.add(q.key); q.cat = c; q.level = levelOf(c.id); qs.push(q);
+    seen.add(q.key); q.cat = c; q.level = atLevel || levelOf(c.id); qs.push(q);
   }
   if (!browse) { state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60); save(); }
-  R = { cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse };
+  R = { cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse, atLevel };
   $('#playTitle').textContent = `${cat.icon} ${cat.title}`;
   document.body.style.setProperty('--theme', cat.color);
   show('play');
@@ -583,26 +583,28 @@ function finish() {
   if (R.browse) { releaseBody3D(); renderHome(); show('home'); return; }   // the test browser does not change levels or stars
   releaseBody3D();
   renderProgress();
-  const m = R.mistakes;
-  const stars = m <= 2 ? 3 : m <= 5 ? 2 : 1;
+  const m = R.mistakes, n = R.qs.length;
+  // stars and levels go by the share of mistakes (the same rule for 5-card quest steps and 10-card rounds)
+  const rate = m / n;
+  const stars = rate <= 0.2 && R.firstTry / n >= 0.8 ? 3 : rate <= 0.5 ? 2 : 1;
   const id = R.cat.id;
   state.stars += R.firstTry;
   state.best[id] = Math.max(state.best[id] || 0, stars);
   // adapt difficulty
   let levelMsg = '';
-  if (id !== 'mix') {
+  if (id !== 'mix' && !R.atLevel) {          // practice at an older level (quest) doesn't move her level
     const lv = levelOf(id);
     // progress decides: great rounds move up (past her grade too, after two great rounds in a row),
     // hard rounds move back down — even below her grade's starting level
     state.good = state.good || {};
-    if (m <= 1) {
+    if (rate <= 0.1) {
       state.good[id] = (state.good[id] || 0) + 1;
       if (lv < levelCap(id)) { state.levels[id] = lv + 1; state.good[id] = 0; levelMsg = `⬆️ Level up! Now level ${lv + 1}`; }
       else if (lv < gameMax(id) && state.good[id] >= 2) { state.levels[id] = lv + 1; state.good[id] = 0; levelMsg = `🚀 Super! Trying a harder level: ${lv + 1}`; }
       else if (lv < gameMax(id)) levelMsg = '⭐ One more great round unlocks a harder level!';
     } else {
       state.good[id] = 0;
-      if (m >= 7 && lv > 1) { state.levels[id] = lv - 1; levelMsg = `🙂 Let's practice level ${lv - 1} a bit more`; }
+      if (rate >= 0.7 && n >= 5 && lv > 1) { state.levels[id] = lv - 1; levelMsg = `🙂 Let's practice level ${lv - 1} a bit more`; }
     }
   }
   const earned = earnPlay();
@@ -956,14 +958,14 @@ $('#startBtn').onclick = () => {
 applyTheme();
 renderHome();
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-  // fetch any voice clips this phone doesn't have yet (after start-up, so the app opens fast)
-  navigator.serviceWorker.ready.then((reg) => setTimeout(() => reg.active && reg.active.postMessage({ type: 'fill-audio' }), 8000)).catch(() => {});
-  // a new version finished downloading: switch to it the next time she is on the home screen
+  navigator.serviceWorker.register('sw.js').then((reg) => {
+    // a new version waits until she is on the home screen (never mid-game), then the app reloads into it
+    const tryUpdate = () => { if (reg.waiting && $('#home').classList.contains('active') && !document.querySelector('.time-up:not([hidden])')) reg.waiting.postMessage({ type: 'update-now' }); };
+    reg.addEventListener('updatefound', () => { const w = reg.installing; if (w) w.addEventListener('statechange', () => w.state === 'installed' && tryUpdate()); });
+    setInterval(tryUpdate, 4000); tryUpdate();
+    // fetch any voice clips this phone doesn't have yet (after start-up, so the app opens fast)
+    setTimeout(() => reg.active && reg.active.postMessage({ type: 'fill-audio' }), 8000);
+  }).catch(() => {});
   let hadController = !!navigator.serviceWorker.controller;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (!hadController) { hadController = true; return; }
-    const reloadWhenHome = () => ($('#home').classList.contains('active') && !document.querySelector('.time-up:not([hidden])') ? location.reload() : setTimeout(reloadWhenHome, 3000));
-    reloadWhenHome();
-  });
+  navigator.serviceWorker.addEventListener('controllerchange', () => { if (!hadController) { hadController = true; return; } location.reload(); });
 }

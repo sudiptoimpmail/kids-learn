@@ -107,5 +107,8 @@ three.js (MIT license) is bundled in `vendor/` so the 3D games work offline. Wor
 
 Progress is stored only on the device (localStorage). No accounts, ads or tracking.
 
+## Tests
+`sh tests/run.sh` runs the browser tests (needs Node, Playwright and Chrome): profiles and old-save migration, 3D clean-up, PIN, tracing (every line must be traced), dashboard, daily quest plans for every grade, short-round grading, hints vs mastery, saving after each answer, play rewards, bad backups, offline caching, and that every voice line has a recording.
+
 ## Plans
 The grade-by-grade plan (what each grade sees and ideas to add) and the launch architecture (native app storage, accounts, subscriptions) are in [docs/launch-architecture.md](docs/launch-architecture.md).

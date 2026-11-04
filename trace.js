@@ -109,7 +109,7 @@ function renderTrace(speak) {
   const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.lineCap = c.lineJoin = 'round';
   const ink = TR.set === 'num' ? '#1c7ed6' : TR.set === 'big' ? '#e64980' : '#2f9e44';
   const width = Math.max(22, W * 0.085);
-  let strokes = [], cur = null, finished = false;
+  let strokes = [], cur = null, finished = false; const started = Date.now();
   const redraw = () => {
     c.clearRect(0, 0, W, W); c.strokeStyle = ink; c.fillStyle = ink; c.lineWidth = width;
     for (const s of strokes) {
@@ -150,7 +150,7 @@ function renderTrace(speak) {
   function win() {
     finished = true;
     state.traced = state.traced || {}; state.traced[TR.set + ch] = 1;
-    if (typeof logAttempt === 'function') logAttempt({ ok: true, t0: Date.now() - 20000 }, 'trace', TR.set === 'num' ? 3 : TR.set === 'small' ? 2 : 1);
+    if (typeof logTrace === 'function') logTrace((Date.now() - started) / 1000);   // real time spent on this letter
     // tracing as part of today's quest: 3 letters, then back home with a check mark
     if (TR.quest && --TR.quest.left <= 0 && typeof questStepDone === 'function') { const qi = TR.quest.i; TR.quest = null; questStepDone(qi); setTimeout(() => { renderHome(); show('home'); }, 2600); }
     save();
@@ -167,7 +167,8 @@ function renderTrace(speak) {
   if (speak) say(spoken.split('. ').map((x, k, a) => (k < a.length - 1 ? x + '.' : x)));
   window.__trace = { it, check, skelPts: () => skelPts.map((p) => [(p % M + 0.5) * W / M, (((p / M) | 0) + 0.5) * W / M]), strokesSet: (s) => { strokes = s; redraw(); check(); } };   // used by automated tests
 }
-$('#trHome').onclick = () => { sfx.tap(); stopClip(); renderHome(); show('home'); };
+$('#trHome').onclick = () => { sfx.tap(); stopClip(); TR.quest = null;   // leaving ends the quest's tracing session (unfinished)
+  renderHome(); show('home'); };
 $('#trHear').onclick = () => { sfx.tap(); const it = traceItems(TR.set)[TR.i]; say(it[2].split('. ').map((x, k, a) => (k < a.length - 1 ? x + '.' : x))); };
 $('#trPrev').onclick = () => { sfx.tap(); const n = traceItems(TR.set).length; TR.i = (TR.i - 1 + n) % n; renderTrace(true); };
 $('#trNext').onclick = () => { sfx.tap(); const n = traceItems(TR.set).length; TR.i = (TR.i + 1) % n; renderTrace(true); };

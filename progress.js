@@ -44,28 +44,40 @@ const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1
 const DAILY_GOAL = () => state.dailyGoal || 20;
 
 function statsDay(day = dayKey()) {
-  state.stats = state.stats || { days: {}, skills: {} };
+  state.stats = state.stats || { days: {}, skills: {} }; state.stats.days = state.stats.days || {}; state.stats.skills = state.stats.skills || {};
   return state.stats.days[day] || (state.stats.days[day] = { q: 0, first: 0, hints: 0, secs: 0, play: 0, cats: {} });
 }
 // one answered card
 function logAttempt(q, cat, level) {
   if (!q || q.logged || q.skipped || !cat) return;
   q.logged = true;
-  const d = statsDay(), first = !!q.ok, secs = Math.min(60, Math.max(1, ((Date.now() - (q.t0 || Date.now())) / 1000)));
-  d.q++; if (first) d.first++; if (q.hintShown) d.hints++; d.secs += secs;
-  const c = d.cats[cat] || (d.cats[cat] = [0, 0]); c[0]++; if (first) c[1]++;
-  const k = `${cat}:${level}`, sk = state.stats.skills[k] || (state.stats.skills[k] = { n: 0, ok: 0, recent: '', last: '' });
-  sk.n++; if (first) sk.ok++; sk.recent = (sk.recent + (first ? '1' : '0')).slice(-12); sk.last = dayKey();
+  const d = statsDay(), first = !!q.ok, alone = first && !q.hintShown;   // "alone" = right first time, no hint
+  const secs = Math.min(60, Math.max(1, ((Date.now() - (q.t0 || Date.now())) / 1000)));
+  d.q++; if (first) d.first++; if (alone) d.alone = (d.alone || 0) + 1; if (q.hintShown) d.hints++; d.secs += secs;
+  const c = d.cats[cat] || (d.cats[cat] = [0, 0, 0]); c[0]++; if (first) c[1]++; if (alone) c[2] = (c[2] || 0) + 1;
+  const k = `${cat}:${level}`, sk = state.stats.skills[k] || (state.stats.skills[k] = { n: 0, ok: 0, recent: '', last: '', days: [] });
+  // mastery uses only answers done alone; hinted answers count as "with help"
+  sk.n++; if (alone) sk.ok++; sk.recent = (sk.recent + (alone ? '1' : first ? 'h' : '0')).slice(-12); sk.last = dayKey();
+  sk.days = [...new Set([...(sk.days || []), dayKey()])].slice(-5);   // on which days it was practiced
   // keep 120 days of daily numbers
   const days = Object.keys(state.stats.days).sort(); while (days.length > 120) delete state.stats.days[days.shift()];
   if (d.q === DAILY_GOAL()) dailyGoalReached();
+  saveSoon();
 }
+// answers are saved a moment later (and right away if the app goes to the background)
+function saveSoon() { clearTimeout(saveSoon.t); saveSoon.t = setTimeout(save, 800); }
+addEventListener('visibilitychange', () => { if (document.hidden) { clearTimeout(saveSoon.t); save(); } });
+addEventListener('pagehide', () => { clearTimeout(saveSoon.t); save(); });
+// tracing is a "did it" activity, not a right/wrong answer: counted separately
+function logTrace(secs) { const d = statsDay(); d.traced = (d.traced || 0) + 1; d.secs += Math.min(120, Math.max(1, secs)); saveSoon(); }
 function logPlay(secs) { if (secs > 2) { statsDay().play += Math.min(secs, 3600); save(); } }
 // a skill's state from its last 12 answers
 function skillState(sk) {
   const r = sk.recent, n = r.length, acc = n ? [...r].filter((x) => x === '1').length / n : 0;
   if (n < 5) return { s: 'new', acc };
-  if (acc >= 0.85 && n >= 8) return { s: 'mastered', acc };
+  // mastered: 85%+ done alone over 8+ recent cards, practiced on at least 2 different days
+  if (acc >= 0.85 && n >= 8 && (sk.days || []).length >= 2) return { s: 'mastered', acc };
+  if (acc >= 0.85 && n >= 8) return { s: 'practicing', acc };
   if (acc >= 0.7) return { s: 'practicing', acc };
   return { s: 'learning', acc };
 }
@@ -103,19 +115,19 @@ function renderDashboard() {
   const week = [];
   for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); const k = dayKey(d); week.push([d, st.days[k] || { q: 0, first: 0, secs: 0, play: 0, hints: 0, cats: {} }]); }
   const sum = (f) => week.reduce((a, [, x]) => a + f(x), 0);
-  const q7 = sum((x) => x.q), f7 = sum((x) => x.first), learnMin = Math.round(sum((x) => x.secs) / 60), playMin = Math.round(sum((x) => x.play) / 60), days7 = week.filter(([, x]) => x.q > 0).length, hints7 = sum((x) => x.hints);
+  const q7 = sum((x) => x.q), f7 = sum((x) => (x.alone != null ? x.alone : x.first)), traced7 = sum((x) => x.traced || 0), learnMin = Math.round(sum((x) => x.secs) / 60), playMin = Math.round(sum((x) => x.play) / 60), days7 = week.filter(([, x]) => x.q > 0).length, hints7 = sum((x) => x.hints);
   const maxQ = Math.max(10, ...week.map(([, x]) => x.q));
   const goal = DAILY_GOAL();
   $('#dashTop').innerHTML = `
     <div class="dash-cards">
       <div class="dc"><b>${q7}</b><small>cards answered</small></div>
-      <div class="dc"><b>${q7 ? Math.round(f7 / q7 * 100) : 0}%</b><small>right on first try</small></div>
-      <div class="dc"><b>${days7}<small>/7</small></b><small>learning days</small></div>
+      <div class="dc"><b>${q7 ? Math.round(f7 / q7 * 100) : 0}%</b><small>right on their own (no hint)</small></div>
+      <div class="dc"><b>${days7}<small>/7</small></b><small>learning days${traced7 ? ` · ${traced7} letters traced` : ''}</small></div>
       <div class="dc"><b>${learnMin}<small> min</small></b><small>learning · ${playMin} min play</small></div>
     </div>
-    <div class="dash-week">${week.map(([d, x]) => `<div class="bar-col"><div class="bar" style="height:${Math.round(x.q / maxQ * 100)}%"><span class="bar-ok" style="height:${x.q ? Math.round(x.first / x.q * 100) : 0}%"></span></div>
+    <div class="dash-week">${week.map(([d, x]) => `<div class="bar-col"><div class="bar" style="height:${Math.round(x.q / maxQ * 100)}%"><span class="bar-ok" style="height:${x.q ? Math.round((x.alone != null ? x.alone : x.first) / x.q * 100) : 0}%"></span></div>
       ${x.q >= goal ? '<i class="goal">✅</i>' : ''}<small>${x.q || ''}</small><em>${d.toLocaleDateString(undefined, { weekday: 'short' }).slice(0, 2)}</em></div>`).join('')}</div>
-    <div class="dash-legend"><span class="lg ok"></span> right first try <span class="lg all"></span> all cards · ✅ daily goal (${goal}) reached · 🔥 streak: ${dayStreak()} day${dayStreak() === 1 ? '' : 's'}</div>`;
+    <div class="dash-legend"><span class="lg ok"></span> right on their own <span class="lg all"></span> all cards · ✅ daily goal (${goal}) reached · 🔥 streak: ${dayStreak()} day${dayStreak() === 1 ? '' : 's'}</div>`;
   // skills
   const skills = Object.entries(st.skills).map(([k, sk]) => { const [cat, lv] = k.split(':'); return { cat, lv: +lv, name: skillName(cat, +lv), ...skillState(sk), n: sk.n, last: sk.last }; });
   const good = skills.filter((s) => s.s === 'mastered').sort((a, b) => b.acc - a.acc);
@@ -128,7 +140,7 @@ function renderDashboard() {
     ${going.length ? `<div class="ds"><h3>📈 Getting there</h3><ul>${going.slice(0, 8).map(row).join('')}</ul></div>` : ''}`;
   // subjects: level now and this week's accuracy
   const catWeek = {};
-  for (const [, x] of week) for (const [c, [n, ok]] of Object.entries(x.cats)) { const a = catWeek[c] || (catWeek[c] = [0, 0]); a[0] += n; a[1] += ok; }
+  for (const [, x] of week) for (const [c, v] of Object.entries(x.cats)) { const a = catWeek[c] || (catWeek[c] = [0, 0]); a[0] += v[0]; a[1] += v[2] != null ? v[2] : v[1]; }
   const shown = CATEGORIES.filter((c) => c.gen && c.id !== 'mix' && (catWeek[c.id] || state.levels[c.id]));
   $('#dashSubjects').innerHTML = `<table><tr><th>Game</th><th>Level</th><th>This week</th></tr>${shown.map((c) => {
     const w = catWeek[c.id];
@@ -141,7 +153,7 @@ function renderDashboard() {
   const lines = [];
   if (!q7) lines.push(`${name} hasn't practiced in the last 7 days. A few minutes a day helps a lot!`);
   else {
-    lines.push(`This week ${name} learned on ${days7} day${days7 === 1 ? '' : 's'} and answered ${q7} cards (${Math.round(f7 / q7 * 100)}% right on the first try).`);
+    lines.push(`This week ${name} learned on ${days7} day${days7 === 1 ? '' : 's'} and answered ${q7} cards (${Math.round(f7 / q7 * 100)}% right on their own, without a hint).`);
     if (topSub) lines.push(`Most practice: ${topSub[0].toLowerCase()} (${topSub[1][0]} cards).`);
     if (good[0]) lines.push(`Doing well: ${good.slice(0, 2).map((s) => s.name.toLowerCase()).join(' and ')}.`);
     if (weak[0]) lines.push(`Needs more practice: ${weak.slice(0, 2).map((s) => s.name.toLowerCase()).join(' and ')}. Try a round of ${(CATEGORIES.find((c) => c.id === weak[0].cat) || {}).title} together.`);
@@ -177,19 +189,23 @@ function questFor() {
   const steps = [], used = new Set();
   const addStep = (cat, why) => { if (cat && !used.has(cat) && (ok(cat) || cat === 'trace')) { used.add(cat); steps.push({ cat, why, done: false }); } };
   // 1. warm-up: something she does well (a quick win), or reading basics
-  const skills = Object.entries((state.stats && state.stats.skills) || {}).map(([k, sk]) => ({ cat: k.split(':')[0], ...skillState(sk) }));
+  const skills = Object.entries((state.stats && state.stats.skills) || {}).map(([k, sk]) => ({ cat: k.split(':')[0], lv: +k.split(':')[1] || 1, ...skillState(sk) }));
   const strong = skills.filter((s) => s.s === 'mastered' && ok(s.cat)).sort((a, b) => b.acc - a.acc)[0];
   addStep(strong ? strong.cat : freshest(QUEST_READING[grade] || QUEST_READING.k), 'warm-up');
   // 2. the skill that needs practice most, or core math
   const weak = skills.filter((s) => (s.s === 'learning' || s.s === 'practicing') && ok(s.cat) && !used.has(s.cat)).sort((a, b) => a.acc - b.acc)[0];
   addStep(weak ? weak.cat : freshest((QUEST_MATH[grade] || QUEST_MATH.k).filter((c) => !used.has(c))), weak ? 'practice' : 'math');
+  if (weak && steps.length && steps[steps.length - 1].cat === weak.cat) steps[steps.length - 1].level = weak.lv;   // practice at the level that was hard
   // 3. reading (if not already in), 4. math (if not already in)
   addStep(freshest((QUEST_READING[grade] || QUEST_READING.k).filter((c) => !used.has(c))), 'reading');
   if (!steps.some((s) => (QUEST_MATH[grade] || []).includes(s.cat))) addStep(freshest((QUEST_MATH[grade] || QUEST_MATH.k).filter((c) => !used.has(c))), 'math');
   // 5. discovery: science and the world
   addStep(freshest(QUEST_WORLD.filter((c) => !used.has(c))), 'discover');
-  // little ones also trace a few letters
-  if (grade === 'prek' || grade === 'k') steps.splice(1, 0, { cat: 'trace', why: 'tracing', done: false });
+  // little ones also trace a few letters: make room by dropping an extra reading/math step, never discovery
+  if (grade === 'prek' || grade === 'k') {
+    while (steps.length > 4) { const drop = ['math', 'reading', 'warm-up'].map((w) => steps.findIndex((x) => x.why === w)).find((i) => i >= 0); steps.splice(drop, 1); }
+    steps.splice(1, 0, { cat: 'trace', why: 'tracing', done: false });
+  }
   state.quest = { date: today, grade, steps: steps.slice(0, 5), gift: false };
   save();
   return state.quest;
@@ -211,12 +227,13 @@ function renderQuest() {
 }
 function startQuestStep(i) {
   const q = questFor(), s = q.steps[i]; if (!s) return;
-  if (s.cat === 'trace') { TR.quest = { i, left: 3 }; openTrace(); return; }
-  startRound(s.cat, QUEST_LEN);
+  if (s.cat === 'trace') { TR.quest = { i, left: 3, date: q.date }; openTrace(); return; }
+  startRound(s.cat, QUEST_LEN, false, s.level || null);
   R.questStep = i;
 }
 function questStepDone(i) {
   const q = questFor(); if (!q.steps[i] || q.steps[i].done) return;
+  if (TR.quest && TR.quest.date && TR.quest.date !== q.date) return;   // an old quest from yesterday
   q.steps[i].done = true; save();
   if (q.steps.every((s) => s.done)) setTimeout(() => say('You finished today\'s quest! Open your gift!'), 1800);
 }
@@ -225,19 +242,22 @@ function openQuestGift() {
   q.gift = true;
   state.quests = (state.quests || 0) + 1;
   state.stars += 5;
-  state.playPasses = (state.playPasses || 0) + 1;      // a free Play Zone break
+  // a free Play Zone break — only where the play rule uses breaks (in 'minutes every hour' mode, time is set by the hour)
+  const givesPlay = !hourlyMode() && !state.playAlways;
+  if (givesPlay) state.playPasses = (state.playPasses || 0) + 1;
   const left = STICKERS.filter((x) => !state.stickers.includes(x));
   const sticker = left.length ? left[Math.floor(Math.random() * left.length)] : '🏆';
   if (left.length) state.stickers.push(sticker);
   save();
   confetti(260, 0.25); setTimeout(() => confetti(200, 0.5), 500); sfx.win();
-  say(['Surprise!', 'Five stars, a new sticker, and play time!']);
+  const canPlay = givesPlay || playOpen();
+  say(['Surprise!', givesPlay ? 'Five stars, a new sticker, and play time!' : 'Five stars and a new sticker!']);
   const d = document.createElement('div'); d.className = 'time-up quest-gift';
-  d.innerHTML = `<div class="tu-box"><div class="gift-open">🎁</div><div class="gift-items"><span>⭐ +5</span><span class="gs">${sticker}</span><span>🎮 Play time</span></div>
+  d.innerHTML = `<div class="tu-box"><div class="gift-open">🎁</div><div class="gift-items"><span>⭐ +5</span><span class="gs">${sticker}</span>${givesPlay ? '<span>🎮 Play time</span>' : ''}</div>
     <h2>Quest complete!</h2><p>${state.quests} quest${state.quests === 1 ? '' : 's'} finished so far</p>
-    <div class="res-btns"><button class="big-btn" data-a="play">🎮 Play now</button><button class="big-btn alt" data-a="home">🏠 Home</button></div></div>`;
+    <div class="res-btns">${canPlay ? '<button class="big-btn" data-a="play">🎮 Play now</button>' : ''}<button class="big-btn alt" data-a="home">🏠 Home</button></div></div>`;
   document.body.appendChild(d);
-  d.querySelector('[data-a="play"]').onclick = () => { d.remove(); openPlayZone(); };
+  if (canPlay) d.querySelector('[data-a="play"]').onclick = () => { d.remove(); openPlayZone(); };
   d.querySelector('[data-a="home"]').onclick = () => { d.remove(); renderHome(); };
   renderHome();
 }
