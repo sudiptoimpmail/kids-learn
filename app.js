@@ -995,9 +995,12 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('mess
   if (!e.data || e.data.type !== 'audio-pack-progress' || e.data.mode !== 'fill-audio-all') return;
   const status = $('#offlineVoiceStatus'), btn = $('#offlineVoiceBtn');
   if (!status) return;
-  const { done, total } = e.data;
-  status.textContent = total ? `Saving offline audio: ${done} of ${total} remaining files processed.` : 'All requested voice clips are already saved.';
-  if (done >= total) { btn.disabled = false; status.textContent = 'Offline voice download processed. Recordings already cached remain available offline.'; }
+  const { done, total, saved = 0 } = e.data;
+  status.textContent = total ? `Saved ${saved} of ${total} additional voice clips (checked ${done}).` : 'All requested voice clips are already saved.';
+  if (done >= total) {
+    btn.disabled = false;
+    status.textContent = saved >= total ? 'Offline voice pack is ready.' : `Saved ${saved} of ${total} additional clips. Some could not be downloaded; try again when online.`;
+  }
 });
 $('#testVoiceBtn').onclick = async () => {
   const out = $('#voiceStatus');
