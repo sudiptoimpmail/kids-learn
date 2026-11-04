@@ -372,7 +372,8 @@ function genSpell(level) {
     else { word = pick(SPELL4); nBlank = 2; nExtra = 3; }
   } else if (level === 3) { word = pick(SPELL4); nBlank = r < 0.75 ? 4 : 3; nExtra = 4; }
   else if (level === 4) {
-    if (r < 0.4) { word = pick(SPELL5); nBlank = 2 + rand(2); nExtra = 4; }
+    // Grade-one picture words are extra spelling practice, not added to Pre-K.
+    if (r < 0.4) { word = pick(Math.random() < 0.45 ? G1_PICTURE_WORDS : SPELL5); nBlank = 2 + rand(2); nExtra = 4; }
     else if (r < 0.7) { mode = 'listen'; }
     else { mode = 'sentence'; }
     nExtra = 4;
@@ -410,6 +411,8 @@ function genSpell(level) {
   }
   const full = blanks.length === letters.length;
   let text, say, main;
+  // Text/picture-first spelling for new targets that lack recorded audio.
+  const visualOnly = mode === 'pic' && Object.hasOwn(G1_SPELL_PICTURES, word);
   if (mode === 'sentence') {
     text = 'Spell the missing word!';
     say = ['Spell the missing word.', fillFull(sentence)];
@@ -420,8 +423,9 @@ function genSpell(level) {
     main = `<button class="big-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`;
   } else {
     text = full ? 'Spell the word!' : 'Fill in the missing letters!';
-    say = [full ? 'Spell the word.' : 'Fill in the missing letters.', word];
-    main = `<div class="spell-pic">${EMOJI_OF[word]}</div><button class="mini-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`;
+    say = visualOnly ? 'Fill in the missing letters!' : [full ? 'Spell the word.' : 'Fill in the missing letters.', word];
+    main = `<div class="spell-pic">${EMOJI_OF[word] || G1_SPELL_PICTURES[word]}</div>` +
+      (visualOnly ? '' : `<button class="mini-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`);
   }
   return {
     key: `spell-${word}-${blanks.join('')}`,
@@ -430,7 +434,8 @@ function genSpell(level) {
     answer: word,
     optClass: 'spell-tray',
     spell: { word, blanks, tiles: shuffle(need.concat(extras)) },
-    hint: { html: '', say: sentence ? fillFull(sentence) : word, slow: true },
+    hint: { html: visualOnly ? '<div class="hint-note">Look closely at the picture and the letters.</div>' : '',
+      say: visualOnly ? 'Look at the picture!' : sentence ? fillFull(sentence) : word, slow: true },
   };
 }
 
@@ -501,6 +506,20 @@ const SENTENCES = [
   ['A little seed was in the dirt. The rain fell and the sun came out. Soon a flower grew.', 'What grew from the seed?', ['a flower 🌸', 'a tree 🌳', 'a carrot 🥕'], 3],
   ['Ben lost his hat. He looked under the bed. He found it in his bag!', 'Where was the hat?', ['in his bag 👜', 'under the bed 🛏️', 'on the dog 🐶'], 3],
   ['The duck swam in the pond. It saw a fish. The fish swam away fast.', 'What did the duck see?', ['a fish 🐟', 'a frog 🐸', 'a boat ⛵'], 3],
+  // Grade 1: short connected passages with one unambiguous answer each.
+  ['Pete has a red bag. He put his book in the bag. Then he took it to school.', 'What did Pete put in his bag?', ['his book', 'his kite', 'his coat'], 3, 'print-first'],
+  ['A frog sat on a rock by the lake. The sun was hot. The frog jumped into the cool water.', 'Why did the frog jump into the lake?', ['to cool down', 'to eat cake', 'to find a hat'], 3, 'print-first'],
+  ['Mia planted a bean in a cup. She added water each day. Soon a small green plant began to grow.', 'What did Mia plant?', ['a bean', 'a flower', 'a plum'], 3, 'print-first'],
+  ['Ben saw a bird on the grass. The bird picked up a small string. It took the string to its nest.', 'Why did the bird take the string?', ['to build its nest', 'to ride a bike', 'to play in the lake'], 3, 'print-first'],
+  ['It was cold and windy. Sam put on his coat and hat. He walked to the park with Dad.', 'What did Sam put on?', ['a coat and hat', 'a shirt and shorts', 'a cape and boots'], 3, 'print-first'],
+  ['A fox ran past our tent. It stopped by a tree. Then it ran back into the woods.', 'Where did the fox stop?', ['by a tree', 'inside the tent', 'on the road'], 3, 'print-first'],
+  ['Dad made a blue kite. We went to a field when the wind blew. The kite rose high in the sky.', 'What helped the kite fly?', ['the wind', 'the rain', 'the snow'], 3, 'print-first'],
+  ['A red flag was by the road. The class stopped to look at it. The flag showed where to turn.', 'What showed the class where to turn?', ['the flag', 'the lake', 'the clock'], 3, 'print-first'],
+  ['Kay has a new bike. She rides it to the park with her brother. She wears a helmet to stay safe.', 'Why does Kay wear a helmet?', ['to stay safe', 'to keep warm', 'to go faster'], 3, 'print-first'],
+  ['A shark swims in the sea. A wolf runs on land. Both animals need food to live.', 'Which animal swims in the sea?', ['the shark', 'the wolf', 'the bird'], 3, 'print-first'],
+  ['The clock rang at six. Tom got up, ate his egg, and took the bus to school.', 'What did Tom eat?', ['an egg', 'a plum', 'a cake'], 3, 'print-first'],
+  ['The goat was near the barn. It saw fresh grass and began to eat. Then it went to rest.', 'What did the goat eat?', ['grass', 'a rock', 'a toy'], 3, 'print-first'],
+  ['“I don\'t see my hat,” said Ben. He looked under the bed. The hat was on a chair.', 'Where was Ben\'s hat?', ['on a chair', 'under the bed', 'in his bag'], 3, 'print-first'],
   // ---- 2nd grade (level 4): short stories, 3 – 4 sentences
   ['Mia wanted to bake a cake for Dad. She mixed eggs, milk and flour. Then she put the cake in the oven. Dad smiled when he saw it.', 'Why did Mia bake a cake?', ['for Dad', 'for her teacher', 'for her dog'], 4],
   ['The class went on a trip to the zoo. They saw lions, monkeys and a tall giraffe. The monkeys were the funniest. Everyone laughed at them.', 'Which animals were the funniest?', ['the monkeys 🐒', 'the lions 🦁', 'the giraffe 🦒'], 4],
@@ -525,7 +544,7 @@ const SENTENCES = [
 const sentLevel = (x) => { if (typeof x !== 'string') return x[3] || sentLevel(x[0]); const n = x.split(' ').length; return n <= 5 ? 1 : n <= 8 && !/[.!?] [A-Z]/.test(x) ? 2 : 3; };
 
 // every reading item as [text, [[question, options], ...], level]
-const READING = () => READING.all || (READING.all = SENTENCES.map((x) => [x[0], [[x[1], x[2]]], sentLevel(x)])
+const READING = () => READING.all || (READING.all = SENTENCES.map((x) => [x[0], [[x[1], x[2]]], sentLevel(x), x[4] === 'print-first'])
   .concat(PATTERN_SENTENCES.map((x) => [x[0], [[x[1], x[2]]], x[3]]), STORIES.map((x) => [x[1], x[2], x[0]])));
 // words that never point to an answer on their own
 const HINT_SKIP = new Set('a an the is are was were be to of and or in on at it its i you he she we they my his her their this that what who where when why how which do does did can has have had will with for from by so but not one some many much'.split(' '));
@@ -546,7 +565,7 @@ function genSentence(level) {
   const all = READING();
   // mostly this level, sometimes one level easier for a quick win
   const exact = all.filter((x) => x[2] === level), near = all.filter((x) => x[2] === level - 1);
-  const [s, qs] = pick(exact.length && (Math.random() < 0.8 || !near.length) ? exact : near.length ? near : all.filter((x) => x[2] <= level));
+  const [s, qs, , printFirst] = pick(exact.length && (Math.random() < 0.8 || !near.length) ? exact : near.length ? near : all.filter((x) => x[2] <= level));
   const [q, opts] = pick(qs);
   const words = s.split(' ').map((w, i) => `<span class="sw" data-i="${i}">${w}</span>`).join(' ');
   const long = s.length > 120 ? ' passage' : s.length > 60 ? ' long' : '';
@@ -554,8 +573,10 @@ function genSentence(level) {
   return {
     key: `sent-${s}`, qkey: q,
     text: '📖 Read, then answer',     // the question is shown once, under the sentence
-    say: '',  // she reads the sentence herself
-    readQ: q,
+    // New print-first passages deliberately use only a known natural recording;
+    // do not synthesize question text whose audio has not been recorded.
+    say: printFirst ? 'Find the answer.' : '',
+    readQ: printFirst ? null : q,
     main: `<div class="sentence${long}">${words}</div><div class="question-line">${q}</div>`,
     options: shuffle(opts).map((o) => ({ v: o, html: o })),
     answer: opts[0],

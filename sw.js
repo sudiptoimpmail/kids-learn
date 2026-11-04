@@ -4,9 +4,9 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v39';
+const VERSION = PREFIX + 'v40';
 const AUDIO = PREFIX + 'audio';
-const FILES = ['./', 'index.html', 'style.css', 'ui-improvements.css', 'feature-flags.js', 'storage.js', 'content.js', 'thinking.js', 'country.js', 'science.js', 'grammar.js', 'numsense.js', 'grade1.js', 'app.js', 'games.js', 'pathmaze.js', 'radialmaze.js', 'wordgames.js', 'trace.js', 'progress.js', 'ball3d.js', 'pinball3d.js', 'geo.js', 'art.js', 'landmarks.js', 'stories.js', 'words.js', 'phonics.js', 'early-words.js', 'scenes.js', 'body3d.js', 'vendor/three.module.min.js', 'vendor/GLTFLoader.js', 'vendor/BufferGeometryUtils.js', 'vendor/meshopt_decoder.module.js', 'vendor/RoomEnvironment.js', 'vendor/body.glb', 'manifest.webmanifest', 'audio/clips.json', 'audio/silence.mp3',
+const FILES = ['./', 'index.html', 'style.css', 'ui-improvements.css', 'feature-flags.js', 'storage.js', 'grade1words.js', 'content.js', 'thinking.js', 'country.js', 'science.js', 'grammar.js', 'numsense.js', 'grade1.js', 'app.js', 'games.js', 'pathmaze.js', 'radialmaze.js', 'wordgames.js', 'trace.js', 'progress.js', 'ball3d.js', 'pinball3d.js', 'geo.js', 'art.js', 'landmarks.js', 'stories.js', 'words.js', 'phonics.js', 'early-words.js', 'scenes.js', 'body3d.js', 'vendor/three.module.min.js', 'vendor/GLTFLoader.js', 'vendor/BufferGeometryUtils.js', 'vendor/meshopt_decoder.module.js', 'vendor/RoomEnvironment.js', 'vendor/body.glb', 'manifest.webmanifest', 'audio/clips.json', 'audio/silence.mp3',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 const SCOPE = new URL('./', self.location).pathname;   // e.g. /kids-learn/ — never touch other apps on the same site
 
