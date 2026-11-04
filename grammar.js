@@ -42,6 +42,30 @@ function grQ(key, text, main, answer, wrong, sayQ, n) {
   return { key: `gr-${key}`, text, say: sayQ, main, mainClass: main ? 'ph-main' : 'empty', options: opts.map((o) => ({ v: o, html: o })), answer,
     optClass: 'opt-text', hint: { html: '', say: 'Think about it!', remove: true } };
 }
+// Reviewed, meaningful short sentences. Never randomly combine unrelated
+// nouns and verbs (e.g. "the cold book can swim").
+const GR_NOUN_VERB_SENTENCES = [
+  ['The happy dog can run.', 'dog', 'run', 'happy'],
+  ['The small cat can jump.', 'cat', 'jump', 'small'],
+  ['The brave girl can swim.', 'girl', 'swim', 'brave'],
+  ['The clever boy can read.', 'boy', 'read', 'clever'],
+  ['The kind teacher can write.', 'teacher', 'write', 'kind'],
+  ['The strong farmer can dig.', 'farmer', 'dig', 'strong'],
+  ['The little kitten can sleep.', 'kitten', 'sleep', 'little'],
+  ['The tall man can climb.', 'man', 'climb', 'tall'],
+  ['The happy girl can sing.', 'girl', 'sing', 'happy'],
+  ['The hungry dog can eat.', 'dog', 'eat', 'hungry'],
+  ['The funny boy can dance.', 'boy', 'dance', 'funny'],
+  ['The small boy can hop.', 'boy', 'hop', 'small'],
+  ['The brave man can help.', 'man', 'help', 'brave'],
+  ['The clever girl can draw.', 'girl', 'draw', 'clever'],
+  ['The happy teacher can laugh.', 'teacher', 'laugh', 'happy'],
+  ['The little boy can kick.', 'boy', 'kick', 'little'],
+  ['The sleepy kitten can nap.', 'kitten', 'nap', 'sleepy'],
+  ['The fast dog can run.', 'dog', 'run', 'fast'],
+  ['The quiet girl can read.', 'girl', 'read', 'quiet'],
+  ['The tall farmer can cook.', 'farmer', 'cook', 'tall'],
+];
 function genGrammar(level) {
   const n = level >= 2 ? 3 : 2, t = Math.random(), big = (w) => `<div class="gr-word">${w}</div>`;
   if (level >= 5 && t < 0.7) {
@@ -64,8 +88,7 @@ function genGrammar(level) {
   }
   // level 1: naming word or action word — all three choices come from one little sentence,
   // so the child decides what each word does (not just which word is in the sentence)
-  const noun = pick(GR_NOUNS), verb = pick(GR_VERBS.filter((v) => v !== noun)), adj = pick(GR_ADJS);
-  const sent = `The ${adj} ${noun} can ${verb}.`;
+  const [sent, noun, verb, adj] = pick(GR_NOUN_VERB_SENTENCES);
   const wantNoun = Math.random() < 0.5;
   const q = grQ(`${wantNoun ? 'noun' : 'verb'}-${noun}-${verb}-${adj}`,
     wantNoun ? 'Which word is a <b>naming word</b> (noun)?' : 'Which word is an <b>action word</b> (verb)?',
