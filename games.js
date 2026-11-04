@@ -1071,7 +1071,7 @@ function startSudoku(mode) {
     const el = cellEl(r, c); el.classList.add('given', 'hinted');
     sfx.yes(); paint(); checkWin();
   };
-  area.querySelector('[data-a="menu"]').onclick = () => { sfx.tap(); startSudokuMenu(); };
+  area.querySelector('[data-a="menu"]').onclick = () => { sfx.tap(); gameSession++; startSudokuMenu(); };
   paint();
 }
 
@@ -1132,8 +1132,8 @@ function startPuzzle(p) {
       later(() => endPanel(up ? `You did it! Next: ${puzzleSize()}×${puzzleSize()} puzzles` : 'You did it!', '🧩', startPuzzleMenu, up), 1300);
     }
   });
-  area.querySelector('[data-a="restart"]').onclick = () => startPuzzle(p);
-  area.querySelector('[data-a="pictures"]').onclick = () => startPuzzleMenu();
+  area.querySelector('[data-a="restart"]').onclick = () => { gameSession++; startPuzzle(p); };
+  area.querySelector('[data-a="pictures"]').onclick = () => { gameSession++; startPuzzleMenu(); };
   draw();
 }
 
