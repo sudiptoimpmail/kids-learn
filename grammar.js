@@ -67,9 +67,9 @@ function genGrammar(level) {
     const a = pick(GR_NOUNS);
     // Words such as "book" and "play" can be nouns or verbs; context resolves their role.
     return grQ(`noun-${a}`, 'Which word is a <b>naming word</b> in this sentence?', big(`I see the ${a}.`),
-      a, [...GR_VERBS, ...GR_ADJS], ['I see the', `${a}.`, 'Which word names a person, place or thing?'], n);
+      a, [...GR_VERBS, ...GR_ADJS], ['Which word is a naming word?'], n);
   }
   const a = pick(GR_VERBS);
   return grQ(`verb-${a}`, 'Which word is an <b>action word</b> in this sentence?', big(`We ${a}.`),
-    a, [...GR_NOUNS, ...GR_ADJS], ['We', `${a}.`, 'Which word tells what we do?'], n);
+    a, [...GR_NOUNS, ...GR_ADJS], ['Which word is an action word?'], n);
 }
