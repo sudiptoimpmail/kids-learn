@@ -363,7 +363,8 @@ function genSpell(level) {
     else { word = pick(SPELL4); nBlank = 2; nExtra = 3; }
   } else if (level === 3) { word = pick(SPELL4); nBlank = r < 0.75 ? 4 : 3; nExtra = 4; }
   else if (level === 4) {
-    if (r < 0.4) { word = pick(SPELL5); nBlank = 2 + rand(2); nExtra = 4; }
+    // Grade-one picture words are extra spelling practice, not added to Pre-K.
+    if (r < 0.4) { word = pick(Math.random() < 0.45 ? G1_PICTURE_WORDS : SPELL5); nBlank = 2 + rand(2); nExtra = 4; }
     else if (r < 0.7) { mode = 'listen'; }
     else { mode = 'sentence'; }
     nExtra = 4;
@@ -401,6 +402,8 @@ function genSpell(level) {
   }
   const full = blanks.length === letters.length;
   let text, say, main;
+  // Text/picture-first spelling for new targets that lack recorded audio.
+  const visualOnly = mode === 'pic' && Object.hasOwn(G1_SPELL_PICTURES, word);
   if (mode === 'sentence') {
     text = 'Spell the missing word!';
     say = ['Spell the missing word.', fillFull(sentence)];
@@ -411,8 +414,9 @@ function genSpell(level) {
     main = `<button class="big-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`;
   } else {
     text = full ? 'Spell the word!' : 'Fill in the missing letters!';
-    say = [full ? 'Spell the word.' : 'Fill in the missing letters.', word];
-    main = `<div class="spell-pic">${EMOJI_OF[word]}</div><button class="mini-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`;
+    say = visualOnly ? 'Fill in the missing letters!' : [full ? 'Spell the word.' : 'Fill in the missing letters.', word];
+    main = `<div class="spell-pic">${EMOJI_OF[word] || G1_SPELL_PICTURES[word]}</div>` +
+      (visualOnly ? '' : `<button class="mini-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`);
   }
   return {
     key: `spell-${word}-${blanks.join('')}`,
@@ -421,7 +425,8 @@ function genSpell(level) {
     answer: word,
     optClass: 'spell-tray',
     spell: { word, blanks, tiles: shuffle(need.concat(extras)) },
-    hint: { html: '', say: sentence ? fillFull(sentence) : word, slow: true },
+    hint: { html: visualOnly ? '<div class="hint-note">Look closely at the picture and the letters.</div>' : '',
+      say: visualOnly ? 'Look at the picture!' : sentence ? fillFull(sentence) : word, slow: true },
   };
 }
 
@@ -492,6 +497,19 @@ const SENTENCES = [
   ['A little seed was in the dirt. The rain fell and the sun came out. Soon a flower grew.', 'What grew from the seed?', ['a flower 🌸', 'a tree 🌳', 'a carrot 🥕'], 3],
   ['Ben lost his hat. He looked under the bed. He found it in his bag!', 'Where was the hat?', ['in his bag 👜', 'under the bed 🛏️', 'on the dog 🐶'], 3],
   ['The duck swam in the pond. It saw a fish. The fish swam away fast.', 'What did the duck see?', ['a fish 🐟', 'a frog 🐸', 'a boat ⛵'], 3],
+  // Grade 1: short connected passages with one unambiguous answer each.
+  ['Pete has a red bag. He put his book in the bag. Then he took it to school.', 'What did Pete put in his bag?', ['his book', 'his kite', 'his coat'], 3],
+  ['A frog sat on a rock by the lake. The sun was hot. The frog jumped into the cool water.', 'Why did the frog jump into the lake?', ['to cool down', 'to eat cake', 'to find a hat'], 3],
+  ['Mia planted a bean in a cup. She added water each day. Soon a small green plant began to grow.', 'What did Mia plant?', ['a bean', 'a flower', 'a plum'], 3],
+  ['Ben saw a bird on the grass. The bird picked up a small string. It took the string to its nest.', 'Why did the bird take the string?', ['to build its nest', 'to ride a bike', 'to play in the lake'], 3],
+  ['It was cold and windy. Sam put on his coat and hat. He walked to the park with Dad.', 'What did Sam put on?', ['a coat and hat', 'a shirt and shorts', 'a cape and boots'], 3],
+  ['A fox ran past our tent. It stopped by a tree. Then it ran back into the woods.', 'Where did the fox stop?', ['by a tree', 'inside the tent', 'on the road'], 3],
+  ['Dad made a blue kite. We went to a field when the wind blew. The kite rose high in the sky.', 'What helped the kite fly?', ['the wind', 'the rain', 'the snow'], 3],
+  ['A red flag was by the road. The class stopped to look at it. The flag showed where to turn.', 'What showed the class where to turn?', ['the flag', 'the lake', 'the clock'], 3],
+  ['Kay has a new bike. She rides it to the park with her brother. She wears a helmet to stay safe.', 'Why does Kay wear a helmet?', ['to stay safe', 'to keep warm', 'to go faster'], 3],
+  ['A shark swims in the sea. A wolf runs on land. Both animals need food to live.', 'Which animal swims in the sea?', ['the shark', 'the wolf', 'the bird'], 3],
+  ['The clock rang at six. Tom got up, ate his egg, and took the bus to school.', 'What did Tom eat?', ['an egg', 'a plum', 'a cake'], 3],
+  ['The goat was near the barn. It saw fresh grass and began to eat. Then it went to rest.', 'What did the goat eat?', ['grass', 'a rock', 'a toy'], 3],
   // ---- 2nd grade (level 4): short stories, 3 – 4 sentences
   ['Mia wanted to bake a cake for Dad. She mixed eggs, milk and flour. Then she put the cake in the oven. Dad smiled when he saw it.', 'Why did Mia bake a cake?', ['for Dad', 'for her teacher', 'for her dog'], 4],
   ['The class went on a trip to the zoo. They saw lions, monkeys and a tall giraffe. The monkeys were the funniest. Everyone laughed at them.', 'Which animals were the funniest?', ['the monkeys 🐒', 'the lions 🦁', 'the giraffe 🦒'], 4],
@@ -1966,6 +1984,7 @@ function genVocab(level) {
 const CATEGORIES = [
   { id: 'trace', title: 'Letters & Numbers', sub: 'trace A–Z · a–z · 1–20', icon: '✍️', color: '#f76707', trace: true },
   { id: 'phonics', title: 'Letter Sounds', sub: 'starts with · rhymes · blends', icon: '🔠', color: '#7950f2', gen: genPhonics, maxLevel: 5 },
+  { id: 'g1read', title: 'Grade 1 Reading', sub: 'short vowels · blends · long vowels · word meanings', icon: '📚', color: '#1971c2', gen: genGrade1Read, maxLevel: 5 },
   { id: 'cvc', title: 'Little Words', sub: 'cat · ant · bee', icon: '🐱', color: '#ff8787', gen: (l) => genWords(W3, l, 'cvc') },
   { id: 'w4', title: 'Big Words', sub: 'frog · truck · tiger', icon: '🐸', color: '#69db7c', gen: (l) => genWords(bigWordList(l), l, 'w4'), maxLevel: 5 },
   { id: 'sight', title: 'Sight Words', sub: 'he · she · went', icon: '👀', color: '#e64980', gen: genSight, maxLevel: 4 },
@@ -2008,9 +2027,9 @@ const GRADES = {
     shape2: '1-1', jobs: '1-1', flags: '1-1', maps: '1-1' } },
   k: { label: 'Kindergarten', g: { trace: '1-1', phonics: '1-4', animals: '1-2', places: '1-1', body: '1-2', gk: '1-2', anatomy: '1-1', match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-2', sent: '1-2', syl: '1-2', add: '1-2',
     sub: '1-2', story: '1-1', cmp: '1-2', shape2: '1-2', jobs: '1-2', flags: '1-2', maps: '1-2', home: '1-2' } },
-  g1: { label: '1st Grade', g: { phonics: '3-5', animals: '1-2', places: '1-2', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '2-3', syl: '2-3', add: '3-4',
+  g1: { label: '1st Grade', g: { phonics: '3-5', g1read: '1-5', animals: '1-2', places: '1-2', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '2-3', syl: '2-3', add: '3-4',
     sub: '3-4', story: '2-3', cmp: '2-4', clock: '1-2', shape2: '2-3', jobs: '2-3', flags: '2-3', maps: '2-3', words: '1-2', numsense: '1-2', sci: '1-2', home: '2-3' } },
-  g2: { label: '2nd Grade', g: { phonics: '4-5', animals: '2-3', places: '2-3', gk: '3-4', anatomy: '2-3', match: '3-5', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-4', sent: '3-4', add: '4-5',
+  g2: { label: '2nd Grade', g: { phonics: '4-5', g1read: '2-5', animals: '2-3', places: '2-3', gk: '3-4', anatomy: '2-3', match: '3-5', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-4', sent: '3-4', add: '4-5',
     sub: '4-5', story: '3-5', cmp: '4-5', mul: '1-3', div: '1-2', clock: '2-4', shape2: '3-4', flags: '3-3', maps: '3-3', words: '2-4', numsense: '2-4', sci: '2-3', home: '2-4' } },
   g3: { label: '3rd Grade', g: { animals: '3-3', places: '3-3', gk: '4-4', anatomy: '3-4', match: '4-5', w4: '5-5', sight: '4-4', spell: '5-5',
     vocab: '3-4', sent: '4-6', add: '5-5', sub: '5-5', story: '4-5', cmp: '5-5', mul: '3-5', div: '2-5', clock: '3-4', shape2: '4-4', flags: '3-3', maps: '3-3', words: '3-5', numsense: '3-5', sci: '3-4', home: '3-4' } },
