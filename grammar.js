@@ -63,6 +63,13 @@ function genGrammar(level) {
     const [a, b] = pick(OPPOSITES); return grQ(`opp-${a}`, `What is the opposite of <b>${a}</b>?`, big(a), b, OPPOSITES.filter((x) => x[0] !== a).map((x) => x[1]), ['What is the opposite?'], n);
   }
   // level 1: naming word or action word
-  if (Math.random() < 0.5) { const a = pick(GR_NOUNS); return grQ(`noun-${a}`, 'Which word is a <b>naming word</b> (noun)?', '<small class="ph-tip">a person, place or thing</small>', a, [...GR_VERBS, ...GR_ADJS], ['Which word is a naming word?'], n); }
-  const a = pick(GR_VERBS); return grQ(`verb-${a}`, 'Which word is an <b>action word</b> (verb)?', '<small class="ph-tip">something you can do</small>', a, [...GR_NOUNS, ...GR_ADJS], ['Which word is an action word?'], n);
+  if (Math.random() < 0.5) {
+    const a = pick(GR_NOUNS);
+    // Words such as "book" and "play" can be nouns or verbs; context resolves their role.
+    return grQ(`noun-${a}`, 'Which word is a <b>naming word</b> in this sentence?', big(`I see the ${a}.`),
+      a, [...GR_VERBS, ...GR_ADJS], ['I see the', `${a}.`, 'Which word names a person, place or thing?'], n);
+  }
+  const a = pick(GR_VERBS);
+  return grQ(`verb-${a}`, 'Which word is an <b>action word</b> in this sentence?', big(`We ${a}.`),
+    a, [...GR_NOUNS, ...GR_ADJS], ['We', `${a}.`, 'Which word tells what we do?'], n);
 }
