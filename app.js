@@ -328,6 +328,11 @@ function renderQ() {
   if (q.body3d) mountBody3D(q);
   if (q.match) renderMatch(q);
   if (q.puzzle) renderPuzzle(q);
+  if (q.multi) renderMulti(q);
+  if (q.letterPath) renderLetterPath(q);
+  if (q.fillIn) renderFillIn(q);
+  if (q.passageFill) renderPassageFill(q);
+  if (q.order) renderOrder(q);
   if (q.blend && typeof wireBlend === 'function') wireBlend(q);
   if (q.letterSound && typeof wireLetter === 'function') wireLetter(q);
   if (q.tap) $$('#qMain [data-val]').forEach((g) => { if (g.dataset.val) g.onclick = () => choose(q, g.dataset.val, g); });
@@ -348,6 +353,8 @@ function showHint(q, auto = false) {
   if (q.hint && q.hint.glow && B3D.view) { B3D.view.highlight(q.answer); q.hintShown = true; $('#hintBtn').classList.remove('glow'); speakHint(q); return; }
   if (q.match) { matchHint(q); $('#hintBtn').classList.remove('glow'); return; }
   if (q.puzzle) { if (!R.locked && q.puzzleCtl) q.puzzleCtl.hint(); q.hintShown = true; $('#hintBtn').classList.remove('glow'); return; }
+  if (q.fillIn || q.passageFill || q.order) { if (!R.locked && q.partHint) q.partHint(); q.hintShown = true; $('#hintBtn').classList.remove('glow'); speakHint(q); return; }
+  if (q.letterPath) { if (!R.locked && q.pathHint) q.pathHint(); q.hintShown = true; $('#hintBtn').classList.remove('glow'); speakHint(q); return; }
   if (q.spell) { spellHint(q); $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
   if (q.hint && q.hint.remove) { if (!q.hintShown || auto === false) removeOneWrong(q); q.hintShown = true; $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
   if (!q.hint || q.hintShown) { if (q.hint) speakHint(q); return; }
@@ -552,6 +559,105 @@ function renderPuzzle(q) {
   const cb = { miss: () => { if (R.qs[R.i] !== q || R.locked) return; q.tries++; R.mistakes++; R.streak = 0; },
     done: () => { if (R.qs[R.i] === q && !R.locked) matchDone(q); } };
   q.puzzleCtl = q.puzzle.kind === 'wsearch' ? mountWordSearch(box, q.puzzle.size, q.puzzle.count, q.puzzle.down, cb) : mountCrossword(box, q.puzzle.words, q.puzzle.lv, cb);
+}
+// tap ALL the right ones: each right tap stays lit; a wrong tap is a mistake; the last right one answers the card
+function renderMulti(q) {
+  const want = new Set(q.multi.map(String)), got = new Set();
+  [...$('#options').children].forEach((b, k) => (b.onclick = () => {
+    if (R.locked || R.qs[R.i] !== q) return;
+    const v = String(q.options[k].v);
+    if (got.has(v)) return;
+    if (want.has(v)) { got.add(v); b.classList.add('right'); sfx.yes(); if (got.size === want.size) matchDone(q); }
+    else { q.tries++; R.mistakes++; R.streak = 0; b.classList.add('wrong'); b.disabled = true; sfx.no(); if (q.tries === 1) say('Look carefully, and try again!'); }
+  }));
+  if (state.testMode) [...$('#options').children].forEach((b, k) => { if (want.has(String(q.options[k].v))) b.dataset.ok = '1'; });
+}
+// follow the letter from the baby to its mom: tap (or slide over) the next box on the path
+function renderLetterPath(q) {
+  const { cols, rows, grid, route, hero, home } = q.letterPath;
+  const box = document.createElement('div'); box.className = 'lp-grid' + (q.letterPath.words ? ' words' : ''); box.style.setProperty('--c', cols);
+  box.innerHTML = grid.map((l, k) => `<button class="lp-cell" data-k="${k}">${l}</button>`).join('');
+  $('#qMain').appendChild(box); $('#options').innerHTML = '';
+  const idx = route.map(([x, y]) => y * cols + x);
+  const cell = (k) => box.children[k];
+  if (q.letterPath.words) cell(idx[0]).insertAdjacentHTML('afterbegin', `<span class="lp-start">${hero}</span>`);
+  else cell(idx[0]).innerHTML = `<span class="lp-pic">${hero}</span>`;
+  cell(idx[0]).classList.add('on');
+  cell(idx[idx.length - 1]).insertAdjacentHTML('beforeend', `<span class="lp-home">${home}</span>`);
+  let at = 0;
+  const step = (k) => {
+    if (R.locked || R.qs[R.i] !== q) return;
+    if (k === idx[at] || box.children[k].classList.contains('on')) return;
+    if (k === idx[at + 1]) {
+      at++; const c = cell(k); c.classList.add('on'); sfx.tap();
+      if (at === idx.length - 1) { if (!q.letterPath.words) c.innerHTML = `<span class="lp-pic">${hero}</span><span class="lp-home">${home}</span>`; matchDone(q); }
+      return;
+    }
+    // next to the path but the wrong letter (or not next to it): a mistake, once per box
+    const c = cell(k); if (c.classList.contains('bad')) return;
+    q.tries++; R.mistakes++; R.streak = 0; c.classList.add('bad'); sfx.no(); setTimeout(() => c.classList.remove('bad'), 600);
+  };
+  box.addEventListener('pointerdown', (e) => { const c = e.target.closest('.lp-cell'); if (c) { e.preventDefault(); box.setPointerCapture && box.setPointerCapture(e.pointerId); box.dragging = true; step(+c.dataset.k); } });
+  box.addEventListener('pointermove', (e) => { if (!box.dragging) return; const el = document.elementFromPoint(e.clientX, e.clientY); const c = el && el.closest && el.closest('.lp-cell'); if (c && box.contains(c) && +c.dataset.k === idx[at + 1]) step(+c.dataset.k); });
+  const up = () => (box.dragging = false); box.addEventListener('pointerup', up); box.addEventListener('pointercancel', up);
+  q.pathHint = () => { const c = cell(idx[at + 1]); if (c) { c.classList.remove('glow-l'); void c.offsetWidth; c.classList.add('glow-l'); } };
+  if (state.testMode || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__letterPath = { idx, step };
+}
+// several small questions on one screen share these: a right answer locks in, a wrong one is a mistake
+const partMiss = (q, el) => { q.tries++; R.mistakes++; R.streak = 0; sfx.no(); if (el) { el.classList.remove('bad'); void el.offsetWidth; el.classList.add('bad'); } };
+const live = (q) => !R.locked && R.qs[R.i] === q;
+// word box: tap a blank, then a word from the box (the first open blank is picked for you)
+function renderFillIn(q) {
+  const { words, lines } = q.fillIn, wrap = document.createElement('div'); wrap.className = 'g1-fill';
+  wrap.innerHTML = `<div class="g1-box">${words.map((w) => `<button class="g1-chip" data-w="${w}">${w}</button>`).join('')}</div>` +
+    lines.map((l, i) => `<div class="g1-line"><span class="g1-lpic">${l.pic}</span><span>${l.text.replace('___', `<button class="g1-blank" data-i="${i}">&nbsp;</button>`)}</span></div>`).join('');
+  $('#qMain').appendChild(wrap); $('#options').innerHTML = '';
+  const done = new Set(); let sel = 0;
+  const blank = (i) => $(`.g1-blank[data-i="${i}"]`, wrap);
+  const mark = () => $$('.g1-blank', wrap).forEach((b) => b.classList.toggle('sel', +b.dataset.i === sel && !done.has(sel)));
+  $$('.g1-blank', wrap).forEach((b) => (b.onclick = () => { if (!live(q) || done.has(+b.dataset.i)) return; sfx.tap(); sel = +b.dataset.i; mark(); }));
+  $$('.g1-chip', wrap).forEach((c) => (c.onclick = () => {
+    if (!live(q) || c.disabled) return;
+    if (c.dataset.w === lines[sel].answer) {
+      done.add(sel); const b = blank(sel); b.textContent = c.dataset.w; b.classList.add('ok'); c.disabled = true; sfx.yes();
+      if (done.size === lines.length) return matchDone(q);
+      sel = lines.findIndex((_, i) => !done.has(i)); mark();
+    } else partMiss(q, blank(sel));
+  }));
+  mark();
+  q.partHint = () => { const c = $(`.g1-chip[data-w="${lines[sel].answer}"]`, wrap); if (c) { c.classList.remove('glow-l'); void c.offsetWidth; c.classList.add('glow-l'); } };
+}
+// read the story, then finish each sentence with one of its words
+function renderPassageFill(q) {
+  const wrap = document.createElement('div'); wrap.className = 'g1-fill';
+  wrap.innerHTML = q.passageFill.map((p, i) => `<div class="g1-q" data-i="${i}"><div class="g1-sent">${p.s.replace('___', '<span class="g1-blank">&nbsp;</span>')}</div>
+    <div class="g1-opts">${p.options.map((o) => `<button class="g1-chip" data-o="${o}">${o}</button>`).join('')}</div></div>`).join('');
+  $('#qMain').appendChild(wrap); $('#options').innerHTML = '';
+  const done = new Set();
+  $$('.g1-q', wrap).forEach((row) => {
+    const i = +row.dataset.i, p = q.passageFill[i];
+    $$('.g1-chip', row).forEach((c) => (c.onclick = () => {
+      if (!live(q) || done.has(i) || c.disabled) return;
+      if (c.dataset.o === p.answer) {
+        done.add(i); const b = $('.g1-blank', row); b.textContent = p.answer; b.classList.add('ok'); row.classList.add('ok'); sfx.yes();
+        if (done.size === q.passageFill.length) matchDone(q);
+      } else { c.disabled = true; partMiss(q, c); }
+    }));
+  });
+  q.partHint = () => { const i = q.passageFill.findIndex((_, k) => !done.has(k)); const row = $(`.g1-q[data-i="${i}"]`, wrap); if (row) row.scrollIntoView({ block: 'center', behavior: 'smooth' }); };
+}
+// tap the pictures in the order of the story
+function renderOrder(q) {
+  const { pics, shown } = q.order, wrap = document.createElement('div'); wrap.className = 'g1-order';
+  wrap.innerHTML = shown.map((k) => `<button class="g1-pic-btn" data-k="${k}">${pics[k]}<i></i></button>`).join('');
+  $('#qMain').appendChild(wrap); $('#options').innerHTML = '';
+  let next = 0;
+  $$('.g1-pic-btn', wrap).forEach((b) => (b.onclick = () => {
+    if (!live(q) || b.classList.contains('ok')) return;
+    if (+b.dataset.k === next) { b.classList.add('ok'); $('i', b).textContent = ++next; sfx.yes(); if (next === pics.length) matchDone(q); }
+    else partMiss(q, b);
+  }));
+  q.partHint = () => { const b = $(`.g1-pic-btn[data-k="${next}"]`, wrap); if (b) { b.classList.remove('glow-l'); void b.offsetWidth; b.classList.add('glow-l'); } };
 }
 function matchDone(q) {
   R.locked = true; clearTimeout(R.nudge);

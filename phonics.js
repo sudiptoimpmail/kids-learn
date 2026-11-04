@@ -79,7 +79,46 @@ const firstLetter = (w) => w[0];
 // the big letter on the card: a real button, so a tap always works (iPad Safari is unreliable with taps on plain text)
 const tapLetter = (l, label = `${l.toUpperCase()} ${l}`) => `<button class="ph-letters tap" aria-label="Hear the sound">${label}</button><small class="ph-tip">👆 tap the letter to hear its sound</small>`;
 
+// workbook-style letter cards for beginners: tap every picture that starts with a letter, or follow a letter path
+const PH_PATH_THEMES = [['🦓', '🦓', 'baby zebra'], ['🐥', '🦆', 'duckling'], ['🐶', '🏠', 'puppy'], ['🐜', '🍓', 'ant'], ['🐰', '🥕', 'bunny']];
+function genPhonicsExtra(level) {
+  const P = phonData();
+  if (Math.random() < 0.55) {
+    // Tap all the pictures that start with B (2–3 right among 6)
+    const byLetter = {}; for (const x of P.first) (byLetter[firstLetter(x[0])] = byLetter[firstLetter(x[0])] || []).push(x);
+    const L = pick(Object.keys(byLetter).filter((k) => byLetter[k].length >= 2));
+    const right = sample(byLetter[L], Math.min(3, byLetter[L].length));
+    const wrong = sample(P.words.filter(([w]) => firstLetter(w) !== L && !(L === 'c' && w[0] === 'k') && !(L === 'k' && w[0] === 'c')), 6 - right.length);
+    const opts = shuffle([...right, ...wrong]);
+    return {
+      key: `ph-all-${L}-${right.map((x) => x[0]).join('')}`, text: `Tap <b>all</b> the pictures that start with <b>${L.toUpperCase()}</b>!`,
+      say: ['Tap all the pictures that start with', `${L.toUpperCase()}!`], main: tapLetter(L), mainClass: 'ph-main', letterSound: L,
+      options: opts.map(picOpt), answer: right.map((x) => x[0]).join(','), optClass: 'opt-emoji six', multi: right.map((x) => x[0]),
+      hint: { html: '', say: [`${L.toUpperCase()} says`, soundClip(L), ...right.map((x) => x[0])] },
+    };
+  }
+  // follow the letter: a path of one letter from the baby to its mom; other letters are dead ends
+  const L = pick('abcdefghjklmnoprstuvwz'.split(''));
+  const [hero, home, who] = pick(PH_PATH_THEMES);
+  // a path that only goes right or down never touches itself, so the letter boxes show exactly one way
+  const cols = 4, rows = 5, route = [[0, 0]];
+  while (route.length < cols + rows - 1) { const [x, y] = route[route.length - 1]; route.push(x === cols - 1 ? [x, y + 1] : y === rows - 1 ? [x + 1, y] : Math.random() < 0.5 ? [x + 1, y] : [x, y + 1]); }
+  const onRoute = new Set(route.map((c) => c.join()));
+  const others = 'abcdefghijklmnopqrstuvwxyz'.split('').filter((x) => x !== L && !(LOOKALIKE_SAFE[L] || '').includes(x));
+  const grid = [];
+  for (let y = 0; y < rows; y++) for (let x = 0; x < cols; x++) grid.push(onRoute.has(`${x},${y}`) ? L : pick(others));
+  return {
+    key: `ph-path-${L}-${route.length}-${rand(1e5)}`, text: `Follow the <b>${L}</b>'s to take the ${who} home!`,
+    say: ['Follow the letter', `${L.toUpperCase()}!`], main: tapLetter(L), mainClass: 'ph-main', letterSound: L,
+    options: [], answer: 'done', optClass: 'spell-tray',
+    letterPath: { L, cols, rows, grid, route, hero, home }, hint: { html: '', say: [`${L.toUpperCase()} says`, soundClip(L)] },
+  };
+}
+// letters too easy to mix up for a beginner are never used as the wrong ones in a letter path
+const LOOKALIKE_SAFE = { b: 'dpq', d: 'bpq', p: 'bdq', q: 'bdp', m: 'nw', n: 'mu', u: 'nv', w: 'mv', i: 'lj', l: 'i', j: 'i' };
 function genPhonics(level) {
+  if (level <= 2 && Math.random() < 0.3) return genPhonicsExtra(level);
+  if (level >= 4 && Math.random() < 0.3 && typeof genGrade1Phonics === 'function') return genGrade1Phonics();
   const P = phonData(), n = numOpts(Math.min(level, 2)) - 1;
   const t = Math.random();
   // ---- level 5: blends and digraphs (sh, ch, tr, st …)

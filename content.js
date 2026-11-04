@@ -532,6 +532,8 @@ function sentenceHintMarks(s, q, answer) {
   return a.length ? a : find(q);
 }
 function genSentence(level) {
+  // 1st-grade workbook-style screens now and then: word box, read & fill, story order
+  if (level >= 2 && level <= 4 && Math.random() < 0.35 && typeof genGrade1Reading === 'function') return genGrade1Reading(level);
   const all = READING();
   // mostly this level, sometimes one level easier for a quick win
   const exact = all.filter((x) => x[2] === level), near = all.filter((x) => x[2] === level - 1);
@@ -1595,7 +1597,19 @@ const JOBS = [
 ];
 
 // one Shapes game: flat shapes first, then 3D shapes join in
+// look at real things: tap all the circles (like "color all the circles you see")
+const SHAPE_THINGS = { circle: ['🍊', '⚽', '🕐', '🍪', '🌕', '🪙', '🏀', '🍩'], square: ['🧇', '🎲', '🧊', '🔲', '🟦'], triangle: ['🍕', '⚠️', '🍙', '📐', '🔺'], rectangle: ['🚪', '📱', '💵', '🍫', '📏'] };
+function genShapeTapAll() {
+  const s = pick(Object.keys(SHAPE_THINGS)), right = sample(SHAPE_THINGS[s], 2 + rand(2));
+  const wrong = sample(Object.entries(SHAPE_THINGS).filter(([k]) => k !== s).flatMap(([, v]) => v), 6 - right.length);
+  return {
+    key: `shape-all-${s}-${right.join('')}`, text: `Tap <b>all</b> the ${s}s you see!`, say: [`Tap all the ${s}s you see!`],
+    main: shape2D(s, pick(PALETTE)), options: shuffle([...right, ...wrong]).map((e) => ({ v: e, html: e })),
+    answer: right.join(','), optClass: 'opt-emoji six', multi: right, hint: { html: `<div class="hint-pic">${SHAPES2[s].real}</div>`, say: SHAPES2[s].tip },
+  };
+}
 function genShapes(level) {
+  if (level <= 3 && Math.random() < 0.25) return genShapeTapAll();
   if (level <= 1) return genShape2(1);
   if (level === 2) return Math.random() < 0.5 ? genShape2(2) : genShape3(1);
   if (level === 3) return Math.random() < 0.5 ? genShape2(3) : genShape3(2);
