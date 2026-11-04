@@ -180,9 +180,9 @@ function genWords(list, level, kind) {
   const puzzles = kind === 'cvc' && level >= 2 && typeof mountWordSearch === 'function' ? ['wsearch', 'xword'] : [];
   const hasNaturalWord = !EARLY_AUDIO_PENDING.has(w);
   const isAdvancedSpelling = kind === 'cvc' && earlyWordLevel(w) >= 3;
-  const pictureTypes = clear ? ['read', 'pic', 'scramble', ...puzzles] : [];
+  const pictureTypes = clear ? (hasNaturalWord ? ['read', 'pic', 'scramble', ...puzzles] : ['read', 'pic', ...puzzles]) : [];
   const types = [...pictureTypes, ...(hasNaturalWord ? ['find'] : []),
-    ...(!isAdvancedSpelling ? ['missing', 'missing'] : [])];
+    ...(hasNaturalWord && !isAdvancedSpelling ? ['missing', 'missing'] : [])];
   const type = pick(types.length ? types : ['missing']);
   if (type === 'wsearch') return { key: `${kind}-ws-${rand(1e6)}`, text: 'Find the hidden words!', say: ['Find the hidden words!', 'Drag your finger across the letters.'],
     main: '', mainClass: 'puzzle-main', options: [], answer: 'done', optClass: 'spell-tray',
@@ -199,7 +199,7 @@ function genWords(list, level, kind) {
       key: `${kind}-pic-${w}`, text: 'Which word matches the picture?', say: 'Which word matches the picture?',
       main: `<div class="spell-pic">${e}</div>`,
       options: shuffle([w, ...others.map((o) => o[0])]).map((x) => ({ v: x, html: x })), answer: w, optClass: 'opt-word',
-      hint: readingHint(w),
+      hint: hasNaturalWord ? readingHint(w) : picHint,
     };
   }
   if (type === 'scramble' && /^[a-z]+$/.test(w)) {
@@ -224,7 +224,7 @@ function genWords(list, level, kind) {
       options: shuffle([[w, e], ...others]).map(([ow, oe]) => ({ v: ow, html: oe })),
       answer: w,
       optClass: 'opt-emoji',
-      hint: readingHint(w),
+      hint: hasNaturalWord ? readingHint(w) : picHint,
     };
   }
 
@@ -353,7 +353,7 @@ const SPELL3 = ['cat', 'dog', 'pig', 'hen', 'bat', 'bus', 'sun', 'cup', 'bed', '
   'van', 'leg', 'bag', 'cap', 'can', 'pan', 'nut', 'jet', 'pin', 'tub', 'log', 'rat', 'net',
   'ant', 'pie', 'key', 'mug', 'fly', 'bee', 'boy', 'toy', 'owl', 'red'];
 // Only words with carefully checked pictures are eligible for picture spelling.
-for (const [w] of EARLY_PICTURE_WORDS) if (w.length === 3 && !SPELL3.includes(w)) SPELL3.push(w);
+for (const [w] of EARLY_PICTURE_WORDS) if (w.length === 3 && !EARLY_AUDIO_PENDING.has(w) && !SPELL3.includes(w)) SPELL3.push(w);
 const SPELL4 = ['frog', 'duck', 'fish', 'crab', 'drum', 'bell', 'cake', 'kite', 'moon', 'star', 'ship', 'milk', 'sock', 'tree',
   'bird', 'lion', 'bear', 'ball', 'book', 'boat', 'corn', 'door', 'hand', 'lamp', 'ring', 'rose', 'shoe', 'snow', 'gift',
   'lock', 'nose', 'foot', 'king', 'goat', 'deer', 'swan', 'seal', 'pear', 'bone', 'tent', 'bike', 'leaf', 'nest', 'soap',
