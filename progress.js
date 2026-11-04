@@ -60,15 +60,17 @@ function logAttempt(q, cat, level) {
   q.logged = true;
   const d = statsDay(), first = !!q.ok, alone = first && !q.hintShown;   // "alone" = right first time, no hint
   const secs = Math.min(60, Math.max(1, ((Date.now() - (q.t0 || Date.now())) / 1000)));
-  d.q++; if (first) d.first++; if (alone) d.alone = (d.alone || 0) + 1; if (q.hintShown) d.hints++; d.secs += secs;
-  const c = d.cats[cat] || (d.cats[cat] = [0, 0, 0]); c[0]++; if (first) c[1]++; if (alone) c[2] = (c[2] || 0) + 1;
+  // a screen with several little questions (a word box with 4 blanks) counts as that many answers
+  const n = Math.max(1, Math.min(6, q.parts || 1));
+  d.q += n; if (first) d.first += n; if (alone) d.alone = (d.alone || 0) + n; if (q.hintShown) d.hints++; d.secs += secs;
+  const c = d.cats[cat] || (d.cats[cat] = [0, 0, 0]); c[0] += n; if (first) c[1] += n; if (alone) c[2] = (c[2] || 0) + n;
   const k = `${cat}:${level}`, sk = state.stats.skills[k] || (state.stats.skills[k] = { n: 0, ok: 0, recent: '', last: '', days: [] });
   // mastery uses only answers done alone; hinted answers count as "with help"
   sk.n++; if (alone) sk.ok++; sk.recent = (sk.recent + (alone ? '1' : first ? 'h' : '0')).slice(-12); sk.last = dayKey();
   sk.days = [...new Set([...(sk.days || []), dayKey()])].slice(-5);   // on which days it was practiced
   // keep 120 days of daily numbers
   const days = Object.keys(state.stats.days).sort(); while (days.length > 120) delete state.stats.days[days.shift()];
-  if (d.q === DAILY_GOAL()) dailyGoalReached();
+  if (d.q >= DAILY_GOAL() && d.q - n < DAILY_GOAL()) dailyGoalReached();
   saveSoon();
 }
 // answers are saved a moment later (and right away if the app goes to the background)

@@ -18,8 +18,22 @@ const NUM_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven'
 const NUM_THINGS = [['apples', '🍎'], ['stars', '⭐'], ['balloons', '🎈'], ['ducks', '🦆'], ['cars', '🚗']];
 const capWord = (s) => s[0].toUpperCase() + s.slice(1);
 
-// [shown character, sentence on screen, what the voice says, picture]
+// pre-writing lines and shapes (fine motor): paths in a 0–1 box, from the first point to the last
+const wave = (f, n = 80) => Array.from({ length: n + 1 }, (_, i) => f(i / n));
+const TRACE_LINES = [
+  ['📏', 'Straight line', 'Straight line. Go from the top down.', '🧒', '🍦', wave((t) => [0.5, 0.12 + 0.76 * t], 20)],
+  ['〰️', 'Wavy line', 'Wavy line. A wavy line goes up and down.', '⚾', '🧤', wave((t) => [0.1 + 0.8 * t, 0.5 - 0.16 * Math.sin(t * Math.PI * 4)])],
+  ['⚡', 'Zigzag line', 'Zigzag line. Up, down, up, down.', '🐝', '🌻', [[0.1, 0.6], [0.26, 0.34], [0.42, 0.66], [0.58, 0.34], [0.74, 0.66], [0.9, 0.4]]],
+  ['🌈', 'Bumpy line', 'Bumpy line. Hop, hop, hop!', '🐸', '🪷', wave((t) => [0.1 + 0.8 * t, 0.62 - 0.26 * Math.abs(Math.sin(t * Math.PI * 3))])],
+  ['➰', 'Loopy line', 'Loopy line. Go round and round.', '🐌', '🍃', wave((t) => [0.14 + 0.62 * t + 0.1 * Math.sin(t * Math.PI * 6), 0.5 - 0.14 * Math.cos(t * Math.PI * 6)], 120)],
+  ['⭕', 'Circle', 'Circle. A circle is round.', '', '', wave((t) => [0.5 + 0.34 * Math.sin(t * Math.PI * 2), 0.52 - 0.34 * Math.cos(t * Math.PI * 2)])],
+  ['🟥', 'Square', 'Square. A square has 4 sides that are the same.', '', '', [[0.2, 0.2], [0.8, 0.2], [0.8, 0.8], [0.2, 0.8], [0.2, 0.2]]],
+  ['🔺', 'Triangle', 'Triangle. A triangle has 3 sides.', '', '', [[0.5, 0.15], [0.86, 0.82], [0.14, 0.82], [0.5, 0.15]]],
+  ['▭', 'Rectangle', 'Rectangle. A rectangle has 2 long sides and 2 short sides.', '', '', [[0.1, 0.3], [0.9, 0.3], [0.9, 0.74], [0.1, 0.74], [0.1, 0.3]]],
+];
+// [shown character, sentence on screen, what the voice says, picture, count, path (lines only), start and end pictures]
 function traceItems(set) {
+  if (set === 'lines') return TRACE_LINES.map(([chip, name, spoken, a, b, path]) => [chip, name, spoken, a && b ? `${a} ➜ ${b}` : chip, 0, path, a, b]);
   if (set === 'num') return Array.from({ length: 20 }, (_, i) => {
     const n = i + 1, [things, e] = NUM_THINGS[i % NUM_THINGS.length];
     const w = n === 1 ? things.replace(/s$/, '') : things;
@@ -80,16 +94,36 @@ function renderTrace(speak) {
   const g = guide.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, W);
   const fs = ch.length > 1 ? W * 0.62 : W * 0.86;
   g.font = `bold ${fs}px ${TRACE_FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle';
+  const path = it[5], stroke = (ctx, size, lw) => { ctx.lineCap = ctx.lineJoin = 'round'; ctx.lineWidth = lw; ctx.beginPath(); path.forEach(([x, y], k) => (k ? ctx.lineTo(x * size, y * size) : ctx.moveTo(x * size, y * size))); ctx.stroke(); };
+  // the shape to follow: a letter, or a line/shape path (thick gray band with a dotted middle, start and end pictures)
+  const drawShape = () => {
+    if (!path) {
+      g.globalAlpha = TR.write ? 0.07 : 0.22; g.fillStyle = '#495057'; g.fillText(ch, W / 2, cy); g.globalAlpha = 1;
+      if (!TR.write) { g.setLineDash([3, 9]); g.lineCap = 'round'; g.lineWidth = 4; g.strokeStyle = '#868e96'; g.strokeText(ch, W / 2, cy); g.setLineDash([]); }
+      return;
+    }
+    g.globalAlpha = TR.write ? 0.07 : 0.22; g.strokeStyle = '#495057'; stroke(g, W, W * 0.085); g.globalAlpha = 1;
+    if (!TR.write) { g.setLineDash([3, 10]); g.strokeStyle = '#868e96'; stroke(g, W, 4); g.setLineDash([]); }
+    g.fillStyle = '#2f9e44'; g.beginPath(); g.arc(path[0][0] * W, path[0][1] * W, W * 0.022, 0, 7); g.fill();   // green dot: start here
+    g.font = `${W * 0.11}px system-ui`;
+    if (it[6]) g.fillText(it[6], path[0][0] * W, path[0][1] * W - W * 0.09);
+    if (it[7]) { const e = path[path.length - 1]; g.fillText(it[7], e[0] * W, e[1] * W + W * 0.1); }
+    g.font = `bold ${fs}px ${TRACE_FONT}`;
+  };
   // writing lines like a school notebook
   g.strokeStyle = '#a5d8ff'; g.lineWidth = 2;
-  for (const y of [0.2, 0.84]) { g.beginPath(); g.moveTo(8, W * y); g.lineTo(W - 8, W * y); g.stroke(); }
-  g.setLineDash([10, 10]); g.beginPath(); g.moveTo(8, W * 0.52); g.lineTo(W - 8, W * 0.52); g.stroke(); g.setLineDash([]);
   const cy = W * 0.54;
-  g.globalAlpha = TR.write ? 0.07 : 0.22; g.fillStyle = '#495057'; g.fillText(ch, W / 2, cy); g.globalAlpha = 1;
-  if (!TR.write) { g.setLineDash([3, 9]); g.lineCap = 'round'; g.lineWidth = 4; g.strokeStyle = '#868e96'; g.strokeText(ch, W / 2, cy); g.setLineDash([]); }
-  // a mask of the letter (small, for checking how much was traced)
+  const notebook = () => {
+    if (path) return;
+    g.strokeStyle = '#a5d8ff'; g.lineWidth = 2;
+    for (const y of [0.2, 0.84]) { g.beginPath(); g.moveTo(8, W * y); g.lineTo(W - 8, W * y); g.stroke(); }
+    g.setLineDash([10, 10]); g.beginPath(); g.moveTo(8, W * 0.52); g.lineTo(W - 8, W * 0.52); g.stroke(); g.setLineDash([]);
+  };
+  notebook(); drawShape();
+  // a mask of the letter or line (small, for checking how much was traced)
   const M = 96, mk = document.createElement('canvas'); mk.width = mk.height = M; const mc = mk.getContext('2d');
-  mc.font = `bold ${fs * M / W}px ${TRACE_FONT}`; mc.textAlign = 'center'; mc.textBaseline = 'middle'; mc.fillText(ch, M / 2, cy * M / W);
+  if (path) { mc.strokeStyle = '#000'; stroke(mc, M, 8); }
+  else { mc.font = `bold ${fs * M / W}px ${TRACE_FONT}`; mc.textAlign = 'center'; mc.textBaseline = 'middle'; mc.fillText(ch, M / 2, cy * M / W); }
   const md = mc.getImageData(0, 0, M, M).data, mask = new Uint8Array(M * M); let mcount = 0;
   for (let p = 0; p < M * M; p++) if (md[p * 4 + 3] > 100) { mask[p] = 1; mcount++; }
   // the letter's middle line (skeleton): every part of it must be traced, so no stroke can be skipped
@@ -116,17 +150,13 @@ function renderTrace(speak) {
   }
   const drawGuide = (missing) => {
     g.clearRect(0, 0, W, W);
-    g.strokeStyle = '#a5d8ff'; g.lineWidth = 2;
-    for (const y of [0.2, 0.84]) { g.beginPath(); g.moveTo(8, W * y); g.lineTo(W - 8, W * y); g.stroke(); }
-    g.setLineDash([10, 10]); g.beginPath(); g.moveTo(8, W * 0.52); g.lineTo(W - 8, W * 0.52); g.stroke(); g.setLineDash([]);
-    g.globalAlpha = TR.write ? 0.07 : 0.22; g.fillStyle = '#495057'; g.fillText(ch, W / 2, cy); g.globalAlpha = 1;
-    if (!TR.write) { g.setLineDash([3, 9]); g.lineCap = 'round'; g.lineWidth = 4; g.strokeStyle = '#868e96'; g.strokeText(ch, W / 2, cy); g.setLineDash([]); }
+    notebook(); drawShape();
     // parts still to trace: orange dots along the middle of the letter
     if (missing && missing.length) { g.fillStyle = '#ff922b'; for (let k = 0; k < missing.length; k += 3) { const p = missing[k]; g.beginPath(); g.arc((p % M + 0.5) * W / M, (((p / M) | 0) + 0.5) * W / M, Math.max(4, W * 0.014), 0, 7); g.fill(); } }
   };
   // drawing
   const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.lineCap = c.lineJoin = 'round';
-  const ink = TR.set === 'num' ? '#1c7ed6' : TR.set === 'big' ? '#e64980' : '#2f9e44';
+  const ink = TR.set === 'num' ? '#1c7ed6' : TR.set === 'big' ? '#e64980' : TR.set === 'lines' ? '#f76707' : '#2f9e44';
   const width = Math.max(22, W * 0.085);
   let strokes = [], cur = null, finished = false; const started = Date.now();
   const redraw = () => {
@@ -165,7 +195,7 @@ function renderTrace(speak) {
     const miss = new Set(missing);
     const allStrokes = branches.every((b) => b.filter((p) => !miss.has(p)).length >= 0.75 * b.length);
     if (cover >= 0.92 && allStrokes && stray < 0.45) { drawGuide(null); win(); }
-    else if (stray > 0.6 && ink2 > 200) { say('Try to stay on the gray letter!'); }
+    else if (stray > 0.6 && ink2 > 200) { say(path ? 'Try to stay on the gray line!' : 'Try to stay on the gray letter!'); }
     else if (cover >= 0.3) drawGuide(missing);          // show the parts that still need tracing
   }
   function win() {

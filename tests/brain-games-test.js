@@ -98,6 +98,17 @@ const { chromium } = require('playwright');
         }
         if (!R.locked) throw Error('Puzzle card ' + kind + ' level ' + lv + ' did not finish');
       }
+      // 1st-grade screens and kindergarten tap-all / letter path: completing each answers the card; parts count
+      for (const [cat, make] of [['sent', () => genWordBox(3)], ['sent', () => genPassageFill()], ['sent', () => genStoryOrder()], ['phonics', () => genVowelPath()],
+        ['phonics', () => genPhonicsExtra(1)], ['shape2', () => genShapeTapAll()]]) {
+        startRound(cat, 3); const q = make(); R.qs[R.i] = q; renderQ();
+        if (q.fillIn) q.fillIn.lines.forEach((l, i) => { document.querySelector(`.g1-blank[data-i="${i}"]`).click(); document.querySelector(`.g1-chip[data-w="${l.answer}"]`).click(); });
+        else if (q.passageFill) q.passageFill.forEach((p, i) => document.querySelector(`.g1-q[data-i="${i}"] .g1-chip[data-o="${p.answer}"]`).click());
+        else if (q.order) q.order.pics.forEach((_, k) => document.querySelector(`.g1-pic-btn[data-k="${k}"]`).click());
+        else if (q.letterPath) window.__letterPath.idx.slice(1).forEach((k) => window.__letterPath.step(k));
+        else if (q.multi) [...document.querySelectorAll('#options .opt')].forEach((b, k) => { if (q.multi.includes(String(q.options[k].v))) b.click(); });
+        if (!R.locked || q.tries) throw Error('Card ' + q.key + ' did not finish cleanly');
+      }
       document.querySelector('#quitBtn').click();
 
       return { sudokuWins: award - before, puzzleWins: puzzleAward - oldWins,

@@ -13,7 +13,7 @@ const { chromium } = require('playwright');
     const pathStrokes = (pts) => { if (!pts.length) return []; const left = pts.slice(), strokes = []; let cur = [left.shift()]; strokes.push(cur);
       while (left.length) { const l = cur[cur.length - 1]; let bi = 0, bd = 1e9; left.forEach((q, i) => { const d = Math.hypot(q[0] - l[0], q[1] - l[1]); if (d < bd) { bd = d; bi = i; } }); const q = left.splice(bi, 1)[0]; if (bd > W() / 96 * 1.6) { cur = [q]; strokes.push(cur); } else cur.push(q); } return strokes; };
     const bad = [], skipped = []; let letters = 0, checks = 0;
-    for (const set of ['big', 'small', 'num']) for (let k = 0; k < traceItems(set).length; k++) {
+    for (const set of ['big', 'small', 'num', 'lines']) for (let k = 0; k < traceItems(set).length; k++) {
       state.traced = {}; TR.set = set; TR.i = k; openTrace(); await new Promise(r => setTimeout(r, 30));
       const sk = window.__trace.skelPts(), br = window.__trace.branches(), ch = window.__trace.it[0]; letters++;
       window.__trace.strokesSet(pathStrokes(sk.map(([x, y], i) => [x + Math.sin(i) * 3, y + Math.cos(i * 1.3) * 3])));
