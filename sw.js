@@ -61,7 +61,7 @@ self.addEventListener('message', (e) => {
       'excellent','awesome job','great work','you did it','super star','fantastic',
       'way to go','amazing','wonderful','brilliant','try again','good try',
       'think about it','look carefully and try again','look at the picture',
-      'lets play','let s play','hi pick a game','great tracing','beautiful',
+      'lets play',"let's play",'let s play','hi pick a game','great tracing','beautiful',
       'you finished todays quest open your gift','follow the yellow dots',
       'what comes next','which picture','find the answer','how many',
       'count the tens and ones','count hundreds tens and ones',
@@ -73,12 +73,13 @@ self.addEventListener('message', (e) => {
     const have = new Set((await audio.keys()).map((req) => req.url));
     const missing = want.filter((url) => !have.has(url));
     const source = e.source;
-    const report = (done) => { try { source && source.postMessage({ type: 'audio-pack-progress', mode: e.data.type, done, total: missing.length }); } catch {} };
+    let saved = 0;
+    const report = (done) => { try { source && source.postMessage({ type: 'audio-pack-progress', mode: e.data.type, done, total: missing.length, saved }); } catch {} };
     report(0);
     // Small batches avoid a single huge request and leave prior cached clips intact.
     for (let i = 0; i < missing.length; i += 20) {
       await Promise.all(missing.slice(i, i + 20).map(async (url) => {
-        try { const response = await fetch(url); if (response.ok) await audio.put(url, response); } catch {}
+        try { const response = await fetch(url); if (response.ok) { await audio.put(url, response); saved++; } } catch {}
       }));
       if (e.data.type === 'fill-audio-all' && (i % 100 === 0 || i + 20 >= missing.length)) report(Math.min(i + 20, missing.length));
     }
