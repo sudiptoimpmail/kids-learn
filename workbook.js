@@ -92,7 +92,7 @@ const IllustratedActivities = (() => {
     if(theme==='forest')return wrap(base()+tree(175,396,.88)+tree(752,396,.65)+
       '<path d="M503 346 Q634 362 568 420 Q536 441 599 480 H756 Q669 431 722 409 Q760 363 653 340Z" fill="url(#iaLake)" stroke="#69bfd6" stroke-width="6"/>'+
       '<path d="M557 403 q34 15 56 -2 M609 438 q23 5 43 -10" stroke="#eeffff" stroke-width="7" fill="none"/>'+
-      bird(640,164,.8)+fox(175,431,.65)+
+      bird(640,164,.8)+fox(175,431,.65).replace(/#e49252|#ed9d57|#e98d46|#ed9955/g,'#7d8e9f')+
       el(344,172,1,'<path d="M0 0 Q-30 -57 17 -66 Q70 -51 0 0Z" fill="#8bc879" stroke="#397d52" stroke-width="7"/><path d="M0 0 L25 -49" stroke="#367c4e" stroke-width="4"/>')+
       bloom(370,423,'#fff4b2',.68)+bloom(443,432,'#ffe1ed',.7),
       'Green woodland with leaf, bird, forest animal and winding stream');
