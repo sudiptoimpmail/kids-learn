@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Learn &amp; Play</title>
   <meta name="description" content="Flash-card learning games for little ones: reading, math, shapes, jobs, flags and maps.">
   <meta name="theme-color" content="#7c5cff">
@@ -14,6 +14,7 @@
   <link rel="icon" href="icons/icon-192.png">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="ui-improvements.css">
 </head>
 <body>
   <canvas id="confetti" aria-hidden="true"></canvas>
@@ -45,8 +46,9 @@
     </div>
     <button id="playBanner" class="play-banner"></button>
     <div id="questBox" class="quest-box"></div>
-    <div class="explore-title">🧭 Explore everything</div>
-    <div id="grid" class="grid"></div>
+    <button id="brainBanner" class="brain-banner"><span>🧠</span><b>Brain Games</b><small>Memory · puzzles · logic</small><span aria-hidden="true">▶</span></button>
+    <div class="explore-title">📚 Learn and discover</div>
+    <div id="grid" class="learning-catalog"></div>
   </section>
 
   <!-- PLAY -->
@@ -127,7 +129,7 @@
   <section id="playzone" class="screen">
     <header class="play-top">
       <button id="pzHome" class="icon-btn" aria-label="Back home">🏠</button>
-      <div class="play-title">🎮 Play Zone</div>
+      <div id="pzTitle" class="play-title">🎮 Play Zone</div>
       <span class="play-clock chip"></span>
     </header>
     <div id="pzGrid" class="grid pz-grid"></div>
@@ -202,8 +204,8 @@
 
   <!-- SETTINGS (for grown-ups) -->
   <section id="settings" class="screen">
-    <header class="play-top">
-      <span class="icon-btn ghost"></span>
+    <header class="play-top settings-top">
+      <button id="settingsBack" class="icon-btn" aria-label="Save settings and return home">‹</button>
       <div class="play-title" id="settingsTitle">Grown-up Settings</div>
       <span class="icon-btn ghost"></span>
     </header>
@@ -265,6 +267,7 @@
   <script src="words.js"></script>
   <script src="phonics.js"></script>
   <script src="content.js"></script>
+  <script src="thinking.js"></script>
   <script src="app.js"></script>
   <script src="scenes.js"></script>
   <script src="games.js"></script>
