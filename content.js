@@ -192,7 +192,7 @@ function genWords(list, level, kind) {
 
   if (type === 'pic') {
     // look at the picture, pick its word from words that look alike (man · pan · cat)
-    const others = similarWords(list.filter(([x]) => x.length === w.length), w, n, 3);
+    const others = similarWords(pool.filter(([x]) => x.length === w.length), w, n, 3);
     return {
       key: `${kind}-pic-${w}`, text: 'Which word matches the picture?', say: 'Which word matches the picture?',
       main: `<div class="spell-pic">${e}</div>`,
@@ -213,7 +213,7 @@ function genWords(list, level, kind) {
   }
 
   if (type === 'read') {
-    const others = similarWords(list, w, n, level);
+    const others = similarWords(pool, w, n, level);
     return {
       key: `${kind}-read-${w}`,
       text: 'Read the word. Tap the picture!',
@@ -227,7 +227,7 @@ function genWords(list, level, kind) {
   }
 
   if (type === 'find') {
-    const others = similarWords(list, w, n, level);
+    const others = similarWords(pool, w, n, level);
     return {
       key: `${kind}-find-${w}`,
       text: 'Listen. Tap the word!',
