@@ -368,7 +368,7 @@ export function start() {
     S.done = true;
     const lvUp = gameLevelUp('ball', 1);
     gameWin(pick(['You did it!', 'Awesome job!', 'Fantastic!']));
-    setTimeout(() => {
+    later(() => {
       endPanel(`You reached the finish!<br><small>💎 ${S.gems} gems · ${S.tries === 0 ? 'no falls!' : `${S.tries} restart${S.tries > 1 ? 's' : ''}`}</small>`, '🏁', start, lvUp);
     }, 900);
   }

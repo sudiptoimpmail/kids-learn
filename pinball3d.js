@@ -439,7 +439,7 @@ export function start(tableIndex) {
     state.pinBest = Math.max(state.pinBest || 0, G.score);
     const up = G.leveled ? gameLevelUp('pinball', 1) : (save(), false);
     gameWin(G.leveled ? 'Awesome job!' : 'Great game!');
-    setTimeout(() => endPanel(`Score: ${G.score.toLocaleString()}${G.leveled ? '' : `<br><small>Score ${TARGET[lv - 1].toLocaleString()} to reach the next level</small>`}<br><small>Best: ${state.pinBest.toLocaleString()}</small>`, '🎯', () => start(), up), 700);
+    later(() => endPanel(`Score: ${G.score.toLocaleString()}${G.leveled ? '' : `<br><small>Score ${TARGET[lv - 1].toLocaleString()} to reach the next level</small>`}<br><small>Best: ${state.pinBest.toLocaleString()}</small>`, '🎯', () => start(), up), 700);
   }
 
   /* ---------------- the loop ---------------- */

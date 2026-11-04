@@ -161,6 +161,7 @@ $('#gameBack').onclick = () => { stopGame(); renderPZ(); show('playzone'); start
 
 let curGame = null, gameCleanup = null, gameCleanupPanel = null;
 function openGame(id) {
+  stopGame();                      // never two games running at once
   const g = GAMES.find((x) => x.id === id);
   curGame = g;
   document.body.style.setProperty('--theme', g.color);
@@ -171,10 +172,13 @@ function openGame(id) {
   startPlayTimer();
   g.start();
 }
-function stopGame() { if (gameCleanup) { gameCleanup(); gameCleanup = null; } }
+function stopGame() { gameSession++; if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
+// a timer that is dropped if the child has left the game (so no old "You win!" panel pops up later)
+let gameSession = 0;
+function later(fn, ms) { const s = gameSession; return setTimeout(() => { if (s === gameSession) fn(); }, ms); }
 
 function gameWin(text = 'You win!') {
-  sfx.win(); confetti(140, 0.35); setTimeout(() => confetti(90, 0.5), 500);
+  sfx.win(); confetti(140, 0.35); later(() => confetti(90, 0.5), 500);
   say(text);
 }
 function endPanel(title, emoji, again, levelUp = false) {
@@ -205,11 +209,11 @@ function startTTT() {
     const w = winner();
     if (w) {
       over = true; w.forEach((i) => cells[i].classList.add('win'));
-      if (b[w[0]] === ME) { const up = gameLevelUp('ttt', 2); gameWin('You win!'); setTimeout(() => endPanel('You win!', '🏆', startTTT, up), 1300); }
-      else { say('Good game! Try again!'); setTimeout(() => endPanel('Robot wins this time!', '🤖', startTTT), 1300); }
+      if (b[w[0]] === ME) { const up = gameLevelUp('ttt', 2); gameWin('You win!'); later(() => endPanel('You win!', '🏆', startTTT, up), 1300); }
+      else { say('Good game! Try again!'); later(() => endPanel('Robot wins this time!', '🤖', startTTT), 1300); }
       return true;
     }
-    if (b.every(Boolean)) { over = true; say("It's a tie!"); setTimeout(() => endPanel("It's a tie!", '🤝', startTTT), 900); return true; }
+    if (b.every(Boolean)) { over = true; say("It's a tie!"); later(() => endPanel("It's a tie!", '🤝', startTTT), 900); return true; }
     return false;
   }
   function botMove() {
@@ -229,7 +233,7 @@ function startTTT() {
     put(i, ME); sfx.tap();
     if (check()) return;
     busy = true;
-    setTimeout(() => { botMove(); busy = false; check(); }, 550);
+    later(() => { botMove(); busy = false; check(); }, 550);
   }));
 }
 
@@ -254,17 +258,17 @@ function startMemory() {
     moves++; $('.mem-moves').textContent = `· ${moves} tries`;
     const [a, b] = open; open = [];
     if (deck[a] === deck[b]) {
-      setTimeout(() => {
+      later(() => {
         cards[a].classList.add('done'); cards[b].classList.add('done'); sfx.yes(); found++;
         if (found === pairs) {
           const up = gameLevelUp('memory', 1);
           gameWin(pick(['Awesome job!', 'You did it!', 'Amazing!']));
-          setTimeout(() => endPanel(`All pairs in ${moves} tries!`, '🧠', startMemory, up), 1300);
+          later(() => endPanel(`All pairs in ${moves} tries!`, '🧠', startMemory, up), 1300);
         }
       }, 350);
     } else {
       lock = true;
-      setTimeout(() => { cards[a].classList.remove('flip'); cards[b].classList.remove('flip'); lock = false; }, 900);
+      later(() => { cards[a].classList.remove('flip'); cards[b].classList.remove('flip'); lock = false; }, 900);
     }
   }));
 }
@@ -383,7 +387,7 @@ function startWhack() {
     const el = holes[i].querySelector('.wm-pop');
     el.textContent = flower ? '🌸' : pick(['🐹', '🐹', '🐹', '🦔', '🐭']);
     holes[i].classList.add('up');
-    const timer = setTimeout(() => { holes[i].classList.remove('up'); up.delete(i); }, upMs * (0.8 + Math.random() * 0.4));
+    const timer = later(() => { holes[i].classList.remove('up'); up.delete(i); }, upMs * (0.8 + Math.random() * 0.4));
     up.set(i, { timer, flower });
   }
   holes.forEach((h, i) => h.addEventListener('pointerdown', (e) => {
@@ -391,7 +395,7 @@ function startWhack() {
     const m = up.get(i); if (!m || !alive) return;
     clearTimeout(m.timer); up.delete(i);
     h.classList.remove('up'); h.classList.add(m.flower ? 'oops' : 'bonk');
-    setTimeout(() => h.classList.remove('bonk', 'oops'), 300);
+    later(() => h.classList.remove('bonk', 'oops'), 300);
     if (m.flower) { score = Math.max(0, score - 1); sfx.no(); } else { score++; tone([520, 780], { dur: 0.05, gap: 0.05, vol: 0.12, type: 'square' }); }
     $('.wm-score', area).textContent = score;
   }));
@@ -543,7 +547,7 @@ function startBallMaze() {
     const got = stars.filter((s) => s.got).length;
     const up = gameLevelUp('maze', 1);
     gameWin(pick(['You did it!', 'Awesome job!', 'Fantastic!']));
-    setTimeout(() => { alive = false; endPanel(`You reached the flag!<br><small>⭐ ${got} of ${stars.length} stars</small>`, '🟫', startBallMaze, up); }, 900);
+    later(() => { alive = false; endPanel(`You reached the flag!<br><small>⭐ ${got} of ${stars.length} stars</small>`, '🟫', startBallMaze, up); }, 900);
   }
   const onResize = () => { ({ c, w, h } = fitCanvas(cv, 380)); u = Math.min(w / 10, h / 14); ox = (w - u * 10) / 2; oy = (h - u * 14) / 2; };
   addEventListener('resize', onResize);
@@ -584,11 +588,11 @@ function startC4() {
     const line = lineAt(r, c, who);
     if (line) {
       over = true; line.forEach(([rr, cc]) => cell(rr, cc).classList.add('win'));
-      if (who === ME) { const up = gameLevelUp('c4', 2); gameWin('You win!'); setTimeout(() => endPanel('Four in a row! You win!', '🏆', startC4, up), 1400); }
-      else { say('Good game! Try again!'); setTimeout(() => endPanel('Robot got four this time!', '🤖', startC4), 1400); }
+      if (who === ME) { const up = gameLevelUp('c4', 2); gameWin('You win!'); later(() => endPanel('Four in a row! You win!', '🏆', startC4, up), 1400); }
+      else { say('Good game! Try again!'); later(() => endPanel('Robot got four this time!', '🤖', startC4), 1400); }
       return true;
     }
-    if (g[0].every(Boolean)) { over = true; say("It's a tie!"); setTimeout(() => endPanel("It's a tie!", '🤝', startC4), 800); return true; }
+    if (g[0].every(Boolean)) { over = true; say("It's a tie!"); later(() => endPanel("It's a tie!", '🤝', startC4), 800); return true; }
     return false;
   }
   function botCol() {
@@ -609,7 +613,7 @@ function startC4() {
     const c = +t.dataset.c; const r = place(c, ME); if (r == null) return;
     if (after(r, c, ME)) return;
     busy = true;
-    setTimeout(() => { const bc = botCol(); const br = place(bc, BOT); busy = false; after(br, bc, BOT); }, 650);
+    later(() => { const bc = botCol(); const br = place(bc, BOT); busy = false; after(br, bc, BOT); }, 650);
   });
 }
 
@@ -883,7 +887,7 @@ function startColoring(p) {
     sfx.tap();
     const regs = $$('.color-wrap .r:not(.bg)', area);
     regs.forEach((r, i) => { r.dataset.was = r.style.fill; r.style.fill = p.orig[i] || '#fff'; });
-    setTimeout(() => regs.forEach((r) => (r.style.fill = r.dataset.was)), 2000);
+    later(() => regs.forEach((r) => (r.style.fill = r.dataset.was)), 2000);
   };
   area.querySelector('[data-a="pics"]').onclick = () => { sfx.tap(); startColorPicker(); };
   area.querySelector('[data-a="done"]').onclick = () => {
@@ -1010,7 +1014,7 @@ function startSudoku(mode) {
     if (up && state.sdkWins % 2 === 0) state.sdkLevel = lv + 1;   // every 2 wins → harder
     save();
     gameWin(pick(['Awesome job!', 'Excellent!', 'You did it!']));
-    setTimeout(() => endPanel(state.sdkLevel > lv ? `Solved! Next puzzles are harder (level ${state.sdkLevel})` : 'Solved!', '🧩', () => startSudoku(mode)), 1300);
+    later(() => endPanel(state.sdkLevel > lv ? `Solved! Next puzzles are harder (level ${state.sdkLevel})` : 'Solved!', '🧩', () => startSudoku(mode)), 1300);
   }
   area.querySelector('.sdk-board').addEventListener('click', (e) => {
     const t = e.target.closest('.sdk-cell'); if (!t) return;
@@ -1089,7 +1093,7 @@ function startPuzzle(p) {
       board.classList.add('solved');
       const up = gameLevelUp('puzzle', 1);
       gameWin(pick(['Awesome job!', 'You did it!', 'Fantastic!']));
-      setTimeout(() => endPanel(up ? `You did it! Next: ${puzzleSize()}×${puzzleSize()} puzzles` : 'You did it!', '🧩', startPuzzleMenu, up), 1300);
+      later(() => endPanel(up ? `You did it! Next: ${puzzleSize()}×${puzzleSize()} puzzles` : 'You did it!', '🧩', startPuzzleMenu, up), 1300);
     }
   });
   draw();
@@ -1130,7 +1134,7 @@ function startMoves() {
     card.classList.remove('go', 'done');
     tx.textContent = '…';
     spin = setInterval(() => { em.textContent = pick(MOVES)[0]; tone([300 + (k++ % 6) * 80], { dur: 0.03, vol: 0.06 }); }, 90);
-    setTimeout(() => {
+    later(() => {
       clearInterval(spin);
       em.textContent = m[0]; tx.textContent = m[1];
       card.classList.add('go');

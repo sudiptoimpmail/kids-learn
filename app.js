@@ -8,7 +8,9 @@ const KEY = 'learnplay.v1';
 
 /* ---------- saved progress ---------- */
 const state = Object.assign({ name: '', voice: true, stars: 0, stickers: [], levels: {}, best: {} }, Store.load());
-const save = () => Store.save(state);   // storage.js decides where it goes (web now, native app later)
+const save = () => Store.save(state);
+// if progress can't be saved (storage full), tell the grown-ups once instead of losing stars quietly
+Store.onError = () => { if (Store.warned) return; Store.warned = true; setTimeout(() => { const n = document.createElement('div'); n.className = 'save-warn'; n.textContent = '⚠️ Progress could not be saved on this device (storage may be full). Grown-ups: ⚙️ → Save a backup.'; n.onclick = () => n.remove(); document.body.appendChild(n); }, 0); };   // storage.js decides where it goes (web now, native app later)
 const levelOf = (id) => state.levels[id] || 1;
 const maxLevelOf = (id) => (CATEGORIES.find((c) => c.id === id) || {}).maxLevel || 3;
 const gameMax = maxLevelOf;
@@ -27,6 +29,8 @@ let CLIPS = {};
 const clipsReady = fetch('audio/clips.json').then((r) => r.json()).then((j) => (CLIPS = j)).catch(() => {});
 let sayToken = 0, actx, curSrc = null;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// a delayed step that only runs if this card is still on screen (the child may have gone home meanwhile)
+const onCard = (q, fn) => () => { if (R && R.qs[R.i] === q && $('#play').classList.contains('active')) fn(); };
 // let sound play even when the iPhone's silent switch is on (Safari 16.4+)
 try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch {}
 function ctx() {
@@ -58,9 +62,11 @@ function unlockAudio() {
   addEventListener(ev, unlockAudio, { capture: true, passive: true }));
 document.addEventListener('visibilitychange', () => { if (!document.hidden && actx) actx.resume().catch(() => {}); });
 
-const bufs = new Map();
+// decoded voice clips, newest last; only the most recent ones are kept so memory stays small on iPads
+const bufs = new Map(), BUF_MAX = 80;
 function getBuf(file) {
-  if (bufs.has(file)) return bufs.get(file);
+  if (bufs.has(file)) { const p = bufs.get(file); bufs.delete(file); bufs.set(file, p); return p; }
+  while (bufs.size >= BUF_MAX) bufs.delete(bufs.keys().next().value);
   const p = fetch('audio/' + file).then((r) => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
     .then((ab) => new Promise((ok, bad) => ctx().decodeAudioData(ab, ok, bad)));
   bufs.set(file, p); p.catch(() => bufs.delete(file));
@@ -250,6 +256,8 @@ function renderProgress() {
 /* ---------- 3D body view (loaded only when a body question appears) ---------- */
 const B3D = { view: null, mod: null };
 function dropBody3D() { if (B3D.view) { B3D.view.dispose(); B3D.view = null; } }
+// leaving the game: free the 3D graphics memory too (the model itself stays loaded)
+function releaseBody3D() { dropBody3D(); if (B3D.mod && B3D.mod.release) B3D.mod.release(); }
 async function mountBody3D(q) {
   const host = document.createElement('div'); host.className = 'b3d-host'; host.innerHTML = '<div class="b3d-loading">🧍 Getting ready…</div>';
   $('#qMain').appendChild(host);
@@ -286,7 +294,7 @@ function renderQ() {
   // nudge the hint after a while, but never show the picture by itself
   clearTimeout(R.nudge);
   R.nudge = setTimeout(() => !q.hintShown && $('#hintBtn').classList.add('glow'), 12000);
-  setTimeout(() => say(q.say || ''), 250);
+  setTimeout(onCard(q, () => say(q.say || '')), 250);
   const nq = R.qs[R.i + 1]; if (nq) { prefetch(nq.say); nq.hint && prefetch(nq.hint.say); }
   q.hint && prefetch(q.hint.say);
 }
@@ -426,7 +434,7 @@ function checkSpell(q) {
   if (blanks.some((i) => q.slots[i] == null)) return;
   R.locked = true;
   const wrong = blanks.filter((i) => tileEl(q.slots[i]).dataset.l !== word[i]);
-  setTimeout(() => {
+  setTimeout(onCard(q, () => {
     if (!wrong.length) {
       clearTimeout(R.nudge);
       const first = q.tries === 0;
@@ -434,7 +442,7 @@ function checkSpell(q) {
       if (first) { R.firstTry++; R.streak++; R.best = Math.max(R.best, R.streak); } else R.streak = 0;
       $$('.slot').forEach((s, k) => { s.classList.add('win'); s.style.animationDelay = `${k * 90}ms`; });
       celebrate(first);
-      setTimeout(next, first ? 2000 : 1700);
+      setTimeout(onCard(q, next), first ? 2000 : 1700);
       return;
     }
     q.tries++; R.mistakes++; R.streak = 0;
@@ -447,7 +455,7 @@ function checkSpell(q) {
       if (q.tries === 1) spellHint(q);         // first miss: one correct letter is given
       say(oops).then(() => say(q.spell.word));
     }, 800);
-  }, 250);
+  }), 250);
 }
 function spellHint(q) {
   if (R.locked) return;
@@ -499,7 +507,7 @@ function matchDone(q) {
   const first = q.tries === 0;
   q.ok = first;
   if (first) { R.firstTry++; R.streak++; R.best = Math.max(R.best, R.streak); } else R.streak = 0;
-  setTimeout(() => { celebrate(first); setTimeout(next, first ? 2000 : 1700); }, 300);
+  setTimeout(onCard(q, () => { celebrate(first); setTimeout(onCard(q, next), first ? 2000 : 1700); }), 300);
 }
 function matchHint(q) {
   if (R.locked) return;
@@ -525,9 +533,9 @@ function choose(q, v, el) {
     $$('.qmark').forEach((m) => { m.textContent = q.answer; m.classList.add('filled'); });
     celebrate(first);
     if (q.reveal && B3D.view) {
-      setTimeout(() => { if (B3D.view) { B3D.view.reveal(q.reveal); say(q.reveal.text); } }, 1200);
-      setTimeout(next, 4600);
-    } else setTimeout(next, first ? 1900 : 1600);
+      setTimeout(onCard(q, () => { if (B3D.view) { B3D.view.reveal(q.reveal); say(q.reveal.text); } }), 1200);
+      setTimeout(onCard(q, next), 4600);
+    } else setTimeout(onCard(q, next), first ? 1900 : 1600);
   } else {
     q.tries++; R.mistakes++; R.streak = 0;
     el.classList.add('wrong'); el.disabled = true;
@@ -561,8 +569,8 @@ function next() {
 }
 
 function finish() {
-  if (R.browse) { dropBody3D(); renderHome(); show('home'); return; }   // the test browser does not change levels or stars
-  dropBody3D();
+  if (R.browse) { releaseBody3D(); renderHome(); show('home'); return; }   // the test browser does not change levels or stars
+  releaseBody3D();
   renderProgress();
   const m = R.mistakes;
   const stars = m <= 2 ? 3 : m <= 5 ? 2 : 1;
@@ -751,7 +759,7 @@ $('#grid').addEventListener('click', (e) => {
 $('#hintBtn').onclick = () => { sfx.tap(); showHint(R.qs[R.i]); };
 $('#sayBtn').onclick = () => { sfx.tap(); const q = R.qs[R.i]; say((q.say && q.say.length) ? q.say : q.readQ || q.text.replace(/<[^>]+>/g, '')); };
 $('#quitBtn').onclick = () => {
-  dropBody3D(); sayToken++; stopClip(); clearTimeout(R && R.nudge); renderHome(); show('home'); };
+  releaseBody3D(); sayToken++; stopClip(); clearTimeout(R && R.nudge); renderHome(); show('home'); };
 $('#againBtn').onclick = () => startRound(R.cat.id);
 $('#homeBtn').onclick = () => { renderHome(); show('home'); };
 $('#stickersBtn').onclick = () => { sfx.tap(); renderStickers(); show('stickers'); };
@@ -804,7 +812,11 @@ function askPin(onOk, change = false) {
     if (typed.length < 4) return;
     setTimeout(() => {
       const m = mode();
-      if (m === 'check') { if (pinHash(typed) === state.pinHash) { close(); onOk(); } else { typed = ''; shake(); paint(); } }
+      if (m === 'check') {
+        if (Date.now() < (askPin.lockUntil || 0)) { typed = ''; shake(); $('#pinNote').textContent = 'Too many tries. Wait a little and try again.'; return; }
+        if (pinHash(typed) === state.pinHash) { askPin.misses = 0; close(); onOk(); }
+        else { typed = ''; shake(); paint(); askPin.misses = (askPin.misses || 0) + 1; if (askPin.misses >= 3) { askPin.lockUntil = Date.now() + 30000 * (askPin.misses - 2); $('#pinNote').textContent = 'Too many tries. Wait 30 seconds.'; } }
+      }
       else if (m === 'new') { first = typed; typed = ''; paint(); }
       else if (typed === first) { state.pinHash = pinHash(typed); save(); close(); sfx.yes(); onOk(); }
       else { first = null; typed = ''; shake(); paint(); }
@@ -823,6 +835,7 @@ function askPin(onOk, change = false) {
 $('#backupBtn').onclick = () => {
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([Store.exportJSON()], { type: 'application/json' }));
   a.download = `learn-and-play-backup-${new Date().toISOString().slice(0, 10)}.json`; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 };
 $('#restoreFile').onchange = async (e) => {
   const f = e.target.files[0]; if (!f) return;
@@ -863,7 +876,12 @@ $('#testVoiceBtn').onclick = async () => {
 };
 $('#resetBtn').onclick = () => {
   if (!confirm('Reset all stars, stickers and levels?')) return;
-  Object.assign(state, { stars: 0, stickers: [], levels: {}, best: {} }); save(); renderHome(); show('home');
+  // keep the grown-up settings (name, grade, voice, PIN, play rules, look); clear everything the child earned
+  const KEEP = ['name', 'grade', 'voice', 'pinHash', 'theme', 'showAll', 'optClock', 'optAnatomy', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'schema'];
+  for (const k of Object.keys(state)) if (!KEEP.includes(k)) delete state[k];
+  Object.assign(state, { stars: 0, stickers: [], levels: {}, best: {} });
+  if (state.grade && GRADES[state.grade]) Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = +r.split('-')[0]));
+  save(); renderHome(); show('home');
 };
 $('#startBtn').onclick = () => {
   // first tap unlocks audio on iPhone
@@ -873,4 +891,13 @@ $('#startBtn').onclick = () => {
 
 applyTheme();
 renderHome();
-if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+  // a new version finished downloading: switch to it the next time she is on the home screen
+  let hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController) { hadController = true; return; }
+    const reloadWhenHome = () => ($('#home').classList.contains('active') && !document.querySelector('.time-up:not([hidden])') ? location.reload() : setTimeout(reloadWhenHome, 3000));
+    reloadWhenHome();
+  });
+}

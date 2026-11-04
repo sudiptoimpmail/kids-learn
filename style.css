@@ -880,3 +880,5 @@ body.test-mode .prog-row { flex-wrap: wrap; }
 }
 
 .backup-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+
+.save-warn { position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 90; background: #fff3bf; border: 2px solid #f59f00; border-radius: 16px; padding: 10px 14px; font-weight: 800; font-size: 14px; box-shadow: 0 6px 16px #0003; }

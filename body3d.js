@@ -79,10 +79,6 @@ const ghostMat = () => new THREE.ShaderMaterial({
 
 async function build() {
   const gltf = await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync(new URL('./vendor/body.glb', import.meta.url).href);
-  const canvas = document.createElement('canvas'); canvas.className = 'b3d-cv';
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(26, 0.7, 0.05, 20);
   scene.add(new THREE.HemisphereLight('#ffffff', '#6b6080', 1.5));
@@ -162,7 +158,7 @@ async function build() {
   }
   if (parts.eyes) parts.eyes.center.z += 0.01;
   if (parts.hair) parts.hair.center.set(0, 1.605, 0.03);   // the top of the head, where a finger would go
-  return { renderer, canvas, scene, camera, body, layers, parts, skinMeshes, ghost, partNames, overlay: null, cam: { y: 0.83, h: 1.8, ty: 0.83, th: 1.8 } };
+  return { renderer: null, canvas: null, scene, camera, body, layers, parts, skinMeshes, ghost, partNames, overlay: null, cam: { y: 0.83, h: 1.8, ty: 0.83, th: 1.8 } };
 }
 
 /* ---------- glow: inner parts pulse orange; outside parts get an orange patch over the real surface ---------- */
@@ -235,7 +231,25 @@ export function mount(host, opts = {}) {
   return view;
 }
 
+// the WebGL renderer is made when a body question shows and released when the child leaves the game;
+// the loaded model stays in memory so the next question opens instantly
+function ensureRenderer() {
+  if (R.renderer) return;
+  const canvas = document.createElement('canvas'); canvas.className = 'b3d-cv';
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  R.renderer = renderer; R.canvas = canvas;
+}
+export function release() {
+  if (!R || !R.renderer) return;
+  clearGlow();
+  R.renderer.dispose(); R.renderer.forceContextLoss();
+  if (R.canvas.parentNode) R.canvas.parentNode.removeChild(R.canvas);
+  R.renderer = null; R.canvas = null;
+}
 function start(view, host, opts) {
+  ensureRenderer();
   host.innerHTML = '';
   host.appendChild(R.canvas);
   const lab = document.createElement('div'); lab.className = 'b3d-label'; lab.hidden = true; host.appendChild(lab);
@@ -323,8 +337,9 @@ function start(view, host, opts) {
   };
   view.dispose = () => {
     view.alive = false; cancelAnimationFrame(raf); removeEventListener('resize', size);
-    R.canvas.removeEventListener('pointerdown', onDown); R.canvas.removeEventListener('pointermove', onMove); R.canvas.removeEventListener('pointerup', onUp);
     clearGlow();
+    if (!R.canvas) return;
+    R.canvas.removeEventListener('pointerdown', onDown); R.canvas.removeEventListener('pointermove', onMove); R.canvas.removeEventListener('pointerup', onUp);
     if (R.canvas.parentNode) R.canvas.parentNode.removeChild(R.canvas);
   };
   view.pickAt = pickAt;
