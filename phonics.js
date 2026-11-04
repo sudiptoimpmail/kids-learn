@@ -14,7 +14,7 @@ const PHON_SKIP = new Set(['red', 'sad', 'wet', 'hug', 'mud', 'hot', 'see', 'run
 let PHON = null;
 function phonData() {
   if (PHON) return PHON;
-  const all = W3.concat(W4, W5, WL).filter(([w]) => !PHON_SKIP.has(w) && /^[a-z]+$/.test(w));
+  const all = W3.concat(W4, W5, WL).filter(([w]) => !PHON_SKIP.has(w) && !EARLY_AUDIO_PENDING.has(w) && /^[a-z]+$/.test(w));
   const uniq = [...new Map(all.map((x) => [x[0], x])).values()];
   const cvc = uniq.filter(([w]) => /^[^aeiou][aeiou][^aeiouwxy]$/.test(w));
   const startsWithDigraph = (w) => /^(sh|ch|th|wh|kn|wr|ph)/.test(w);
