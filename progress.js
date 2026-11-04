@@ -36,9 +36,13 @@ const SKILLS = {
   animals: ['Where animals live', 'Animals by country', 'Animals of the world (harder)'],
   places: ['Famous places', 'More famous places', 'Famous places of the world'],
   maps: ['Continents', 'Countries on the map', 'Countries and capitals'],
+  pattern: ['AB patterns', 'AAB and ABB patterns', 'Three-symbol patterns', 'Number patterns', 'Growing number patterns'],
+  odd: ['Recognize categories', 'Categorize by traits', 'Group by function and features'],
+  sequence: ['Everyday order', 'Cause and effect', 'Multi-step sequences'],
 };
 const skillName = (cat, lv) => (SKILLS[cat] && SKILLS[cat][lv - 1]) || `${(CATEGORIES.find((c) => c.id === cat) || {}).title || cat} · level ${lv}`;
-const SUBJECT = (cat) => (['add', 'sub', 'story', 'cmp', 'mul', 'div', 'clock', 'shape2', 'shape3', 'match'].includes(cat) ? 'Math'
+const SUBJECT = (cat) => (['pattern', 'odd', 'sequence'].includes(cat) ? 'Thinking Skills'
+  : ['add', 'sub', 'story', 'cmp', 'mul', 'div', 'clock', 'shape2', 'shape3', 'match'].includes(cat) ? 'Math'
   : ['phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'syl', 'trace'].includes(cat) ? 'Reading & words' : 'Science & world');
 const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const DAILY_GOAL = () => state.dailyGoal || 20;
@@ -177,6 +181,7 @@ const QUEST_LEN = 5;
 const QUEST_READING = { prek: ['phonics', 'cvc'], k: ['phonics', 'cvc', 'sight'], g1: ['sent', 'sight', 'phonics', 'spell'], g2: ['sent', 'spell', 'vocab'], g3: ['sent', 'vocab', 'spell'] };
 const QUEST_MATH = { prek: ['add', 'cmp', 'shape2'], k: ['add', 'sub', 'cmp'], g1: ['add', 'sub', 'story'], g2: ['add', 'sub', 'mul', 'story'], g3: ['mul', 'div', 'story'] };
 const QUEST_WORLD = ['animals', 'places', 'maps', 'body', 'gk', 'shape3', 'jobs', 'flags', 'anatomy'];
+const QUEST_THINKING = ['pattern', 'odd', 'sequence'];
 function questFor() {
   const today = dayKey(), grade = state.grade || 'k';
   if (state.quest && state.quest.date === today && state.quest.grade === grade) return state.quest;
@@ -201,7 +206,14 @@ function questFor() {
   if (!steps.some((s) => (QUEST_MATH[grade] || []).includes(s.cat))) addStep(freshest((QUEST_MATH[grade] || QUEST_MATH.k).filter((c) => !used.has(c))), 'math');
   // 5. discovery: science and the world
   addStep(freshest(QUEST_WORLD.filter((c) => !used.has(c))), 'discover');
-  // little ones also trace a few letters: make room by dropping an extra reading/math step, never discovery
+  // Alternate a thinking lesson in the daily plan without dropping discovery.
+  if (+today.slice(-2) % 2 === 0) addStep(freshest(QUEST_THINKING.filter((c) => !used.has(c))), 'thinking');
+  while (steps.length > (grade === 'prek' || grade === 'k' ? 4 : 5)) {
+    const drop = ['warm-up', 'reading', 'math'].map((w) => steps.findIndex((x) => x.why === w)).find((i) => i >= 0);
+    if (drop < 0) break;
+    steps.splice(drop, 1);
+  }
+  // Little ones trace three characters; preserve thinking and discovery if included.
   if (grade === 'prek' || grade === 'k') {
     while (steps.length > 4) { const drop = ['math', 'reading', 'warm-up'].map((w) => steps.findIndex((x) => x.why === w)).find((i) => i >= 0); steps.splice(drop, 1); }
     steps.splice(1, 0, { cat: 'trace', why: 'tracing', done: false });
@@ -217,7 +229,7 @@ function renderQuest() {
   box.innerHTML = `<div class="quest-head"><b>🗺️ Today's Quest</b><span class="quest-checks">${q.steps.map((s) => `<i class="${s.done ? 'on' : ''}">✓</i>`).join('')}<i class="gift ${all ? (q.gift ? 'opened' : 'ready') : ''}">🎁</i></span></div>
     <div class="quest-steps">${q.steps.map((s, i) => {
       const c = s.cat === 'trace' ? { icon: '✍️', title: 'Tracing', color: '#f76707' } : CATEGORIES.find((x) => x.id === s.cat) || { icon: '⭐', title: s.cat, color: '#8f6bff' };
-      return `<button class="quest-step ${s.done ? 'done' : ''} ${i === nextI ? 'next' : ''}" data-i="${i}" style="--c:${c.color}"><span class="qs-ico">${c.icon}</span><span class="qs-t">${c.title}</span><span class="qs-why">${{ 'warm-up': 'Warm up', practice: 'Practice', math: 'Math', reading: 'Reading', discover: 'Discover', tracing: 'Write' }[s.why] || ''}</span>${s.done ? '<span class="qs-ok">✓</span>' : ''}</button>`;
+      return `<button class="quest-step ${s.done ? 'done' : ''} ${i === nextI ? 'next' : ''}" data-i="${i}" style="--c:${c.color}"><span class="qs-ico">${c.icon}</span><span class="qs-t">${c.title}</span><span class="qs-why">${{ 'warm-up': 'Warm up', practice: 'Practice', math: 'Math', reading: 'Reading', discover: 'Discover', thinking: 'Think', tracing: 'Write' }[s.why] || ''}</span>${s.done ? '<span class="qs-ok">✓</span>' : ''}</button>`;
     }).join('')}${all ? `<button class="quest-step gift-step ${q.gift ? 'done' : 'next'}" data-gift="1"><span class="qs-ico">🎁</span><span class="qs-t">${q.gift ? 'Gift opened!' : 'Open your gift!'}</span></button>` : ''}</div>`;
   $$('.quest-step', box).forEach((b) => (b.onclick = () => {
     sfx.tap();
