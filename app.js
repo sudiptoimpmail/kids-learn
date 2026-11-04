@@ -114,23 +114,14 @@ async function playClip(file, token = sayToken) {
   });
 }
 
-let voice = null;
-function pickVoice() {
-  if (!('speechSynthesis' in window)) return;
-  const en = speechSynthesis.getVoices().filter((v) => /^en[-_](US|GB|AU|IE|CA)/i.test(v.lang));
-  const score = (v) => (/premium/i.test(v.name) ? 100 : 0) + (/enhanced|neural|natural/i.test(v.name) ? 60 : 0)
-    + (/Ava|Zoe|Samantha|Allison|Nicky|Evan|Serena|Karen|Google US English/i.test(v.name) ? 20 : 0)
-    + (/Novelty|Bells|Bubbles|Boing|Whisper|Zarvox|Trinoids|Albert|Bahh|Jester|Organ|Cellos|Superstar|Wobble|Bad News|Good News|Eddy|Flo|Grandma|Grandpa|Reed|Rocko|Sandy|Shelley/i.test(v.name) ? -200 : 0)
-    + (v.lang === 'en-US' ? 5 : 0);
-  voice = en.sort((a, b) => score(b) - score(a))[0] || null;
-}
-if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+// All narration comes from the application's existing high-quality recorded clips.
+// Never select a browser/system TTS voice: mechanical voices are not allowed.
 
 async function say(text, opts = {}) {
   const my = ++sayToken;
   if (!text || !state.voice) return;
   // only touch system speech if it is actually talking (cancelling it can pause iPhone audio)
-  if (window.speechSynthesis && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel();
+  // No system speech synthesis; only prerecorded clips are played.
   stopClip();
   if (!Object.keys(CLIPS).length) await Promise.race([clipsReady, sleep(4000)]);
   if (my !== sayToken) return;
@@ -145,20 +136,11 @@ async function say(text, opts = {}) {
   return deviceSay(text, opts, my);
 }
 
-function deviceSay(text, { rate = 0.92, pitch = 1.1 } = {}, token = sayToken) {
-  return new Promise((res) => {
-    if (!('speechSynthesis' in window)) return res();
-    if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    if (voice) u.voice = voice;
-    u.lang = 'en-US'; u.rate = rate; u.pitch = pitch;
-    let done = false; const fin = () => { if (!done) { done = true; res(); } };
-    u.onend = fin; u.onerror = fin;
-    u.onboundary = (ev) => u._onWord && u._onWord(ev);
-    setTimeout(() => { if (token === sayToken && state.voice) speechSynthesis.speak(u); else fin(); }, 60);
-    setTimeout(fin, 9000);
-    say.current = u;
-  });
+function deviceSay(text) {
+  // Non-robotic fallback: the question and options are still visible.
+  // This hook is intentionally retained for voiceaudit.js to report missing clips.
+  if (testFeatureAvailable()) console.warn('Missing natural recording:', text);
+  return Promise.resolve();
 }
 
 /* ---------- little sound effects (no files needed) ---------- */
