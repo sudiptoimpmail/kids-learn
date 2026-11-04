@@ -8,6 +8,9 @@ const KEY = 'learnplay.v1';
 
 /* ---------- saved progress ---------- */
 const state = Object.assign({ name: '', voice: true, stars: 0, stickers: [], levels: {}, best: {} }, Store.load());   // device settings + the active child
+const QA_AVAILABLE = typeof APP_FEATURES !== 'undefined' && APP_FEATURES.qaTools === true;
+const isQAMode = () => QA_AVAILABLE && state.testMode === true;
+if (!QA_AVAILABLE) state.testMode = false; // Ignore stale tester settings in production.
 const save = () => Store.save(state);
 // if progress can't be saved (storage full), tell the grown-ups once instead of losing stars quietly
 Store.onError = () => { if (Store.warned) return; Store.warned = true; setTimeout(() => { const n = document.createElement('div'); n.className = 'save-warn'; n.textContent = '⚠️ Progress could not be saved on this device (storage may be full). Grown-ups: ⚙️ → Save a backup.'; n.onclick = () => n.remove(); document.body.appendChild(n); }, 0); };   // storage.js decides where it goes (web now, native app later)
@@ -18,7 +21,7 @@ const gameMax = maxLevelOf;
 const OPTIONAL = { clock: 'optClock', anatomy: 'optAnatomy' };  // off unless a parent turns them on in Settings
 // a child who reads and spells well doesn't need syllable clapping any more
 const strongReader = () => levelOf('spell') >= 4 || levelOf('sent') >= 3 || (levelOf('spell') >= 3 && (state.best.spell || 0) >= 3);
-const visibleGames = () => state.testMode ? CATEGORIES.slice() : CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
+const visibleGames = () => isQAMode() ? CATEGORIES.slice() : CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'syl' && !state.showAll && strongReader())
   && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
@@ -114,51 +117,27 @@ async function playClip(file, token = sayToken) {
   });
 }
 
-let voice = null;
-function pickVoice() {
-  if (!('speechSynthesis' in window)) return;
-  const en = speechSynthesis.getVoices().filter((v) => /^en[-_](US|GB|AU|IE|CA)/i.test(v.lang));
-  const score = (v) => (/premium/i.test(v.name) ? 100 : 0) + (/enhanced|neural|natural/i.test(v.name) ? 60 : 0)
-    + (/Ava|Zoe|Samantha|Allison|Nicky|Evan|Serena|Karen|Google US English/i.test(v.name) ? 20 : 0)
-    + (/Novelty|Bells|Bubbles|Boing|Whisper|Zarvox|Trinoids|Albert|Bahh|Jester|Organ|Cellos|Superstar|Wobble|Bad News|Good News|Eddy|Flo|Grandma|Grandpa|Reed|Rocko|Sandy|Shelley/i.test(v.name) ? -200 : 0)
-    + (v.lang === 'en-US' ? 5 : 0);
-  voice = en.sort((a, b) => score(b) - score(a))[0] || null;
+// A missing recording must never trigger a device/mechanical voice.
+// The existing recorded audio pipeline remains the only narration source.
+function deviceSay(text) {
+  if (QA_AVAILABLE) console.warn('Missing natural voice clip:', text);
+  return Promise.resolve();
 }
-if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
 
 async function say(text, opts = {}) {
   const my = ++sayToken;
   if (!text || !state.voice) return;
-  // only touch system speech if it is actually talking (cancelling it can pause iPhone audio)
-  if (window.speechSynthesis && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel();
   stopClip();
   if (!Object.keys(CLIPS).length) await Promise.race([clipsReady, sleep(4000)]);
   if (my !== sayToken) return;
   const parts = Array.isArray(text) ? text.map(String) : splitSentences(text);
-  if (Array.isArray(text)) text = text.join(' ');
   const files = parts.map((p) => CLIPS[clipKey(p)]);
   if (parts.length && files.every(Boolean)) {
     say.current = null;
     for (const f of files) { if (my !== sayToken) return; await playClip(f, my); }
     return;
   }
-  return deviceSay(text, opts, my);
-}
-
-function deviceSay(text, { rate = 0.92, pitch = 1.1 } = {}, token = sayToken) {
-  return new Promise((res) => {
-    if (!('speechSynthesis' in window)) return res();
-    if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    if (voice) u.voice = voice;
-    u.lang = 'en-US'; u.rate = rate; u.pitch = pitch;
-    let done = false; const fin = () => { if (!done) { done = true; res(); } };
-    u.onend = fin; u.onerror = fin;
-    u.onboundary = (ev) => u._onWord && u._onWord(ev);
-    setTimeout(() => { if (token === sayToken && state.voice) speechSynthesis.speak(u); else fin(); }, 60);
-    setTimeout(fin, 9000);
-    say.current = u;
-  });
+  return deviceSay(Array.isArray(text) ? text.join(' ') : text);
 }
 
 /* ---------- little sound effects (no files needed) ---------- */
@@ -257,6 +236,7 @@ function renderHome() {
 let R = null; // current round
 
 function startRound(catId, count, browse = false, atLevel = null) {
+  if (isQAMode()) browse = true; // QA never changes mastery, stars or play passes.
   sayToken++; stopClip(); $('#pop').classList.remove('show'); $('#pop').replaceChildren();
   const cat = CATEGORIES.find((c) => c.id === catId);
   const real = visibleGames().filter((c) => c.gen);
@@ -322,8 +302,8 @@ function renderQ() {
   const opts = $('#options');
   opts.className = 'options ' + (q.optClass || '') + (q.options.length === 4 ? ' four' : '') + (q.options.length === 2 ? ' two' : '');
   opts.innerHTML = q.options.map((o) => `<button class="opt" data-v="${String(o.v).replace(/"/g, '&quot;')}">${locHTML(String(o.html))}</button>`).join('');
-  [...opts.children].forEach((b, k) => { b.style.animationDelay = `${k * 60}ms`; b.onclick = () => choose(q, q.options[k].v, b); if (state.testMode && String(q.options[k].v) === String(q.answer)) b.dataset.ok = '1'; });
-  if (state.testMode) $('#qText').insertAdjacentHTML('beforeend', `<div class="test-ans">🧪 ${String(q.answer)}</div>`);
+  [...opts.children].forEach((b, k) => { b.style.animationDelay = `${k * 60}ms`; b.onclick = () => choose(q, q.options[k].v, b); if (isQAMode() && String(q.options[k].v) === String(q.answer)) b.dataset.ok = '1'; });
+  if (isQAMode()) $('#qText').insertAdjacentHTML('beforeend', `<div class="test-ans">🧪 ${String(q.answer)}</div>`);
   if (q.spell) renderSpell(q);
   if (q.body3d) mountBody3D(q);
   if (q.match) renderMatch(q);
@@ -570,7 +550,7 @@ function renderMulti(q) {
     if (want.has(v)) { got.add(v); b.classList.add('right'); sfx.yes(); if (got.size === want.size) matchDone(q); }
     else { q.tries++; R.mistakes++; R.streak = 0; b.classList.add('wrong'); b.disabled = true; sfx.no(); if (q.tries === 1) say('Look carefully, and try again!'); }
   }));
-  if (state.testMode) [...$('#options').children].forEach((b, k) => { if (want.has(String(q.options[k].v))) b.dataset.ok = '1'; });
+  if (isQAMode()) [...$('#options').children].forEach((b, k) => { if (want.has(String(q.options[k].v))) b.dataset.ok = '1'; });
 }
 // follow the letter from the baby to its mom: tap (or slide over) the next box on the path
 function renderLetterPath(q) {
@@ -893,33 +873,39 @@ function applyTheme() {
   const t = THEMES[state.theme] ? state.theme : 'rainbow';
   document.body.className = document.body.className.replace(/\btheme-\w+/g, '').trim() + ' theme-' + t;
   $('#mascot').textContent = THEMES[t].mascot;
-  document.body.classList.toggle('test-mode', !!state.testMode);
+  document.body.classList.toggle('test-mode', isQAMode());
 }
 function renderThemes() {
   $('#themeBtns').innerHTML = Object.entries(THEMES).map(([k, t]) => `<button class="grade-btn ${(state.theme || 'rainbow') === k ? 'on' : ''}" data-t="${k}">${t.label}</button>`).join('');
   $$('#themeBtns .grade-btn').forEach((b) => (b.onclick = () => { sfx.tap(); state.theme = b.dataset.t; save(); applyTheme(); renderThemes(); }));
 }
 
-/* ---------- hidden test mode: tap the Settings title 5 times ---------- */
-(() => {
-  let taps = 0, t = 0;
-  $('#settingsTitle').addEventListener('click', () => {
-    taps++; clearTimeout(t); t = setTimeout(() => (taps = 0), 1500);
-    if (taps >= 5) { taps = 0; $('#testSection').hidden = false; sfx.yes(); renderTestInfo(); }
-  });
-})();
+/* QA is a normal, PIN-protected Settings toggle only when enabled by app-config.js. */
 function renderTestInfo() {
   const clips = Object.keys(CLIPS).length;
   const gl = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
   $('#testInfo').textContent = `Voice clips: ${clips} · 3D: ${gl ? 'yes' : 'no'} · Grade: ${state.grade || 'none'} · Screen: ${innerWidth}×${innerHeight}`;
 }
-$('#testMode').onchange = () => { state.testMode = $('#testMode').checked; save(); applyTheme(); };
-// skip: count the card as right and move on · end: jump to the results
+$('#testMode').onchange = () => { if (!QA_AVAILABLE) return; state.testMode = $('#testMode').checked; save(); applyTheme(); $('#testSection .test-browse').hidden = !isQAMode(); if (isQAMode()) renderTestInfo(); };
+// QA navigation is instant and NEVER awards learning credit.
 $('#skipBtn').onclick = () => {
-  const q = R.qs[R.i]; if (R.locked) return;
-  R.locked = true; q.ok = true; q.skipped = true; R.firstTry++; clearTimeout(R.nudge); next();
+  if (!isQAMode() || !R || !R.qs[R.i]) return;
+  R.browse = true; const q = R.qs[R.i]; q.skipped = true; q.ok = false;
+  R.locked = true; clearTimeout(R.nudge); sayToken++; stopClip(); next();
 };
-$('#endBtn').onclick = () => { R.i = R.qs.length - 1; R.locked = true; next(); };
+$('#endBtn').onclick = () => {
+  if (!isQAMode() || !R) return;
+  R.browse = true; R.i = R.qs.length - 1; R.locked = true; next();
+};
+$('#qaRevealBtn').onclick = () => {
+  if (!isQAMode() || !R) return;
+  const q = R.qs[R.i]; $('#qText').insertAdjacentHTML('beforeend', `<div class="test-ans">🧪 Answer: ${esc(String(q.answer))}</div>`);
+};
+document.addEventListener('keydown', (e) => {
+  if (!isQAMode() || !$('#play').classList.contains('active') || /INPUT|SELECT|TEXTAREA/.test(document.activeElement?.tagName || '') || e.altKey || e.metaKey || e.ctrlKey) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); $('#skipBtn').click(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); $('#prevBtn').click(); }
+});
 
 /* ---------- wire up ---------- */
 $('#grid').addEventListener('click', (e) => {
@@ -957,7 +943,7 @@ $('#gradeChip').onclick = () => $('#settingsBtn').onclick();
 $('#settingsBtn').onclick = () => askPin(openSettings);
 function openSettings() {
   renderKids();
-  renderGrades(); renderThemes(); $('#testMode').checked = !!state.testMode; $('#testSection').hidden = !state.testMode;
+  renderGrades(); renderThemes(); $('#testMode').checked = isQAMode(); $('#testSection').hidden = !QA_AVAILABLE; $('#testSection .test-browse').hidden = !isQAMode(); if (QA_AVAILABLE) renderTestInfo();
   $('#countrySel').innerHTML = COUNTRY_ORDER.map((k) => `<option value="${k}">${COUNTRIES[k].flag} ${COUNTRIES[k].label}</option>`).join('') + '<option value="other">🌍 Somewhere else</option>';
   $('#countrySel').value = countryCode();
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
@@ -1035,12 +1021,13 @@ function renderTestBrowser() {
   sel.onchange = lv; lv();
 }
 $('#tbGo').onclick = () => {
-  const id = $('#tbGame').value, lv = +$('#tbLevel').value;
-  const keep = state.levels[id]; state.levels[id] = lv;
-  startRound(id, 30, true);
-  state.levels[id] = keep;
+  if (!isQAMode()) return;
+  startRound($('#tbGame').value, 30, true, +$('#tbLevel').value);
 };
-$('#prevBtn').onclick = () => { if (!R || R.i === 0) return; R.i--; R.locked = false; renderQ(); };
+$('#prevBtn').onclick = () => {
+  if (!isQAMode() || !R || R.i === 0) return;
+  R.browse = true; R.i--; R.locked = false; renderQ();
+};
 function collectSettings() {
   state.name = $('#nameInput').value.trim().slice(0, 20);
   state.voice = $('#voiceToggle').checked;
