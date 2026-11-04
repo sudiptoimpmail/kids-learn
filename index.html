@@ -30,7 +30,8 @@
   <!-- HOME -->
   <section id="home" class="screen active">
     <header class="top">
-      <div>
+      <button id="kidBtn" class="kid-btn" aria-label="Who is playing?"><span id="kidAvatar">🦄</span></button>
+      <div class="top-txt">
         <div id="hello" class="hello">Hi there!</div>
         <div class="sub">What do you want to learn?</div>
       </div>
@@ -140,6 +141,13 @@
       <button id="timeUpBtn" class="big-btn">📚 Let's learn!</button></div>
   </div>
 
+  <!-- who is playing? -->
+  <div id="whoSheet" class="time-up" hidden>
+    <div class="tu-box who-box"><h2>Who is playing?</h2>
+      <div id="whoGrid" class="who-grid"></div>
+      <small class="note">Grown-ups can add a child in ⚙️ Settings.</small></div>
+  </div>
+
   <!-- grown-up PIN -->
   <div id="pinSheet" class="time-up" hidden>
     <div class="tu-box pin-box"><h2 id="pinTitle">🔒 Grown-ups only</h2><p id="pinNote" class="note"></p>
@@ -176,10 +184,18 @@
       <span class="icon-btn ghost"></span>
     </header>
     <div class="panel">
-      <div class="field">Look <small>(colors and mascot for the app)</small>
+      <div class="field kids-field">👧👦 Children <small>(each child has their own grade, levels, stars and pictures)</small>
+        <div id="kidChips" class="kid-chips"></div>
+        <div class="kid-edit">
+          <label class="lvrow">Name<input id="nameInput" maxlength="20" autocomplete="off" placeholder="e.g. Maya"></label>
+          <div id="avatarRow" class="avatar-row"></div>
+          <button id="kidRemove" class="link-btn">Remove this child</button>
+        </div>
+      </div>
+      <div class="field">Look <small>(colors and mascot — for this child)</small>
         <div id="themeBtns" class="grade-btns theme-btns"></div>
       </div>
-      <div class="field">Grade <small>(sets every game to the right starting level)</small>
+      <div class="field">Grade <small>(for this child — sets every game to the right starting level)</small>
         <div id="gradeBtns" class="grade-btns"></div>
       </div>
       <div class="field">🎮 Play Zone
@@ -192,9 +208,6 @@
       <label class="field row">🫀 Inside My Body <small>(optional — heart, lungs, brain…)</small><input id="optAnatomy" type="checkbox"></label>
       <label class="field row">🕐 Clock game <small>(optional — telling time)</small><input id="optClock" type="checkbox"></label>
       <label class="field row">Show all games <small>(even ones above this grade)</small><input id="showAll" type="checkbox"></label>
-      <label class="field">Child's name (said in praise)
-        <input id="nameInput" maxlength="20" autocomplete="off" placeholder="e.g. Maya">
-      </label>
       <label class="field row">Voice &amp; sounds <input id="voiceToggle" type="checkbox"></label>
       <button id="testVoiceBtn" class="big-btn alt small">🔊 Test voice</button>
       <p id="voiceStatus" class="note small"></p>
@@ -224,6 +237,8 @@
   <script src="art.js"></script>
   <script src="landmarks.js"></script>
   <script src="stories.js"></script>
+  <script src="words.js"></script>
+  <script src="phonics.js"></script>
   <script src="content.js"></script>
   <script src="app.js"></script>
   <script src="scenes.js"></script>

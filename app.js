@@ -7,7 +7,7 @@ const ROUND = 10;
 const KEY = 'learnplay.v1';
 
 /* ---------- saved progress ---------- */
-const state = Object.assign({ name: '', voice: true, stars: 0, stickers: [], levels: {}, best: {} }, Store.load());
+const state = Object.assign({ name: '', voice: true, stars: 0, stickers: [], levels: {}, best: {} }, Store.load());   // device settings + the active child
 const save = () => Store.save(state);
 // if progress can't be saved (storage full), tell the grown-ups once instead of losing stars quietly
 Store.onError = () => { if (Store.warned) return; Store.warned = true; setTimeout(() => { const n = document.createElement('div'); n.className = 'save-warn'; n.textContent = '⚠️ Progress could not be saved on this device (storage may be full). Grown-ups: ⚙️ → Save a backup.'; n.onclick = () => n.remove(); document.body.appendChild(n); }, 0); };   // storage.js decides where it goes (web now, native app later)
@@ -204,6 +204,8 @@ function show(id) {
 }
 
 function renderHome() {
+  $('#kidAvatar').textContent = state.avatar || '🦄';
+  $('#kidBtn').classList.toggle('many', Store.kids().length > 1);
   $('#hello').textContent = state.name ? `Hi, ${state.name}!` : 'Hi there!' + ' ' + ((THEMES[state.theme] || THEMES.rainbow).mascot);
   $('#starCount').textContent = state.stars;
   $('#stickerCount').textContent = state.stickers.length;
@@ -621,7 +623,7 @@ function renderStickers() {
 /* ---------- Word Wonders: learn cards ---------- */
 const L = { list: [], i: 0 };
 function openLearn() {
-  L.list = vocabPool(levelOf('vocab'));
+  L.list = vocabLearnList(levelOf('vocab'));
   if (L.i >= L.list.length) L.i = 0;
   document.body.style.setProperty('--theme', '#f59f00');
   show('learn');
@@ -782,6 +784,7 @@ function renderGrades() {
 $('#gradeChip').onclick = () => $('#settingsBtn').onclick();
 $('#settingsBtn').onclick = () => askPin(openSettings);
 function openSettings() {
+  renderKids();
   renderGrades(); renderThemes(); $('#testMode').checked = !!state.testMode; $('#testSection').hidden = !state.testMode;
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
@@ -858,15 +861,55 @@ $('#tbGo').onclick = () => {
   state.levels[id] = keep;
 };
 $('#prevBtn').onclick = () => { if (!R || R.i === 0) return; R.i--; R.locked = false; renderQ(); };
-$('#settingsDone').onclick = () => {
+function collectSettings() {
   state.name = $('#nameInput').value.trim().slice(0, 20);
   state.voice = $('#voiceToggle').checked;
   state.showAll = $('#showAll').checked;
   state.optClock = $('#optClock').checked;
   state.roundsPerPlay = +$('#roundsPerPlay').value; state.playMinutes = +$('#playMinutes').value; state.playAlways = $('#playAlways').checked; state.optAnatomy = $('#optAnatomy').checked; state.playMode = $('#playMode').value; state.playPerHour = +$('#playPerHour').value;
   $$('#levels select').forEach((s) => (state.levels[s.dataset.id] = +s.value));
-  save(); renderHome(); show('home');
+  save();
+}
+$('#settingsDone').onclick = () => {
+  collectSettings(); applyTheme(); renderHome(); show('home');
   say("Let's play!");
+};
+
+/* ---------- children (profiles): picker on the home screen, add / edit / remove in Settings ---------- */
+function switchKid(id) {
+  if (id === Store.activeId()) return;
+  sayToken++; stopClip();
+  Store.switchTo(id, state);
+  applyTheme(); renderHome();
+  if (typeof renderPlayBanner === 'function') renderPlayBanner();
+}
+function openWho() {
+  const kids = Store.kids();
+  $('#whoGrid').innerHTML = kids.map((k) => `<button class="who-kid ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}">
+    <span class="who-av">${k.avatar || '🦄'}</span><b>${k.name || 'Player'}</b><small>${k.grade ? GRADES[k.grade].label : ''}</small></button>`).join('');
+  $$('#whoGrid .who-kid').forEach((b) => (b.onclick = () => { sfx.tap(); switchKid(b.dataset.id); $('#whoSheet').hidden = true; say("Let's play!"); }));
+  $('#whoSheet').hidden = false;
+}
+$('#kidBtn').onclick = () => { sfx.tap(); if (Store.kids().length > 1) openWho(); else askPin(() => { openSettings(); setTimeout(() => $('.kids-field').scrollIntoView({ block: 'center' }), 50); }); };
+$('#whoSheet').onclick = (e) => { if (e.target.id === 'whoSheet') $('#whoSheet').hidden = true; };
+function renderKids() {
+  const kids = Store.kids();
+  $('#kidChips').innerHTML = kids.map((k) => `<button class="kid-chip ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}"><span>${k.avatar || '🦄'}</span>${k.name || 'Player'}</button>`).join('')
+    + (kids.length < MAX_KIDS ? '<button class="kid-chip add" data-add="1">＋ Add a child</button>' : '');
+  $('#avatarRow').innerHTML = AVATARS.map((a) => `<button class="av ${state.avatar === a ? 'on' : ''}" data-a="${a}">${a}</button>`).join('');
+  $('#kidRemove').hidden = kids.length <= 1;
+  $('#kidRemove').textContent = `Remove ${state.name || 'this child'}`;
+  $$('#kidChips .kid-chip').forEach((b) => (b.onclick = () => {
+    sfx.tap(); collectSettings();
+    if (b.dataset.add) Store.addKid({ grade: state.grade || null }, state); else Store.switchTo(b.dataset.id, state);
+    applyTheme(); openSettings();
+    if (b.dataset.add) setTimeout(() => $('#nameInput').focus(), 50);
+  }));
+  $$('#avatarRow .av').forEach((b) => (b.onclick = () => { sfx.tap(); state.avatar = b.dataset.a; save(); renderKids(); }));
+}
+$('#kidRemove').onclick = () => {
+  if (!confirm(`Remove ${state.name || 'this child'} and all of their stars, levels and pictures?`)) return;
+  Store.removeKid(Store.activeId(), state); applyTheme(); openSettings();
 };
 $('#testVoiceBtn').onclick = async () => {
   const out = $('#voiceStatus');
@@ -877,7 +920,7 @@ $('#testVoiceBtn').onclick = async () => {
 $('#resetBtn').onclick = () => {
   if (!confirm('Reset all stars, stickers and levels?')) return;
   // keep the grown-up settings (name, grade, voice, PIN, play rules, look); clear everything the child earned
-  const KEEP = ['name', 'grade', 'voice', 'pinHash', 'theme', 'showAll', 'optClock', 'optAnatomy', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'schema'];
+  const KEEP = ['name', 'avatar', 'grade', 'voice', 'pinHash', 'theme', 'showAll', 'optClock', 'optAnatomy', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'schema'];
   for (const k of Object.keys(state)) if (!KEEP.includes(k)) delete state[k];
   Object.assign(state, { stars: 0, stickers: [], levels: {}, best: {} });
   if (state.grade && GRADES[state.grade]) Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = +r.split('-')[0]));
@@ -885,8 +928,9 @@ $('#resetBtn').onclick = () => {
 };
 $('#startBtn').onclick = () => {
   // first tap unlocks audio on iPhone
-  tone([1, 1], { vol: 0.001 }); say('Hi! Pick a game!');
+  tone([1, 1], { vol: 0.001 });
   $('#splash').classList.add('gone');
+  if (Store.kids().length > 1) openWho(); else say('Hi! Pick a game!');
 };
 
 applyTheme();

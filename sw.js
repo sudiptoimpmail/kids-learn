@@ -2,8 +2,8 @@
 // A new version is downloaded completely into its own cache before it is used, so the app never
 // mixes files from two versions (even if the internet drops halfway through an update).
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v21';
-const FILES = ['./', 'index.html', 'style.css', 'storage.js', 'content.js', 'app.js', 'games.js', 'trace.js', 'ball3d.js', 'pinball3d.js', 'geo.js', 'art.js', 'landmarks.js', 'stories.js', 'scenes.js', 'body3d.js', 'vendor/three.module.min.js', 'vendor/GLTFLoader.js', 'vendor/BufferGeometryUtils.js', 'vendor/meshopt_decoder.module.js', 'vendor/RoomEnvironment.js', 'vendor/body.glb', 'manifest.webmanifest', 'audio/clips.json', 'audio/silence.mp3',
+const VERSION = PREFIX + 'v23';
+const FILES = ['./', 'index.html', 'style.css', 'storage.js', 'content.js', 'app.js', 'games.js', 'trace.js', 'ball3d.js', 'pinball3d.js', 'geo.js', 'art.js', 'landmarks.js', 'stories.js', 'words.js', 'phonics.js', 'scenes.js', 'body3d.js', 'vendor/three.module.min.js', 'vendor/GLTFLoader.js', 'vendor/BufferGeometryUtils.js', 'vendor/meshopt_decoder.module.js', 'vendor/RoomEnvironment.js', 'vendor/body.glb', 'manifest.webmanifest', 'audio/clips.json', 'audio/silence.mp3',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 const SCOPE = new URL('./', self.location).pathname;   // e.g. /kids-learn/ — never touch other apps on the same site
 

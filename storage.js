@@ -7,20 +7,40 @@
    See docs/launch-architecture.md for the full plan.
    ========================================================= */
 const STORE_KEY = 'learnplay.v1';
-const SCHEMA = 2;            // bump when the shape of the saved data changes, and add a step to migrate()
+const SCHEMA = 3;            // bump when the shape of the saved data changes, and add a step to migrate()
+// saved once for the whole device; everything else belongs to one child
+const DEVICE_KEYS = ['voice', 'pinHash', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode'];
+const AVATARS = ['🦄', '🐶', '🐱', '🦊', '🐼', '🐯', '🦁', '🐸', '🐵', '🐰', '🐻', '🐨', '🐧', '🦖', '🐙', '🦋', '🚀', '⚽', '🌈', '⭐'];
+const MAX_KIDS = 6;
+const profileDefaults = () => ({ name: '', avatar: '🦄', stars: 0, stickers: [], levels: {}, best: {}, recent: {}, traced: {} });
 
+/* Saved shape (schema 3):
+   { schema, savedAt, active: 'p1', order: ['p1', 'p2'],
+     device: { voice, pinHash, play-time rules … },
+     profiles: { p1: { name, avatar, grade, theme, levels, stars, stickers, … }, p2: { … } } }
+   The app works with one flat `state` object = device settings + the active child's data. */
 const Store = {
   ok: true,                  // false when the last save failed (storage full or blocked)
   onError: null,             // the app shows a note to grown-ups when saving fails
+  root: null,
   load() {
     let data = {};
     try { data = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch {}
     Store.loadedAt = data.savedAt || 0;          // what the app started with (saves made at start-up don't count)
-    return Store.migrate(data);
+    Store.root = Store.migrate(data);
+    return Store.flat();
   },
-  save(data) {
-    data.schema = SCHEMA; data.savedAt = Date.now();
-    const json = JSON.stringify(data);
+  flat() { const r = Store.root; return Object.assign(profileDefaults(), r.profiles[r.active], r.device); },
+  // split the app's flat state back into device settings and the active child's data
+  absorb(state) {
+    const r = Store.root, dev = {}, kid = {};
+    for (const [k, v] of Object.entries(state)) { if (k === 'schema' || k === 'savedAt') continue; (DEVICE_KEYS.includes(k) ? dev : kid)[k] = v; }
+    r.device = dev; r.profiles[r.active] = kid;
+  },
+  save(state) {
+    Store.absorb(state);
+    const r = Store.root; r.schema = SCHEMA; r.savedAt = Date.now();
+    const json = JSON.stringify(r);
     try { localStorage.setItem(STORE_KEY, json); Store.ok = true; }
     catch (e) { Store.ok = false; if (Store.onError) Store.onError(e); }
     // native app: also keep a copy in the app's own storage (iOS never clears it).
@@ -36,12 +56,51 @@ const Store = {
   },
   // older saved data → today's shape
   migrate(d) {
-    if (!d.schema || d.schema < 2) {
-      d.recent = d.recent || {};          // questions seen lately (so they don't repeat)
-      d.traced = d.traced || {};          // letters and numbers already traced
+    if (!d.profiles) {
+      // schema 1–2: one child, everything in one flat object
+      d.recent = d.recent || {};
+      d.traced = d.traced || {};
+      const dev = {}, kid = {};
+      for (const [k, v] of Object.entries(d)) { if (k === 'schema' || k === 'savedAt') continue; (DEVICE_KEYS.includes(k) ? dev : kid)[k] = v; }
+      kid.avatar = kid.avatar || '🦄';
+      d = { schema: SCHEMA, savedAt: d.savedAt || 0, active: 'p1', order: ['p1'], device: dev, profiles: { p1: kid } };
     }
+    d.order = (d.order || Object.keys(d.profiles)).filter((id) => d.profiles[id]);
+    if (!d.order.length) { d.profiles = { p1: profileDefaults() }; d.order = ['p1']; }
+    if (!d.profiles[d.active]) d.active = d.order[0];
+    d.device = d.device || {};
     d.schema = SCHEMA;
     return d;
+  },
+  /* ---------- children ---------- */
+  kids: () => Store.root.order.map((id) => ({ id, ...Store.root.profiles[id] })),
+  activeId: () => Store.root.active,
+  // switch the app's state object to another child (in place, so every screen sees it)
+  switchTo(id, state) {
+    if (!Store.root.profiles[id]) return;
+    Store.save(state);
+    for (const k of Object.keys(state)) if (!DEVICE_KEYS.includes(k)) delete state[k];
+    Store.root.active = id;
+    Object.assign(state, Store.flat());
+    Store.save(state);
+  },
+  addKid(meta, state) {
+    if (Store.root.order.length >= MAX_KIDS) return null;
+    let n = Store.root.order.length + 1; while (Store.root.profiles['p' + n]) n++;
+    const id = 'p' + n;
+    const used = new Set(Store.kids().map((k) => k.avatar));
+    Store.root.profiles[id] = Object.assign(profileDefaults(), { avatar: AVATARS.find((a) => !used.has(a)) || '⭐' }, meta);
+    Store.root.order.push(id);
+    Store.switchTo(id, state);
+    return id;
+  },
+  removeKid(id, state) {
+    if (Store.root.order.length <= 1) return false;
+    if (Store.root.active === id) Store.switchTo(Store.root.order.find((x) => x !== id), state);
+    delete Store.root.profiles[id];
+    Store.root.order = Store.root.order.filter((x) => x !== id);
+    Store.save(state);
+    return true;
   },
   native: () => (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Preferences) || null,
   // native app start-up: if the app's own copy is newer than the web copy (or the web copy is gone), use it
@@ -63,9 +122,9 @@ const Store = {
   importJSON(text) {
     const d = JSON.parse(text);
     // only a real Learn & Play backup: an object with the fields the app saves
-    if (typeof d !== 'object' || !d || Array.isArray(d) || !('levels' in d || 'stars' in d) || text.length > 5e6) throw new Error('not a backup');
-    d.savedAt = Date.now();
-    localStorage.setItem(STORE_KEY, JSON.stringify(Store.migrate(d)));
+    if (typeof d !== 'object' || !d || Array.isArray(d) || !('profiles' in d || 'levels' in d || 'stars' in d) || text.length > 5e6) throw new Error('not a backup');
+    const m = Store.migrate(d); m.savedAt = Date.now();
+    localStorage.setItem(STORE_KEY, JSON.stringify(m));
   },
 };
 Store.ready = Store.restoreIfNeeded();

@@ -82,7 +82,7 @@ Each new game is one generator in `content.js` (questions + hint + voice text), 
   | `recent` | profile id, game id, recently asked question keys |
   | `artwork` | profile id, drawing / coloring file path (images saved as files, not inside the database) |
 
-- **Several children on one device:** the current single `state` becomes one profile. Plan the switch now: a profile picker on the start screen, and every progress key scoped by profile id. (Only settings like the PIN and play-time rules stay device-wide.)
+- **Several children on one device:** ✅ done. Saved data is `{ device: {...}, profiles: { p1: {...}, p2: {...} }, active, order }` (schema 3, `storage.js`). Device-wide: voice, PIN, play-time rules, test mode. Everything else is per child. The app keeps one flat `state` (device + active child) and `Store.switchTo()` swaps the child in place.
 
 ### Cloud (only when we add sync or subscriptions)
 - **Accounts are for the parent only.** Children never sign in, type an email, or create a username. This keeps the app inside the App Store Kids rules and COPPA.
@@ -113,7 +113,7 @@ Each new game is one generator in `content.js` (questions + hint + voice text), 
 1. ✅ All saving goes through `storage.js` (one place to change).
 2. ✅ Data has a schema version with migrations.
 3. ✅ Grown-up PIN in front of Settings (needed for the Kids category anyway).
-4. ➕ Before launch: profiles (several children), images saved as files, `isPremium()` gate, privacy policy, Capacitor project.
+4. ✅ Profiles (several children). ➕ Before launch: images saved as files, `isPremium()` gate, privacy policy, Capacitor project.
 5. ➕ Only when needed: cloud accounts and sync.
 
 ### Licenses to keep in mind

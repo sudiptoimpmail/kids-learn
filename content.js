@@ -1871,15 +1871,23 @@ const VOCAB = [
   ['migrate', '🦆', 'to move far away when the seasons change', 'Some birds migrate south for the winter.', 'Where would you migrate?'],
 ];
 const vocabMeaning = (v) => `${v[0][0].toUpperCase() + v[0].slice(1)} means ${v[2]}.`;
-const vocabPool = (level) => VOCAB.slice(0, [20, 40, VOCAB.length][level - 1]);
+// word level: the first 55 words keep their old levels; the new ones come from words.js
+const VOCAB_LEVEL = new Map(VOCAB.map((v, i) => [v, i < 20 ? 1 : i < 40 ? 2 : 3]));
+Object.entries(VOCAB_MORE).forEach(([lv, list]) => list.forEach((v) => { VOCAB.push(v); VOCAB_LEVEL.set(v, +lv); }));
+const vocabPool = (level) => VOCAB.filter((v) => VOCAB_LEVEL.get(v) <= level);
+// learn cards: this level's words first, then the ones before
+const vocabLearnList = (level) => VOCAB.filter((v) => VOCAB_LEVEL.get(v) === level).concat(VOCAB.filter((v) => VOCAB_LEVEL.get(v) < level));
 
 function vocabDistractors(v, pool, n) {
-  return sample(pool.filter((x) => x !== v && (!v[5] || x[5] !== v[5])), n);
+  // no word from the same meaning group, and never two choices with the same picture
+  const seen = new Set([v[1]]), out = [];
+  for (const x of shuffle(pool.filter((x) => x !== v && (!v[5] || x[5] !== v[5])))) { if (seen.has(x[1])) continue; seen.add(x[1]); out.push(x); if (out.length === n) break; }
+  return out;
 }
 
 function genVocab(level) {
-  const pool = vocabPool(level);
-  const v = pick(pool);
+  const pool = vocabPool(level), exact = pool.filter((x) => VOCAB_LEVEL.get(x) === level);
+  const v = pick(exact.length && Math.random() < 0.7 ? exact : pool);
   const [word, pic, gloss] = v;
   const others = vocabDistractors(v, pool, numOpts(level) - 1);
   const meaningHint = { html: `<div class="hint-note">${vocabMeaning(v)}</div>`, say: vocabMeaning(v) };
@@ -1902,11 +1910,12 @@ function genVocab(level) {
 /* ---------------- CATEGORIES ---------------- */
 const CATEGORIES = [
   { id: 'trace', title: 'Letters & Numbers', sub: 'trace A–Z · a–z · 1–20', icon: '✍️', color: '#f76707', trace: true },
+  { id: 'phonics', title: 'Letter Sounds', sub: 'starts with · rhymes · blends', icon: '🔠', color: '#7950f2', gen: genPhonics, maxLevel: 5 },
   { id: 'cvc', title: 'Little Words', sub: 'cat · ant · bee', icon: '🐱', color: '#ff8787', gen: (l) => genWords(W3, l, 'cvc') },
   { id: 'w4', title: 'Big Words', sub: 'frog · truck · tiger', icon: '🐸', color: '#69db7c', gen: (l) => genWords(bigWordList(l), l, 'w4'), maxLevel: 5 },
   { id: 'sight', title: 'Sight Words', sub: 'he · she · went', icon: '👀', color: '#e64980', gen: genSight, maxLevel: 4 },
   { id: 'spell', title: 'Spell It', sub: 'drag the letters', icon: '🔤', color: '#20c997', gen: genSpell, maxLevel: 5 },
-  { id: 'vocab', title: 'Word Wonders', sub: 'learn new words', icon: '🌟', color: '#f59f00', gen: genVocab, learn: true },
+  { id: 'vocab', title: 'Word Wonders', sub: 'learn new words', icon: '🌟', color: '#f59f00', gen: genVocab, learn: true, maxLevel: 4 },
   { id: 'sent', title: 'Read & Answer', sub: 'sentences & stories', icon: '📖', color: '#74c0fc', gen: genSentence, maxLevel: 6 },
   { id: 'match', title: 'Match It', sub: 'word ↔ picture · 3+2 ↔ 5', icon: '🔗', color: '#5c7cfa', gen: genMatch, maxLevel: 5, roundLen: 5 },
   { id: 'syl', title: 'Clap It!', sub: 'syllables', icon: '👏', color: '#ffd43b', gen: genSyllable },
@@ -1935,16 +1944,16 @@ const CATEGORIES = [
 // Roughly follows Common Core: time to the hour/half hour in 1st, 5 minutes in 2nd;
 // multiplication/division start as equal groups and sharing in 2nd.
 const GRADES = {
-  prek: { label: 'Pre-K', g: { trace: '1-1', animals: '1-1', places: '1-1', body: '1-1', gk: '1-1', anatomy: '1-1', match: '1-1', cvc: '1-1', sight: '1-1', spell: '1-1', vocab: '1-1', syl: '1-1', add: '1-1', sub: '1-1', cmp: '1-1',
+  prek: { label: 'Pre-K', g: { trace: '1-1', phonics: '1-2', animals: '1-1', places: '1-1', body: '1-1', gk: '1-1', anatomy: '1-1', match: '1-1', cvc: '1-1', sight: '1-1', spell: '1-1', vocab: '1-1', syl: '1-1', add: '1-1', sub: '1-1', cmp: '1-1',
     shape2: '1-1', shape3: '1-1', jobs: '1-1', flags: '1-1', maps: '1-1' } },
-  k: { label: 'Kindergarten', g: { trace: '1-1', animals: '1-2', places: '1-1', body: '1-2', gk: '1-2', anatomy: '1-1', match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-1', sent: '1-2', syl: '1-2', add: '1-2',
+  k: { label: 'Kindergarten', g: { trace: '1-1', phonics: '1-4', animals: '1-2', places: '1-1', body: '1-2', gk: '1-2', anatomy: '1-1', match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-2', sent: '1-2', syl: '1-2', add: '1-2',
     sub: '1-2', story: '1-1', cmp: '1-2', shape2: '1-2', shape3: '1-1', jobs: '1-2', flags: '1-2', maps: '1-2' } },
-  g1: { label: '1st Grade', g: { animals: '1-2', places: '1-2', body: '2-3', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '2-3', syl: '2-3', add: '3-4',
+  g1: { label: '1st Grade', g: { phonics: '3-5', animals: '1-2', places: '1-2', body: '2-3', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '2-3', syl: '2-3', add: '3-4',
     sub: '3-4', story: '2-3', cmp: '2-4', clock: '1-2', shape2: '2-3', shape3: '1-2', jobs: '2-3', flags: '2-3', maps: '2-3' } },
-  g2: { label: '2nd Grade', g: { animals: '2-3', places: '2-3', body: '3-3', gk: '3-4', anatomy: '2-3', match: '3-5', cvc: '3-3', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-3', sent: '3-4', syl: '3-3', add: '4-5',
+  g2: { label: '2nd Grade', g: { phonics: '4-5', animals: '2-3', places: '2-3', body: '3-3', gk: '3-4', anatomy: '2-3', match: '3-5', cvc: '3-3', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-4', sent: '3-4', syl: '3-3', add: '4-5',
     sub: '4-5', story: '3-5', cmp: '4-5', mul: '1-3', div: '1-2', clock: '2-4', shape2: '3-3', shape3: '2-2', jobs: '3-3', flags: '3-3', maps: '3-3' } },
   g3: { label: '3rd Grade', g: { animals: '3-3', places: '3-3', body: '3-3', gk: '4-4', anatomy: '3-4', match: '4-5', cvc: '3-3', w4: '5-5', sight: '4-4', spell: '5-5',
-    vocab: '3-3', sent: '4-6', syl: '3-3', add: '5-5', sub: '5-5', story: '4-5', cmp: '5-5', mul: '3-5', div: '2-5', clock: '3-4', shape2: '3-3', shape3: '3-3', jobs: '3-3', flags: '3-3', maps: '3-3' } },
+    vocab: '3-4', sent: '4-6', syl: '3-3', add: '5-5', sub: '5-5', story: '4-5', cmp: '5-5', mul: '3-5', div: '2-5', clock: '3-4', shape2: '3-3', shape3: '3-3', jobs: '3-3', flags: '3-3', maps: '3-3' } },
 };
 const gradeRange = (grade, id) => { const r = GRADES[grade] && GRADES[grade].g[id]; return r ? r.split('-').map(Number) : null; };
 

@@ -10,11 +10,12 @@ A flash-card learning game for Pre-K through 3rd grade, built as an installable 
 | Game | What it practices |
 |---|---|
 | ✍️ Letters & Numbers (Pre-K, K) | Trace **A–Z, a–z and 1–20** with a finger on writing lines. The voice says "A. A is for apple" with a picture (numbers show that many things). Trace most of the gray letter to earn a star and go on; ✏️ hides the guide to write on your own. |
+| 🔠 Letter Sounds | Phonics with pictures, 5 levels: which picture **starts with** B → which picture **rhymes** with cat → which picture **ends with** T, and **blend** b·a·t into a word → same **middle (short vowel) sound** as log → **blends and digraphs** (sh, ch, tr, st, cl…). 💡 Hint names every picture out loud. Pre-K 1–2, K 1–4, 1st 3–5, 2nd 4–5 |
 | 🐱 Little Words | 3-letter words (cat, ant, bee, key, owl…) — read the word → tap the picture, listen → tap the word, missing vowel |
 | 🐸 Big Words | Levels 1–3: 4-letter words (crab, lamp, wolf, coin…) · 4: 5-letter (truck, tiger, puppy, brick…) · 5: long words (alligator, anchor, orange, mother…) |
 | 👀 Sight Words | he, she, like, went, from, take, make, over, under, write… Listen → tap the word, fill the missing word in a sentence, and opposites (up/down, hot/cold) from level 3 |
 | 🔤 Spell It | See the picture, hear the word, then drag (or tap) letter tiles into the blanks. Extra decoy letters. Level 1: 1–2 missing letters in 3-letter words · Level 2: whole 3-letter words or 2 blanks in 4-letter words · Level 3: whole 4-letter words with look-alike decoys (b/d, m/n) · Level 4: 5-letter words, listen-and-spell sight words (no picture), spell the missing word in a sentence · Level 5: whole 5-letter and long words. Tap a placed letter to send it back; wrong letters bounce out and one correct letter is given |
-| 🌟 Word Wonders | 55 new vocabulary words (enormous, curious, fragile, nocturnal…). **Learn** cards: picture + the voice reads the word, a kid-friendly meaning and an example; tap any line to hear it again; swipe or ◀ ▶ to move; a **Talk together** question for parent and child. **🎯 Quiz**: pick the picture for a word, or the word for a meaning. Level 1 = first 20 words, 2 = 40, 3 = all |
+| 🌟 Word Wonders | 207 vocabulary words in 4 levels: everyday words (hungry, gentle, share…) → feelings and actions (excited, wobble, rescue…) → science and community (habitat, observe, volunteer…) → 2nd–3rd grade words (persevere, evidence, ecosystem, transparent…). **Learn** cards: picture + the voice reads the word, a kid-friendly meaning and an example; tap any line to hear it again; swipe or ◀ ▶ to move; a **Talk together** question for parent and child. **🎯 Quiz**: pick the picture for a word, or the word for a meaning. Learn cards show this level's new words first. Choices never repeat a picture or offer two words that mean the same |
 | 📖 Read & Answer | 280+ texts with 370+ questions in 6 levels: short sentences → longer sentences → 1st-grade 2–3 sentence stories → 2nd-grade short stories → 3rd-grade passages → 3rd-grade challenge stories (6–8 sentences). Most stories have 2–3 different questions. Questions seen in the last few rounds are not asked again while fresh ones are left (this works in every game) |
 | 🔗 Match It | Two columns, tap a left item then its partner: word ↔ picture, number ↔ picture count, problem ↔ answer (3 pairs at Pre-K up to 5 pairs with long words and × ÷ in 2nd). Lines join the matches. 5 boards per round |
 | 👏 Clap It! | Syllable counting |
@@ -61,6 +62,9 @@ Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (defau
 
 ## Looks
 ⚙️ → **Look**: 🌈 Rainbow, 🦄 Unicorn, 🦖 Dino, 🚀 Space, 🐬 Ocean, ⚽ Sports, 🏎️ Race Cars, 🦁 Jungle — changes the colors, the splash screen and the mascot. Game tiles have glossy 3D-style icons.
+
+## Children (profiles)
+Each child has their own name, picture, grade, levels, stars, stickers, colored pictures, drawings, traced letters and Play Zone time. Tap the picture at the top of the home screen to switch (with more than one child the app also asks **Who is playing?** when it opens). Add, rename, change the picture, or remove a child in ⚙️ → Children (up to 6). Voice, PIN and the Play Zone rules are shared by the whole device. Older saved progress becomes the first child automatically.
 
 ## Grown-up PIN
 ⚙️ asks for a 4-digit PIN (you make one the first time). Forgot it? Tap **Forgot PIN?** and answer a grown-up multiplication question to make a new one. Change it any time in ⚙️.
