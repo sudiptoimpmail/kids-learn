@@ -88,7 +88,7 @@ function traceDone(set, ch) { return !!(state.traced && state.traced[set + ch]);
 function renderTrace(speak) {
   const items = traceItems(TR.set), it = items[TR.i];
   const [ch, shown, spoken, pic, n] = it;
-  $('#trace .tr-tab').forEach((b) => {
+  $$('#trace .tr-tab').forEach((b) => {
     if (b.dataset.set === 'words') b.hidden = state.grade !== 'g1' && !state.showAll;
     b.classList.toggle('on', b.dataset.set === TR.set);
   });
