@@ -126,7 +126,7 @@ const IllustratedActivities = (() => {
     ],correct:['clock','plate','wheel','ball']},
     forest:{theme:'forest',items:[['leaf',43,36],['bird',80,34],['wolf',22,83],['water',78,83]]}
   };
-  const longA=['gate','name','hot','fish','rope','kite','date','rain','jam','pet','dog','rain','mail','paid','net','bat','jam','wave','page','sun','tail','make','cake','lake','wave'];
+  const longA=['gate','name','date','hot','rope','fish','rain','mail','kite','pet','page','paid','lake','wave','net','cake','name','rain','bake','sun','make','plane','cane','rain','tail'];
   const zebraLetters=['Z','Z','Z','F','X','S','Z','Z','X','F','Z','Z','Z','Z','S','Z','Z','S','Z','X','Z','Z','Z','Z','Z'];
   const route=[0,1,2,7,12,11,10,15,20,21,22,23,24];
   const branches=[[1,6],[6,11],[7,8],[12,13],[13,18],[15,16],[16,17],[17,18],[18,23],[3,8],[8,9]];
@@ -194,7 +194,7 @@ const IllustratedActivities = (() => {
       note.textContent=mode==='forest'?'Find the '+q.answer+'.':'Tap pictures to find all '+info.correct.length+'.';
     }else if(mode==='letters'||mode==='longa'){
       const labels=mode==='letters'?zebraLetters:longA;
-      const valid=v=>mode==='letters'?v==='Z':/^(gate|name|date|rain|mail|paid|page|lake|cake|make|tail|wave)$/.test(v);
+      const valid=v=>mode==='letters'?v==='Z':/^(gate|name|date|rain|mail|paid|page|lake|cake|make|tail|wave|bake|plane|cane)$/.test(v);
       const linkSet=new Set(edges.flatMap(([a,b])=>[a+'-'+b,b+'-'+a]));
       const point=i=>[19+(i%5)*15.5,19+Math.floor(i/5)*15.1];
       const connections='<svg class="ia-connections" viewBox="0 0 800 480" preserveAspectRatio="none" aria-hidden="true">'+edges.map(([a,b])=>{
@@ -242,7 +242,7 @@ const IllustratedActivities = (() => {
       const tray=document.createElement('div');tray.className='ia-story-cards';
       cards.forEach(card=>{
         const b=document.createElement('button');b.type='button';b.className='ia-story-card';b.dataset.step=card.id;
-        b.innerHTML='<span class="ia-story-art">'+el(48,69,.36,'<path d="M0 0" fill="none"/>')+
+        b.innerHTML='<span class="ia-story-art">'+
           '<svg viewBox="0 0 180 115" aria-hidden="true">'+
           '<rect width="180" height="115" rx="13" fill="#d9f2ca"/>'+
           '<path d="M0 83 Q70 62 180 86 V115 H0Z" fill="#8ac079"/>'+
