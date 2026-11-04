@@ -80,7 +80,7 @@ function mountWordSearch(root, size, count, down, cb) {
   };
   board.addEventListener('pointerup', finish); board.addEventListener('pointercancel', finish);
   $$('.ws-clue', root).forEach((b) => (b.onclick = () => { sfx.tap(); say([b.dataset.speak]); }));
-  if (state.testMode || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__wordSearch = { placed, find: (i) => { sel = placed[i].cells.slice(); start = sel[0]; finish(); } };
+  if (isQAMode() || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__wordSearch = { placed, find: (i) => { sel = placed[i].cells.slice(); start = sel[0]; finish(); } };
   // hint: the first letter of a word not found yet glows
   return { hint() { const p = placed.find((x) => !x.got); if (!p) return; const el = cellEl(...p.cells[0]); el.classList.remove('glow-l'); void el.offsetWidth; el.classList.add('glow-l'); say([p.w]); } };
 }
@@ -184,7 +184,7 @@ function mountCrossword(root, nWords, lv, cb) {
   });
   $$('.xw-key', root).forEach((b) => (b.onclick = () => { if (done || !selK) return; sfx.tap(); put(selK, b.dataset.l); }));
   paint();
-  if (state.testMode || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__crossword = { words, cells, given, type: (k, l) => { selK = k; put(k, l); } };
+  if (isQAMode() || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__crossword = { words, cells, given, type: (k, l) => { selK = k; put(k, l); } };
   // hint: one right letter goes in
   return { hint() { const k = open.find((x) => typed.get(x) !== cells.get(x)); if (k) { selK = k; put(k, cells.get(k)); } } };
 }
