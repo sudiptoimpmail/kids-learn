@@ -169,8 +169,32 @@ function similarWords(list, word, n, level) {
 function genWords(list, level, kind) {
   const [w, e] = pick(list);
   const n = numOpts(level) - 1;
-  const type = pick(['read', 'read', 'find', 'missing']);
+  // workbook-style variety: read → picture, picture → word, listen → word, missing letter, unscramble
+  const clear = !(typeof PHON_SKIP !== 'undefined' && PHON_SKIP.has(w));      // the picture can only mean this word
+  const type = pick(clear ? ['read', 'pic', 'find', 'missing', 'missing', 'scramble'] : ['read', 'find', 'missing']);
   const picHint = { html: `<div class="hint-pic">${e}</div>`, say: 'Look at the picture!' };
+
+  if (type === 'pic') {
+    // look at the picture, pick its word from words that look alike (man · pan · cat)
+    const others = similarWords(list.filter(([x]) => x.length === w.length), w, n, 3);
+    return {
+      key: `${kind}-pic-${w}`, text: 'Which word matches the picture?', say: 'Which word matches the picture?',
+      main: `<div class="spell-pic">${e}</div>`,
+      options: shuffle([w, ...others.map((o) => o[0])]).map((x) => ({ v: x, html: x })), answer: w, optClass: 'opt-word',
+      hint: readingHint(w),
+    };
+  }
+  if (type === 'scramble' && /^[a-z]+$/.test(w)) {
+    // unscramble the letters (nsu → sun): the letters are the tiles, nothing extra
+    let mixed; do { mixed = shuffle(w.split('')); } while (mixed.join('') === w && new Set(w).size > 1);
+    return {
+      key: `${kind}-scr-${w}`, text: 'Unscramble the letters!', say: 'Unscramble the letters!', speak: w,
+      main: `<div class="spell-pic">${e}</div><div class="scrambled">${mixed.join(' ')}</div>`,
+      options: [], answer: w, optClass: 'spell-tray',
+      spell: { word: w, blanks: w.split('').map((_, i) => i), tiles: mixed },
+      hint: { html: '', say: w, slow: true },
+    };
+  }
 
   if (type === 'read') {
     const others = similarWords(list, w, n, level);
@@ -203,7 +227,7 @@ function genWords(list, level, kind) {
 
   // missing letter
   let pos;
-  if (w.length === 3) pos = 1; // CVC: the vowel
+  if (w.length === 3) pos = level <= 1 ? 1 : pick([0, 1, 1, 2]); // CVC: the vowel first; later also the first or last letter
   else { do { pos = rand(w.length); } while (!/[a-z]/.test(w[pos])); }
   const letter = w[pos];
   const pool = (VOWELS.includes(letter) ? VOWELS : CONS).filter((l) => l !== letter);
@@ -214,11 +238,12 @@ function genWords(list, level, kind) {
     text: 'Which letter is missing?',
     say: `Which letter is missing? ${w}.`,
     speak: w,
-    main: `<div class="word" style="font-size:min(var(--wfs), ${Math.floor(125 / w.length)}vw)">${shown}</div>`,
+    // the picture is shown too: c_t could be cat, cot or cut — the picture says which
+    main: `${clear ? `<div class="miss-pic">${e}</div>` : ''}<div class="word" style="font-size:min(var(--wfs), ${Math.floor(125 / w.length)}vw)">${shown}</div>`,
     options: opts.map((l) => ({ v: l, html: l })),
     answer: letter,
     optClass: 'opt-letter',
-    hint: picHint,
+    hint: clear ? { html: '', say: [w], slow: true } : picHint,
     fill: { pos, word: w },
   };
 }
