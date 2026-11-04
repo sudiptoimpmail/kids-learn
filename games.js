@@ -1048,10 +1048,12 @@ function startSudoku(mode) {
     sel = null; paint();
     $$('.sdk-cell', area).forEach((el, k) => { el.style.animationDelay = `${k * 30}ms`; el.classList.add('win'); });
     const up = lv < 5;
-    state.sdkWins = (state.sdkWins || 0) + 1;
-    if (brainMode && typeof logBrainWin === 'function') logBrainWin('sudoku');
-    if (up && state.sdkWins % 2 === 0) state.sdkLevel = lv + 1;   // every 2 wins → harder
-    save();
+    if (!isTestMode()) {
+      state.sdkWins = (state.sdkWins || 0) + 1;
+      if (brainMode && typeof logBrainWin === 'function') logBrainWin('sudoku');
+      if (up && state.sdkWins % 2 === 0) state.sdkLevel = lv + 1;   // every 2 wins → harder
+      save();
+    }
     gameWin(pick(['Awesome job!', 'Excellent!', 'You did it!']));
     later(() => endPanel(state.sdkLevel > lv ? `Solved! Next puzzles are harder (level ${state.sdkLevel})` : 'Solved!', '🧩', () => startSudoku(mode)), 1300);
   }
