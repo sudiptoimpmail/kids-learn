@@ -152,7 +152,7 @@ const IllustratedActivities = (() => {
       ['The fox is by the ____.','tree','milk','chair','rain','park'],
       ['The bird is in the ____.','tree','lake','chair','bag','forest']
     ];const s=sentences[Math.floor(Math.random()*sentences.length)];return {
-      key:'ill-sentence-'+s[0],text:s[0].replace('____','_____'),say:'Which word fits?',main:illustration(s[5]),mainClass:'ia-picture',
+      key:'ill-sentence-'+s[0],text:s[0].replace('____','_____'),say:'Which word fits?',main:'<div class="ia-stage ia-static-scene">'+illustration(s[5])+'</div>',mainClass:'ia-picture',
       options:[s[1],s[2],s[3],s[4]].sort(()=>Math.random()-.5).map(w=>({v:w,html:w})),answer:s[1],
       optClass:'opt-text',hint:{html:'Read the sentence and look at the picture.',say:'Look at the picture!'}
     };}
