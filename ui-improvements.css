@@ -3,8 +3,6 @@
 .catalog-section { min-width: 0; }
 .catalog-section h2 { margin: 4px 6px 12px; font-size: 21px; font-weight: 900; }
 .catalog-section .grid { align-items: stretch; }
-  background: #ede9fe; color: #42217d; border-radius: 22px; text-align: left;
-  margin: 0 0 18px; box-shadow: 0 5px 0 #d0bfff; }
 .settings-top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 15; padding: 5px 0 10px; background: var(--bg); }
 button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
   outline: 4px solid #1c7ed6; outline-offset: 3px;
@@ -24,7 +22,8 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
     .think-pattern span { min-width: 68px; min-height: 74px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  }
+  .catalog-section .tile { transition: none; }
+}
 
 /* Science, Word Detective, Number Sense */
 .sci-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
@@ -114,3 +113,13 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .big-btn.ico.small { font-size: 20px; min-height: 50px; padding: 6px 14px; }
 .big-btn.ico.start { font-size: 36px; min-width: 170px; min-height: 80px; border-radius: 999px; }
 .pin-back { font-size: 22px !important; padding: 8px 14px !important; }
+/* Fingers trace with one pointer; two fingers pinch/pan only the puzzle surface. */
+.pm-view { touch-action: none; overflow: hidden; position: relative; border-radius: 14px; }
+.pm-view .pm-cv { transform-origin: 0 0; touch-action: none; display:block; }
+
+.q-zoom-controls { display:flex; justify-content:flex-end; gap:7px; margin:5px 0 7px; }
+.q-zoom-controls .diff-btn { min-width:43px; min-height:42px; font-weight:900; }
+.q-zoom-view { overflow:auto; max-height:min(70dvh, 760px); overscroll-behavior:contain; }
+#qZoomSpace { position:relative; max-width:none; min-width:100%; }
+#qZoomInner { transform-origin:0 0; }
+@media (prefers-reduced-motion: reduce) { #qZoomInner { transition:none; } }

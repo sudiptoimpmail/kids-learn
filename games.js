@@ -14,7 +14,7 @@ const perHour = () => state.playPerHour || 15;
 const hourKey = () => { const d = new Date(); return `${d.toDateString()} ${d.getHours()}`; };
 const usedThisHour = () => (state.playUsed && state.playUsed.h === hourKey() ? state.playUsed.ms : 0);
 const hourLeftMs = () => Math.max(0, perHour() * 60000 - usedThisHour());
-const playOpen = () => !!state.playAlways || !!state.testMode || (hourlyMode() ? hourLeftMs() > 0 : (state.playUntil || 0) > Date.now());
+const playOpen = () => !!state.playAlways || isTestMode() || (hourlyMode() ? hourLeftMs() > 0 : (state.playUntil || 0) > Date.now());
 
 // called from finish() in app.js; returns true when a new play break was earned
 function earnPlay() {
@@ -137,7 +137,7 @@ const GAMES = [
   { id: 'moves', title: 'Silly Moves', icon: '🤸', color: '#12b886', start: startMoves },
 ];
 // level per game; winning moves you up (needWins wins per level)
-const GAME_MAX = { path: 7, pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
+const GAME_MAX = { path: 11, pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
 // Brain Teasers: puzzle games shown with the thinking lessons on the home screen.
 // They are learning, so they never need earned play time (Tic-Tac-Toe and Ball Maze stay in the Play Zone).
 const BRAIN_GAME_IDS = new Set(['path', 'memory', 'puzzle', 'sudoku', 'c4']);
@@ -159,9 +159,11 @@ function GL(id) {
   if (id === 'maze' && state.gameLv && state.gameLv.maze == null && state.gameLv.ball > 1 && !state.ball3d) { state.gameLv.maze = state.gameLv.ball; state.gameLv.ball = 1; state.ball3d = true; }
   if (id === 'sudoku') return sdkLevel();
   if (id === 'color') return colorLevel();
+  if (id === 'path' && !(state.gameLv && state.gameLv.path)) return ({ prek: 1, k: 2, g1: 4, g2: 6, g3: 9 })[state.grade] || 1;
   return (state.gameLv && state.gameLv[id]) || 1;
 }
 function gameLevelUp(id, needWins = 1) {
+  if (isTestMode()) return false; // QA runs do not mutate earned levels or rewards
   state.gameLv = state.gameLv || {}; state.gameWins = state.gameWins || {};
   state.gameWins[id] = (state.gameWins[id] || 0) + 1;
   if (brainMode && BRAIN_GAME_IDS.has(id) && typeof logBrainWin === 'function') logBrainWin(id);
@@ -861,7 +863,7 @@ function startColorPicker() {
 }
 
 // pinch (two fingers) to zoom, drag with one finger when zoomed in; taps still go through
-function zoomable(view, inner) {
+function zoomable(view, inner, { oneFingerPan = true } = {}) {
   let s = 1, x = 0, y = 0, last = 0;
   const pts = new Map(); let start = null;
   const apply = () => {
@@ -885,7 +887,7 @@ function zoomable(view, inner) {
       const ns = Math.min(4, Math.max(1, start.s * d / start.d));
       const mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
       x = mx - (start.mx - start.x) * ns / start.s; y = my - (start.my - start.y) * ns / start.s; s = ns; apply(); last = Date.now();
-    } else if (pts.size === 1 && start.px && s > 1.01) {
+    } else if (oneFingerPan && pts.size === 1 && start.px && s > 1.01) {
       const p = local(e), dx = p[0] - start.px[0], dy = p[1] - start.px[1];
       if (Math.hypot(dx, dy) > 8) { x = start.x + dx; y = start.y + dy; apply(); last = Date.now(); }
     }
@@ -1046,10 +1048,12 @@ function startSudoku(mode) {
     sel = null; paint();
     $$('.sdk-cell', area).forEach((el, k) => { el.style.animationDelay = `${k * 30}ms`; el.classList.add('win'); });
     const up = lv < 5;
-    state.sdkWins = (state.sdkWins || 0) + 1;
-    if (brainMode && typeof logBrainWin === 'function') logBrainWin('sudoku');
-    if (up && state.sdkWins % 2 === 0) state.sdkLevel = lv + 1;   // every 2 wins → harder
-    save();
+    if (!isTestMode()) {
+      state.sdkWins = (state.sdkWins || 0) + 1;
+      if (brainMode && typeof logBrainWin === 'function') logBrainWin('sudoku');
+      if (up && state.sdkWins % 2 === 0) state.sdkLevel = lv + 1;   // every 2 wins → harder
+      save();
+    }
     gameWin(pick(['Awesome job!', 'Excellent!', 'You did it!']));
     later(() => endPanel(state.sdkLevel > lv ? `Solved! Next puzzles are harder (level ${state.sdkLevel})` : 'Solved!', '🧩', () => startSudoku(mode)), 1300);
   }
