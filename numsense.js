@@ -82,7 +82,7 @@ function genNumSense(level) {
     const unit = C.coins[0][0], total = unit >= 100 ? 100 * (3 + rand(30)) : unit * (3 + rand(Math.floor(95 / unit))), main = nsCoins(total, C);
     if (main) return nsQ(`money-${total}`, 'How much money?', ['How much money?'], main, C.fmt(total), [C.fmt(total + unit), C.fmt(Math.max(unit, total - unit)), C.fmt(total + 5 * unit), C.fmt(total * 2)], n, 'opt-text');
   }
-  if (level >= 2 && t < 0.8) {
+  if (level === 2 && t < 0.8) {
     const k = Math.random();
     if (k < 0.35) {
       const v = 10 + rand(90), s = String(v), i = pick([0, 1].filter((j) => s[j] !== '0')), val = +s[i] * (i ? 1 : 10);
