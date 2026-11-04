@@ -48,25 +48,29 @@ const { chromium } = require('playwright');
       state.grade = 'prek';
       renderHome();
       const sections = [...document.querySelectorAll('#grid .catalog-section h2')].map(e => e.textContent);
-      if (!sections.some(s => s.includes('Thinking Skills')))
-        throw new Error('Thinking Skills missing from educational catalog');
+      if (!sections.some(s => s.includes('Brain Teasers')))
+        throw new Error('Brain Teasers missing from home');
       if (!document.querySelector('#grid [data-cat="pattern"]'))
         throw new Error('Pattern activity missing from home');
-      openBrainGames();
-      const early = [...document.querySelectorAll('#pzGrid [data-game]')].map(x => x.dataset.game);
-      if (!early.includes('memory') || early.includes('sudoku') || early.includes('c4') || early.includes('pinball'))
+      // brain games sit inside Brain Teasers on the home screen, filtered by age
+      const tiles = () => [...document.querySelectorAll('#grid [data-game]')].map(x => x.dataset.game);
+      const early = tiles();
+      if (!early.includes('memory') || !early.includes('path') || early.includes('sudoku') || early.includes('c4') || early.includes('ttt') || early.includes('maze'))
         throw new Error('Pre-K brain-game age filters failed: ' + early.join(','));
-      if (!document.querySelector('#playzone .play-clock').hidden)
+      openBrainGame('memory');
+      if (!document.querySelector('#game .play-clock').hidden)
         throw new Error('Brain games must not show an arcade timer');
+      document.querySelector('#gameBack').click();
+      if (!document.querySelector('#home').classList.contains('active')) throw new Error('Back from a brain game must go home');
       state.grade = 'g3';
-      renderPZ();
-      const older = [...document.querySelectorAll('#pzGrid [data-game]')].map(x => x.dataset.game);
+      renderHome();
+      const older = tiles();
       if (!older.includes('sudoku') || !older.includes('c4') || older.includes('pop'))
         throw new Error('Older child brain games failed: ' + older.join(','));
       state.playAlways = true;
       openPlayZone();
       const arcade = [...document.querySelectorAll('#pzGrid [data-game]')].map(x => x.dataset.game);
-      if (!arcade.includes('pinball') || arcade.includes('memory'))
+      if (!arcade.includes('pinball') || !arcade.includes('ttt') || !arcade.includes('maze') || arcade.includes('memory') || arcade.includes('path'))
         throw new Error('Arcade games not separated: ' + arcade.join(','));
       return { combinations: audit.length, early, older, arcade, sections };
     });

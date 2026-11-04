@@ -26,8 +26,11 @@ const SKILLS = {
   mul: ['Equal groups', 'Times 2, 5 and 10', 'Times tables to 5', 'Times tables to 10', 'Missing factors and stories'],
   div: ['Share equally', 'Divide by 2, 5 and 10', 'Divide within 25', 'Divide within 100', 'Division stories'],
   clock: ["O'clock", 'Half past', 'Quarter past and to', 'Five minutes'],
-  shape2: ['Name flat shapes', 'Find shapes', 'Count sides'],
-  shape3: ['Name 3D shapes', 'Flat or solid', '3D shapes in real life'],
+  shape2: ['Name flat shapes', 'Flat and 3D shapes', 'Sides and solids', '3D shapes in real life'],
+  words: ['Nouns and verbs', 'Plurals and opposites', 'Past tense and compound words', 'Contractions and synonyms', 'Prefixes, suffixes and sound-alikes'],
+  numsense: ['Even, odd and tens', 'Place value and rounding', 'Hundreds and money', 'Fractions', 'Fractions of numbers and money'],
+  sci: ['Living things and seasons', 'Animals, materials and magnets', 'Matter, space and food chains', 'Forces, rocks and energy'],
+  home: ['Money, symbols and help', 'Capital, flag and holidays', 'States and neighbours', 'Rivers, mountains and capitals'],
   body: ['Big body parts', 'More body parts and what is inside', 'Small body parts'],
   gk: ['Animals and colors', 'Seasons, days, safety', 'Planets, plants, months', 'Continents, magnets, water'],
   anatomy: ['Main organs', 'More organs and big bones', 'Bones, kidneys, blood vessels', 'All bones and science facts'],
@@ -41,9 +44,9 @@ const SKILLS = {
   sequence: ['Everyday order', 'Cause and effect', 'Multi-step sequences'],
 };
 const skillName = (cat, lv) => (SKILLS[cat] && SKILLS[cat][lv - 1]) || `${(CATEGORIES.find((c) => c.id === cat) || {}).title || cat} · level ${lv}`;
-const SUBJECT = (cat) => (['pattern', 'odd', 'sequence'].includes(cat) ? 'Thinking Skills'
-  : ['add', 'sub', 'story', 'cmp', 'mul', 'div', 'clock', 'shape2', 'shape3', 'match'].includes(cat) ? 'Math'
-  : ['phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'syl', 'trace'].includes(cat) ? 'Reading & words' : 'Science & world');
+const SUBJECT = (cat) => (['pattern', 'odd', 'sequence'].includes(cat) ? 'Brain teasers'
+  : ['add', 'sub', 'story', 'cmp', 'mul', 'div', 'clock', 'shape2', 'numsense', 'match'].includes(cat) ? 'Math'
+  : ['phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'syl', 'trace', 'words'].includes(cat) ? 'Reading & words' : 'Science & world');
 const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const DAILY_GOAL = () => state.dailyGoal || 20;
 
@@ -192,9 +195,9 @@ $('#dashBtn').onclick = () => { sfx.tap(); openDashboard('settings'); };
    topic (and tracing for Pre-K/K). Each step is 5 cards. All done → a gift.
    ========================================================= */
 const QUEST_LEN = 5;
-const QUEST_READING = { prek: ['phonics', 'cvc'], k: ['phonics', 'cvc', 'sight'], g1: ['sent', 'sight', 'phonics', 'spell'], g2: ['sent', 'spell', 'vocab'], g3: ['sent', 'vocab', 'spell'] };
-const QUEST_MATH = { prek: ['add', 'cmp', 'shape2'], k: ['add', 'sub', 'cmp'], g1: ['add', 'sub', 'story'], g2: ['add', 'sub', 'mul', 'story'], g3: ['mul', 'div', 'story'] };
-const QUEST_WORLD = ['animals', 'places', 'maps', 'body', 'gk', 'shape3', 'jobs', 'flags', 'anatomy'];
+const QUEST_READING = { prek: ['phonics', 'cvc'], k: ['phonics', 'cvc', 'sight'], g1: ['sent', 'sight', 'phonics', 'spell', 'words'], g2: ['sent', 'spell', 'vocab', 'words'], g3: ['sent', 'vocab', 'spell', 'words'] };
+const QUEST_MATH = { prek: ['add', 'cmp', 'shape2'], k: ['add', 'sub', 'cmp'], g1: ['add', 'sub', 'story', 'numsense'], g2: ['add', 'sub', 'mul', 'story', 'numsense'], g3: ['mul', 'div', 'story', 'numsense'] };
+const QUEST_WORLD = ['sci', 'home', 'animals', 'places', 'maps', 'body', 'gk', 'shape2', 'jobs', 'flags', 'anatomy'];
 const QUEST_THINKING = ['pattern', 'odd', 'sequence'];
 function questFor() {
   const today = dayKey(), grade = state.grade || 'k';

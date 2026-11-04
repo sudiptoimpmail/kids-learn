@@ -11,11 +11,16 @@ const state = Object.assign({ name: '', voice: true, stars: 0, stickers: [], lev
 const save = () => Store.save(state);
 // if progress can't be saved (storage full), tell the grown-ups once instead of losing stars quietly
 Store.onError = () => { if (Store.warned) return; Store.warned = true; setTimeout(() => { const n = document.createElement('div'); n.className = 'save-warn'; n.textContent = '⚠️ Progress could not be saved on this device (storage may be full). Grown-ups: ⚙️ → Save a backup.'; n.onclick = () => n.remove(); document.body.appendChild(n); }, 0); };   // storage.js decides where it goes (web now, native app later)
-const levelOf = (id) => state.levels[id] || 1;
+// a game never played yet starts in the middle of the child's grade range
+const levelOf = (id) => state.levels[id] || (state.grade && GRADES[state.grade] && GRADES[state.grade].g[id] ? gradeStart(GRADES[state.grade].g[id]) : 1);
 const maxLevelOf = (id) => (CATEGORIES.find((c) => c.id === id) || {}).maxLevel || 3;
 const gameMax = maxLevelOf;
 const OPTIONAL = { clock: 'optClock', anatomy: 'optAnatomy' };  // off unless a parent turns them on in Settings
+// a child who reads and spells well doesn't need syllable clapping any more
+const strongReader = () => levelOf('spell') >= 4 || levelOf('sent') >= 3 || (levelOf('spell') >= 3 && (state.best.spell || 0) >= 3);
 const visibleGames = () => state.testMode ? CATEGORIES.slice() : CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
+  && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
+  && !(c.id === 'syl' && !state.showAll && strongReader())
   && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
 // auto level-up stops at the top of the child's grade (unless all games are shown)
 const levelCap = (id) => { const r = state.grade && !state.showAll && gradeRange(state.grade, id); return r ? r[1] : gameMax(id); };
@@ -219,23 +224,27 @@ function renderHome() {
   if (typeof renderToday === 'function') renderToday();
   if (typeof renderQuest === 'function') renderQuest();
   const groups = [
-    ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'match', 'syl']],
-    ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'mul', 'div', 'clock', 'shape2', 'shape3']],
-    ['🧠 Thinking Skills', ['pattern', 'odd', 'sequence']],
-    ['🌍 Science & World', ['body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
+    ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'match', 'syl']],
+    ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'mul', 'div', 'clock', 'shape2']],
+    ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], true],
+    ['🌍 Science & World', ['sci', 'home', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
   ];
   const visible = visibleGames();
   const makeTile = (c) => {
     const best = Math.min(3, state.best[c.id] || 0);
     const lv = c.id === 'mix' || c.trace ? '' : `<span class="lv">Lv ${levelOf(c.id)}</span>`;
+    const icon = c.id === 'home' && typeof myCountry === 'function' && myCountry() ? myCountry().flag : c.icon;
     return `<button class="tile" data-cat="${c.id}" style="--c:${c.color}">
-      ${lv}<span class="ti">${c.icon}</span><span class="tt">${c.title}</span><span class="ts">${c.sub}</span>
+      ${lv}<span class="ti">${icon}</span><span class="tt">${c.title}</span><span class="ts">${c.sub}</span>
       <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
   };
-  $('#grid').innerHTML = groups.map(([title, ids]) => {
+  // brain games (memory, puzzles, mazes …) sit right inside Brain Teasers: a tap opens the game
+  const gameTile = (g) => `<button class="tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span><span class="ts">puzzle game</span></button>`;
+  $('#grid').innerHTML = locHTML(groups.map(([title, ids, brain]) => {
     const cats = visible.filter((c) => ids.includes(c.id));
-    return cats.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${cats.map(makeTile).join('')}</div></section>` : '';
-  }).join('');
+    const games = brain && typeof brainGames === 'function' ? brainGames() : [];
+    return cats.length || games.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${cats.map(makeTile).join('')}${games.map(gameTile).join('')}</div></section>` : '';
+  }).join(''));
 }
 
 /* ---------- a round ---------- */
@@ -295,15 +304,15 @@ function renderQ() {
   q.t0 = Date.now();
   q.tries = 0; q.hintShown = false; R.locked = false;
   renderProgress();
-  $('#qText').innerHTML = q.text;
+  $('#qText').innerHTML = locHTML(q.text);
   $('#qMain').className = 'q-main ' + (q.mainClass || '');
-  $('#qMain').innerHTML = q.main;
+  $('#qMain').innerHTML = locHTML(q.main);
   $('#hintBox').innerHTML = ''; $('#hintBox').hidden = true;
   $('#hintBtn').hidden = !q.hint;
   $('#hintBtn').classList.remove('glow');
   const opts = $('#options');
   opts.className = 'options ' + (q.optClass || '') + (q.options.length === 4 ? ' four' : '') + (q.options.length === 2 ? ' two' : '');
-  opts.innerHTML = q.options.map((o) => `<button class="opt" data-v="${String(o.v).replace(/"/g, '&quot;')}">${o.html}</button>`).join('');
+  opts.innerHTML = q.options.map((o) => `<button class="opt" data-v="${String(o.v).replace(/"/g, '&quot;')}">${locHTML(String(o.html))}</button>`).join('');
   [...opts.children].forEach((b, k) => { b.style.animationDelay = `${k * 60}ms`; b.onclick = () => choose(q, q.options[k].v, b); if (state.testMode && String(q.options[k].v) === String(q.answer)) b.dataset.ok = '1'; });
   if (state.testMode) $('#qText').insertAdjacentHTML('beforeend', `<div class="test-ans">🧪 ${String(q.answer)}</div>`);
   if (q.spell) renderSpell(q);
@@ -334,7 +343,7 @@ function showHint(q, auto = false) {
   q.hintShown = true;
   if (q.hint.mark) $$('#qMain .sw').forEach((w, i) => w.classList.toggle('mark', q.hint.mark.includes(i)));
   const box = $('#hintBox');
-  box.innerHTML = q.hint.html || '';
+  box.innerHTML = locHTML(q.hint.html || '');
   box.hidden = !q.hint.html;
   box.classList.remove('hint-in'); void box.offsetWidth; box.classList.add('hint-in');
   $('#hintBtn').classList.remove('glow');
@@ -618,7 +627,7 @@ function finish() {
       else if (lv < gameMax(id)) levelMsg = '⭐ One more great round unlocks a harder level!';
     } else {
       state.good[id] = 0;
-      if (rate >= 0.7 && n >= 5 && lv > 1) { state.levels[id] = lv - 1; levelMsg = `🙂 Let's practice level ${lv - 1} a bit more`; }
+      if (rate >= 0.5 && n >= 5 && lv > 1) { state.levels[id] = lv - 1; levelMsg = `🙂 Let's practice level ${lv - 1} a bit more`; }
     }
   }
   const earned = earnPlay();
@@ -790,6 +799,7 @@ $('#endBtn').onclick = () => { R.i = R.qs.length - 1; R.locked = true; next(); }
 $('#grid').addEventListener('click', (e) => {
   const t = e.target.closest('.tile'); if (!t) return;
   sfx.tap();
+  if (t.dataset.game) return openBrainGame(t.dataset.game);
   if (t.dataset.cat === 'vocab') return openLearn();
   if (t.dataset.cat === 'trace') { TR.quest = null; return openTrace(); }
   startRound(t.dataset.cat);
@@ -812,7 +822,7 @@ function renderGrades() {
   $('#gradeBtns').innerHTML = Object.entries(GRADES).map(([k, g]) =>
     `<button class="grade-btn ${state.grade === k ? 'on' : ''}" data-g="${k}">${g.label}</button>`).join('');
   $$('#gradeBtns .grade-btn').forEach((b) => (b.onclick = () => {
-    sfx.tap(); state.grade = b.dataset.g; state.levels = {}; Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = +r.split('-')[0])); save();
+    sfx.tap(); state.grade = b.dataset.g; state.levels = {}; Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = gradeStart(r))); save();
     renderGrades();
     $$('#levels select').forEach((sel) => (sel.value = levelOf(sel.dataset.id)));
   }));
@@ -822,6 +832,8 @@ $('#settingsBtn').onclick = () => askPin(openSettings);
 function openSettings() {
   renderKids();
   renderGrades(); renderThemes(); $('#testMode').checked = !!state.testMode; $('#testSection').hidden = !state.testMode;
+  $('#countrySel').innerHTML = COUNTRY_ORDER.map((k) => `<option value="${k}">${COUNTRIES[k].flag} ${COUNTRIES[k].label}</option>`).join('') + '<option value="other">🌍 Somewhere else</option>';
+  $('#countrySel').value = countryCode();
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
@@ -906,6 +918,7 @@ $('#prevBtn').onclick = () => { if (!R || R.i === 0) return; R.i--; R.locked = f
 function collectSettings() {
   state.name = $('#nameInput').value.trim().slice(0, 20);
   state.voice = $('#voiceToggle').checked;
+  state.country = $('#countrySel').value;
   state.showAll = $('#showAll').checked;
   state.optClock = $('#optClock').checked;
   state.roundsPerPlay = +$('#roundsPerPlay').value; state.playMinutes = +$('#playMinutes').value; state.playAlways = $('#playAlways').checked; state.optAnatomy = $('#optAnatomy').checked; state.playMode = $('#playMode').value; state.playPerHour = +$('#playPerHour').value;
@@ -968,7 +981,7 @@ $('#resetBtn').onclick = () => {
   const KEEP = ['name', 'avatar', 'grade', 'voice', 'pinHash', 'theme', 'showAll', 'optClock', 'optAnatomy', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'schema'];
   for (const k of Object.keys(state)) if (!KEEP.includes(k)) delete state[k];
   Object.assign(state, { stars: 0, stickers: [], levels: {}, best: {} });
-  if (state.grade && GRADES[state.grade]) Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = +r.split('-')[0]));
+  if (state.grade && GRADES[state.grade]) Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = gradeStart(r)));
   save(); renderHome(); show('home');
 };
 $('#startBtn').onclick = () => {

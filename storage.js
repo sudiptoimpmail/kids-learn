@@ -9,7 +9,7 @@
 const STORE_KEY = 'learnplay.v1';
 const SCHEMA = 3;            // bump when the shape of the saved data changes, and add a step to migrate()
 // saved once for the whole device; everything else belongs to one child
-const DEVICE_KEYS = ['voice', 'pinHash', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode'];
+const DEVICE_KEYS = ['voice', 'pinHash', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'country'];
 const AVATARS = ['🦄', '🐶', '🐱', '🦊', '🐼', '🐯', '🦁', '🐸', '🐵', '🐰', '🐻', '🐨', '🐧', '🦖', '🐙', '🦋', '🚀', '⚽', '🌈', '⭐'];
 const MAX_KIDS = 6;
 const profileDefaults = () => ({ name: '', avatar: '🦄', stars: 0, stickers: [], levels: {}, best: {}, recent: {}, traced: {} });

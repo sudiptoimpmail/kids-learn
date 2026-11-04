@@ -73,7 +73,6 @@ function openPlayZone() {
   }
   brainMode = false;
   renderPZ();
-  $('#pzTitle').textContent = '🎮 Play Zone';
   $$('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = false));
   document.body.style.setProperty('--theme', '#ff6bb5');
   show('playzone');
@@ -129,28 +128,29 @@ const GAMES = [
   { id: 'ball', title: 'Rolling Ball 3D', icon: BALL_ICON, color: '#339af0', start: startBall },
   { id: 'pinball', title: '3D Pinball', icon: '🎯', color: '#7048e8', start: startPinball },
   { id: 'maze', title: 'Ball Maze', icon: '🟫', color: '#c0874f', start: startBallMaze },
+  { id: 'path', title: 'Finger Maze', icon: '🐥', color: '#f59f00', start: () => startPathMaze() },
   { id: 'whack', title: 'Whack-a-Mole', icon: '🐹', color: '#a9734a', start: startWhack, max: 5 },
   { id: 'draw', title: 'Draw & Copy', icon: '✏️', color: '#e8590c', start: startDraw },
   { id: 'moves', title: 'Silly Moves', icon: '🤸', color: '#12b886', start: startMoves },
 ];
 // level per game; winning moves you up (needWins wins per level)
-const GAME_MAX = { pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
-// Thinking games are educational: never require earned arcade time.
-const BRAIN_GAME_IDS = new Set(['ttt', 'memory', 'c4', 'sudoku', 'puzzle', 'maze']);
-const BRAIN_MIN_GRADE = { ttt: 'prek', memory: 'prek', puzzle: 'prek', sudoku: 'k', maze: 'k', c4: 'g1' };
+const GAME_MAX = { path: 7, pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
+// Brain Teasers: puzzle games shown with the thinking lessons on the home screen.
+// They are learning, so they never need earned play time (Tic-Tac-Toe and Ball Maze stay in the Play Zone).
+const BRAIN_GAME_IDS = new Set(['path', 'memory', 'puzzle', 'sudoku', 'c4']);
+const BRAIN_MIN_GRADE = { path: 'prek', memory: 'prek', puzzle: 'prek', sudoku: 'k', c4: 'g1' };
 const BRAIN_GRADE_ORDER = ['prek', 'k', 'g1', 'g2', 'g3'];
 let brainMode = false;
 function brainVisible(g) {
-  return BRAIN_GAME_IDS.has(g.id) && (!!state.showAll || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') >= BRAIN_GRADE_ORDER.indexOf(BRAIN_MIN_GRADE[g.id]));
+  return BRAIN_GAME_IDS.has(g.id) && (!!state.showAll || !!state.testMode || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') >= BRAIN_GRADE_ORDER.indexOf(BRAIN_MIN_GRADE[g.id]));
 }
-function openBrainGames() {
+const brainGames = () => GAMES.filter(brainVisible);
+// open a brain game straight from its tile on the home screen (no play clock, back goes home)
+function openBrainGame(id) {
   brainMode = true;
   clearInterval(playTimer);
-  renderPZ();
-  $('#pzTitle').textContent = '🧠 Brain Games';
-  $$('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = true));
-  document.body.style.setProperty('--theme', '#7950f2');
-  show('playzone');
+  $$('#game .play-clock').forEach((x) => (x.hidden = true));
+  openGame(id);
 }
 function GL(id) {
   if (id === 'maze' && state.gameLv && state.gameLv.maze == null && state.gameLv.ball > 1 && !state.ball3d) { state.gameLv.maze = state.gameLv.ball; state.gameLv.ball = 1; state.ball3d = true; }
@@ -170,7 +170,7 @@ function gameLevelUp(id, needWins = 1) {
 }
 const lvBadge = (id) => (GAME_MAX[id] || id === 'sudoku' ? `<span class="lv">Lv ${GL(id)}</span>` : '');
 function renderPZ() {
-  $('#pzGrid').innerHTML = GAMES.filter((g) => brainMode ? brainVisible(g) : !BRAIN_GAME_IDS.has(g.id)).map((g) =>
+  $('#pzGrid').innerHTML = GAMES.filter((g) => !BRAIN_GAME_IDS.has(g.id)).map((g) =>
     `<button class="tile pz-tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`).join('');
 }
 
@@ -179,7 +179,7 @@ $('#pzGrid').addEventListener('click', (e) => {
   sfx.tap(); openGame(t.dataset.game);
 });
 $('#pzHome').onclick = () => { sayToken++; stopClip(); renderHome(); show('home'); };
-$('#gameBack').onclick = () => { stopGame(); renderPZ(); show('playzone'); if (!brainMode) startPlayTimer(); };
+$('#gameBack').onclick = () => { stopGame(); if (brainMode) { renderHome(); show('home'); return; } renderPZ(); show('playzone'); startPlayTimer(); };
 
 let curGame = null, gameCleanup = null, gameCleanupPanel = null;
 function openGame(id) {
@@ -215,7 +215,7 @@ function endPanel(title, emoji, again, levelUp = false) {
   const d = document.createElement('div');
   d.className = 'end-panel';
   d.innerHTML = `<div class="ep-card"><div class="ep-emoji">${emoji}</div><div class="ep-title">${title}</div>
-    <div class="ep-btns"><button class="big-btn" data-a="again">🔁 Again</button><button class="big-btn alt" data-a="menu">🎮 Games</button></div></div>`;
+    <div class="ep-btns"><button class="big-btn" data-a="again">🔁 Again</button><button class="big-btn alt" data-a="menu">${brainMode ? '🏠 Home' : '🎮 Games'}</button></div></div>`;
   d.querySelector('[data-a="again"]').onclick = () => { sfx.tap(); if (brainMode || playOpen()) { openGame(curGame.id); } else timeUp(); };
   d.querySelector('[data-a="menu"]').onclick = () => { sfx.tap(); $('#gameBack').onclick(); };
   $('#gameArea').appendChild(d);
@@ -1297,7 +1297,6 @@ function drawGallery() {
   area.querySelector('[data-a="back"]').onclick = () => { sfx.tap(); startDraw(); };
 }
 
-$('#brainBanner').onclick = () => { sfx.tap(); openBrainGames(); };
 $('#playBanner').onclick = () => { sfx.tap(); openPlayZone(); };
 $('#playEarned').onclick = () => { sfx.tap(); openPlayZone(); };
 renderPlayBanner();

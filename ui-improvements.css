@@ -3,13 +3,8 @@
 .catalog-section { min-width: 0; }
 .catalog-section h2 { margin: 4px 6px 12px; font-size: 21px; font-weight: 900; }
 .catalog-section .grid { align-items: stretch; }
-.brain-banner { display: flex; width: 100%; align-items: center; gap: 12px; padding: 15px 18px;
   background: #ede9fe; color: #42217d; border-radius: 22px; text-align: left;
   margin: 0 0 18px; box-shadow: 0 5px 0 #d0bfff; }
-.brain-banner > span:first-child { font-size: 42px; }
-.brain-banner b { font-size: 23px; font-weight: 900; }
-.brain-banner small { font-size: 14px; color: #5f3dc4; font-weight: 800; }
-.brain-banner > span:last-child { margin-left: auto; font-size: 26px; }
 .settings-top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 15; padding: 5px 0 10px; background: var(--bg); }
 button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
   outline: 4px solid #1c7ed6; outline-offset: 3px;
@@ -20,17 +15,34 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .think-pattern .think-missing { border: 3px dashed #7950f2; color: #7950f2; }
 .think-symbol { font-size: 84px; }
 @media (max-width: 420px) {
-  .brain-banner { flex-wrap: wrap; }
-  .brain-banner small { width: 100%; padding-left: 52px; }
-  .think-pattern { gap: 4px; }
+      .think-pattern { gap: 4px; }
   .think-pattern span { min-width: 36px; min-height: 44px; }
   .catalog-section .tile { min-height: 142px; }
 }
 @media (min-width: 700px) {
   .catalog-section h2 { font-size: 28px; }
-  .brain-banner { padding: 18px 24px; }
-  .think-pattern span { min-width: 68px; min-height: 74px; }
+    .think-pattern span { min-width: 68px; min-height: 74px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .brain-banner, .catalog-section .tile { transition: none; }
-}
+  }
+
+/* Science, Word Detective, Number Sense */
+.sci-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.sci-item span { font-size: 84px; line-height: 1.1; } .sci-item b { font-size: 26px; }
+.gr-word { font-size: 44px; font-weight: 900; color: #5f3dc4; text-align: center; }
+.gr-sent { font-size: 30px; font-weight: 800; text-align: center; line-height: 1.3; }
+.gr-gap { color: #5f3dc4; letter-spacing: 2px; }
+.ns-big { font-size: 56px; font-weight: 900; display: flex; align-items: center; gap: 14px; justify-content: center; }
+.ns-hl { color: #1c7ed6; text-decoration: underline; text-decoration-thickness: 5px; }
+.ns-gap { border: 3px dashed #7950f2; border-radius: 12px; padding: 0 12px; color: #7950f2; }
+.ns-f { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; font-weight: 900; vertical-align: middle; }
+.ns-f b { border-bottom: 3px solid currentColor; padding: 0 4px 2px; } .ns-f i { font-style: normal; padding-top: 2px; }
+.opt .ns-f { font-size: 30px; }
+.ns-dots { color: #f76707; letter-spacing: 3px; font-size: 20px; max-width: 300px; text-align: center; word-break: break-all; }
+.ns-blocks { display: flex; align-items: flex-end; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 92vw; }
+.ns-flat { width: 74px; } .ns-rod { width: 12px; height: 100px; } .ns-ones { display: grid; grid-template-columns: repeat(3, 12px); gap: 2px; } .ns-cube { width: 12px; height: 12px; }
+.ns-frac { width: 150px; height: 150px; } .ns-frac.bar { width: min(300px, 80vw); height: auto; }
+.ns-coins { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 360px; }
+.ns-coin { width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; font-weight: 900; font-size: 17px; box-shadow: inset 0 -4px 0 #0002, 0 3px 0 #0002; }
+.ns-coin.c0 { background: #ffe066; } .ns-coin.c1 { background: #dee2e6; } .ns-coin.c2 { background: #e8b07a; } .ns-coin.c3 { background: #ced4da; }
+.pm-cv { touch-action: none; }
