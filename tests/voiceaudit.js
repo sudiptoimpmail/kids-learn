@@ -37,8 +37,12 @@ const { chromium } = require('playwright');
     }
     return [...miss.entries()].sort((a, b) => b[1] - a[1]);
   });
-  console.log(misses.length + ' missing phrases');
-  for (const [t, n] of misses.slice(0, 80)) console.log(n, JSON.stringify(t));
+  // One deliberately nonsensical phrase and the voice-status line are diagnostic,
+  // not missing curriculum recordings. Fail CI on all actual regressions.
+  const unexpected = misses.filter(([t]) => t !== 'xyzzy blorp test' && !t.startsWith('state.voice='));
+  console.log(unexpected.length + ' unexpected missing phrases');
+  for (const [t, n] of unexpected.slice(0, 80)) console.log(n, JSON.stringify(t));
   console.log('errors', JSON.stringify(errs.slice(0, 5)));
+  if (unexpected.length || errs.length) process.exitCode = 1;
   await b.close();
 })();

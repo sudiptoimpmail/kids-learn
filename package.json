@@ -5,7 +5,7 @@
   "description": "Browser tests for the offline-first Learn & Play app",
   "scripts": {
     "test": "sh tests/run.sh",
-    "check": "node --check app.js && node --check games.js && node --check thinking.js && node --check progress.js"
+    "check": "node --check app.js && node --check games.js && node --check thinking.js && node --check progress.js && node --check numsense.js && node --check grammar.js && node --check science.js && node --check country.js && node --check storage.js && node --check pathmaze.js && node --check trace.js && node --check content.js && node --check sw.js && node --check tests/child-regressions.js && node --check scripts/check-cache-version.cjs"
   },
   "devDependencies": {
     "playwright": "^1.56.0"

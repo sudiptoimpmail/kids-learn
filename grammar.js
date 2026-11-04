@@ -62,7 +62,14 @@ function genGrammar(level) {
     if (Math.random() < 0.65) { const [s, p] = pick(GR_PLURAL); const w = GR_WRONG_PLURAL(s, p); return grQ(`pl-${s}`, `One <b>${s}</b>, two…`, big(`1 ${s} → 2 ?`), p, w.length >= n ? w : [...w, s + 'ss', s + 'z'], ['One', `${s}.`, 'Two…?'], n); }
     const [a, b] = pick(OPPOSITES); return grQ(`opp-${a}`, `What is the opposite of <b>${a}</b>?`, big(a), b, OPPOSITES.filter((x) => x[0] !== a).map((x) => x[1]), ['What is the opposite?'], n);
   }
-  // level 1: naming word or action word
-  if (Math.random() < 0.5) { const a = pick(GR_NOUNS); return grQ(`noun-${a}`, 'Which word is a <b>naming word</b> (noun)?', '<small class="ph-tip">a person, place or thing</small>', a, [...GR_VERBS, ...GR_ADJS], ['Which word is a naming word?'], n); }
-  const a = pick(GR_VERBS); return grQ(`verb-${a}`, 'Which word is an <b>action word</b> (verb)?', '<small class="ph-tip">something you can do</small>', a, [...GR_NOUNS, ...GR_ADJS], ['Which word is an action word?'], n);
+  // level 1: naming word or action word — all three choices come from one little sentence,
+  // so the child decides what each word does (not just which word is in the sentence)
+  const noun = pick(GR_NOUNS), verb = pick(GR_VERBS.filter((v) => v !== noun)), adj = pick(GR_ADJS);
+  const sent = `The ${adj} ${noun} can ${verb}.`;
+  const wantNoun = Math.random() < 0.5;
+  const q = grQ(`${wantNoun ? 'noun' : 'verb'}-${noun}-${verb}-${adj}`,
+    wantNoun ? 'Which word is a <b>naming word</b> (noun)?' : 'Which word is an <b>action word</b> (verb)?',
+    `<div class="gr-sent">${sent}</div><small class="ph-tip">${wantNoun ? 'a person, place or thing' : 'something you can do'}</small>`,
+    wantNoun ? noun : verb, wantNoun ? [verb, adj] : [noun, adj], [wantNoun ? 'Which word is a naming word?' : 'Which word is an action word?'], 2);
+  return q;
 }

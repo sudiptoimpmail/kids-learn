@@ -34,7 +34,7 @@ function genPattern(level) {
       [answer, ...[...new Set(wrong)].slice(0, 3)], answer, `Count forward by ${step} each time.`, 'opt-num');
   }
   const kind = level <= 1 ? 0 : level === 2 ? rand(3) : rand(THINKING_PATTERNS.length);
-  const shape = THINKING_PATTERNS[kind], symbols = pick(THINKING_PATTERN_SETS);
+  const shape = THINKING_PATTERNS[kind], symbols = shuffle([...pick(THINKING_PATTERN_SETS)]);
   const answer = symbols[shape[6]];
   const choices = [answer, ...symbols.filter((x) => x !== answer).slice(0, level >= 2 ? 3 : 2)];
   return thinkingQuestion(`pattern-${kind}-${symbols.join('')}`, 'What comes next?',
@@ -76,8 +76,9 @@ const THINKING_ODD = [
 function genOdd(level) {
   const pool = THINKING_ODD.filter((x) => x[0] <= level);
   const [difficulty, similar, different, reason] = pick(pool);
-  const choices = level === 1 ? [similar[0], similar[1], different] : [...similar, different];
-  return thinkingQuestion(`odd-${difficulty}-${similar.join('')}-${different}`,
+  const chosen = level === 1 ? sample(similar, 2) : similar;
+  const choices = [...chosen, different];
+  return thinkingQuestion(`odd-${difficulty}-${chosen.join('')}-${different}`,
     'Which one does NOT belong?', '<div class="think-symbol">🔍</div>', choices, different, reason);
 }
 const THINKING_SEQUENCES = [
@@ -95,6 +96,31 @@ const THINKING_SEQUENCES = [
   [1, ['🧊', '☀️', '💧'], 'The warmth from sunshine can melt ice into water.'],
   [1, ['✏️', '🖍️', '🖼️'], 'Draw, color, and finish your picture.'],
   [1, ['✉️', '📮', '📬'], 'Write a letter, mail it, and it arrives.'],
+  [1, ['🛒', '🍎', '🏠'], 'Choose apples at the shop, then take them home.'],
+  [1, ['📦', '🚚', '🏠'], 'A parcel goes on the delivery truck and arrives at home.'],
+  [1, ['🧩', '🧠', '✅'], 'Look at a puzzle, think, and solve it.'],
+  [1, ['🪵', '🪚', '🪑'], 'Wood can be cut and used to make a chair.'],
+  [1, ['🐑', '🧶', '🧣'], 'Sheep give wool, and wool can be made into a scarf.'],
+  [1, ['🥚', '🍳', '🍽️'], 'An egg is cooked and served for a meal.'],
+  [1, ['🦷', '🪥', '✨'], 'Clean your teeth with a toothbrush to make them sparkle.'],
+  [1, ['🧑‍🍳', '🥘', '🍽️'], 'A cook makes food, then serves the meal.'],
+  [1, ['🧑‍🌾', '🌱', '🥕'], 'A farmer plants seeds, and vegetables grow.'],
+  [1, ['🧱', '🏗️', '🏠'], 'Bricks are used at a building site to make a house.'],
+  [1, ['🌙', '😴', '🌞'], 'Nighttime comes, we sleep, and then morning arrives.'],
+  [1, ['👋', '🚌', '🏫'], 'Say goodbye, ride the bus, and arrive at school.'],
+  [1, ['🐔', '🥚', '🐣'], 'A hen lays an egg and a chick hatches.'],
+  [1, ['🐈', '🥣', '😺'], 'A cat eats from its bowl and feels happy.'],
+  [1, ['🧸', '🛏️', '😴'], 'Get a teddy bear, climb into bed, and fall asleep.'],
+  [1, ['🌼', '🐝', '🍯'], 'A bee visits flowers and makes honey.'],
+  [1, ['⛅', '🌧️', '🌈'], 'Clouds bring rain, and a rainbow may appear afterward.'],
+  [1, ['🍞', '🍯', '🥪'], 'Spread honey on bread and make a sandwich.'],
+  [1, ['🦴', '🐶', '😋'], 'A puppy finds a bone and enjoys it.'],
+  [1, ['🧶', '🪡', '🧣'], 'Use yarn and a needle to make a scarf.'],
+  [1, ['🍂', '❄️', '🌷'], 'Autumn is followed by winter, then spring.'],
+  [1, ['📚', '📖', '🧠'], 'Choose a book, read it, and learn something.'],
+  [1, ['🌳', '🍂', '🌱'], 'Leaves fall from trees and new plants grow later.'],
+  [1, ['🏀', '🏃', '🏆'], 'Get ready for a game, play, and celebrate a win.'],
+  [1, ['🚦', '🚗', '🏠'], 'Wait at a traffic light, drive safely, and arrive home.'],
   [2, ['📖', '🧠', '✅'], 'Read, think, and then answer.'],
   [2, ['🧺', '🫧', '👕'], 'Put clothes in the basket, wash them, and then they are clean.'],
   [3, ['📝', '✉️', '📮'], 'Write a letter, put it in an envelope, and mail it.'],
@@ -104,15 +130,18 @@ const THINKING_SEQUENCES = [
 function genSequence(level) {
   const pool = THINKING_SEQUENCES.filter((x) => x[0] <= level);
   const [difficulty, steps, reason] = pick(pool);
-  const answer = steps[2];
+  // Show either the missing middle event or the final event; older children can also
+  // work backward from the last two events. This triples useful variations.
+  const missingAt = level <= 1 ? pick([1, 2]) : pick([0, 1, 2]);
+  const answer = steps[missingAt];
   // never offer a picture from a related sequence (seed → tree, egg → chicken): it could also be right
   const related = THINKING_SEQUENCES.filter((x) => x[1].some((e) => steps.includes(e))).flatMap((x) => x[1]);
   const others = [...new Set(THINKING_SEQUENCES.flatMap((x) => x[1]))]
     .filter((x) => x !== answer && !related.includes(x));
   const options = [answer, ...sample(others, level >= 2 ? 3 : 2)];
-  return thinkingQuestion(`sequence-${difficulty}-${steps.join('')}`,
-    'What happens next?',
-    `<div class="think-pattern"><span>${steps[0]}</span><span>➜</span><span>${steps[1]}</span><span>➜</span><span class="think-missing">?</span></div>`,
+  return thinkingQuestion(`sequence-${difficulty}-${steps.join('')}-${missingAt}`,
+    missingAt === 2 ? 'What happens next?' : 'What happens in the missing spot?',
+    `<div class="think-pattern">${steps.map((step, i) => `<span class="${i === missingAt ? 'think-missing' : ''}">${i === missingAt ? '?' : step}</span>`).join('<span>➜</span>')}</div>`,
     options, answer, reason);
 }
 CATEGORIES.push(

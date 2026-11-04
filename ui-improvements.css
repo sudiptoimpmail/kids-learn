@@ -39,8 +39,18 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .ns-f b { border-bottom: 3px solid currentColor; padding: 0 4px 2px; } .ns-f i { font-style: normal; padding-top: 2px; }
 .opt .ns-f { font-size: 30px; }
 .ns-dots { color: #f76707; letter-spacing: 3px; font-size: 20px; max-width: 300px; text-align: center; word-break: break-all; }
-.ns-blocks { display: flex; align-items: flex-end; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 92vw; }
-.ns-flat { width: 74px; } .ns-rod { width: 12px; height: 100px; } .ns-ones { display: grid; grid-template-columns: repeat(3, 12px); gap: 2px; } .ns-cube { width: 12px; height: 12px; }
+/* Tactile-looking base-ten blocks. No WebGL: inexpensive CSS shading works offline on old iPads. */
+.ns-blocks { display:flex; flex-direction:column; align-items:center; gap:14px; width:100%; max-width: min(420px, 88vw); margin:auto; padding:12px 6px; }
+.ns-block-row { display:flex; align-items:flex-end; justify-content:center; gap:9px; flex-wrap:wrap; max-width:100%; }
+.ns-tens { gap:11px; }
+.ns-ones { gap:12px; }
+.ns-flat, .ns-rod, .ns-cube { display:inline-block; position:relative; flex:0 0 auto; border:1px solid #0002; border-radius:2px; filter:drop-shadow(2px 3px 1px #0002); }
+.ns-flat { width:90px; height:90px; background-color:#74c0fc; background-image:repeating-linear-gradient(to right,transparent 0, transparent 8px,#1971c2 8px,#1971c2 9px),repeating-linear-gradient(to bottom,transparent 0,transparent 8px,#1971c2 8px,#1971c2 9px); box-shadow:inset -5px -5px 0 #1971c266, 5px 5px 0 #1864ab; transform:skewY(-3deg); }
+.ns-rod { width:18px; height:95px; border-radius:2px; background:repeating-linear-gradient(to bottom,#ffbc75 0,#ffbc75 8px,#d9480f 8px,#d9480f 9.5px); box-shadow:inset -4px 0 0 #d9480f70, 5px 4px 0 #b74211; transform:skewY(-4deg); }
+.ns-cube { width:25px; height:25px; background:linear-gradient(135deg,#b2f2bb 0%,#69db7c 35%,#37b24d 100%); box-shadow:inset -5px -4px 0 #2b8a3e66, 4px 4px 0 #2b8a3e; transform:skewY(-5deg); }
+.ns-block-key { color:#495057; font-size:14px; font-weight:750; text-align:center; line-height:1.5; }
+@media (max-width: 390px) { .ns-flat{width:75px;height:75px;background-size:100% 100%;} .ns-rod{width:16px;height:80px;} .ns-cube{width:22px;height:22px;} .ns-block-row{gap:7px;} .ns-tens{gap:9px;} }
+
 .ns-frac { width: 150px; height: 150px; } .ns-frac.bar { width: min(300px, 80vw); height: auto; }
 .ns-coins { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 360px; }
 .ns-coin { width: 62px; height: 62px; border-radius: 50%; display: grid; place-items: center; font-weight: 900; font-size: 17px; box-shadow: inset 0 -4px 0 #0002, 0 3px 0 #0002; }

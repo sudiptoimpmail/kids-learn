@@ -96,11 +96,12 @@ function skillState(sk) {
   if (acc >= 0.7) return { s: 'practicing', acc };
   return { s: 'learning', acc };
 }
+const isLearningDay = (d) => !!d && ((d.q || 0) > 0 || (d.brain || 0) > 0 || (d.traced || 0) > 0);
 function dayStreak() {
   const days = (state.stats && state.stats.days) || {};
   let n = 0; const d = new Date();
-  if (!(days[dayKey(d)] && days[dayKey(d)].q)) d.setDate(d.getDate() - 1);   // today not started yet: count up to yesterday
-  while (days[dayKey(d)] && days[dayKey(d)].q > 0) { n++; d.setDate(d.getDate() - 1); }
+  if (!isLearningDay(days[dayKey(d)])) d.setDate(d.getDate() - 1);   // today not started yet: count up to yesterday
+  while (isLearningDay(days[dayKey(d)])) { n++; d.setDate(d.getDate() - 1); }
   return n;
 }
 
@@ -108,7 +109,7 @@ function dayStreak() {
 function renderToday() {
   const el = $('#todayChip'); if (!el) return;
   const d = (state.stats && state.stats.days[dayKey()]) || { q: 0 }, goal = DAILY_GOAL(), pct = Math.min(1, d.q / goal), streak = dayStreak();
-  el.innerHTML = `<span class="ring" style="--p:${Math.round(pct * 100)}"><i>${pct >= 1 ? '✅' : '🎯'}</i></span><span><b>${Math.min(d.q, goal)}/${goal}</b> today</span>${streak > 1 ? `<span class="streak">🔥 ${streak} days</span>` : ''}`;
+  el.innerHTML = `<span class="ring" style="--p:${Math.round(pct * 100)}"><i>${pct >= 1 ? '✅' : '🎯'}</i></span><span><b>${Math.min(d.q, goal)}/${goal}</b> today</span>${streak > 1 ? `<span class="streak">🔥 ${streak} days</span>` : ''}${d.brain ? `<span class="streak">🧠 ${d.brain} solved</span>` : ''}`;
   el.classList.toggle('done', pct >= 1);
 }
 function dailyGoalReached() {
@@ -132,7 +133,7 @@ function renderDashboard() {
   const week = [];
   for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); const k = dayKey(d); week.push([d, st.days[k] || { q: 0, first: 0, secs: 0, play: 0, hints: 0, cats: {} }]); }
   const sum = (f) => week.reduce((a, [, x]) => a + f(x), 0);
-  const q7 = sum((x) => x.q), f7 = sum((x) => (x.alone != null ? x.alone : x.first)), traced7 = sum((x) => x.traced || 0), learnMin = Math.round(sum((x) => x.secs) / 60), playMin = Math.round(sum((x) => x.play) / 60), days7 = week.filter(([, x]) => x.q > 0).length, hints7 = sum((x) => x.hints), brain7 = sum((x) => x.brain || 0);
+  const q7 = sum((x) => x.q), f7 = sum((x) => (x.alone != null ? x.alone : x.first)), traced7 = sum((x) => x.traced || 0), learnMin = Math.round(sum((x) => x.secs) / 60), playMin = Math.round(sum((x) => x.play) / 60), days7 = week.filter(([, x]) => isLearningDay(x)).length, hints7 = sum((x) => x.hints), brain7 = sum((x) => x.brain || 0);
   const maxQ = Math.max(10, ...week.map(([, x]) => x.q));
   const goal = DAILY_GOAL();
   $('#dashTop').innerHTML = `
@@ -169,7 +170,8 @@ function renderDashboard() {
   for (const [c, [n, ok]] of Object.entries(catWeek)) { const s = SUBJECT(c); const a = bySubject[s] || (bySubject[s] = [0, 0]); a[0] += n; a[1] += ok; }
   const topSub = Object.entries(bySubject).sort((a, b) => b[1][0] - a[1][0])[0];
   const lines = [];
-  if (!q7) lines.push(`${name} hasn't practiced in the last 7 days. A few minutes a day helps a lot!`);
+  if (!q7 && !brain7 && !traced7) lines.push(`${name} hasn't practiced in the last 7 days. A few minutes a day helps a lot!`);
+  else if (!q7) lines.push(`${name} practiced on ${days7} day${days7 === 1 ? '' : 's'} with ${brain7} brain puzzle${brain7 === 1 ? '' : 's'} and ${traced7} traced character${traced7 === 1 ? '' : 's'}.`);
   else {
     lines.push(`This week ${name} learned on ${days7} day${days7 === 1 ? '' : 's'} and answered ${q7} cards (${Math.round(f7 / q7 * 100)}% right on their own, without a hint).`);
     if (topSub) lines.push(`Most practice: ${topSub[0].toLowerCase()} (${topSub[1][0]} cards).`);

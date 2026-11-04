@@ -1949,7 +1949,7 @@ const CATEGORIES = [
   { id: 'mul', title: 'Multiply', sub: '3 × 4 = ?', icon: '✖️', color: '#fa5252', gen: genMul, maxLevel: 5 },
   { id: 'div', title: 'Divide', sub: 'share equally', icon: '➗', color: '#15aabf', gen: genDiv, maxLevel: 5 },
   { id: 'clock', title: 'Clock', sub: 'tell the time', icon: '🕐', color: '#7950f2', gen: genClock, maxLevel: 4 },
-  { id: 'shape2', title: 'Shapes', sub: 'flat & 3D shapes', icon: '🧊', color: '#3bc9db', gen: genShapes, maxLevel: 4 },
+  { id: 'shape2', title: 'Shapes', sub: 'flat & 3D shapes', icon: '🔺', color: '#ffa94d', gen: genShapes, maxLevel: 4 },
   { id: 'numsense', title: 'Number Sense', sub: 'place value · fractions · money', icon: '🧮', color: '#0ca678', gen: (l) => genNumSense(l), maxLevel: 5 },
   { id: 'sci', title: 'Science', sub: 'living things · matter · space', icon: '🔬', color: '#1098ad', gen: (l) => genScience(l), maxLevel: 4 },
   { id: 'home', title: 'My Country', sub: 'symbols · places · facts', icon: '🏳️', color: '#e03131', gen: (l) => genCountry(l), maxLevel: 4 },

@@ -82,7 +82,8 @@ function getBuf(file) {
 function prefetch(text) { if (text) (Array.isArray(text) ? text.map(String) : splitSentences(text)).forEach((p) => { const f = CLIPS[clipKey(p)]; if (f) getBuf(f).catch(() => {}); }); }
 function stopClip() { try { curSrc && curSrc.stop(); } catch {} curSrc = null; try { htmlPlayer.pause(); } catch {} }
 
-function htmlPlay(file) {
+function htmlPlay(file, token = sayToken) {
+  if (token !== sayToken) return Promise.resolve();
   return new Promise((res) => {
     let done = false; const fin = () => { if (!done) { done = true; res(); } };
     htmlPlayer.onended = fin; htmlPlayer.onerror = fin;
@@ -92,20 +93,24 @@ function htmlPlay(file) {
   });
 }
 const lastAudio = { path: '', err: '' };
-async function playClip(file) {
+async function playClip(file, token = sayToken) {
+  if (token !== sayToken) return;
   const c = ctx();
   if (c.state !== 'running') { await Promise.race([c.resume().catch(() => {}), sleep(300)]); }
-  if (c.state !== 'running') { lastAudio.path = 'html'; return htmlPlay(file); }
+  if (token !== sayToken) return;
+  if (c.state !== 'running') { lastAudio.path = 'html'; return htmlPlay(file, token); }
   let buf;
-  try { buf = await getBuf(file); } catch (e) { lastAudio.path = 'html'; lastAudio.err = String(e); return htmlPlay(file); }
+  try { buf = await getBuf(file); } catch (e) { if (token !== sayToken) return; lastAudio.path = 'html'; lastAudio.err = String(e); return htmlPlay(file, token); }
+  if (token !== sayToken) return;
   return new Promise((res) => {
     let done = false; const fin = () => { if (!done) { done = true; res(); } };
     try {
+      if (token !== sayToken) return fin();
       const src = c.createBufferSource(); src.buffer = buf; src.connect(c.destination);
       src.onended = fin; curSrc = src; src.start();
       lastAudio.path = 'webaudio';
       setTimeout(fin, buf.duration * 1000 + 400);
-    } catch (e) { lastAudio.err = String(e); htmlPlay(file).then(fin); }
+    } catch (e) { if (token !== sayToken) return fin(); lastAudio.err = String(e); htmlPlay(file, token).then(fin); }
   });
 }
 
@@ -134,13 +139,13 @@ async function say(text, opts = {}) {
   const files = parts.map((p) => CLIPS[clipKey(p)]);
   if (parts.length && files.every(Boolean)) {
     say.current = null;
-    for (const f of files) { if (my !== sayToken) return; await playClip(f); }
+    for (const f of files) { if (my !== sayToken) return; await playClip(f, my); }
     return;
   }
-  return deviceSay(text, opts);
+  return deviceSay(text, opts, my);
 }
 
-function deviceSay(text, { rate = 0.92, pitch = 1.1 } = {}) {
+function deviceSay(text, { rate = 0.92, pitch = 1.1 } = {}, token = sayToken) {
   return new Promise((res) => {
     if (!('speechSynthesis' in window)) return res();
     if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
@@ -150,7 +155,7 @@ function deviceSay(text, { rate = 0.92, pitch = 1.1 } = {}) {
     let done = false; const fin = () => { if (!done) { done = true; res(); } };
     u.onend = fin; u.onerror = fin;
     u.onboundary = (ev) => u._onWord && u._onWord(ev);
-    setTimeout(() => speechSynthesis.speak(u), 60);
+    setTimeout(() => { if (token === sayToken && state.voice) speechSynthesis.speak(u); else fin(); }, 60);
     setTimeout(fin, 9000);
     say.current = u;
   });
@@ -208,6 +213,7 @@ function step() {
 let homeScrollY = 0;
 function show(id) {
   if ($('#home').classList.contains('active') && id !== 'home') homeScrollY = window.scrollY;
+  if (id !== 'play') { const pop = $('#pop'); pop.classList.remove('show'); pop.replaceChildren(); }
   $$('.screen').forEach((s) => s.classList.toggle('active', s.id === id));
   requestAnimationFrame(() => window.scrollTo(0, id === 'home' ? homeScrollY : 0));
 }
@@ -251,6 +257,7 @@ function renderHome() {
 let R = null; // current round
 
 function startRound(catId, count, browse = false, atLevel = null) {
+  sayToken++; stopClip(); $('#pop').classList.remove('show'); $('#pop').replaceChildren();
   const cat = CATEGORIES.find((c) => c.id === catId);
   const real = visibleGames().filter((c) => c.gen);
   const qs = [], seen = new Set();
@@ -299,6 +306,8 @@ async function mountBody3D(q) {
 }
 
 function renderQ() {
+  // A prior answer's recording or feedback must never appear on an unanswered card.
+  sayToken++; stopClip(); $('#pop').classList.remove('show'); $('#pop').replaceChildren();
   dropBody3D();
   const q = R.qs[R.i];
   q.t0 = Date.now();
@@ -324,7 +333,7 @@ function renderQ() {
   $$('[data-speak]', $('#qMain')).forEach((b) => (b.onclick = () => { sfx.tap(); say(b.dataset.speak, { rate: 0.8 }); }));
   // nudge the hint after a while, but never show the picture by itself
   clearTimeout(R.nudge);
-  R.nudge = setTimeout(() => !q.hintShown && $('#hintBtn').classList.add('glow'), 12000);
+  R.nudge = setTimeout(onCard(q, () => { if (!q.hintShown) $('#hintBtn').classList.add('glow'); }), 12000);
   setTimeout(onCard(q, () => say(q.say || '')), 250);
   const nq = R.qs[R.i + 1]; if (nq) { prefetch(nq.say); nq.hint && prefetch(nq.hint.say); }
   q.hint && prefetch(q.hint.say);
@@ -554,7 +563,7 @@ const PRAISE = ['Excellent!', 'Awesome job!', 'Great work!', 'You did it!', 'Sup
 const POPS = ['🌟', '🎉', '🦄', '🌈', '🥳', '💖', '🚀', '👏', '🏆', '😻'];
 
 function choose(q, v, el) {
-  if (R.locked) return;
+  if (!R || R.locked || R.qs[R.i] !== q || !$('#play').classList.contains('active')) return;
   if (String(v) === String(q.answer)) {
     R.locked = true; clearTimeout(R.nudge);
     const first = q.tries === 0;
@@ -576,11 +585,12 @@ function choose(q, v, el) {
     const oops = ['Oops! Try again.', 'Almost! Try again.', 'Not quite. You can do it!'][Math.min(q.tries - 1, 2)];
     const needHint = q.tries === 1 && q.hint && !q.hintShown;
     if (needHint) showHint(q, true); // picture/clue appears only after a miss
-    say(oops).then(() => { if (needHint && !R.locked) speakHint(q); });
+    say(oops).then(() => { if (needHint && R && R.qs[R.i] === q && !R.locked && $('#play').classList.contains('active')) speakHint(q); });
   }
 }
 
 function celebrate(first) {
+  if (!R || !R.locked || !$('#play').classList.contains('active')) return;
   sfx.yes();
   const phrase = PRAISE[Math.floor(Math.random() * PRAISE.length)];
   const withName = state.name && Math.random() < 0.35 ? `${phrase.replace('!', '')}, ${state.name}!` : phrase;
@@ -969,6 +979,29 @@ $('#kidRemove').onclick = () => {
   if (!confirm(`Remove ${state.name || 'this child'} and all of their stars, levels and pictures?`)) return;
   Store.removeKid(Store.activeId(), state); applyTheme(); openSettings();
 };
+// Full-library downloads are opt-in to avoid silently downloading thousands of clips.
+$('#offlineVoiceBtn').onclick = async () => {
+  const status = $('#offlineVoiceStatus'), btn = $('#offlineVoiceBtn');
+  if (!('serviceWorker' in navigator)) { status.textContent = 'Offline audio download is available in the installed app over HTTPS.'; return; }
+  status.textContent = 'Preparing the offline voice library…'; btn.disabled = true;
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    if (!reg.active) throw new Error('offline service unavailable');
+    state.offlineAudio = 'full'; save();
+    reg.active.postMessage({ type: 'fill-audio-all' });
+  } catch { btn.disabled = false; status.textContent = 'Could not start the download. Check the connection and try again.'; }
+};
+if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', (e) => {
+  if (!e.data || e.data.type !== 'audio-pack-progress' || e.data.mode !== 'fill-audio-all') return;
+  const status = $('#offlineVoiceStatus'), btn = $('#offlineVoiceBtn');
+  if (!status) return;
+  const { done, total, saved = 0 } = e.data;
+  status.textContent = total ? `Saved ${saved} of ${total} additional voice clips (checked ${done}).` : 'All requested voice clips are already saved.';
+  if (done >= total) {
+    btn.disabled = false;
+    status.textContent = saved >= total ? 'Offline voice pack is ready.' : `Saved ${saved} of ${total} additional clips. Some could not be downloaded; try again when online.`;
+  }
+});
 $('#testVoiceBtn').onclick = async () => {
   const out = $('#voiceStatus');
   out.textContent = 'Playing…';
@@ -978,7 +1011,7 @@ $('#testVoiceBtn').onclick = async () => {
 $('#resetBtn').onclick = () => {
   if (!confirm('Reset all stars, stickers and levels?')) return;
   // keep the grown-up settings (name, grade, voice, PIN, play rules, look); clear everything the child earned
-  const KEEP = ['name', 'avatar', 'grade', 'voice', 'pinHash', 'theme', 'showAll', 'optClock', 'optAnatomy', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'schema'];
+  const KEEP = ['name', 'avatar', 'grade', 'country', 'dailyGoal', 'voice', 'pinHash', 'theme', 'showAll', 'optClock', 'optAnatomy', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'schema'];
   for (const k of Object.keys(state)) if (!KEEP.includes(k)) delete state[k];
   Object.assign(state, { stars: 0, stickers: [], levels: {}, best: {} });
   if (state.grade && GRADES[state.grade]) Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = gradeStart(r)));
@@ -987,20 +1020,23 @@ $('#resetBtn').onclick = () => {
 $('#startBtn').onclick = () => {
   // first tap unlocks audio on iPhone
   tone([1, 1], { vol: 0.001 });
+  try { sessionStorage.setItem('learnplay.started', '1'); } catch {}
   $('#splash').classList.add('gone');
   if (Store.kids().length > 1) openWho(); else say('Hi! Pick a game!');
 };
 
 applyTheme();
 renderHome();
+// A service-worker upgrade can reload this tab; never ask the child to press Let's Play twice.
+try { if (sessionStorage.getItem('learnplay.started') === '1') $('#splash').classList.add('gone'); } catch {}
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   navigator.serviceWorker.register('sw.js').then((reg) => {
     // a new version waits until she is on the home screen (never mid-game), then the app reloads into it
-    const tryUpdate = () => { if (reg.waiting && $('#home').classList.contains('active') && !document.querySelector('.time-up:not([hidden])')) reg.waiting.postMessage({ type: 'update-now' }); };
+    const tryUpdate = () => { if (reg.waiting && $('#splash').classList.contains('gone') && $('#home').classList.contains('active') && !document.querySelector('.time-up:not([hidden])')) reg.waiting.postMessage({ type: 'update-now' }); };
     reg.addEventListener('updatefound', () => { const w = reg.installing; if (w) w.addEventListener('statechange', () => w.state === 'installed' && tryUpdate()); });
     setInterval(tryUpdate, 4000); tryUpdate();
     // fetch any voice clips this phone doesn't have yet (after start-up, so the app opens fast)
-    setTimeout(() => reg.active && reg.active.postMessage({ type: 'fill-audio' }), 8000);
+    setTimeout(() => reg.active && reg.active.postMessage({ type: state.offlineAudio === 'full' ? 'fill-audio-all' : 'fill-audio' }), 8000);
   }).catch(() => {});
   let hadController = !!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!hadController) { hadController = true; return; } location.reload(); });

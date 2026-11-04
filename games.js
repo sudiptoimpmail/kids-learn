@@ -80,19 +80,21 @@ function openPlayZone() {
 }
 
 /* ---------- play timer ---------- */
-let playTimer = 0, lastTick = 0;
+let playTimer = 0, lastTick = 0, lastPlaySave = 0;
 function startPlayTimer() {
   clearInterval(playTimer);
-  lastTick = Date.now();
+  lastTick = performance.now();
+  lastPlaySave = lastTick;
   const tick = () => {
     const inPlay = ['playzone', 'game'].some((id) => $('#' + id).classList.contains('active'));
-    const now = Date.now();
+    const now = performance.now();
     // hourly mode: count only time actually spent in the Play Zone
     if (hourlyMode() && inPlay && !document.hidden) {
       const h = hourKey();
       if (!state.playUsed || state.playUsed.h !== h) state.playUsed = { h, ms: 0 };
-      state.playUsed.ms += Math.min(now - lastTick, 5000);
-      save();
+      state.playUsed.ms += Math.max(0, Math.min(now - lastTick, 5000));
+      // Do not synchronously serialize all child progress every second during animations.
+      if (now - lastPlaySave >= 10000) { save(); lastPlaySave = now; }
     }
     lastTick = now;
     const txt = state.playAlways ? '∞' : fmtLeft();
@@ -105,6 +107,7 @@ function startPlayTimer() {
 }
 function timeUp() {
   stopGame();
+  save(); // flush the final hourly-time balance before showing the end screen
   $('#timeUp').hidden = false;
   $('#timeUp p').textContent = hourlyMode() ? `More play time at ${nextHourLabel()}. Let's learn some more!` : "Let's learn some more — then play again!";
   sfx.win();
