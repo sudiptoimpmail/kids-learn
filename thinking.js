@@ -27,7 +27,7 @@ function genPattern(level) {
     const start = level >= 5 ? 1 + rand(8) : 1 + rand(5);
     const nums = Array.from({ length: 4 }, (_, i) => start + i * step);
     const answer = String(start + 4 * step);
-    const wrong = [String(+answer - step), String(+answer + step), String(+answer + 1), String(+answer - 1)]
+    const wrong = [String(+answer - step), String(+answer + step), String(+answer + 1), String(+answer - 1), String(+answer + 2), String(+answer - 2)]
       .filter((x) => x !== answer);
     return thinkingQuestion(`pattern-number-${start}-${step}`, 'Which number comes next?',
       `<div class="think-pattern">${nums.map((n) => `<span>${n}</span>`).join('')}<span class="think-missing">?</span></div>`,
@@ -99,7 +99,7 @@ const THINKING_SEQUENCES = [
   [2, ['🧊', '☀️', '💧'], 'Warmth melts ice into water.'],
   [2, ['📖', '🧠', '✅'], 'Read, think, and then answer.'],
   [2, ['🧺', '🫧', '👕'], 'Wash your clothes before they are clean.'],
-  [3, ['📝', '📮', '✉️'], 'Write a letter, mail it, and it arrives.'],
+  [3, ['📝', '✉️', '📮'], 'Write a letter, put it in an envelope, and mail it.'],
   [3, ['🌰', '🌱', '🌳'], 'A seed sprouts and becomes a tree.'],
   [3, ['☁️', '🌧️', '🌱'], 'Clouds can bring rain, and rain helps plants grow.'],
 ];
