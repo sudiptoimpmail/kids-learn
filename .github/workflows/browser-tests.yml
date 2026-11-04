@@ -23,9 +23,9 @@ jobs:
       - name: Validate JavaScript syntax
         run: npm run check
       - name: Browser regression tests
-        run: npm test
-        env:
-          CHROME_BIN: ${{ github.workspace }}/node_modules/playwright/.local-browsers/chromium/chrome-linux/chrome
+        run: |
+          export CHROME_BIN="$(node -p 'require("playwright").chromium.executablePath()')"
+          npm test
       - name: Upload browser screenshots
         if: always()
         uses: actions/upload-artifact@v4
