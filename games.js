@@ -984,7 +984,7 @@ function startSudoku(mode) {
   else { word = pick(n === 4 ? SDK_WORDS4 : SDK_WORDS6); syms = word.split(''); }
   const cur = puz.map((r) => r.slice());
   const given = puz.map((r) => r.map((v) => v != null));
-  let sel = null;
+  let sel = null, solved = false;
   const area = $('#gameArea');
   const bc = n / 2;
   area.innerHTML = `${word ? `<div class="sdk-word">${syms.map((l) => `<b>${l}</b>`).join('')}<button class="mini-speaker" data-speak="${word}">🔊</button></div>` : ''}
@@ -1012,7 +1012,9 @@ function startSudoku(mode) {
     }
   }
   function checkWin() {
+    if (solved) return;
     for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (cur[r][c] !== sol[r][c]) return;
+    solved = true;
     sel = null; paint();
     $$('.sdk-cell', area).forEach((el, k) => { el.style.animationDelay = `${k * 30}ms`; el.classList.add('win'); });
     const up = lv < 5;
@@ -1025,10 +1027,11 @@ function startSudoku(mode) {
   area.querySelector('.sdk-board').addEventListener('click', (e) => {
     const t = e.target.closest('.sdk-cell'); if (!t) return;
     const r = +t.dataset.r, c = +t.dataset.c;
-    if (given[r][c]) return;
+    if (solved || given[r][c]) return;
     sel = [r, c]; sfx.tap(); paint();
   });
-  $$('.sdk-key', area).forEach((k) => (k.onclick = () => {
+  $('.sdk-key', area).forEach((k) => (k.onclick = () => {
+    if (solved) return;
     if (!sel) { const f = firstEmpty(); if (!f) return; sel = f; }
     const [r, c] = sel;
     cur[r][c] = k.dataset.v === 'x' ? null : +k.dataset.v;
@@ -1038,6 +1041,7 @@ function startSudoku(mode) {
   }));
   const firstEmpty = () => { for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (!given[r][c] && cur[r][c] !== sol[r][c]) return [r, c]; return null; };
   area.querySelector('[data-a="hint"]').onclick = () => {
+    if (solved) return;
     const f = firstEmpty(); if (!f) return;
     const [r, c] = f; cur[r][c] = sol[r][c]; given[r][c] = true;
     const el = cellEl(r, c); el.classList.add('given', 'hinted');
