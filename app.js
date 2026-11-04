@@ -840,7 +840,12 @@ function askPin(onOk, change = false) {
     $$('#pinDots i').forEach((d, k) => d.classList.toggle('on', k < typed.length));
     $('#pinForgotBtn').hidden = mode() !== 'check'; $('#pinForgot').hidden = true;
   };
-  const close = () => { sheet.hidden = true; $('#pinPad').onclick = null; };
+  const close = () => { sheet.hidden = true; $('#pinPad').onclick = null; sheet.onclick = null; };
+  // kids who land here by accident: a big way back, and the voice tells them where it is
+  const goBack = () => { sfx.tap(); sayToken++; stopClip(); close(); };
+  $('#pinBack').onclick = goBack;
+  sheet.onclick = (e) => { if (e.target === sheet) goBack(); };   // tapping outside the box also goes back
+  const kidNote = () => say(['This part is for grown-ups.', 'Tap the house to go back.']);
   const shake = () => { const b = $('.pin-box'); b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); sfx.no(); };
   $('#pinPad').onclick = (e) => {
     const b = e.target.closest('button'); if (!b) return; const k = b.dataset.k; sfx.tap();
@@ -854,7 +859,7 @@ function askPin(onOk, change = false) {
       if (m === 'check') {
         if (Date.now() < (askPin.lockUntil || 0)) { typed = ''; shake(); $('#pinNote').textContent = 'Too many tries. Wait a little and try again.'; return; }
         if (pinHash(typed) === state.pinHash) { askPin.misses = 0; close(); onOk(); }
-        else { typed = ''; shake(); paint(); askPin.misses = (askPin.misses || 0) + 1; if (askPin.misses >= 3) { askPin.lockUntil = Date.now() + 30000 * (askPin.misses - 2); $('#pinNote').textContent = 'Too many tries. Wait 30 seconds.'; } }
+        else { typed = ''; shake(); paint(); kidNote(); askPin.misses = (askPin.misses || 0) + 1; if (askPin.misses >= 3) { askPin.lockUntil = Date.now() + 30000 * (askPin.misses - 2); $('#pinNote').textContent = 'Too many tries. Wait 30 seconds.'; } }
       }
       else if (m === 'new') { first = typed; typed = ''; paint(); }
       else if (typed === first) { state.pinHash = pinHash(typed); save(); close(); sfx.yes(); onOk(); }
@@ -870,6 +875,7 @@ function askPin(onOk, change = false) {
     $$('#pinForgot [data-v]').forEach((x) => (x.onclick = () => { if (+x.dataset.v === ans) { state.pinHash = ''; save(); typed = ''; first = null; paint(); } else { shake(); $('#pinForgot').hidden = true; } }));
   };
   typed = ''; paint(); sheet.hidden = false;
+  if (mode() === 'check') kidNote();
 }
 $('#backupBtn').onclick = () => {
   const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([Store.exportJSON()], { type: 'application/json' }));

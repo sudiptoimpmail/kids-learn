@@ -986,3 +986,7 @@ header.top { align-items: center; }
 @media (min-width: 700px) { .quest-steps { grid-template-columns: repeat(3, 1fr); } .quest-step { min-height: 140px; } .quest-step .qs-ico { font-size: 56px; } }
 .quest-head { flex-wrap: wrap; gap: 6px; } .quest-head b { white-space: nowrap; }
 @media (max-width: 420px) { .quest-checks i { width: 20px; height: 20px; font-size: 11px; } .quest-head b { font-size: 20px; } }
+
+/* PIN screen: a big, clear way back for kids */
+.pin-box { position: relative; padding-top: 64px; }
+.pin-back { position: absolute; left: 12px; top: 12px; padding: 10px 16px; border-radius: 16px; background: #ffe066; color: #5c3c00; font-size: 20px; font-weight: 900; box-shadow: 0 4px 0 #f0b400; }
