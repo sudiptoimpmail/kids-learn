@@ -200,9 +200,11 @@ function step() {
 }
 
 /* ---------- screens ---------- */
+let homeScrollY = 0;
 function show(id) {
-  $$('.screen').forEach((s) => s.classList.toggle('active', s.id === id));
-  scrollTo(0, 0);
+  if ($('#home').classList.contains('active') && id !== 'home') homeScrollY = window.scrollY;
+  $('.screen').forEach((s) => s.classList.toggle('active', s.id === id));
+  requestAnimationFrame(() => window.scrollTo(0, id === 'home' ? homeScrollY : 0));
 }
 
 function renderHome() {
@@ -216,12 +218,23 @@ function renderHome() {
   if (typeof renderPlayBanner === 'function') renderPlayBanner();
   if (typeof renderToday === 'function') renderToday();
   if (typeof renderQuest === 'function') renderQuest();
-  $('#grid').innerHTML = visibleGames().map((c) => {
-    const best = state.best[c.id] || 0;
+  const groups = [
+    ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'match', 'syl']],
+    ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'mul', 'div', 'clock', 'shape2', 'shape3']],
+    ['🧠 Thinking Skills', ['pattern', 'odd', 'sequence']],
+    ['🌍 Science & World', ['body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
+  ];
+  const visible = visibleGames();
+  const makeTile = (c) => {
+    const best = Math.min(3, state.best[c.id] || 0);
     const lv = c.id === 'mix' || c.trace ? '' : `<span class="lv">Lv ${levelOf(c.id)}</span>`;
     return `<button class="tile" data-cat="${c.id}" style="--c:${c.color}">
       ${lv}<span class="ti">${c.icon}</span><span class="tt">${c.title}</span><span class="ts">${c.sub}</span>
       <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
+  };
+  $('#grid').innerHTML = groups.map(([title, ids]) => {
+    const cats = visible.filter((c) => ids.includes(c.id));
+    return cats.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${cats.map(makeTile).join('')}</div></section>` : '';
   }).join('');
 }
 
@@ -896,6 +909,7 @@ $('#settingsDone').onclick = () => {
   collectSettings(); applyTheme(); renderHome(); show('home');
   say("Let's play!");
 };
+$('#settingsBack').onclick = () => $('#settingsDone').click();
 
 /* ---------- children (profiles): picker on the home screen, add / edit / remove in Settings ---------- */
 function switchKid(id) {
