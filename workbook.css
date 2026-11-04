@@ -42,3 +42,6 @@
 @media(prefers-reduced-motion:reduce){
  .ia-hotspot-ring {transition:none;}
 }
+
+/* The Grade 1 word tracing tab must remain hidden for younger profiles. */
+#trace .tr-tab[hidden] { display:none !important; }
