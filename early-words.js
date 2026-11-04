@@ -9,7 +9,7 @@ const EARLY_PHRASES = ["I don't"];
 // Short-vowel consonant-vowel-consonant sound patterns. This is a phonics
 // classification, not a generic rule for every three-letter spelling.
 const EARLY_CVC = new Set(
-  'cat bat fan hat rat bag can tap jam man mat van pen ram nap fat yam hen bed jet net ten den leg pet wet red pin bib fig big kid dip dig rib win kit dog jog mop cot log top dot rot cop hot pot mob sun son run hut cup bug nut jug bus tub rug bud cub gum mud tug mug hug fun bun cut web cap map pan sad'.split(' ')
+  'cat bat fan hat rat bag pig lip can tap jam man mat van pen ram nap fat yam hen bed jet net ten den leg pet wet red pin bib fig big kid dip dig rib win kit dog jog mop cot log top dot rot cop hot pot mob sun son run hut cup bug nut jug bus tub rug bud cub gum mud tug mug hug fun bun cut web cap map pan sad'.split(' ')
 );
 const EARLY_REVIEW = new Set(['mo', 'lead', 'bow']); // unclear token / multiple pronunciations
 const EARLY_PATTERN_L2 = new Set('ant egg ill ink six mix fox box yuck none zip'.split(' '));
