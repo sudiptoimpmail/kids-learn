@@ -12,6 +12,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -21,6 +23,10 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Validate JavaScript syntax
         run: npm run check
+      - name: Verify offline cache version changed with code
+        run: node scripts/check-cache-version.cjs
+        env:
+          BASE_SHA: ${{ github.event.before }}
       - name: Browser regression tests
         run: |
           export CHROME_BIN="$(node -p 'require("playwright").chromium.executablePath()')"
