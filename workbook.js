@@ -163,6 +163,7 @@ const IllustratedActivities = (() => {
       mode==='shapes' ? 'Tap all the circles you see.' :
       mode==='forest' ? ['Find the word.', answer] : ['Read the story.','What happened first?'];
     return {key:'ill-'+mode+(mode==='forest'?'-'+answer:''),text,say:voice,
+      parts: ['shapes','sounds','sequence'].includes(mode) ? 4 : 1,
       main:'',options:[],answer,illustrated:{mode,theme},mainClass:'ia-picture',hint:{html:'Look at the picture and try again.',say:hint}};
   }
   function setFeedback(host,message){
@@ -179,7 +180,7 @@ const IllustratedActivities = (() => {
     host.append(note);
     const progress=new Set();
     const correctAnswer=(button)=>actions.choose(q.answer,button);
-    const good=msg=>{setFeedback(host,msg);if(typeof sfx!=='undefined')sfx.yes();};
+    const good=msg=>{setFeedback(host,msg);if(typeof sfx!=='undefined')sfx.tap();};
     if(info){
       const required=mode==='forest'?[q.answer]:info.correct;
       info.items.forEach(([id,x,y])=>{
