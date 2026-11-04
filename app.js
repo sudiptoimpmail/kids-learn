@@ -949,6 +949,7 @@ $('#grid').addEventListener('click', (e) => {
   const t = e.target.closest('.tile'); if (!t) return;
   sfx.tap();
   if (t.dataset.game) return openBrainGame(t.dataset.game);
+  if (!t.dataset.cat) return;          // other tiles (the workbook) have their own handlers
   if (t.dataset.cat === 'vocab') return openLearn();
   if (t.dataset.cat === 'trace') { TR.quest = null; return openTrace(); }
   startRound(t.dataset.cat);
