@@ -161,6 +161,7 @@ function GL(id) {
 function gameLevelUp(id, needWins = 1) {
   state.gameLv = state.gameLv || {}; state.gameWins = state.gameWins || {};
   state.gameWins[id] = (state.gameWins[id] || 0) + 1;
+  if (brainMode && BRAIN_GAME_IDS.has(id) && typeof logBrainWin === 'function') logBrainWin(id);
   const lv = GL(id);
   let up = false;
   if (lv < (GAME_MAX[id] || 1) && state.gameWins[id] % needWins === 0) { state.gameLv[id] = lv + 1; up = true; }
@@ -1043,6 +1044,7 @@ function startSudoku(mode) {
     $$('.sdk-cell', area).forEach((el, k) => { el.style.animationDelay = `${k * 30}ms`; el.classList.add('win'); });
     const up = lv < 5;
     state.sdkWins = (state.sdkWins || 0) + 1;
+    if (brainMode && typeof logBrainWin === 'function') logBrainWin('sudoku');
     if (up && state.sdkWins % 2 === 0) state.sdkLevel = lv + 1;   // every 2 wins → harder
     save();
     gameWin(pick(['Awesome job!', 'Excellent!', 'You did it!']));
