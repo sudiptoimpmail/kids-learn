@@ -38,14 +38,23 @@ The first thing on the home screen: a short guided mix for today (about 10–12 
 | 🗺️ World Map | Realistic world map (real country shapes): name the orange continent or country, tap a continent or country. Big famous countries by level: USA, Canada, Brazil, Russia, China, Australia, India → UK, France, Germany, Italy, Japan, Mexico, Egypt → Spain, Argentina, South Africa, Peru, Kenya, New Zealand… Hint shows the flag |
 | 🐼 Animals of the World | Where does the panda / kangaroo / polar bear / anaconda / tiger… live? Hint highlights the place on the map |
 | 🗽 Famous Places | Statue of Liberty, CN Tower, Niagara Falls, Taj Mahal, Machu Picchu, Eiffel Tower, Great Wall, Big Ben, Sydney Opera House, Colosseum… Where is it? / Which one is in France? / What is it called? |
+| 🧩 Pattern Detective | Educational reasoning: 5 levels of repeating emoji patterns (AB, AAB/ABB, ABC, AABB) and number sequences. Pre-K through Grade 3; 12–100 generated question variants by level. |
+| 🔍 Odd One Out | Educational classification: 3 levels, category and feature recognition with spoken explanations. 16–28 prompts available across levels. |
+| 🪴 What Comes Next? | Educational sequencing: 3 levels using age-appropriate daily events and cause/effect; 14–21 prompts by level. |
 | 🎲 Mix It Up | A bit of everything |
 
 **How it plays:** 10 cards per round. Pictures/clues stay hidden behind **💡 Hint** and appear only when she taps it or after a wrong answer. Right answers get a spoken "Excellent!" / "Awesome job!", confetti and a bouncing emoji; 3 in a row shows a streak. Each finished round earns stars and a new sticker. Each game has 3 levels (math games have 5) and moves up automatically after a great round (grown-ups can change levels in ⚙️).
 
 **Reading hints** break words into syllables (al · li · ga · tor, in colors, read aloud slowly); one-syllable words split into sound chunks (c · at, fr · og). Sentence hints show every long word broken into syllables while the voice reads along.
 
+## 🧠 Brain Games (always available)
+
+Open **Brain Games** on Home for Memory Match, Tic-Tac-Toe, Picture Puzzle, Sudoku, Connect Four, and Ball Maze. These problem-solving challenges are **not locked behind earned play breaks**. The available games depend on age/grade (Pre-K: Memory, Tic-Tac-Toe, Picture Puzzle; Kindergarten also Sudoku and Ball Maze; Grade 1 adds Connect Four). In Settings, **Show all games** overrides grade visibility. A completed brain puzzle is counted separately in the parent Progress dashboard.
+
+Pattern recognition, Odd One Out and What Comes Next? are **education lessons**, found under **Thinking Skills** in the learning catalog, and included in alternating daily quests.
+
 ## 🎮 Play Zone (reward games)
-Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (default: every 2 finished learning rounds earn a 3-minute break) or **Minutes every hour** (free play for up to 15 minutes in each clock hour — only time actually spent playing counts). Or set "Always open". Every game shows its **level** (badge on the tile) and winning moves her up. A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
+The Play Zone contains arcade and creativity activities (Balloons, Coloring, Rolling Ball 3D, Pinball, Whack-a-Mole, Draw & Copy, Silly Moves). Brain Games listed below are available separately on Home. Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (default: every 2 finished learning rounds earn a 3-minute break) or **Minutes every hour** (free play for up to 15 minutes in each clock hour — only time actually spent playing counts). Or set "Always open". Every game shows its **level** (badge on the tile) and winning moves her up. A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
 
 | Game | Notes |
 |---|---|
