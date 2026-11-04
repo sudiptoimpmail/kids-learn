@@ -288,7 +288,9 @@ function startRound(catId, count, browse = false, atLevel = null) {
     // Illustrated activities appear as variations in existing question rounds.
     const illustrated = !browse && !isTestMode() && typeof IllustratedActivities !== 'undefined' &&
       IllustratedActivities.available(state.grade, c.id, lv) && (qs.length % 4 === 1 || (qs.length === 0 && Math.random() < 0.45));
-    const q = (illustrated && IllustratedActivities.make(state.grade, c.id, lv)) || c.gen(lv);
+    let q = (illustrated && IllustratedActivities.make(state.grade, c.id, lv)) || c.gen(lv);
+    // Keep a single occurrence of each illustrated exercise per round.
+    if (q.illustrated && seen.has(q.key)) q = c.gen(lv);
     if (seen.has(q.key) && guard < 500) continue;
     if (!browse && recent.has(q.key) && guard < 350) continue;
     seen.add(q.key); q.cat = c; q.level = atLevel || levelOf(c.id); qs.push(q);
