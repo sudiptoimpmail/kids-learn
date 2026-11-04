@@ -109,6 +109,11 @@ Each new game is one generator in `content.js` (questions + hint + voice text), 
 - In code, every locked game asks one function: `isPremium()` → cached entitlement on the device (works offline), refreshed from the store at app start.
 - Purchases and any link that leaves the app sit behind the **grown-up gate** (the PIN screen, or a grown-up math question).
 
+### Done since
+- ✅ Today's Quest (daily guided path) — `progress.js` (`questFor()`), per child per day.
+- ✅ Progress dashboard and per-skill tracking (game + level = skill) — `progress.js`.
+- ✅ Letter sounds recorded from phonemes (`LETTER_SOUNDS` in `phonics.js`); worth checking by ear.
+
 ### What to do now so launch is easy
 1. ✅ All saving goes through `storage.js` (one place to change).
 2. ✅ Data has a schema version with migrations.

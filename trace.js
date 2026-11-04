@@ -113,6 +113,8 @@ function renderTrace(speak) {
     finished = true;
     state.traced = state.traced || {}; state.traced[TR.set + ch] = 1;
     if (typeof logAttempt === 'function') logAttempt({ ok: true, t0: Date.now() - 20000 }, 'trace', TR.set === 'num' ? 3 : TR.set === 'small' ? 2 : 1);
+    // tracing as part of today's quest: 3 letters, then back home with a check mark
+    if (TR.quest && --TR.quest.left <= 0 && typeof questStepDone === 'function') { const qi = TR.quest.i; TR.quest = null; questStepDone(qi); setTimeout(() => { renderHome(); show('home'); }, 2600); }
     save();
     sfx.yes(); confetti(70);
     $('#trPic').classList.remove('cheer'); void $('#trPic').offsetWidth; $('#trPic').classList.add('cheer');

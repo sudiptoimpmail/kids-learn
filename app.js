@@ -28,6 +28,8 @@ const splitSentences = (t) => (t.match(/[^.!?]+[.!?]*/g) || []).map((x) => x.tri
 let CLIPS = {};
 const clipsReady = fetch('audio/clips.json').then((r) => r.json()).then((j) => (CLIPS = j)).catch(() => {});
 let sayToken = 0, actx, curSrc = null;
+// text that came from a person (names) is escaped before it goes into HTML
+const esc = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // a delayed step that only runs if this card is still on screen (the child may have gone home meanwhile)
 const onCard = (q, fn) => () => { if (R && R.qs[R.i] === q && $('#play').classList.contains('active')) fn(); };
@@ -213,6 +215,7 @@ function renderHome() {
   $('#gradeChip').classList.toggle('pulse', !state.grade);
   if (typeof renderPlayBanner === 'function') renderPlayBanner();
   if (typeof renderToday === 'function') renderToday();
+  if (typeof renderQuest === 'function') renderQuest();
   $('#grid').innerHTML = visibleGames().map((c) => {
     const best = state.best[c.id] || 0;
     const lv = c.id === 'mix' || c.trace ? '' : `<span class="lv">Lv ${levelOf(c.id)}</span>`;
@@ -293,6 +296,8 @@ function renderQ() {
   if (q.spell) renderSpell(q);
   if (q.body3d) mountBody3D(q);
   if (q.match) renderMatch(q);
+  if (q.blend && typeof wireBlend === 'function') wireBlend(q);
+  if (q.letterSound && typeof wireLetter === 'function') wireLetter(q);
   if (q.tap) $$('#qMain [data-val]').forEach((g) => { if (g.dataset.val) g.onclick = () => choose(q, g.dataset.val, g); });
   $$('[data-speak]', $('#qMain')).forEach((b) => (b.onclick = () => { sfx.tap(); say(b.dataset.speak, { rate: 0.8 }); }));
   // nudge the hint after a while, but never show the picture by itself
@@ -557,7 +562,7 @@ function celebrate(first) {
   const phrase = PRAISE[Math.floor(Math.random() * PRAISE.length)];
   const withName = state.name && Math.random() < 0.35 ? `${phrase.replace('!', '')}, ${state.name}!` : phrase;
   const pop = $('#pop');
-  pop.innerHTML = `<div class="pop-emoji">${POPS[Math.floor(Math.random() * POPS.length)]}</div><div class="pop-text">${withName}</div>` +
+  pop.innerHTML = `<div class="pop-emoji">${POPS[Math.floor(Math.random() * POPS.length)]}</div><div class="pop-text">${esc(withName)}</div>` +
     (R.streak >= 3 ? `<div class="pop-streak">🔥 ${R.streak} in a row!</div>` : '');
   pop.classList.remove('show'); void pop.offsetWidth; pop.classList.add('show');
   confetti(first ? 110 : 50);
@@ -601,6 +606,9 @@ function finish() {
     }
   }
   const earned = earnPlay();
+  // part of today's quest?
+  const questI = R.questStep;
+  if (questI != null && typeof questStepDone === 'function') questStepDone(questI);
   // sticker
   const left = STICKERS.filter((s) => !state.stickers.includes(s));
   const sticker = left.length ? left[Math.floor(Math.random() * left.length)] : null;
@@ -613,6 +621,14 @@ function finish() {
   $('#resLevel').textContent = levelMsg;
   $('#resSticker').innerHTML = sticker ? `<div class="new-sticker">${sticker}</div><div>New sticker!</div>` : '<div>You have every sticker! 🏆</div>';
   $('#playEarned').hidden = !earned;
+  const qn = questI != null && typeof questFor === 'function' ? questFor() : null;
+  $('#questNext').hidden = !qn;
+  if (qn) {
+    const nextI = qn.steps.findIndex((x) => !x.done);
+    $('#questNext').textContent = nextI < 0 ? '🎁 Open your quest gift!' : '🗺️ Next quest step ▶';
+    $('#questNext').onclick = () => { sfx.tap(); if (nextI < 0) { renderHome(); show('home'); openQuestGift(); } else startQuestStep(nextI); };
+  }
+  $('#againBtn').hidden = !!qn;
   show('result');
   sfx.win(); confetti(160, 0.3); setTimeout(() => confetti(120, 0.5), 600);
   say(`${stars === 3 ? 'Wow! Awesome job!' : stars === 2 ? 'Great job!' : 'Good try!'} You got ${R.firstTry} stars.${levelMsg ? ' Level up!' : ''}${sticker ? ' And a new sticker!' : ''}${earned ? ' You earned play time!' : ''}`);
@@ -759,7 +775,7 @@ $('#grid').addEventListener('click', (e) => {
   const t = e.target.closest('.tile'); if (!t) return;
   sfx.tap();
   if (t.dataset.cat === 'vocab') return openLearn();
-  if (t.dataset.cat === 'trace') return openTrace();
+  if (t.dataset.cat === 'trace') { TR.quest = null; return openTrace(); }
   startRound(t.dataset.cat);
 });
 $('#hintBtn').onclick = () => { sfx.tap(); showHint(R.qs[R.i]); };
@@ -890,7 +906,7 @@ function switchKid(id) {
 function openWho() {
   const kids = Store.kids();
   $('#whoGrid').innerHTML = kids.map((k) => `<button class="who-kid ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}">
-    <span class="who-av">${k.avatar || '🦄'}</span><b>${k.name || 'Player'}</b><small>${k.grade ? GRADES[k.grade].label : ''}</small></button>`).join('');
+    <span class="who-av">${esc(k.avatar || '🦄')}</span><b>${esc(k.name || 'Player')}</b><small>${k.grade ? GRADES[k.grade].label : ''}</small></button>`).join('');
   $$('#whoGrid .who-kid').forEach((b) => (b.onclick = () => { sfx.tap(); switchKid(b.dataset.id); $('#whoSheet').hidden = true; say("Let's play!"); }));
   $('#whoSheet').hidden = false;
 }
@@ -898,7 +914,7 @@ $('#kidBtn').onclick = () => { sfx.tap(); if (Store.kids().length > 1) openWho()
 $('#whoSheet').onclick = (e) => { if (e.target.id === 'whoSheet') $('#whoSheet').hidden = true; };
 function renderKids() {
   const kids = Store.kids();
-  $('#kidChips').innerHTML = kids.map((k) => `<button class="kid-chip ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}"><span>${k.avatar || '🦄'}</span>${k.name || 'Player'}</button>`).join('')
+  $('#kidChips').innerHTML = kids.map((k) => `<button class="kid-chip ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}"><span>${esc(k.avatar || '🦄')}</span>${esc(k.name || 'Player')}</button>`).join('')
     + (kids.length < MAX_KIDS ? '<button class="kid-chip add" data-add="1">＋ Add a child</button>' : '');
   $('#avatarRow').innerHTML = AVATARS.map((a) => `<button class="av ${state.avatar === a ? 'on' : ''}" data-a="${a}">${a}</button>`).join('');
   $('#kidRemove').hidden = kids.length <= 1;
@@ -941,6 +957,8 @@ applyTheme();
 renderHome();
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   navigator.serviceWorker.register('sw.js').catch(() => {});
+  // fetch any voice clips this phone doesn't have yet (after start-up, so the app opens fast)
+  navigator.serviceWorker.ready.then((reg) => setTimeout(() => reg.active && reg.active.postMessage({ type: 'fill-audio' }), 8000)).catch(() => {});
   // a new version finished downloading: switch to it the next time she is on the home screen
   let hadController = !!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener('controllerchange', () => {

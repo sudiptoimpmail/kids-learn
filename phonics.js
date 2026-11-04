@@ -37,6 +37,36 @@ function phonData() {
   for (const b of Object.keys(PHON.blends)) if (PHON.blends[b].length < 2) delete PHON.blends[b];
   return PHON;
 }
+// each letter's sound, as phonemes for the voice model (recorded into audio/ as "sound b" etc.)
+// stop sounds (b, d, k…) are kept short with no "uh" after them, the way phonics is taught
+const LETTER_SOUNDS = { a: 'ˈæ', b: 'b', c: 'k', d: 'd', e: 'ˈɛ', f: 'ˈf', g: 'ɡ', h: 'h', i: 'ˈɪ', j: 'dʒ', k: 'k', l: 'ˈl', m: 'ˈm', n: 'ˈn', o: 'ˈɑ', p: 'p',
+  q: 'kw', r: 'ˈɹ', s: 'ˈs', t: 't', u: 'ˈʌ', v: 'ˈv', w: 'w', x: 'ks', y: 'j', z: 'ˈz', sh: 'ˈʃ', ch: 'tʃ', th: 'ˈθ' };
+const soundClip = (l) => `sound ${l}`;
+// letter tiles: tap one to hear its sound; tap ▶ (or slide a finger across) to hear them blend into the word
+function wireBlend(q) {
+  const tiles = $$('.ph-tiles .ph-t'); if (!tiles.length) return;
+  const lit = (i) => tiles.forEach((t, k) => t.classList.toggle('on', k === i));
+  const playOne = (i) => { lit(i); return say([soundClip(q.blend[i])]).then(() => lit(-1)); };
+  tiles.forEach((t, i) => (t.onclick = (e) => { e.stopPropagation(); playOne(i); }));
+  let blending = false;
+  const blendAll = async () => {
+    if (blending) return; blending = true;
+    for (let i = 0; i < tiles.length; i++) { lit(i); await say([soundClip(q.blend[i])]); await sleep(120); }
+    lit(-1); tiles.forEach((t) => t.classList.add('joined'));
+    await say([q.answer]); setTimeout(() => tiles.forEach((t) => t.classList.remove('joined')), 900); blending = false;
+  };
+  const go = $('.ph-blend-go'); if (go) go.onclick = (e) => { e.stopPropagation(); blendAll(); };
+  // slide across the tiles: each tile sounds as the finger reaches it
+  const row = $('.ph-tiles'); let seen = -1;
+  row.onpointerdown = (e) => { seen = -1; row.setPointerCapture && row.setPointerCapture(e.pointerId); };
+  row.onpointermove = (e) => {
+    if (!e.buttons && e.pointerType === 'mouse') return;
+    const i = tiles.findIndex((t) => { const r = t.getBoundingClientRect(); return e.clientX >= r.left && e.clientX <= r.right; });
+    if (i > seen) { seen = i; lit(i); say([soundClip(q.blend[i])]); if (i === tiles.length - 1) setTimeout(() => { lit(-1); say([q.answer]); }, 450); }
+  };
+}
+// a big letter you can tap to hear its sound
+function wireLetter(q) { const el = $('.ph-letters'); if (el && q.letterSound) el.onclick = () => { el.classList.remove('bounce'); void el.offsetWidth; el.classList.add('bounce'); say([soundClip(q.letterSound)]); }; }
 const picOpt = (x) => ({ v: x[0], html: x[1] });
 const namesHint = (opts, say) => ({ html: `<div class="hint-note">${opts.map((o) => `${o[1]} ${o[0]}`).join(' · ')}</div>`, say: [say, ...opts.map((o) => o[0])] });
 const firstLetter = (w) => w[0];
@@ -78,9 +108,10 @@ function genPhonics(level) {
       const fill = wrong.length < n ? sample(P.cvc.filter((x) => x[0] !== w && !wrong.includes(x)), n - wrong.length) : [];
       const opts = shuffle([right, ...wrong, ...fill]);
       return {
-        key: `ph-blendw-${w}`, text: 'Put the sounds together. Which word is it?', say: 'Put the sounds together. Which word is it?',
-        main: `<div class="ph-tiles">${w.split('').map((c, i) => `<span style="animation-delay:${i * 0.35}s">${c}</span>`).join('')}</div>`, mainClass: 'ph-main',
-        options: opts.map(picOpt), answer: w, optClass: 'opt-emoji', hint: { html: `<div class="hint-note">${w.split('').join(' · ')} → ${w}</div>`, say: w, slow: true },
+        key: `ph-blendw-${w}`, text: 'Blend the sounds. Which picture is it?', say: ['Tap each letter to hear its sound.', 'Then slide your finger to blend them!'],
+        main: `<div class="ph-tiles">${w.split('').map((c, i) => `<button class="ph-t" style="animation-delay:${i * 0.25}s">${c}</button>`).join('')}</div><button class="ph-blend-go">▶ Blend</button>`, mainClass: 'ph-main',
+        options: opts.map(picOpt), answer: w, optClass: 'opt-emoji', blend: w.split(''),
+        hint: { html: `<div class="hint-note">${w.split('').join(' · ')} → ${w}</div>`, say: [...w.split('').map(soundClip), w] },
       };
     }
     const L = pick([...new Set(P.cvc.map(([w]) => w[2]))]);
@@ -112,7 +143,7 @@ function genPhonics(level) {
   const opts = shuffle([right, ...wrong]);
   return {
     key: `ph-first-${L}-${right[0]}`, text: `Which picture starts with <b>${L.toUpperCase()}</b>?`, say: ['Which picture starts with', `${L.toUpperCase()}?`],
-    main: `<div class="ph-letters">${L.toUpperCase()} ${L}</div>`, mainClass: 'ph-main', options: opts.map(picOpt), answer: right[0], optClass: 'opt-emoji',
-    hint: namesHint(opts, 'Say each picture. Listen to the start!'),
+    main: `<div class="ph-letters tap">${L.toUpperCase()} ${L}</div><small class="ph-tip">👆 tap the letter to hear its sound</small>`, mainClass: 'ph-main', options: opts.map(picOpt), answer: right[0], optClass: 'opt-emoji',
+    letterSound: L, hint: { html: namesHint(opts, '').html, say: [`${L.toUpperCase()} says`, soundClip(L), 'Listen to the start of each picture!', ...opts.map((o) => o[0])] },
   };
 }

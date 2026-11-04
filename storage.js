@@ -47,15 +47,20 @@ const Store = {
     // Writes wait until start-up restore has finished, then go one at a time, newest last.
     const native = Store.native();
     if (native) {
+      // one write at a time, always the newest data; a failed write is tried again with the next save
       Store.pending = json;
-      Store.chain = Store.ready.then(async () => {
-        if (Store.pending !== json) return;          // a newer save will write instead
-        try { await native.set({ key: STORE_KEY, value: json }); } catch (e) { if (Store.onError) Store.onError(e); }
+      Store.chain = (Store.chain || Store.ready).catch(() => {}).then(async () => {
+        const latest = Store.pending; if (!latest) return;
+        Store.pending = null;
+        try { await native.set({ key: STORE_KEY, value: latest }); }
+        catch (e) { if (!Store.pending) Store.pending = latest; if (Store.onError) Store.onError(e); }
       });
     }
   },
   // older saved data → today's shape
   migrate(d) {
+    if (!d || typeof d !== 'object' || Array.isArray(d)) d = {};
+    if (d.profiles && (typeof d.profiles !== 'object' || Array.isArray(d.profiles))) delete d.profiles;
     if (!d.profiles) {
       // schema 1–2: one child, everything in one flat object
       d.recent = d.recent || {};
@@ -65,10 +70,20 @@ const Store = {
       kid.avatar = kid.avatar || '🦄';
       d = { schema: SCHEMA, savedAt: d.savedAt || 0, active: 'p1', order: ['p1'], device: dev, profiles: { p1: kid } };
     }
-    d.order = (d.order || Object.keys(d.profiles)).filter((id) => d.profiles[id]);
+    // keep only well-formed children: an id like p1, an object, a plain-text name, a known picture
+    for (const [id, p] of Object.entries(d.profiles)) {
+      if (!/^p\d{1,3}$/.test(id) || !p || typeof p !== 'object' || Array.isArray(p)) { delete d.profiles[id]; continue; }
+      p.name = typeof p.name === 'string' ? p.name.replace(/[<>&"'`]/g, '').slice(0, 20) : '';
+      if (!AVATARS.includes(p.avatar)) p.avatar = '🦄';
+      for (const k of ['levels', 'best', 'recent', 'traced', 'stats']) if (p[k] != null && (typeof p[k] !== 'object' || Array.isArray(p[k]))) delete p[k];
+      if (!Array.isArray(p.stickers)) p.stickers = [];
+      if (typeof p.stars !== 'number' || !(p.stars >= 0)) p.stars = 0;
+    }
+    d.order = (Array.isArray(d.order) ? d.order : Object.keys(d.profiles)).filter((id, i, a) => d.profiles[id] && a.indexOf(id) === i).slice(0, MAX_KIDS);
     if (!d.order.length) { d.profiles = { p1: profileDefaults() }; d.order = ['p1']; }
     if (!d.profiles[d.active]) d.active = d.order[0];
-    d.device = d.device || {};
+    d.device = d.device && typeof d.device === 'object' && !Array.isArray(d.device) ? d.device : {};
+    for (const k of Object.keys(d.device)) if (!DEVICE_KEYS.includes(k)) delete d.device[k];
     d.schema = SCHEMA;
     return d;
   },

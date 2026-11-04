@@ -6,11 +6,14 @@ A flash-card learning game for Pre-K through 3rd grade, built as an installable 
 
 **🎚️ Difficulty slider (grown-ups):** on any question screen, **press and hold** the 🎚️ Lv button for a second to open a slider (Easier ↔ Harder) that shows which grade each level suits.
 
+## 🗺️ Today's Quest
+The first thing on the home screen: a short guided mix for today (about 10–12 minutes), made for each child from their grade, the skill that needs the most practice, and what they haven't done lately — a warm-up, practice, reading, math, a discovery topic (and 3 letters of tracing for Pre-K/K). Each step is 5 cards; finished steps get a ✓. When all are done the 🎁 gift opens: 5 stars, a new sticker and a Play Zone break. A new quest is made every day. Everything else stays under **Explore everything**.
+
 ## Games
 | Game | What it practices |
 |---|---|
 | ✍️ Letters & Numbers (Pre-K, K) | Trace **A–Z, a–z and 1–20** with a finger on writing lines. The voice says "A. A is for apple" with a picture (numbers show that many things). Trace most of the gray letter to earn a star and go on; ✏️ hides the guide to write on your own. |
-| 🔠 Letter Sounds | Phonics with pictures, 5 levels: which picture **starts with** B → which picture **rhymes** with cat → which picture **ends with** T, and **blend** b·a·t into a word → same **middle (short vowel) sound** as log → **blends and digraphs** (sh, ch, tr, st, cl…). 💡 Hint names every picture out loud. Pre-K 1–2, K 1–4, 1st 3–5, 2nd 4–5 |
+| 🔠 Letter Sounds | Phonics with pictures and **real letter sounds** (/b/, /m/, /a/ — tap the big letter to hear it; on blending cards tap each tile or slide a finger across to blend b·a·g into "bag"), 5 levels: which picture **starts with** B → which picture **rhymes** with cat → which picture **ends with** T, and **blend** b·a·t into a word → same **middle (short vowel) sound** as log → **blends and digraphs** (sh, ch, tr, st, cl…). 💡 Hint names every picture out loud. Pre-K 1–2, K 1–4, 1st 3–5, 2nd 4–5 |
 | 🐱 Little Words | 3-letter words (cat, ant, bee, key, owl…) — read the word → tap the picture, listen → tap the word, missing vowel |
 | 🐸 Big Words | Levels 1–3: 4-letter words (crab, lamp, wolf, coin…) · 4: 5-letter (truck, tiger, puppy, brick…) · 5: long words (alligator, anchor, orange, mother…) |
 | 👀 Sight Words | he, she, like, went, from, take, make, over, under, write… Listen → tap the word, fill the missing word in a sentence, and opposites (up/down, hot/cold) from level 3 |

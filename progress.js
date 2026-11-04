@@ -95,10 +95,10 @@ function openDashboard() {
 }
 function renderDashboard() {
   const kids = Store.kids();
-  $('#dashKids').innerHTML = kids.length > 1 ? kids.map((k) => `<button class="kid-chip ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}"><span>${k.avatar || '🦄'}</span>${k.name || 'Player'}</button>`).join('') : '';
+  $('#dashKids').innerHTML = kids.length > 1 ? kids.map((k) => `<button class="kid-chip ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}"><span>${esc(k.avatar || '🦄')}</span>${esc(k.name || 'Player')}</button>`).join('') : '';
   $$('#dashKids .kid-chip').forEach((b) => (b.onclick = () => { sfx.tap(); switchKid(b.dataset.id); renderDashboard(); }));
   const st = state.stats || { days: {}, skills: {} };
-  const name = state.name || 'Your child';
+  const name = esc(state.name || 'Your child');
   // last 7 days
   const week = [];
   for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); const k = dayKey(d); week.push([d, st.days[k] || { q: 0, first: 0, secs: 0, play: 0, hints: 0, cats: {} }]); }
@@ -154,3 +154,93 @@ function renderDashboard() {
 $('#dashBack').onclick = () => { sfx.tap(); openSettings(); };
 $('#dashGoal').onchange = () => { state.dailyGoal = +$('#dashGoal').value; save(); renderDashboard(); };
 $('#dashBtn').onclick = () => { sfx.tap(); openDashboard(); };
+
+/* =========================================================
+   🗺️ Today's Quest: a short, guided mix for each day (about 10–12 minutes)
+   Built once a day per child from their grade, their weakest skill, and what they
+   haven't practiced lately: a warm-up, a skill that needs practice, reading, a discovery
+   topic (and tracing for Pre-K/K). Each step is 5 cards. All done → a gift.
+   ========================================================= */
+const QUEST_LEN = 5;
+const QUEST_READING = { prek: ['phonics', 'cvc'], k: ['phonics', 'cvc', 'sight'], g1: ['sent', 'sight', 'phonics', 'spell'], g2: ['sent', 'spell', 'vocab'], g3: ['sent', 'vocab', 'spell'] };
+const QUEST_MATH = { prek: ['add', 'cmp', 'shape2'], k: ['add', 'sub', 'cmp'], g1: ['add', 'sub', 'story'], g2: ['add', 'sub', 'mul', 'story'], g3: ['mul', 'div', 'story'] };
+const QUEST_WORLD = ['animals', 'places', 'maps', 'body', 'gk', 'shape3', 'jobs', 'flags', 'anatomy'];
+function questFor() {
+  const today = dayKey(), grade = state.grade || 'k';
+  if (state.quest && state.quest.date === today && state.quest.grade === grade) return state.quest;
+  const visible = new Set(visibleGames().filter((c) => c.gen && c.id !== 'mix').map((c) => c.id));
+  const ok = (id) => visible.has(id);
+  // how many days ago each game was played (from the last 7 days)
+  const ago = {};
+  for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); const x = state.stats && state.stats.days[dayKey(d)]; if (x) for (const c of Object.keys(x.cats)) if (ago[c] == null) ago[c] = i; }
+  const freshest = (list) => list.filter(ok).sort((a, b) => (ago[b] ?? 99) - (ago[a] ?? 99))[0];
+  const steps = [], used = new Set();
+  const addStep = (cat, why) => { if (cat && !used.has(cat) && (ok(cat) || cat === 'trace')) { used.add(cat); steps.push({ cat, why, done: false }); } };
+  // 1. warm-up: something she does well (a quick win), or reading basics
+  const skills = Object.entries((state.stats && state.stats.skills) || {}).map(([k, sk]) => ({ cat: k.split(':')[0], ...skillState(sk) }));
+  const strong = skills.filter((s) => s.s === 'mastered' && ok(s.cat)).sort((a, b) => b.acc - a.acc)[0];
+  addStep(strong ? strong.cat : freshest(QUEST_READING[grade] || QUEST_READING.k), 'warm-up');
+  // 2. the skill that needs practice most, or core math
+  const weak = skills.filter((s) => (s.s === 'learning' || s.s === 'practicing') && ok(s.cat) && !used.has(s.cat)).sort((a, b) => a.acc - b.acc)[0];
+  addStep(weak ? weak.cat : freshest((QUEST_MATH[grade] || QUEST_MATH.k).filter((c) => !used.has(c))), weak ? 'practice' : 'math');
+  // 3. reading (if not already in), 4. math (if not already in)
+  addStep(freshest((QUEST_READING[grade] || QUEST_READING.k).filter((c) => !used.has(c))), 'reading');
+  if (!steps.some((s) => (QUEST_MATH[grade] || []).includes(s.cat))) addStep(freshest((QUEST_MATH[grade] || QUEST_MATH.k).filter((c) => !used.has(c))), 'math');
+  // 5. discovery: science and the world
+  addStep(freshest(QUEST_WORLD.filter((c) => !used.has(c))), 'discover');
+  // little ones also trace a few letters
+  if (grade === 'prek' || grade === 'k') steps.splice(1, 0, { cat: 'trace', why: 'tracing', done: false });
+  state.quest = { date: today, grade, steps: steps.slice(0, 5), gift: false };
+  save();
+  return state.quest;
+}
+function renderQuest() {
+  const box = $('#questBox'); if (!box) return;
+  const q = questFor(), doneN = q.steps.filter((s) => s.done).length, all = doneN === q.steps.length;
+  const nextI = q.steps.findIndex((s) => !s.done);
+  box.innerHTML = `<div class="quest-head"><b>🗺️ Today's Quest</b><span class="quest-checks">${q.steps.map((s) => `<i class="${s.done ? 'on' : ''}">✓</i>`).join('')}<i class="gift ${all ? (q.gift ? 'opened' : 'ready') : ''}">🎁</i></span></div>
+    <div class="quest-steps">${q.steps.map((s, i) => {
+      const c = s.cat === 'trace' ? { icon: '✍️', title: 'Tracing', color: '#f76707' } : CATEGORIES.find((x) => x.id === s.cat) || { icon: '⭐', title: s.cat, color: '#8f6bff' };
+      return `<button class="quest-step ${s.done ? 'done' : ''} ${i === nextI ? 'next' : ''}" data-i="${i}" style="--c:${c.color}"><span class="qs-ico">${c.icon}</span><span class="qs-t">${c.title}</span><span class="qs-why">${{ 'warm-up': 'Warm up', practice: 'Practice', math: 'Math', reading: 'Reading', discover: 'Discover', tracing: 'Write' }[s.why] || ''}</span>${s.done ? '<span class="qs-ok">✓</span>' : ''}</button>`;
+    }).join('')}${all ? `<button class="quest-step gift-step ${q.gift ? 'done' : 'next'}" data-gift="1"><span class="qs-ico">🎁</span><span class="qs-t">${q.gift ? 'Gift opened!' : 'Open your gift!'}</span></button>` : ''}</div>`;
+  $$('.quest-step', box).forEach((b) => (b.onclick = () => {
+    sfx.tap();
+    if (b.dataset.gift) return openQuestGift();
+    startQuestStep(+b.dataset.i);
+  }));
+}
+function startQuestStep(i) {
+  const q = questFor(), s = q.steps[i]; if (!s) return;
+  if (s.cat === 'trace') { TR.quest = { i, left: 3 }; openTrace(); return; }
+  startRound(s.cat, QUEST_LEN);
+  R.questStep = i;
+}
+function questStepDone(i) {
+  const q = questFor(); if (!q.steps[i] || q.steps[i].done) return;
+  q.steps[i].done = true; save();
+  if (q.steps.every((s) => s.done)) setTimeout(() => say('You finished today\'s quest! Open your gift!'), 1800);
+}
+function openQuestGift() {
+  const q = questFor(); if (q.gift) return;
+  q.gift = true;
+  state.quests = (state.quests || 0) + 1;
+  state.stars += 5;
+  state.playPasses = (state.playPasses || 0) + 1;      // a free Play Zone break
+  const left = STICKERS.filter((x) => !state.stickers.includes(x));
+  const sticker = left.length ? left[Math.floor(Math.random() * left.length)] : '🏆';
+  if (left.length) state.stickers.push(sticker);
+  save();
+  confetti(260, 0.25); setTimeout(() => confetti(200, 0.5), 500); sfx.win();
+  say(['Surprise!', 'Five stars, a new sticker, and play time!']);
+  const d = document.createElement('div'); d.className = 'time-up quest-gift';
+  d.innerHTML = `<div class="tu-box"><div class="gift-open">🎁</div><div class="gift-items"><span>⭐ +5</span><span class="gs">${sticker}</span><span>🎮 Play time</span></div>
+    <h2>Quest complete!</h2><p>${state.quests} quest${state.quests === 1 ? '' : 's'} finished so far</p>
+    <div class="res-btns"><button class="big-btn" data-a="play">🎮 Play now</button><button class="big-btn alt" data-a="home">🏠 Home</button></div></div>`;
+  document.body.appendChild(d);
+  d.querySelector('[data-a="play"]').onclick = () => { d.remove(); openPlayZone(); };
+  d.querySelector('[data-a="home"]').onclick = () => { d.remove(); renderHome(); };
+  renderHome();
+}
+
+// the home screen was first drawn before this file loaded: draw it again with today's goal and quest
+renderHome();

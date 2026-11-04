@@ -2,7 +2,7 @@
 // A new version is downloaded completely into its own cache before it is used, so the app never
 // mixes files from two versions (even if the internet drops halfway through an update).
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v24';
+const VERSION = PREFIX + 'v26';
 const FILES = ['./', 'index.html', 'style.css', 'storage.js', 'content.js', 'app.js', 'games.js', 'trace.js', 'progress.js', 'ball3d.js', 'pinball3d.js', 'geo.js', 'art.js', 'landmarks.js', 'stories.js', 'words.js', 'phonics.js', 'scenes.js', 'body3d.js', 'vendor/three.module.min.js', 'vendor/GLTFLoader.js', 'vendor/BufferGeometryUtils.js', 'vendor/meshopt_decoder.module.js', 'vendor/RoomEnvironment.js', 'vendor/body.glb', 'manifest.webmanifest', 'audio/clips.json', 'audio/silence.mp3',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 const SCOPE = new URL('./', self.location).pathname;   // e.g. /kids-learn/ — never touch other apps on the same site
@@ -11,15 +11,15 @@ self.addEventListener('install', (e) => {
   e.waitUntil((async () => {
     const c = await caches.open(VERSION);
     await c.addAll(FILES.map((f) => new Request(f, { cache: 'reload' })));   // all or nothing, fresh from the site
-    // voice clips: reuse the ones already downloaded, fetch the rest in the background
+    // voice clips: reuse the ones this phone already has (no download here, so updates install fast)
     try {
       const clips = await (await fetch('audio/clips.json', { cache: 'no-store' })).json();
       const files = [...new Set(Object.values(clips))].map((f) => 'audio/' + f);
       const old = (await caches.keys()).filter((k) => k.startsWith(PREFIX) && k !== VERSION);
-      for (const f of files) {
-        for (const k of old) { const hit = await (await caches.open(k)).match(f); if (hit) { await c.put(f, hit); break; } }
+      for (const k of old) {
+        const oc = await caches.open(k);
+        for (const f of files) { const hit = await oc.match(f); if (hit) await c.put(f, hit); }
       }
-      for (let i = 0; i < files.length; i += 40) await c.addAll((await Promise.all(files.slice(i, i + 40).map(async (f) => ((await c.match(f)) ? null : f)))).filter(Boolean)).catch(() => {});
     } catch {}
     await self.skipWaiting();
   })());
@@ -43,4 +43,16 @@ self.addEventListener('fetch', (e) => {
     if (r.ok && r.type === 'basic') c.put(e.request, r.clone());
     return r;
   })());
+});
+// the app asks for the missing voice clips once it is running: downloaded quietly, a few at a time
+self.addEventListener('message', (e) => {
+  if (!e.data || e.data.type !== 'fill-audio') return;
+  e.waitUntil((async () => {
+    const c = await caches.open(VERSION);
+    const clips = await (await fetch('audio/clips.json')).json();
+    const files = [...new Set(Object.values(clips))].map((f) => 'audio/' + f);
+    const missing = [];
+    for (const f of files) if (!(await c.match(f))) missing.push(f);
+    for (let i = 0; i < missing.length; i += 20) await c.addAll(missing.slice(i, i + 20)).catch(() => {});
+  })().catch(() => {}));
 });
