@@ -2052,7 +2052,7 @@ const GRADES = {
     shape2: '1-1', jobs: '1-1', flags: '1-1', maps: '1-1' } },
   k: { label: 'Kindergarten', g: { trace: '1-1', phonics: '1-4', animals: '1-2', places: '1-1', body: '1-2', gk: '1-2', anatomy: '1-1', match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-2', sent: '1-2', syl: '1-2', add: '1-2',
     sub: '1-2', story: '1-1', cmp: '1-2', shape2: '1-2', jobs: '1-2', flags: '1-2', maps: '1-2', home: '1-2' } },
-  g1: { label: '1st Grade', g: { phonics: '3-5', animals: '1-2', places: '1-2', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '2-3', syl: '2-3', add: '3-4',
+  g1: { label: '1st Grade', g: { trace: '1-1', phonics: '3-5', animals: '1-2', places: '1-2', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '2-3', syl: '2-3', add: '3-4',
     sub: '3-4', story: '2-3', cmp: '2-4', clock: '1-2', shape2: '2-3', jobs: '2-3', flags: '2-3', maps: '2-3', words: '1-2', numsense: '1-2', sci: '1-2', home: '2-3' } },
   g2: { label: '2nd Grade', g: { phonics: '4-5', animals: '2-3', places: '2-3', gk: '3-4', anatomy: '2-3', match: '3-5', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-4', sent: '3-4', add: '4-5',
     sub: '4-5', story: '3-5', cmp: '4-5', mul: '1-3', div: '1-2', clock: '2-4', shape2: '3-4', flags: '3-3', maps: '3-3', words: '2-4', numsense: '2-4', sci: '2-3', home: '2-4' } },
