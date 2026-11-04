@@ -125,8 +125,9 @@ const EARLY_WORD_SPECIALS = Object.freeze({
   sentence: "I don't",
   editorialReview: ['mo', 'lead', 'bow']
 });
-// Only picturable words with a confirmed natural voice clip enter shared
-// reading/spelling question generators in this release. Existing words remain.
+// Picturable words with one clear meaning enter the shared reading/spelling question generators.
+// Every word on the list now has its own natural recording (audio/clips.json).
 const EARLY_READY_PICTURE_WORDS = Object.freeze([
-  ['car', '🚗'], ['cow', '🐄'], ['two', '2️⃣']
+  ['car', '🚗'], ['cow', '🐄'], ['two', '2️⃣'], ['fan', '🪭'], ['jar', '🫙'], ['yam', '🍠'], ['ear', '👂'],
+  ['egg', '🥚'], ['ice', '🧊'], ['arm', '💪'], ['sea', '🌊'], ['tie', '👔'], ['sky', '🌤️']
 ]);
