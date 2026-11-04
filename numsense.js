@@ -93,6 +93,18 @@ function genNumSense(level) {
     const [txt, ans] = kind === 0 ? [`What comes just after <b>${v}</b>?`, v + 1] : kind === 1 ? [`What comes just before <b>${v}</b>?`, v - 1] : [`What number is between <b>${v - 1}</b> and <b>${v + 1}</b>?`, v];
     return nsQ(`ba-${kind}-${v}`, txt, [kind === 0 ? 'What comes just after?' : kind === 1 ? 'What comes just before?' : 'What number is between?'], `<div class="ns-big">${kind === 2 ? `${v - 1} , ? , ${v + 1}` : v}</div>`, ans, [ans + 1, ans - 1, ans + 10, ans - 10, ans + 2].filter((x) => x >= 0), n);
   }
+  // Review within the child's current grade, not a surprise Level-1 counting card.
+  // Previously roughly 20% of high-level questions fell through to the toddler pool.
+  if (level >= 3) {
+    const v = 101 + rand(299);
+    return nsQ(`blocks3-${v}`, 'Count hundreds, tens and ones.', ['Count hundreds, tens and ones.'],
+      nsBlocks(v), v, [v + 10, v - 10, v + 100, v - 100, v + 1].filter((x) => x > 0), n);
+  }
+  if (level >= 2) {
+    const v = 11 + rand(88), rounded = Math.round(v / 10) * 10;
+    return nsQ(`r10-${v}`, `Round <b>${v}</b> to the nearest ten.`, ['Round to the nearest ten.'],
+      `<div class="ns-big">${v}</div>`, rounded, [rounded + 10, rounded - 10, v, Math.floor(v / 10) * 10].filter((x) => x >= 0), n);
+  }
   // level 1
   const k = Math.random();
   if (k < 0.35) { const v = 1 + rand(30); return nsQ(`eo-${v}`, `Is <b>${v}</b> even or odd?`, ['Is it even or odd?'], `<div class="ns-big">${v}</div><div class="ns-dots">${'●'.repeat(Math.min(v, 30))}</div>`, v % 2 ? 'odd' : 'even', ['even', 'odd'], 1, 'opt-text'); }
