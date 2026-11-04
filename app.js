@@ -132,12 +132,16 @@ async function say(text, opts = {}) {
   if (my !== sayToken) return;
   const parts = Array.isArray(text) ? text.map(String) : splitSentences(text);
   const files = parts.map((p) => CLIPS[clipKey(p)]);
-  if (parts.length && files.every(Boolean)) {
+  if (parts.length) {
     say.current = null;
-    for (const f of files) { if (my !== sayToken) return; await playClip(f, my); }
-    return;
+    // Play all recorded segments in order. An unavailable word is silent,
+    // but does not silence a recorded instruction or use a robotic voice.
+    for (let i = 0; i < parts.length; i++) {
+      if (my !== sayToken) return;
+      if (files[i]) await playClip(files[i], my);
+      else await deviceSay(parts[i]);
+    }
   }
-  return deviceSay(Array.isArray(text) ? text.join(' ') : text);
 }
 
 /* ---------- little sound effects (no files needed) ---------- */
