@@ -1295,6 +1295,7 @@ function drawGallery() {
   area.querySelector('[data-a="back"]').onclick = () => { sfx.tap(); startDraw(); };
 }
 
+$('#brainBanner').onclick = () => { sfx.tap(); openBrainGames(); };
 $('#playBanner').onclick = () => { sfx.tap(); openPlayZone(); };
 $('#playEarned').onclick = () => { sfx.tap(); openPlayZone(); };
 renderPlayBanner();
