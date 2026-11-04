@@ -14,7 +14,7 @@ const perHour = () => state.playPerHour || 15;
 const hourKey = () => { const d = new Date(); return `${d.toDateString()} ${d.getHours()}`; };
 const usedThisHour = () => (state.playUsed && state.playUsed.h === hourKey() ? state.playUsed.ms : 0);
 const hourLeftMs = () => Math.max(0, perHour() * 60000 - usedThisHour());
-const playOpen = () => !!state.playAlways || !!state.testMode || (hourlyMode() ? hourLeftMs() > 0 : (state.playUntil || 0) > Date.now());
+const playOpen = () => !!state.playAlways || !!isQAMode() || (hourlyMode() ? hourLeftMs() > 0 : (state.playUntil || 0) > Date.now());
 
 // called from finish() in app.js; returns true when a new play break was earned
 function earnPlay() {
@@ -145,7 +145,7 @@ const BRAIN_MIN_GRADE = { path: 'prek', memory: 'prek', puzzle: 'prek', sudoku: 
 const BRAIN_GRADE_ORDER = ['prek', 'k', 'g1', 'g2', 'g3'];
 let brainMode = false;
 function brainVisible(g) {
-  return BRAIN_GAME_IDS.has(g.id) && (!!state.showAll || !!state.testMode || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') >= BRAIN_GRADE_ORDER.indexOf(BRAIN_MIN_GRADE[g.id]));
+  return BRAIN_GAME_IDS.has(g.id) && (!!state.showAll || !!isQAMode() || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') >= BRAIN_GRADE_ORDER.indexOf(BRAIN_MIN_GRADE[g.id]));
 }
 const brainGames = () => GAMES.filter(brainVisible);
 // open a brain game straight from its tile on the home screen (no play clock, back goes home)
