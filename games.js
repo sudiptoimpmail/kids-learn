@@ -184,21 +184,22 @@ let curGame = null, gameCleanup = null, gameCleanupPanel = null;
 function openGame(id) {
   stopGame();                      // never two games running at once
   const g = GAMES.find((x) => x.id === id);
+  if (!g || (brainMode && !brainVisible(g))) return;
   curGame = g;
   document.body.style.setProperty('--theme', g.color);
   $('#gameTitle').innerHTML = `${g.icon === BALL_ICON ? '🔵' : g.icon} ${g.title}${GAME_MAX[id] || id === 'sudoku' ? ` <small class="g-lv">Lv ${GL(id)}</small>` : ''}`;
   $('#gameArea').innerHTML = '';
   $('#gameArea').className = 'game-area g-' + id;
   show('game');
-  startPlayTimer();
-  gameStart = Date.now();
+  if (!brainMode) startPlayTimer();
+  gameStart = brainMode ? 0 : Date.now();
   g.start();
 }
 function stopGame() { gameSession++; if (gameStart) { playActive += Date.now() - gameStart; gameStart = 0; } if (playActive) { logPlay(playActive / 1000); playActive = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
 let gameStart = 0, playActive = 0;   // play time for the grown-ups' numbers: only while the app is on screen
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && gameStart) { playActive += Date.now() - gameStart; gameStart = 0; }
-  else if (!document.hidden && curGame && $('#game').classList.contains('active') && !gameStart) gameStart = Date.now();
+  else if (!document.hidden && !brainMode && curGame && $('#game').classList.contains('active') && !gameStart) gameStart = Date.now();
 });
 // a timer that is dropped if the child has left the game (so no old "You win!" panel pops up later)
 let gameSession = 0;
@@ -214,7 +215,7 @@ function endPanel(title, emoji, again, levelUp = false) {
   d.className = 'end-panel';
   d.innerHTML = `<div class="ep-card"><div class="ep-emoji">${emoji}</div><div class="ep-title">${title}</div>
     <div class="ep-btns"><button class="big-btn" data-a="again">🔁 Again</button><button class="big-btn alt" data-a="menu">🎮 Games</button></div></div>`;
-  d.querySelector('[data-a="again"]').onclick = () => { sfx.tap(); if (playOpen()) { openGame(curGame.id); } else timeUp(); };
+  d.querySelector('[data-a="again"]').onclick = () => { sfx.tap(); if (brainMode || playOpen()) { openGame(curGame.id); } else timeUp(); };
   d.querySelector('[data-a="menu"]').onclick = () => { sfx.tap(); $('#gameBack').onclick(); };
   $('#gameArea').appendChild(d);
   gameCleanupPanel = d;
