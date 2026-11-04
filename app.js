@@ -948,6 +948,8 @@ function renderTestInfo() {
   const gl = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
   $('#testInfo').textContent = `Voice clips: ${clips} · 3D: ${gl ? 'yes' : 'no'} · Grade: ${state.grade || 'none'} · Screen: ${innerWidth}×${innerHeight}`;
 }
+// QA unlocked by the ?qa=1 link: a grown-up can lock it again here (same as opening ?qa=0)
+$('#qaLock').onclick = () => { try { localStorage.removeItem(QA_KEY); } catch {} state.testMode = false; save(); applyTheme(); $('#testSection').hidden = !testFeatureAvailable(); };
 $('#testMode').onchange = () => { state.testMode = testFeatureAvailable() && $('#testMode').checked; save(); applyTheme(); };
 // skip: count the card as right and move on · end: jump to the results
 $('#skipBtn').onclick = () => {
