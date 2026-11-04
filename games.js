@@ -913,7 +913,7 @@ const SDK_PICS6 = [['🍎', '🍌', '🍇', '🍓', '🍊', '🥝'], ['🐶', '�
 const distinct = (w) => new Set(w).size === w.length;
 const SDK_WORDS4 = W4.map((x) => x[0]).filter((w) => /^[a-z]{4}$/.test(w) && distinct(w));
 const SDK_WORDS6 = SPELLL.filter((w) => w.length === 6 && distinct(w));
-const sdkLevel = () => state.sdkLevel || (state.grade === 'g2' ? 3 : state.grade === 'g1' ? 2 : 1);
+const sdkLevel = () => state.sdkLevel || ({ prek: 1, k: 1, g1: 2, g2: 3, g3: 4 }[state.grade] || 1);
 
 function sdkSolution(n) {
   // valid base grid, then shuffle rows/cols inside bands and stacks
