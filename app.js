@@ -203,7 +203,7 @@ function step() {
 let homeScrollY = 0;
 function show(id) {
   if ($('#home').classList.contains('active') && id !== 'home') homeScrollY = window.scrollY;
-  $('.screen').forEach((s) => s.classList.toggle('active', s.id === id));
+  $$('.screen').forEach((s) => s.classList.toggle('active', s.id === id));
   requestAnimationFrame(() => window.scrollTo(0, id === 'home' ? homeScrollY : 0));
 }
 
