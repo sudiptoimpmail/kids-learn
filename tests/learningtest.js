@@ -71,7 +71,7 @@ const { chromium } = require('playwright');
       return { combinations: audit.length, early, older, arcade, sections };
     });
     assert.equal(errors.length, 0, errors.join('\n'));
-    assert.ok(result.combinations >= 25);
+    assert.ok(result.combinations >= 23);   // every grade × activity × level in GRADES (23 today)
     console.log('PASS thinking lessons and grade-based navigation', JSON.stringify(result));
     await page.close();
   } finally {

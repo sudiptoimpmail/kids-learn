@@ -16,6 +16,8 @@ const { chromium } = require('playwright');
     await page.locator('#startBtn').click();
 
     const result = await page.evaluate(async () => {
+      // the reload's own save (pagehide) can overwrite the data set above, so set the grade here too
+      state.grade = 'g2';
       const before = state.sdkWins || 0;
       openBrainGames();
       if (document.querySelector('#pzTitle').textContent !== '🧠 Brain Games')

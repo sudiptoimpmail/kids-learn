@@ -93,3 +93,10 @@ Tests use a local static HTTP server on port **8765**. Existing test scripts may
 Review **this branch**, not `main`, before applying further edits. Preserve the existing no-build HTML/CSS/JS architecture. Do not put educational reasoning lessons behind arcade time gates. Increment the service worker `VERSION` when changing cached assets. Add deterministic tests for new generators and interactive games. Use a separate PR/commit for new curriculum breadth versus stability fixes to keep regressions traceable.
 
 **Merge gate:** syntax check + required CI browser tests green, device spot checks completed, and explicit PR review. Do not merge solely on static source inspection.
+
+## Review on merge (2026-11-04)
+- Fixed: Sudoku crashed on open (`$('.sdk-key')` → `$$`), so the number keys never worked.
+- Fixed: "What happens next?" could offer a second right answer from a related sequence (seed → 🌻 with 🌳 offered); related pictures are no longer used as wrong answers. Removed two duplicate sequence rows.
+- Fixed: quest step trimming could remove the first step when no droppable step was left (`find()` gives `undefined`, not `-1`).
+- Recorded voice clips for all 51 new Thinking Skills lines (questions and hints); voice audit clean.
+- Tests: learningtest expected 25 grade/level combinations but GRADES gives 23; brain-games-test lost its grade to the reload's own save. Both fixed; full suite green.

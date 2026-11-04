@@ -95,10 +95,8 @@ const THINKING_SEQUENCES = [
   [1, ['🧊', '☀️', '💧'], 'The warmth from sunshine can melt ice into water.'],
   [1, ['✏️', '🖍️', '🖼️'], 'Draw, color, and finish your picture.'],
   [1, ['✉️', '📮', '📬'], 'Write a letter, mail it, and it arrives.'],
-  [2, ['🍞', '🧀', '🥪'], 'Put the ingredients together to make a sandwich.'],
-  [2, ['🧊', '☀️', '💧'], 'Warmth melts ice into water.'],
   [2, ['📖', '🧠', '✅'], 'Read, think, and then answer.'],
-  [2, ['🧺', '🫧', '👕'], 'Wash your clothes before they are clean.'],
+  [2, ['🧺', '🫧', '👕'], 'Put clothes in the basket, wash them, and then they are clean.'],
   [3, ['📝', '✉️', '📮'], 'Write a letter, put it in an envelope, and mail it.'],
   [3, ['🌰', '🌱', '🌳'], 'A seed sprouts and becomes a tree.'],
   [3, ['☁️', '🌧️', '🌱'], 'Clouds can bring rain, and rain helps plants grow.'],
@@ -107,8 +105,10 @@ function genSequence(level) {
   const pool = THINKING_SEQUENCES.filter((x) => x[0] <= level);
   const [difficulty, steps, reason] = pick(pool);
   const answer = steps[2];
+  // never offer a picture from a related sequence (seed → tree, egg → chicken): it could also be right
+  const related = THINKING_SEQUENCES.filter((x) => x[1].some((e) => steps.includes(e))).flatMap((x) => x[1]);
   const others = [...new Set(THINKING_SEQUENCES.flatMap((x) => x[1]))]
-    .filter((x) => x !== answer && !steps.includes(x));
+    .filter((x) => x !== answer && !related.includes(x));
   const options = [answer, ...sample(others, level >= 2 ? 3 : 2)];
   return thinkingQuestion(`sequence-${difficulty}-${steps.join('')}`,
     'What happens next?',

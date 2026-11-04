@@ -220,12 +220,12 @@ function questFor() {
   if (+today.slice(-2) % 2 === 0) addStep(freshest(QUEST_THINKING.filter((c) => !used.has(c))), 'thinking');
   while (steps.length > (grade === 'prek' || grade === 'k' ? 4 : 5)) {
     const drop = ['warm-up', 'reading', 'math'].map((w) => steps.findIndex((x) => x.why === w)).find((i) => i >= 0);
-    if (drop < 0) break;
+    if (drop == null) break;
     steps.splice(drop, 1);
   }
   // Little ones trace three characters; preserve thinking and discovery if included.
   if (grade === 'prek' || grade === 'k') {
-    while (steps.length > 4) { const drop = ['math', 'reading', 'warm-up'].map((w) => steps.findIndex((x) => x.why === w)).find((i) => i >= 0); steps.splice(drop, 1); }
+    while (steps.length > 4) { const drop = ['math', 'reading', 'warm-up'].map((w) => steps.findIndex((x) => x.why === w)).find((i) => i >= 0); if (drop == null) break; steps.splice(drop, 1); }
     steps.splice(1, 0, { cat: 'trace', why: 'tracing', done: false });
   }
   state.quest = { date: today, grade, steps: steps.slice(0, 5), gift: false };

@@ -1056,7 +1056,7 @@ function startSudoku(mode) {
     if (solved || given[r][c]) return;
     sel = [r, c]; sfx.tap(); paint();
   });
-  $('.sdk-key', area).forEach((k) => (k.onclick = () => {
+  $$('.sdk-key', area).forEach((k) => (k.onclick = () => {
     if (solved) return;
     if (!sel) { const f = firstEmpty(); if (!f) return; sel = f; }
     const [r, c] = sel;
