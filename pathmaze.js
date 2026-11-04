@@ -284,5 +284,5 @@ function startPathMaze() {
   area.querySelector('[data-a="new"]').onclick = () => { sfx.tap(); gameSession++; startPathMaze(); };
   draw();
   // for automated tests
-  if (isQAMode() || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__pathMaze = { route: () => mazeRoute(W, start, goal), go: (cells) => { for (const t of cells) moveTo(t); }, done: () => done, session };
+  if (isQAMode() || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__pathMaze = { route: () => mazeRoute(W, start, goal), go: (cells) => { for (const t of cells) moveTo(t); }, done: () => done, session, type: 'rect', cols, rows };
 }
