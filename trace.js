@@ -87,6 +87,15 @@ function renderTrace(speak) {
   const now = $('#trStrip .now'); if (now) now.scrollIntoView({ block: 'nearest', inline: 'center' });
   $('#trPic').innerHTML = `<div class="tr-emoji ${n > 5 ? 'many' : ''}">${pic}</div><div class="tr-word">${shown}</div>`;
   const pad = $('#trPad'), cv = $('#trCv'), guide = $('#trGuide');
+  // The existing stroke-validation engine stays in charge; an original scene sits
+  // behind its canvas for pre-writing motion paths, not in a separate game.
+  pad.querySelector('.ia-trace-scene')?.remove();
+  if (TR.set === 'lines' && typeof IllustratedActivities !== 'undefined' &&
+      ['Wavy line','Bumpy line','Zigzag line','Straight line'].includes(it[1])) {
+    const scene = document.createElement('div'); scene.className = 'ia-trace-scene';
+    scene.innerHTML = IllustratedActivities.traceScene(it[1] === 'Straight line' ? 'garden' : 'sports');
+    pad.insertBefore(scene, guide);
+  }
   const W = pad.clientWidth;
   const dpr = Math.min(devicePixelRatio || 1, 2);
   for (const c of [cv, guide]) { c.width = c.height = Math.round(W * dpr); c.style.width = c.style.height = W + 'px'; }
