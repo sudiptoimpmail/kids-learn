@@ -426,19 +426,21 @@ function startWhack() {
 /* ======================= ROLLING BALL 3D (loads ball3d.js + three.js only when opened) ======================= */
 function webglOK() { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } }
 async function startBall() {
-  const area = $('#gameArea');
-  if (!webglOK()) return startBallMaze();
+  const area = $('#gameArea'), session = gameSession;
+  const current = () => session === gameSession && curGame && curGame.id === 'ball' && $('#game').classList.contains('active');
+  if (!webglOK()) return current() && startBallMaze();
   area.innerHTML = '<div class="g-msg">Getting the ball ready… 🔵</div>';
-  try { const m = await import('./ball3d.js'); if ($('#game').classList.contains('active')) m.start(); }
-  catch (e) { console.warn(e); startBallMaze(); }
+  try { const m = await import('./ball3d.js'); if (current()) m.start(); }
+  catch (e) { console.warn(e); if (current()) startBallMaze(); }
 }
 
 async function startPinball() {
-  const area = $('#gameArea');
+  const area = $('#gameArea'), session = gameSession;
+  const current = () => session === gameSession && curGame && curGame.id === 'pinball' && $('#game').classList.contains('active');
   if (!webglOK()) { area.innerHTML = '<div class="g-msg">Pinball needs 3D graphics, which this device does not have.</div>'; return; }
   area.innerHTML = '<div class="g-msg">Setting up the table… 🎯</div>';
-  try { const m = await import('./pinball3d.js'); if ($('#game').classList.contains('active')) m.start(); }
-  catch (e) { console.warn(e); area.innerHTML = '<div class="g-msg">Oops, pinball could not start.</div>'; }
+  try { const m = await import('./pinball3d.js'); if (current()) m.start(); }
+  catch (e) { console.warn(e); if (current()) area.innerHTML = '<div class="g-msg">Oops, pinball could not start.</div>'; }
 }
 
 /* ======================= BALL MAZE (2D) ======================= */
