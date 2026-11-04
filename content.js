@@ -38,6 +38,9 @@ const W3 = [
   ['ant', '🐜'], ['pie', '🥧'], ['key', '🔑'], ['mug', '☕'], ['fly', '🪰'], ['bee', '🐝'],
   ['boy', '👦'], ['toy', '🧸'], ['owl', '🦉'], ['run', '🏃'], ['hot', '🥵'], ['see', '👀'],
 ];
+// Add only picture-reviewed entries. All requested words remain in the separate
+// auditable early-words.js catalog, including those awaiting audio/context review.
+for (const [word, pic] of EARLY_PICTURE_WORDS) if (word.length === 3 && !W3.some(([w]) => w === word)) W3.push([word, pic]);
 const W4 = [
   ['frog', '🐸'], ['duck', '🦆'], ['fish', '🐟'], ['crab', '🦀'], ['drum', '🥁'], ['bell', '🔔'],
   ['cake', '🍰'], ['kite', '🪁'], ['moon', '🌙'], ['star', '⭐'], ['ship', '🚢'], ['milk', '🥛'],
@@ -167,13 +170,20 @@ function similarWords(list, word, n, level) {
 }
 
 function genWords(list, level, kind) {
-  const [w, e] = pick(list);
+  const eligible = kind === 'cvc' ? list.filter(([word]) => earlyWordLevel(word) <= level) : list;
+  const source = eligible.length ? eligible : list;
+  const [w, e] = pick(source);
   const n = numOpts(level) - 1;
   // workbook-style variety: read → picture, picture → word, listen → word, missing letter, unscramble
   const clear = !(typeof PHON_SKIP !== 'undefined' && PHON_SKIP.has(w));      // the picture can only mean this word
   // little words from level 2 on: now and then a whole word search or picture crossword as one card
   const puzzles = kind === 'cvc' && level >= 2 && typeof mountWordSearch === 'function' ? ['wsearch', 'xword'] : [];
-  const type = pick(clear ? ['read', 'pic', 'find', 'missing', 'missing', 'scramble', ...puzzles] : ['read', 'find', 'missing']);
+  const hasNaturalWord = !EARLY_AUDIO_PENDING.has(w);
+  const isAdvancedSpelling = kind === 'cvc' && earlyWordLevel(w) >= 3;
+  const pictureTypes = clear ? ['read', 'pic', 'scramble', ...puzzles] : [];
+  const types = [...pictureTypes, ...(hasNaturalWord ? ['find'] : []),
+    ...(!isAdvancedSpelling ? ['missing', 'missing'] : [])];
+  const type = pick(types.length ? types : ['missing']);
   if (type === 'wsearch') return { key: `${kind}-ws-${rand(1e6)}`, text: 'Find the hidden words!', say: ['Find the hidden words!', 'Drag your finger across the letters.'],
     main: '', mainClass: 'puzzle-main', options: [], answer: 'done', optClass: 'spell-tray',
     puzzle: { kind: 'wsearch', size: level >= 3 ? 6 : 5, count: level >= 3 ? 3 : 2, down: level >= 3 }, hint: { html: '', say: '' } };
@@ -184,7 +194,7 @@ function genWords(list, level, kind) {
 
   if (type === 'pic') {
     // look at the picture, pick its word from words that look alike (man · pan · cat)
-    const others = similarWords(list.filter(([x]) => x.length === w.length), w, n, 3);
+    const others = similarWords(source.filter(([x]) => x.length === w.length), w, n, 3);
     return {
       key: `${kind}-pic-${w}`, text: 'Which word matches the picture?', say: 'Which word matches the picture?',
       main: `<div class="spell-pic">${e}</div>`,
@@ -205,7 +215,7 @@ function genWords(list, level, kind) {
   }
 
   if (type === 'read') {
-    const others = similarWords(list, w, n, level);
+    const others = similarWords(source, w, n, level);
     return {
       key: `${kind}-read-${w}`,
       text: 'Read the word. Tap the picture!',
@@ -235,7 +245,7 @@ function genWords(list, level, kind) {
 
   // missing letter
   let pos;
-  if (w.length === 3) pos = level <= 1 ? 1 : pick([0, 1, 1, 2]); // CVC: the vowel first; later also the first or last letter
+  if (w.length === 3 && earlyWordLevel(w) === 1) pos = level <= 1 ? 1 : pick([0, 1, 1, 2]); // true short-vowel CVC only
   else { do { pos = rand(w.length); } while (!/[a-z]/.test(w[pos])); }
   const letter = w[pos];
   const pool = (VOWELS.includes(letter) ? VOWELS : CONS).filter((l) => l !== letter);
