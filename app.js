@@ -267,6 +267,10 @@ function renderHome() {
     const games = brain === 'brain' && typeof brainGames === 'function' ? brainGames() : [];
     return cats.length || games.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${cats.map(makeTile).join('')}${games.map(gameTile).join('')}</div></section>` : '';
   }).join(''));
+  // Workbook activities complement regular reading/math games; show for K and Grade 1.
+  if (state.grade === 'k' || state.grade === 'g1' || state.showAll || isTestMode()) {
+    $('#grid').insertAdjacentHTML('afterbegin', '<section class="catalog-section"><h2>📚 Interactive Workbook</h2><div class="grid"><button id="workbookLaunch" class="tile" style="--c:#22c55e"><span class="ti">🎨</span><span class="tt">My Workbook</span><span class="ts">Trace · find · read · solve</span></button></div></section>');
+  }
 }
 
 /* ---------- a round ---------- */

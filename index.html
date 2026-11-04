@@ -15,6 +15,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="ui-improvements.css">
+  <link rel="stylesheet" href="workbook.css">
 </head>
 <body>
   <canvas id="confetti" aria-hidden="true"></canvas>
@@ -74,6 +75,17 @@
     <div id="options" class="options"></div>
     <button id="hintBtn" class="hint-btn" aria-label="Hint">💡 Hint</button>
     <div id="pop" class="pop" aria-live="polite"></div>
+  </section>
+
+  <!-- ORIGINAL INTERACTIVE WORKBOOK -->
+  <section id="workbook" class="screen">
+    <header class="play-top">
+      <button id="workbookBack" class="icon-btn" aria-label="Back to workbook activities">‹</button>
+      <div id="workbookTitle" class="play-title">My Workbook</div>
+      <span class="chip">📚</span>
+    </header>
+    <div id="workbookStatus" role="status" aria-live="polite"></div>
+    <div id="workbookBody"></div>
   </section>
 
   <!-- RESULT -->
@@ -295,5 +307,6 @@
   <script src="wordgames.js"></script>
   <script src="trace.js"></script>
   <script src="progress.js"></script>
+  <script src="workbook.js"></script>
 </body>
 </html>
