@@ -31,8 +31,14 @@ const TRACE_LINES = [
   ['🔺', 'Triangle', 'Triangle. A triangle has 3 sides.', '', '', [[0.5, 0.15], [0.86, 0.82], [0.14, 0.82], [0.5, 0.15]]],
   ['▭', 'Rectangle', 'Rectangle. A rectangle has 2 long sides and 2 short sides.', '', '', [[0.1, 0.3], [0.9, 0.3], [0.9, 0.74], [0.1, 0.74], [0.1, 0.3]]],
 ];
+// Grade 1 handwriting combines spelling patterns and fine-motor formation in the existing trace engine.
+const TRACE_WORDS = [
+  ['fish','🐟'],['wash','🫧'],['bench','🪑'],['lunch','🥪'],['rock','🪨'],['sand','🏖️'],
+  ['sick','🤒'],['rain','🌧️'],['cake','🍰'],['ship','⛵'],['chair','🪑'],['leaf','🍃']
+];
 // [shown character, sentence on screen, what the voice says, picture, count, path (lines only), start and end pictures]
 function traceItems(set) {
+  if (set === 'words') return TRACE_WORDS.map(([word, picture]) => [word, word, word, picture, 0]);
   if (set === 'lines') return TRACE_LINES.map(([chip, name, spoken, a, b, path]) => [chip, name, spoken, a && b ? `${a} ➜ ${b}` : chip, 0, path, a, b]);
   if (set === 'num') return Array.from({ length: 20 }, (_, i) => {
     const n = i + 1, [things, e] = NUM_THINGS[i % NUM_THINGS.length];
@@ -73,6 +79,7 @@ function thin(src, M) {
 }
 const TRACE_FONT = '"Chalkboard SE", "Comic Sans MS", "Arial Rounded MT Bold", "Nunito", system-ui, sans-serif';
 function openTrace() {
+  if (TR.set === 'words' && state.grade !== 'g1' && !state.showAll) TR.set = 'big';
   stopClip && stopClip();
   show('trace');
   renderTrace(true);
@@ -81,18 +88,30 @@ function traceDone(set, ch) { return !!(state.traced && state.traced[set + ch]);
 function renderTrace(speak) {
   const items = traceItems(TR.set), it = items[TR.i];
   const [ch, shown, spoken, pic, n] = it;
-  $$('#trace .tr-tab').forEach((b) => b.classList.toggle('on', b.dataset.set === TR.set));
+  $$('#trace .tr-tab').forEach((b) => {
+    if (b.dataset.set === 'words') b.hidden = state.grade !== 'g1' && !state.showAll;
+    b.classList.toggle('on', b.dataset.set === TR.set);
+  });
   $('#trWrite').classList.toggle('on', TR.write);
   $('#trStrip').innerHTML = items.map((x, k) => `<button class="tr-chip ${k === TR.i ? 'now' : ''} ${traceDone(TR.set, x[0]) ? 'done' : ''}" data-k="${k}">${x[0]}</button>`).join('');
   const now = $('#trStrip .now'); if (now) now.scrollIntoView({ block: 'nearest', inline: 'center' });
   $('#trPic').innerHTML = `<div class="tr-emoji ${n > 5 ? 'many' : ''}">${pic}</div><div class="tr-word">${shown}</div>`;
   const pad = $('#trPad'), cv = $('#trCv'), guide = $('#trGuide');
+  // The existing stroke-validation engine stays in charge; an original scene sits
+  // behind its canvas for pre-writing motion paths, not in a separate game.
+  pad.querySelector('.ia-trace-scene')?.remove();
+  if ((TR.set === 'words' || TR.set === 'lines') && typeof IllustratedActivities !== 'undefined' &&
+      (TR.set === 'words' || ['Wavy line','Bumpy line','Zigzag line','Straight line'].includes(it[1]))) {
+    const scene = document.createElement('div'); scene.className = 'ia-trace-scene';
+    scene.innerHTML = IllustratedActivities.traceScene(TR.set === 'words' ? 'forest' : it[1] === 'Straight line' ? 'garden' : 'sports');
+    pad.insertBefore(scene, guide);
+  }
   const W = pad.clientWidth;
   const dpr = Math.min(devicePixelRatio || 1, 2);
   for (const c of [cv, guide]) { c.width = c.height = Math.round(W * dpr); c.style.width = c.style.height = W + 'px'; }
   // the guide: a big gray letter with a dotted middle line to follow
   const g = guide.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, W);
-  const fs = ch.length > 1 ? W * 0.62 : W * 0.86;
+  const fs = TR.set === 'words' ? W * (ch.length >= 6 ? 0.19 : ch.length >= 5 ? 0.22 : 0.29) : ch.length > 1 ? W * 0.62 : W * 0.86;
   g.font = `bold ${fs}px ${TRACE_FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle';
   const path = it[5], stroke = (ctx, size, lw) => { ctx.lineCap = ctx.lineJoin = 'round'; ctx.lineWidth = lw; ctx.beginPath(); path.forEach(([x, y], k) => (k ? ctx.lineTo(x * size, y * size) : ctx.moveTo(x * size, y * size))); ctx.stroke(); };
   // the shape to follow: a letter, or a line/shape path (thick gray band with a dotted middle, start and end pictures)

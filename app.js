@@ -267,10 +267,6 @@ function renderHome() {
     const games = brain === 'brain' && typeof brainGames === 'function' ? brainGames() : [];
     return cats.length || games.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${cats.map(makeTile).join('')}${games.map(gameTile).join('')}</div></section>` : '';
   }).join(''));
-  // Workbook activities complement regular reading/math games; show for K and Grade 1.
-  if (state.grade === 'k' || state.grade === 'g1' || state.showAll || isTestMode()) {
-    $('#grid').insertAdjacentHTML('afterbegin', '<section class="catalog-section"><h2>📚 Interactive Workbook</h2><div class="grid"><button id="workbookLaunch" class="tile" style="--c:#22c55e"><span class="ti">🎨</span><span class="tt">My Workbook</span><span class="ts">Trace · find · read · solve</span></button></div></section>');
-  }
 }
 
 /* ---------- a round ---------- */
@@ -288,7 +284,13 @@ function startRound(catId, count, browse = false, atLevel = null) {
   const recent = new Set(state.recent[cat.id] || []);
   while (qs.length < N && guard++ < 600) {
     const c = cat.gen ? cat : real[Math.floor(Math.random() * real.length)];
-    const q = c.gen(atLevel || levelOf(c.id));
+    const lv = atLevel || levelOf(c.id);
+    // Illustrated activities appear as variations in existing question rounds.
+    const illustrated = !browse && !isTestMode() && typeof IllustratedActivities !== 'undefined' &&
+      IllustratedActivities.available(state.grade, c.id, lv) && (qs.length % 4 === 1 || (qs.length === 0 && Math.random() < 0.45));
+    let q = (illustrated && IllustratedActivities.make(state.grade, c.id, lv)) || c.gen(lv);
+    // Keep a single occurrence of each illustrated exercise per round.
+    if (q.illustrated && seen.has(q.key)) q = c.gen(lv);
     if (seen.has(q.key) && guard < 500) continue;
     if (!browse && recent.has(q.key) && guard < 350) continue;
     seen.add(q.key); q.cat = c; q.level = atLevel || levelOf(c.id); qs.push(q);
@@ -347,6 +349,17 @@ function renderQ() {
   if (isTestMode()) $('#qText').insertAdjacentHTML('beforeend', `<div class="test-ans">🧪 ${String(q.answer)}</div>`);
   if (q.spell) renderSpell(q);
   if (q.body3d) mountBody3D(q);
+  if (q.illustrated && typeof IllustratedActivities !== 'undefined') {
+    IllustratedActivities.mount(q, $('#qMain'), {
+      choose: (value, element) => choose(q, value, element),
+      mistake: () => {
+        if (R.locked || R.qs[R.i] !== q) return;
+        q.tries++; R.mistakes++; R.streak = 0; sfx.no();
+        say('Try again.');
+        if (q.tries === 1 && q.hint && !q.hintShown) showHint(q, true);
+      }
+    });
+  }
   if (q.match) renderMatch(q);
   if (q.puzzle) renderPuzzle(q);
   if (q.multi) renderMulti(q);
@@ -372,6 +385,7 @@ function removeOneWrong(q) {
 }
 function showHint(q, auto = false) {
   if (q.hint && q.hint.glow && B3D.view) { B3D.view.highlight(q.answer); q.hintShown = true; $('#hintBtn').classList.remove('glow'); speakHint(q); return; }
+  if (q.illustrated && q.illHint) { q.hintShown = true; q.illHint(); $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
   if (q.match) { matchHint(q); $('#hintBtn').classList.remove('glow'); return; }
   if (q.puzzle) { if (!R.locked && q.puzzleCtl) q.puzzleCtl.hint(); q.hintShown = true; $('#hintBtn').classList.remove('glow'); return; }
   if (q.fillIn || q.passageFill || q.order) { if (!R.locked && q.partHint) q.partHint(); q.hintShown = true; $('#hintBtn').classList.remove('glow'); speakHint(q); return; }
@@ -949,7 +963,7 @@ $('#grid').addEventListener('click', (e) => {
   const t = e.target.closest('.tile'); if (!t) return;
   sfx.tap();
   if (t.dataset.game) return openBrainGame(t.dataset.game);
-  if (!t.dataset.cat) return;          // other tiles (the workbook) have their own handlers
+  if (!t.dataset.cat) return;
   if (t.dataset.cat === 'vocab') return openLearn();
   if (t.dataset.cat === 'trace') { TR.quest = null; return openTrace(); }
   startRound(t.dataset.cat);
