@@ -71,6 +71,10 @@ function openPlayZone() {
       return;
     }
   }
+  brainMode = false;
+  renderPZ();
+  $('#pzTitle').textContent = '🎮 Play Zone';
+  $('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = false));
   document.body.style.setProperty('--theme', '#ff6bb5');
   show('playzone');
   startPlayTimer();
@@ -131,6 +135,23 @@ const GAMES = [
 ];
 // level per game; winning moves you up (needWins wins per level)
 const GAME_MAX = { pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
+// Thinking games are educational: never require earned arcade time.
+const BRAIN_GAME_IDS = new Set(['ttt', 'memory', 'c4', 'sudoku', 'puzzle', 'maze']);
+const BRAIN_MIN_GRADE = { ttt: 'prek', memory: 'prek', puzzle: 'prek', sudoku: 'k', maze: 'k', c4: 'g1' };
+const BRAIN_GRADE_ORDER = ['prek', 'k', 'g1', 'g2', 'g3'];
+let brainMode = false;
+function brainVisible(g) {
+  return BRAIN_GAME_IDS.has(g.id) && (!!state.showAll || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') >= BRAIN_GRADE_ORDER.indexOf(BRAIN_MIN_GRADE[g.id]));
+}
+function openBrainGames() {
+  brainMode = true;
+  clearInterval(playTimer);
+  renderPZ();
+  $('#pzTitle').textContent = '🧠 Brain Games';
+  $('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = true));
+  document.body.style.setProperty('--theme', '#7950f2');
+  show('playzone');
+}
 function GL(id) {
   if (id === 'maze' && state.gameLv && state.gameLv.maze == null && state.gameLv.ball > 1 && !state.ball3d) { state.gameLv.maze = state.gameLv.ball; state.gameLv.ball = 1; state.ball3d = true; }
   if (id === 'sudoku') return sdkLevel();
@@ -148,7 +169,7 @@ function gameLevelUp(id, needWins = 1) {
 }
 const lvBadge = (id) => (GAME_MAX[id] || id === 'sudoku' ? `<span class="lv">Lv ${GL(id)}</span>` : '');
 function renderPZ() {
-  $('#pzGrid').innerHTML = GAMES.map((g) =>
+  $('#pzGrid').innerHTML = GAMES.filter((g) => brainMode ? brainVisible(g) : !BRAIN_GAME_IDS.has(g.id)).map((g) =>
     `<button class="tile pz-tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`).join('');
 }
 
@@ -157,7 +178,7 @@ $('#pzGrid').addEventListener('click', (e) => {
   sfx.tap(); openGame(t.dataset.game);
 });
 $('#pzHome').onclick = () => { sayToken++; stopClip(); renderHome(); show('home'); };
-$('#gameBack').onclick = () => { stopGame(); renderPZ(); show('playzone'); startPlayTimer(); };
+$('#gameBack').onclick = () => { stopGame(); renderPZ(); show('playzone'); if (!brainMode) startPlayTimer(); };
 
 let curGame = null, gameCleanup = null, gameCleanupPanel = null;
 function openGame(id) {
