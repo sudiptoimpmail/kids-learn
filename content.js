@@ -38,9 +38,11 @@ const W3 = [
   ['ant', '🐜'], ['pie', '🥧'], ['key', '🔑'], ['mug', '☕'], ['fly', '🪰'], ['bee', '🐝'],
   ['boy', '👦'], ['toy', '🧸'], ['owl', '🦉'], ['run', '🏃'], ['hot', '🥵'], ['see', '👀'],
 ];
-// Add only picture-reviewed entries. All requested words remain in the separate
-// auditable early-words.js catalog, including those awaiting audio/context review.
-for (const [word, pic] of EARLY_PICTURE_WORDS) if (word.length === 3 && !W3.some(([w]) => w === word)) W3.push([word, pic]);
+// Share a vetted, prerecorded picture word inventory across reading and spelling.
+// Do not silently treat all three-letter spellings as regular CVC phonics.
+for (const entry of EARLY_READY_PICTURE_WORDS) if (!W3.some(([w]) => w === entry[0])) W3.push(entry);
+const isSimpleCVC = (word) => /^[bcdfghjklmnprstvwyz][aeiou][bcdfghjklmnprstvz]$/.test(word)
+  && !new Set(['car', 'son', 'gel']).has(word);
 const W4 = [
   ['frog', '🐸'], ['duck', '🦆'], ['fish', '🐟'], ['crab', '🦀'], ['drum', '🥁'], ['bell', '🔔'],
   ['cake', '🍰'], ['kite', '🪁'], ['moon', '🌙'], ['star', '⭐'], ['ship', '🚢'], ['milk', '🥛'],
@@ -170,20 +172,16 @@ function similarWords(list, word, n, level) {
 }
 
 function genWords(list, level, kind) {
-  const eligible = kind === 'cvc' ? list.filter(([word]) => earlyWordLevel(word) <= level) : list;
-  const source = eligible.length ? eligible : list;
-  const [w, e] = pick(source);
+  const wordPool = kind === 'cvc' && level <= 1 ? list.filter(([w]) => isSimpleCVC(w)) : list;
+  const [w, e] = pick(wordPool);
   const n = numOpts(level) - 1;
   // workbook-style variety: read → picture, picture → word, listen → word, missing letter, unscramble
   const clear = !(typeof PHON_SKIP !== 'undefined' && PHON_SKIP.has(w));      // the picture can only mean this word
   // little words from level 2 on: now and then a whole word search or picture crossword as one card
   const puzzles = kind === 'cvc' && level >= 2 && typeof mountWordSearch === 'function' ? ['wsearch', 'xword'] : [];
-  const hasNaturalWord = !EARLY_AUDIO_PENDING.has(w);
-  const isAdvancedSpelling = kind === 'cvc' && earlyWordLevel(w) >= 3;
-  const pictureTypes = clear ? (hasNaturalWord ? ['read', 'pic', 'scramble', ...puzzles] : ['read', 'pic', ...puzzles]) : [];
-  const types = [...pictureTypes, ...(hasNaturalWord ? ['find'] : []),
-    ...(hasNaturalWord && !isAdvancedSpelling ? ['missing', 'missing'] : [])];
-  const type = pick(types.length ? types : ['missing']);
+  const modes = clear ? ['read', 'pic', 'find', 'missing', 'missing', 'scramble', ...puzzles] : ['read', 'find', 'missing'];
+  // Vowel teams and irregular three-letter words are not short-vowel CVC cards.
+  const type = pick(kind === 'cvc' && !isSimpleCVC(w) ? modes.filter((m) => m !== 'missing') : modes);
   if (type === 'wsearch') return { key: `${kind}-ws-${rand(1e6)}`, text: 'Find the hidden words!', say: ['Find the hidden words!', 'Drag your finger across the letters.'],
     main: '', mainClass: 'puzzle-main', options: [], answer: 'done', optClass: 'spell-tray',
     puzzle: { kind: 'wsearch', size: level >= 3 ? 6 : 5, count: level >= 3 ? 3 : 2, down: level >= 3 }, hint: { html: '', say: '' } };
@@ -194,12 +192,12 @@ function genWords(list, level, kind) {
 
   if (type === 'pic') {
     // look at the picture, pick its word from words that look alike (man · pan · cat)
-    const others = similarWords(source.filter(([x]) => x.length === w.length), w, n, 3);
+    const others = similarWords(wordPool.filter(([x]) => x.length === w.length), w, n, 3);
     return {
       key: `${kind}-pic-${w}`, text: 'Which word matches the picture?', say: 'Which word matches the picture?',
       main: `<div class="spell-pic">${e}</div>`,
       options: shuffle([w, ...others.map((o) => o[0])]).map((x) => ({ v: x, html: x })), answer: w, optClass: 'opt-word',
-      hint: hasNaturalWord ? readingHint(w) : picHint,
+      hint: readingHint(w),
     };
   }
   if (type === 'scramble' && /^[a-z]+$/.test(w)) {
@@ -215,7 +213,7 @@ function genWords(list, level, kind) {
   }
 
   if (type === 'read') {
-    const others = similarWords(source, w, n, level);
+    const others = similarWords(wordPool, w, n, level);
     return {
       key: `${kind}-read-${w}`,
       text: 'Read the word. Tap the picture!',
@@ -224,12 +222,12 @@ function genWords(list, level, kind) {
       options: shuffle([[w, e], ...others]).map(([ow, oe]) => ({ v: ow, html: oe })),
       answer: w,
       optClass: 'opt-emoji',
-      hint: hasNaturalWord ? readingHint(w) : picHint,
+      hint: readingHint(w),
     };
   }
 
   if (type === 'find') {
-    const others = similarWords(source, w, n, level);
+    const others = similarWords(wordPool, w, n, level);
     return {
       key: `${kind}-find-${w}`,
       text: 'Listen. Tap the word!',
@@ -245,7 +243,7 @@ function genWords(list, level, kind) {
 
   // missing letter
   let pos;
-  if (w.length === 3 && earlyWordLevel(w) === 1) pos = level <= 1 ? 1 : pick([0, 1, 1, 2]); // true short-vowel CVC only
+  if (w.length === 3 && isSimpleCVC(w)) pos = level <= 1 ? 1 : pick([0, 1, 1, 2]); // regular CVC only
   else { do { pos = rand(w.length); } while (!/[a-z]/.test(w[pos])); }
   const letter = w[pos];
   const pool = (VOWELS.includes(letter) ? VOWELS : CONS).filter((l) => l !== letter);
@@ -352,8 +350,7 @@ function genSight(level) {
 const SPELL3 = ['cat', 'dog', 'pig', 'hen', 'bat', 'bus', 'sun', 'cup', 'bed', 'box', 'fox', 'hat', 'map', 'pen', 'web', 'bug',
   'van', 'leg', 'bag', 'cap', 'can', 'pan', 'nut', 'jet', 'pin', 'tub', 'log', 'rat', 'net',
   'ant', 'pie', 'key', 'mug', 'fly', 'bee', 'boy', 'toy', 'owl', 'red'];
-// Only words with carefully checked pictures are eligible for picture spelling.
-for (const [w] of EARLY_PICTURE_WORDS) if (w.length === 3 && !EARLY_AUDIO_PENDING.has(w) && !SPELL3.includes(w)) SPELL3.push(w);
+for (const [word] of EARLY_READY_PICTURE_WORDS) if (!SPELL3.includes(word)) SPELL3.push(word);
 const SPELL4 = ['frog', 'duck', 'fish', 'crab', 'drum', 'bell', 'cake', 'kite', 'moon', 'star', 'ship', 'milk', 'sock', 'tree',
   'bird', 'lion', 'bear', 'ball', 'book', 'boat', 'corn', 'door', 'hand', 'lamp', 'ring', 'rose', 'shoe', 'snow', 'gift',
   'lock', 'nose', 'foot', 'king', 'goat', 'deer', 'swan', 'seal', 'pear', 'bone', 'tent', 'bike', 'leaf', 'nest', 'soap',
@@ -369,13 +366,14 @@ const LOOKALIKE = { b: 'dp', d: 'bp', p: 'bq', q: 'p', m: 'n', n: 'mu', u: 'n', 
 function genSpell(level) {
   let word, nBlank, nExtra, mode = 'pic', sentence = null;
   const r = Math.random();
-  if (level === 1) { word = pick(SPELL3.filter((w) => earlyWordLevel(w) === 1)); nBlank = r < 0.5 ? 1 : 2; nExtra = 2; }
+  if (level === 1) { word = pick(SPELL3.filter(isSimpleCVC)); nBlank = r < 0.5 ? 1 : 2; nExtra = 2; }
   else if (level === 2) {
-    if (r < 0.5) { word = pick(SPELL3.filter((w) => earlyWordLevel(w) <= 2)); nBlank = 3; nExtra = 3; }
+    if (r < 0.5) { word = pick(SPELL3); nBlank = 3; nExtra = 3; }
     else { word = pick(SPELL4); nBlank = 2; nExtra = 3; }
-  } else if (level === 3) { word = r < 0.25 ? pick(SPELL3.filter((w) => earlyWordLevel(w) === 3)) : pick(SPELL4); nBlank = r < 0.75 ? word.length : Math.max(2, word.length - 1); nExtra = 4; }
+  } else if (level === 3) { word = pick(SPELL4); nBlank = r < 0.75 ? 4 : 3; nExtra = 4; }
   else if (level === 4) {
-    if (r < 0.4) { word = pick(SPELL5); nBlank = 2 + rand(2); nExtra = 4; }
+    // Grade-one picture words are extra spelling practice, not added to Pre-K.
+    if (r < 0.4) { word = pick(Math.random() < 0.45 ? G1_PICTURE_WORDS : SPELL5); nBlank = 2 + rand(2); nExtra = 4; }
     else if (r < 0.7) { mode = 'listen'; }
     else { mode = 'sentence'; }
     nExtra = 4;
@@ -413,6 +411,8 @@ function genSpell(level) {
   }
   const full = blanks.length === letters.length;
   let text, say, main;
+  // Text/picture-first spelling for new targets that lack recorded audio.
+  const visualOnly = mode === 'pic' && Object.hasOwn(G1_SPELL_PICTURES, word);
   if (mode === 'sentence') {
     text = 'Spell the missing word!';
     say = ['Spell the missing word.', fillFull(sentence)];
@@ -423,8 +423,9 @@ function genSpell(level) {
     main = `<button class="big-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`;
   } else {
     text = full ? 'Spell the word!' : 'Fill in the missing letters!';
-    say = [full ? 'Spell the word.' : 'Fill in the missing letters.', word];
-    main = `<div class="spell-pic">${EMOJI_OF[word]}</div><button class="mini-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`;
+    say = visualOnly ? 'Fill in the missing letters!' : [full ? 'Spell the word.' : 'Fill in the missing letters.', word];
+    main = `<div class="spell-pic">${EMOJI_OF[word] || G1_SPELL_PICTURES[word]}</div>` +
+      (visualOnly ? '' : `<button class="mini-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`);
   }
   return {
     key: `spell-${word}-${blanks.join('')}`,
@@ -433,7 +434,8 @@ function genSpell(level) {
     answer: word,
     optClass: 'spell-tray',
     spell: { word, blanks, tiles: shuffle(need.concat(extras)) },
-    hint: { html: '', say: sentence ? fillFull(sentence) : word, slow: true },
+    hint: { html: visualOnly ? '<div class="hint-note">Look closely at the picture and the letters.</div>' : '',
+      say: visualOnly ? 'Look at the picture!' : sentence ? fillFull(sentence) : word, slow: true },
   };
 }
 
@@ -504,6 +506,20 @@ const SENTENCES = [
   ['A little seed was in the dirt. The rain fell and the sun came out. Soon a flower grew.', 'What grew from the seed?', ['a flower 🌸', 'a tree 🌳', 'a carrot 🥕'], 3],
   ['Ben lost his hat. He looked under the bed. He found it in his bag!', 'Where was the hat?', ['in his bag 👜', 'under the bed 🛏️', 'on the dog 🐶'], 3],
   ['The duck swam in the pond. It saw a fish. The fish swam away fast.', 'What did the duck see?', ['a fish 🐟', 'a frog 🐸', 'a boat ⛵'], 3],
+  // Grade 1: short connected passages with one unambiguous answer each.
+  ['Pete has a red bag. He put his book in the bag. Then he took it to school.', 'What did Pete put in his bag?', ['his book', 'his kite', 'his coat'], 3, 'print-first'],
+  ['A frog sat on a rock by the lake. The sun was hot. The frog jumped into the cool water.', 'Why did the frog jump into the lake?', ['to cool down', 'to eat cake', 'to find a hat'], 3, 'print-first'],
+  ['Mia planted a bean in a cup. She added water each day. Soon a small green plant began to grow.', 'What did Mia plant?', ['a bean', 'a flower', 'a plum'], 3, 'print-first'],
+  ['Ben saw a bird on the grass. The bird picked up a small string. It took the string to its nest.', 'Why did the bird take the string?', ['to build its nest', 'to ride a bike', 'to play in the lake'], 3, 'print-first'],
+  ['It was cold and windy. Sam put on his coat and hat. He walked to the park with Dad.', 'What did Sam put on?', ['a coat and hat', 'a shirt and shorts', 'a cape and boots'], 3, 'print-first'],
+  ['A fox ran past our tent. It stopped by a tree. Then it ran back into the woods.', 'Where did the fox stop?', ['by a tree', 'inside the tent', 'on the road'], 3, 'print-first'],
+  ['Dad made a blue kite. We went to a field when the wind blew. The kite rose high in the sky.', 'What helped the kite fly?', ['the wind', 'the rain', 'the snow'], 3, 'print-first'],
+  ['A red flag was by the road. The class stopped to look at it. The flag showed where to turn.', 'What showed the class where to turn?', ['the flag', 'the lake', 'the clock'], 3, 'print-first'],
+  ['Kay has a new bike. She rides it to the park with her brother. She wears a helmet to stay safe.', 'Why does Kay wear a helmet?', ['to stay safe', 'to keep warm', 'to go faster'], 3, 'print-first'],
+  ['A shark swims in the sea. A wolf runs on land. Both animals need food to live.', 'Which animal swims in the sea?', ['the shark', 'the wolf', 'the bird'], 3, 'print-first'],
+  ['The clock rang at six. Tom got up, ate his egg, and took the bus to school.', 'What did Tom eat?', ['an egg', 'a plum', 'a cake'], 3, 'print-first'],
+  ['The goat was near the barn. It saw fresh grass and began to eat. Then it went to rest.', 'What did the goat eat?', ['grass', 'a rock', 'a toy'], 3, 'print-first'],
+  ['“I don\'t see my hat,” said Ben. He looked under the bed. The hat was on a chair.', 'Where was Ben\'s hat?', ['on a chair', 'under the bed', 'in his bag'], 3, 'print-first'],
   // ---- 2nd grade (level 4): short stories, 3 – 4 sentences
   ['Mia wanted to bake a cake for Dad. She mixed eggs, milk and flour. Then she put the cake in the oven. Dad smiled when he saw it.', 'Why did Mia bake a cake?', ['for Dad', 'for her teacher', 'for her dog'], 4],
   ['The class went on a trip to the zoo. They saw lions, monkeys and a tall giraffe. The monkeys were the funniest. Everyone laughed at them.', 'Which animals were the funniest?', ['the monkeys 🐒', 'the lions 🦁', 'the giraffe 🦒'], 4],
@@ -528,7 +544,7 @@ const SENTENCES = [
 const sentLevel = (x) => { if (typeof x !== 'string') return x[3] || sentLevel(x[0]); const n = x.split(' ').length; return n <= 5 ? 1 : n <= 8 && !/[.!?] [A-Z]/.test(x) ? 2 : 3; };
 
 // every reading item as [text, [[question, options], ...], level]
-const READING = () => READING.all || (READING.all = SENTENCES.map((x) => [x[0], [[x[1], x[2]]], sentLevel(x)])
+const READING = () => READING.all || (READING.all = SENTENCES.map((x) => [x[0], [[x[1], x[2]]], sentLevel(x), x[4] === 'print-first'])
   .concat(PATTERN_SENTENCES.map((x) => [x[0], [[x[1], x[2]]], x[3]]), STORIES.map((x) => [x[1], x[2], x[0]])));
 // words that never point to an answer on their own
 const HINT_SKIP = new Set('a an the is are was were be to of and or in on at it its i you he she we they my his her their this that what who where when why how which do does did can has have had will with for from by so but not one some many much'.split(' '));
@@ -549,7 +565,7 @@ function genSentence(level) {
   const all = READING();
   // mostly this level, sometimes one level easier for a quick win
   const exact = all.filter((x) => x[2] === level), near = all.filter((x) => x[2] === level - 1);
-  const [s, qs] = pick(exact.length && (Math.random() < 0.8 || !near.length) ? exact : near.length ? near : all.filter((x) => x[2] <= level));
+  const [s, qs, , printFirst] = pick(exact.length && (Math.random() < 0.8 || !near.length) ? exact : near.length ? near : all.filter((x) => x[2] <= level));
   const [q, opts] = pick(qs);
   const words = s.split(' ').map((w, i) => `<span class="sw" data-i="${i}">${w}</span>`).join(' ');
   const long = s.length > 120 ? ' passage' : s.length > 60 ? ' long' : '';
@@ -557,8 +573,10 @@ function genSentence(level) {
   return {
     key: `sent-${s}`, qkey: q,
     text: '📖 Read, then answer',     // the question is shown once, under the sentence
-    say: '',  // she reads the sentence herself
-    readQ: q,
+    // New print-first passages deliberately use only a known natural recording;
+    // do not synthesize question text whose audio has not been recorded.
+    say: printFirst ? 'Find the answer.' : '',
+    readQ: printFirst ? null : q,
     main: `<div class="sentence${long}">${words}</div><div class="question-line">${q}</div>`,
     options: shuffle(opts).map((o) => ({ v: o, html: o })),
     answer: opts[0],
@@ -2034,7 +2052,7 @@ const GRADES = {
     shape2: '1-1', jobs: '1-1', flags: '1-1', maps: '1-1' } },
   k: { label: 'Kindergarten', g: { trace: '1-1', phonics: '1-4', animals: '1-2', places: '1-1', body: '1-2', gk: '1-2', anatomy: '1-1', match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-2', sent: '1-2', syl: '1-2', add: '1-2',
     sub: '1-2', story: '1-1', cmp: '1-2', shape2: '1-2', jobs: '1-2', flags: '1-2', maps: '1-2', home: '1-2' } },
-  g1: { label: '1st Grade', g: { phonics: '3-5', animals: '1-2', places: '1-2', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '2-3', syl: '2-3', add: '3-4',
+  g1: { label: '1st Grade', g: { trace: '1-1', phonics: '3-5', animals: '1-2', places: '1-2', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '2-3', syl: '2-3', add: '3-4',
     sub: '3-4', story: '2-3', cmp: '2-4', clock: '1-2', shape2: '2-3', jobs: '2-3', flags: '2-3', maps: '2-3', words: '1-2', numsense: '1-2', sci: '1-2', home: '2-3' } },
   g2: { label: '2nd Grade', g: { phonics: '4-5', animals: '2-3', places: '2-3', gk: '3-4', anatomy: '2-3', match: '3-5', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-4', sent: '3-4', add: '4-5',
     sub: '4-5', story: '3-5', cmp: '4-5', mul: '1-3', div: '1-2', clock: '2-4', shape2: '3-4', flags: '3-3', maps: '3-3', words: '2-4', numsense: '2-4', sci: '2-3', home: '2-4' } },

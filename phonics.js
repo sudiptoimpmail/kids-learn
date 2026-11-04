@@ -119,6 +119,8 @@ const LOOKALIKE_SAFE = { b: 'dpq', d: 'bpq', p: 'bdq', q: 'bdp', m: 'nw', n: 'mu
 function genPhonics(level) {
   if (level <= 2 && Math.random() < 0.3) return genPhonicsExtra(level);
   if (level >= 4 && Math.random() < 0.3 && typeof genGrade1Phonics === 'function') return genGrade1Phonics();
+  // 1st-grade word list (short/long vowels, blends, endings) mixed into the same round — no extra tile
+  if (level >= 3 && Math.random() < 0.25 && typeof genGrade1Read === 'function') return genGrade1Read(Math.min(5, level - 2 + rand(2)));
   const P = phonData(), n = numOpts(Math.min(level, 2)) - 1;
   const t = Math.random();
   // ---- level 5: blends and digraphs (sh, ch, tr, st …)

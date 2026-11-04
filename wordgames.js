@@ -5,7 +5,7 @@
    Words are three-letter words with a clear picture (W3 in content.js).
    mountWordSearch / mountCrossword draw a puzzle into a box and report back through callbacks.
    ========================================================= */
-const WG_WORDS = () => W3.filter(([w]) => /^[a-z]{3}$/.test(w) && !EARLY_AUDIO_PENDING.has(w) && !(typeof PHON_SKIP !== 'undefined' && PHON_SKIP.has(w)));
+const WG_WORDS = () => W3.filter(([w]) => /^[a-z]{3}$/.test(w) && !(typeof PHON_SKIP !== 'undefined' && PHON_SKIP.has(w)));
 
 /* ---------- 🔎 Word Search ---------- */
 const WS_SIZES = [[5, 3, false], [6, 4, true], [7, 5, true], [8, 6, true]];   // grid size, words, also downward
@@ -80,7 +80,7 @@ function mountWordSearch(root, size, count, down, cb) {
   };
   board.addEventListener('pointerup', finish); board.addEventListener('pointercancel', finish);
   $$('.ws-clue', root).forEach((b) => (b.onclick = () => { sfx.tap(); say([b.dataset.speak]); }));
-  if (isQAMode() || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__wordSearch = { placed, find: (i) => { sel = placed[i].cells.slice(); start = sel[0]; finish(); } };
+  if (testFeatureAvailable()) window.__wordSearch = { placed, find: (i) => { sel = placed[i].cells.slice(); start = sel[0]; finish(); } };
   // hint: the first letter of a word not found yet glows
   return { hint() { const p = placed.find((x) => !x.got); if (!p) return; const el = cellEl(...p.cells[0]); el.classList.remove('glow-l'); void el.offsetWidth; el.classList.add('glow-l'); say([p.w]); } };
 }
@@ -184,7 +184,7 @@ function mountCrossword(root, nWords, lv, cb) {
   });
   $$('.xw-key', root).forEach((b) => (b.onclick = () => { if (done || !selK) return; sfx.tap(); put(selK, b.dataset.l); }));
   paint();
-  if (isQAMode() || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__crossword = { words, cells, given, type: (k, l) => { selK = k; put(k, l); } };
+  if (testFeatureAvailable()) window.__crossword = { words, cells, given, type: (k, l) => { selK = k; put(k, l); } };
   // hint: one right letter goes in
   return { hint() { const k = open.find((x) => typed.get(x) !== cells.get(x)); if (k) { selK = k; put(k, cells.get(k)); } } };
 }

@@ -217,7 +217,7 @@ function renderTrace(speak) {
   $('#trMeter').style.width = '0%';
   if (speak) say(spoken.split('. ').map((x, k, a) => (k < a.length - 1 ? x + '.' : x)));
   const toXY = (p) => [(p % M + 0.5) * W / M, (((p / M) | 0) + 0.5) * W / M];
-  if (isQAMode() || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__trace = { it, check, skelPts: () => skelPts.map(toXY), branches: () => branches.map((b) => b.map(toXY)), strokesSet: (s) => { strokes = s; redraw(); check(); } }; // browser tests only
+  if (testFeatureAvailable()) window.__trace = { it, check, skelPts: () => skelPts.map(toXY), branches: () => branches.map((b) => b.map(toXY)), strokesSet: (s) => { strokes = s; redraw(); check(); } }; // browser tests only
 }
 $('#trHome').onclick = () => { sfx.tap(); stopClip(); TR.quest = null;   // leaving ends the quest's tracing session (unfinished)
   renderHome(); show('home'); };

@@ -288,7 +288,7 @@ function openQuestGift() {
   const d = document.createElement('div'); d.className = 'time-up quest-gift';
   d.innerHTML = `<div class="tu-box"><div class="gift-open">🎁</div><div class="gift-items"><span>⭐ +5</span><span class="gs">${sticker}</span>${givesPlay ? '<span>🎮 Play time</span>' : ''}</div>
     <h2>Quest complete!</h2><p>${state.quests} quest${state.quests === 1 ? '' : 's'} finished so far</p>
-    <div class="res-btns">${canPlay ? '<button class="big-btn" data-a="play">🎮 Play now</button>' : ''}<button class="big-btn alt" data-a="home">🏠 Home</button></div></div>`;
+    <div class="res-btns">${canPlay ? '<button class="big-btn ico" data-a="play" aria-label="Play now">🎮 Play</button>' : ''}<button class="big-btn alt ico" data-a="home" aria-label="Home">🏠 Home</button></div></div>`;
   document.body.appendChild(d);
   if (canPlay) d.querySelector('[data-a="play"]').onclick = () => { d.remove(); openPlayZone(); };
   d.querySelector('[data-a="home"]').onclick = () => { d.remove(); renderHome(); };

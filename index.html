@@ -15,6 +15,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="ui-improvements.css">
+  <link rel="stylesheet" href="workbook.css">
 </head>
 <body>
   <canvas id="confetti" aria-hidden="true"></canvas>
@@ -24,7 +25,7 @@
     <div class="splash-in">
       <div class="splash-emoji" id="mascot">🦄</div>
       <h1>Learn &amp; Play</h1>
-      <button id="startBtn" class="big-btn">▶︎ Let's Play!</button>
+      <button id="startBtn" class="big-btn ico start" aria-label="Let's play">▶︎ Play</button>
     </div>
   </div>
 
@@ -58,16 +59,33 @@
       <div id="playTitle" class="play-title"></div>
       <button id="sayBtn" class="icon-btn" aria-label="Say it again">🔊</button>
     </header>
-    <div class="prog-row"><div id="progress" class="progress"></div><button id="skipBtn" class="diff-btn test-only" aria-label="Test: skip">⏭</button><button id="qaRevealBtn" class="diff-btn test-only" aria-label="Test: reveal answer">👁</button><button id="prevBtn" class="diff-btn test-only" aria-label="Test: previous card">⏮</button><button id="endBtn" class="diff-btn test-only" aria-label="Test: end round">🏁</button><button id="diffBtn" class="diff-btn" aria-label="Grown-ups: press and hold to change difficulty">🎚️ <span id="diffLv"></span></button></div>
-    <div class="card">
-      <div id="qText" class="q-text"></div>
-      <div id="qZoomView" class="q-zoom-view"><div id="qZoomInner" class="q-zoom-inner"><div id="qMain" class="q-main"></div></div></div>
-        <div class="q-zoom-controls" aria-label="Question zoom"><button id="qZoomIn" type="button" aria-label="Zoom into question">＋</button><button id="qZoomOut" type="button" aria-label="Zoom out of question">－</button><button id="qZoomReset" type="button">Reset</button></div>
-      <div id="hintBox" class="hint-box" hidden></div>
+    <div class="prog-row"><div id="progress" class="progress"></div><button id="skipBtn" class="diff-btn test-only" aria-label="Test: skip">⏭</button><button id="prevBtn" class="diff-btn test-only" aria-label="Test: previous card">⏮</button><button id="endBtn" class="diff-btn test-only" aria-label="Test: end round">🏁</button><button id="diffBtn" class="diff-btn" aria-label="Grown-ups: press and hold to change difficulty">🎚️ <span id="diffLv"></span></button></div>
+    <div class="q-zoom-controls" aria-label="Question zoom controls">
+      <button id="qZoomOut" class="diff-btn" aria-label="Zoom question out">－</button>
+      <button id="qZoomReset" class="diff-btn" aria-label="Reset question zoom">1×</button>
+      <button id="qZoomIn" class="diff-btn" aria-label="Zoom question in">＋</button>
+    </div>
+    <div class="card q-zoom-view">
+      <div id="qZoomSpace"><div id="qZoomInner">
+        <div id="qText" class="q-text"></div>
+        <div id="qMain" class="q-main"></div>
+        <div id="hintBox" class="hint-box" hidden></div>
+      </div></div>
     </div>
     <div id="options" class="options"></div>
-    <button id="hintBtn" class="hint-btn">💡 Hint</button>
+    <button id="hintBtn" class="hint-btn" aria-label="Hint">💡 Hint</button>
     <div id="pop" class="pop" aria-live="polite"></div>
+  </section>
+
+  <!-- ORIGINAL INTERACTIVE WORKBOOK -->
+  <section id="workbook" class="screen">
+    <header class="play-top">
+      <button id="workbookBack" class="icon-btn" aria-label="Back to workbook activities">‹</button>
+      <div id="workbookTitle" class="play-title">My Workbook</div>
+      <span class="chip">📚</span>
+    </header>
+    <div id="workbookStatus" role="status" aria-live="polite"></div>
+    <div id="workbookBody"></div>
   </section>
 
   <!-- RESULT -->
@@ -80,10 +98,10 @@
       <div id="resLevel" class="res-level"></div>
       <div id="resSticker" class="res-sticker"></div>
       <div class="res-btns">
-        <button id="questNext" class="big-btn quest-next" hidden>🗺️ Next quest step ▶</button>
-        <button id="playEarned" class="big-btn play-earned" hidden>🎮 Play time! Let's go!</button>
-        <button id="againBtn" class="big-btn">🔁 Play again</button>
-        <button id="homeBtn" class="big-btn alt">🏠 Home</button>
+        <button id="questNext" class="big-btn ico quest-next" aria-label="Next quest step" hidden>🗺️ Next ▶</button>
+        <button id="playEarned" class="big-btn ico play-earned" aria-label="Play time" hidden>🎮 Play!</button>
+        <button id="againBtn" class="big-btn ico" aria-label="Play again">🔁 Again</button>
+        <button id="homeBtn" class="big-btn alt ico" aria-label="Home">🏠 Home</button>
       </div>
     </div>
   </section>
@@ -102,14 +120,14 @@
       <button id="learnHear" class="nav-btn hear" aria-label="Hear it again">🔊</button>
       <button id="learnNext" class="nav-btn" aria-label="Next word">▶</button>
     </div>
-    <button id="learnQuiz2" class="big-btn alt quiz-wide">🎯 Quiz me on these words</button>
+    <button id="learnQuiz2" class="big-btn alt ico quiz-wide" aria-label="Quiz me on these words">🎯 Quiz</button>
   </section>
 
   <!-- LETTERS & NUMBERS: tracing -->
   <section id="trace" class="screen">
     <header class="play-top">
       <button id="trHome" class="icon-btn" aria-label="Back home">🏠</button>
-      <div class="tr-tabs"><button class="tr-tab on" data-set="big">ABC</button><button class="tr-tab" data-set="small">abc</button><button class="tr-tab" data-set="num">123</button><button class="tr-tab" data-set="lines">Lines</button></div>
+      <div class="tr-tabs"><button class="tr-tab on" data-set="big">ABC</button><button class="tr-tab" data-set="small">abc</button><button class="tr-tab" data-set="num">123</button><button class="tr-tab" data-set="lines" aria-label="Lines and shapes">〰️ Lines</button></div>
       <button id="trHear" class="icon-btn" aria-label="Hear it again">🔊</button>
     </header>
     <div id="trStrip" class="tr-strip"></div>
@@ -145,7 +163,7 @@
   </section>
   <div id="timeUp" class="time-up" hidden>
     <div class="tu-box"><div class="tu-emoji">⏰</div><h2>Play time is over!</h2><p>Let's learn some more — then play again!</p>
-      <button id="timeUpBtn" class="big-btn">📚 Let's learn!</button></div>
+      <button id="timeUpBtn" class="big-btn ico" aria-label="Let's learn">📚 Learn</button></div>
   </div>
 
   <!-- who is playing? -->
@@ -157,7 +175,7 @@
 
   <!-- grown-up PIN -->
   <div id="pinSheet" class="time-up" hidden>
-    <div class="tu-box pin-box"><button id="pinBack" class="pin-back" aria-label="Go back">🏠 Go back</button><h2 id="pinTitle">🔒 Grown-ups only</h2><p id="pinNote" class="note"></p>
+    <div class="tu-box pin-box"><button id="pinBack" class="pin-back" aria-label="Go back">🏠 Back</button><h2 id="pinTitle">🔒 Grown-ups only</h2><p id="pinNote" class="note"></p>
       <div id="pinDots" class="pin-dots"><i></i><i></i><i></i><i></i></div>
       <div id="pinPad" class="pin-pad"><button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button data-k="✕">✕</button><button data-k="0">0</button><button data-k="⌫">⌫</button></div>
       <div id="pinForgot" class="pin-forgot" hidden></div>
@@ -264,7 +282,7 @@
     </div>
   </section>
 
-  <script src="app-config.js"></script>
+  <script src="feature-flags.js"></script>
   <script src="storage.js"></script>
   <script src="geo.js"></script>
   <script src="art.js"></script>
@@ -273,6 +291,7 @@
   <script src="words.js"></script>
   <script src="phonics.js"></script>
   <script src="early-words.js"></script>
+  <script src="grade1words.js"></script>
   <script src="content.js"></script>
   <script src="thinking.js"></script>
   <script src="country.js"></script>
@@ -284,8 +303,10 @@
   <script src="scenes.js"></script>
   <script src="games.js"></script>
   <script src="pathmaze.js"></script>
+  <script src="radialmaze.js"></script>
   <script src="wordgames.js"></script>
   <script src="trace.js"></script>
   <script src="progress.js"></script>
+  <script src="workbook.js"></script>
 </body>
 </html>

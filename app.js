@@ -8,9 +8,6 @@ const KEY = 'learnplay.v1';
 
 /* ---------- saved progress ---------- */
 const state = Object.assign({ name: '', voice: true, stars: 0, stickers: [], levels: {}, best: {} }, Store.load());   // device settings + the active child
-const QA_AVAILABLE = typeof APP_FEATURES !== 'undefined' && APP_FEATURES.qaTools === true;
-const isQAMode = () => QA_AVAILABLE && state.testMode === true;
-if (!QA_AVAILABLE) state.testMode = false; // Ignore stale tester settings in production.
 const save = () => Store.save(state);
 // if progress can't be saved (storage full), tell the grown-ups once instead of losing stars quietly
 Store.onError = () => { if (Store.warned) return; Store.warned = true; setTimeout(() => { const n = document.createElement('div'); n.className = 'save-warn'; n.textContent = '⚠️ Progress could not be saved on this device (storage may be full). Grown-ups: ⚙️ → Save a backup.'; n.onclick = () => n.remove(); document.body.appendChild(n); }, 0); };   // storage.js decides where it goes (web now, native app later)
@@ -21,7 +18,7 @@ const gameMax = maxLevelOf;
 const OPTIONAL = { clock: 'optClock', anatomy: 'optAnatomy' };  // off unless a parent turns them on in Settings
 // a child who reads and spells well doesn't need syllable clapping any more
 const strongReader = () => levelOf('spell') >= 4 || levelOf('sent') >= 3 || (levelOf('spell') >= 3 && (state.best.spell || 0) >= 3);
-const visibleGames = () => isQAMode() ? CATEGORIES.slice() : CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
+const visibleGames = () => isTestMode() ? CATEGORIES.slice() : CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'syl' && !state.showAll && strongReader())
   && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
@@ -117,31 +114,33 @@ async function playClip(file, token = sayToken) {
   });
 }
 
-// A missing recording must never trigger a device/mechanical voice.
-// The existing recorded audio pipeline remains the only narration source.
-function deviceSay(text) {
-  if (QA_AVAILABLE) console.warn('Missing natural voice clip:', text);
-  return Promise.resolve();
-}
+// All narration comes from the application's existing high-quality recorded clips.
+// Never select a browser/system TTS voice: mechanical voices are not allowed.
 
 async function say(text, opts = {}) {
   const my = ++sayToken;
   if (!text || !state.voice) return;
+  // only touch system speech if it is actually talking (cancelling it can pause iPhone audio)
+  // No system speech synthesis; only prerecorded clips are played.
   stopClip();
   if (!Object.keys(CLIPS).length) await Promise.race([clipsReady, sleep(4000)]);
   if (my !== sayToken) return;
   const parts = Array.isArray(text) ? text.map(String) : splitSentences(text);
+  if (Array.isArray(text)) text = text.join(' ');
   const files = parts.map((p) => CLIPS[clipKey(p)]);
-  if (parts.length) {
+  if (parts.length && files.every(Boolean)) {
     say.current = null;
-    // Play all recorded segments in order. An unavailable word is silent,
-    // but does not silence a recorded instruction or use a robotic voice.
-    for (let i = 0; i < parts.length; i++) {
-      if (my !== sayToken) return;
-      if (files[i]) await playClip(files[i], my);
-      else await deviceSay(parts[i]);
-    }
+    for (const f of files) { if (my !== sayToken) return; await playClip(f, my); }
+    return;
   }
+  return deviceSay(text, opts, my);
+}
+
+function deviceSay(text) {
+  // Non-robotic fallback: the question and options are still visible.
+  // This hook is intentionally retained for voiceaudit.js to report missing clips.
+  if (testFeatureAvailable()) console.warn('Missing natural recording:', text);
+  return Promise.resolve();
 }
 
 /* ---------- little sound effects (no files needed) ---------- */
@@ -192,12 +191,39 @@ function step() {
   raf = parts.length ? requestAnimationFrame(step) : (cx.clearRect(0, 0, cv.width, cv.height), 0);
 }
 
-/* Keep accidental page pinch/expansion off the navigation screens; preserve
-   one-finger scrolling, system accessibility zoom and question-page zoom. */
-const onNavigationScreen = () => ['home', 'settings'].some((id) => $('#' + id)?.classList.contains('active'));
-document.addEventListener('gesturestart', (e) => { if (onNavigationScreen()) e.preventDefault(); }, { passive: false });
-document.addEventListener('touchmove', (e) => { if (onNavigationScreen() && e.touches.length > 1) e.preventDefault(); }, { passive: false });
-document.addEventListener('wheel', (e) => { if (onNavigationScreen() && e.ctrlKey) e.preventDefault(); }, { passive: false });
+/* Browser pinch on Home/Settings can accidentally enlarge navigation.
+   Keep OS accessibility zoom available; allow native pinch on question/game screens. */
+const isNavigationScreen = () => ['home', 'settings'].some((id) => $('#' + id).classList.contains('active'));
+document.addEventListener('touchmove', (e) => {
+  if (isNavigationScreen() && e.touches.length >= 2) e.preventDefault();
+}, { passive: false });
+for (const type of ['gesturestart', 'gesturechange']) {
+  document.addEventListener(type, (e) => { if (isNavigationScreen()) e.preventDefault(); }, { passive: false });
+}
+document.addEventListener('wheel', (e) => {
+  if (isNavigationScreen() && e.ctrlKey) e.preventDefault();
+}, { passive: false });
+
+let questionZoom = 1, questionBaseWidth = 0;
+function setQuestionZoom(value = 1) {
+  const inner = $('#qZoomInner'), space = $('#qZoomSpace'), view = $('.q-zoom-view');
+  if (!inner || !space || !view) return;
+  questionZoom = Math.max(1, Math.min(4, value));
+  if (questionZoom <= 1) {
+    inner.style.transform = ''; inner.style.width = '';
+    space.style.width = ''; space.style.height = '';
+    questionBaseWidth = 0; view.scrollTo(0, 0);
+    return;
+  }
+  if (!questionBaseWidth) questionBaseWidth = inner.offsetWidth;
+  inner.style.width = questionBaseWidth + 'px';
+  inner.style.transform = `scale(${questionZoom})`;
+  space.style.width = Math.round(questionBaseWidth * questionZoom) + 'px';
+  space.style.height = Math.round(inner.offsetHeight * questionZoom) + 'px';
+}
+$('#qZoomIn').onclick = () => setQuestionZoom(questionZoom * 1.4);
+$('#qZoomOut').onclick = () => setQuestionZoom(questionZoom / 1.4);
+$('#qZoomReset').onclick = () => setQuestionZoom(1);
 
 /* ---------- screens ---------- */
 let homeScrollY = 0;
@@ -241,13 +267,16 @@ function renderHome() {
     const games = brain === 'brain' && typeof brainGames === 'function' ? brainGames() : [];
     return cats.length || games.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${cats.map(makeTile).join('')}${games.map(gameTile).join('')}</div></section>` : '';
   }).join(''));
+  // Workbook activities complement regular reading/math games; show for K and Grade 1.
+  if (state.grade === 'k' || state.grade === 'g1' || state.showAll || isTestMode()) {
+    $('#grid').insertAdjacentHTML('afterbegin', '<section class="catalog-section"><h2>📚 Interactive Workbook</h2><div class="grid"><button id="workbookLaunch" class="tile" style="--c:#22c55e"><span class="ti">🎨</span><span class="tt">My Workbook</span><span class="ts">Trace · find · read · solve</span></button></div></section>');
+  }
 }
 
 /* ---------- a round ---------- */
 let R = null; // current round
 
 function startRound(catId, count, browse = false, atLevel = null) {
-  if (isQAMode()) browse = true; // QA never changes mastery, stars or play passes.
   sayToken++; stopClip(); $('#pop').classList.remove('show'); $('#pop').replaceChildren();
   const cat = CATEGORIES.find((c) => c.id === catId);
   const real = visibleGames().filter((c) => c.gen);
@@ -264,7 +293,7 @@ function startRound(catId, count, browse = false, atLevel = null) {
     if (!browse && recent.has(q.key) && guard < 350) continue;
     seen.add(q.key); q.cat = c; q.level = atLevel || levelOf(c.id); qs.push(q);
   }
-  if (!browse) { state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60); save(); }
+  if (!browse && !isTestMode()) { state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60); save(); }
   R = { cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse, atLevel };
   $('#playTitle').textContent = `${cat.icon} ${cat.title}`;
   document.body.style.setProperty('--theme', cat.color);
@@ -296,17 +325,8 @@ async function mountBody3D(q) {
   });
 }
 
-let questionZoom = null;
-function ensureQuestionZoom() {
-  if (questionZoom || typeof zoomable !== 'function') return;
-  questionZoom = zoomable($('#qZoomView'), $('#qZoomInner'));
-  $('#qZoomIn').onclick = () => questionZoom.by(1.4);
-  $('#qZoomOut').onclick = () => questionZoom.by(1 / 1.4);
-  $('#qZoomReset').onclick = () => questionZoom.reset();
-}
 function renderQ() {
-  ensureQuestionZoom();
-  if (questionZoom) questionZoom.reset();
+  setQuestionZoom(1);
   // A prior answer's recording or feedback must never appear on an unanswered card.
   sayToken++; stopClip(); $('#pop').classList.remove('show'); $('#pop').replaceChildren();
   dropBody3D();
@@ -323,8 +343,8 @@ function renderQ() {
   const opts = $('#options');
   opts.className = 'options ' + (q.optClass || '') + (q.options.length === 4 ? ' four' : '') + (q.options.length === 2 ? ' two' : '');
   opts.innerHTML = q.options.map((o) => `<button class="opt" data-v="${String(o.v).replace(/"/g, '&quot;')}">${locHTML(String(o.html))}</button>`).join('');
-  [...opts.children].forEach((b, k) => { b.style.animationDelay = `${k * 60}ms`; b.onclick = () => choose(q, q.options[k].v, b); if (isQAMode() && String(q.options[k].v) === String(q.answer)) b.dataset.ok = '1'; });
-  if (isQAMode()) $('#qText').insertAdjacentHTML('beforeend', `<div class="test-ans">🧪 ${String(q.answer)}</div>`);
+  [...opts.children].forEach((b, k) => { b.style.animationDelay = `${k * 60}ms`; b.onclick = () => choose(q, q.options[k].v, b); if (isTestMode() && String(q.options[k].v) === String(q.answer)) b.dataset.ok = '1'; });
+  if (isTestMode()) $('#qText').insertAdjacentHTML('beforeend', `<div class="test-ans">🧪 ${String(q.answer)}</div>`);
   if (q.spell) renderSpell(q);
   if (q.body3d) mountBody3D(q);
   if (q.match) renderMatch(q);
@@ -571,7 +591,7 @@ function renderMulti(q) {
     if (want.has(v)) { got.add(v); b.classList.add('right'); sfx.yes(); if (got.size === want.size) matchDone(q); }
     else { q.tries++; R.mistakes++; R.streak = 0; b.classList.add('wrong'); b.disabled = true; sfx.no(); if (q.tries === 1) say('Look carefully, and try again!'); }
   }));
-  if (isQAMode()) [...$('#options').children].forEach((b, k) => { if (want.has(String(q.options[k].v))) b.dataset.ok = '1'; });
+  if (isTestMode()) [...$('#options').children].forEach((b, k) => { if (want.has(String(q.options[k].v))) b.dataset.ok = '1'; });
 }
 // follow the letter from the baby to its mom: tap (or slide over) the next box on the path
 function renderLetterPath(q) {
@@ -602,7 +622,7 @@ function renderLetterPath(q) {
   box.addEventListener('pointermove', (e) => { if (!box.dragging) return; const el = document.elementFromPoint(e.clientX, e.clientY); const c = el && el.closest && el.closest('.lp-cell'); if (c && box.contains(c) && +c.dataset.k === idx[at + 1]) step(+c.dataset.k); });
   const up = () => (box.dragging = false); box.addEventListener('pointerup', up); box.addEventListener('pointercancel', up);
   q.pathHint = () => { const c = cell(idx[at + 1]); if (c) { c.classList.remove('glow-l'); void c.offsetWidth; c.classList.add('glow-l'); } };
-  if (isQAMode() || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__letterPath = { idx, step };
+  if (testFeatureAvailable()) window.__letterPath = { idx, step };
 }
 // several small questions on one screen share these: a right answer locks in, a wrong one is a mistake
 const partMiss = (q, el) => { q.tries++; R.mistakes++; R.streak = 0; sfx.no(); if (el) { el.classList.remove('bad'); void el.offsetWidth; el.classList.add('bad'); } };
@@ -723,14 +743,14 @@ function celebrate(first) {
 function next() {
   $('#pop').classList.remove('show');
   const done = R.qs[R.i];
-  if (!R.browse && done && done.ok !== undefined && typeof logAttempt === 'function') logAttempt(done, done.cat.id, done.level);
+  if (!R.browse && !isTestMode() && done && done.ok !== undefined && typeof logAttempt === 'function') logAttempt(done, done.cat.id, done.level);
   R.i++;
   if (R.i >= R.qs.length) return finish();
   renderQ();
 }
 
 function finish() {
-  if (R.browse) { releaseBody3D(); renderHome(); show('home'); return; }   // the test browser does not change levels or stars
+  if (R.browse || isTestMode()) { releaseBody3D(); renderHome(); show('home'); return; }   // the test browser does not change levels or stars
   releaseBody3D();
   renderProgress();
   const m = R.mistakes, n = R.qs.length;
@@ -777,7 +797,7 @@ function finish() {
   $('#questNext').hidden = !qn;
   if (qn) {
     const nextI = qn.steps.findIndex((x) => !x.done);
-    $('#questNext').textContent = nextI < 0 ? '🎁 Open your quest gift!' : '🗺️ Next quest step ▶';
+    $('#questNext').textContent = nextI < 0 ? '🎁 Open' : '🗺️ Next ▶';
     $('#questNext').onclick = () => { sfx.tap(); if (nextI < 0) { renderHome(); show('home'); openQuestGift(); } else startQuestStep(nextI); };
   }
   $('#againBtn').hidden = !!qn;
@@ -894,45 +914,42 @@ function applyTheme() {
   const t = THEMES[state.theme] ? state.theme : 'rainbow';
   document.body.className = document.body.className.replace(/\btheme-\w+/g, '').trim() + ' theme-' + t;
   $('#mascot').textContent = THEMES[t].mascot;
-  document.body.classList.toggle('test-mode', isQAMode());
+  document.body.classList.toggle('test-mode', isTestMode());
 }
 function renderThemes() {
   $('#themeBtns').innerHTML = Object.entries(THEMES).map(([k, t]) => `<button class="grade-btn ${(state.theme || 'rainbow') === k ? 'on' : ''}" data-t="${k}">${t.label}</button>`).join('');
   $$('#themeBtns .grade-btn').forEach((b) => (b.onclick = () => { sfx.tap(); state.theme = b.dataset.t; save(); applyTheme(); renderThemes(); }));
 }
 
-/* QA is a normal, PIN-protected Settings toggle only when enabled by app-config.js. */
+/* ---------- hidden test mode: tap the Settings title 5 times ---------- */
+(() => {
+  let taps = 0, t = 0;
+  $('#settingsTitle').addEventListener('click', () => {
+    taps++; clearTimeout(t); t = setTimeout(() => (taps = 0), 1500);
+    if (taps >= 5) { taps = 0; if (testFeatureAvailable()) { $('#testSection').hidden = false; sfx.yes(); renderTestInfo(); } }
+  });
+})();
 function renderTestInfo() {
   const clips = Object.keys(CLIPS).length;
   const gl = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
   $('#testInfo').textContent = `Voice clips: ${clips} · 3D: ${gl ? 'yes' : 'no'} · Grade: ${state.grade || 'none'} · Screen: ${innerWidth}×${innerHeight}`;
 }
-$('#testMode').onchange = () => { if (!QA_AVAILABLE) return; state.testMode = $('#testMode').checked; save(); applyTheme(); $('#testSection .test-browse').hidden = !isQAMode(); if (isQAMode()) renderTestInfo(); };
-// QA navigation is instant and NEVER awards learning credit.
+$('#testMode').onchange = () => { state.testMode = testFeatureAvailable() && $('#testMode').checked; save(); applyTheme(); };
+// skip: count the card as right and move on · end: jump to the results
 $('#skipBtn').onclick = () => {
-  if (!isQAMode() || !R || !R.qs[R.i]) return;
-  R.browse = true; const q = R.qs[R.i]; q.skipped = true; q.ok = false;
-  R.locked = true; clearTimeout(R.nudge); sayToken++; stopClip(); next();
+  if (!isTestMode() || !R || !$('#play').classList.contains('active')) return;
+  // QA navigation is not an answer: never grant stars, mastery or answer credit.
+  sayToken++; stopClip(); clearTimeout(R.nudge);
+  R.locked = true; next();
 };
-$('#endBtn').onclick = () => {
-  if (!isQAMode() || !R) return;
-  R.browse = true; R.i = R.qs.length - 1; R.locked = true; next();
-};
-$('#qaRevealBtn').onclick = () => {
-  if (!isQAMode() || !R) return;
-  const q = R.qs[R.i]; $('#qText').insertAdjacentHTML('beforeend', `<div class="test-ans">🧪 Answer: ${esc(String(q.answer))}</div>`);
-};
-document.addEventListener('keydown', (e) => {
-  if (!isQAMode() || !$('#play').classList.contains('active') || /INPUT|SELECT|TEXTAREA/.test(document.activeElement?.tagName || '') || e.altKey || e.metaKey || e.ctrlKey) return;
-  if (e.key === 'ArrowRight') { e.preventDefault(); $('#skipBtn').click(); }
-  else if (e.key === 'ArrowLeft') { e.preventDefault(); $('#prevBtn').click(); }
-});
+$('#endBtn').onclick = () => { if (!isTestMode() || !R) return; R.i = R.qs.length - 1; R.locked = true; next(); };
 
 /* ---------- wire up ---------- */
 $('#grid').addEventListener('click', (e) => {
   const t = e.target.closest('.tile'); if (!t) return;
   sfx.tap();
   if (t.dataset.game) return openBrainGame(t.dataset.game);
+  if (!t.dataset.cat) return;          // other tiles (the workbook) have their own handlers
   if (t.dataset.cat === 'vocab') return openLearn();
   if (t.dataset.cat === 'trace') { TR.quest = null; return openTrace(); }
   startRound(t.dataset.cat);
@@ -964,7 +981,7 @@ $('#gradeChip').onclick = () => $('#settingsBtn').onclick();
 $('#settingsBtn').onclick = () => askPin(openSettings);
 function openSettings() {
   renderKids();
-  renderGrades(); renderThemes(); $('#testMode').checked = isQAMode(); $('#testSection').hidden = !QA_AVAILABLE; $('#testSection .test-browse').hidden = !isQAMode(); if (QA_AVAILABLE) renderTestInfo();
+  renderGrades(); renderThemes(); $('#testMode').checked = isTestMode(); $('#testSection').hidden = !testFeatureAvailable();
   $('#countrySel').innerHTML = COUNTRY_ORDER.map((k) => `<option value="${k}">${COUNTRIES[k].flag} ${COUNTRIES[k].label}</option>`).join('') + '<option value="other">🌍 Somewhere else</option>';
   $('#countrySel').value = countryCode();
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
@@ -1042,13 +1059,12 @@ function renderTestBrowser() {
   sel.onchange = lv; lv();
 }
 $('#tbGo').onclick = () => {
-  if (!isQAMode()) return;
-  startRound($('#tbGame').value, 30, true, +$('#tbLevel').value);
+  const id = $('#tbGame').value, lv = +$('#tbLevel').value;
+  const keep = state.levels[id]; state.levels[id] = lv;
+  startRound(id, 30, true);
+  state.levels[id] = keep;
 };
-$('#prevBtn').onclick = () => {
-  if (!isQAMode() || !R || R.i === 0) return;
-  R.browse = true; R.i--; R.locked = false; renderQ();
-};
+$('#prevBtn').onclick = () => { if (!R || R.i === 0) return; R.i--; R.locked = false; renderQ(); };
 function collectSettings() {
   state.name = $('#nameInput').value.trim().slice(0, 20);
   state.voice = $('#voiceToggle').checked;
