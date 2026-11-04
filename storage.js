@@ -133,7 +133,15 @@ const Store = {
         if (!value) return;
         const theirs = JSON.parse(value);
         if (Store.loadedAt == null) { try { Store.loadedAt = (JSON.parse(localStorage.getItem(STORE_KEY)) || {}).savedAt || 0; } catch { Store.loadedAt = 0; } }
-        if ((theirs.savedAt || 0) > Store.loadedAt) { Store.frozen = true; localStorage.setItem(STORE_KEY, value); location.reload(); await new Promise(() => {}); }
+        if ((theirs.savedAt || 0) > Store.loadedAt) {
+          // Startup had already rendered the web copy. Replace it atomically and restart.
+          // Clear queued older writes, so they cannot overwrite the recovered native copy.
+          Store.frozen = true;
+          Store.pending = null;
+          localStorage.setItem(STORE_KEY, JSON.stringify(Store.migrate(theirs)));
+          location.replace(location.href);
+          return;
+        }
       } catch {}
     })();
   },
