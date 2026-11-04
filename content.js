@@ -229,7 +229,7 @@ function genWords(list, level, kind) {
   }
 
   if (type === 'find') {
-    const others = similarWords(list, w, n, level);
+    const others = similarWords(source, w, n, level);
     return {
       key: `${kind}-find-${w}`,
       text: 'Listen. Tap the word!',
@@ -352,6 +352,8 @@ function genSight(level) {
 const SPELL3 = ['cat', 'dog', 'pig', 'hen', 'bat', 'bus', 'sun', 'cup', 'bed', 'box', 'fox', 'hat', 'map', 'pen', 'web', 'bug',
   'van', 'leg', 'bag', 'cap', 'can', 'pan', 'nut', 'jet', 'pin', 'tub', 'log', 'rat', 'net',
   'ant', 'pie', 'key', 'mug', 'fly', 'bee', 'boy', 'toy', 'owl', 'red'];
+// Only words with carefully checked pictures are eligible for picture spelling.
+for (const [w] of EARLY_PICTURE_WORDS) if (w.length === 3 && !SPELL3.includes(w)) SPELL3.push(w);
 const SPELL4 = ['frog', 'duck', 'fish', 'crab', 'drum', 'bell', 'cake', 'kite', 'moon', 'star', 'ship', 'milk', 'sock', 'tree',
   'bird', 'lion', 'bear', 'ball', 'book', 'boat', 'corn', 'door', 'hand', 'lamp', 'ring', 'rose', 'shoe', 'snow', 'gift',
   'lock', 'nose', 'foot', 'king', 'goat', 'deer', 'swan', 'seal', 'pear', 'bone', 'tent', 'bike', 'leaf', 'nest', 'soap',
@@ -367,11 +369,11 @@ const LOOKALIKE = { b: 'dp', d: 'bp', p: 'bq', q: 'p', m: 'n', n: 'mu', u: 'n', 
 function genSpell(level) {
   let word, nBlank, nExtra, mode = 'pic', sentence = null;
   const r = Math.random();
-  if (level === 1) { word = pick(SPELL3); nBlank = r < 0.5 ? 1 : 2; nExtra = 2; }
+  if (level === 1) { word = pick(SPELL3.filter((w) => earlyWordLevel(w) === 1)); nBlank = r < 0.5 ? 1 : 2; nExtra = 2; }
   else if (level === 2) {
-    if (r < 0.5) { word = pick(SPELL3); nBlank = 3; nExtra = 3; }
+    if (r < 0.5) { word = pick(SPELL3.filter((w) => earlyWordLevel(w) <= 2)); nBlank = 3; nExtra = 3; }
     else { word = pick(SPELL4); nBlank = 2; nExtra = 3; }
-  } else if (level === 3) { word = pick(SPELL4); nBlank = r < 0.75 ? 4 : 3; nExtra = 4; }
+  } else if (level === 3) { word = r < 0.25 ? pick(SPELL3.filter((w) => earlyWordLevel(w) === 3)) : pick(SPELL4); nBlank = r < 0.75 ? word.length : Math.max(2, word.length - 1); nExtra = 4; }
   else if (level === 4) {
     if (r < 0.4) { word = pick(SPELL5); nBlank = 2 + rand(2); nExtra = 4; }
     else if (r < 0.7) { mode = 'listen'; }
