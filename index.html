@@ -61,7 +61,8 @@
     <div class="prog-row"><div id="progress" class="progress"></div><button id="skipBtn" class="diff-btn test-only" aria-label="Test: skip">⏭</button><button id="qaRevealBtn" class="diff-btn test-only" aria-label="Test: reveal answer">👁</button><button id="prevBtn" class="diff-btn test-only" aria-label="Test: previous card">⏮</button><button id="endBtn" class="diff-btn test-only" aria-label="Test: end round">🏁</button><button id="diffBtn" class="diff-btn" aria-label="Grown-ups: press and hold to change difficulty">🎚️ <span id="diffLv"></span></button></div>
     <div class="card">
       <div id="qText" class="q-text"></div>
-      <div id="qMain" class="q-main"></div>
+      <div id="qZoomView" class="q-zoom-view"><div id="qZoomInner" class="q-zoom-inner"><div id="qMain" class="q-main"></div></div></div>
+        <div class="q-zoom-controls" aria-label="Question zoom"><button id="qZoomIn" type="button" aria-label="Zoom into question">＋</button><button id="qZoomOut" type="button" aria-label="Zoom out of question">－</button><button id="qZoomReset" type="button">Reset</button></div>
       <div id="hintBox" class="hint-box" hidden></div>
     </div>
     <div id="options" class="options"></div>
