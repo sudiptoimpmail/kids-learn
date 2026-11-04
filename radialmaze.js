@@ -87,7 +87,14 @@ function startCircularMaze(level = GL('path')) {
     c.fillStyle = '#fff9db'; c.beginPath(); c.arc(cx, cy, outer + 4, 0, Math.PI * 2); c.fill();
     c.strokeStyle = '#4dabf7'; c.lineWidth = Math.max(5, dr * 0.38); c.lineCap = 'round'; c.lineJoin = 'round';
     c.beginPath(); path.forEach((id, i) => {
-      const [x, y] = mid(id); if (!i) c.moveTo(x, y); else c.lineTo(x, y);
+      const [x, y] = mid(id);
+      if (!i) { c.moveTo(x, y); return; }
+      const from = path[i - 1], r0 = Math.floor(from / sectors), r1 = Math.floor(id / sectors);
+      if (r0 === r1) {
+        const a = angle((from % sectors) + 0.5), target = angle((id % sectors) + 0.5);
+        const delta = ((target - a + 3 * Math.PI) % (2 * Math.PI)) - Math.PI;
+        c.arc(cx, cy, inner + (r0 + 0.5) * dr, a, a + delta, delta < 0);
+      } else c.lineTo(x, y);
     }); c.stroke();
     if (hint) {
       c.fillStyle = '#ffd43b';
