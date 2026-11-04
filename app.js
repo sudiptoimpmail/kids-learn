@@ -355,6 +355,7 @@ function renderQ() {
       mistake: () => {
         if (R.locked || R.qs[R.i] !== q) return;
         q.tries++; R.mistakes++; R.streak = 0; sfx.no();
+        say('Try again.');
         if (q.tries === 1 && q.hint && !q.hintShown) showHint(q, true);
       }
     });
