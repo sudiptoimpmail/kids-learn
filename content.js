@@ -510,6 +510,7 @@ const SENTENCES = [
   ['A shark swims in the sea. A wolf runs on land. Both animals need food to live.', 'Which animal swims in the sea?', ['the shark', 'the wolf', 'the bird'], 3, 'print-first'],
   ['The clock rang at six. Tom got up, ate his egg, and took the bus to school.', 'What did Tom eat?', ['an egg', 'a plum', 'a cake'], 3, 'print-first'],
   ['The goat was near the barn. It saw fresh grass and began to eat. Then it went to rest.', 'What did the goat eat?', ['grass', 'a rock', 'a toy'], 3, 'print-first'],
+  ['“I don\'t see my hat,” said Ben. He looked under the bed. The hat was on a chair.', 'Where was Ben\'s hat?', ['on a chair', 'under the bed', 'in his bag'], 3, 'print-first'],
   // ---- 2nd grade (level 4): short stories, 3 – 4 sentences
   ['Mia wanted to bake a cake for Dad. She mixed eggs, milk and flour. Then she put the cake in the oven. Dad smiled when he saw it.', 'Why did Mia bake a cake?', ['for Dad', 'for her teacher', 'for her dog'], 4],
   ['The class went on a trip to the zoo. They saw lions, monkeys and a tall giraffe. The monkeys were the funniest. Everyone laughed at them.', 'Which animals were the funniest?', ['the monkeys 🐒', 'the lions 🦁', 'the giraffe 🦒'], 4],
