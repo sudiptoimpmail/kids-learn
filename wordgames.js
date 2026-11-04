@@ -5,7 +5,7 @@
    Words are three-letter words with a clear picture (W3 in content.js).
    mountWordSearch / mountCrossword draw a puzzle into a box and report back through callbacks.
    ========================================================= */
-const WG_WORDS = () => W3.filter(([w]) => /^[a-z]{3}$/.test(w) && !(typeof PHON_SKIP !== 'undefined' && PHON_SKIP.has(w)));
+const WG_WORDS = () => W3.filter(([w]) => /^[a-z]{3}$/.test(w) && !EARLY_AUDIO_PENDING.has(w) && !(typeof PHON_SKIP !== 'undefined' && PHON_SKIP.has(w)));
 
 /* ---------- 🔎 Word Search ---------- */
 const WS_SIZES = [[5, 3, false], [6, 4, true], [7, 5, true], [8, 6, true]];   // grid size, words, also downward
