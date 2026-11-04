@@ -28,10 +28,11 @@ const { chromium } = require('playwright');
     await page.waitForFunction(() => !!navigator.serviceWorker.controller);
     await ctx.setOffline(true);
     const offline = await page.evaluate(async (core) => {
-      const a = await fetch('app.js'), b = await fetch(core), c = await fetch('audio/clips.json');
-      return {app:a.ok,core:b.ok,manifest:c.ok};
+      const a = await fetch('app.js'), b = await fetch(core), c = await fetch('audio/clips.json'),
+          d = await fetch('workbook.js'), e = await fetch('workbook.css');
+      return {app:a.ok,core:b.ok,manifest:c.ok,illustrations:d.ok,styles:e.ok};
     }, result.core);
-    assert.deepEqual(offline, {app:true,core:true,manifest:true});
+    assert.deepEqual(offline, {app:true,core:true,manifest:true,illustrations:true,styles:true});
     assert.deepEqual(errors, []);
     console.log('PASS offline app, starter audio and cache isolation', result, offline);
   } finally {
