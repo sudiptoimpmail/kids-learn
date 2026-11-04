@@ -65,3 +65,7 @@ Mandatory iPad/iPhone PWA checks:
 - [#12](https://github.com/sudiptoimpmail/kids-learn/issues/12), [#13](https://github.com/sudiptoimpmail/kids-learn/issues/13): audited word coverage and age-appropriate phonics.
 
 **Merge policy:** Keep this PR draft until CI passes and on-device QA. Do not silently close partially implemented issues.
+
+## Merge note (2026-11-04)
+This branch overlapped PR #16, which was merged first and covers the same issues (test-mode flag in `feature-flags.js`, no device speech, larger and circular mazes in `pathmaze.js`/`radialmaze.js`, scoped zoom, curated grammar, early-word checklist in `early-words.js`).
+To avoid two implementations of each feature, conflicts were resolved in favour of main. `app-config.js`, `tests/release-and-maze.js` and the `EARLY_AUDIO_PENDING` filter were dropped: every early and Grade 1 word now has a natural recording, so nothing is pending. This document is kept for history.

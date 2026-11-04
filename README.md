@@ -70,7 +70,6 @@ The Play Zone contains arcade and creativity activities (Balloons, Coloring, Rol
 | 🧩 Picture Puzzle | Swap tiles to rebuild a picture — 5 levels: 2×2 → 3×3 → 4×4 → 5×5 → 6×6. Uses her own colored pictures when she has them |
 | 🔵 Rolling Ball 3D | 3D sky-track runner (like mobile rolling games, built with three.js): the ball rolls forward on its own — drag left/right or tilt to steer, tap to jump. 8 levels: faster, longer, more gaps, red blocks, jump gaps from level 3, **ramps that fly you over a broken bridge** (level 2+) **or a waterfall canyon** (level 4+), narrow plank bridges (level 5+), sliding purple blocks (level 6+). Collect 💎, checkpoints every 15 rows, every track has a guaranteed safe path |
 | 🟫 Ball Maze | The original top-down maze: drag or tilt to roll to the 🚩 — 8 mazes with walls and holes |
-| 🐥 Finger Maze | Drag a finger through Pre-K 3×4 mazes, then progressively larger Grade 1–3 labyrinths up to 19×23 cells. Advanced rounds include actual concentric circular mazes with radial passages, hints and ＋ / － / Reset zoom. New mazes are freshly generated and checked for solvable paths. |
 | 🐹 Whack-a-Mole | 30 seconds, 5 levels (faster moles, more at once, don't tap the 🌸 from level 3) |
 
 ## Looks
@@ -85,10 +84,8 @@ Each child has their own name, picture, grade, levels, stars, stickers, colored 
 ## Backup
 ⚙️ → **Save a backup** downloads a small file with all progress; **Load a backup** brings it back (on this or another device).
 
-## Feature-flagged test mode (OFF in production)
-The local file **`app-config.js`** contains `APP_FEATURES.qaTools: false` by default. This must remain **false** for production releases. In a private QA build, set it to `true`, bump the service-worker version in `sw.js`, and open the PIN-protected ⚙️ Settings screen to find the visible 🧪 **Test Mode** On/Off switch. When QA is enabled, the question viewer offers ⏮ Previous, ⏭ Skip, 👁 Reveal, 🏁 End and desktop arrow keys. The Question Browser can open a category at any level for 30 fast-review cards. QA review does **not** earn stars, levels, mastery or play time, and saved test-mode state cannot bypass the production-off flag.
-
-Large reading/puzzle questions now have ＋ / － / Reset zoom controls. The Home and Settings UI suppresses accidental app pinch scaling, while question/art/maze content provides its own zoom. System accessibility zoom is not globally disabled.
+## Hidden test mode
+In ⚙️, **tap the "Grown-up Settings" title 5 times** to show 🧪 Test mode: the right answer is outlined, ⏮ ⏭ step back and forward through cards, 🏁 ends the round, every game is shown, the Play Zone is always open, and a line shows voice clips / 3D support / screen size. The **Question browser** opens any game at any level with 30 cards to flip through (it never changes her levels or stars).
 
 ## Turn on hosting (one time)
 Repo **Settings → Pages → Build and deployment → Source: Deploy from a branch → Branch: `main` / `(root)` → Save**.
@@ -100,12 +97,11 @@ After a minute the app is live at https://sudiptoimpmail.github.io/kids-learn/
 3. Open it from the home screen — it runs full-screen and works offline.
 
 ## Voice
-The app uses the existing prerecorded natural voice clips (`audio/`, Kokoro `af_heart`) and plays available sentence segments in order. **It never switches to mechanical/system speech** when a recording is absent. Missing segments remain silent until an approved recording is produced. Voice coverage audits and the curated word checklist track these gaps.
-
-`early-words.js` tracks all **116 unique user-requested early words** plus letters B/P/T/I/X and the phrase “I don't”, classifies CVC vs later phonics patterns, and flags words needing image/pronunciation or natural recording review. Only picture-approved entries can join visual reading; missing-audio words do not enter new listening-only spelling/phonics or Word Search/Crossword questions. Do not claim full coverage until the missing natural clips are recorded using the existing pipeline.
+Every word, question and praise is pre-recorded in a natural voice (`audio/`, made with the open-source Kokoro TTS model, voice `af_heart`), so it sounds the same on every device and works offline.
+If a phrase has no recording, the app falls back to the best voice installed on the device. For a better fallback on iPhone/iPad: **Settings → Accessibility → Spoken Content → Voices → English → download "Ava (Premium)" or "Zoe (Premium)"**.
 
 ## Edit content
-Learning generators are in `content.js`, `phonics.js`, `grade1.js`, `grammar.js` and related subject modules; review `early-words.js` before adding early reading/spelling words. After any code, CSS, feature-flag or content change, bump `VERSION` in `sw.js` so installed copies update.
+All words, sentences, vocabulary (`VOCAB`), jobs, flags, etc. live in `content.js` — add rows to the arrays. After changing files, bump `VERSION` in `sw.js` so installed copies update.
 
 3D body model: BodyParts3D © The Database Center for Life Science, Human Reference Atlas (HuBMAP) — CC BY 4.0; body shape MakeHuman (CC0); via [open-anatomy-3d](https://github.com/MervinR07/open-anatomy-3d) (CC BY 4.0). Changed for this app: clothes and hair added, lung surfaces made from the airway model, reproductive and other parts removed (`vendor/body.glb`). The credit is shown under the 3D view and in ⚙️.
 
