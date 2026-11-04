@@ -157,7 +157,12 @@ const IllustratedActivities = (() => {
       optClass:'opt-text',hint:{html:'Read the sentence and look at the picture.',say:'Look at the picture!'}
     };}
     if(mode==='sequence'){text='Read the fox story. Tap the four pictures in story order.';theme='park';}
-    return {key:'ill-'+mode+(mode==='forest'?'-'+answer:''),text,say:mode==='forest'?'Find the word.':'Look at the picture!',
+    const voice = mode==='letters' ? ['Help the baby zebra reach its family.','Follow only the letter Z.'] :
+      mode==='longa' ? 'Follow only words with the long A sound to reach TAIL.' :
+      mode==='sounds' ? ['Tap all the pictures that start with','A'] :
+      mode==='shapes' ? 'Tap all the circles you see.' :
+      mode==='forest' ? ['Find the word.', answer] : ['Read the story.','What happened first?'];
+    return {key:'ill-'+mode+(mode==='forest'?'-'+answer:''),text,say:voice,
       main:'',options:[],answer,illustrated:{mode,theme},mainClass:'ia-picture',hint:{html:'Look at the picture and try again.',say:hint}};
   }
   function setFeedback(host,message){
@@ -242,15 +247,21 @@ const IllustratedActivities = (() => {
       const tray=document.createElement('div');tray.className='ia-story-cards';
       cards.forEach(card=>{
         const b=document.createElement('button');b.type='button';b.className='ia-story-card';b.dataset.step=card.id;
-        b.innerHTML='<span class="ia-story-art">'+
-          '<svg viewBox="0 0 180 115" aria-hidden="true">'+
+        const x=card.id===0?45:card.id===1?82:card.id===2?85:51;
+        const y=card.id===2?76:110;
+        const motion=card.id===1?'<path d="M9 60 h30 M7 74 h23 M21 89 h24" stroke="#d49a56" stroke-width="5" stroke-linecap="round"/>':
+          card.id===2?'<path d="M23 70 Q52 18 89 38" fill="none" stroke="#c47f55" stroke-width="5" stroke-dasharray="6 7"/>':
+          card.id===3?'<path d="M140 44 V86 M132 73 l8 13 8 -13" stroke="#af5447" stroke-width="5" fill="none"/>':'';
+        const appleY=card.id===3?80:24;
+        b.innerHTML='<span class="ia-story-art"><svg viewBox="0 0 180 115" aria-hidden="true">'+
           '<rect width="180" height="115" rx="13" fill="#d9f2ca"/>'+
           '<path d="M0 83 Q70 62 180 86 V115 H0Z" fill="#8ac079"/>'+
-          '<circle cx="140" cy="26" r="21" fill="#e65350" stroke="#a94141" stroke-width="4"/>'+
-          '<path d="M140 10 q5 -11 17 -9" stroke="#427e3d" stroke-width="5" fill="none"/>'+
-          fox(61,108,card.id===2?.36:.4)+
-          (card.id===3?'<path d="M145 36 V82" stroke="#ae7244" stroke-width="4" stroke-dasharray="5 6"/>':'')+
-          '</svg></span><small>'+div(card.label)+'</small><b></b>';
+          (card.id===0||card.id===1?'<path d="M140 90 V38" stroke="#8e6947" stroke-width="8"/>'+
+            '<circle cx="140" cy="28" r="31" fill="#71af6b"/>':'')+
+          '<circle cx="140" cy="'+appleY+'" r="17" fill="#e65350" stroke="#a94141" stroke-width="4"/>'+
+          '<path d="M139 '+(appleY-16)+' q5 -11 17 -9" stroke="#427e3d" stroke-width="5" fill="none"/>'+
+          fox(x,y,card.id===2?.29:.36)+motion+
+          '</svg></span><b class="ia-event-number" aria-hidden="true">?</b>';
         b.setAttribute('aria-label',card.desc);
         b.addEventListener('click',()=>{
           if(b.disabled)return;
