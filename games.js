@@ -170,9 +170,11 @@ function openGame(id) {
   $('#gameArea').className = 'game-area g-' + id;
   show('game');
   startPlayTimer();
+  gameStart = Date.now();
   g.start();
 }
-function stopGame() { gameSession++; if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
+function stopGame() { gameSession++; if (gameStart) { logPlay((Date.now() - gameStart) / 1000); gameStart = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
+let gameStart = 0;   // when the current Play Zone game began (for the grown-ups' play-time numbers)
 // a timer that is dropped if the child has left the game (so no old "You win!" panel pops up later)
 let gameSession = 0;
 function later(fn, ms) { const s = gameSession; return setTimeout(() => { if (s === gameSession) fn(); }, ms); }

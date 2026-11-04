@@ -212,6 +212,7 @@ function renderHome() {
   $('#gradeLabel').textContent = state.grade ? GRADES[state.grade].label : 'Pick grade';
   $('#gradeChip').classList.toggle('pulse', !state.grade);
   if (typeof renderPlayBanner === 'function') renderPlayBanner();
+  if (typeof renderToday === 'function') renderToday();
   $('#grid').innerHTML = visibleGames().map((c) => {
     const best = state.best[c.id] || 0;
     const lv = c.id === 'mix' || c.trace ? '' : `<span class="lv">Lv ${levelOf(c.id)}</span>`;
@@ -238,7 +239,7 @@ function startRound(catId, count, browse = false) {
     const q = c.gen(levelOf(c.id));
     if (seen.has(q.key) && guard < 500) continue;
     if (!browse && recent.has(q.key) && guard < 350) continue;
-    seen.add(q.key); q.cat = c; qs.push(q);
+    seen.add(q.key); q.cat = c; q.level = levelOf(c.id); qs.push(q);
   }
   if (!browse) { state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60); save(); }
   R = { cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse };
@@ -275,6 +276,7 @@ async function mountBody3D(q) {
 function renderQ() {
   dropBody3D();
   const q = R.qs[R.i];
+  q.t0 = Date.now();
   q.tries = 0; q.hintShown = false; R.locked = false;
   renderProgress();
   $('#qText').innerHTML = q.text;
@@ -565,6 +567,8 @@ function celebrate(first) {
 
 function next() {
   $('#pop').classList.remove('show');
+  const done = R.qs[R.i];
+  if (!R.browse && done && done.ok !== undefined && typeof logAttempt === 'function') logAttempt(done, done.cat.id, done.level);
   R.i++;
   if (R.i >= R.qs.length) return finish();
   renderQ();
@@ -746,7 +750,7 @@ $('#testMode').onchange = () => { state.testMode = $('#testMode').checked; save(
 // skip: count the card as right and move on · end: jump to the results
 $('#skipBtn').onclick = () => {
   const q = R.qs[R.i]; if (R.locked) return;
-  R.locked = true; q.ok = true; R.firstTry++; clearTimeout(R.nudge); next();
+  R.locked = true; q.ok = true; q.skipped = true; R.firstTry++; clearTimeout(R.nudge); next();
 };
 $('#endBtn').onclick = () => { R.i = R.qs.length - 1; R.locked = true; next(); };
 
@@ -761,7 +765,7 @@ $('#grid').addEventListener('click', (e) => {
 $('#hintBtn').onclick = () => { sfx.tap(); showHint(R.qs[R.i]); };
 $('#sayBtn').onclick = () => { sfx.tap(); const q = R.qs[R.i]; say((q.say && q.say.length) ? q.say : q.readQ || q.text.replace(/<[^>]+>/g, '')); };
 $('#quitBtn').onclick = () => {
-  releaseBody3D(); sayToken++; stopClip(); clearTimeout(R && R.nudge); renderHome(); show('home'); };
+  releaseBody3D(); sayToken++; stopClip(); clearTimeout(R && R.nudge); save(); renderHome(); show('home'); };
 $('#againBtn').onclick = () => startRound(R.cat.id);
 $('#homeBtn').onclick = () => { renderHome(); show('home'); };
 $('#stickersBtn').onclick = () => { sfx.tap(); renderStickers(); show('stickers'); };

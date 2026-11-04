@@ -41,6 +41,7 @@
       <div class="chip">⭐ <b id="starCount">0</b></div>
       <button id="gradeChip" class="chip btn grade-chip">🎓 <b id="gradeLabel">Grade</b></button>
       <button id="stickersBtn" class="chip btn">🏅 <b id="stickerCount">0</b> stickers ›</button>
+      <div id="todayChip" class="chip today-chip"></div>
     </div>
     <button id="playBanner" class="play-banner"></button>
     <div id="grid" class="grid"></div>
@@ -165,6 +166,26 @@
       <small class="note">For grown-ups. Levels also move up and down by themselves as she plays.</small></div>
   </div>
 
+  <!-- GROWN-UPS: progress dashboard -->
+  <section id="dash" class="screen">
+    <header class="play-top">
+      <button id="dashBack" class="icon-btn" aria-label="Back">‹</button>
+      <div class="play-title">📊 Progress</div>
+      <span class="icon-btn ghost"></span>
+    </header>
+    <div id="dashKids" class="kid-chips"></div>
+    <div class="panel dash">
+      <div id="dashSummary" class="dash-summary"></div>
+      <h3>Last 7 days</h3>
+      <div id="dashTop"></div>
+      <div id="dashSkills" class="dash-skills"></div>
+      <h3>Games and levels</h3>
+      <div id="dashSubjects" class="dash-subjects"></div>
+      <label class="lvrow">Daily goal (cards a day)<select id="dashGoal"><option>10</option><option>15</option><option>20</option><option>30</option><option>40</option></select></label>
+      <p class="note small">Kept only on this device. "Right on first try" counts cards answered correctly without a wrong tap; a skill is "doing well" after 8+ recent cards at 85% or more, and "needs practice" below 70%.</p>
+    </div>
+  </section>
+
   <!-- STICKERS -->
   <section id="stickers" class="screen">
     <header class="play-top">
@@ -222,6 +243,7 @@
           <button id="tbGo" class="big-btn small">▶ Open 30 cards</button>
           <small class="note">Use ⏮ ⏭ on the card to step through. Every game and the Play Zone are open in test mode.</small></div>
       </div>
+      <button id="dashBtn" class="big-btn small">📊 Progress for grown-ups</button>
       <button id="pinChange" class="big-btn alt small">🔒 Change grown-up PIN</button>
       <div class="backup-row"><button id="backupBtn" class="big-btn alt small">💾 Save a backup</button><label class="big-btn alt small">📂 Load a backup<input id="restoreFile" type="file" accept=".json,application/json" hidden></label></div>
       <button id="settingsDone" class="big-btn">Save</button>
@@ -244,5 +266,6 @@
   <script src="scenes.js"></script>
   <script src="games.js"></script>
   <script src="trace.js"></script>
+  <script src="progress.js"></script>
 </body>
 </html>

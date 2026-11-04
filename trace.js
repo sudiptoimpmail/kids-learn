@@ -111,7 +111,9 @@ function renderTrace(speak) {
   }
   function win() {
     finished = true;
-    state.traced = state.traced || {}; state.traced[TR.set + ch] = 1; save();
+    state.traced = state.traced || {}; state.traced[TR.set + ch] = 1;
+    if (typeof logAttempt === 'function') logAttempt({ ok: true, t0: Date.now() - 20000 }, 'trace', TR.set === 'num' ? 3 : TR.set === 'small' ? 2 : 1);
+    save();
     sfx.yes(); confetti(70);
     $('#trPic').classList.remove('cheer'); void $('#trPic').offsetWidth; $('#trPic').classList.add('cheer');
     say([pick(['Great tracing!', 'Beautiful!', 'You did it!', 'Super writing!']), spoken.split('. ')[1] || spoken]).then(() => {
