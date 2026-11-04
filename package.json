@@ -1,0 +1,13 @@
+{
+  "name": "kids-learn-browser-regression",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Browser tests for the offline-first Learn & Play app",
+  "scripts": {
+    "test": "sh tests/run.sh",
+    "check": "node --check app.js && node --check games.js && node --check thinking.js && node --check progress.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.0"
+  }
+}

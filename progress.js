@@ -36,9 +36,13 @@ const SKILLS = {
   animals: ['Where animals live', 'Animals by country', 'Animals of the world (harder)'],
   places: ['Famous places', 'More famous places', 'Famous places of the world'],
   maps: ['Continents', 'Countries on the map', 'Countries and capitals'],
+  pattern: ['AB patterns', 'AAB and ABB patterns', 'Three-symbol patterns', 'Number patterns', 'Growing number patterns'],
+  odd: ['Recognize categories', 'Categorize by traits', 'Group by function and features'],
+  sequence: ['Everyday order', 'Cause and effect', 'Multi-step sequences'],
 };
 const skillName = (cat, lv) => (SKILLS[cat] && SKILLS[cat][lv - 1]) || `${(CATEGORIES.find((c) => c.id === cat) || {}).title || cat} · level ${lv}`;
-const SUBJECT = (cat) => (['add', 'sub', 'story', 'cmp', 'mul', 'div', 'clock', 'shape2', 'shape3', 'match'].includes(cat) ? 'Math'
+const SUBJECT = (cat) => (['pattern', 'odd', 'sequence'].includes(cat) ? 'Thinking Skills'
+  : ['add', 'sub', 'story', 'cmp', 'mul', 'div', 'clock', 'shape2', 'shape3', 'match'].includes(cat) ? 'Math'
   : ['phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'syl', 'trace'].includes(cat) ? 'Reading & words' : 'Science & world');
 const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const DAILY_GOAL = () => state.dailyGoal || 20;
@@ -71,6 +75,14 @@ addEventListener('pagehide', () => { clearTimeout(saveSoon.t); save(); });
 // tracing is a "did it" activity, not a right/wrong answer: counted separately
 function logTrace(secs) { const d = statsDay(); d.traced = (d.traced || 0) + 1; d.secs += Math.min(120, Math.max(1, secs)); saveSoon(); }
 function logPlay(secs) { if (secs > 2) { statsDay().play += Math.min(secs, 3600); save(); } }
+// Brain Games are educational puzzles: count completed challenges, not as arcade minutes.
+function logBrainWin(gameId) {
+  const d = statsDay();
+  d.brain = (d.brain || 0) + 1;
+  d.brainByGame = d.brainByGame || {};
+  d.brainByGame[gameId] = (d.brainByGame[gameId] || 0) + 1;
+  saveSoon();
+}
 // a skill's state from its last 12 answers
 function skillState(sk) {
   const r = sk.recent, n = r.length, acc = n ? [...r].filter((x) => x === '1').length / n : 0;
@@ -115,7 +127,7 @@ function renderDashboard() {
   const week = [];
   for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); const k = dayKey(d); week.push([d, st.days[k] || { q: 0, first: 0, secs: 0, play: 0, hints: 0, cats: {} }]); }
   const sum = (f) => week.reduce((a, [, x]) => a + f(x), 0);
-  const q7 = sum((x) => x.q), f7 = sum((x) => (x.alone != null ? x.alone : x.first)), traced7 = sum((x) => x.traced || 0), learnMin = Math.round(sum((x) => x.secs) / 60), playMin = Math.round(sum((x) => x.play) / 60), days7 = week.filter(([, x]) => x.q > 0).length, hints7 = sum((x) => x.hints);
+  const q7 = sum((x) => x.q), f7 = sum((x) => (x.alone != null ? x.alone : x.first)), traced7 = sum((x) => x.traced || 0), learnMin = Math.round(sum((x) => x.secs) / 60), playMin = Math.round(sum((x) => x.play) / 60), days7 = week.filter(([, x]) => x.q > 0).length, hints7 = sum((x) => x.hints), brain7 = sum((x) => x.brain || 0);
   const maxQ = Math.max(10, ...week.map(([, x]) => x.q));
   const goal = DAILY_GOAL();
   $('#dashTop').innerHTML = `
@@ -124,6 +136,7 @@ function renderDashboard() {
       <div class="dc"><b>${q7 ? Math.round(f7 / q7 * 100) : 0}%</b><small>right on their own (no hint)</small></div>
       <div class="dc"><b>${days7}<small>/7</small></b><small>learning days${traced7 ? ` · ${traced7} letters traced` : ''}</small></div>
       <div class="dc"><b>${learnMin}<small> min</small></b><small>learning · ${playMin} min play</small></div>
+       <div class="dc"><b>${brain7}</b><small>brain puzzles solved</small></div>
     </div>
     <div class="dash-week">${week.map(([d, x]) => `<div class="bar-col"><div class="bar" style="height:${Math.round(x.q / maxQ * 100)}%"><span class="bar-ok" style="height:${x.q ? Math.round((x.alone != null ? x.alone : x.first) / x.q * 100) : 0}%"></span></div>
       ${x.q >= goal ? '<i class="goal">✅</i>' : ''}<small>${x.q || ''}</small><em>${d.toLocaleDateString(undefined, { weekday: 'short' }).slice(0, 2)}</em></div>`).join('')}</div>
@@ -155,6 +168,7 @@ function renderDashboard() {
   else {
     lines.push(`This week ${name} learned on ${days7} day${days7 === 1 ? '' : 's'} and answered ${q7} cards (${Math.round(f7 / q7 * 100)}% right on their own, without a hint).`);
     if (topSub) lines.push(`Most practice: ${topSub[0].toLowerCase()} (${topSub[1][0]} cards).`);
+    if (brain7) lines.push(`Solved ${brain7} brain puzzle${brain7 === 1 ? '' : 's'} this week.`);
     if (good[0]) lines.push(`Doing well: ${good.slice(0, 2).map((s) => s.name.toLowerCase()).join(' and ')}.`);
     if (weak[0]) lines.push(`Needs more practice: ${weak.slice(0, 2).map((s) => s.name.toLowerCase()).join(' and ')}. Try a round of ${(CATEGORIES.find((c) => c.id === weak[0].cat) || {}).title} together.`);
     if (hints7 > q7 * 0.4) lines.push('Hints were used a lot — that\'s fine while learning; the levels will adjust.');
@@ -177,6 +191,7 @@ const QUEST_LEN = 5;
 const QUEST_READING = { prek: ['phonics', 'cvc'], k: ['phonics', 'cvc', 'sight'], g1: ['sent', 'sight', 'phonics', 'spell'], g2: ['sent', 'spell', 'vocab'], g3: ['sent', 'vocab', 'spell'] };
 const QUEST_MATH = { prek: ['add', 'cmp', 'shape2'], k: ['add', 'sub', 'cmp'], g1: ['add', 'sub', 'story'], g2: ['add', 'sub', 'mul', 'story'], g3: ['mul', 'div', 'story'] };
 const QUEST_WORLD = ['animals', 'places', 'maps', 'body', 'gk', 'shape3', 'jobs', 'flags', 'anatomy'];
+const QUEST_THINKING = ['pattern', 'odd', 'sequence'];
 function questFor() {
   const today = dayKey(), grade = state.grade || 'k';
   if (state.quest && state.quest.date === today && state.quest.grade === grade) return state.quest;
@@ -201,9 +216,16 @@ function questFor() {
   if (!steps.some((s) => (QUEST_MATH[grade] || []).includes(s.cat))) addStep(freshest((QUEST_MATH[grade] || QUEST_MATH.k).filter((c) => !used.has(c))), 'math');
   // 5. discovery: science and the world
   addStep(freshest(QUEST_WORLD.filter((c) => !used.has(c))), 'discover');
-  // little ones also trace a few letters: make room by dropping an extra reading/math step, never discovery
+  // Alternate a thinking lesson in the daily plan without dropping discovery.
+  if (+today.slice(-2) % 2 === 0) addStep(freshest(QUEST_THINKING.filter((c) => !used.has(c))), 'thinking');
+  while (steps.length > (grade === 'prek' || grade === 'k' ? 4 : 5)) {
+    const drop = ['warm-up', 'reading', 'math'].map((w) => steps.findIndex((x) => x.why === w)).find((i) => i >= 0);
+    if (drop == null) break;
+    steps.splice(drop, 1);
+  }
+  // Little ones trace three characters; preserve thinking and discovery if included.
   if (grade === 'prek' || grade === 'k') {
-    while (steps.length > 4) { const drop = ['math', 'reading', 'warm-up'].map((w) => steps.findIndex((x) => x.why === w)).find((i) => i >= 0); steps.splice(drop, 1); }
+    while (steps.length > 4) { const drop = ['math', 'reading', 'warm-up'].map((w) => steps.findIndex((x) => x.why === w)).find((i) => i >= 0); if (drop == null) break; steps.splice(drop, 1); }
     steps.splice(1, 0, { cat: 'trace', why: 'tracing', done: false });
   }
   state.quest = { date: today, grade, steps: steps.slice(0, 5), gift: false };
@@ -217,7 +239,7 @@ function renderQuest() {
   box.innerHTML = `<div class="quest-head"><b>🗺️ Today's Quest</b><span class="quest-checks">${q.steps.map((s) => `<i class="${s.done ? 'on' : ''}">✓</i>`).join('')}<i class="gift ${all ? (q.gift ? 'opened' : 'ready') : ''}">🎁</i></span></div>
     <div class="quest-steps">${q.steps.map((s, i) => {
       const c = s.cat === 'trace' ? { icon: '✍️', title: 'Tracing', color: '#f76707' } : CATEGORIES.find((x) => x.id === s.cat) || { icon: '⭐', title: s.cat, color: '#8f6bff' };
-      return `<button class="quest-step ${s.done ? 'done' : ''} ${i === nextI ? 'next' : ''}" data-i="${i}" style="--c:${c.color}"><span class="qs-ico">${c.icon}</span><span class="qs-t">${c.title}</span><span class="qs-why">${{ 'warm-up': 'Warm up', practice: 'Practice', math: 'Math', reading: 'Reading', discover: 'Discover', tracing: 'Write' }[s.why] || ''}</span>${s.done ? '<span class="qs-ok">✓</span>' : ''}</button>`;
+      return `<button class="quest-step ${s.done ? 'done' : ''} ${i === nextI ? 'next' : ''}" data-i="${i}" style="--c:${c.color}"><span class="qs-ico">${c.icon}</span><span class="qs-t">${c.title}</span><span class="qs-why">${{ 'warm-up': 'Warm up', practice: 'Practice', math: 'Math', reading: 'Reading', discover: 'Discover', thinking: 'Think', tracing: 'Write' }[s.why] || ''}</span>${s.done ? '<span class="qs-ok">✓</span>' : ''}</button>`;
     }).join('')}${all ? `<button class="quest-step gift-step ${q.gift ? 'done' : 'next'}" data-gift="1"><span class="qs-ico">🎁</span><span class="qs-t">${q.gift ? 'Gift opened!' : 'Open your gift!'}</span></button>` : ''}</div>`;
   $$('.quest-step', box).forEach((b) => (b.onclick = () => {
     sfx.tap();

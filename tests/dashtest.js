@@ -1,7 +1,7 @@
 const { chromium } = require('playwright');
 const S = require('path').join(__dirname, 'out/');
 (async () => {
-  const b = await chromium.launch({ executablePath: '/usr/bin/google-chrome' });
+  const b = await chromium.launch({ executablePath: process.env.CHROME_BIN || '/usr/bin/google-chrome' });
   const errs = [];
   for (const [name, vp] of [['phone', { width: 390, height: 844 }], ['ipad', { width: 820, height: 1180 }]]) {
   const p = await b.newPage({ viewport: vp }); p.on('pageerror', e => errs.push(e.message));

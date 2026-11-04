@@ -71,6 +71,10 @@ function openPlayZone() {
       return;
     }
   }
+  brainMode = false;
+  renderPZ();
+  $('#pzTitle').textContent = '🎮 Play Zone';
+  $$('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = false));
   document.body.style.setProperty('--theme', '#ff6bb5');
   show('playzone');
   startPlayTimer();
@@ -131,6 +135,23 @@ const GAMES = [
 ];
 // level per game; winning moves you up (needWins wins per level)
 const GAME_MAX = { pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
+// Thinking games are educational: never require earned arcade time.
+const BRAIN_GAME_IDS = new Set(['ttt', 'memory', 'c4', 'sudoku', 'puzzle', 'maze']);
+const BRAIN_MIN_GRADE = { ttt: 'prek', memory: 'prek', puzzle: 'prek', sudoku: 'k', maze: 'k', c4: 'g1' };
+const BRAIN_GRADE_ORDER = ['prek', 'k', 'g1', 'g2', 'g3'];
+let brainMode = false;
+function brainVisible(g) {
+  return BRAIN_GAME_IDS.has(g.id) && (!!state.showAll || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') >= BRAIN_GRADE_ORDER.indexOf(BRAIN_MIN_GRADE[g.id]));
+}
+function openBrainGames() {
+  brainMode = true;
+  clearInterval(playTimer);
+  renderPZ();
+  $('#pzTitle').textContent = '🧠 Brain Games';
+  $$('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = true));
+  document.body.style.setProperty('--theme', '#7950f2');
+  show('playzone');
+}
 function GL(id) {
   if (id === 'maze' && state.gameLv && state.gameLv.maze == null && state.gameLv.ball > 1 && !state.ball3d) { state.gameLv.maze = state.gameLv.ball; state.gameLv.ball = 1; state.ball3d = true; }
   if (id === 'sudoku') return sdkLevel();
@@ -140,6 +161,7 @@ function GL(id) {
 function gameLevelUp(id, needWins = 1) {
   state.gameLv = state.gameLv || {}; state.gameWins = state.gameWins || {};
   state.gameWins[id] = (state.gameWins[id] || 0) + 1;
+  if (brainMode && BRAIN_GAME_IDS.has(id) && typeof logBrainWin === 'function') logBrainWin(id);
   const lv = GL(id);
   let up = false;
   if (lv < (GAME_MAX[id] || 1) && state.gameWins[id] % needWins === 0) { state.gameLv[id] = lv + 1; up = true; }
@@ -148,7 +170,7 @@ function gameLevelUp(id, needWins = 1) {
 }
 const lvBadge = (id) => (GAME_MAX[id] || id === 'sudoku' ? `<span class="lv">Lv ${GL(id)}</span>` : '');
 function renderPZ() {
-  $('#pzGrid').innerHTML = GAMES.map((g) =>
+  $('#pzGrid').innerHTML = GAMES.filter((g) => brainMode ? brainVisible(g) : !BRAIN_GAME_IDS.has(g.id)).map((g) =>
     `<button class="tile pz-tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`).join('');
 }
 
@@ -157,27 +179,28 @@ $('#pzGrid').addEventListener('click', (e) => {
   sfx.tap(); openGame(t.dataset.game);
 });
 $('#pzHome').onclick = () => { sayToken++; stopClip(); renderHome(); show('home'); };
-$('#gameBack').onclick = () => { stopGame(); renderPZ(); show('playzone'); startPlayTimer(); };
+$('#gameBack').onclick = () => { stopGame(); renderPZ(); show('playzone'); if (!brainMode) startPlayTimer(); };
 
 let curGame = null, gameCleanup = null, gameCleanupPanel = null;
 function openGame(id) {
   stopGame();                      // never two games running at once
   const g = GAMES.find((x) => x.id === id);
+  if (!g || (brainMode && !brainVisible(g))) return;
   curGame = g;
   document.body.style.setProperty('--theme', g.color);
   $('#gameTitle').innerHTML = `${g.icon === BALL_ICON ? '🔵' : g.icon} ${g.title}${GAME_MAX[id] || id === 'sudoku' ? ` <small class="g-lv">Lv ${GL(id)}</small>` : ''}`;
   $('#gameArea').innerHTML = '';
   $('#gameArea').className = 'game-area g-' + id;
   show('game');
-  startPlayTimer();
-  gameStart = Date.now();
+  if (!brainMode) startPlayTimer();
+  gameStart = brainMode ? 0 : Date.now();
   g.start();
 }
 function stopGame() { gameSession++; if (gameStart) { playActive += Date.now() - gameStart; gameStart = 0; } if (playActive) { logPlay(playActive / 1000); playActive = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
 let gameStart = 0, playActive = 0;   // play time for the grown-ups' numbers: only while the app is on screen
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && gameStart) { playActive += Date.now() - gameStart; gameStart = 0; }
-  else if (!document.hidden && curGame && $('#game').classList.contains('active') && !gameStart) gameStart = Date.now();
+  else if (!document.hidden && !brainMode && curGame && $('#game').classList.contains('active') && !gameStart) gameStart = Date.now();
 });
 // a timer that is dropped if the child has left the game (so no old "You win!" panel pops up later)
 let gameSession = 0;
@@ -193,7 +216,7 @@ function endPanel(title, emoji, again, levelUp = false) {
   d.className = 'end-panel';
   d.innerHTML = `<div class="ep-card"><div class="ep-emoji">${emoji}</div><div class="ep-title">${title}</div>
     <div class="ep-btns"><button class="big-btn" data-a="again">🔁 Again</button><button class="big-btn alt" data-a="menu">🎮 Games</button></div></div>`;
-  d.querySelector('[data-a="again"]').onclick = () => { sfx.tap(); if (playOpen()) { openGame(curGame.id); } else timeUp(); };
+  d.querySelector('[data-a="again"]').onclick = () => { sfx.tap(); if (brainMode || playOpen()) { openGame(curGame.id); } else timeUp(); };
   d.querySelector('[data-a="menu"]').onclick = () => { sfx.tap(); $('#gameBack').onclick(); };
   $('#gameArea').appendChild(d);
   gameCleanupPanel = d;
@@ -426,19 +449,21 @@ function startWhack() {
 /* ======================= ROLLING BALL 3D (loads ball3d.js + three.js only when opened) ======================= */
 function webglOK() { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } }
 async function startBall() {
-  const area = $('#gameArea');
-  if (!webglOK()) return startBallMaze();
+  const area = $('#gameArea'), session = gameSession;
+  const current = () => session === gameSession && curGame && curGame.id === 'ball' && $('#game').classList.contains('active');
+  if (!webglOK()) return current() && startBallMaze();
   area.innerHTML = '<div class="g-msg">Getting the ball ready… 🔵</div>';
-  try { const m = await import('./ball3d.js'); if ($('#game').classList.contains('active')) m.start(); }
-  catch (e) { console.warn(e); startBallMaze(); }
+  try { const m = await import('./ball3d.js'); if (current()) m.start(); }
+  catch (e) { console.warn(e); if (current()) startBallMaze(); }
 }
 
 async function startPinball() {
-  const area = $('#gameArea');
+  const area = $('#gameArea'), session = gameSession;
+  const current = () => session === gameSession && curGame && curGame.id === 'pinball' && $('#game').classList.contains('active');
   if (!webglOK()) { area.innerHTML = '<div class="g-msg">Pinball needs 3D graphics, which this device does not have.</div>'; return; }
   area.innerHTML = '<div class="g-msg">Setting up the table… 🎯</div>';
-  try { const m = await import('./pinball3d.js'); if ($('#game').classList.contains('active')) m.start(); }
-  catch (e) { console.warn(e); area.innerHTML = '<div class="g-msg">Oops, pinball could not start.</div>'; }
+  try { const m = await import('./pinball3d.js'); if (current()) m.start(); }
+  catch (e) { console.warn(e); if (current()) area.innerHTML = '<div class="g-msg">Oops, pinball could not start.</div>'; }
 }
 
 /* ======================= BALL MAZE (2D) ======================= */
@@ -913,7 +938,7 @@ const SDK_PICS6 = [['🍎', '🍌', '🍇', '🍓', '🍊', '🥝'], ['🐶', '�
 const distinct = (w) => new Set(w).size === w.length;
 const SDK_WORDS4 = W4.map((x) => x[0]).filter((w) => /^[a-z]{4}$/.test(w) && distinct(w));
 const SDK_WORDS6 = SPELLL.filter((w) => w.length === 6 && distinct(w));
-const sdkLevel = () => state.sdkLevel || (state.grade === 'g2' ? 3 : state.grade === 'g1' ? 2 : 1);
+const sdkLevel = () => state.sdkLevel || ({ prek: 1, k: 1, g1: 2, g2: 3, g3: 4 }[state.grade] || 1);
 
 function sdkSolution(n) {
   // valid base grid, then shuffle rows/cols inside bands and stacks
@@ -984,7 +1009,7 @@ function startSudoku(mode) {
   else { word = pick(n === 4 ? SDK_WORDS4 : SDK_WORDS6); syms = word.split(''); }
   const cur = puz.map((r) => r.slice());
   const given = puz.map((r) => r.map((v) => v != null));
-  let sel = null;
+  let sel = null, solved = false;
   const area = $('#gameArea');
   const bc = n / 2;
   area.innerHTML = `${word ? `<div class="sdk-word">${syms.map((l) => `<b>${l}</b>`).join('')}<button class="mini-speaker" data-speak="${word}">🔊</button></div>` : ''}
@@ -1012,11 +1037,14 @@ function startSudoku(mode) {
     }
   }
   function checkWin() {
+    if (solved) return;
     for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (cur[r][c] !== sol[r][c]) return;
+    solved = true;
     sel = null; paint();
     $$('.sdk-cell', area).forEach((el, k) => { el.style.animationDelay = `${k * 30}ms`; el.classList.add('win'); });
     const up = lv < 5;
     state.sdkWins = (state.sdkWins || 0) + 1;
+    if (brainMode && typeof logBrainWin === 'function') logBrainWin('sudoku');
     if (up && state.sdkWins % 2 === 0) state.sdkLevel = lv + 1;   // every 2 wins → harder
     save();
     gameWin(pick(['Awesome job!', 'Excellent!', 'You did it!']));
@@ -1025,10 +1053,11 @@ function startSudoku(mode) {
   area.querySelector('.sdk-board').addEventListener('click', (e) => {
     const t = e.target.closest('.sdk-cell'); if (!t) return;
     const r = +t.dataset.r, c = +t.dataset.c;
-    if (given[r][c]) return;
+    if (solved || given[r][c]) return;
     sel = [r, c]; sfx.tap(); paint();
   });
   $$('.sdk-key', area).forEach((k) => (k.onclick = () => {
+    if (solved) return;
     if (!sel) { const f = firstEmpty(); if (!f) return; sel = f; }
     const [r, c] = sel;
     cur[r][c] = k.dataset.v === 'x' ? null : +k.dataset.v;
@@ -1038,12 +1067,13 @@ function startSudoku(mode) {
   }));
   const firstEmpty = () => { for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (!given[r][c] && cur[r][c] !== sol[r][c]) return [r, c]; return null; };
   area.querySelector('[data-a="hint"]').onclick = () => {
+    if (solved) return;
     const f = firstEmpty(); if (!f) return;
     const [r, c] = f; cur[r][c] = sol[r][c]; given[r][c] = true;
     const el = cellEl(r, c); el.classList.add('given', 'hinted');
     sfx.yes(); paint(); checkWin();
   };
-  area.querySelector('[data-a="menu"]').onclick = () => { sfx.tap(); startSudokuMenu(); };
+  area.querySelector('[data-a="menu"]').onclick = () => { sfx.tap(); gameSession++; startSudokuMenu(); };
   paint();
 }
 
@@ -1075,19 +1105,20 @@ function startPuzzle(p) {
   const body = p.svg().replace(/class="r( bg)?"/g, () => `class="r" style="fill:${fills[k++] || '#fff'}"`);
   let order;
   do { order = shuffle([...Array(N).keys()]); } while (order.every((v, i) => v === i));
-  let pickA = null;
+  let pickA = null, solved = false;
   const area = $('#gameArea');
   const tileSVG = (t) => `<svg viewBox="${(t % n) * part} ${Math.floor(t / n) * part} ${part} ${part}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`;
   area.innerHTML = `<div class="g-msg">Put the picture back together!</div>
     <div class="pz-wrap"><div class="pz-board" style="grid-template-columns:repeat(${n},1fr)"></div>
-    <div class="pz-peek"><svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg><small>Look!</small></div></div>`;
+    <div class="pz-peek"><svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg><small>Look!</small></div></div>
+    <div class="color-btns"><button class="big-btn alt small" data-a="restart">🔄 Restart</button><button class="big-btn alt small" data-a="pictures">🖼️ Pictures</button></div>`;
   say('Put the picture back together!');
   const board = $('.pz-board', area);
   function draw() {
     board.innerHTML = order.map((t, i) => `<button class="pzl-tile ${t === i ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}">${tileSVG(t)}</button>`).join('');
   }
   board.addEventListener('click', (e) => {
-    const b = e.target.closest('.pzl-tile'); if (!b) return;
+    const b = e.target.closest('.pzl-tile'); if (!b || solved) return;
     const i = +b.dataset.i;
     if (pickA == null) { pickA = i; sfx.tap(); draw(); return; }
     if (pickA !== i) {
@@ -1096,12 +1127,15 @@ function startPuzzle(p) {
     }
     pickA = null; draw();
     if (order.every((v, j) => v === j)) {
+      solved = true;
       board.classList.add('solved');
       const up = gameLevelUp('puzzle', 1);
       gameWin(pick(['Awesome job!', 'You did it!', 'Fantastic!']));
       later(() => endPanel(up ? `You did it! Next: ${puzzleSize()}×${puzzleSize()} puzzles` : 'You did it!', '🧩', startPuzzleMenu, up), 1300);
     }
   });
+  area.querySelector('[data-a="restart"]').onclick = () => { gameSession++; startPuzzle(p); };
+  area.querySelector('[data-a="pictures"]').onclick = () => { gameSession++; startPuzzleMenu(); };
   draw();
 }
 
@@ -1263,6 +1297,7 @@ function drawGallery() {
   area.querySelector('[data-a="back"]').onclick = () => { sfx.tap(); startDraw(); };
 }
 
+$('#brainBanner').onclick = () => { sfx.tap(); openBrainGames(); };
 $('#playBanner').onclick = () => { sfx.tap(); openPlayZone(); };
 $('#playEarned').onclick = () => { sfx.tap(); openPlayZone(); };
 renderPlayBanner();
