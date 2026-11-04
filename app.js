@@ -18,7 +18,7 @@ const gameMax = maxLevelOf;
 const OPTIONAL = { clock: 'optClock', anatomy: 'optAnatomy' };  // off unless a parent turns them on in Settings
 // a child who reads and spells well doesn't need syllable clapping any more
 const strongReader = () => levelOf('spell') >= 4 || levelOf('sent') >= 3 || (levelOf('spell') >= 3 && (state.best.spell || 0) >= 3);
-const visibleGames = () => state.testMode ? CATEGORIES.slice() : CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
+const visibleGames = () => isTestMode() ? CATEGORIES.slice() : CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'syl' && !state.showAll && strongReader())
   && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
@@ -273,7 +273,7 @@ function startRound(catId, count, browse = false, atLevel = null) {
     if (!browse && recent.has(q.key) && guard < 350) continue;
     seen.add(q.key); q.cat = c; q.level = atLevel || levelOf(c.id); qs.push(q);
   }
-  if (!browse) { state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60); save(); }
+  if (!browse && !isTestMode()) { state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60); save(); }
   R = { cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse, atLevel };
   $('#playTitle').textContent = `${cat.icon} ${cat.title}`;
   document.body.style.setProperty('--theme', cat.color);
@@ -322,8 +322,8 @@ function renderQ() {
   const opts = $('#options');
   opts.className = 'options ' + (q.optClass || '') + (q.options.length === 4 ? ' four' : '') + (q.options.length === 2 ? ' two' : '');
   opts.innerHTML = q.options.map((o) => `<button class="opt" data-v="${String(o.v).replace(/"/g, '&quot;')}">${locHTML(String(o.html))}</button>`).join('');
-  [...opts.children].forEach((b, k) => { b.style.animationDelay = `${k * 60}ms`; b.onclick = () => choose(q, q.options[k].v, b); if (state.testMode && String(q.options[k].v) === String(q.answer)) b.dataset.ok = '1'; });
-  if (state.testMode) $('#qText').insertAdjacentHTML('beforeend', `<div class="test-ans">🧪 ${String(q.answer)}</div>`);
+  [...opts.children].forEach((b, k) => { b.style.animationDelay = `${k * 60}ms`; b.onclick = () => choose(q, q.options[k].v, b); if (isTestMode() && String(q.options[k].v) === String(q.answer)) b.dataset.ok = '1'; });
+  if (isTestMode()) $('#qText').insertAdjacentHTML('beforeend', `<div class="test-ans">🧪 ${String(q.answer)}</div>`);
   if (q.spell) renderSpell(q);
   if (q.body3d) mountBody3D(q);
   if (q.match) renderMatch(q);
@@ -570,7 +570,7 @@ function renderMulti(q) {
     if (want.has(v)) { got.add(v); b.classList.add('right'); sfx.yes(); if (got.size === want.size) matchDone(q); }
     else { q.tries++; R.mistakes++; R.streak = 0; b.classList.add('wrong'); b.disabled = true; sfx.no(); if (q.tries === 1) say('Look carefully, and try again!'); }
   }));
-  if (state.testMode) [...$('#options').children].forEach((b, k) => { if (want.has(String(q.options[k].v))) b.dataset.ok = '1'; });
+  if (isTestMode()) [...$('#options').children].forEach((b, k) => { if (want.has(String(q.options[k].v))) b.dataset.ok = '1'; });
 }
 // follow the letter from the baby to its mom: tap (or slide over) the next box on the path
 function renderLetterPath(q) {
@@ -601,7 +601,7 @@ function renderLetterPath(q) {
   box.addEventListener('pointermove', (e) => { if (!box.dragging) return; const el = document.elementFromPoint(e.clientX, e.clientY); const c = el && el.closest && el.closest('.lp-cell'); if (c && box.contains(c) && +c.dataset.k === idx[at + 1]) step(+c.dataset.k); });
   const up = () => (box.dragging = false); box.addEventListener('pointerup', up); box.addEventListener('pointercancel', up);
   q.pathHint = () => { const c = cell(idx[at + 1]); if (c) { c.classList.remove('glow-l'); void c.offsetWidth; c.classList.add('glow-l'); } };
-  if (state.testMode || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__letterPath = { idx, step };
+  if (testFeatureAvailable()) window.__letterPath = { idx, step };
 }
 // several small questions on one screen share these: a right answer locks in, a wrong one is a mistake
 const partMiss = (q, el) => { q.tries++; R.mistakes++; R.streak = 0; sfx.no(); if (el) { el.classList.remove('bad'); void el.offsetWidth; el.classList.add('bad'); } };
@@ -722,14 +722,14 @@ function celebrate(first) {
 function next() {
   $('#pop').classList.remove('show');
   const done = R.qs[R.i];
-  if (!R.browse && done && done.ok !== undefined && typeof logAttempt === 'function') logAttempt(done, done.cat.id, done.level);
+  if (!R.browse && !isTestMode() && done && done.ok !== undefined && typeof logAttempt === 'function') logAttempt(done, done.cat.id, done.level);
   R.i++;
   if (R.i >= R.qs.length) return finish();
   renderQ();
 }
 
 function finish() {
-  if (R.browse) { releaseBody3D(); renderHome(); show('home'); return; }   // the test browser does not change levels or stars
+  if (R.browse || isTestMode()) { releaseBody3D(); renderHome(); show('home'); return; }   // the test browser does not change levels or stars
   releaseBody3D();
   renderProgress();
   const m = R.mistakes, n = R.qs.length;
@@ -893,7 +893,7 @@ function applyTheme() {
   const t = THEMES[state.theme] ? state.theme : 'rainbow';
   document.body.className = document.body.className.replace(/\btheme-\w+/g, '').trim() + ' theme-' + t;
   $('#mascot').textContent = THEMES[t].mascot;
-  document.body.classList.toggle('test-mode', !!state.testMode);
+  document.body.classList.toggle('test-mode', isTestMode());
 }
 function renderThemes() {
   $('#themeBtns').innerHTML = Object.entries(THEMES).map(([k, t]) => `<button class="grade-btn ${(state.theme || 'rainbow') === k ? 'on' : ''}" data-t="${k}">${t.label}</button>`).join('');
@@ -905,7 +905,7 @@ function renderThemes() {
   let taps = 0, t = 0;
   $('#settingsTitle').addEventListener('click', () => {
     taps++; clearTimeout(t); t = setTimeout(() => (taps = 0), 1500);
-    if (taps >= 5) { taps = 0; $('#testSection').hidden = false; sfx.yes(); renderTestInfo(); }
+    if (taps >= 5) { taps = 0; if (testFeatureAvailable()) { $('#testSection').hidden = false; sfx.yes(); renderTestInfo(); } }
   });
 })();
 function renderTestInfo() {
@@ -913,13 +913,15 @@ function renderTestInfo() {
   const gl = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
   $('#testInfo').textContent = `Voice clips: ${clips} · 3D: ${gl ? 'yes' : 'no'} · Grade: ${state.grade || 'none'} · Screen: ${innerWidth}×${innerHeight}`;
 }
-$('#testMode').onchange = () => { state.testMode = $('#testMode').checked; save(); applyTheme(); };
+$('#testMode').onchange = () => { state.testMode = testFeatureAvailable() && $('#testMode').checked; save(); applyTheme(); };
 // skip: count the card as right and move on · end: jump to the results
 $('#skipBtn').onclick = () => {
-  const q = R.qs[R.i]; if (R.locked) return;
-  R.locked = true; q.ok = true; q.skipped = true; R.firstTry++; clearTimeout(R.nudge); next();
+  if (!isTestMode() || !R || !$('#play').classList.contains('active')) return;
+  // QA navigation is not an answer: never grant stars, mastery or answer credit.
+  sayToken++; stopClip(); clearTimeout(R.nudge);
+  R.locked = true; next();
 };
-$('#endBtn').onclick = () => { R.i = R.qs.length - 1; R.locked = true; next(); };
+$('#endBtn').onclick = () => { if (!isTestMode() || !R) return; R.i = R.qs.length - 1; R.locked = true; next(); };
 
 /* ---------- wire up ---------- */
 $('#grid').addEventListener('click', (e) => {
@@ -957,7 +959,7 @@ $('#gradeChip').onclick = () => $('#settingsBtn').onclick();
 $('#settingsBtn').onclick = () => askPin(openSettings);
 function openSettings() {
   renderKids();
-  renderGrades(); renderThemes(); $('#testMode').checked = !!state.testMode; $('#testSection').hidden = !state.testMode;
+  renderGrades(); renderThemes(); $('#testMode').checked = isTestMode(); $('#testSection').hidden = !testFeatureAvailable();
   $('#countrySel').innerHTML = COUNTRY_ORDER.map((k) => `<option value="${k}">${COUNTRIES[k].flag} ${COUNTRIES[k].label}</option>`).join('') + '<option value="other">🌍 Somewhere else</option>';
   $('#countrySel').value = countryCode();
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
