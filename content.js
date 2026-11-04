@@ -41,7 +41,7 @@ const W3 = [
 // Share a vetted, prerecorded picture word inventory across reading and spelling.
 // Do not silently treat all three-letter spellings as regular CVC phonics.
 for (const entry of EARLY_READY_PICTURE_WORDS) if (!W3.some(([w]) => w === entry[0])) W3.push(entry);
-const isSimpleCVC = (word) => /^[bcdfghjklmnprstv][aeiou][bcdfghjklmnprstv]$/.test(word)
+const isSimpleCVC = (word) => /^[bcdfghjklmnprstvwyz][aeiou][bcdfghjklmnprstvz]$/.test(word)
   && !new Set(['car', 'son', 'gel']).has(word);
 const W4 = [
   ['frog', '🐸'], ['duck', '🦆'], ['fish', '🐟'], ['crab', '🦀'], ['drum', '🥁'], ['bell', '🔔'],
