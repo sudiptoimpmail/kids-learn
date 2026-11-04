@@ -602,7 +602,7 @@ function renderLetterPath(q) {
   box.addEventListener('pointermove', (e) => { if (!box.dragging) return; const el = document.elementFromPoint(e.clientX, e.clientY); const c = el && el.closest && el.closest('.lp-cell'); if (c && box.contains(c) && +c.dataset.k === idx[at + 1]) step(+c.dataset.k); });
   const up = () => (box.dragging = false); box.addEventListener('pointerup', up); box.addEventListener('pointercancel', up);
   q.pathHint = () => { const c = cell(idx[at + 1]); if (c) { c.classList.remove('glow-l'); void c.offsetWidth; c.classList.add('glow-l'); } };
-  if (state.testMode || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__letterPath = { idx, step };
+  if (isQAMode() || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__letterPath = { idx, step };
 }
 // several small questions on one screen share these: a right answer locks in, a wrong one is a mistake
 const partMiss = (q, el) => { q.tries++; R.mistakes++; R.streak = 0; sfx.no(); if (el) { el.classList.remove('bad'); void el.offsetWidth; el.classList.add('bad'); } };
