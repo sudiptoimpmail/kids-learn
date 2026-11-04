@@ -128,6 +128,5 @@ const EARLY_WORD_SPECIALS = Object.freeze({
 // Only picturable words with a confirmed natural voice clip enter shared
 // reading/spelling question generators in this release. Existing words remain.
 const EARLY_READY_PICTURE_WORDS = Object.freeze([
-  ['car', '🚗'], ['cow', '🐄'], ['two', '2️⃣'], ['big', '🐘'],
-  ['cry', '😢'], ['fun', '🎉'], ['oil', '🛢️'], ['buy', '🛍️']
+  ['car', '🚗'], ['cow', '🐄'], ['two', '2️⃣']
 ]);
