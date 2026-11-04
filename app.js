@@ -230,9 +230,9 @@ function renderHome() {
   if (typeof renderToday === 'function') renderToday();
   if (typeof renderQuest === 'function') renderQuest();
   const groups = [
-    ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'match', 'syl']],
+    ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'match', 'syl'], 'read'],
     ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'mul', 'div', 'clock', 'shape2']],
-    ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], true],
+    ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], 'brain'],
     ['🌍 Science & World', ['sci', 'home', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
   ];
   const visible = visibleGames();
@@ -245,10 +245,10 @@ function renderHome() {
       <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
   };
   // brain games (memory, puzzles, mazes …) sit right inside Brain Teasers: a tap opens the game
-  const gameTile = (g) => `<button class="tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span><span class="ts">puzzle game</span></button>`;
+  const gameTile = (g) => `<button class="tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span><span class="ts">${READ_GAME_IDS.includes(g.id) ? 'word puzzle' : 'puzzle game'}</span></button>`;
   $('#grid').innerHTML = locHTML(groups.map(([title, ids, brain]) => {
     const cats = visible.filter((c) => ids.includes(c.id));
-    const games = brain && typeof brainGames === 'function' ? brainGames() : [];
+    const games = brain === 'brain' && typeof brainGames === 'function' ? brainGames() : brain === 'read' && typeof readingGames === 'function' ? readingGames() : [];
     return cats.length || games.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${cats.map(makeTile).join('')}${games.map(gameTile).join('')}</div></section>` : '';
   }).join(''));
 }

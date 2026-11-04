@@ -132,22 +132,27 @@ const GAMES = [
   { id: 'pinball', title: '3D Pinball', icon: '🎯', color: '#7048e8', start: startPinball },
   { id: 'maze', title: 'Ball Maze', icon: '🟫', color: '#c0874f', start: startBallMaze },
   { id: 'path', title: 'Finger Maze', icon: '🐥', color: '#f59f00', start: () => startPathMaze() },
+  { id: 'wsearch', title: 'Word Search', icon: '🔎', color: '#1c7ed6', start: () => startWordSearch() },
+  { id: 'xword', title: 'Picture Crossword', icon: '📰', color: '#e8590c', start: () => startCrossword() },
   { id: 'whack', title: 'Whack-a-Mole', icon: '🐹', color: '#a9734a', start: startWhack, max: 5 },
   { id: 'draw', title: 'Draw & Copy', icon: '✏️', color: '#e8590c', start: startDraw },
   { id: 'moves', title: 'Silly Moves', icon: '🤸', color: '#12b886', start: startMoves },
 ];
 // level per game; winning moves you up (needWins wins per level)
-const GAME_MAX = { path: 7, pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
+const GAME_MAX = { path: 7, wsearch: 4, xword: 3, pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
 // Brain Teasers: puzzle games shown with the thinking lessons on the home screen.
 // They are learning, so they never need earned play time (Tic-Tac-Toe and Ball Maze stay in the Play Zone).
-const BRAIN_GAME_IDS = new Set(['path', 'memory', 'puzzle', 'sudoku', 'c4']);
-const BRAIN_MIN_GRADE = { path: 'prek', memory: 'prek', puzzle: 'prek', sudoku: 'k', c4: 'g1' };
+const BRAIN_GAME_IDS = new Set(['path', 'memory', 'puzzle', 'sudoku', 'c4', 'wsearch', 'xword']);
+const BRAIN_MIN_GRADE = { path: 'prek', memory: 'prek', puzzle: 'prek', sudoku: 'k', c4: 'g1', wsearch: 'k', xword: 'k' };
+// word puzzles sit with Reading & Words on the home screen; the rest with Brain Teasers
+const READ_GAME_IDS = ['wsearch', 'xword'];
 const BRAIN_GRADE_ORDER = ['prek', 'k', 'g1', 'g2', 'g3'];
 let brainMode = false;
 function brainVisible(g) {
   return BRAIN_GAME_IDS.has(g.id) && (!!state.showAll || !!state.testMode || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') >= BRAIN_GRADE_ORDER.indexOf(BRAIN_MIN_GRADE[g.id]));
 }
-const brainGames = () => GAMES.filter(brainVisible);
+const brainGames = () => GAMES.filter((g) => brainVisible(g) && !READ_GAME_IDS.includes(g.id));
+const readingGames = () => GAMES.filter((g) => brainVisible(g) && READ_GAME_IDS.includes(g.id));
 // open a brain game straight from its tile on the home screen (no play clock, back goes home)
 function openBrainGame(id) {
   brainMode = true;
