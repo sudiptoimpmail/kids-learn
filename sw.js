@@ -66,6 +66,12 @@ self.addEventListener('message', (e) => {
       'what comes next','which picture','find the answer','how many',
       'count the tens and ones','count hundreds tens and ones',
       'one more great round unlocks a harder level',
+      // Integrated illustrated scenes: cache every required instruction and word offline.
+      'help the baby zebra reach its family','follow only the letter z',
+      'follow only words with the long a sound to reach tail',
+      'tap all the pictures that start with','tap all the circles you see',
+      'read the story','what happened first','which word fits','find the word',
+      'apple','ant','acorn','airplane','leaf','bird','wolf','water',
     ];
     const core = new Set([...corePhrases, ...Array.from({ length: 21 }, (_, i) => String(i)), ...'abcdefghijklmnopqrstuvwxyz']);
     const entries = Object.entries(manifest).filter(([phrase]) => e.data.type === 'fill-audio-all' || core.has(phrase));
