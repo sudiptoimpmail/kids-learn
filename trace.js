@@ -36,6 +36,27 @@ function traceItems(set) {
 }
 
 const TR = { set: 'big', i: 0, write: false };
+// Zhang–Suen thinning: turns the filled letter into a 1-pixel middle line
+function thin(src, M) {
+  const a = Uint8Array.from(src), at = (x, y) => (x >= 0 && y >= 0 && x < M && y < M ? a[y * M + x] : 0);
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const step of [0, 1]) {
+      const del = [];
+      for (let y = 1; y < M - 1; y++) for (let x = 1; x < M - 1; x++) {
+        if (!a[y * M + x]) continue;
+        const n = [at(x, y - 1), at(x + 1, y - 1), at(x + 1, y), at(x + 1, y + 1), at(x, y + 1), at(x - 1, y + 1), at(x - 1, y), at(x - 1, y - 1)];
+        const b = n.reduce((s, v) => s + v, 0); if (b < 2 || b > 6) continue;
+        let t = 0; for (let i = 0; i < 8; i++) if (!n[i] && n[(i + 1) % 8]) t++; if (t !== 1) continue;
+        if (step === 0 ? (n[0] && n[2] && n[4]) || (n[2] && n[4] && n[6]) : (n[0] && n[2] && n[6]) || (n[0] && n[4] && n[6])) continue;
+        del.push(y * M + x);
+      }
+      if (del.length) { changed = true; for (const p of del) a[p] = 0; }
+    }
+  }
+  return a;
+}
 const TRACE_FONT = '"Chalkboard SE", "Comic Sans MS", "Arial Rounded MT Bold", "Nunito", system-ui, sans-serif';
 function openTrace() {
   stopClip && stopClip();
@@ -71,6 +92,19 @@ function renderTrace(speak) {
   mc.font = `bold ${fs * M / W}px ${TRACE_FONT}`; mc.textAlign = 'center'; mc.textBaseline = 'middle'; mc.fillText(ch, M / 2, cy * M / W);
   const md = mc.getImageData(0, 0, M, M).data, mask = new Uint8Array(M * M); let mcount = 0;
   for (let p = 0; p < M * M; p++) if (md[p * 4 + 3] > 100) { mask[p] = 1; mcount++; }
+  // the letter's middle line (skeleton): every part of it must be traced, so no stroke can be skipped
+  const skel = thin(mask, M), skelPts = [];
+  for (let p = 0; p < M * M; p++) if (skel[p]) skelPts.push(p);
+  const drawGuide = (missing) => {
+    g.clearRect(0, 0, W, W);
+    g.strokeStyle = '#a5d8ff'; g.lineWidth = 2;
+    for (const y of [0.2, 0.84]) { g.beginPath(); g.moveTo(8, W * y); g.lineTo(W - 8, W * y); g.stroke(); }
+    g.setLineDash([10, 10]); g.beginPath(); g.moveTo(8, W * 0.52); g.lineTo(W - 8, W * 0.52); g.stroke(); g.setLineDash([]);
+    g.globalAlpha = TR.write ? 0.07 : 0.22; g.fillStyle = '#495057'; g.fillText(ch, W / 2, cy); g.globalAlpha = 1;
+    if (!TR.write) { g.setLineDash([3, 9]); g.lineCap = 'round'; g.lineWidth = 4; g.strokeStyle = '#868e96'; g.strokeText(ch, W / 2, cy); g.setLineDash([]); }
+    // parts still to trace: orange dots along the middle of the letter
+    if (missing && missing.length) { g.fillStyle = '#ff922b'; for (let k = 0; k < missing.length; k += 3) { const p = missing[k]; g.beginPath(); g.arc((p % M + 0.5) * W / M, (((p / M) | 0) + 0.5) * W / M, Math.max(4, W * 0.014), 0, 7); g.fill(); } }
+  };
   // drawing
   const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.lineCap = c.lineJoin = 'round';
   const ink = TR.set === 'num' ? '#1c7ed6' : TR.set === 'big' ? '#e64980' : '#2f9e44';
@@ -104,10 +138,14 @@ function renderTrace(speak) {
         if (!near) out++;
       }
     }
-    const cover = hit / mcount, stray = ink2 ? out / ink2 : 0;
-    $("#trMeter").style.width = `${Math.min(100, Math.round(cover / 0.45 * 100))}%`;
-    if (cover >= 0.45 && stray < 0.45) win();
+    // how much of the letter's middle line has ink on it (or right next to it)
+    const inkAt = (x, y) => x >= 0 && y >= 0 && x < M && y < M && td[(y * M + x) * 4 + 3] >= 60;
+    const missing = skelPts.filter((p) => { const x = p % M, y = (p / M) | 0; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) if (inkAt(x + dx, y + dy)) return false; return true; });
+    const cover = skelPts.length ? 1 - missing.length / skelPts.length : hit / mcount, stray = ink2 ? out / ink2 : 0;
+    $("#trMeter").style.width = `${Math.min(100, Math.round(cover / 0.92 * 100))}%`;
+    if (cover >= 0.92 && stray < 0.45) { drawGuide(null); win(); }
     else if (stray > 0.6 && ink2 > 200) { say('Try to stay on the gray letter!'); }
+    else if (cover >= 0.3) drawGuide(missing);          // show the parts that still need tracing
   }
   function win() {
     finished = true;
@@ -124,10 +162,10 @@ function renderTrace(speak) {
     renderStripOnly();
   }
   function renderStripOnly() { const b = $(`#trStrip [data-k="${TR.i}"]`); if (b) b.classList.add('done'); }
-  $('#trClear').onclick = () => { sfx.tap(); strokes = []; finished = false; redraw(); $('#trMeter').style.width = '0%'; };
+  $('#trClear').onclick = () => { sfx.tap(); strokes = []; finished = false; redraw(); drawGuide(null); $('#trMeter').style.width = '0%'; };
   $('#trMeter').style.width = '0%';
   if (speak) say(spoken.split('. ').map((x, k, a) => (k < a.length - 1 ? x + '.' : x)));
-  window.__trace = { it, check, strokesSet: (s) => { strokes = s; redraw(); check(); } };   // used by automated tests
+  window.__trace = { it, check, skelPts: () => skelPts.map((p) => [(p % M + 0.5) * W / M, (((p / M) | 0) + 0.5) * W / M]), strokesSet: (s) => { strokes = s; redraw(); check(); } };   // used by automated tests
 }
 $('#trHome').onclick = () => { sfx.tap(); stopClip(); renderHome(); show('home'); };
 $('#trHear').onclick = () => { sfx.tap(); const it = traceItems(TR.set)[TR.i]; say(it[2].split('. ').map((x, k, a) => (k < a.length - 1 ? x + '.' : x))); };

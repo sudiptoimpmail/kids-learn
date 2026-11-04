@@ -12,7 +12,7 @@ The first thing on the home screen: a short guided mix for today (about 10–12 
 ## Games
 | Game | What it practices |
 |---|---|
-| ✍️ Letters & Numbers (Pre-K, K) | Trace **A–Z, a–z and 1–20** with a finger on writing lines. The voice says "A. A is for apple" with a picture (numbers show that many things). Trace most of the gray letter to earn a star and go on; ✏️ hides the guide to write on your own. |
+| ✍️ Letters & Numbers (Pre-K, K) | Trace **A–Z, a–z and 1–20** with a finger on writing lines. The voice says "A. A is for apple" with a picture (numbers show that many things). Trace along the whole letter — every line — to earn a star and go on (orange dots show the parts still to trace); ✏️ hides the guide to write on your own. |
 | 🔠 Letter Sounds | Phonics with pictures and **real letter sounds** (/b/, /m/, /a/ — tap the big letter to hear it; on blending cards tap each tile or slide a finger across to blend b·a·g into "bag"), 5 levels: which picture **starts with** B → which picture **rhymes** with cat → which picture **ends with** T, and **blend** b·a·t into a word → same **middle (short vowel) sound** as log → **blends and digraphs** (sh, ch, tr, st, cl…). 💡 Hint names every picture out loud. Pre-K 1–2, K 1–4, 1st 3–5, 2nd 4–5 |
 | 🐱 Little Words | 3-letter words (cat, ant, bee, key, owl…) — read the word → tap the picture, listen → tap the word, missing vowel |
 | 🐸 Big Words | Levels 1–3: 4-letter words (crab, lamp, wolf, coin…) · 4: 5-letter (truck, tiger, puppy, brick…) · 5: long words (alligator, anchor, orange, mother…) |
