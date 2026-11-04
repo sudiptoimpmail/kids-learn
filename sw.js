@@ -4,7 +4,7 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v32';
+const VERSION = PREFIX + 'v33';
 const AUDIO = PREFIX + 'audio';
 const FILES = ['./', 'index.html', 'style.css', 'ui-improvements.css', 'storage.js', 'content.js', 'thinking.js', 'country.js', 'science.js', 'grammar.js', 'numsense.js', 'app.js', 'games.js', 'pathmaze.js', 'trace.js', 'progress.js', 'ball3d.js', 'pinball3d.js', 'geo.js', 'art.js', 'landmarks.js', 'stories.js', 'words.js', 'phonics.js', 'scenes.js', 'body3d.js', 'vendor/three.module.min.js', 'vendor/GLTFLoader.js', 'vendor/BufferGeometryUtils.js', 'vendor/meshopt_decoder.module.js', 'vendor/RoomEnvironment.js', 'vendor/body.glb', 'manifest.webmanifest', 'audio/clips.json', 'audio/silence.mp3',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
@@ -40,7 +40,11 @@ self.addEventListener('fetch', (e) => {
     const hit = await c.match(e.request, { ignoreSearch: true });
     if (hit) return hit;
     const r = await fetch(e.request);
-    if (r.ok && r.type === 'basic') c.put(e.request, r.clone());
+    if (r.ok && r.type === 'basic') {
+      // Keep this fetch alive until its cache write finishes; otherwise the browser
+      // can terminate the worker and silently lose the offline copy.
+      try { await c.put(e.request, r.clone()); } catch {} // quota full: still return the network response
+    }
     return r;
   })());
 });
@@ -48,14 +52,36 @@ self.addEventListener('message', (e) => {
   if (!e.data) return;
   // the app says it is on the home screen: switch to the waiting new version now
   if (e.data.type === 'update-now') { self.skipWaiting(); return; }
-  // after start-up: download voice clips this phone doesn't have yet, a few at a time; drop ones no longer used
-  if (e.data.type === 'fill-audio') e.waitUntil((async () => {
+  // Default: cache a small starter pack and cache everything else on first use.
+  // An adult may explicitly request the complete (large) recorded voice library.
+  if (e.data.type === 'fill-audio' || e.data.type === 'fill-audio-all') e.waitUntil((async () => {
     const audio = await caches.open(AUDIO);
-    const clips = await (await (await caches.open(VERSION)).match('audio/clips.json') || await fetch('audio/clips.json')).json();
-    const want = new Set([...new Set(Object.values(clips))].map((f) => new URL('audio/' + f, self.registration.scope).href));
-    const have = new Set((await audio.keys()).map((r) => r.url));
-    for (const u of have) if (!want.has(u)) await audio.delete(u);
-    const missing = [...want].filter((u) => !have.has(u));
-    for (let i = 0; i < missing.length; i += 20) await audio.addAll(missing.slice(i, i + 20)).catch(() => {});
+    const manifest = await (await (await caches.open(VERSION)).match('audio/clips.json') || await fetch('audio/clips.json')).json();
+    const corePhrases = [
+      'excellent','awesome job','great work','you did it','super star','fantastic',
+      'way to go','amazing','wonderful','brilliant','try again','good try',
+      'think about it','look carefully and try again','look at the picture',
+      'lets play','let s play','hi pick a game','great tracing','beautiful',
+      'you finished todays quest open your gift','follow the yellow dots',
+      'what comes next','which picture','find the answer','how many',
+      'count the tens and ones','count hundreds tens and ones',
+      'one more great round unlocks a harder level',
+    ];
+    const core = new Set([...corePhrases, ...Array.from({ length: 21 }, (_, i) => String(i)), ...'abcdefghijklmnopqrstuvwxyz']);
+    const entries = Object.entries(manifest).filter(([phrase]) => e.data.type === 'fill-audio-all' || core.has(phrase));
+    const want = [...new Set(entries.map(([, file]) => new URL('audio/' + file, self.registration.scope).href))];
+    const have = new Set((await audio.keys()).map((req) => req.url));
+    const missing = want.filter((url) => !have.has(url));
+    const source = e.source;
+    const report = (done) => { try { source && source.postMessage({ type: 'audio-pack-progress', mode: e.data.type, done, total: missing.length }); } catch {} };
+    report(0);
+    // Small batches avoid a single huge request and leave prior cached clips intact.
+    for (let i = 0; i < missing.length; i += 20) {
+      await Promise.all(missing.slice(i, i + 20).map(async (url) => {
+        try { const response = await fetch(url); if (response.ok) await audio.put(url, response); } catch {}
+      }));
+      if (e.data.type === 'fill-audio-all' && (i % 100 === 0 || i + 20 >= missing.length)) report(Math.min(i + 20, missing.length));
+    }
+    report(missing.length);
   })().catch(() => {}));
 });
