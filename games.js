@@ -1079,19 +1079,20 @@ function startPuzzle(p) {
   const body = p.svg().replace(/class="r( bg)?"/g, () => `class="r" style="fill:${fills[k++] || '#fff'}"`);
   let order;
   do { order = shuffle([...Array(N).keys()]); } while (order.every((v, i) => v === i));
-  let pickA = null;
+  let pickA = null, solved = false;
   const area = $('#gameArea');
   const tileSVG = (t) => `<svg viewBox="${(t % n) * part} ${Math.floor(t / n) * part} ${part} ${part}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`;
   area.innerHTML = `<div class="g-msg">Put the picture back together!</div>
     <div class="pz-wrap"><div class="pz-board" style="grid-template-columns:repeat(${n},1fr)"></div>
-    <div class="pz-peek"><svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg><small>Look!</small></div></div>`;
+    <div class="pz-peek"><svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg><small>Look!</small></div></div>
+    <div class="color-btns"><button class="big-btn alt small" data-a="restart">🔄 Restart</button><button class="big-btn alt small" data-a="pictures">🖼️ Pictures</button></div>`;
   say('Put the picture back together!');
   const board = $('.pz-board', area);
   function draw() {
     board.innerHTML = order.map((t, i) => `<button class="pzl-tile ${t === i ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}">${tileSVG(t)}</button>`).join('');
   }
   board.addEventListener('click', (e) => {
-    const b = e.target.closest('.pzl-tile'); if (!b) return;
+    const b = e.target.closest('.pzl-tile'); if (!b || solved) return;
     const i = +b.dataset.i;
     if (pickA == null) { pickA = i; sfx.tap(); draw(); return; }
     if (pickA !== i) {
@@ -1100,12 +1101,15 @@ function startPuzzle(p) {
     }
     pickA = null; draw();
     if (order.every((v, j) => v === j)) {
+      solved = true;
       board.classList.add('solved');
       const up = gameLevelUp('puzzle', 1);
       gameWin(pick(['Awesome job!', 'You did it!', 'Fantastic!']));
       later(() => endPanel(up ? `You did it! Next: ${puzzleSize()}×${puzzleSize()} puzzles` : 'You did it!', '🧩', startPuzzleMenu, up), 1300);
     }
   });
+  area.querySelector('[data-a="restart"]').onclick = () => startPuzzle(p);
+  area.querySelector('[data-a="pictures"]').onclick = () => startPuzzleMenu();
   draw();
 }
 
