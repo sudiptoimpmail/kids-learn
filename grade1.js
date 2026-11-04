@@ -32,6 +32,7 @@ const G1_START_CLUSTERS = Object.freeze('bl br cl cr fl fr gl gr pl sk sl sm sn 
 const G1_BLEND_WORDS = Object.freeze(G1_ACTIVE_WORDS.filter(w => G1_START_CLUSTERS.some(p => w.startsWith(p))));
 const G1_SHORT_WORDS = Object.freeze([...new Set(Object.values(G1_SHORT_VOWELS).flat())].filter(w => G1_ACTIVE_WORDS.includes(w)));
 const G1_LONG_WORDS = Object.freeze([...new Set(Object.values(G1_LONG_VOWELS).flat())].filter(w => G1_ACTIVE_WORDS.includes(w)));
+const G1_CORE_WORDS = Object.freeze([...new Set([...G1_SHORT_WORDS, ...G1_BLEND_WORDS, ...G1_LONG_WORDS])]);
 const G1_OPPOSITES = Object.freeze([['hot','cold'],['fast','slow'],['big','small'],['new','old'],['wet','dry']]);
 
 // Unambiguous picture cues for optional grade-one spelling practice; not injected into Pre-K.
@@ -54,9 +55,9 @@ function genGrade1Vocab() {
     hint:{html:'<div class="hint-note">Think of a word with the opposite meaning.</div>',say:'Think about it'} };
 }
 function genGrade1Read(level, requestedWord) {
-  if (!requestedWord && level >= 4 && Math.random() < .2) return genGrade1Vocab();
+  if (!requestedWord && level >= 3 && Math.random() < (level >= 4 ? .2 : .13)) return genGrade1Vocab();
   const focus = level <= 1 ? G1_SHORT_WORDS :
-    level === 2 ? G1_BLEND_WORDS : level === 3 ? G1_LONG_WORDS : G1_ACTIVE_WORDS;
+    level === 2 ? G1_BLEND_WORDS : level === 3 ? G1_CORE_WORDS : G1_ACTIVE_WORDS;
   const word = requestedWord || pick(focus);
   if (!G1_ACTIVE_WORDS.includes(word)) throw Error('Unapproved Grade 1 word: '+word);
   let candidates, textLabel, pattern, mode;
