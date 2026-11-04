@@ -230,7 +230,7 @@ function renderHome() {
   if (typeof renderToday === 'function') renderToday();
   if (typeof renderQuest === 'function') renderQuest();
   const groups = [
-    ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'match', 'syl'], 'read'],
+    ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'match', 'syl']],
     ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'mul', 'div', 'clock', 'shape2']],
     ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], 'brain'],
     ['🌍 Science & World', ['sci', 'home', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
@@ -245,10 +245,10 @@ function renderHome() {
       <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
   };
   // brain games (memory, puzzles, mazes …) sit right inside Brain Teasers: a tap opens the game
-  const gameTile = (g) => `<button class="tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span><span class="ts">${READ_GAME_IDS.includes(g.id) ? 'word puzzle' : 'puzzle game'}</span></button>`;
+  const gameTile = (g) => `<button class="tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span><span class="ts">puzzle game</span></button>`;
   $('#grid').innerHTML = locHTML(groups.map(([title, ids, brain]) => {
     const cats = visible.filter((c) => ids.includes(c.id));
-    const games = brain === 'brain' && typeof brainGames === 'function' ? brainGames() : brain === 'read' && typeof readingGames === 'function' ? readingGames() : [];
+    const games = brain === 'brain' && typeof brainGames === 'function' ? brainGames() : [];
     return cats.length || games.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${cats.map(makeTile).join('')}${games.map(gameTile).join('')}</div></section>` : '';
   }).join(''));
 }
@@ -327,6 +327,7 @@ function renderQ() {
   if (q.spell) renderSpell(q);
   if (q.body3d) mountBody3D(q);
   if (q.match) renderMatch(q);
+  if (q.puzzle) renderPuzzle(q);
   if (q.blend && typeof wireBlend === 'function') wireBlend(q);
   if (q.letterSound && typeof wireLetter === 'function') wireLetter(q);
   if (q.tap) $$('#qMain [data-val]').forEach((g) => { if (g.dataset.val) g.onclick = () => choose(q, g.dataset.val, g); });
@@ -346,6 +347,7 @@ function removeOneWrong(q) {
 function showHint(q, auto = false) {
   if (q.hint && q.hint.glow && B3D.view) { B3D.view.highlight(q.answer); q.hintShown = true; $('#hintBtn').classList.remove('glow'); speakHint(q); return; }
   if (q.match) { matchHint(q); $('#hintBtn').classList.remove('glow'); return; }
+  if (q.puzzle) { if (!R.locked && q.puzzleCtl) q.puzzleCtl.hint(); q.hintShown = true; $('#hintBtn').classList.remove('glow'); return; }
   if (q.spell) { spellHint(q); $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
   if (q.hint && q.hint.remove) { if (!q.hintShown || auto === false) removeOneWrong(q); q.hintShown = true; $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
   if (!q.hint || q.hintShown) { if (q.hint) speakHint(q); return; }
@@ -542,6 +544,14 @@ function drawLine(a, b, ok) {
   const s = svg.getBoundingClientRect(), ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
   const x1 = ra.right - s.left, y1 = ra.top + ra.height / 2 - s.top, x2 = rb.left - s.left, y2 = rb.top + rb.height / 2 - s.top;
   svg.insertAdjacentHTML('beforeend', `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${ok ? 'ok' : ''}"/>`);
+}
+// a word search or crossword as one card in the round: mistakes count, finishing it answers the card
+function renderPuzzle(q) {
+  const box = document.createElement('div'); box.className = 'puzzle-card';
+  $('#qMain').appendChild(box); $('#options').innerHTML = '';
+  const cb = { miss: () => { if (R.qs[R.i] !== q || R.locked) return; q.tries++; R.mistakes++; R.streak = 0; },
+    done: () => { if (R.qs[R.i] === q && !R.locked) matchDone(q); } };
+  q.puzzleCtl = q.puzzle.kind === 'wsearch' ? mountWordSearch(box, q.puzzle.size, q.puzzle.count, q.puzzle.down, cb) : mountCrossword(box, q.puzzle.words, q.puzzle.lv, cb);
 }
 function matchDone(q) {
   R.locked = true; clearTimeout(R.nudge);

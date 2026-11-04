@@ -171,7 +171,15 @@ function genWords(list, level, kind) {
   const n = numOpts(level) - 1;
   // workbook-style variety: read → picture, picture → word, listen → word, missing letter, unscramble
   const clear = !(typeof PHON_SKIP !== 'undefined' && PHON_SKIP.has(w));      // the picture can only mean this word
-  const type = pick(clear ? ['read', 'pic', 'find', 'missing', 'missing', 'scramble'] : ['read', 'find', 'missing']);
+  // little words from level 2 on: now and then a whole word search or picture crossword as one card
+  const puzzles = kind === 'cvc' && level >= 2 && typeof mountWordSearch === 'function' ? ['wsearch', 'xword'] : [];
+  const type = pick(clear ? ['read', 'pic', 'find', 'missing', 'missing', 'scramble', ...puzzles] : ['read', 'find', 'missing']);
+  if (type === 'wsearch') return { key: `${kind}-ws-${rand(1e6)}`, text: 'Find the hidden words!', say: ['Find the hidden words!', 'Drag your finger across the letters.'],
+    main: '', mainClass: 'puzzle-main', options: [], answer: 'done', optClass: 'spell-tray',
+    puzzle: { kind: 'wsearch', size: level >= 3 ? 6 : 5, count: level >= 3 ? 3 : 2, down: level >= 3 }, hint: { html: '', say: '' } };
+  if (type === 'xword') return { key: `${kind}-xw-${rand(1e6)}`, text: 'Fill in the crossword!', say: ['Fill in the crossword!', 'Tap a box, then tap a letter.'],
+    main: '', mainClass: 'puzzle-main', options: [], answer: 'done', optClass: 'spell-tray',
+    puzzle: { kind: 'xword', words: level >= 3 ? 3 : 2, lv: level >= 3 ? 2 : 1 }, hint: { html: '', say: '' } };
   const picHint = { html: `<div class="hint-pic">${e}</div>`, say: 'Look at the picture!' };
 
   if (type === 'pic') {

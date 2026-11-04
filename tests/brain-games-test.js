@@ -84,22 +84,21 @@ const { chromium } = require('playwright');
       openBrainGame('path');
       const r = window.__pathMaze.route(); window.__pathMaze.go([r[r.length - 1]]);
       if (window.__pathMaze.done()) throw Error('Finger Maze let the path go through walls');
-      // word puzzles: finding every word / filling every box wins exactly once
-      state.gameLv.wsearch = 3; openBrainGame('wsearch');
-      const wsBefore = (state.gameWins && state.gameWins.wsearch) || 0;
-      window.__wordSearch.placed.forEach((_, i) => window.__wordSearch.find(i));
-      window.__wordSearch.find(0);
-      if (state.gameWins.wsearch !== wsBefore + 1) throw Error('Word Search did not finish once');
-      for (const lv of [1, 2, 3]) {
-        state.gameLv.xword = lv; openBrainGame('xword');
-        const xw = window.__crossword, xBefore = (state.gameWins && state.gameWins.xword) || 0;
-        // a wrong letter first: the box is cleared, nothing is won
-        const firstOpen = [...xw.cells.keys()].find((k) => !xw.given.has(k));
-        const wrong = [...document.querySelectorAll('.xw-key')].map((b) => b.dataset.l).find((l) => l && l !== xw.cells.get(firstOpen));
-        xw.type(firstOpen, wrong);
-        for (const [k, l] of xw.cells) if (!xw.given.has(k)) xw.type(k, l);
-        if (state.gameWins.xword !== xBefore + 1) throw Error('Crossword level ' + lv + ' did not finish once');
+      // word puzzles are cards inside Little Words rounds: finishing one answers the card
+      const cvc = CATEGORIES.find((c) => c.id === 'cvc');
+      for (const kind of ['ws', 'xw']) for (const lv of [2, 3]) {
+        startRound('cvc', 3);
+        let q; do { q = cvc.gen(lv); } while (!q.key.includes('-' + kind + '-'));
+        R.qs[R.i] = q; renderQ();
+        if (kind === 'ws') { window.__wordSearch.placed.forEach((_, i) => window.__wordSearch.find(i)); }
+        else {
+          const xw = window.__crossword;
+          const firstOpen = [...xw.cells.keys()].find((k) => !xw.given.has(k));
+          for (const [k, l] of xw.cells) if (!xw.given.has(k)) xw.type(k, l);
+        }
+        if (!R.locked) throw Error('Puzzle card ' + kind + ' level ' + lv + ' did not finish');
       }
+      document.querySelector('#quitBtn').click();
 
       return { sudokuWins: award - before, puzzleWins: puzzleAward - oldWins,
         brainCards: (renderHome(), document.querySelectorAll('#grid [data-game]').length) };

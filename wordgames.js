@@ -1,8 +1,9 @@
 /* =========================================================
-   Reading games in the style of a phonics workbook (untimed, shown with Reading & Words):
+   Workbook-style word puzzles, used as cards inside Little Words rounds (mixed with the other card types):
    🔎 Word Search — find the hidden picture words: drag a finger across the letters
    📰 Picture Crossword — two or three little words cross; fill the boxes from the letter tiles
    Words are three-letter words with a clear picture (W3 in content.js).
+   mountWordSearch / mountCrossword draw a puzzle into a box and report back through callbacks.
    ========================================================= */
 const WG_WORDS = () => W3.filter(([w]) => /^[a-z]{3}$/.test(w) && !(typeof PHON_SKIP !== 'undefined' && PHON_SKIP.has(w)));
 
@@ -44,17 +45,13 @@ function makeWordSearch(size, count, down) {
   }
   return null;
 }
-function startWordSearch() {
-  const lv = GL('wsearch'), [size, count, down] = WS_SIZES[Math.min(lv, WS_SIZES.length) - 1];
-  const puzzle = makeWordSearch(size, count, down);
-  if (!puzzle) return startWordSearch();
+// cb: { found(word), miss(), done() } · returns { hint() } for the hint button
+function mountWordSearch(root, size, count, down, cb) {
+  const puzzle = makeWordSearch(size, count, down) || makeWordSearch(size, count, false);
   const { grid, placed } = puzzle;
-  const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Find the hidden words! 🔎<small>Drag your finger across the letters.</small></div>
-    <div class="ws-clues">${placed.map((p, i) => `<button class="ws-clue" data-i="${i}" data-speak="${p.w}"><span>${p.e}</span><b>${p.w}</b></button>`).join('')}</div>
+  root.innerHTML = `<div class="ws-clues">${placed.map((p, i) => `<button class="ws-clue" data-i="${i}" data-speak="${p.w}"><span>${p.e}</span><b>${p.w}</b></button>`).join('')}</div>
     <div class="ws-grid" style="--n:${size}">${grid.map((row, y) => row.map((c, x) => `<div class="ws-cell" data-x="${x}" data-y="${y}">${c}</div>`).join('')).join('')}</div>`;
-  say(['Find the hidden words!', 'Drag your finger across the letters.']);
-  const board = $('.ws-grid', area), cellEl = (x, y) => board.children[y * size + x];
+  const board = $('.ws-grid', root), cellEl = (x, y) => board.children[y * size + x];
   let start = null, sel = [], found = 0;
   const colors = ['#ffd43b', '#8ce99a', '#74c0fc', '#ffa8a8', '#d0bfff', '#ffc078'];
   const at = (e) => { const el = document.elementFromPoint(e.clientX, e.clientY); return el && el.classList.contains('ws-cell') && board.contains(el) ? [+el.dataset.x, +el.dataset.y] : null; };
@@ -66,29 +63,26 @@ function startWordSearch() {
     return [a];
   };
   const paintSel = () => { $$('.ws-cell.sel', board).forEach((c) => c.classList.remove('sel')); sel.forEach(([x, y]) => cellEl(x, y).classList.add('sel')); };
-  board.addEventListener('pointerdown', (e) => { e.preventDefault(); const c = at(e); if (!c) return; start = c; sel = [c]; board.setPointerCapture && board.setPointerCapture(e.pointerId); paintSel(); sfx.tap(); });
+  board.addEventListener('pointerdown', (e) => { e.preventDefault(); if (found === placed.length) return; const c = at(e); if (!c) return; start = c; sel = [c]; board.setPointerCapture && board.setPointerCapture(e.pointerId); paintSel(); sfx.tap(); });
   board.addEventListener('pointermove', (e) => { if (!start) return; const c = at(e); if (!c) return; const s2 = line(start, c); if (s2.length !== sel.length) { sel = s2; paintSel(); } });
   const finish = () => {
     if (!start) return;
-    const word = sel.map(([x, y]) => grid[y][x]).join('');
     const hit = placed.findIndex((p) => !p.got && p.cells.length === sel.length && p.cells.every(([x, y], i) => x === sel[i][0] && y === sel[i][1]));
     start = null;
     if (hit >= 0) {
       const p = placed[hit]; p.got = true; found++;
       p.cells.forEach(([x, y]) => { const el = cellEl(x, y); el.classList.add('got'); el.style.background = colors[hit % colors.length]; });
-      $(`.ws-clue[data-i="${hit}"]`, area).classList.add('got');
-      sfx.yes(); say([p.w]);
-      if (found === placed.length) {
-        const up = gameLevelUp('wsearch', 2);
-        later(() => { gameWin(pick(['You found them all!', 'Great job!', 'Awesome job!'])); }, 700);
-        later(() => endPanel(up ? 'You found them all! Next: a bigger puzzle' : 'You found them all!', '🔎', null, up), 2000);
-      }
-    } else if (sel.length >= 3 && word.length) sfx.no();
+      $(`.ws-clue[data-i="${hit}"]`, root).classList.add('got');
+      sfx.yes(); say([p.w]); cb.found && cb.found(p.w);
+      if (found === placed.length) cb.done();
+    } else if (sel.length >= 3) { sfx.no(); cb.miss && cb.miss(); }
     sel = []; paintSel();
   };
   board.addEventListener('pointerup', finish); board.addEventListener('pointercancel', finish);
-  $$('.ws-clue', area).forEach((b) => (b.onclick = () => { sfx.tap(); say([b.dataset.speak]); }));
+  $$('.ws-clue', root).forEach((b) => (b.onclick = () => { sfx.tap(); say([b.dataset.speak]); }));
   if (state.testMode || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__wordSearch = { placed, find: (i) => { sel = placed[i].cells.slice(); start = sel[0]; finish(); } };
+  // hint: the first letter of a word not found yet glows
+  return { hint() { const p = placed.find((x) => !x.got); if (!p) return; const el = cellEl(...p.cells[0]); el.classList.remove('glow-l'); void el.offsetWidth; el.classList.add('glow-l'); say([p.w]); } };
 }
 
 /* ---------- 📰 Picture Crossword ---------- */
@@ -138,16 +132,14 @@ function makeCrossword(nWords) {
   }
   return null;
 }
-function startCrossword() {
-  const lv = GL('xword'), puzzle = makeCrossword(lv >= 2 ? 3 : 2);
-  if (!puzzle) return startCrossword();
-  const { words, cells, w: W, h: H } = puzzle;
-  // given letters: where words cross (like the book), plus one more at level 1
+// level 1–2: given letters where words cross plus one more · level 3: fewer given letters
+// cb: { word(w), miss(), done() } · returns { hint() }
+function mountCrossword(root, nWords, lv, cb) {
+  const { words, cells, w: W, h: H } = makeCrossword(nWords) || makeCrossword(2);
   const crossing = [...cells.keys()].filter((k) => words.filter((p) => [0, 1, 2].some((i) => `${p.x + p.dx * i},${p.y + p.dy * i}` === k)).length > 1);
   const given = new Set(lv >= 3 ? crossing.slice(0, 1) : crossing);
   if (lv <= 1) { const extra = shuffle([...cells.keys()].filter((k) => !given.has(k)))[0]; if (extra) given.add(extra); }
   const typed = new Map();
-  const area = $('#gameArea');
   const clueAt = new Map(words.map((p, i) => [`${p.x - p.dx},${p.y - p.dy}`, i]));
   let html = '';
   for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
@@ -158,11 +150,9 @@ function startCrossword() {
   }
   const need = [...cells.keys()].filter((k) => !given.has(k)).map((k) => cells.get(k));
   const extras = sample('abcdefghijklmnoprstuvwy'.split('').filter((c) => !need.includes(c)), lv >= 2 ? 3 : 2);
-  area.innerHTML = `<div class="g-msg">Fill in the crossword! 📰<small>Tap a box, then tap a letter. The pictures are the clues.</small></div>
-    <div class="xw-grid" style="--w:${W};--h:${H}">${html}</div>
+  root.innerHTML = `<div class="xw-grid" style="--w:${W};--h:${H}">${html}</div>
     <div class="xw-keys">${shuffle([...new Set(need), ...extras]).map((c) => `<button class="xw-key" data-l="${c}">${c}</button>`).join('')}<button class="xw-key del" data-l="">⌫</button></div>`;
-  say(['Fill in the crossword!', 'Tap a box, then tap a letter.']);
-  const grid = $('.xw-grid', area), cellEl = (k) => $(`.xw-cell[data-k="${k}"]`, grid);
+  const grid = $('.xw-grid', root), cellEl = (k) => $(`.xw-cell[data-k="${k}"]`, grid);
   const open = [...cells.keys()].filter((k) => !given.has(k));
   let selK = open[0], done = false;
   const wordCells = (p) => [0, 1, 2].map((i) => `${p.x + p.dx * i},${p.y + p.dy * i}`);
@@ -172,34 +162,29 @@ function startCrossword() {
     for (const p of words) {
       const ks = wordCells(p);
       if (p.ok || !ks.every((k) => letter(k))) continue;
-      if (ks.map(letter).join('') === p.w) { p.ok = true; ks.forEach((k) => cellEl(k).classList.add('ok')); sfx.yes(); say([p.w]); }
-      else { ks.filter((k) => !given.has(k) && typed.get(k) !== cells.get(k)).forEach((k) => { typed.delete(k); const el = cellEl(k); el.textContent = ''; el.classList.remove('bad'); void el.offsetWidth; el.classList.add('bad'); }); sfx.no(); }
+      if (ks.map(letter).join('') === p.w) { p.ok = true; ks.forEach((k) => cellEl(k).classList.add('ok')); sfx.yes(); say([p.w]); cb.word && cb.word(p.w); }
+      else { ks.filter((k) => !given.has(k) && typed.get(k) !== cells.get(k)).forEach((k) => { typed.delete(k); const el = cellEl(k); el.textContent = ''; el.classList.remove('bad'); void el.offsetWidth; el.classList.add('bad'); }); sfx.no(); cb.miss && cb.miss(); }
     }
-    if (!done && words.every((p) => p.ok)) {
-      done = true; paint();
-      const up = gameLevelUp('xword', 2);
-      later(() => gameWin(pick(['You did it!', 'Great job!', 'Super speller!'])), 700);
-      later(() => endPanel(up ? 'You did it! Next: a bigger crossword' : 'You did it!', '📰', null, up), 2000);
-    }
+    if (!done && words.every((p) => p.ok)) { done = true; paint(); cb.done(); }
   }
+  const put = (k, l) => {
+    const el = cellEl(k); if (!el || done) return;
+    if (!l) { typed.delete(k); el.textContent = ''; return; }
+    typed.set(k, l); el.textContent = l;
+    checkWords();
+    const next = open.find((x) => !typed.get(x) && !words.some((p) => p.ok && wordCells(p).includes(x)));
+    if (next) selK = next;
+    paint();
+  };
   grid.addEventListener('click', (e) => {
     const c = e.target.closest('.xw-cell'), clue = e.target.closest('.xw-clue');
     if (clue) { sfx.tap(); say([clue.dataset.speak]); return; }
     if (!c || done || given.has(c.dataset.k)) return;
     sfx.tap(); selK = c.dataset.k; paint();
   });
-  $$('.xw-key', area).forEach((b) => (b.onclick = () => {
-    if (done || !selK) return;
-    sfx.tap();
-    const l = b.dataset.l, el = cellEl(selK);
-    if (!l) { typed.delete(selK); el.textContent = ''; return; }
-    typed.set(selK, l); el.textContent = l;
-    checkWords();
-    // next empty box (in reading order)
-    const next = open.find((k) => !typed.get(k) && !words.some((p) => p.ok && wordCells(p).includes(k)));
-    if (next) selK = next;
-    paint();
-  }));
+  $$('.xw-key', root).forEach((b) => (b.onclick = () => { if (done || !selK) return; sfx.tap(); put(selK, b.dataset.l); }));
   paint();
-  if (state.testMode || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__crossword = { words, cells, given, type: (k, l) => { selK = k; $(`.xw-key[data-l="${l}"]`, area).click(); } };
+  if (state.testMode || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) window.__crossword = { words, cells, given, type: (k, l) => { selK = k; put(k, l); } };
+  // hint: one right letter goes in
+  return { hint() { const k = open.find((x) => typed.get(x) !== cells.get(x)); if (k) { selK = k; put(k, cells.get(k)); } } };
 }
