@@ -39,13 +39,26 @@ function mazeRoute(W, from, to) {
   const out = []; let k = to; while (k) { out.unshift(k); k = prev.get(k.join()); } return out;
 }
 function startPathMaze() {
-  const lv = GL('path'), [cols, rows] = PATH_SIZES[Math.min(lv, PATH_SIZES.length) - 1];
+  const lv = GL('path');
+  // Later levels include real concentric-ring puzzles, not just rectangular skins.
+  if (lv >= 8 && (lv >= 11 || Math.random() < 0.55)) return startRadialMaze(lv);
+  const [cols, rows] = PATH_SIZES[Math.min(lv, PATH_SIZES.length) - 1];
   const [hero, goalE, line] = pick(PATH_THEMES);
-  const W = makeMaze(cols, rows), start = [0, 0], goal = [cols - 1, rows - 1];
+  const start = [0, 0], goal = [cols - 1, rows - 1];
+  let W = makeMaze(cols, rows);
+  if (lv >= 5) {
+    // Avoid large-but-trivially-short routes; keep the hardest solvable candidate.
+    let best = mazeRoute(W, start, goal).length;
+    for (let i = 0; i < 15; i++) {
+      const candidate = makeMaze(cols, rows), length = mazeRoute(candidate, start, goal).length;
+      if (length > best) { W = candidate; best = length; }
+    }
+  }
   const area = $('#gameArea');
   area.innerHTML = `<div class="g-msg">${hero} → ${goalE} ${line}<small>Put your finger on ${hero} and draw the way.</small></div>
-    <div class="cv-wrap"><canvas class="game-cv pm-cv"></canvas></div>
-    <div class="color-btns"><button class="big-btn alt small" data-a="hint">💡 Show me</button><button class="big-btn alt small" data-a="new">🔄 New maze</button></div>`;
+    <div class="cv-wrap pm-view"><div class="pm-inner"><canvas class="game-cv pm-cv"></canvas></div></div>
+    <div class="color-btns"><button class="big-btn alt small" data-a="hint">💡 Show me</button><button class="big-btn alt small" data-a="new">🔄 New maze</button>
+    ${lv >= 5 ? '<button class="big-btn alt small" data-z="in" aria-label="Zoom in">＋</button><button class="big-btn alt small" data-z="out" aria-label="Zoom out">－</button><button class="big-btn alt small" data-z="reset">Reset view</button>' : ''}</div>`;
   say([line, 'Draw the way with your finger!']);
   const cv = $('.pm-cv', area);
   const fit = fitCanvas(cv, 360), c = fit.c, w = fit.w;
@@ -54,6 +67,8 @@ function startPathMaze() {
   const h = cell * rows + 16, dpr = Math.min(devicePixelRatio || 1, 2);
   cv.style.height = h + 'px'; cv.height = Math.round(h * dpr); c.setTransform(dpr, 0, 0, dpr, 0, 0);
   const ox = (w - cell * cols) / 2, oy = (h - cell * rows) / 2;
+  const zoom = zoomable($('.pm-view', area), $('.pm-inner', area), { oneFingerPan: false });
+  $('[data-z]', area).forEach((b) => (b.onclick = () => b.dataset.z === 'reset' ? zoom.reset() : zoom.by(b.dataset.z === 'in' ? 1.5 : 1 / 1.5));
   const mid = ([x, y]) => [ox + (x + 0.5) * cell, oy + (y + 0.5) * cell];
   let path = [start], drawing = false, done = false, hint = null;
   const session = gameSession;
@@ -80,7 +95,7 @@ function startPathMaze() {
     const [gx, gy] = mid(goal); c.fillText(goalE, gx, gy + 2);
     const [hx, hy] = mid(path[path.length - 1]); c.fillText(hero, hx, hy + 2);
   }
-  const cellAt = (e) => { const r = cv.getBoundingClientRect(); const x = Math.floor((e.clientX - r.left - ox) / cell), y = Math.floor((e.clientY - r.top - oy) / cell); return x >= 0 && y >= 0 && x < cols && y < rows ? [x, y] : null; };
+  const cellAt = (e) => { const r = cv.getBoundingClientRect(); const x = Math.floor(((e.clientX - r.left) * w / r.width - ox) / cell), y = Math.floor(((e.clientY - r.top) * h / r.height - oy) / cell); return x >= 0 && y >= 0 && x < cols && y < rows ? [x, y] : null; };
   const open = ([c1, r1], [c2, r2]) => { const k = W[r1][c1]; return c2 === c1 + 1 && r2 === r1 ? !k.e : c2 === c1 - 1 && r2 === r1 ? !k.w : r2 === r1 + 1 && c2 === c1 ? !k.s : r2 === r1 - 1 && c2 === c1 ? !k.n : false; };
   const same = (a, b) => a && b && a[0] === b[0] && a[1] === b[1];
   const dist = (a, b) => Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
@@ -107,7 +122,7 @@ function startPathMaze() {
     later(() => endPanel(up ? 'You did it! Next: a bigger maze' : 'You did it!', goalE, null, up), 1300);
   }
   cv.addEventListener('pointerdown', (e) => {
-    e.preventDefault(); if (done) return;
+    e.preventDefault(); if (done || !e.isPrimary || zoom.busy()) return;
     const t = cellAt(e); if (!t) return;
     // start from the hero (or anywhere already on the path: the path goes back to there)
     const i = path.findIndex((p) => same(p, t));
@@ -115,7 +130,7 @@ function startPathMaze() {
     else path = path.slice(0, i + 1);
     drawing = true; cv.setPointerCapture && cv.setPointerCapture(e.pointerId); moveTo(t);
   });
-  cv.addEventListener('pointermove', (e) => { if (!drawing || done) return; for (const ev of (e.getCoalescedEvents ? e.getCoalescedEvents() : [e])) { const t = cellAt(ev); if (t) moveTo(t); } });
+  cv.addEventListener('pointermove', (e) => { if (!drawing || done || zoom.busy()) { if (zoom.busy()) drawing = false; return; } for (const ev of (e.getCoalescedEvents ? e.getCoalescedEvents() : [e])) { const t = cellAt(ev); if (t) moveTo(t); } });
   const lift = () => (drawing = false); cv.addEventListener('pointerup', lift); cv.addEventListener('pointercancel', lift);
   area.querySelector('[data-a="hint"]').onclick = () => { sfx.tap(); hint = mazeRoute(W, start, goal); draw(); say('Follow the yellow dots!'); later(() => { hint = null; draw(); }, 2500); };
   area.querySelector('[data-a="new"]').onclick = () => { sfx.tap(); gameSession++; startPathMaze(); };
