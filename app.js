@@ -979,6 +979,26 @@ $('#kidRemove').onclick = () => {
   if (!confirm(`Remove ${state.name || 'this child'} and all of their stars, levels and pictures?`)) return;
   Store.removeKid(Store.activeId(), state); applyTheme(); openSettings();
 };
+// Full-library downloads are opt-in to avoid silently downloading thousands of clips.
+$('#offlineVoiceBtn').onclick = async () => {
+  const status = $('#offlineVoiceStatus'), btn = $('#offlineVoiceBtn');
+  if (!('serviceWorker' in navigator)) { status.textContent = 'Offline audio download is available in the installed app over HTTPS.'; return; }
+  status.textContent = 'Preparing the offline voice library…'; btn.disabled = true;
+  try {
+    const reg = await navigator.serviceWorker.ready;
+    if (!reg.active) throw new Error('offline service unavailable');
+    state.offlineAudio = 'full'; save();
+    reg.active.postMessage({ type: 'fill-audio-all' });
+  } catch { btn.disabled = false; status.textContent = 'Could not start the download. Check the connection and try again.'; }
+};
+if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', (e) => {
+  if (!e.data || e.data.type !== 'audio-pack-progress' || e.data.mode !== 'fill-audio-all') return;
+  const status = $('#offlineVoiceStatus'), btn = $('#offlineVoiceBtn');
+  if (!status) return;
+  const { done, total } = e.data;
+  status.textContent = total ? `Saving offline audio: ${done} of ${total} remaining files processed.` : 'All requested voice clips are already saved.';
+  if (done >= total) { btn.disabled = false; status.textContent = 'Offline voice download processed. Recordings already cached remain available offline.'; }
+});
 $('#testVoiceBtn').onclick = async () => {
   const out = $('#voiceStatus');
   out.textContent = 'Playing…';
@@ -1013,7 +1033,7 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     reg.addEventListener('updatefound', () => { const w = reg.installing; if (w) w.addEventListener('statechange', () => w.state === 'installed' && tryUpdate()); });
     setInterval(tryUpdate, 4000); tryUpdate();
     // fetch any voice clips this phone doesn't have yet (after start-up, so the app opens fast)
-    setTimeout(() => reg.active && reg.active.postMessage({ type: 'fill-audio' }), 8000);
+    setTimeout(() => reg.active && reg.active.postMessage({ type: state.offlineAudio === 'full' ? 'fill-audio-all' : 'fill-audio' }), 8000);
   }).catch(() => {});
   let hadController = !!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!hadController) { hadController = true; return; } location.reload(); });
