@@ -111,3 +111,10 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 /* Fingers trace with one pointer; two fingers pinch/pan only the puzzle surface. */
 .pm-view { touch-action: none; overflow: hidden; position: relative; border-radius: 14px; }
 .pm-view .pm-cv { transform-origin: 0 0; touch-action: none; display:block; }
+
+.q-zoom-controls { display:flex; justify-content:flex-end; gap:7px; margin:5px 0 7px; }
+.q-zoom-controls .diff-btn { min-width:43px; min-height:42px; font-weight:900; }
+.q-zoom-view { overflow:auto; max-height:min(70dvh, 760px); overscroll-behavior:contain; }
+#qZoomSpace { position:relative; max-width:none; min-width:100%; }
+#qZoomInner { transform-origin:0 0; }
+@media (prefers-reduced-motion: reduce) { #qZoomInner { transition:none; } }
