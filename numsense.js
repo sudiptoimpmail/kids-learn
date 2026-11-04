@@ -95,6 +95,8 @@ function genNumSense(level) {
   }
   // Review within the child's current grade, not a surprise Level-1 counting card.
   // Previously roughly 20% of high-level questions fell through to the toddler pool.
+  // higher levels fall back to the level below (a mix of its question types), never to plain counting only
+  if (level >= 4) return genNumSense(level - 1);
   if (level >= 3) {
     const v = 101 + rand(299);
     return nsQ(`blocks3-${v}`, 'Count hundreds, tens and ones.', ['How many?'],

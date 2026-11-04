@@ -83,8 +83,10 @@ const { chromium } = require('playwright');
         sizes.push({level,blocks});
       }
       const q1 = genGrammar(1);
-      if (!q1.main.includes('I see the') && !q1.main.includes('We '))
-        fails.push('First-grade noun/verb without disambiguating sentence');
+      // all three choices must come from the one sentence, so the child judges each word's job
+      const words = q1.options.map(o => String(o.v));
+      if (!/The \w+ \w+ can \w+\./.test(q1.main) || !words.every(w => q1.main.includes(w)))
+        fails.push('First-grade noun/verb choices are not all from the sentence');
       document.querySelector('#qMain').innerHTML = nsBlocks(38);
       const block = document.querySelector('#qMain .ns-blocks');
       if (!block || !block.querySelector('.ns-rod') || !block.querySelector('.ns-cube'))

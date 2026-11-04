@@ -70,6 +70,9 @@ self.addEventListener('message', (e) => {
     const core = new Set([...corePhrases, ...Array.from({ length: 21 }, (_, i) => String(i)), ...'abcdefghijklmnopqrstuvwxyz']);
     const entries = Object.entries(manifest).filter(([phrase]) => e.data.type === 'fill-audio-all' || core.has(phrase));
     const want = [...new Set(entries.map(([, file]) => new URL('audio/' + file, self.registration.scope).href))];
+    // drop clips the app no longer uses (a changed clip gets a new file name)
+    const all = new Set(Object.values(manifest).map((file) => new URL('audio/' + file, self.registration.scope).href));
+    for (const req of await audio.keys()) if (!all.has(req.url)) await audio.delete(req);
     const have = new Set((await audio.keys()).map((req) => req.url));
     const missing = want.filter((url) => !have.has(url));
     const source = e.source;
