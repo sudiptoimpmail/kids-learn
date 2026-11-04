@@ -24,7 +24,8 @@ const { chromium } = require('playwright');
       }
       for (let i = 0; i < 500; i++) {
         const q = genWords(W3, 1, 'cvc');
-        check(isSimpleCVC(q.answer), 'Pre-K Little Words not genuine CVC: '+q.answer);
+        const target = q.fill ? q.fill.word : q.answer;     // a missing-letter card's answer is the letter; check its word
+        check(isSimpleCVC(target), 'Pre-K Little Words not genuine CVC: '+target);
         for (const option of q.options || [])
           if (/^cvc-(read|find|pic)/.test(q.key))
             check(isSimpleCVC(option.v), 'Advanced word in Pre-K distractors: '+option.v);
