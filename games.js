@@ -166,6 +166,7 @@ function GL(id) {
   return (state.gameLv && state.gameLv[id]) || 1;
 }
 function gameLevelUp(id, needWins = 1) {
+  if (isQAMode()) return false; // QA gameplay must never persist wins, levels or parent statistics.
   state.gameLv = state.gameLv || {}; state.gameWins = state.gameWins || {};
   state.gameWins[id] = (state.gameWins[id] || 0) + 1;
   if (brainMode && BRAIN_GAME_IDS.has(id) && typeof logBrainWin === 'function') logBrainWin(id);
@@ -200,7 +201,7 @@ function openGame(id) {
   $('#gameArea').className = 'game-area g-' + id;
   show('game');
   if (!brainMode) startPlayTimer();
-  gameStart = brainMode ? 0 : Date.now();
+  gameStart = brainMode || isQAMode() ? 0 : Date.now();
   g.start();
 }
 function stopGame() { gameSession++; if (gameStart) { playActive += Date.now() - gameStart; gameStart = 0; } if (playActive) { logPlay(playActive / 1000); playActive = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
@@ -1050,7 +1051,7 @@ function startSudoku(mode) {
     sel = null; paint();
     $$('.sdk-cell', area).forEach((el, k) => { el.style.animationDelay = `${k * 30}ms`; el.classList.add('win'); });
     const up = lv < 5;
-    state.sdkWins = (state.sdkWins || 0) + 1;
+    if (!isQAMode()) state.sdkWins = (state.sdkWins || 0) + 1;
     if (brainMode && typeof logBrainWin === 'function') logBrainWin('sudoku');
     if (up && state.sdkWins % 2 === 0) state.sdkLevel = lv + 1;   // every 2 wins → harder
     save();
