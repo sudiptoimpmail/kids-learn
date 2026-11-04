@@ -47,4 +47,4 @@ npm run check
 CHROME_BIN="$(node -p 'require("playwright").chromium.executablePath()')" npm test
 ```
 
-Do not alter `main` directly. When cached assets change after this branch, bump the service-worker VERSION (this PR bumped v37 to v38). The CI check rejects changed precached assets without a version bump.
+Do not alter `main` directly. When cached assets change after this branch, bump the service-worker VERSION (main has since reached v38; this PR now uses v39). The CI check rejects changed precached assets without a version bump.
