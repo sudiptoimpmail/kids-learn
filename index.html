@@ -47,7 +47,6 @@
     </div>
     <button id="playBanner" class="play-banner"></button>
     <div id="questBox" class="quest-box"></div>
-    <button id="brainBanner" class="brain-banner"><span>🧠</span><b>Brain Games</b><small>Memory · puzzles · logic</small><span aria-hidden="true">▶</span></button>
     <div class="explore-title">📚 Learn and discover</div>
     <div id="grid" class="learning-catalog"></div>
   </section>
@@ -225,6 +224,7 @@
       <div class="field">Grade <small>(for this child — sets every game to the right starting level)</small>
         <div id="gradeBtns" class="grade-btns"></div>
       </div>
+      <label class="field row">🌍 Country <small>(country questions, coins and spelling like colour)</small><select id="countrySel"></select></label>
       <div class="field">🎮 Play Zone
         <label class="lvrow">Play time rule<select id="playMode"><option value="rounds">Earn by rounds</option><option value="hourly">Minutes every hour</option></select></label>
         <label class="lvrow hourly-only">Minutes of play per hour<select id="playPerHour"><option>10</option><option selected>15</option><option>20</option><option>30</option></select></label>
@@ -268,9 +268,14 @@
   <script src="phonics.js"></script>
   <script src="content.js"></script>
   <script src="thinking.js"></script>
+  <script src="country.js"></script>
+  <script src="science.js"></script>
+  <script src="grammar.js"></script>
+  <script src="numsense.js"></script>
   <script src="app.js"></script>
   <script src="scenes.js"></script>
   <script src="games.js"></script>
+  <script src="pathmaze.js"></script>
   <script src="trace.js"></script>
   <script src="progress.js"></script>
 </body>

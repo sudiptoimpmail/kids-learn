@@ -1254,7 +1254,6 @@ const GK = [
   [4, 'Which animal is a mammal?', '🐬 dolphin', '🦈 shark', '🐊 alligator', '🐍 snake'],
   [4, 'Animals that eat only plants are called…', 'herbivores', 'carnivores', 'omnivores', 'astronauts'],
   [4, 'The sun rises in the…', 'east', 'west', 'north', 'south'],
-  [4, 'What is the capital of the United States?', 'Washington, D.C.', 'New York City', 'Chicago', 'Los Angeles'],
   [4, 'Which animal changes color to hide?', '🦎 chameleon', '🐻 bear', '🐶 dog', '🦒 giraffe'],
   [4, 'What are the three states of water?', 'solid, liquid, gas', 'hot, cold, warm', 'red, blue, green', 'big, small, tiny'],
   [4, 'Which bird cannot fly?', '🐧 penguin', '🦅 eagle', '🦜 parrot', '🦉 owl'],
@@ -1562,6 +1561,13 @@ const JOBS = [
   ['bus driver', '🚌', 'drives kids to school', '🚏🧒'],
 ];
 
+// one Shapes game: flat shapes first, then 3D shapes join in
+function genShapes(level) {
+  if (level <= 1) return genShape2(1);
+  if (level === 2) return Math.random() < 0.5 ? genShape2(2) : genShape3(1);
+  if (level === 3) return Math.random() < 0.5 ? genShape2(3) : genShape3(2);
+  return Math.random() < 0.65 ? genShape3(3) : genShape2(3);
+}
 function genJobs(level) {
   const pool = level === 1 ? JOBS.slice(0, 12) : JOBS;
   const j = pick(pool);
@@ -1933,17 +1939,20 @@ const CATEGORIES = [
   { id: 'spell', title: 'Spell It', sub: 'drag the letters', icon: '🔤', color: '#20c997', gen: genSpell, maxLevel: 5 },
   { id: 'vocab', title: 'Word Wonders', sub: 'learn new words', icon: '🌟', color: '#f59f00', gen: genVocab, learn: true, maxLevel: 4 },
   { id: 'sent', title: 'Read & Answer', sub: 'sentences & stories', icon: '📖', color: '#74c0fc', gen: genSentence, maxLevel: 6 },
+  { id: 'words', title: 'Word Detective', sub: 'nouns · plurals · past tense', icon: '🕵️', color: '#5f3dc4', gen: (l) => genGrammar(l), maxLevel: 5 },
   { id: 'match', title: 'Match It', sub: 'word ↔ picture · 3+2 ↔ 5', icon: '🔗', color: '#5c7cfa', gen: genMatch, maxLevel: 5, roundLen: 5 },
   { id: 'syl', title: 'Clap It!', sub: 'syllables', icon: '👏', color: '#ffd43b', gen: genSyllable },
   { id: 'add', title: 'Adding', sub: '2 + 3 · 34 + 5', icon: '➕', color: '#b197fc', gen: genAdd, maxLevel: 5 },
-  { id: 'sub', title: 'Take Away', sub: '5 − 2 · 47 − 3', icon: '➖', color: '#f783ac', gen: genSub, maxLevel: 5 },
+  { id: 'sub', title: 'Subtraction', sub: '5 − 2 · 47 − 3', icon: '➖', color: '#f783ac', gen: genSub, maxLevel: 5 },
   { id: 'story', title: 'Word Problems', sub: 'math stories', icon: '📝', color: '#4c6ef5', gen: genWordProblem, maxLevel: 5 },
   { id: 'cmp', title: 'Compare', sub: '7 > 3 · 2 < 9', icon: '🐊', color: '#40c057', gen: genCompare, maxLevel: 5 },
   { id: 'mul', title: 'Multiply', sub: '3 × 4 = ?', icon: '✖️', color: '#fa5252', gen: genMul, maxLevel: 5 },
   { id: 'div', title: 'Divide', sub: 'share equally', icon: '➗', color: '#15aabf', gen: genDiv, maxLevel: 5 },
   { id: 'clock', title: 'Clock', sub: 'tell the time', icon: '🕐', color: '#7950f2', gen: genClock, maxLevel: 4 },
-  { id: 'shape2', title: 'Shapes', sub: 'flat shapes', icon: '🔺', color: '#ffa94d', gen: genShape2 },
-  { id: 'shape3', title: '3D Shapes', sub: 'cube · cone', icon: '🧊', color: '#3bc9db', gen: genShape3 },
+  { id: 'shape2', title: 'Shapes', sub: 'flat & 3D shapes', icon: '🧊', color: '#3bc9db', gen: genShapes, maxLevel: 4 },
+  { id: 'numsense', title: 'Number Sense', sub: 'place value · fractions · money', icon: '🧮', color: '#0ca678', gen: (l) => genNumSense(l), maxLevel: 5 },
+  { id: 'sci', title: 'Science', sub: 'living things · matter · space', icon: '🔬', color: '#1098ad', gen: (l) => genScience(l), maxLevel: 4 },
+  { id: 'home', title: 'My Country', sub: 'symbols · places · facts', icon: '🏳️', color: '#e03131', gen: (l) => genCountry(l), maxLevel: 4 },
   { id: 'body', title: 'Body Parts', sub: 'nose · knees · elbows', icon: '🙋', color: '#ff8787', gen: genBody },
   { id: 'gk', title: 'Did You Know?', sub: 'general knowledge', icon: '💡', color: '#fab005', gen: genGK, maxLevel: 4 },
   { id: 'anatomy', title: 'Inside My Body', sub: 'organs · bones · veins', icon: '🫀', color: '#e64980', gen: genAnatomy, maxLevel: 4 },
@@ -1959,18 +1968,22 @@ const CATEGORIES = [
 // Games not listed are hidden for that grade (unless "Show all games" is on).
 // Roughly follows Common Core: time to the hour/half hour in 1st, 5 minutes in 2nd;
 // multiplication/division start as equal groups and sharing in 2nd.
+// which games each grade sees, and the levels that suit it; a child starts in the middle of the range
+// and then moves up or down with how well she does (even past the range)
 const GRADES = {
   prek: { label: 'Pre-K', g: { trace: '1-1', phonics: '1-2', animals: '1-1', places: '1-1', body: '1-1', gk: '1-1', anatomy: '1-1', match: '1-1', cvc: '1-1', sight: '1-1', spell: '1-1', vocab: '1-1', syl: '1-1', add: '1-1', sub: '1-1', cmp: '1-1',
-    shape2: '1-1', shape3: '1-1', jobs: '1-1', flags: '1-1', maps: '1-1' } },
+    shape2: '1-1', jobs: '1-1', flags: '1-1', maps: '1-1' } },
   k: { label: 'Kindergarten', g: { trace: '1-1', phonics: '1-4', animals: '1-2', places: '1-1', body: '1-2', gk: '1-2', anatomy: '1-1', match: '1-2', cvc: '2-3', w4: '1-2', sight: '1-2', spell: '1-2', vocab: '1-2', sent: '1-2', syl: '1-2', add: '1-2',
-    sub: '1-2', story: '1-1', cmp: '1-2', shape2: '1-2', shape3: '1-1', jobs: '1-2', flags: '1-2', maps: '1-2' } },
-  g1: { label: '1st Grade', g: { phonics: '3-5', animals: '1-2', places: '1-2', body: '2-3', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '2-3', syl: '2-3', add: '3-4',
-    sub: '3-4', story: '2-3', cmp: '2-4', clock: '1-2', shape2: '2-3', shape3: '1-2', jobs: '2-3', flags: '2-3', maps: '2-3' } },
-  g2: { label: '2nd Grade', g: { phonics: '4-5', animals: '2-3', places: '2-3', body: '3-3', gk: '3-4', anatomy: '2-3', match: '3-5', cvc: '3-3', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-4', sent: '3-4', syl: '3-3', add: '4-5',
-    sub: '4-5', story: '3-5', cmp: '4-5', mul: '1-3', div: '1-2', clock: '2-4', shape2: '3-3', shape3: '2-2', jobs: '3-3', flags: '3-3', maps: '3-3' } },
-  g3: { label: '3rd Grade', g: { animals: '3-3', places: '3-3', body: '3-3', gk: '4-4', anatomy: '3-4', match: '4-5', cvc: '3-3', w4: '5-5', sight: '4-4', spell: '5-5',
-    vocab: '3-4', sent: '4-6', syl: '3-3', add: '5-5', sub: '5-5', story: '4-5', cmp: '5-5', mul: '3-5', div: '2-5', clock: '3-4', shape2: '3-3', shape3: '3-3', jobs: '3-3', flags: '3-3', maps: '3-3' } },
+    sub: '1-2', story: '1-1', cmp: '1-2', shape2: '1-2', jobs: '1-2', flags: '1-2', maps: '1-2', home: '1-2' } },
+  g1: { label: '1st Grade', g: { phonics: '3-5', animals: '1-2', places: '1-2', gk: '2-3', anatomy: '1-2', match: '2-3', cvc: '3-3', w4: '2-4', sight: '2-3', spell: '3-4', vocab: '1-2', sent: '2-3', syl: '2-3', add: '3-4',
+    sub: '3-4', story: '2-3', cmp: '2-4', clock: '1-2', shape2: '2-3', jobs: '2-3', flags: '2-3', maps: '2-3', words: '1-2', numsense: '1-2', sci: '1-2', home: '2-3' } },
+  g2: { label: '2nd Grade', g: { phonics: '4-5', animals: '2-3', places: '2-3', gk: '3-4', anatomy: '2-3', match: '3-5', w4: '4-5', sight: '3-4', spell: '4-5', vocab: '2-4', sent: '3-4', add: '4-5',
+    sub: '4-5', story: '3-5', cmp: '4-5', mul: '1-3', div: '1-2', clock: '2-4', shape2: '3-4', flags: '3-3', maps: '3-3', words: '2-4', numsense: '2-4', sci: '2-3', home: '2-4' } },
+  g3: { label: '3rd Grade', g: { animals: '3-3', places: '3-3', gk: '4-4', anatomy: '3-4', match: '4-5', w4: '5-5', sight: '4-4', spell: '5-5',
+    vocab: '3-4', sent: '4-6', add: '5-5', sub: '5-5', story: '4-5', cmp: '5-5', mul: '3-5', div: '2-5', clock: '3-4', shape2: '4-4', flags: '3-3', maps: '3-3', words: '3-5', numsense: '3-5', sci: '3-4', home: '3-4' } },
 };
+// where a child of this grade starts: the middle of the range (rounded down)
+const gradeStart = (r) => { const [a, b] = r.split('-').map(Number); return Math.floor((a + b) / 2); };
 const gradeRange = (grade, id) => { const r = GRADES[grade] && GRADES[grade].g[id]; return r ? r.split('-').map(Number) : null; };
 
 const STICKERS = ['🦄', '🐶', '🐱', '🐼', '🦊', '🐯', '🐸', '🐵', '🦁', '🐨', '🐰', '🐻', '🐷', '🐮', '🐙', '🦋',

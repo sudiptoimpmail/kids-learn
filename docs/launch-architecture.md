@@ -110,6 +110,11 @@ Each new game is one generator in `content.js` (questions + hint + voice text), 
 - Purchases and any link that leaves the app sit behind the **grown-up gate** (the PIN screen, or a grown-up math question).
 
 ### Done since
+- ✅ Grade start in the middle of each game's range; one hard round (half wrong) moves a level down, great rounds move up (`gradeStart`, `GRADES` in `content.js`).
+- ✅ Brain Teasers on the home screen: Pattern Puzzle, Odd One Out, What Comes Next, plus Finger Maze, Memory, Picture Puzzle, Sudoku, Connect Four (untimed).
+- ✅ Science (`science.js`, grades 1–3), Word Detective grammar (`grammar.js`), Number Sense with place value, fractions and local coins (`numsense.js`).
+- ✅ Country setting (`country.js`): My Country questions, local coins and spelling (colour, maths) for US, UK, Canada, Australia, New Zealand, India, Ireland.
+- ✅ 2D and 3D shapes are one Shapes game; Jobs is Pre-K–1st; Body Parts is Pre-K–K; Clap It hides once a child reads and spells well.
 - ✅ Today's Quest (daily guided path) — `progress.js` (`questFor()`), per child per day.
 - ✅ Progress dashboard and per-skill tracking (game + level = skill) — `progress.js`.
 - ✅ Letter sounds recorded from phonemes (`LETTER_SOUNDS` in `phonics.js`); worth checking by ear.
