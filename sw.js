@@ -72,6 +72,7 @@ self.addEventListener('message', (e) => {
       'tap all the pictures that start with','tap all the circles you see',
       'read the story','what happened first','which word fits','find the word',
       'apple','ant','acorn','airplane','leaf','bird','wolf','water',
+      'fish','wash','bench','lunch','rock','sand','sick','rain','cake','ship','chair',
     ];
     const core = new Set([...corePhrases, ...Array.from({ length: 21 }, (_, i) => String(i)), ...'abcdefghijklmnopqrstuvwxyz']);
     const entries = Object.entries(manifest).filter(([phrase]) => e.data.type === 'fill-audio-all' || core.has(phrase));
