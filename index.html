@@ -59,10 +59,17 @@
       <button id="sayBtn" class="icon-btn" aria-label="Say it again">🔊</button>
     </header>
     <div class="prog-row"><div id="progress" class="progress"></div><button id="skipBtn" class="diff-btn test-only" aria-label="Test: skip">⏭</button><button id="prevBtn" class="diff-btn test-only" aria-label="Test: previous card">⏮</button><button id="endBtn" class="diff-btn test-only" aria-label="Test: end round">🏁</button><button id="diffBtn" class="diff-btn" aria-label="Grown-ups: press and hold to change difficulty">🎚️ <span id="diffLv"></span></button></div>
-    <div class="card">
-      <div id="qText" class="q-text"></div>
-      <div id="qMain" class="q-main"></div>
-      <div id="hintBox" class="hint-box" hidden></div>
+    <div class="q-zoom-controls" aria-label="Question zoom controls">
+      <button id="qZoomOut" class="diff-btn" aria-label="Zoom question out">－</button>
+      <button id="qZoomReset" class="diff-btn" aria-label="Reset question zoom">1×</button>
+      <button id="qZoomIn" class="diff-btn" aria-label="Zoom question in">＋</button>
+    </div>
+    <div class="card q-zoom-view">
+      <div id="qZoomSpace"><div id="qZoomInner">
+        <div id="qText" class="q-text"></div>
+        <div id="qMain" class="q-main"></div>
+        <div id="hintBox" class="hint-box" hidden></div>
+      </div></div>
     </div>
     <div id="options" class="options"></div>
     <button id="hintBtn" class="hint-btn">💡 Hint</button>
