@@ -42,6 +42,20 @@ function grQ(key, text, main, answer, wrong, sayQ, n) {
   return { key: `gr-${key}`, text, say: sayQ, main, mainClass: main ? 'ph-main' : 'empty', options: opts.map((o) => ({ v: o, html: o })), answer,
     optClass: 'opt-text', hint: { html: '', say: 'Think about it!', remove: true } };
 }
+// Curated combinations: never randomly generate statements such as
+// "The cold book can swim" or "The fluffy river can read".
+const GR_SIMPLE_SENTENCES = [
+  ['happy', 'dog', 'run'], ['little', 'cat', 'jump'], ['brave', 'girl', 'swim'],
+  ['happy', 'boy', 'play'], ['tall', 'teacher', 'read'], ['brave', 'farmer', 'climb'],
+  ['tiny', 'kitten', 'sleep'], ['big', 'dog', 'dig'], ['happy', 'girl', 'sing'],
+  ['little', 'boy', 'dance'], ['soft', 'kitten', 'hop'], ['funny', 'teacher', 'laugh'],
+  ['brave', 'boy', 'swim'], ['happy', 'teacher', 'write'], ['tiny', 'dog', 'run'],
+  ['tall', 'girl', 'throw'], ['little', 'boy', 'kick'], ['sleepy', 'kitten', 'sleep'],
+  ['happy', 'farmer', 'cook'], ['brave', 'girl', 'climb'], ['funny', 'boy', 'sing'],
+  ['tall', 'farmer', 'walk'], ['sleepy', 'cat', 'sleep'], ['happy', 'kid', 'draw'],
+  ['funny', 'dog', 'jump'], ['little', 'kid', 'read'], ['tiny', 'kitten', 'play']
+].filter(([adj, noun, verb]) => GR_ADJS.includes(adj) && GR_NOUNS.includes(noun) && GR_VERBS.includes(verb));
+
 function genGrammar(level) {
   const n = level >= 2 ? 3 : 2, t = Math.random(), big = (w) => `<div class="gr-word">${w}</div>`;
   if (level >= 5 && t < 0.7) {
@@ -64,7 +78,7 @@ function genGrammar(level) {
   }
   // level 1: naming word or action word — all three choices come from one little sentence,
   // so the child decides what each word does (not just which word is in the sentence)
-  const noun = pick(GR_NOUNS), verb = pick(GR_VERBS.filter((v) => v !== noun)), adj = pick(GR_ADJS);
+  const [adj, noun, verb] = pick(GR_SIMPLE_SENTENCES);
   const sent = `The ${adj} ${noun} can ${verb}.`;
   const wantNoun = Math.random() < 0.5;
   const q = grQ(`${wantNoun ? 'noun' : 'verb'}-${noun}-${verb}-${adj}`,
