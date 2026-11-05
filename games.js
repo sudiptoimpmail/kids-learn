@@ -314,7 +314,8 @@ function fitCanvas(cv, minH = 360) {
   const dpr = Math.min(devicePixelRatio || 1, 2);
   const w = cv.parentElement.clientWidth;
   const top = cv.getBoundingClientRect().top;
-  const h = Math.max(minH, Math.min(innerHeight - top - 20, w * 1.6));
+  const available = Math.max(220, innerHeight - top - 115);
+  const h = Math.min(available, Math.max(Math.min(minH, available), Math.min(available, w * 1.6)));
   cv.style.width = w + 'px'; cv.style.height = h + 'px';
   cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
   const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0);
