@@ -1254,3 +1254,24 @@ html, body { min-height: 100%; }
 #loadStatus { min-height:22px; margin:13px 0 0; font-size:14px; color:#5c5174; font-weight:650; }
 #loadStatus:empty { display:none; }
 #startBtn:disabled { opacity:.7; cursor:progress; }
+
+/* Clap It: safe on a 320px iPhone, iPad split view and large accessibility text. */
+.q-main.syl-main { min-width:0; width:100%; max-width:100%; overflow:hidden; gap:clamp(8px,2vw,14px); }
+.q-main.syl-main .syl-word {
+  font-size:clamp(26px,var(--syl-font,10vw),68px);
+  line-height:1.14; letter-spacing:0; font-weight:900;
+  box-sizing:border-box; max-width:100%; width:100%;
+  overflow-wrap:anywhere; word-break:normal; white-space:normal;
+  text-align:center; padding:0 4px; text-wrap:balance;
+}
+.options.syl-choices { min-width:0; width:100%; }
+.options.syl-choices .opt { min-width:0; overflow:hidden; padding:clamp(8px,2vw,14px) 3px; }
+.options.syl-choices .opt small { display:block; max-width:100%; line-height:1.2; font-size:clamp(13px,2.3vw,20px); overflow-wrap:anywhere; }
+.options.syl-choices .opt b { display:block; font-size:clamp(24px,5vw,35px); }
+.hint-box .hint-claps { max-width:100%; width:100%; gap:clamp(4px,1vw,10px); }
+.hint-box .hint-claps span { min-width:0; max-width:46%; font-size:clamp(19px,4.8vw,30px); }
+.hint-box .hint-claps b { max-width:100%; font-size:clamp(15px,4vw,22px); overflow-wrap:anywhere; }
+@media (max-width:380px) {
+  .q-main.syl-main .mini-speaker { font-size:22px; padding:6px 14px; }
+  .options.syl-choices .opt small { letter-spacing:-1px; }
+}
