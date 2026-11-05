@@ -1370,8 +1370,19 @@ function genPrekPhoto() {
     optClass:'opt-emoji pk-options',
     hint:{html:'<div class="hint-note">Look carefully at each picture.</div>',say:'Look at the picture!'} };
 }
-const genGK = (level) => level === 1 && Math.random() < 0.65
-  ? genPrekPhoto() : mcQuestion('gk', pickLevelled(GK, level), level);
+function genGK(level) {
+  if (level === 1 && Math.random() < 0.65) return genPrekPhoto();
+  const q = mcQuestion('gk', pickLevelled(GK, level), level);
+  // Text always shows the full question. Newly added calendar prompts are
+  // spoken by device TTS when a prerecorded sentence has not been produced yet.
+  // A short natural recording gives an immediate cue while the full question is visible.
+  if (typeof CLIPS !== 'undefined' && !CLIPS[clipKey(q.say)]) {
+    q.say = /how many/i.test(q.text) ? 'How many?' :
+      /after|follows|before|comes next|last month|first month/i.test(q.text) ? 'What comes next?' :
+      'Look at the picture!';
+  }
+  return q;
+}
 
 /* ---------------- INSIDE MY BODY (optional) ---------------- */
 function organSVG(highlight) {
