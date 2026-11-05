@@ -2,13 +2,13 @@
    Bundled JSON must be loaded BEFORE question generators run. No eval or remote scripts. */
 (() => {
   'use strict';
-  const NAMESPACES = ['content', 'thinking', 'science', 'grammar', 'grade1', 'words', 'stories', 'early-words', 'reading-patterns', 'country', 'coloring-0', 'coloring-1', 'coloring-2', 'coloring-3', 'coloring-4', 'coloring-5', 'coloring-landmarks'];
+  const NAMESPACES = ['content', 'thinking', 'science', 'grammar', 'grade1', 'words', 'stories', 'early-words', 'reading-patterns', 'country', 'scenes', 'coloring-0', 'coloring-1', 'coloring-2', 'coloring-3', 'coloring-4', 'coloring-5', 'coloring-landmarks'];
   const SCRIPTS = [
     'feature-flags.js','storage.js','geo.js','art-engine.js','landmarks.js',
     'story-engine.js','words.js','phonics.js','early-words.js','grade1words.js',
     'photos.js','illustrations.js','content.js','content-packs.js',
     'thinking.js','country.js','science.js','grammar.js','numsense.js',
-    'grade1.js','app.js','scenes.js','games.js','pathmaze.js',
+    'grade1.js','app.js','scene-engine.js','games.js','pathmaze.js',
     'radialmaze.js','wordgames.js','trace.js','progress.js','workbook.js'
   ];
   const status = document.getElementById('loadStatus');
