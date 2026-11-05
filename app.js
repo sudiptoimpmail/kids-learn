@@ -944,7 +944,7 @@ function renderThemes() {
   let taps = 0, t = 0;
   $('#settingsTitle').addEventListener('click', () => {
     taps++; clearTimeout(t); t = setTimeout(() => (taps = 0), 1500);
-    if (taps >= 5) { taps = 0; if (testFeatureAvailable()) { $('#testSection').hidden = false; sfx.yes(); renderTestInfo(); } }
+    if (taps >= 5) { taps = 0; unlockTestTools(); }
   });
 })();
 function renderTestInfo() {
@@ -952,8 +952,16 @@ function renderTestInfo() {
   const gl = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
   $('#testInfo').textContent = `Voice clips: ${clips} · 3D: ${gl ? 'yes' : 'no'} · Grade: ${state.grade || 'none'} · Screen: ${innerWidth}×${innerHeight}`;
 }
-// QA unlocked by the ?qa=1 link: a grown-up can lock it again here (same as opening ?qa=0)
-$('#qaLock').onclick = () => { try { localStorage.removeItem(QA_KEY); } catch {} state.testMode = false; save(); applyTheme(); $('#testSection').hidden = !testFeatureAvailable(); };
+// QA unlock is available inside PIN-protected Settings on installed home-screen apps.
+function unlockTestTools() {
+  try { localStorage.setItem(QA_KEY, '1'); } catch {}
+  state.testMode = true; save(); applyTheme();
+  $('#testMode').checked = true; $('#testSection').hidden = false;
+  $('#qaUnlock').hidden = true; sfx.yes(); renderTestInfo();
+}
+$('#qaUnlock').onclick = unlockTestTools;
+// A grown-up can lock QA again here (same as opening ?qa=0).
+$('#qaLock').onclick = () => { try { localStorage.removeItem(QA_KEY); } catch {} state.testMode = false; save(); applyTheme(); $('#testSection').hidden = !testFeatureAvailable(); $('#qaUnlock').hidden = testFeatureAvailable(); };
 $('#testMode').onchange = () => { state.testMode = testFeatureAvailable() && $('#testMode').checked; save(); applyTheme(); };
 // Test navigation never treats a skipped card as correct or changes persistent progress.
 function qaMove(step) {
@@ -1016,7 +1024,7 @@ $('#gradeChip').onclick = () => $('#settingsBtn').onclick();
 $('#settingsBtn').onclick = () => askPin(openSettings);
 function openSettings() {
   renderKids();
-  renderGrades(); renderThemes(); $('#testMode').checked = isTestMode(); $('#testSection').hidden = !testFeatureAvailable();
+  renderGrades(); renderThemes(); $('#testMode').checked = isTestMode(); $('#testSection').hidden = !testFeatureAvailable(); $('#qaUnlock').hidden = testFeatureAvailable();
   $('#countrySel').innerHTML = COUNTRY_ORDER.map((k) => `<option value="${k}">${COUNTRIES[k].flag} ${COUNTRIES[k].label}</option>`).join('') + '<option value="other">🌍 Somewhere else</option>';
   $('#countrySel').value = countryCode();
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
