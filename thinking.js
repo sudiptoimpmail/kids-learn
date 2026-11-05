@@ -21,7 +21,44 @@ function thinkingQuestion(key, text, main, choices, answer, reason, optsClass = 
     answer, optClass: optsClass,
     hint: { html: `<div class="hint-note">${reason}</div>`, say: [reason] } };
 }
+
+// More challenging reasoning at older levels: extend a growing pattern,
+// detect multiplication, and infer the changing difference.
+function genAdvancedPattern(level) {
+  const kind = rand(level >= 5 ? 4 : 2);
+  let nums, answer, reason;
+  if (kind === 0) {
+    const first = 1 + rand(5), initial = 1 + rand(3);
+    nums = [first]; let step = initial;
+    for (let i = 0; i < 4; i++) { nums.push(nums.at(-1) + step); step += level >= 5 ? 2 : 1; }
+    answer = nums.at(-1) + step;
+    reason = 'Look at how much the number increases each time.';
+  } else if (kind === 1) {
+    const factor = level >= 5 ? pick([2, 3, 4]) : 2, first = 1 + rand(3);
+    nums = Array.from({ length: 5 }, (_, i) => first * factor ** i);
+    answer = first * factor ** 5;
+    reason = 'Multiply by the same number each time.';
+  } else if (kind === 2) {
+    const base = 2 + rand(8), step = 2 + rand(4);
+    nums = Array.from({ length: 5 }, (_, i) => base + (i % 2 === 0 ? i / 2 : -((i + 1) / 2) * step));
+    answer = base + 3;
+    reason = 'Two number patterns take turns.';
+  } else {
+    const first = 2 + rand(3);
+    nums = Array.from({ length: 5 }, (_, i) => first + i * i);
+    answer = first + 25;
+    reason = 'The jumps grow by two each time.';
+  }
+  const correct = String(answer);
+  const wrong = [...new Set([answer + 1, answer - 1, answer + 2, answer - 2, answer + 4, answer * 2])]
+    .filter(n => n >= 0 && n !== answer).map(String).slice(0, 3);
+  return thinkingQuestion('advanced-pattern-' + kind + '-' + nums.join('-'), 'What number should come next?',
+    '<div class="think-pattern">' + nums.map(n => '<span>' + n + '</span>').join('') + '<span class="think-missing">?</span></div>',
+    [correct, ...wrong], correct, reason, 'opt-num');
+}
+
 function genPattern(level) {
+  if (level >= 3 && Math.random() < (level >= 4 ? 0.75 : 0.25)) return genAdvancedPattern(level);
   if (level >= 4 && Math.random() < 0.65) {
     const step = pick(level >= 5 ? [2, 3, 4, 5, 10] : [1, 2, 5]);
     const start = level >= 5 ? 1 + rand(8) : 1 + rand(5);
