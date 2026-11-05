@@ -85,7 +85,7 @@ function genPattern(level) {
 }
 // Each row describes three items with the same property and one outlier.
 // Levels: obvious categories -> habitats/objects -> properties & functions.
-const THINKING_ODD = ContentData.get('thinking','THINKING_ODD');
+const THINKING_ODD = ContentData.get('thinking','THINKING_ODD').concat(ContentData.get('grade23-extension','THINKING_ODD'));
 function genOdd(level) {
   const pool = THINKING_ODD.filter((x) => x[0] <= level);
   const [difficulty, similar, different, reason] = pick(pool);
@@ -98,7 +98,7 @@ function genOdd(level) {
   q.hint.say = 'Think about it!';
   return q;
 }
-const THINKING_SEQUENCES = ContentData.get('thinking','THINKING_SEQUENCES');
+const THINKING_SEQUENCES = ContentData.get('thinking','THINKING_SEQUENCES').concat(ContentData.get('grade23-extension','THINKING_SEQUENCES'));
 function genSequence(level) {
   const pool = THINKING_SEQUENCES.filter((x) => x[0] <= level);
   const exact = pool.filter(row => row[0] === level);

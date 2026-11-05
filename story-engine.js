@@ -12,4 +12,6 @@
 const PATTERN_SENTENCES = ContentData.get('reading-patterns','PATTERN_SENTENCES');
 
 // [level, story, [[question, [right, wrong, wrong]], ...]]
-const STORIES = ContentData.get('stories','STORIES').concat(ContentData.get('upper-grade-stories','STORIES'));
+const STORIES = ContentData.get('stories','STORIES')
+  .concat(ContentData.get('upper-grade-stories','STORIES'))
+  .concat(ContentData.get('grade23-extension','STORIES').map(row => [...row, true]));

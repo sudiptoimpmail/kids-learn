@@ -371,7 +371,7 @@ const sentLevel = (x) => { if (typeof x !== 'string') return x[3] || sentLevel(x
 
 // every reading item as [text, [[question, options], ...], level]
 const READING = () => READING.all || (READING.all = SENTENCES.map((x) => [x[0], [[x[1], x[2]]], sentLevel(x), x[4] === 'print-first'])
-  .concat(PATTERN_SENTENCES.map((x) => [x[0], [[x[1], x[2]]], x[3]]), STORIES.map((x) => [x[1], x[2], x[0]])));
+  .concat(PATTERN_SENTENCES.map((x) => [x[0], [[x[1], x[2]]], x[3]]), STORIES.map((x) => [x[1], x[2], x[0], x[3] === true])));
 // words that never point to an answer on their own
 const HINT_SKIP = new Set('a an the is are was were be to of and or in on at it its i you he she we they my his her their this that what who where when why how which do does did can has have had will with for from by so but not one some many much'.split(' '));
 const HINT_NUMS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
@@ -1013,7 +1013,7 @@ function genAnatomy3D(level) {
 
 /* ---------------- GENERAL KNOWLEDGE ---------------- */
 // Levels: 1 Pre-K · 2 Kindergarten · 3 1st grade · 4 2nd grade
-const GK = ContentData.get('content','GK');
+const GK = ContentData.get('content','GK').concat(ContentData.get('grade23-extension','GK'));
 /* Pre-K picture listening and recognition, with genuinely age-banded visual content.
    The bank is large, but each short question shows 2–4 related images, not a wall of thumbnails. */
 function genVisualRecognition(level) {
