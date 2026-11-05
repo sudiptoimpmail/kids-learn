@@ -29,8 +29,22 @@ function nsPie(parts, shaded, bar) {
 }
 const frac = (a, b) => `${a}/${b}`;
 const fracHTML = (a, b) => `<span class="ns-f"><b>${a}</b><i>${b}</i></span>`;
+// Original denomination artwork, kept as inline SVG so money questions work offline.
+// Coins are schematic teaching drawings, not photographic/legal reproductions.
+function nsCoinPicture(value, label, currencyCode) {
+  const tone = ({1:'#ca864b',2:'#d4a66c',5:'#aab7bf',10:'#b4c0cc',20:'#d8b568',25:'#b8c3ce',50:'#d0b779',100:'#dfb74d',200:'#c9d7d7'})[value] || '#d2b781';
+  const safe = String(label).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
+  const code = String(currencyCode || '').replace(/[^A-Za-z ]/g,'').slice(0,14);
+  return `<svg class="ns-currency-picture" viewBox="0 0 110 110" role="img" aria-label="${safe} coin">
+    <circle cx="55" cy="55" r="51" fill="#fff" opacity=".7"/>
+    <circle cx="55" cy="55" r="46" fill="${tone}" stroke="#6d635a" stroke-width="2.5"/>
+    <circle cx="55" cy="55" r="40" fill="none" stroke="#fff" stroke-opacity=".72" stroke-width="2" stroke-dasharray="2 4"/>
+    <path d="M32 38Q55 14 78 38" stroke="#fff" stroke-opacity=".5" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <text x="55" y="63" font-size="${safe.length>3?23:29}" text-anchor="middle" fill="#28394b" font-weight="900" font-family="system-ui,sans-serif">${safe}</text>
+    <text x="55" y="79" font-size="8" text-anchor="middle" fill="#374354" font-weight="700" font-family="system-ui,sans-serif">${code}</text>
+  </svg>`;
+}
 function nsCoins(total, C) {
-  // pick coins that add up to the total, biggest first with a little variety
   const coins = C.coins.map((c) => c[0]).sort((a, b) => b - a);
   let out, left = 1;
   for (let tries = 0; tries < 6 && left; tries++) {
@@ -39,8 +53,9 @@ function nsCoins(total, C) {
   }
   if (left) return null;
   const label = (v) => C.coins.find((c) => c[0] === v)[1];
-  return `<div class="ns-coins">${out.map((v) => `<span class="ns-coin c${coins.indexOf(v) % 4}">${label(v)}</span>`).join('')}</div>`;
+  return `<div class="ns-coins" aria-label="Count the coins">${out.map((v) => `<span class="ns-coin c${coins.indexOf(v)%4}">${nsCoinPicture(v,label(v),C.label || C.name)}</span>`).join('')}</div>`;
 }
+
 function nsQ(key, text, sayQ, main, answer, wrong, n, optClass = 'opt-num') {
   const opts = shuffle([String(answer), ...sample([...new Set(wrong.map(String))].filter((x) => x !== String(answer)), n)]);
   return { key: `ns-${key}`, text, say: sayQ, main, mainClass: 'ph-main', options: opts.map((o) => ({ v: o, html: o.includes('/') ? fracHTML(...o.split('/')) : o })), answer: String(answer),
