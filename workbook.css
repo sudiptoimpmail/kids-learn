@@ -45,3 +45,31 @@
 
 /* The Grade 1 word tracing tab must remain hidden for younger profiles. */
 #trace .tr-tab[hidden] { display:none !important; }
+
+/* Touch-first two-step shape page: trace the printed outline, then find it in the scene. */
+.ia-shape-step { width:min(100%,420px); margin:0 auto 14px; padding:11px 12px 8px; background:#fffaf0; border:3px solid #e8c28b; border-radius:19px; text-align:center; color:#4a4738; }
+.ia-trace-heading { display:flex; flex-direction:column; gap:3px; }
+.ia-trace-heading b { font-weight:900; font-size:1.12rem; }
+.ia-trace-heading small { font-size:.85rem; color:#5b6465; }
+.ia-trace-shape { width:min(100%,230px); height:auto; display:block; margin:4px auto; overflow:visible; touch-action:none; cursor:crosshair; }
+.ia-trace-ink { pointer-events:none; transition:stroke-dashoffset .07s linear; }
+.ia-trace-assist { color:#43616b; padding:7px 12px; background:#eef7ff; border:2px solid #aac7de; border-radius:11px; font-size:.84rem; font-weight:700; }
+.ia-shape-locked { filter:saturate(.62); }
+.ia-shape-locked .ia-hotspot { pointer-events:none; }
+.ia-shape-step .ia-trace-complete { opacity:.85; }
+@media (prefers-reduced-motion:reduce) { .ia-trace-ink {transition:none;} }
+
+/* Keep the café illustration legible beneath the existing validated finger-tracing canvas. */
+.ia-trace-scene {opacity:.47;}
+
+/* Hidden printed words live in the actual picture, not a letter-grid mini-game. */
+.ia-wordhunt-bank {max-width:760px;width:100%;border:3px solid #e2ce99;background:#fff8df;border-radius:15px;padding:12px;line-height:2.1;text-align:center;margin-bottom:12px;font-weight:700;}
+.ia-wordhunt-bank strong {display:block;line-height:1.4;}
+.ia-wordhunt-bank span {display:inline-block;background:#fff;border-radius:8px;padding:0 7px;margin:1px 2px;border:1px solid #d8bb7f;font-size:clamp(13px,3vw,17px);}
+.ia-wordhunt-bank span.ia-found {background:#c8f4d0;text-decoration:line-through;color:#1b6c40;border-color:#56a770;}
+.ia-hidden-word {position:absolute;z-index:5;transform:translate(-50%,-50%);min-width:44px;min-height:39px;padding:4px;border:2px solid #957b5488;border-radius:10px;background:#fff6dfcc;color:#513d28;font:900 clamp(12px,3.5vw,18px)/1.1 system-ui,sans-serif;touch-action:manipulation;}
+.ia-hidden-word:focus-visible {outline:4px solid #23669c;outline-offset:2px;}
+.ia-hidden-word.ia-found {background:#b7ebbe;box-shadow:0 0 0 3px #4a9e60;opacity:.88;}
+.ia-hidden-word.ia-found:after {content:"✓";position:absolute;right:-8px;top:-9px;background:#2e915c;color:#fff;width:19px;height:19px;border-radius:50%;font-size:13px;display:grid;place-items:center;}
+.ia-found-words {font-weight:800;color:#2d7544;text-align:center;padding:8px;}
+@media(max-width:400px){.ia-hidden-word{min-width:40px;min-height:34px;font-size:12px;padding:2px;}}

@@ -183,7 +183,7 @@ function genPhonics(level) {
     return {
       key: `ph-rhyme-${a[0]}-${b[0]}`, text: `Which picture rhymes with <b>${a[0]}</b>?`, say: ['Which picture rhymes with', `${a[0]}?`],
       main: `<div class="ph-word"><span class="ph-e">${a[1]}</span>${a[0]}</div>`, mainClass: 'ph-main',
-      options: opts.map(picOpt), answer: b[0], optClass: 'opt-emoji', hint: namesHint(opts, `Rhymes sound the same at the end, like ${a[0]}!`),
+      options: opts.map(picOpt), answer: b[0], optClass: 'opt-emoji', hint: namesHint(opts, 'Say each picture. Listen to the end!'),
     };
   }
   // ---- level 1: first letter

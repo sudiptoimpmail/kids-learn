@@ -59,7 +59,7 @@
       <div id="playTitle" class="play-title"></div>
       <button id="sayBtn" class="icon-btn" aria-label="Say it again">🔊</button>
     </header>
-    <div class="prog-row"><div id="progress" class="progress"></div><button id="skipBtn" class="diff-btn test-only" aria-label="Test: skip">⏭</button><button id="prevBtn" class="diff-btn test-only" aria-label="Test: previous card">⏮</button><button id="endBtn" class="diff-btn test-only" aria-label="Test: end round">🏁</button><button id="diffBtn" class="diff-btn" aria-label="Grown-ups: press and hold to change difficulty">🎚️ <span id="diffLv"></span></button></div>
+    <div class="prog-row"><div id="progress" class="progress"></div><span id="qaPosition" class="test-only qa-position" aria-live="polite"></span><button id="prevBtn" class="diff-btn test-only qa-nav" type="button" aria-label="Test: previous question without answering">← Prev</button><button id="skipBtn" class="diff-btn test-only qa-nav" type="button" aria-label="Test: next question without answering">Next →</button><button id="endBtn" class="diff-btn test-only qa-nav" type="button" aria-label="Test: end preview without scoring">End</button><button id="diffBtn" class="diff-btn" aria-label="Grown-ups: press and hold to change difficulty">🎚️ <span id="diffLv"></span></button></div>
     <div class="q-zoom-controls" aria-label="Question zoom controls">
       <button id="qZoomOut" class="diff-btn" aria-label="Zoom question out">－</button>
       <button id="qZoomReset" class="diff-btn" aria-label="Reset question zoom">1×</button>
@@ -260,7 +260,7 @@
           <label class="lvrow">Game<select id="tbGame"></select></label>
           <label class="lvrow">Level<select id="tbLevel"></select></label>
           <button id="tbGo" class="big-btn small">▶ Open 30 cards</button>
-          <small class="note">Use ⏮ ⏭ on the card to step through. Every game and the Play Zone are open in test mode.</small></div>
+          <small class="note">Use Prev / Next on any question without answering, or the keyboard ← / → keys. Skipped answers are never scored. Illustrated activities appear in their normal subject sections.</small></div>
       </div>
       <button id="dashBtn" class="big-btn small">📊 Progress for grown-ups</button>
       <button id="pinChange" class="big-btn alt small">🔒 Change grown-up PIN</button>

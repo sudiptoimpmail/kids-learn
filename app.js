@@ -37,7 +37,7 @@ let sayToken = 0, actx, curSrc = null;
 const esc = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 // a delayed step that only runs if this card is still on screen (the child may have gone home meanwhile)
-const onCard = (q, fn) => () => { if (R && R.qs[R.i] === q && $('#play').classList.contains('active')) fn(); };
+const onCard = (q, fn) => { const token = R && R.navToken; return () => { if (R && R.navToken === token && R.qs[R.i] === q && $('#play').classList.contains('active')) fn(); }; };
 // let sound play even when the iPhone's silent switch is on (Safari 16.4+)
 try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch {}
 function ctx() {
@@ -286,7 +286,7 @@ function startRound(catId, count, browse = false, atLevel = null) {
     const c = cat.gen ? cat : real[Math.floor(Math.random() * real.length)];
     const lv = atLevel || levelOf(c.id);
     // Illustrated activities appear as variations in existing question rounds.
-    const illustrated = !browse && !isTestMode() && typeof IllustratedActivities !== 'undefined' &&
+    const illustrated = typeof IllustratedActivities !== 'undefined' &&
       IllustratedActivities.available(state.grade, c.id, lv) && (qs.length % 4 === 1 || (qs.length === 0 && Math.random() < 0.45));
     let q = (illustrated && IllustratedActivities.make(state.grade, c.id, lv)) || c.gen(lv);
     // Keep a single occurrence of each illustrated exercise per round.
@@ -306,6 +306,8 @@ function startRound(catId, count, browse = false, atLevel = null) {
 function renderProgress() {
   $('#diffLv').textContent = R.cat.id === 'mix' ? '' : `Lv ${levelOf(R.cat.id)}`;
   $('#diffBtn').hidden = R.cat.id === 'mix';
+  $('#qaPosition').textContent = (R.i + 1) + ' / ' + R.qs.length;
+  $('#prevBtn').disabled = R.i === 0;
   $('#progress').innerHTML = R.qs.map((q, i) =>
     `<span class="dot ${i < R.i ? (q.ok ? 'ok' : 'meh') : i === R.i ? 'now' : ''}">${i < R.i ? (q.ok ? '⭐' : '✔︎') : ''}</span>`).join('');
 }
@@ -328,6 +330,8 @@ async function mountBody3D(q) {
 }
 
 function renderQ() {
+  // Increment the navigation epoch so delayed feedback cannot advance a card revisited in QA.
+  R.navToken = (R.navToken || 0) + 1;
   setQuestionZoom(1);
   // A prior answer's recording or feedback must never appear on an unanswered card.
   sayToken++; stopClip(); $('#pop').classList.remove('show'); $('#pop').replaceChildren();
@@ -951,14 +955,29 @@ function renderTestInfo() {
 // QA unlocked by the ?qa=1 link: a grown-up can lock it again here (same as opening ?qa=0)
 $('#qaLock').onclick = () => { try { localStorage.removeItem(QA_KEY); } catch {} state.testMode = false; save(); applyTheme(); $('#testSection').hidden = !testFeatureAvailable(); };
 $('#testMode').onchange = () => { state.testMode = testFeatureAvailable() && $('#testMode').checked; save(); applyTheme(); };
-// skip: count the card as right and move on · end: jump to the results
-$('#skipBtn').onclick = () => {
+// Test navigation never treats a skipped card as correct or changes persistent progress.
+function qaMove(step) {
   if (!isTestMode() || !R || !$('#play').classList.contains('active')) return;
-  // QA navigation is not an answer: never grant stars, mastery or answer credit.
+  if (step < 0 && R.i === 0) return;
   sayToken++; stopClip(); clearTimeout(R.nudge);
-  R.locked = true; next();
+  $('#pop').classList.remove('show');
+  if (step > 0 && R.i === R.qs.length - 1) { finish(); return; }
+  R.i += step;
+  renderQ();
+}
+$('#skipBtn').onclick = () => qaMove(1);
+$('#prevBtn').onclick = () => qaMove(-1);
+$('#endBtn').onclick = () => {
+  if (!isTestMode() || !R || !$('#play').classList.contains('active')) return;
+  sayToken++; stopClip(); clearTimeout(R.nudge);
+  finish();
 };
-$('#endBtn').onclick = () => { if (!isTestMode() || !R) return; R.i = R.qs.length - 1; R.locked = true; next(); };
+document.addEventListener('keydown', e => {
+  if (!isTestMode() || !$('#play').classList.contains('active') || e.altKey || e.ctrlKey || e.metaKey) return;
+  if (e.target.closest('input, textarea, select, [contenteditable="true"]')) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); qaMove(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); qaMove(-1); }
+});
 
 /* ---------- wire up ---------- */
 $('#grid').addEventListener('click', (e) => {
@@ -1080,7 +1099,7 @@ $('#tbGo').onclick = () => {
   startRound(id, 30, true);
   state.levels[id] = keep;
 };
-$('#prevBtn').onclick = () => { if (!R || R.i === 0) return; R.i--; R.locked = false; renderQ(); };
+
 function collectSettings() {
   state.name = $('#nameInput').value.trim().slice(0, 20);
   state.voice = $('#voiceToggle').checked;
