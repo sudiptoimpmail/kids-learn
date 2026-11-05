@@ -317,6 +317,9 @@ const FILES = [
   "data/landmark-photos.json",
   "assets/body/child-front.webp",
   "data/grade23-extension.json",
+  "data/explorer-math.json",
+  "data/explorer-science.json",
+  "explorer-engine.js",
 ];
 const SCOPE = new URL('./', self.location).pathname;   // e.g. /kids-learn/ — never touch other apps on the same site
 

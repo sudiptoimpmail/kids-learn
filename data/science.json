@@ -1473,6 +1473,591 @@
             3
           ]
         ]
+      ],
+      [
+        3,
+        "In the water cycle, what is happening?",
+        [
+          "evaporation",
+          "condensation"
+        ],
+        [
+          [
+            "a puddle gets smaller on a hot day",
+            "☀️",
+            0
+          ],
+          [
+            "wet clothes dry in the breeze",
+            "👕",
+            0
+          ],
+          [
+            "water disappears from an open cup over time",
+            "🥛",
+            0
+          ],
+          [
+            "a lake loses water to the air",
+            "🏞️",
+            0
+          ],
+          [
+            "rainwater on pavement dries",
+            "🛣️",
+            0
+          ],
+          [
+            "droplets form on a cold window",
+            "🪟",
+            1
+          ],
+          [
+            "dew forms on cool grass",
+            "🌿",
+            1
+          ],
+          [
+            "water beads on a cold bottle",
+            "🧴",
+            1
+          ],
+          [
+            "a bathroom mirror fogs up",
+            "🪞",
+            1
+          ],
+          [
+            "mist becomes tiny water drops",
+            "🌫️",
+            1
+          ]
+        ]
+      ],
+      [
+        3,
+        "What is its role in a simple food chain?",
+        [
+          "producer",
+          "consumer",
+          "decomposer"
+        ],
+        [
+          [
+            "grass growing in sunlight",
+            "🌱",
+            0
+          ],
+          [
+            "oak tree making sugar from sunlight",
+            "🌳",
+            0
+          ],
+          [
+            "algae growing in a pond",
+            "🟢",
+            0
+          ],
+          [
+            "sunflower making its food",
+            "🌻",
+            0
+          ],
+          [
+            "rabbit eating grass",
+            "🐇",
+            1
+          ],
+          [
+            "fox eating a mouse",
+            "🦊",
+            1
+          ],
+          [
+            "deer eating leaves",
+            "🦌",
+            1
+          ],
+          [
+            "bird eating insects",
+            "🐦",
+            1
+          ],
+          [
+            "mushroom breaking down a log",
+            "🍄",
+            2
+          ],
+          [
+            "earthworm helping break down dead leaves",
+            "🪱",
+            2
+          ],
+          [
+            "bacteria decomposing a fallen leaf",
+            "🦠",
+            2
+          ],
+          [
+            "fungi breaking down dead wood",
+            "🍄",
+            2
+          ]
+        ]
+      ],
+      [
+        3,
+        "Which observation shows a push or a pull?",
+        [
+          "push",
+          "pull"
+        ],
+        [
+          [
+            "opening a door by pressing it away",
+            "🚪",
+            0
+          ],
+          [
+            "pushing a shopping cart forward",
+            "🛒",
+            0
+          ],
+          [
+            "kicking a soccer ball ahead",
+            "⚽",
+            0
+          ],
+          [
+            "closing a drawer by pressing its front",
+            "🗄️",
+            0
+          ],
+          [
+            "pushing a swing from behind",
+            "🛝",
+            0
+          ],
+          [
+            "tugging a rope toward you",
+            "🪢",
+            1
+          ],
+          [
+            "opening a drawer by its handle",
+            "🗄️",
+            1
+          ],
+          [
+            "drawing a wagon toward you",
+            "🛒",
+            1
+          ],
+          [
+            "lifting a bucket with a rope",
+            "🪣",
+            1
+          ],
+          [
+            "pulling a suitcase by its handle",
+            "🧳",
+            1
+          ]
+        ]
+      ],
+      [
+        3,
+        "What is this material best described as?",
+        [
+          "transparent",
+          "opaque"
+        ],
+        [
+          [
+            "clear window glass",
+            "🪟",
+            0
+          ],
+          [
+            "clean clear plastic sheet",
+            "📄",
+            0
+          ],
+          [
+            "clear drinking glass",
+            "🥛",
+            0
+          ],
+          [
+            "transparent acrylic pane",
+            "🔍",
+            0
+          ],
+          [
+            "clear plastic water bottle",
+            "🧴",
+            0
+          ],
+          [
+            "wooden board",
+            "🪵",
+            1
+          ],
+          [
+            "thick cardboard sheet",
+            "📦",
+            1
+          ],
+          [
+            "solid metal plate",
+            "🔩",
+            1
+          ],
+          [
+            "brick wall",
+            "🧱",
+            1
+          ],
+          [
+            "closed wooden door",
+            "🚪",
+            1
+          ]
+        ]
+      ],
+      [
+        4,
+        "Is this energy source renewable or nonrenewable?",
+        [
+          "renewable",
+          "nonrenewable"
+        ],
+        [
+          [
+            "sunlight for solar panels",
+            "☀️",
+            0
+          ],
+          [
+            "wind turning a turbine",
+            "🌬️",
+            0
+          ],
+          [
+            "moving water at a hydroelectric dam",
+            "💧",
+            0
+          ],
+          [
+            "heat from deep underground",
+            "🌋",
+            0
+          ],
+          [
+            "coal burned at a power station",
+            "🪨",
+            1
+          ],
+          [
+            "natural gas extracted from underground",
+            "🔥",
+            1
+          ],
+          [
+            "gasoline made from petroleum",
+            "⛽",
+            1
+          ],
+          [
+            "diesel fuel made from crude oil",
+            "⛽",
+            1
+          ]
+        ]
+      ],
+      [
+        4,
+        "Which simple machine helps?",
+        [
+          "lever",
+          "pulley",
+          "inclined plane"
+        ],
+        [
+          [
+            "a seesaw lifting one side",
+            "⚖️",
+            0
+          ],
+          [
+            "crowbar lifting a lid",
+            "🛠️",
+            0
+          ],
+          [
+            "bottle opener prying a cap",
+            "🍾",
+            0
+          ],
+          [
+            "a wheelbarrow lifting its load",
+            "🛞",
+            0
+          ],
+          [
+            "a flag raised with a rope over a wheel",
+            "🚩",
+            1
+          ],
+          [
+            "a bucket raised with a rope over a wheel",
+            "🪣",
+            1
+          ],
+          [
+            "a curtain lifted by a cord and wheel",
+            "🪟",
+            1
+          ],
+          [
+            "a load hoisted using a rope and wheel",
+            "🪢",
+            1
+          ],
+          [
+            "a ramp leading into a truck",
+            "🚚",
+            2
+          ],
+          [
+            "a sloped wheelchair access ramp",
+            "♿",
+            2
+          ],
+          [
+            "a sloping board to roll a crate up",
+            "📦",
+            2
+          ],
+          [
+            "a gentle slope up to a loading dock",
+            "🏗️",
+            2
+          ]
+        ]
+      ],
+      [
+        4,
+        "Which force is mainly responsible?",
+        [
+          "gravity",
+          "friction",
+          "magnetic force"
+        ],
+        [
+          [
+            "an apple falls from a tree",
+            "🍎",
+            0
+          ],
+          [
+            "a dropped ball falls to the ground",
+            "⚽",
+            0
+          ],
+          [
+            "rain falls from a cloud",
+            "🌧️",
+            0
+          ],
+          [
+            "a marble rolls down a slope",
+            "🔵",
+            0
+          ],
+          [
+            "a sliding book slows on a table",
+            "📚",
+            1
+          ],
+          [
+            "bicycle brakes slow the wheel",
+            "🚲",
+            1
+          ],
+          [
+            "shoes grip a rough floor",
+            "👟",
+            1
+          ],
+          [
+            "a box stops sliding on carpet",
+            "📦",
+            1
+          ],
+          [
+            "a paper clip moves toward a magnet",
+            "📎",
+            2
+          ],
+          [
+            "a magnet attracts an iron nail",
+            "🔩",
+            2
+          ],
+          [
+            "two magnet poles pull toward each other",
+            "🧲",
+            2
+          ],
+          [
+            "a compass needle aligns with Earth's magnetic field",
+            "🧭",
+            2
+          ]
+        ]
+      ],
+      [
+        4,
+        "Which Earth process is described?",
+        [
+          "weathering",
+          "erosion",
+          "deposition"
+        ],
+        [
+          [
+            "water freezes in a crack and breaks a rock",
+            "🪨",
+            0
+          ],
+          [
+            "plant roots slowly split a rock",
+            "🌱",
+            0
+          ],
+          [
+            "acidic rain slowly dissolves limestone",
+            "🌧️",
+            0
+          ],
+          [
+            "temperature changes crack a rock in place",
+            "🌡️",
+            0
+          ],
+          [
+            "a stream carries soil downstream",
+            "🏞️",
+            1
+          ],
+          [
+            "strong wind carries sand from a dune",
+            "🌬️",
+            1
+          ],
+          [
+            "moving glacier ice carries rock fragments",
+            "🧊",
+            1
+          ],
+          [
+            "waves move sand away from a beach",
+            "🌊",
+            1
+          ],
+          [
+            "sediment settles where a river slows",
+            "🏞️",
+            2
+          ],
+          [
+            "sand piles up on a riverbank",
+            "⏳",
+            2
+          ],
+          [
+            "silt collects at a river mouth",
+            "💧",
+            2
+          ],
+          [
+            "wind drops sand behind a large rock",
+            "🪨",
+            2
+          ]
+        ]
+      ],
+      [
+        4,
+        "In a science investigation, what kind of statement is this?",
+        [
+          "prediction",
+          "observation",
+          "conclusion"
+        ],
+        [
+          [
+            "I think the warmer water will dissolve sugar faster.",
+            "🌡️",
+            0
+          ],
+          [
+            "I expect a longer shadow later today.",
+            "☀️",
+            0
+          ],
+          [
+            "I predict the paper plane with wide wings will fly farther.",
+            "✈️",
+            0
+          ],
+          [
+            "I think a magnet will attract the steel washer.",
+            "🧲",
+            0
+          ],
+          [
+            "The thermometer reads 22 degrees Celsius.",
+            "🌡️",
+            1
+          ],
+          [
+            "The seedling grew two centimeters this week.",
+            "🌱",
+            1
+          ],
+          [
+            "I counted six drops on the outside of the cup.",
+            "💧",
+            1
+          ],
+          [
+            "The paper plane flew four floor tiles.",
+            "✈️",
+            1
+          ],
+          [
+            "Our repeated tests support the claim that warm water dissolved sugar faster.",
+            "🔬",
+            2
+          ],
+          [
+            "The results suggest the rough surface increased friction.",
+            "🔍",
+            2
+          ],
+          [
+            "Our observations support the idea that sunlight affected plant growth.",
+            "🌱",
+            2
+          ],
+          [
+            "The data indicate the wider wings improved flight distance in this test.",
+            "✈️",
+            2
+          ]
+        ]
       ]
     ]
   }

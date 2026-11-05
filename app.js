@@ -774,10 +774,17 @@ function choose(q, v, el) {
     if (q.fill) { const b = $('.blank'); if (b) { b.textContent = q.answer; b.classList.add('filled'); } }
     $$('.qmark').forEach((m) => { m.textContent = q.answer; m.classList.add('filled'); });
     celebrate(first);
+    if (q.explorer && q.explanation) {
+      const why = document.createElement('div');
+      why.className = 'explorer-explanation';
+      why.setAttribute('role', 'status');
+      why.textContent = q.explanation;
+      $('#qMain').appendChild(why);
+    }
     if (q.reveal && B3D.view) {
       setTimeout(onCard(q, () => { if (B3D.view) { B3D.view.reveal(q.reveal); say(q.reveal.text); } }), 1200);
       setTimeout(onCard(q, next), 4600);
-    } else setTimeout(onCard(q, next), first ? 1900 : 1600);
+    } else setTimeout(onCard(q, next), q.explorer ? 4300 : first ? 1900 : 1600);
   } else {
     q.tries++; R.mistakes++; R.streak = 0;
     el.classList.add('wrong'); el.disabled = true;
