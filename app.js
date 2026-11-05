@@ -27,6 +27,8 @@ const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CAT
   && !sectionOff(c.id)
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'region' && typeof myRegion === 'function' && !myRegion())
+  && !(c.id === 'check' && !(typeof checkFor === 'function' && checkFor()))
+  && !(c.id === 'lang' && !(typeof langPack === 'function' && langPack()))
   && !(c.id === 'syl' && !state.showAll && strongReader())
   && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
 // auto level-up stops at the top of the child's grade (unless all games are shown)
@@ -94,7 +96,7 @@ const spokenNumber = (p) => {
   const h = Math.floor(n / 100), r = n % 100;
   return r ? [`${HUNDREDS[h]} hundred`, r + m[2]] : [`${HUNDREDS[h]} hundred${m[2]}`];
 };
-const sayParts = (text) => (Array.isArray(text) ? text.map(String) : splitSentences(text)).flatMap(spokenNumber);
+const sayParts = (text) => (Array.isArray(text) ? text.map(String) : splitSentences(text)).flatMap(spokenNumber).map((p) => (typeof localSpoken === 'function' ? localSpoken(p) : p));
 function prefetch(text) { if (text) sayParts(text).forEach((p) => { const f = CLIPS[clipKey(p)]; if (f) getBuf(f).catch(() => {}); }); }
 function stopClip() { try { curSrc && curSrc.stop(); } catch {} curSrc = null; try { htmlPlayer.pause(); } catch {} }
 
@@ -262,6 +264,7 @@ function renderHome() {
   if (typeof renderToday === 'function') renderToday();
   if (typeof renderQuest === 'function') renderQuest();
   const groups = [
+    ['📝 Practice', ['check', 'lang']],
     ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'gp', 'match', 'syl']],
     ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'frac', 'measure', 'mul', 'div', 'clock', 'shape2']],
     ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], 'brain'],
@@ -273,7 +276,7 @@ function renderHome() {
     const lv = c.id === 'mix' || c.trace ? '' : stepDots(c.id);
     const icon = c.id === 'home' && typeof myCountry === 'function' && myCountry() ? myCountry().flag : c.icon;
     return `<button class="tile" data-cat="${c.id}" style="--c:${c.color}">
-      ${lv}<span class="ti">${icon}</span><span class="tt">${typeof localTileTitle === 'function' ? localTileTitle(c.id, c.title) : c.title}</span><span class="ts">${c.sub}</span>
+      ${lv}<span class="ti">${icon}</span><span class="tt">${typeof editionTitle === 'function' ? editionTitle(c.id, localTileTitle(c.id, c.title)) : c.title}</span><span class="ts">${typeof editionSub === 'function' ? editionSub(c.id, c.sub) : c.sub}</span>
       <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
   };
   // brain games (memory, puzzles, mazes …) sit right inside Brain Teasers: a tap opens the game
@@ -329,7 +332,7 @@ function startRound(catId, count, browse = false, atLevel = null) {
   if (!browse && !isTestMode()) { state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60); save(); }
   if (!qs.length) { renderHome(); show('home'); return; }   // nothing for this grade (e.g. a stale link)
   R = { cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse, atLevel };
-  $('#playTitle').textContent = `${cat.icon} ${cat.title}`;
+  $('#playTitle').textContent = `${cat.icon} ${typeof editionTitle === 'function' ? editionTitle(cat.id, localTileTitle(cat.id, cat.title)) : cat.title}`;
   document.body.style.setProperty('--theme', cat.color);
   show('play');
   renderQ();

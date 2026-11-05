@@ -1419,3 +1419,8 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .tile .lv.steps { letter-spacing:1px; font-size:12px; color:#3b2a6b; text-shadow:none; font-weight:900; }
 .curr-area { display:block; color:#1c7ed6; font-weight:700; }
 .curr-name { margin:0 0 8px; font-size:14px; color:#495057; }
+/* times tables check: a calm 6-second bar (nothing is marked wrong when it runs out) */
+.ed-timer { width:min(320px,80vw); height:10px; margin:10px auto 0; background:#e9ecef; border-radius:6px; overflow:hidden; }
+.ed-timer i { display:block; height:100%; width:100%; background:linear-gradient(90deg,#51cf66,#fcc419,#ff6b6b); transform-origin:left; animation: edtime var(--secs) linear forwards; }
+@keyframes edtime { from { transform:scaleX(1); } to { transform:scaleX(0); } }
+.ed-word { font-size:clamp(34px,8vw,56px); }
