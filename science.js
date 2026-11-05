@@ -67,7 +67,7 @@ const SCIENCE = [
   [3, 'Sound is made when things…', 'vibrate', 'freeze', 'melt', 'sleep'],
   [3, 'Light travels in…', 'straight lines', 'circles', 'zigzags', 'squares'],
   [3, 'Which one lets electricity flow through it?', '🔩 metal', '🪵 wood', '🥤 plastic', '🧶 wool'],
-  [3, 'Which animal sleeps all winter? (hibernates)', '🐻 bear', '🐶 dog', '🐔 hen', '🐟 fish'],
+  [3, 'Which animal becomes much less active and stays in a den for much of winter?', '🐻 bear', '🐶 dog', '🐔 hen', '🐟 fish'],
   [3, 'Birds flying to warmer places for winter is called…', 'migration', 'hibernation', 'evaporation', 'camouflage'],
   // level 4
   [4, 'The force that pulls things toward the Earth is…', 'gravity', 'friction', 'magnetism', 'electricity'],
@@ -78,7 +78,7 @@ const SCIENCE = [
   [4, 'The remains of plants and animals from long ago found in rock are…', 'fossils', 'crystals', 'magnets', 'seeds'],
   [4, 'Hot melted rock that comes out of a volcano is…', 'lava', 'sand', 'ice', 'clay'],
   [4, 'Rock slowly worn away by wind and water is called…', 'erosion', 'evaporation', 'gravity', 'migration'],
-  [4, 'Which energy will never run out?', '☀️ sunlight', '⛽ gasoline', '🪨 coal', '🛢️ oil'],
+  [4, 'Which energy source is renewable on a human timescale?', '☀️ sunlight', '⛽ gasoline', '🪨 coal', '🛢️ oil'],
   [4, 'Which one turns wind into electricity?', 'a wind turbine', 'a battery', 'a candle', 'a magnet'],
   [4, 'How does a polar bear stay warm?', 'thick fur and fat', 'big ears', 'long tail', 'sharp teeth'],
   [4, 'How does a cactus live in the hot desert?', 'it stores water', 'it has big leaves', 'it drinks soda', 'it hides underground'],
@@ -110,7 +110,7 @@ const SCI_SORT = [
   [3, 'Is it a solid, a liquid or a gas?', ['solid', 'liquid', 'gas'], [
     ['ice cube', '🧊', 0], ['rock', '🪨', 0], ['apple', '🍎', 0], ['brick', '🧱', 0], ['spoon', '🥄', 0], ['book', '📖', 0],
     ['water', '💧', 1], ['milk', '🥛', 1], ['juice', '🧃', 1], ['honey', '🍯', 1], ['rain', '🌧️', 1], ['oil', '🫗', 1],
-    ['steam', '♨️', 2], ['air in a balloon', '🎈', 2], ['smoke', '💨', 2], ['the air we breathe', '🌬️', 2]]],
+    ['water vapor', '💨', 2], ['air in a balloon', '🎈', 2], ['helium in a balloon', '🎈', 2], ['the air we breathe', '🌬️', 2]]],
   [3, 'What does it eat?', ['plants (herbivore)', 'meat (carnivore)', 'both (omnivore)'], [
     ['cow', '🐮', 0], ['rabbit', '🐰', 0], ['horse', '🐴', 0], ['deer', '🦌', 0], ['giraffe', '🦒', 0], ['elephant', '🐘', 0], ['koala', '🐨', 0],
     ['lion', '🦁', 1], ['tiger', '🐯', 1], ['shark', '🦈', 1], ['wolf', '🐺', 1], ['eagle', '🦅', 1], ['crocodile', '🐊', 1],
