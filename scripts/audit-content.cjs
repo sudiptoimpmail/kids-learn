@@ -122,7 +122,7 @@ for(const [subject,book,levels] of [
       !q.choices.includes(q.answer)||
       new Set(q.choices.map(x=>String(x).trim().toLowerCase())).size!==q.choices.length)
       error('explorer-'+subject,q.id,'invalid answer/distractors');
-    if(q.asset && (!new RegExp('^assets/(?:photos|illustrations)/[a-z0-9_-]+[.](?:svg|jpg)
+    if(q.asset && (!new RegExp('^assets/(?:photos|illustrations)/[a-z0-9_-]+[.](?:svg|jpg)$').test(q.asset)||
         !fs.existsSync(path.join(root,q.asset))))
       error('explorer-'+subject,q.id,'missing or disallowed offline media '+q.asset);
   }
