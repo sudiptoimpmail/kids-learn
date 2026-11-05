@@ -1049,3 +1049,28 @@ html, body { min-height: 100%; }
 .gk-picture-choices .opt .gk-picture { font-size:clamp(62px,10vw,100px); line-height:1.1; filter:drop-shadow(0 4px 3px #0002); }
 .gk-picture-choices .opt small { font-size:15px; font-weight:900; color:#51436f; }
 @media(max-height:730px){ .gk-picture-choices .opt { min-height:95px; } .gk-picture-choices .opt .gk-picture { font-size:55px; } }
+
+
+/* Self-contained photographed learning illustrations; all images precached for offline iPad use. */
+.gk-picture-choices .opt .gk-photo {
+  display:block; width:100%; max-width:230px; height:clamp(100px, 18vw, 170px);
+  aspect-ratio:1; object-fit:cover; border-radius:15px;
+  box-shadow:0 3px 0 #d5c5ac;
+}
+.reading-word-photo { display:block; width:min(230px,54vw); aspect-ratio:1; object-fit:cover; border-radius:21px; box-shadow:0 4px 0 #d9c9ad; margin:0 auto; }
+.reading-photo-wrap { width:min(230px,65vw); margin:8px auto; }
+.reading-photo { display:block; width:100%; aspect-ratio:5/3; object-fit:cover; border-radius:15px; box-shadow:0 4px 0 #d5c5b2; }
+.pz-photo-pick { display:block; width:100%; aspect-ratio:1; object-fit:cover; border-radius:12px; }
+.pz-photo-peek { display:block; width:100%; aspect-ratio:1; object-fit:cover; border-radius:10px; box-shadow:0 3px 0 #ded8cc; }
+.pzl-tile .pz-photo-slice { display:block; width:100%; height:100%; background-repeat:no-repeat; border-radius:inherit; }
+.pzl-tile .jigsaw-art { overflow:hidden; }
+@media (max-width:440px) {
+  .gk-picture-choices .opt .gk-photo { height:105px; }
+  .reading-photo-wrap { width:min(175px,54vw); }
+  .pz-photo-peek { width:72px; }
+  .pz-board { min-width:0; }
+}
+@media (max-height:720px) {
+  .reading-photo-wrap { width:min(145px,36vw); }
+  .gk-picture-choices .opt .gk-photo { height:80px; }
+}
