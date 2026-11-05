@@ -1299,3 +1299,16 @@ html, body { min-height: 100%; }
 .hint-mini .body-photo-map { width:min(145px,34vw); pointer-events:none; }
 .q-main.body-main { overflow:visible; }
 @media (min-width:700px) { .body-fig.body-photo-map { width:340px; } }
+
+/* Famous Places: photo-led recognition, informative text/map until verified photos exist. */
+.lm-box.lm-real-photo { width:min(330px,80vw);aspect-ratio:4 / 3;background:#e7f6fb;border:4px solid #fff;border-radius:18px;
+  box-shadow:0 6px 0 #bed7df,0 10px 18px #183b5e1a;overflow:hidden; }
+.lm-box.lm-real-photo .lm-art {width:100%;height:100%;object-fit:contain;box-shadow:none;border-radius:0;}
+.lm-box.lm-illustration .lm-art {border:3px solid #f7f5e4;box-shadow:0 4px 0 #d1d8cf;}
+.lm-art-note {display:block;text-align:center;font-size:11px;color:#5b6677;font-weight:700;margin:4px 0;}
+.lm-info-card {display:grid;justify-items:center;gap:6px;margin:2px auto;padding:18px 16px;
+  width:min(315px,84vw);max-width:100%;border-radius:24px;background:linear-gradient(140deg,#e4f8f8,#f7f5d9);
+  border:3px solid #fff;box-shadow:0 6px 0 #b6d9d7;line-height:1.25;}
+.lm-info-card span {font-size:52px;line-height:1.1;}
+.lm-info-card b {font-size:clamp(21px,5vw,28px);overflow-wrap:anywhere;}
+.lm-info-card small {font-size:14px;font-weight:700;color:#4d5b65;}
