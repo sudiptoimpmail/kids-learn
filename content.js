@@ -1513,35 +1513,71 @@ function genAnimals(level) {
 
 /* ---------------- FAMOUS PLACES ---------------- */
 function genPlaces(level) {
-  const pool = LANDMARKS.filter((l) => l[4] <= level);
-  const exact = pool.filter((l) => l[4] === level);
+  const pool = LANDMARKS.filter(l => l[4] <= level);
+  const exact = pool.filter(l => l[4] === level);
   const L = pick(exact.length && Math.random() < 0.6 ? exact : pool);
   const [id, name, country, city] = L;
-  const n = numOpts(level) - 1;
-  const mapHint = { html: `<div class="hint-map">${worldSVG({ hl: country, level: 3 })}</div><div class="hint-note">📍 ${city}</div>`, say: 'Look at the orange place on the map!' };
-  const type = pick(['where', 'where', 'which', 'name']);
+  const n = numOpts(level)-1;
+  const mapHint = {html: `<div class="hint-map">${worldSVG({hl:country,level:3})}</div><div class="hint-note">📍 ${city}</div>`,
+    say: 'Look at the orange place on the map!'};
+  const illustrated = !landmarkHasPhoto(id);
+  const illustrationNote = `<div class="lm-info-card" aria-label="Place explorer">
+    <span aria-hidden="true">🧭</span><b>${name}</b><small>Find this place on the world map</small></div>`;
+  // A simplified cartoon is not an acceptable visual-identification target.
+  // Reserve "name the picture" and "which picture" modes for licensed,
+  // accuracy-reviewed actual photographs bundled in the app.
+  const pictured = pool.filter(l => landmarkHasPhoto(l[0]));
+  const photoCompatible = !illustrated && pictured.length >= n+1;
+  const type = photoCompatible
+    ? pick(['where','where','city','which','name'])
+    : pick(['where','where','city','name-text']);
   if (type === 'which') {
-    const others = sample(LANDMARKS.filter((x) => x[2] !== country && !(LM_ALSO[x[0]] || []).includes(country) && x[4] <= Math.max(level, 2)), n);
-    return {
-      key: `lm-which-${id}`, text: `Which one is in <b>${theC(country)}</b>? ${COUNTRY_FLAG[country] || ''}`, say: ['Which one is in', `${theC(country)}?`],
-      main: '', mainClass: 'empty', options: shuffle([L, ...others]).map((x) => ({ v: x[0], html: landmarkArt(x[0], 'small') })), answer: id,
-      optClass: 'opt-svg lm-opts', hint: mapHint,
+    const others=sample(pictured.filter(x=>x[2]!==country && !(LM_ALSO[x[0]]||[]).includes(country)),n);
+    if(others.length===n)return {
+      key:`lm-which-${id}`, text:`Which picture is in <b>${theC(country)}</b>?`,
+      say:['Which one is in', `${theC(country)}?`],
+      main:'',mainClass:'empty',
+      options:shuffle([L,...others]).map(x=>({v:x[0],html:landmarkArt(x[0],'small')})),
+      answer:id,optClass:'opt-svg lm-opts',hint:mapHint
     };
   }
   if (type === 'name') {
-    const others = sample(pool.filter((x) => x[0] !== id), n);
+    const others=sample(pictured.filter(x=>x[0]!==id),n);
     return {
-      key: `lm-name-${id}`, text: 'What is this famous place called?', say: 'What is this famous place called?',
-      main: landmarkArt(id), mainClass: 'lm-main', options: shuffle([L, ...others]).map((x) => ({ v: x[0], html: x[1] })), answer: id,
-      optClass: 'opt-text', hint: { html: `<div class="hint-note">📍 ${city}, ${country} ${COUNTRY_FLAG[country] || ''}</div>`, say: 'Think about where it is!' },
+      key:`lm-name-${id}`, text:'What is this famous place called?',
+      say:'What is this famous place called?',main:landmarkArt(id),mainClass:'lm-main',
+      options:shuffle([L,...others]).map(x=>({v:x[0],html:x[1]})),
+      answer:id,optClass:'opt-text',
+      hint:{html:`<div class="hint-note">📍 ${city}, ${country}</div>`,say:'Think about where it is!'}
     };
   }
-  const not = LM_ALSO[id] || [];
-  const wrong = sample(famousCountries(Math.max(level, 2)).filter((x) => x !== country && !not.includes(x)), n);
+  if (type === 'city') {
+    const poolCities=[...new Set(pool.filter(x=>x[3]!==city).map(x=>x[3]))];
+    const wrong=sample(poolCities,n);
+    if(wrong.length===n) return {
+      key:`lm-city-${id}`,text:`Which city or area is <b>${name}</b> in?`,
+      say:'Find the answer.',main:illustrated?illustrationNote:landmarkArt(id),
+      mainClass:'lm-main',options:shuffle([city,...wrong]).map(v=>({v,html:v})),
+      answer:city,optClass:'opt-text',hint:mapHint
+    };
+  }
+  if(type === 'name-text'){
+    const others=sample(pool.filter(x=>x[0]!==id && x[2]!==country),n);
+    if(others.length===n)return {
+      key:`lm-nametext-${id}`,text:`Which famous place is in <b>${theC(country)}</b>?`,
+      say:['Which one is in', `${theC(country)}?`],
+      main:'',mainClass:'empty',
+      options:shuffle([L,...others]).map(x=>({v:x[0],html:x[1]})),
+      answer:id,optClass:'opt-text',hint:mapHint
+    };
+  }
+  const not=LM_ALSO[id]||[];
+  const wrong=sample(famousCountries(Math.max(level,2)).filter(x=>x!==country && !not.includes(x)),n);
   return {
-    key: `lm-where-${id}`, text: lmWhere(id, `<b>${name}</b>`), say: lmWhere(id, name),
-    main: landmarkArt(id), mainClass: 'lm-main', options: shuffle([country, ...wrong]).map((x) => ({ v: x, html: `${COUNTRY_FLAG[x] || ''} ${x}` })), answer: country,
-    optClass: 'opt-text', hint: mapHint,
+    key:`lm-where-${id}`,text:lmWhere(id,`<b>${name}</b>`),say:lmWhere(id,name),
+    main:illustrated?illustrationNote:landmarkArt(id),mainClass:'lm-main',
+    options:shuffle([country,...wrong]).map(x=>({v:x,html:`${COUNTRY_FLAG[x]||''} ${x}`})),
+    answer:country,optClass:'opt-text',hint:mapHint
   };
 }
 
