@@ -702,6 +702,9 @@ function mathHint(op, a, b, e) {
 }
 
 function genAdd(level) {
+  // Comparison is a math activity, not a separate category: mix age-appropriate
+  // more/fewer and symbol comparisons into ordinary addition practice.
+  if (Math.random() < 0.13) return genCompare(Math.min(level, 5));
   const [a, b] = addPair(level);
   const ans = a + b;
   const [e, things] = pick(THINGS);
