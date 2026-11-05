@@ -1,6 +1,6 @@
 /* =========================================================
    3D Pinball — 2D physics on the playfield, drawn as a real machine with three.js
-   Six different tables (a random one every game), each with its own layout:
+   Three rotating tables (a random one every game), each with its own layout:
    pop bumpers, ramps the ball rides up and around, drop-target banks, spinners,
    saucers that catch and kick the ball, stand-up targets and rollover lanes.
    Every hit shows its points; a dot-matrix display keeps the score.
@@ -38,15 +38,14 @@ const TABLES = [
     rollovers: [[3.0, 16.3], [4.4, 16.8]], standups: [[2.0, 15.4, -0.5], [6.4, 15.9, 0.6]], saucers: [] },
 ];
 
+const PLAY_TABLES = [TABLES[0], TABLES[2], TABLES[4]];
 export function start(tableIndex) {
   const lv = GL('pinball');
-  const T = TABLES[tableIndex != null ? tableIndex : Math.floor(Math.random() * TABLES.length)];
+  const T = PLAY_TABLES[tableIndex != null ? tableIndex % PLAY_TABLES.length : Math.floor(Math.random() * PLAY_TABLES.length)];
   const area = $('#gameArea');
-  area.innerHTML = `<div class="pb-dmd"><div class="pb-dmd-top"><b class="pb-score">0</b><span class="pb-balls">● ● ●</span></div>
-      <div class="pb-dmd-msg">${T.icon} ${T.name.toUpperCase()}</div><div class="pb-dmd-bot"><span>TARGET ${TARGET[lv - 1].toLocaleString()}</span><span class="pb-mult">×1</span></div></div>
-    <div class="b3-wrap pb-wrap"><canvas class="game-cv pb-cv"></canvas><div class="b3-msg" hidden></div></div>
-    <div class="pb-btns"><button class="pb-flip" data-f="L">◀</button><button class="pb-launch">🚀 Launch</button><button class="pb-flip" data-f="R">▶</button></div>
-    <div class="color-btns"><button class="big-btn alt small" data-a="skin">🎰 New table</button></div>`;
+  area.innerHTML = `<div class="pb-dmd"><div class="pb-dmd-top"><b class="pb-score">0</b><span class="pb-dmd-msg">${T.icon} ${T.name}</span><span class="pb-balls">● ● ●</span><span class="pb-mult">×1</span></div><div class="pb-dmd-bot"><span>TARGET ${TARGET[lv - 1].toLocaleString()}</span></div></div>
+    <div class="b3-wrap pb-wrap"><canvas class="game-cv pb-cv"></canvas><div class="b3-msg" hidden></div><button class="pb-launch pb-plunger" type="button" aria-label="Launch ball from the right lane">⬆<small>Launch</small></button></div>
+    <div class="pb-btns"><button class="pb-flip" data-f="L" type="button" aria-label="Left flipper">◀ <span>LEFT</span></button><button class="pb-flip" data-f="R" type="button" aria-label="Right flipper"><span>RIGHT</span> ▶</button></div>`;
   say('Tap to launch the ball!');
 
   const cv = $('.pb-cv', area), wrap = $('.b3-wrap', area);
@@ -63,7 +62,7 @@ export function start(tableIndex) {
   const P = (x, y, h = 0) => new THREE.Vector3(x - 5, h, -y);          // table (x, y) → 3D
   function size() {
     const w = wrap.clientWidth, top = wrap.getBoundingClientRect().top;
-    const h = Math.max(380, Math.min(innerHeight - top - 150, w * 1.8));
+    const h = Math.max(270, Math.min(Math.max(270, innerHeight - top - 105 - (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--safe-bottom')) || 0)), w * 1.8));
     renderer.setSize(w, h, true); camera.aspect = w / h;
     // keep the whole table in view whatever the screen shape
     camera.fov = THREE.MathUtils.clamp(46 * Math.pow(0.62 / camera.aspect, 0.55), 40, 64);
@@ -301,10 +300,11 @@ export function start(tableIndex) {
   const ballsTxt = () => ($('.pb-balls', area).textContent = '● '.repeat(Math.max(0, G.balls)).trim());
   function launch() {
     if (!G.inLane || G.over) return;
+    $('.pb-launch', area).hidden = true;
     G.inLane = false; G.vy = 15.5 + Math.random() * 5; G.vx = 0; G.saver = SAVER[lv - 1];
     tone([220, 330, 440], { dur: 0.06, gap: 0.04, vol: 0.12, type: 'sawtooth' });
   }
-  function resetBall() { G.x = 9.55; G.y = 0.6; G.vx = G.vy = 0; G.h = 0; G.inLane = true; G.ride = null; G.held = null; G.still = 0; }
+  function resetBall() { $('.pb-launch', area).hidden = false; G.x = 9.55; G.y = 0.6; G.vx = G.vy = 0; G.h = 0; G.inLane = true; G.ride = null; G.held = null; G.still = 0; }
 
   /* ---------------- input ---------------- */
   const press = (side, on) => { const f = flips[side]; if (on && !f.pressed) tone([side === 'L' ? 300 : 340], { dur: 0.03, vol: 0.06 }); f.pressed = on; };
@@ -325,7 +325,6 @@ export function start(tableIndex) {
   $('.pb-launch', area).onclick = launch;
   const key = (e) => { const on = e.type === 'keydown'; if (e.key === 'ArrowLeft' || e.key === 'z') press('L', on); if (e.key === 'ArrowRight' || e.key === '/') press('R', on); if (on && (e.key === ' ' || e.key === 'ArrowDown')) launch(); };
   addEventListener('keydown', key); addEventListener('keyup', key);
-  area.querySelector('[data-a="skin"]').onclick = () => { cleanup(); start((TABLES.indexOf(T) + 1 + Math.floor(Math.random() * (TABLES.length - 1))) % TABLES.length); };
 
   /* ---------------- physics ---------------- */
   function collideSeg(s, rest = 0.45) {
@@ -435,7 +434,7 @@ export function start(tableIndex) {
     flash('Next ball!'); dmd('NEXT BALL'); resetBall();
   }
   function gameOver() {
-    G.over = true; G.inLane = true;
+    G.over = true; G.inLane = true; $('.pb-launch', area).hidden = true;
     state.pinBest = Math.max(state.pinBest || 0, G.score);
     const up = G.leveled ? gameLevelUp('pinball', 1) : (save(), false);
     gameWin(G.leveled ? 'Awesome job!' : 'Great game!');
