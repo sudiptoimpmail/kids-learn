@@ -46,7 +46,59 @@ function nsQ(key, text, sayQ, main, answer, wrong, n, optClass = 'opt-num') {
   return { key: `ns-${key}`, text, say: sayQ, main, mainClass: 'ph-main', options: opts.map((o) => ({ v: o, html: o.includes('/') ? fracHTML(...o.split('/')) : o })), answer: String(answer),
     optClass, hint: { html: '', say: 'Think about it!', remove: true } };
 }
+
+/* Measurement and data: real K–3 mathematical thinking, mixed into Number Sense.
+   Levels 1–2 use nonstandard units and simple picture graphs; levels 3–5
+   add comparisons, perimeter and area. Every picture is locally rendered. */
+function genMeasureData(level) {
+  const modes = level === 1 ? ['units', 'longer', 'graph'] :
+    level === 2 ? ['units', 'longer', 'graph', 'graph'] :
+    level === 3 ? ['units', 'graph', 'difference'] :
+    ['graph', 'difference', 'perimeter', 'area'];
+  const mode = pick(modes);
+  if (mode === 'units') {
+    const n = 3 + rand(level >= 2 ? 11 : 6);
+    const blocks = '<div class="md-unit-row" role="img" aria-label="' + n +
+      ' equal blocks in one row">' + Array.from({length:n}, () => '<span class="md-unit"></span>').join('') + '</div>';
+    return nsQ('measure-units-' + n, 'Count the blocks. How long is the line?',
+      'How many?', blocks, n, [n-2,n-1,n+1,n+2].filter(v=>v>0), level>=2?3:2);
+  }
+  if (mode === 'longer') {
+    const a = 3 + rand(5), b = 3 + rand(5);
+    if (a === b) return genMeasureData(level);
+    const rows = '<div class="md-ribbons"><div><b>A</b><span class="md-ribbon" style="width:'+(a*9)+'%"></span></div>'+
+      '<div><b>B</b><span class="md-ribbon md-blue" style="width:'+(b*9)+'%"></span></div></div>';
+    return nsQ('measure-longer-'+a+'-'+b, 'Which ribbon is longer?', 'Find the answer!',
+      rows, a>b?'A':'B', [a>b?'B':'A'], 1, 'opt-text two');
+  }
+  if (mode === 'perimeter' || mode === 'area') {
+    const w = 2 + rand(6), h = 2 + rand(5), answer = mode === 'area' ? w*h : 2*(w+h);
+    const diagram = '<div class="md-rectangle"><span class="md-width">'+w+' units</span><span class="md-grid" style="grid-template-columns:repeat('+w+',18px)">'+
+      '<i></i>'.repeat(w*h)+'</span><span class="md-height">'+h+' units</span></div>';
+    return nsQ('measure-'+mode+'-'+w+'-'+h,
+      mode === 'area' ? 'How many square units cover the rectangle?' : 'What is the distance all around this rectangle?',
+      'Find the answer!', diagram, answer,
+      [answer+2,answer-2,mode==='area'?2*(w+h):w*h,answer+w,answer+h].filter(v=>v>0&&v!==answer),3);
+  }
+  const labels=['apples','bananas','grapes'];
+  let values;
+  do {values = [2+rand(6),2+rand(6),2+rand(6)];} while(new Set(values).size!==3);
+  const hi = values.indexOf(Math.max(...values)), lo=values.indexOf(Math.min(...values));
+  const chart='<div class="md-graph" role="img" aria-label="Picture graph: '+
+    labels.map((name,i)=>name+' '+values[i]).join(', ')+'">'+labels.map((name,i)=>
+      '<div class="md-graph-row"><span>'+name+'</span><div class="md-graph-bar">'+
+      '<i style="width:'+(values[i]*12)+'%"></i></div><b>'+values[i]+'</b></div>').join('')+'</div>';
+  if(mode==='difference') {
+    const answer=values[hi]-values[lo];
+    return nsQ('data-difference-'+values.join('-'),'How many more votes did the most popular fruit get than the least popular?',
+      'Find the answer!',chart,answer,[answer-1,answer+1,answer+2,values[hi]].filter(v=>v>=0),3);
+  }
+  return nsQ('data-most-'+values.join('-'),'Which fruit got the most votes?',
+    'Find the answer!',chart,labels[hi],labels.filter(x=>x!==labels[hi]),2,'opt-text');
+}
+
 function genNumSense(level) {
+  if (Math.random() < 0.27) return genMeasureData(level);
   const n = level >= 2 ? 3 : 2, t = Math.random();
   const C = (typeof myCountry === 'function' && myCountry()) || COUNTRIES.us;
   if (level >= 5 && t < 0.65) {
