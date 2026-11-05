@@ -1358,7 +1358,7 @@ const genGK = (level) => {
   const q = mcQuestion('gk', pickLevelled(GK, level), level);
   // Pre-K children hear a recognizable prompt and a target word with prerecorded audio.
   if (q.text.startsWith('Which picture shows')) {
-    const noun = q.answer.replace(/^\\S+\\s+/, '');
+    const noun = q.answer.split(' ').slice(1).join(' ');
     q.say = CLIPS[clipKey(noun)] ? ['Find the picture of', noun] : 'Look at the picture!';
   } else if (!CLIPS[clipKey(q.text)]) {
     // Newly added calendar questions remain readable offline without missing audio-file requests.
