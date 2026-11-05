@@ -2,7 +2,7 @@
    Bundled JSON must be loaded BEFORE question generators run. No eval or remote scripts. */
 (() => {
   'use strict';
-  const NAMESPACES = ['content', 'thinking', 'science', 'grammar', 'grade1', 'words', 'stories', 'early-words', 'reading-patterns'];
+  const NAMESPACES = ['content', 'thinking', 'science', 'grammar', 'grade1', 'words', 'stories', 'early-words', 'reading-patterns', 'country'];
   const SCRIPTS = [
     'feature-flags.js','storage.js','geo.js','art.js','landmarks.js',
     'story-engine.js','words.js','phonics.js','early-words.js','grade1words.js',
