@@ -1102,28 +1102,30 @@ const puzzleSize = () => [2, 2, 3, 3, 4][GL('puzzle') - 1]; // short puzzles: 4�
 function startPuzzleMenu() {
   const area = $('#gameArea');
   const size = puzzleSize();
-  const PUZ = ALL_PICS.filter((p) => p.orig || !p.om);
+  const PUZ = [...PHOTO_PUZZLE, ...ALL_PICS.filter((p) => p.orig || !p.om)];
   area.innerHTML = `<div class="g-msg">Pick a picture · ${size}×${size} puzzle</div><div class="pic-grid">${PUZ.map((p) =>
-    `<button class="pic-pick" data-p="${p.id}">${picSVG(p, puzzleFills(p))}<span>${p.name}</span></button>`).join('')}</div>`;
+    `<button class="pic-pick" data-p="${p.id}">${p.photo ? photoImage(p.photo,'pz-photo-pick') : picSVG(p, puzzleFills(p))}<span>${p.name}</span></button>`).join('')}</div>`;
   say('Pick a picture!');
-  $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startPuzzle(ALL_PICS.find((p) => p.id === b.dataset.p)); }));
+  $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startPuzzle(PUZ.find((p) => p.id === b.dataset.p)); }));
 }
 
 function startPuzzle(p) {
   const n = puzzleSize(), N = n * n, VB = p.vb || 200, part = VB / n;
   const fills = puzzleFills(p);
   let k = 0;
-  const body = p.svg().replace(/class="r( bg)?"/g, () => `class="r" style="fill:${fills[k++] || '#fff'}"`);
+  const body = p.photo ? '' : p.svg().replace(/class="r( bg)?"/g, () => `class="r" style="fill:${fills[k++] || '#fff'}"`);
   let order;
   do { order = shuffle([...Array(N).keys()]); } while (order.every((v, i) => v === i));
   let pickA = null, solved = false;
   // A handful of pieces begin rotated at harder levels; the child rotates by tapping a selected piece again.
   const turns = Array.from({length:N}, () => GL('puzzle') >= 2 && Math.random() < 0.28 ? 1 + rand(3) : 0);
   const area = $('#gameArea');
-  const tileSVG = (t) => `<svg viewBox="${(t % n) * part} ${Math.floor(t / n) * part} ${part} ${part}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`;
+  const tileSVG = (t) => p.photo
+    ? `<span class="pz-photo-slice" style="background-image:url('assets/photos/${p.photo}.jpg');background-size:${n * 100}% ${n * 100}%;background-position:${(t % n) * 100 / (n - 1)}% ${Math.floor(t / n) * 100 / (n - 1)}%"></span>`
+    : `<svg viewBox="${(t % n) * part} ${Math.floor(t / n) * part} ${part} ${part}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`;
   area.innerHTML = `<div class="g-msg">Put the picture back together! <small>Tap two pieces to swap. Tap a selected piece again to rotate.</small></div>
     <div class="pz-wrap"><div class="pz-board" style="grid-template-columns:repeat(${n},1fr)"></div>
-    <div class="pz-peek"><svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg><small>Look!</small></div></div>
+    <div class="pz-peek">${p.photo ? photoImage(p.photo,'pz-photo-peek') : `<svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`}<small>Look!</small></div></div>
     <div class="color-btns"><button class="big-btn alt small ico" data-a="restart" aria-label="Restart">🔄 Restart</button><button class="big-btn alt small ico" data-a="pictures" aria-label="Pictures">🖼️ Pictures</button></div>`;
   say('Put the picture back together!');
   const board = $('.pz-board', area);
