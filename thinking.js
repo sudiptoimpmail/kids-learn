@@ -127,6 +127,35 @@ const THINKING_ODD = [
   [3, ['⚽', '🏀', '🏐'], '🎸', 'The others are balls used in games.'],
   [3, ['🖊️', '✏️', '🖍️'], '🪥', 'The others are used for writing or drawing.'],
   [3, ['🧥', '👕', '👖'], '🍕', 'The others are clothing.'],
+
+  // Expanded Kindergarten and Grade 1 classification: what things are for,
+  // where they belong, and shared attributes rather than repeated labels.
+  [2, ['🧴', '🧽', '🧹'], '🍌', 'The others are things we use to clean.'],
+  [2, ['🚒', '🚑', '🚓'], '🚜', 'The others help people in emergencies.'],
+  [2, ['📖', '✏️', '📏'], '🍪', 'The others are school supplies.'],
+  [2, ['🛁', '🪥', '🧼'], '🪁', 'The others help keep us clean.'],
+  [2, ['🐢', '🐸', '🐊'], '🦋', 'The others can live in or near water.'],
+  [2, ['🥣', '🍽️', '🥄'], '📷', 'The others are used at mealtime.'],
+  [2, ['🎸', '🎺', '🪕'], '🎨', 'The others are musical instruments.'],
+  [2, ['🧥', '🧤', '🧣'], '🩴', 'The others keep us warm in cold weather.'],
+  [2, ['🌂', '☂️', '🧥'], '🏀', 'The others can protect us from rain.'],
+  [2, ['⛵', '🚤', '🚢'], '🚲', 'The others travel on water.'],
+  [2, ['🏥', '🏫', '📚'], '🍔', 'The others are connected with community services or learning.'],
+  [2, ['🍴', '🥄', '🥢'], '🧸', 'The others help us eat food.'],
+  // More demanding Grade 2/3 distinctions with a reason to explain.
+  [3, ['🦉', '🦅', '🐧'], '🦇', 'The others are birds. A bat is a mammal.'],
+  [3, ['🦁', '🐯', '🐻'], '🐊', 'The others are mammals. A crocodile is a reptile.'],
+  [3, ['🐙', '🦀', '🦐'], '🐬', 'The others are invertebrates. A dolphin has a backbone.'],
+  [3, ['📏', '⚖️', '🌡️'], '🔦', 'The others are tools used to measure.'],
+  [3, ['🪐', '🌍', '🔴'], '☄️', 'The others can represent planets. A comet is not a planet.'],
+  [3, ['🧲', '🔭', '🔬'], '🧁', 'The others are tools used to explore science.'],
+  [3, ['♻️', '🗑️', '🧹'], '🎾', 'The others relate to managing waste and cleaning.'],
+  [3, ['📚', '📰', '📖'], '🎧', 'The others are printed reading materials.'],
+  [3, ['🚶', '🏃', '🚴'], '🛏️', 'The others are ways people can be physically active.'],
+  [3, ['🎨', '🖍️', '🖌️'], '📏', 'The others are used to make art.'],
+  [3, ['🌳', '🌲', '🌴'], '🌹', 'The others are trees. A rose is not a tree.'],
+  [3, ['🧃', '🥛', '💧'], '🥖', 'The others are drinks or water.'],
+
 ];
 function genOdd(level) {
   const pool = THINKING_ODD.filter((x) => x[0] <= level);
