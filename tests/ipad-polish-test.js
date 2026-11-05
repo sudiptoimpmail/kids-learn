@@ -25,6 +25,26 @@ const { chromium } = require('playwright');
       state.testMode = false;
       // Number tracing already exists for the youngest children.
       check(traceItems('num').length===20, 'Number tracing 1-20 missing');
+      // Every photograph ships locally, and picture questions offer only real photos from the same group.
+      check(PHOTO_NAMES.length === 16, 'Photographic vocabulary has fewer than sixteen subjects');
+      let photographed = 0;
+      for (let i = 0; i < 180; i++) {
+        const q = genGK(1);
+        if (q.text.startsWith('Which picture shows') && PHOTO_SET.has(q.answer)) {
+          photographed++;
+          check(q.options.length >= 3, 'Photo recognition requires multiple photo answers');
+          check(q.options.every(o => o.html.includes('<img') && PHOTO_SET.has(o.v)), 'Photo question has non-photographic answer');
+          check(q.options.filter(o => o.v === q.answer).length === 1, 'Photo quiz answer missing');
+          check(new Set(q.options.map(o => o.v)).size === q.options.length, 'Photo quiz choices duplicated');
+        }
+      }
+      check(photographed >= 10, 'PreK photo recognition questions are not generated');
+      let illustrated = false;
+      for (let i = 0; i < 120; i++) {
+        const q = genSentence(2);
+        if (q.main.includes('reading-photo')) { illustrated = true; break; }
+      }
+      check(illustrated, 'Photographs absent from reading comprehension questions');
       // New age-graded questions must never ask for unrecorded audio.
       for(let lv=1;lv<=4;lv++) for(let i=0;i<150;i++){
         const q=genGK(lv);
@@ -56,10 +76,19 @@ const { chromium } = require('playwright');
       check(tiles.length===9, 'Grade-appropriate jigsaw count missing');
       tiles[0].click();tiles[0].click();
       check(!!area.querySelector('.jigsaw-art'), 'Puzzle rotation artwork missing');
+      startPuzzle(PHOTO_PUZZLE[0]);
+      check(area.querySelectorAll('.pz-photo-slice').length===9, 'Photo puzzle tiles are missing');
+      check(!!area.querySelector('.pz-photo-peek'), 'Photo preview is missing from puzzle');
+
       return failures.slice(0,20);
     });
     assert.deepEqual(result,[],result.join('\n'));
     assert.deepEqual(errors,[],errors.join('\n'));
+    for(const name of ['cat','dog','rabbit','duck','elephant','tiger','butterfly','horse','sunflower','rose','tulip','daisy','car','airplane','helicopter','truck']) {
+      const path = 'assets/photos/' + name + '.jpg';
+      assert.ok(fs.existsSync(path) && fs.statSync(path).size > 6000, 'Missing photographed asset: ' + path);
+      assert.ok(fs.readFileSync('sw.js','utf8').includes(path), 'Missing offline pre-cache: ' + path);
+    }
     const pin=fs.readFileSync('pinball3d.js','utf8');
     assert.ok(!pin.includes('data-a="skin"'), 'Manual pinball table change must be removed');
     assert.ok(pin.includes('Math.floor(Math.random() * 3)'), 'Pinball should choose one of three tables');
