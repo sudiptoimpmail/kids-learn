@@ -23,7 +23,7 @@ const sectionOff = (id) => (id === 'clock' ? !!state.hideClock : OPTIONAL[id] &&
 // a child who reads and spells well doesn't need syllable clapping any more
 const strongReader = () => levelOf('spell') >= 4 || levelOf('sent') >= 3 || (levelOf('spell') >= 3 && (state.best.spell || 0) >= 3);
 // test mode keeps the child's grade; "Show all games" opens everything
-const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CATEGORIES.slice() : CATEGORIES.filter((c) => c.id !== 'cmp' // comparisons are mixed into math, not shown as a separate game
+const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CATEGORIES.filter((c) => c.id !== 'placement') : CATEGORIES.filter((c) => c.id !== 'cmp' && c.id !== 'placement' // comparisons are mixed into math, not shown as a separate game
   && !sectionOff(c.id)
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'region' && typeof myRegion === 'function' && !myRegion())
@@ -831,19 +831,20 @@ function finish() {
   state.best[id] = Math.max(state.best[id] || 0, stars);
   // adapt difficulty
   let levelMsg = '';
-  if (id !== 'mix' && !R.atLevel) {          // practice at an older level (quest) doesn't move her level
+  if (id === 'placement' && typeof applyPlacement === 'function') { applyPlacement(R.qs); levelMsg = '🎯 All set! Your games now start at the right step.'; }
+  else if (id !== 'mix' && !R.atLevel) {          // practice at an older level (quest) doesn't move her level
     const lv = levelOf(id);
     // Adaptive levels stay inside the selected grade's curriculum scope.
     // Parents can unlock wider levels with Show all games in Settings.
     state.good = state.good || {};
     if (rate <= 0.1) {
       state.good[id] = (state.good[id] || 0) + 1;
-      if (lv < levelCap(id)) { state.levels[id] = lv + 1; state.good[id] = 0; levelMsg = `⬆️ Level up! Now level ${lv + 1}`; }
+      if (lv < levelCap(id)) { state.levels[id] = lv + 1; state.good[id] = 0; levelMsg = '⬆️ Next step unlocked!'; }
       else if (!state.showAll && state.grade) levelMsg = '⭐ Great work! Try another skill for your grade.';
     } else {
       state.good[id] = 0;
       const floor = !state.showAll && state.grade ? (gradeRange(state.grade,id)||[1])[0] : 1;
-      if (rate >= 0.5 && n >= 5 && lv > floor) { state.levels[id] = lv - 1; levelMsg = `🙂 Let's practice level ${lv - 1} a bit more`; }
+      if (rate >= 0.5 && n >= 5 && lv > floor) { state.levels[id] = lv - 1; levelMsg = "🙂 Let's practice the step before a bit more"; }
     }
   }
   const earned = earnPlay();
@@ -872,7 +873,7 @@ function finish() {
   $('#againBtn').hidden = !!qn;
   show('result');
   sfx.win(); confetti(160, 0.3); setTimeout(() => confetti(120, 0.5), 600);
-  say(`${stars === 3 ? 'Wow! Awesome job!' : stars === 2 ? 'Great job!' : 'Good try!'} You got ${R.firstTry} stars.${levelMsg ? ' Level up!' : ''}${sticker ? ' And a new sticker!' : ''}${earned ? ' You earned play time!' : ''}`);
+  say(`${stars === 3 ? 'Wow! Awesome job!' : stars === 2 ? 'Great job!' : 'Good try!'} You got ${R.firstTry} stars.${levelMsg.startsWith('⬆️') ? ' Level up!' : ''}${sticker ? ' And a new sticker!' : ''}${earned ? ' You earned play time!' : ''}`);
 }
 
 function renderStickers() {
@@ -1065,6 +1066,7 @@ function renderGrades() {
     renderGrades();
     $$('#levels select').forEach((sel) => (sel.value = levelOf(sel.dataset.id)));
   }));
+  $('#placeBtn').hidden = !state.grade;
 }
 $('#gradeChip').onclick = () => $('#settingsBtn').onclick();
 $('#settingsBtn').onclick = () => askPin(openSettings);
@@ -1075,7 +1077,7 @@ function openSettings() {
   $('#countrySel').value = countryCode();
   fillRegions();
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !state.hideClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
-  $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
+  $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen && c.id !== 'placement').map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
   renderTestBrowser();
   // This section is accessible only after the parent PIN. No child-facing paywall.
@@ -1311,3 +1313,6 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
   let hadController = !!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener('controllerchange', () => { if (!hadController) { hadController = true; return; } location.reload(); });
 }
+
+// quick placement check, started by a grown-up from Settings
+$('#placeBtn').onclick = () => { sfx.tap(); collectSettings(); startPlacement(); };

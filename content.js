@@ -1728,6 +1728,7 @@ const CATEGORIES = [
   { id: 'numsense', title: 'Number Sense', sub: 'place value · fractions · money', icon: '🧮', color: '#0ca678', gen: (l) => genNumSensePlus(l), maxLevel: 5 },
   { id: 'sci', title: 'Science', sub: 'living things · matter · space', icon: '🔬', color: '#1098ad', gen: (l) => genSciencePlus(l), maxLevel: 4 },
   { id: 'community', title: 'Our Community', sub: 'rules · maps · money choices', icon: '🏘️', color: '#2b8a3e', gen: (l) => genCommunity(l), maxLevel: 3 },
+  { id: 'placement', title: 'Quick Check', sub: 'find the right step', icon: '🎯', color: '#7048e8', gen: () => genPlacement(), maxLevel: 1 },
   { id: 'check', title: 'Test Practice', sub: 'reading · maths', icon: '📝', color: '#495057', gen: () => genCheck(), maxLevel: 1, roundLen: 10 },
   { id: 'region', title: 'My State', sub: 'capital · places · facts', icon: '🗺️', color: '#c2255c', gen: (l) => genRegion(l), maxLevel: 3 },
   { id: 'home', title: 'My Country', sub: 'symbols · places · facts', icon: '🏳️', color: '#e03131', gen: (l) => genCountry(l), maxLevel: 4 },

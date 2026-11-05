@@ -1424,3 +1424,4 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .ed-timer i { display:block; height:100%; width:100%; background:linear-gradient(90deg,#51cf66,#fcc419,#ff6b6b); transform-origin:left; animation: edtime var(--secs) linear forwards; }
 @keyframes edtime { from { transform:scaleX(1); } to { transform:scaleX(0); } }
 .ed-word { font-size:clamp(34px,8vw,56px); }
+.place-btn { margin-top:10px; width:100%; font-size:17px; }
