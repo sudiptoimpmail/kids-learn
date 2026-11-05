@@ -391,7 +391,7 @@ function renderQ() {
   if (q.order) renderOrder(q);
   if (q.blend && typeof wireBlend === 'function') wireBlend(q);
   if (q.letterSound && typeof wireLetter === 'function') wireLetter(q);
-  if (q.tap) $('#qMain [data-val]').forEach((g) => {
+  if (q.tap) $$('#qMain [data-val]').forEach((g) => {
     if (!g.dataset.val) return;
     g.onclick = () => choose(q, g.dataset.val, g);
     g.onkeydown = e => {
@@ -753,7 +753,6 @@ function choose(q, v, el) {
     $$('.qmark').forEach((m) => { m.textContent = q.answer; m.classList.add('filled'); });
     celebrate(first);
     if (q.explorer && q.explanation) {
-      // The conclusion is shown only after a correct answer, never as a hint.
       const why = document.createElement('div');
       why.className = 'explorer-explanation';
       why.setAttribute('role', 'status');
