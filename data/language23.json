@@ -1,0 +1,1165 @@
+{
+  "schema": 1,
+  "namespace": "language23",
+  "datasets": {
+    "GP_CAPITALS": [
+      "Maya and Leo went to the park on Monday.",
+      "My dog Biscuit likes to dig.",
+      "We visited Grandma in July.",
+      "On Friday, Sam read a book about sharks.",
+      "Ava and I baked bread.",
+      "Our class went to the museum in May.",
+      "Ben lives on Maple Street.",
+      "The library opens on Saturday.",
+      "Zara saw a rainbow over the lake.",
+      "Mr. Kim teaches music.",
+      "Last week, Omar lost a tooth.",
+      "I can ride my bike to school."
+    ],
+    "GP_ENDMARKS": [
+      [
+        "Where is my hat",
+        "?"
+      ],
+      [
+        "I like green apples",
+        "."
+      ],
+      [
+        "Watch out for the ball",
+        "!"
+      ],
+      [
+        "Can you help me",
+        "?"
+      ],
+      [
+        "The cat is asleep on the rug",
+        "."
+      ],
+      [
+        "What a huge wave",
+        "!"
+      ],
+      [
+        "Do you want to play",
+        "?"
+      ],
+      [
+        "We ate soup for lunch",
+        "."
+      ],
+      [
+        "Hooray, we won",
+        "!"
+      ],
+      [
+        "How many legs does a spider have",
+        "?"
+      ],
+      [
+        "The bus is late today",
+        "."
+      ],
+      [
+        "Wow, look at that rocket",
+        "!"
+      ]
+    ],
+    "GP_POSSESSIVE": [
+      [
+        "the bone that belongs to the dog",
+        "the dog's bone"
+      ],
+      [
+        "the hat that belongs to Mia",
+        "Mia's hat"
+      ],
+      [
+        "the nest of the bird",
+        "the bird's nest"
+      ],
+      [
+        "the bike of my brother",
+        "my brother's bike"
+      ],
+      [
+        "the tail of the cat",
+        "the cat's tail"
+      ],
+      [
+        "the book that belongs to Leo",
+        "Leo's book"
+      ],
+      [
+        "the car of the teacher",
+        "the teacher's car"
+      ],
+      [
+        "the shell of the turtle",
+        "the turtle's shell"
+      ]
+    ],
+    "GP_LISTS": [
+      [
+        "We need eggs, milk and bread.",
+        "We need eggs milk and bread.",
+        "We need, eggs, milk, and, bread."
+      ],
+      [
+        "I saw a cow, a pig and a goat.",
+        "I saw a cow a pig and a goat.",
+        "I saw, a cow a pig, and a goat."
+      ],
+      [
+        "She packed a hat, a coat and gloves.",
+        "She packed a hat a coat and gloves.",
+        "She packed, a hat, a coat, and, gloves."
+      ],
+      [
+        "Red, blue and yellow are colors.",
+        "Red blue and yellow are colors.",
+        "Red, blue, and, yellow, are colors."
+      ],
+      [
+        "Tom likes soccer, swimming and chess.",
+        "Tom likes soccer swimming and chess.",
+        "Tom likes, soccer swimming, and chess."
+      ]
+    ],
+    "GP_COLLECTIVE": [
+      [
+        "a ___ of fish",
+        "school",
+        "pack",
+        "herd"
+      ],
+      [
+        "a ___ of cows",
+        "herd",
+        "swarm",
+        "school"
+      ],
+      [
+        "a ___ of birds",
+        "flock",
+        "pride",
+        "bunch"
+      ],
+      [
+        "a ___ of wolves",
+        "pack",
+        "flock",
+        "litter"
+      ],
+      [
+        "a ___ of bees",
+        "swarm",
+        "herd",
+        "team"
+      ],
+      [
+        "a ___ of grapes",
+        "bunch",
+        "pack",
+        "school"
+      ],
+      [
+        "a ___ of lions",
+        "pride",
+        "swarm",
+        "flock"
+      ],
+      [
+        "a ___ of puppies",
+        "litter",
+        "pride",
+        "bunch"
+      ],
+      [
+        "a ___ of players",
+        "team",
+        "herd",
+        "litter"
+      ],
+      [
+        "a ___ of sheep",
+        "flock",
+        "school",
+        "swarm"
+      ]
+    ],
+    "GP_REFLEXIVE": [
+      [
+        "I made the card all by ___.",
+        "myself",
+        "himself",
+        "ourselves"
+      ],
+      [
+        "She hurt ___ on the slide.",
+        "herself",
+        "himself",
+        "myself"
+      ],
+      [
+        "We cleaned the room by ___.",
+        "ourselves",
+        "themselves",
+        "myself"
+      ],
+      [
+        "The cat licked ___ clean.",
+        "itself",
+        "himself",
+        "herself"
+      ],
+      [
+        "They built the fort by ___.",
+        "themselves",
+        "ourselves",
+        "itself"
+      ],
+      [
+        "He tied his shoes by ___.",
+        "himself",
+        "herself",
+        "themselves"
+      ],
+      [
+        "You can do it ___!",
+        "yourself",
+        "myself",
+        "itself"
+      ]
+    ],
+    "GP_ADVERB": [
+      [
+        "The turtle walked ___.",
+        "slowly",
+        "slow"
+      ],
+      [
+        "She sang ___.",
+        "beautifully",
+        "beautiful"
+      ],
+      [
+        "The rabbit hopped ___.",
+        "quickly",
+        "quick"
+      ],
+      [
+        "Please talk ___ in the library.",
+        "quietly",
+        "quiet"
+      ],
+      [
+        "He has a ___ voice.",
+        "loud",
+        "loudly"
+      ],
+      [
+        "It was a ___ day.",
+        "sunny",
+        "sunnily"
+      ],
+      [
+        "The ___ dog barked.",
+        "noisy",
+        "noisily"
+      ],
+      [
+        "The children played ___.",
+        "happily",
+        "happy"
+      ],
+      [
+        "She is a ___ runner.",
+        "fast",
+        "fastly"
+      ]
+    ],
+    "GP_COMPARE": [
+      [
+        "A whale is ___ than a fish.",
+        "bigger",
+        "big",
+        "biggest"
+      ],
+      [
+        "This is the ___ day of the year.",
+        "hottest",
+        "hot",
+        "hotter"
+      ],
+      [
+        "My kite flew ___ than yours.",
+        "higher",
+        "high",
+        "highest"
+      ],
+      [
+        "A cheetah is the ___ land animal.",
+        "fastest",
+        "fast",
+        "faster"
+      ],
+      [
+        "Today is ___ than yesterday.",
+        "colder",
+        "cold",
+        "coldest"
+      ],
+      [
+        "The giraffe is the ___ animal in the zoo.",
+        "tallest",
+        "tall",
+        "taller"
+      ],
+      [
+        "A mouse is ___ than a cat.",
+        "smaller",
+        "small",
+        "smallest"
+      ]
+    ],
+    "GP_AGREE": [
+      [
+        "The dogs ___ loudly.",
+        "bark",
+        "barks"
+      ],
+      [
+        "My sister ___ the piano.",
+        "plays",
+        "play"
+      ],
+      [
+        "The birds ___ in the tree.",
+        "sing",
+        "sings"
+      ],
+      [
+        "He ___ to school.",
+        "walks",
+        "walk"
+      ],
+      [
+        "The kids ___ soccer.",
+        "play",
+        "plays"
+      ],
+      [
+        "The sun ___ every morning.",
+        "rises",
+        "rise"
+      ],
+      [
+        "We ___ our homework.",
+        "do",
+        "does"
+      ],
+      [
+        "She ___ apples.",
+        "likes",
+        "like"
+      ]
+    ],
+    "GP_IRREGULAR": [
+      [
+        "Yesterday we ___ to the zoo.",
+        "went",
+        "goed",
+        "go"
+      ],
+      [
+        "Last night I ___ a dream.",
+        "had",
+        "haved",
+        "has"
+      ],
+      [
+        "She ___ a picture of a horse.",
+        "drew",
+        "drawed",
+        "draw"
+      ],
+      [
+        "The bird ___ away.",
+        "flew",
+        "flied",
+        "fly"
+      ],
+      [
+        "We ___ pizza for dinner.",
+        "ate",
+        "eated",
+        "eat"
+      ],
+      [
+        "He ___ the ball over the fence.",
+        "threw",
+        "throwed",
+        "throw"
+      ],
+      [
+        "I ___ my friend at the park.",
+        "saw",
+        "seed",
+        "see"
+      ],
+      [
+        "They ___ a song in class.",
+        "sang",
+        "singed",
+        "sing"
+      ],
+      [
+        "She ___ a letter to Grandpa.",
+        "wrote",
+        "writed",
+        "write"
+      ],
+      [
+        "The baby ___ all night.",
+        "slept",
+        "sleeped",
+        "sleep"
+      ]
+    ],
+    "GP_CONJ": [
+      [
+        "I wanted to play outside, ___ it was raining.",
+        "but",
+        "and",
+        "so"
+      ],
+      [
+        "I was hungry, ___ I ate a snack.",
+        "so",
+        "but",
+        "or"
+      ],
+      [
+        "We took umbrellas ___ it was raining.",
+        "because",
+        "but",
+        "or"
+      ],
+      [
+        "Do you want milk ___ juice?",
+        "or",
+        "so",
+        "because"
+      ],
+      [
+        "Sam likes cats ___ dogs.",
+        "and",
+        "because",
+        "so"
+      ],
+      [
+        "The road was icy, ___ we drove slowly.",
+        "so",
+        "or",
+        "but"
+      ],
+      [
+        "She smiled ___ she won the race.",
+        "because",
+        "or",
+        "but"
+      ]
+    ],
+    "GP_QUOTES": [
+      [
+        "\"Let's play tag,\" said Maya.",
+        "Let's play tag, said Maya.",
+        "\"Let's play tag, said Maya.\""
+      ],
+      [
+        "Dad said, \"Time for bed.\"",
+        "Dad said, Time for bed.",
+        "Dad \"said, Time for bed.\""
+      ],
+      [
+        "\"I found a frog!\" shouted Leo.",
+        "I found a frog! shouted Leo.",
+        "\"I found a frog! shouted\" Leo."
+      ],
+      [
+        "\"Can I help?\" asked Nina.",
+        "Can I help? asked Nina.",
+        "\"Can I help? asked Nina.\""
+      ]
+    ],
+    "WS_MEANING": [
+      [
+        "bat",
+        "The bat flew out of the cave at night.",
+        "a flying animal",
+        "a stick to hit a ball"
+      ],
+      [
+        "bat",
+        "Sam swung the bat and hit the ball.",
+        "a stick to hit a ball",
+        "a flying animal"
+      ],
+      [
+        "bark",
+        "The tree's bark is rough.",
+        "the outside of a tree",
+        "the sound a dog makes"
+      ],
+      [
+        "bark",
+        "I heard the dog bark.",
+        "the sound a dog makes",
+        "the outside of a tree"
+      ],
+      [
+        "ring",
+        "She wore a gold ring.",
+        "something you wear on a finger",
+        "the sound of a bell"
+      ],
+      [
+        "fall",
+        "Leaves turn red in the fall.",
+        "autumn",
+        "to drop down"
+      ],
+      [
+        "park",
+        "Dad will park the car.",
+        "to stop a car in a space",
+        "a place with grass and swings"
+      ],
+      [
+        "wave",
+        "A big wave hit the beach.",
+        "moving water in the sea",
+        "to move your hand hello"
+      ],
+      [
+        "light",
+        "This bag is light.",
+        "not heavy",
+        "brightness from the sun"
+      ],
+      [
+        "watch",
+        "Let's watch the birds.",
+        "to look at",
+        "a small clock you wear"
+      ],
+      [
+        "kind",
+        "What kind of cake is it?",
+        "type",
+        "nice and caring"
+      ],
+      [
+        "trunk",
+        "The elephant lifted its trunk.",
+        "an elephant's long nose",
+        "the back of a car"
+      ]
+    ],
+    "WS_ROOT": [
+      [
+        "replaying",
+        "play"
+      ],
+      [
+        "unhappily",
+        "happy"
+      ],
+      [
+        "helpful",
+        "help"
+      ],
+      [
+        "rebuilding",
+        "build"
+      ],
+      [
+        "careless",
+        "care"
+      ],
+      [
+        "unlocked",
+        "lock"
+      ],
+      [
+        "painter",
+        "paint"
+      ],
+      [
+        "teacher",
+        "teach"
+      ],
+      [
+        "kindness",
+        "kind"
+      ],
+      [
+        "preheat",
+        "heat"
+      ],
+      [
+        "dislike",
+        "like"
+      ],
+      [
+        "thankful",
+        "thank"
+      ]
+    ],
+    "WS_PREFIX": [
+      [
+        "un",
+        "not",
+        "unkind"
+      ],
+      [
+        "re",
+        "again",
+        "redo"
+      ],
+      [
+        "pre",
+        "before",
+        "preview"
+      ],
+      [
+        "dis",
+        "not or opposite",
+        "disagree"
+      ],
+      [
+        "mis",
+        "wrongly",
+        "misspell"
+      ]
+    ],
+    "WS_SUFFIX": [
+      [
+        "ful",
+        "full of",
+        "joyful"
+      ],
+      [
+        "less",
+        "without",
+        "fearless"
+      ],
+      [
+        "er",
+        "a person who",
+        "baker"
+      ],
+      [
+        "ly",
+        "in a way that is",
+        "softly"
+      ],
+      [
+        "able",
+        "can be",
+        "washable"
+      ]
+    ],
+    "WS_SIMILE": [
+      [
+        "as busy as a ___",
+        "bee",
+        "rock",
+        "cloud"
+      ],
+      [
+        "as cold as ___",
+        "ice",
+        "toast",
+        "sand"
+      ],
+      [
+        "as quiet as a ___",
+        "mouse",
+        "drum",
+        "lion"
+      ],
+      [
+        "as light as a ___",
+        "feather",
+        "brick",
+        "piano"
+      ],
+      [
+        "as slow as a ___",
+        "snail",
+        "rocket",
+        "cheetah"
+      ],
+      [
+        "as bright as the ___",
+        "sun",
+        "mud",
+        "night"
+      ],
+      [
+        "as soft as a ___",
+        "pillow",
+        "nail",
+        "stone"
+      ],
+      [
+        "as tall as a ___",
+        "giraffe",
+        "mouse",
+        "ant"
+      ]
+    ],
+    "WS_IDIOM": [
+      [
+        "It's raining cats and dogs.",
+        "It is raining very hard.",
+        "Animals are falling from the sky."
+      ],
+      [
+        "That test was a piece of cake.",
+        "The test was very easy.",
+        "The test was made of cake."
+      ],
+      [
+        "I'm all ears.",
+        "I am listening carefully.",
+        "My head is covered in ears."
+      ],
+      [
+        "Let's call it a day.",
+        "Let's stop working for now.",
+        "Let's give the day a name."
+      ],
+      [
+        "Break a leg in the show!",
+        "Good luck in the show!",
+        "Hurt your leg in the show."
+      ],
+      [
+        "He let the cat out of the bag.",
+        "He told a secret.",
+        "He set a cat free."
+      ]
+    ],
+    "WS_ABC": [
+      [
+        "apple",
+        "banana",
+        "cherry"
+      ],
+      [
+        "dog",
+        "duck",
+        "dust"
+      ],
+      [
+        "bear",
+        "bird",
+        "bus"
+      ],
+      [
+        "sand",
+        "seal",
+        "sun"
+      ],
+      [
+        "cake",
+        "camp",
+        "cave"
+      ],
+      [
+        "map",
+        "mop",
+        "mud"
+      ],
+      [
+        "tree",
+        "trip",
+        "truck"
+      ],
+      [
+        "play",
+        "plum",
+        "plus"
+      ],
+      [
+        "rain",
+        "rice",
+        "rope"
+      ],
+      [
+        "fish",
+        "flag",
+        "frog"
+      ]
+    ],
+    "ALIEN_WORDS": [
+      "vap",
+      "jix",
+      "zof",
+      "quib",
+      "thog",
+      "chuz",
+      "shem",
+      "grint",
+      "plok",
+      "frub",
+      "mib",
+      "yed",
+      "sheb",
+      "choop",
+      "blim",
+      "drup",
+      "splon",
+      "nep",
+      "keb",
+      "starp"
+    ],
+    "REAL_WORDS": [
+      "cat",
+      "ship",
+      "jump",
+      "frog",
+      "chin",
+      "milk",
+      "rain",
+      "tent",
+      "duck",
+      "shop",
+      "lamp",
+      "drum",
+      "sock",
+      "moon",
+      "flag",
+      "nest",
+      "thin",
+      "rock",
+      "swim",
+      "bell"
+    ],
+    "PASSAGES23": [
+      [
+        [
+          "Every spring, the Ruiz family plants a garden.",
+          "First they pull out the old weeds.",
+          "Next they dig small holes and drop in bean seeds.",
+          "They water the seeds every morning.",
+          "By summer, tall bean plants climb up the fence.",
+          "The family picks beans for dinner every week."
+        ],
+        [
+          [
+            "What is this text mostly about?",
+            "how a family grows beans",
+            "how to build a fence",
+            "what the family eats for breakfast"
+          ],
+          [
+            "What do they do first?",
+            "pull out the old weeds",
+            "pick beans",
+            "water the seeds"
+          ],
+          [
+            "Why do the plants grow tall?",
+            "the family plants and waters them",
+            "the fence is tall",
+            "it is winter"
+          ]
+        ],
+        "🌱🫘",
+        4
+      ],
+      [
+        [
+          "Owls hunt at night.",
+          "Their big eyes help them see in the dark.",
+          "Their soft feathers let them fly without a sound.",
+          "An owl can turn its head far to look behind it.",
+          "These features make owls great night hunters."
+        ],
+        [
+          [
+            "What is the main idea?",
+            "Owls have features that help them hunt at night",
+            "Owls like to sleep all night",
+            "Owls live in deserts"
+          ],
+          [
+            "Why can owls fly quietly?",
+            "their feathers are soft",
+            "their eyes are big",
+            "they are small"
+          ],
+          [
+            "Which word means the same as 'features'?",
+            "special parts",
+            "places",
+            "sounds"
+          ]
+        ],
+        "🦉🌙",
+        4
+      ],
+      [
+        [
+          "Leo's class wanted a cleaner playground.",
+          "They counted the litter for one week.",
+          "They found 63 wrappers and 18 bottles.",
+          "The class asked for two new bins.",
+          "The next week, they counted only 12 pieces of litter."
+        ],
+        [
+          [
+            "What happened after the new bins arrived?",
+            "There was much less litter",
+            "There was more litter",
+            "The class stopped playing outside"
+          ],
+          [
+            "How many pieces of litter did they find in the first week?",
+            "81",
+            "63",
+            "18"
+          ],
+          [
+            "What is this text mostly about?",
+            "a class solving a litter problem",
+            "a class learning to count",
+            "a class buying toys"
+          ]
+        ],
+        "🗑️🌳",
+        5
+      ],
+      [
+        [
+          "Monarch butterflies travel a very long way each autumn.",
+          "They fly south to warm forests where they can survive the winter.",
+          "In spring, they head north again.",
+          "Along the way they lay eggs on milkweed plants.",
+          "Without milkweed, the caterpillars would have nothing to eat."
+        ],
+        [
+          [
+            "Why do monarchs fly south in autumn?",
+            "to survive the winter in warm forests",
+            "to find the sea",
+            "to build nests"
+          ],
+          [
+            "What would happen without milkweed?",
+            "the caterpillars would have no food",
+            "the butterflies would fly faster",
+            "winter would end sooner"
+          ],
+          [
+            "What is the main idea?",
+            "Monarchs make a long trip each year and need milkweed",
+            "Monarchs are the biggest butterflies",
+            "Caterpillars eat leaves of every plant"
+          ]
+        ],
+        "🦋🌿",
+        5
+      ],
+      [
+        [
+          "Priya wanted to win the art contest.",
+          "Her first painting got smudged in the rain.",
+          "She felt upset, but she did not give up.",
+          "She painted a new picture of the storm itself.",
+          "The judges said it was the most creative painting of all."
+        ],
+        [
+          [
+            "How did Priya feel when her painting got smudged?",
+            "upset",
+            "proud",
+            "sleepy"
+          ],
+          [
+            "What lesson does the story teach?",
+            "Keep trying when things go wrong",
+            "Never paint outside",
+            "Contests are not fun"
+          ],
+          [
+            "What did Priya paint the second time?",
+            "the storm",
+            "a rainbow",
+            "her cat"
+          ]
+        ],
+        "🎨⛈️",
+        5
+      ],
+      [
+        [
+          "The Great Lakes are five large lakes in North America.",
+          "Together they hold about one fifth of the fresh surface water on Earth.",
+          "Ships carry iron, grain and other goods across them.",
+          "Many people swim, fish and sail on the lakes in summer.",
+          "In winter, parts of the lakes freeze."
+        ],
+        [
+          [
+            "What is this text mostly about?",
+            "the Great Lakes and how people use them",
+            "how to sail a ship",
+            "why winter is cold"
+          ],
+          [
+            "What do ships carry across the lakes?",
+            "iron and grain",
+            "cars and planes",
+            "snow and ice"
+          ],
+          [
+            "How many Great Lakes are there?",
+            "five",
+            "three",
+            "seven"
+          ]
+        ],
+        "🌊⛵",
+        6
+      ],
+      [
+        [
+          "Text A: Cats are good pets because they are quiet and clean.",
+          "They can stay home alone during the day.",
+          "Text B: Dogs are good pets because they love to play.",
+          "They need walks, which help their owners exercise too."
+        ],
+        [
+          [
+            "What do both texts describe?",
+            "reasons an animal makes a good pet",
+            "how to train a pet",
+            "where pets come from"
+          ],
+          [
+            "Which text says the pet helps owners exercise?",
+            "Text B",
+            "Text A",
+            "both texts"
+          ],
+          [
+            "How are cats and dogs different in the texts?",
+            "cats can stay alone, dogs need walks",
+            "cats need walks, dogs stay alone",
+            "both need walks"
+          ]
+        ],
+        "🐱🐶",
+        6
+      ],
+      [
+        [
+          "Text A: Long ago, people wrote letters with ink and paper.",
+          "A letter could take weeks to arrive.",
+          "Text B: Today, many people send messages on phones.",
+          "A message can arrive in seconds."
+        ],
+        [
+          [
+            "What is the biggest difference between the two texts?",
+            "how fast messages travel",
+            "who writes letters",
+            "what colour the ink is"
+          ],
+          [
+            "Which came first?",
+            "letters on paper",
+            "phone messages",
+            "both at the same time"
+          ],
+          [
+            "What topic do both texts share?",
+            "sending messages",
+            "making paper",
+            "using phones for games"
+          ]
+        ],
+        "✉️📱",
+        6
+      ],
+      [
+        [
+          "Bees are busy insects.",
+          "They fly from flower to flower to collect nectar.",
+          "While they do this, pollen sticks to their legs.",
+          "When a bee visits the next flower, some pollen falls off.",
+          "This helps new seeds and fruit grow."
+        ],
+        [
+          [
+            "How do bees help plants?",
+            "they carry pollen from flower to flower",
+            "they eat the leaves",
+            "they water the flowers"
+          ],
+          [
+            "What do bees collect from flowers?",
+            "nectar",
+            "seeds",
+            "water"
+          ],
+          [
+            "What happens because pollen falls off?",
+            "new seeds and fruit can grow",
+            "the bee gets lost",
+            "the flower closes"
+          ]
+        ],
+        "🐝🌼",
+        4
+      ],
+      [
+        [
+          "Arun's family moved to a new town.",
+          "On the first day of school, Arun did not know anyone.",
+          "At lunch, a girl named Rosa asked him to sit with her.",
+          "They found out they both loved soccer.",
+          "By Friday, Arun had three new friends."
+        ],
+        [
+          [
+            "How did Arun feel on the first day?",
+            "nervous and alone",
+            "angry",
+            "bored"
+          ],
+          [
+            "What helped Arun make friends?",
+            "Rosa invited him to sit with her",
+            "he got a new soccer ball",
+            "he moved again"
+          ],
+          [
+            "What is the story mostly about?",
+            "making friends at a new school",
+            "learning to play soccer",
+            "packing for a move"
+          ]
+        ],
+        "🏫⚽",
+        4
+      ]
+    ]
+  }
+}

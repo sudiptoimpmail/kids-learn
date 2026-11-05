@@ -1704,14 +1704,15 @@ function genVocab(level) {
 /* ---------------- CATEGORIES ---------------- */
 const CATEGORIES = [
   { id: 'trace', title: 'Letters & Numbers', sub: 'trace A–Z · a–z · 1–20', icon: '✍️', color: '#f76707', trace: true },
-  { id: 'phonics', title: 'Letter Sounds', sub: 'starts with · rhymes · blends', icon: '🔠', color: '#7950f2', gen: genPhonics, maxLevel: 5 },
+  { id: 'phonics', title: 'Letter Sounds', sub: 'starts with · rhymes · blends', icon: '🔠', color: '#7950f2', gen: (l) => genPhonicsPlus(l), maxLevel: 5 },
   { id: 'cvc', title: 'Little Words', sub: 'cat · ant · bee', icon: '🐱', color: '#ff8787', gen: (l) => genWords(W3, l, 'cvc') },
   { id: 'w4', title: 'Big Words', sub: 'frog · truck · tiger', icon: '🐸', color: '#69db7c', gen: (l) => genWords(bigWordList(l), l, 'w4'), maxLevel: 5 },
   { id: 'sight', title: 'Sight Words', sub: 'he · she · went', icon: '👀', color: '#e64980', gen: genSight, maxLevel: 4 },
   { id: 'spell', title: 'Spell It', sub: 'drag the letters', icon: '🔤', color: '#20c997', gen: genSpell, maxLevel: 5 },
   { id: 'vocab', title: 'Word Wonders', sub: 'learn new words', icon: '🌟', color: '#f59f00', gen: genVocab, learn: true, maxLevel: 4 },
-  { id: 'sent', title: 'Read & Answer', sub: 'sentences & stories', icon: '📖', color: '#74c0fc', gen: genSentence, maxLevel: 6 },
-  { id: 'words', title: 'Word Detective', sub: 'nouns · plurals · past tense', icon: '🕵️', color: '#5f3dc4', gen: (l) => genGrammar(l), maxLevel: 5 },
+  { id: 'sent', title: 'Read & Answer', sub: 'sentences & stories', icon: '📖', color: '#74c0fc', gen: (l) => genSentencePlus(l), maxLevel: 6 },
+  { id: 'words', title: 'Word Study', sub: 'prefixes · roots · meanings', icon: '🕵️', color: '#5f3dc4', gen: (l) => genWordsPlus(l), maxLevel: 5 },
+  { id: 'gp', title: 'Grammar', sub: 'capitals · commas · tenses', icon: '✏️', color: '#d6336c', gen: (l) => genGrammarPunct(l), maxLevel: 3 },
   { id: 'match', title: 'Match It', sub: 'word ↔ picture · 3+2 ↔ 5', icon: '🔗', color: '#5c7cfa', gen: genMatch, maxLevel: 5, roundLen: 5 },
   { id: 'syl', title: 'Clap It!', sub: 'syllables', icon: '👏', color: '#ffd43b', gen: genSyllable },
   { id: 'add', title: 'Adding', sub: '2 + 3 · 347 + 286', icon: '➕', color: '#b197fc', gen: genAdd, maxLevel: 8 },
