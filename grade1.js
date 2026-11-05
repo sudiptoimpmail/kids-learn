@@ -51,7 +51,7 @@ const G1_PHRASES = [
   ['hat', '🎩', 'a ___ on his head'], ['star', '⭐', 'a ___ in the sky'], ['lamp', '💡', 'turn on the ___'], ['bread', '🍞', 'jam on the ___'],
   ['chair', '🪑', 'sit on a ___'], ['sheep', '🐑', 'a ___ on the farm'], ['wheel', '🛞', 'a ___ on the car'], ['shell', '🐚', 'a ___ by the sea'],
   ['thin', '✏️', 'a ___ pencil'], ['brick', '🧱', 'one red ___'], ['crib', '🛏️', 'a baby in a ___'], ['grass', '🌱', 'green ___ in the yard'],
-  ['mane', '🐴', 'the horse has a ___'], ['frog', '🐸', 'a ___ by the pond'],
+  ['mane', '🐴', 'the horse has a ___'],
   ['clock', '🕰️', 'the ___ says it is time'], ['brush', '🪥', 'a ___ for my teeth'], ['snail', '🐌', 'a slow ___ on a leaf'], ['train', '🚆', 'the ___ on the track'],
 ];
 function genWordBox(level) {
