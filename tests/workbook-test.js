@@ -69,6 +69,14 @@ const { chromium } = require('playwright');
     await page.screenshot({path:'tests/out/illustrated-g1-vowel-maze.png',fullPage:true});
     for(const k of [0,1,2,7,12,11,10,15,20,21,22,23,24]) await page.locator('.ia-stone').nth(k).click();
     assert.equal(await page.evaluate(()=>R.qs[0].ok),true,'Long-A route must be solvable');
+    assert.equal((await prepare('g1','cvc')).mode,'wordhunt');
+    assert.equal(await page.locator('.ia-hidden-word').count(),13);
+    await page.screenshot({path:'tests/out/illustrated-g1-hidden-word-garden.png',fullPage:true});
+    await page.locator('.ia-hidden-word[data-word="sun"]').click();
+    assert.equal(await page.evaluate(()=>R.mistakes),1,'Unlisted word should be rejected');
+    for(const word of ['cub','fan','can','map','wig','bat','cap','cat','ham','bag'])
+      await page.locator('.ia-hidden-word[data-word="'+word+'"]').click();
+    assert.equal(await page.evaluate(()=>R.locked),true,'All ten printed scene words found');
     assert.equal((await prepare('g1','match')).mode,'forest');
     await page.screenshot({path:'tests/out/illustrated-g1-forest-match.png',fullPage:true});
     const target=await page.evaluate(()=>R.qs[0].answer);
