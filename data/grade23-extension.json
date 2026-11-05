@@ -1,0 +1,1346 @@
+{
+  "schema": 1,
+  "namespace": "grade23-extension",
+  "datasets": {
+    "SCIENCE": [
+      [
+        3,
+        "Which observation shows that a seedling has grown?",
+        "its measured height increased over time",
+        "its pot has a new label",
+        "the room has a different poster",
+        "a pencil changed color"
+      ],
+      [
+        3,
+        "Two plants get the same soil and water but different amounts of light. What is being tested?",
+        "the effect of sunlight on growth",
+        "the effect of different soils",
+        "the effect of different seeds",
+        "the effect of changing pots"
+      ],
+      [
+        3,
+        "Why can tiny water drops appear outside a cold glass?",
+        "water vapor in nearby air condenses",
+        "water leaks through solid glass",
+        "ice turns into sugar",
+        "the glass creates water from nothing"
+      ],
+      [
+        3,
+        "A puddle gets smaller on a sunny afternoon. What most likely happened?",
+        "some water evaporated into the air",
+        "the water changed into soil",
+        "the puddle became a shadow",
+        "all the water froze"
+      ],
+      [
+        3,
+        "Why does a sponge help clean up spilled water?",
+        "it absorbs some of the liquid",
+        "it turns water into light",
+        "it makes the liquid heavier",
+        "it pushes water into the air"
+      ],
+      [
+        3,
+        "Why does a tree's shadow often move during the day?",
+        "the sun's apparent position in the sky changes",
+        "the tree always walks",
+        "sunlight stops traveling straight",
+        "the tree changes its roots each hour"
+      ],
+      [
+        3,
+        "What causes a plucked guitar string to make a sound?",
+        "the string vibrates",
+        "the string freezes",
+        "the string becomes a magnet",
+        "the air stops moving"
+      ],
+      [
+        3,
+        "Which object would an ordinary classroom magnet most likely attract?",
+        "a steel paper clip",
+        "a wooden block",
+        "a rubber eraser",
+        "a plastic spoon"
+      ],
+      [
+        3,
+        "Which tool is most useful for measuring a book's length?",
+        "a ruler",
+        "a rain gauge",
+        "a thermometer",
+        "a compass"
+      ],
+      [
+        3,
+        "Which tool tells us whether water is warmer or colder?",
+        "a thermometer",
+        "a calendar",
+        "a ruler",
+        "a magnifying glass"
+      ],
+      [
+        3,
+        "Which information should a weather chart record each day?",
+        "the actual weather conditions observed",
+        "only the observer's favorite color",
+        "the price of the notebook",
+        "the name of the classroom pet"
+      ],
+      [
+        3,
+        "A frog begins as an egg, then becomes a tadpole. What happens next as it grows?",
+        "it develops legs and becomes a frog",
+        "it becomes a butterfly",
+        "it turns into a rock",
+        "it grows feathers"
+      ],
+      [
+        3,
+        "Which is the best evidence that two objects have different masses?",
+        "a balance compares them",
+        "one object is brighter",
+        "one has a longer name",
+        "one is closer to a window"
+      ],
+      [
+        3,
+        "Why do ducks have webbed feet?",
+        "webbing helps them push water when swimming",
+        "webbing makes them invisible",
+        "webbing lets them breathe underwater",
+        "webbing makes them hatch from eggs"
+      ],
+      [
+        3,
+        "Why is it helpful to repeat an experiment?",
+        "to check whether the result happens again",
+        "to guarantee a preferred answer",
+        "to avoid recording observations",
+        "to make every object identical"
+      ],
+      [
+        3,
+        "If plants near a window lean toward the light, what could you investigate?",
+        "whether the direction of light affects growth",
+        "whether their pots have names",
+        "whether the room is painted yellow",
+        "whether the windows are square"
+      ],
+      [
+        3,
+        "When you see a rainbow, what is interacting with sunlight?",
+        "water droplets in the air",
+        "wooden desks",
+        "only dry sand",
+        "the dark side of the moon"
+      ],
+      [
+        3,
+        "Which change can be reversed by warming ice?",
+        "melting it back into liquid water",
+        "turning ashes back into wood",
+        "uncooking a baked cake",
+        "turning rust back into new iron"
+      ],
+      [
+        3,
+        "Which observation suggests a habitat has changed over a year?",
+        "fewer pond plants are counted each season",
+        "the calendar has twelve months",
+        "a student brings a new pen",
+        "one cloud has a different shape"
+      ],
+      [
+        3,
+        "A toy car rolls farther on a smooth floor than on thick carpet. What could explain this?",
+        "the two surfaces create different amounts of friction",
+        "the car knows the room",
+        "carpet creates more gravity",
+        "the wheels turn into magnets"
+      ],
+      [
+        4,
+        "A flashlight turns off when a wire is disconnected. Why?",
+        "the electrical circuit is no longer complete",
+        "the battery turns into water",
+        "the wire becomes invisible",
+        "the bulb stops having mass"
+      ],
+      [
+        4,
+        "Why do bicycle brakes help slow the wheels?",
+        "friction opposes the wheels' motion",
+        "brakes remove gravity",
+        "friction makes the bike float",
+        "brakes make the bicycle lighter"
+      ],
+      [
+        4,
+        "Which material usually transfers heat better?",
+        "a metal spoon",
+        "a wooden spoon",
+        "a wool mitten",
+        "a foam cup"
+      ],
+      [
+        4,
+        "What is a renewable source of energy?",
+        "sunlight",
+        "coal",
+        "petroleum",
+        "natural gas"
+      ],
+      [
+        4,
+        "When you let go of a dropped ball, which force pulls it toward Earth?",
+        "gravity",
+        "magnetism from the floor",
+        "sound",
+        "light"
+      ],
+      [
+        4,
+        "A river carries soil away from a bank. This is an example of…",
+        "erosion",
+        "condensation",
+        "pollination",
+        "reflection"
+      ],
+      [
+        4,
+        "A river drops sand when its water slows down. This process is called…",
+        "deposition",
+        "evaporation",
+        "freezing",
+        "vibration"
+      ],
+      [
+        4,
+        "Why can bees help flowering plants reproduce?",
+        "they can carry pollen between flowers",
+        "they change soil into seeds",
+        "they stop flowers receiving light",
+        "they turn leaves into roots"
+      ],
+      [
+        4,
+        "Which animal undergoes a complete change from caterpillar to butterfly?",
+        "a butterfly",
+        "a horse",
+        "a dog",
+        "a turtle"
+      ],
+      [
+        4,
+        "What is an inherited trait?",
+        "a characteristic passed from parents to offspring",
+        "a skill learned from a teacher",
+        "a song you memorize",
+        "the title of a book"
+      ],
+      [
+        4,
+        "Which is mainly a physical change rather than making a new substance?",
+        "ice melting into water",
+        "wood burning into ash",
+        "iron forming rust",
+        "cake batter baking into cake"
+      ],
+      [
+        4,
+        "Sugar seems to disappear when stirred into water. What usually happened?",
+        "the sugar dissolved and spread through the water",
+        "the sugar stopped existing",
+        "the sugar changed into air",
+        "the water turned into metal"
+      ],
+      [
+        4,
+        "What happens to a sound's pitch when its source vibrates faster?",
+        "the pitch usually becomes higher",
+        "the sound becomes a color",
+        "its pitch must become lower",
+        "the source stops vibrating"
+      ],
+      [
+        4,
+        "Which container is best for measuring 100 milliliters of water?",
+        "a marked measuring cylinder",
+        "a paper ruler",
+        "a bathroom clock",
+        "a compass"
+      ],
+      [
+        4,
+        "Why do engineers build and test prototypes?",
+        "to discover what works and improve a design",
+        "to avoid checking any problems",
+        "to guarantee that a first idea is perfect",
+        "to replace measurement with guesses"
+      ],
+      [
+        4,
+        "Why might introducing a new predator affect an ecosystem?",
+        "it can change how many prey animals survive",
+        "it makes every food chain identical",
+        "it stops all plants growing immediately",
+        "it removes the need for food"
+      ],
+      [
+        4,
+        "Which soil lets water drain through most quickly in a typical simple test?",
+        "coarse gravel",
+        "packed clay",
+        "a sealed plastic cup",
+        "solid glass"
+      ],
+      [
+        4,
+        "What is a fair way to compare two paper-bridge designs?",
+        "use the same paper amount and loading method",
+        "test them with completely different weights",
+        "only test the prettier bridge",
+        "ignore the amount of paper used"
+      ],
+      [
+        4,
+        "Why should students record an unexpected result instead of hiding it?",
+        "it may help them improve their explanation",
+        "the notebook must always be full",
+        "it proves every original guess was wrong",
+        "it makes the experiment disappear"
+      ],
+      [
+        4,
+        "Which action reduces waste before it is produced?",
+        "using a reusable water bottle",
+        "throwing away a new bottle each hour",
+        "mixing batteries into food scraps",
+        "putting litter in a stream"
+      ]
+    ],
+    "GK": [
+      [
+        3,
+        "What does the legend on a map explain?",
+        "what its symbols and colors mean",
+        "how much every house costs",
+        "who drew the oldest map",
+        "why rivers flow"
+      ],
+      [
+        3,
+        "A bar graph shows 9 apples and 6 pears. How many more apples are shown?",
+        "3",
+        "6",
+        "9",
+        "15"
+      ],
+      [
+        3,
+        "A library book is due on Friday. Today is Wednesday. How many days until it is due?",
+        "2",
+        "1",
+        "3",
+        "5"
+      ],
+      [
+        3,
+        "Which direction is opposite east?",
+        "west",
+        "north",
+        "south",
+        "up"
+      ],
+      [
+        3,
+        "What is the safest place during a thunderstorm?",
+        "inside a sturdy building",
+        "under a lone tall tree",
+        "in an open field",
+        "in a swimming pool"
+      ],
+      [
+        3,
+        "Why is a table useful when collecting daily temperatures?",
+        "it keeps observations organized for comparison",
+        "it changes the temperatures",
+        "it guarantees good weather",
+        "it replaces the thermometer"
+      ],
+      [
+        3,
+        "You have two quarters and one dime. How many cents is that?",
+        "60",
+        "35",
+        "50",
+        "75"
+      ],
+      [
+        3,
+        "Which source could help you find when a museum opens?",
+        "the museum's current official schedule",
+        "an unrelated cartoon",
+        "a guess from last year",
+        "a photo of a dinosaur"
+      ],
+      [
+        3,
+        "What is a scale on a map used for?",
+        "relating distances on a map to real distances",
+        "showing the weight of a book",
+        "counting the colors on a flag",
+        "deciding the weather"
+      ],
+      [
+        3,
+        "Why should you read the title and labels on a graph?",
+        "to understand what the numbers represent",
+        "to make the bars taller",
+        "to change the answer",
+        "to avoid looking at the data"
+      ],
+      [
+        4,
+        "A map shows north at the top. Which direction is to your left?",
+        "west",
+        "east",
+        "south",
+        "up"
+      ],
+      [
+        4,
+        "If a 15-cent pencil and a 25-cent eraser are bought together, what is the total?",
+        "40 cents",
+        "35 cents",
+        "50 cents",
+        "10 cents"
+      ],
+      [
+        4,
+        "One bus leaves at 9:15 and another at 9:45. How much later is the second bus?",
+        "30 minutes",
+        "15 minutes",
+        "45 minutes",
+        "60 minutes"
+      ],
+      [
+        4,
+        "Which is strongest evidence that a town's buildings changed over time?",
+        "photographs of the same street from different years",
+        "one person's guess without dates",
+        "a blank piece of paper",
+        "a picture of an unrelated city"
+      ],
+      [
+        4,
+        "What does a primary source mean in a history investigation?",
+        "an original record or object from the time",
+        "a fictional story written today",
+        "a guess about the future",
+        "a list of unrelated jokes"
+      ],
+      [
+        4,
+        "Which online action best protects personal information?",
+        "asking a trusted adult before sharing private details",
+        "posting a home address in a public game",
+        "sending a password to a stranger",
+        "sharing a full name with unknown people"
+      ],
+      [
+        4,
+        "In a survey, 12 students choose swimming and 8 choose biking. How many were surveyed?",
+        "20",
+        "4",
+        "12",
+        "96"
+      ],
+      [
+        4,
+        "Why is it important to check when a news article was published?",
+        "the information may have changed since then",
+        "older articles cannot contain facts",
+        "dates make every story false",
+        "publication dates are secret"
+      ],
+      [
+        4,
+        "What is an estimate?",
+        "a reasonable approximate answer",
+        "a value always exactly correct",
+        "a random number with no reason",
+        "a number written only in words"
+      ],
+      [
+        4,
+        "Which method helps compare two products fairly?",
+        "check their price and the amount each contains",
+        "choose whichever package is brighter",
+        "ignore the size of both products",
+        "compare only their brand names"
+      ]
+    ],
+    "THINKING_ODD": [
+      [
+        2,
+        [
+          "🌡️",
+          "📏",
+          "⚖️"
+        ],
+        "🍎",
+        "The others are tools used to measure something."
+      ],
+      [
+        2,
+        [
+          "🌋",
+          "🏔️",
+          "⛰️"
+        ],
+        "🎒",
+        "The others are mountains or mountain-shaped landforms."
+      ],
+      [
+        2,
+        [
+          "🦋",
+          "🐝",
+          "🐞"
+        ],
+        "🐌",
+        "The others are insects with six legs; a snail is a mollusk."
+      ],
+      [
+        2,
+        [
+          "📅",
+          "⏱️",
+          "⌚"
+        ],
+        "🧲",
+        "The others are used for dates or time."
+      ],
+      [
+        2,
+        [
+          "🐬",
+          "🐋",
+          "🦭"
+        ],
+        "🦈",
+        "The others are mammals; a shark is a fish."
+      ],
+      [
+        2,
+        [
+          "🔺",
+          "⬜",
+          "⬟"
+        ],
+        "⚪",
+        "The others are polygons with straight sides; a circle is not."
+      ],
+      [
+        2,
+        [
+          "💧",
+          "🧊",
+          "❄️"
+        ],
+        "🔥",
+        "The others represent water or ice."
+      ],
+      [
+        2,
+        [
+          "🛶",
+          "🚢",
+          "⛵"
+        ],
+        "🚂",
+        "The others travel on water."
+      ],
+      [
+        2,
+        [
+          "🌽",
+          "🥕",
+          "🥦"
+        ],
+        "🐟",
+        "The others are foods grown from plants."
+      ],
+      [
+        2,
+        [
+          "✉️",
+          "📧",
+          "📮"
+        ],
+        "⚽",
+        "The others relate to sending mail or messages."
+      ],
+      [
+        3,
+        [
+          "🔋",
+          "🔌",
+          "💡"
+        ],
+        "🥖",
+        "The others are connected to electricity."
+      ],
+      [
+        3,
+        [
+          "🌡️",
+          "🧪",
+          "🔬"
+        ],
+        "🎮",
+        "The others can be used in scientific investigations."
+      ],
+      [
+        3,
+        [
+          "🌪️",
+          "🌧️",
+          "❄️"
+        ],
+        "🪨",
+        "The others are types of weather."
+      ],
+      [
+        3,
+        [
+          "📈",
+          "📊",
+          "🗒️"
+        ],
+        "🎡",
+        "The others can be used to record or display data."
+      ],
+      [
+        3,
+        [
+          "🦅",
+          "🦆",
+          "🦉"
+        ],
+        "🦇",
+        "The others are birds; a bat is a mammal."
+      ],
+      [
+        3,
+        [
+          "🌱",
+          "🌿",
+          "🌳"
+        ],
+        "🪨",
+        "The others show plants or plant growth."
+      ],
+      [
+        3,
+        [
+          "🏝️",
+          "🏞️",
+          "🏜️"
+        ],
+        "🏢",
+        "The others represent natural landscapes."
+      ],
+      [
+        3,
+        [
+          "⚙️",
+          "🔧",
+          "🪛"
+        ],
+        "🎻",
+        "The others are tools or mechanical hardware."
+      ],
+      [
+        3,
+        [
+          "🐢",
+          "🦎",
+          "🐍"
+        ],
+        "🐧",
+        "The others are reptiles; a penguin is a bird."
+      ],
+      [
+        3,
+        [
+          "🕑",
+          "⌛",
+          "📆"
+        ],
+        "🌡️",
+        "The others measure or organize time rather than temperature."
+      ]
+    ],
+    "THINKING_SEQUENCES": [
+      [
+        2,
+        [
+          "🫘",
+          "🪴",
+          "🌱",
+          "🌻"
+        ],
+        "Plant a seed in soil, watch it sprout, and let it grow into a flowering plant."
+      ],
+      [
+        2,
+        [
+          "🧳",
+          "🗺️",
+          "🚆",
+          "🏖️"
+        ],
+        "Pack, check the route, travel and arrive at the destination."
+      ],
+      [
+        2,
+        [
+          "📚",
+          "🔍",
+          "📝",
+          "💬"
+        ],
+        "Choose books, find facts, take notes and share what you learned."
+      ],
+      [
+        2,
+        [
+          "🧼",
+          "💧",
+          "👐",
+          "🧻"
+        ],
+        "Use soap and water, scrub your hands and dry them."
+      ],
+      [
+        2,
+        [
+          "🥚",
+          "🐣",
+          "🐤",
+          "🐔"
+        ],
+        "A chicken hatches from an egg, grows into a chick and then an adult."
+      ],
+      [
+        2,
+        [
+          "✂️",
+          "📄",
+          "📐",
+          "✉️"
+        ],
+        "Gather craft supplies, cut paper, fold it and make a card."
+      ],
+      [
+        2,
+        [
+          "🌧️",
+          "💦",
+          "🌤️",
+          "🌱"
+        ],
+        "Rain leaves puddles, the weather clears, and plants can grow."
+      ],
+      [
+        2,
+        [
+          "🛒",
+          "🍎",
+          "💳",
+          "🧺"
+        ],
+        "Get a basket, choose a food item, pay and take it home."
+      ],
+      [
+        2,
+        [
+          "📷",
+          "🖼️",
+          "📝",
+          "📖"
+        ],
+        "Take a photograph, study it, write a description and add it to a report."
+      ],
+      [
+        2,
+        [
+          "📏",
+          "🔢",
+          "📊",
+          "💡"
+        ],
+        "Measure an object, record the numbers, graph them and discuss what they show."
+      ],
+      [
+        3,
+        [
+          "❓",
+          "🧪",
+          "📝",
+          "✅"
+        ],
+        "Ask a testable question, test it, record results and decide what the evidence shows."
+      ],
+      [
+        3,
+        [
+          "🌧️",
+          "🏞️",
+          "🌊",
+          "🪨"
+        ],
+        "Heavy rain raises a river, flowing water moves sediment and rocks are exposed."
+      ],
+      [
+        3,
+        [
+          "🌼",
+          "🐝",
+          "🌱",
+          "🌻"
+        ],
+        "A pollinator visits a flower, pollen reaches another flower, seeds form and a new plant grows."
+      ],
+      [
+        3,
+        [
+          "🗳️",
+          "📋",
+          "📊",
+          "🗣️"
+        ],
+        "Collect preferences, tally them, make a graph and explain the results."
+      ],
+      [
+        3,
+        [
+          "📍",
+          "🗺️",
+          "🧭",
+          "🏠"
+        ],
+        "Mark a location, plan a route, navigate and arrive safely."
+      ],
+      [
+        3,
+        [
+          "🧲",
+          "📎",
+          "🪵",
+          "📝"
+        ],
+        "Choose a magnet, test a steel clip and a wooden object, then record what happened."
+      ],
+      [
+        3,
+        [
+          "🌞",
+          "💧",
+          "☁️",
+          "🌧️"
+        ],
+        "Sun warms water, water vapor forms clouds and rain falls."
+      ],
+      [
+        3,
+        [
+          "📄",
+          "📏",
+          "🏗️",
+          "⚖️"
+        ],
+        "Sketch a bridge, measure the materials, build it and test its strength."
+      ],
+      [
+        3,
+        [
+          "🌱",
+          "📷",
+          "📅",
+          "📈"
+        ],
+        "Start a plant, photograph it, record observations by date and graph its growth."
+      ],
+      [
+        3,
+        [
+          "📗",
+          "✍️",
+          "🔎",
+          "✅"
+        ],
+        "Read a source, draft an explanation, check the evidence and revise your answer."
+      ]
+    ],
+    "STORIES": [
+      [
+        4,
+        "Tomas designed a paper boat for the school pond. His first boat folded under the weight of a small pebble. He tried making the bottom wider and tested the new design using the same pebble. The second boat stayed afloat for longer. Tomas kept a record of both tests and planned to try another shape.",
+        [
+          [
+            "What did Tomas change in the second design?",
+            [
+              "the width of the boat's bottom",
+              "the weight of the pebble",
+              "the size of the pond"
+            ]
+          ],
+          [
+            "Why did he use the same pebble again?",
+            [
+              "to make the comparison fairer",
+              "to make the paper waterproof",
+              "to measure the pond's depth"
+            ]
+          ],
+          [
+            "What did Tomas learn from his tests?",
+            [
+              "changing a design can affect how it performs",
+              "all paper boats float for exactly the same time",
+              "pebbles always make boats move faster"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "The class wanted to know which plants attracted butterflies. Over three afternoons, they watched flowers in the garden and counted visiting butterflies. Yellow flowers had many visitors, but there were also more yellow flowers than other colors. Their teacher suggested counting visits per flower before deciding whether color mattered.",
+        [
+          [
+            "Why was counting only total butterfly visits misleading?",
+            [
+              "there were different numbers of flowers of each color",
+              "all butterflies avoid flowers",
+              "the class watched on three days"
+            ]
+          ],
+          [
+            "What did the teacher suggest?",
+            [
+              "compare visits per flower",
+              "remove all yellow flowers",
+              "guess which color is prettiest"
+            ]
+          ],
+          [
+            "What is the main lesson of the passage?",
+            [
+              "fair comparisons need the right measurements",
+              "a single count always proves a cause",
+              "flowers never attract insects"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "On Tuesday, Nadia borrowed a book about bridges. She learned that some bridges use arches and others use cables. On Wednesday she visited a footbridge with her uncle and took notes about its supports. She used the notes and book to make a labeled drawing for her class.",
+        [
+          [
+            "What two kinds of information did Nadia use?",
+            [
+              "a book and observations from a real bridge",
+              "two recipes",
+              "a weather chart and a calendar"
+            ]
+          ],
+          [
+            "Why did she label her drawing?",
+            [
+              "to show the important bridge parts",
+              "to make the paper heavier",
+              "to change the bridge's design"
+            ]
+          ],
+          [
+            "What did Nadia do after visiting the footbridge?",
+            [
+              "used her notes to make a drawing",
+              "built a car",
+              "forgot what she observed"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "The school cafeteria offered two lunches. One meal came with a reusable cup, and the other with a disposable bottle. Students counted the containers thrown away during a week. They presented the results to the principal and suggested using more reusable cups to reduce waste.",
+        [
+          [
+            "What did the students count?",
+            [
+              "discarded containers",
+              "the number of classrooms",
+              "the amount of sunlight"
+            ]
+          ],
+          [
+            "What was the goal of their suggestion?",
+            [
+              "reduce disposable waste",
+              "make lunches cost more",
+              "remove all drinks"
+            ]
+          ],
+          [
+            "Which detail supports their recommendation?",
+            [
+              "they collected a week of observations",
+              "they chose their favorite color",
+              "they read an unrelated story"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Evan checked the library schedule before a visit. Story time began at ten o'clock, and the bus ride took twenty minutes. His family left at nine thirty so they would arrive before the program. They brought their library cards and returned two books on the way in.",
+        [
+          [
+            "How long before story time did Evan's family leave?",
+            [
+              "30 minutes",
+              "10 minutes",
+              "20 minutes"
+            ]
+          ],
+          [
+            "Why did they check the schedule?",
+            [
+              "to plan when to leave",
+              "to decide which books weighed more",
+              "to change the bus route"
+            ]
+          ],
+          [
+            "What did they do at the library?",
+            [
+              "returned books and attended story time",
+              "bought a bicycle",
+              "made a weather forecast"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "At a river cleanup, Maya noticed that plastic bottles collected near the park outnumbered cans. Her group recorded the types and locations of litter, then compared their findings with an older cleanup report. They learned that one day's results cannot reveal every long-term pattern. They proposed adding more bins and conducting another survey after several weeks. Their poster explained what they observed, what they inferred, and what they still did not know.",
+        [
+          [
+            "Why did Maya's group compare an older report?",
+            [
+              "to look for changes over time",
+              "to prove the park had no litter",
+              "to make the river flow faster"
+            ]
+          ],
+          [
+            "Which statement is an observation rather than an inference?",
+            [
+              "more plastic bottles than cans were collected near the park",
+              "the entire town will stop littering tomorrow",
+              "every bottle came from a visitor"
+            ]
+          ],
+          [
+            "Why did the group suggest another survey?",
+            [
+              "to gather more evidence",
+              "to avoid using the data",
+              "to make their poster longer"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Owen built two model houses from cardboard. One had a wide roof, and the other had a steep roof. To compare how they handled rain, he poured the same amount of water onto each roof from the same height. Water ran off both, but the steep roof drained more quickly. Owen repeated the experiment and wrote that the slope seemed to affect drainage in his models. He did not claim that all real roofs would behave the same way.",
+        [
+          [
+            "What variable did Owen change?",
+            [
+              "the roof slope",
+              "the amount of water",
+              "the pouring height"
+            ]
+          ],
+          [
+            "What did the repeated tests suggest?",
+            [
+              "steeper roofs drained faster in his models",
+              "cardboard cannot get wet",
+              "all houses require the same roof"
+            ]
+          ],
+          [
+            "Why did Owen limit his conclusion?",
+            [
+              "a cardboard model cannot represent every real roof",
+              "water cannot be measured",
+              "he forgot which house he built"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "During a neighborhood walk, Leena used a map to compare two possible routes to a playground. The shorter route crossed a busy street, while the longer route used a marked crossing near a traffic light. She chose the longer route and explained that the safest option is not always the shortest. She recorded the distances so the family could plan future walks.",
+        [
+          [
+            "Why did Leena choose the longer route?",
+            [
+              "it used a safer crossing",
+              "she wanted to avoid the playground",
+              "the map showed no roads"
+            ]
+          ],
+          [
+            "What does the passage suggest about planning?",
+            [
+              "distance is only one consideration",
+              "shortest routes are always safest",
+              "maps cannot show streets"
+            ]
+          ],
+          [
+            "What information did she record?",
+            [
+              "route distances",
+              "the color of each car",
+              "the number of clouds"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "A class studied the way the moon appeared in the evening sky. Each student sketched the visible shape once a week. When they placed the sketches in date order, the class saw that the bright part changed. Their teacher explained that the moon reflects sunlight and that its appearance depends on the positions of Earth, the sun, and the moon. The students then predicted what a later sketch might show and checked their prediction.",
+        [
+          [
+            "What helped the students recognize a pattern?",
+            [
+              "placing the sketches in date order",
+              "drawing them with different pens",
+              "making every sketch the same"
+            ]
+          ],
+          [
+            "What causes the moon's changing appearance?",
+            [
+              "different views of its sunlit half",
+              "the moon turning off its own light",
+              "clouds permanently changing its shape"
+            ]
+          ],
+          [
+            "What did the students do after predicting?",
+            [
+              "made another observation to check",
+              "stopped watching the sky",
+              "changed the moon's orbit"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "The school garden committee was choosing between two watering systems. A sprinkler was quick to use, but some water landed on the sidewalk. A slow hose delivered water closer to the plants' roots. The students measured how much water each method used and considered the time needed. They recommended a method only after comparing the results and discussing tradeoffs.",
+        [
+          [
+            "What two factors did the committee compare?",
+            [
+              "water use and time",
+              "the colors of the hoses",
+              "the ages of the plants"
+            ]
+          ],
+          [
+            "Which is an example of a tradeoff in the passage?",
+            [
+              "a quick method may waste water",
+              "every method uses the same water",
+              "plants need no water"
+            ]
+          ],
+          [
+            "Why did the students measure both systems?",
+            [
+              "to support their choice with evidence",
+              "to guarantee no plants would ever wilt",
+              "to find the longest sidewalk"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "A team of students explored how different surfaces affected rolling toy cars. They made a wooden ramp and released the same car from the same marked height onto carpet, tile, and rough cardboard. On tile, the car rolled farthest. On carpet, it stopped sooner. They repeated each trial and calculated an average distance. Their report noted that friction might explain the difference, while also admitting that small measuring errors could affect their numbers.",
+        [
+          [
+            "Which variables did the students try to keep constant?",
+            [
+              "the car and the release height",
+              "the stopping distance",
+              "the type of surface"
+            ]
+          ],
+          [
+            "Why did they calculate an average?",
+            [
+              "to summarize repeated measurements",
+              "to make every trial identical",
+              "to avoid writing down results"
+            ]
+          ],
+          [
+            "What did they identify as a limitation?",
+            [
+              "possible measuring errors",
+              "the color of the ramp",
+              "the day of the week"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "A coastal town was deciding where to plant trees near a busy road. Children from two schools measured shade, recorded temperatures, and interviewed neighbors. The sites with more shade were cooler during several afternoon visits, but traffic and building shapes also varied. Their report recommended further observations and explained the difference between a pattern they saw and proof of a single cause. The town used the findings as one part of its planning process.",
+        [
+          [
+            "Why could the temperature pattern have more than one cause?",
+            [
+              "traffic and buildings also differed between sites",
+              "thermometers cannot measure outdoors",
+              "trees stop all traffic"
+            ]
+          ],
+          [
+            "Which statement is supported by the observations?",
+            [
+              "shadier sites were cooler during several visits",
+              "shade always reduces temperature by exactly ten degrees",
+              "all roads have identical temperatures"
+            ]
+          ],
+          [
+            "How did the town use the children's report?",
+            [
+              "as one source of evidence for planning",
+              "as proof that no more measurements were needed",
+              "to replace every road immediately"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Students built a small rain garden using plants that could tolerate wet soil. Before planting, they tested how quickly water drained through different mixes of sand, soil, and compost. One mixture drained too rapidly for their chosen plants, and another stayed soggy. They selected a balanced mixture, planted the garden, and measured how it performed after several storms. The class wrote about both successful results and changes they would make next year.",
+        [
+          [
+            "What did the class test before planting?",
+            [
+              "how quickly water drained through soil mixtures",
+              "how high the school roof was",
+              "how quickly flowers changed color"
+            ]
+          ],
+          [
+            "Why did they avoid the fastest-draining mixture?",
+            [
+              "it did not suit the chosen plants' moisture needs",
+              "all sand is poisonous to plants",
+              "it made the garden too colorful"
+            ]
+          ],
+          [
+            "What made their investigation useful over time?",
+            [
+              "they monitored results after several storms",
+              "they ignored all unsuccessful tests",
+              "they measured only one flower once"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "At a local museum, Arjun examined photographs of a street taken in three different decades. An older picture showed small shops, while the most recent showed apartment buildings and a bicycle lane. He read newspaper reports to learn why some changes happened and interviewed a longtime resident for another perspective. In his report he separated details visible in the photographs from explanations that needed other sources. He also noted that one person's memory could be incomplete.",
+        [
+          [
+            "Which fact could Arjun verify directly from the photographs?",
+            [
+              "the street had a bicycle lane in the recent image",
+              "every resident supported the changes",
+              "all shops closed for the same reason"
+            ]
+          ],
+          [
+            "Why did he consult newspapers and an interview?",
+            [
+              "to investigate reasons not visible in photographs",
+              "to change the photographs",
+              "to avoid gathering evidence"
+            ]
+          ],
+          [
+            "What did he recognize about personal memories?",
+            [
+              "they can provide clues but may be incomplete",
+              "they always contain every detail",
+              "they replace all other historical sources"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "A robotics club tried to build a claw that could pick up a paper cup without crushing it. Their first model gripped too tightly, so they added a softer pad. The new design lifted the cup but occasionally dropped it. Students recorded how many times each version succeeded in ten trials. Instead of declaring victory after one good attempt, they compared results, adjusted the grip, and prepared a new test. They learned that improving an invention often means balancing competing needs.",
+        [
+          [
+            "What was the first design's problem?",
+            [
+              "it gripped too tightly",
+              "it could not be assembled",
+              "it had no movable parts"
+            ]
+          ],
+          [
+            "What evidence did the club collect?",
+            [
+              "the number of successful lifts in ten trials",
+              "the color of the cups alone",
+              "how much the students liked the pads"
+            ]
+          ],
+          [
+            "What tradeoff were they solving?",
+            [
+              "holding the cup firmly without crushing it",
+              "making every cup the same size",
+              "changing the cup into a different material"
+            ]
+          ]
+        ]
+      ]
+    ]
+  }
+}
