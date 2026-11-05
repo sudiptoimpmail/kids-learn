@@ -4,7 +4,8 @@ const { chromium } = require('playwright');
   const errs = []; p.on('pageerror', e => errs.push(e.message));
   await p.goto('http://localhost:8765/index.html');
   await p.evaluate(() => localStorage.setItem('learnplay.v1', JSON.stringify({ voice: false, grade: 'k', name: 'T' })));
-  await p.reload(); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(300);
+  await p.reload(); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady);
+  await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(300);
   const r = await p.evaluate(async () => {
     const out = [];
     // 1. every grade, with and without a weak skill and a strong skill: discovery always there; little ones trace
@@ -49,7 +50,7 @@ const { chromium } = require('playwright');
   console.log(r.join('\n'));
   // 7. a bad backup with broken stats
   await p.evaluate(() => { Store.importJSON(JSON.stringify({ schema: 3, active: 'p1', order: ['p1'], device: {}, profiles: { p1: { name: 'X', stats: { days: 5, skills: [] }, quest: { steps: 'x' }, levels: { add: 'big', sub: 2 } } } })); });
-  await p.reload(); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(300);
+  await p.reload(); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(300);
   console.log('bad backup →', JSON.stringify(await p.evaluate(() => { openDashboard(); return { stats: state.stats, quest: questFor().steps.length, levels: state.levels }; })));
   console.log('errors', JSON.stringify(errs)); await b.close();
 })();

@@ -458,6 +458,7 @@ const NAMES = ContentData.get('content','NAMES');
 function numberOptions(ans, level, min = 0) {
   const set = new Set([ans]);
   if (level >= 4) { if (ans + 10 >= min) set.add(ans + 10); else if (ans - 10 >= min) set.add(ans - 10); } // classic place-value slip
+  if (level >= 7 && ans >= 100) set.add(Math.random() < 0.5 && ans - 100 >= min ? ans - 100 : ans + 100);       // hundreds slip
   const spread = level >= 3 ? 3 : 2;
   let guard = 0;
   while (set.size < numOpts(level) && guard++ < 60) {
@@ -490,8 +491,17 @@ function addPair(level) {
     do { a = rand(Math.min(10, max) + 1); b = rand(Math.min(10, max) + 1); } while (a + b > max || (a === 0 && b === 0) || (level > 1 && (a === 0 || b === 0)));
   } else if (level === 4) { // no carry
     do { a = 10 + rand(89); b = 1 + rand(9); } while ((a % 10) + b > 9);
-  } else { // carry
+  } else if (level === 5) { // carry
     do { a = 10 + rand(80); b = 2 + rand(8); } while ((a % 10) + b < 10);
+  } else if (level === 6) { // two-digit + two-digit within 100, usually with regrouping
+    const carry = Math.random() < 0.65;
+    do { a = 11 + rand(78); b = 11 + rand(78); } while (a + b > 99 || ((a % 10) + (b % 10) >= 10) !== carry);
+  } else if (level === 7) { // three-digit + two- or three-digit, no regrouping
+    do { a = 100 + rand(800); b = Math.random() < 0.4 ? 10 + rand(89) : 100 + rand(700); }
+    while (a + b > 999 || (a % 10) + (b % 10) > 9 || (Math.floor(a / 10) % 10) + (Math.floor(b / 10) % 10) > 9);
+  } else { // three-digit + three-digit within 1000, regrouping ones and/or tens
+    do { a = 100 + rand(800); b = 100 + rand(700); }
+    while (a + b > 999 || ((a % 10) + (b % 10) < 10 && (Math.floor(a / 10) % 10) + (Math.floor(b / 10) % 10) < 10));
   }
   return [a, b];
 }
@@ -499,8 +509,44 @@ function subPair(level) {
   let a, b;
   if (level <= 3) { const max = [5, 10, 15][level - 1]; a = 1 + rand(max); b = level > 1 ? 1 + rand(a) : rand(a + 1); }
   else if (level === 4) { do { a = 11 + rand(89); b = 1 + rand(9); } while (b > a % 10); } // no borrow
-  else { do { a = 20 + rand(80); b = 2 + rand(8); } while (b <= a % 10); }                 // borrow
+  else if (level === 5) { do { a = 20 + rand(80); b = 2 + rand(8); } while (b <= a % 10); } // borrow
+  else if (level === 6) { // two-digit − two-digit, usually with regrouping
+    const borrow = Math.random() < 0.65;
+    do { a = 30 + rand(70); b = 11 + rand(a - 20); } while (b >= a || ((b % 10) > (a % 10)) !== borrow);
+  } else if (level === 7) { // three-digit − two- or three-digit, no regrouping
+    do { a = 200 + rand(799); b = Math.random() < 0.4 ? 10 + rand(89) : 100 + rand(a - 150); }
+    while (b >= a || (b % 10) > (a % 10) || (Math.floor(b / 10) % 10) > (Math.floor(a / 10) % 10));
+  } else { // three-digit − three-digit with regrouping
+    do { a = 200 + rand(799); b = 100 + rand(a - 150); }
+    while (b >= a || ((b % 10) <= (a % 10) && (Math.floor(b / 10) % 10) <= (Math.floor(a / 10) % 10)));
+  }
   return [a, b];
+}
+
+// Grade 2–3 sums are written in columns, the way school worksheets show them.
+function columnHTML(op, a, b) {
+  const w = String(Math.max(a, b)).length;
+  const row = (n, sign) => `<div class="col-row"><span class="col-sign">${sign}</span>${String(n).padStart(w, ' ').split('').map((d) => `<span class="col-d">${d === ' ' ? '' : d}</span>`).join('')}</div>`;
+  return `<div class="col-sum" aria-label="${a} ${op === '+' ? 'plus' : 'minus'} ${b}">${row(a, '')}${row(b, op)}<div class="col-line"></div><div class="col-row"><span class="col-sign"></span>${'<span class="col-d qmark">?</span>'.repeat(w)}</div></div>`;
+}
+function columnHint(op, a, b) {
+  const digits = (n) => [n % 10, Math.floor(n / 10) % 10, Math.floor(n / 100)];
+  const [A, B] = [digits(a), digits(b)], names = ['ones', 'tens', 'hundreds'], places = a >= 100 ? 3 : 2;
+  const lines = [];
+  let carry = 0;
+  for (let i = 0; i < places; i++) {
+    if (op === '+') {
+      const t = A[i] + B[i] + carry;
+      lines.push(`${names[i]}: ${A[i]} + ${B[i]}${carry ? ' + 1' : ''} = ${t}${t >= 10 && i < places - 1 ? ` → write ${t % 10}, carry 1` : ''}`);
+      carry = t >= 10 ? 1 : 0;
+    } else {
+      let top = A[i] - carry; carry = 0;
+      if (top < B[i] && i < places - 1) { lines.push(`${names[i]}: ${top} is less than ${B[i]} → trade a ten: ${top + 10} − ${B[i]} = ${top + 10 - B[i]}`); carry = 1; }
+      else lines.push(`${names[i]}: ${top} − ${B[i]} = ${top - B[i]}`);
+    }
+  }
+  return { html: `<div class="hint-note col-hint">${lines.join('<br>')}</div>`,
+    say: op === '+' ? 'Add the ones first, then the tens, then the hundreds!' : 'Take away the ones first, then the tens, then the hundreds!' };
 }
 
 function mathHint(op, a, b, e) {
@@ -532,11 +578,11 @@ function genAdd(level) {
     key: `add-${a}-${b}`,
     text,
     say: story ? `You have ${a} ${things}. You get ${b} more. How many now?` : level >= 4 ? ['What is', a, 'plus', `${b}?`] : `What is ${a} plus ${b}?`,
-    main: story ? `<div class="story">${text}</div>` : `<div class="equation">${a} + ${b} = <span class="qmark">?</span></div>`,
+    main: story ? `<div class="story">${text}</div>` : level >= 6 ? columnHTML('+', a, b) : `<div class="equation">${a} + ${b} = <span class="qmark">?</span></div>`,
     options: numberOptions(ans, level),
     answer: ans,
     optClass: 'opt-num',
-    hint: mathHint('+', a, b, e),
+    hint: level >= 6 ? columnHint('+', a, b) : mathHint('+', a, b, e),
   };
 }
 
@@ -550,11 +596,11 @@ function genSub(level) {
     key: `sub-${a}-${b}`,
     text,
     say: story ? `You have ${a} ${things}. You give away ${b}. How many are left?` : level >= 4 ? ['What is', a, 'minus', `${b}?`] : `What is ${a} minus ${b}?`,
-    main: story ? `<div class="story">${text}</div>` : `<div class="equation">${a} − ${b} = <span class="qmark">?</span></div>`,
+    main: story ? `<div class="story">${text}</div>` : level >= 6 ? columnHTML('−', a, b) : `<div class="equation">${a} − ${b} = <span class="qmark">?</span></div>`,
     options: numberOptions(ans, level),
     answer: ans,
     optClass: 'opt-num',
-    hint: mathHint('−', a, b, e),
+    hint: level >= 6 ? columnHint('−', a, b) : mathHint('−', a, b, e),
   };
 }
 
@@ -1637,8 +1683,8 @@ const CATEGORIES = [
   { id: 'words', title: 'Word Detective', sub: 'nouns · plurals · past tense', icon: '🕵️', color: '#5f3dc4', gen: (l) => genGrammar(l), maxLevel: 5 },
   { id: 'match', title: 'Match It', sub: 'word ↔ picture · 3+2 ↔ 5', icon: '🔗', color: '#5c7cfa', gen: genMatch, maxLevel: 5, roundLen: 5 },
   { id: 'syl', title: 'Clap It!', sub: 'syllables', icon: '👏', color: '#ffd43b', gen: genSyllable },
-  { id: 'add', title: 'Adding', sub: '2 + 3 · 34 + 5', icon: '➕', color: '#b197fc', gen: genAdd, maxLevel: 5 },
-  { id: 'sub', title: 'Subtraction', sub: '5 − 2 · 47 − 3', icon: '➖', color: '#f783ac', gen: genSub, maxLevel: 5 },
+  { id: 'add', title: 'Adding', sub: '2 + 3 · 347 + 286', icon: '➕', color: '#b197fc', gen: genAdd, maxLevel: 8 },
+  { id: 'sub', title: 'Subtraction', sub: '5 − 2 · 642 − 358', icon: '➖', color: '#f783ac', gen: genSub, maxLevel: 8 },
   { id: 'story', title: 'Word Problems', sub: 'math stories', icon: '📝', color: '#4c6ef5', gen: genWordProblem, maxLevel: 5 },
   { id: 'cmp', title: 'Compare', sub: '7 > 3 · 2 < 9', icon: '🐊', color: '#40c057', gen: genCompare, maxLevel: 5 },
   { id: 'mul', title: 'Multiply', sub: '3 × 4 = ?', icon: '✖️', color: '#fa5252', gen: genMul, maxLevel: 5 },

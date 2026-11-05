@@ -1,12 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="t"><title id="t">Illustrated United Kingdom 5p coin</title>
-    <defs><radialGradient id="metal" cx=".35" cy=".25" r=".85"><stop stop-color="#fffdf3"/><stop offset=".24" stop-color="#f9e2a7"/><stop offset=".72" stop-color="#bf8f55"/><stop offset="1" stop-color="#795331"/></radialGradient><filter id="s"><feGaussianBlur stdDeviation="4"/></filter></defs>
-    <ellipse cx="121" cy="223" rx="91" ry="10" fill="#304050" opacity=".15" filter="url(#s)"/>
-    <circle cx="120" cy="120" r="103" fill="url(#metal)" stroke="#795331" stroke-width="5"/>
-    <circle cx="120" cy="120" r="88" fill="none" stroke="#fff" opacity=".55" stroke-width="3" stroke-dasharray="2 5"/>
-    <circle cx="120" cy="120" r="81" fill="none" stroke="#795331" stroke-width="2" opacity=".44"/>
-    <path d="M56 88Q119 29 186 85" stroke="#fff" stroke-width="8" fill="none" opacity=".25" stroke-linecap="round"/>
-    <path d="M64 175Q120 206 176 175" stroke="#795331" stroke-width="5" fill="none" opacity=".24" stroke-linecap="round"/>
-    <text x="120" y="122" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="61" fill="#795331">5p</text>
-    <text x="120" y="150" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="700" font-size="13" fill="#795331">UNITED KINGDOM</text>
-    <text x="120" y="172" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="600" font-size="10" fill="#795331">COIN · LEARNING ART</text>
-  </svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="t"><title id="t">United Kingdom 5p coin</title>
+<defs><radialGradient id="m" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#e3e7ec"/><stop offset=".85" stop-color="#aab3bd"/><stop offset="1" stop-color="#5d6873"/></radialGradient><path id="rim" d="M72.3 120A47.7 47.7 0 1 1 167.7 120"/><filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter></defs>
+<ellipse cx="122" cy="185.625" rx="51.277499999999996" ry="4.17375" fill="#1d2733" opacity=".18" filter="url(#s)"/>
+<circle cx="120" cy="120" r="59.625" fill="url(#m)" stroke="#5d6873" stroke-width="2.086875"/>
+<circle cx="120" cy="120" r="55.45125" fill="none" stroke="#5d6873" stroke-opacity=".35" stroke-width="1.5" stroke-dasharray="1.5 2.5"/>
+
+<text font-family="system-ui,-apple-system,sans-serif" font-size="8.3" font-weight="700" letter-spacing="1" fill="#5d6873" fill-opacity=".85"><textPath href="#rim" startOffset="50%" text-anchor="middle">FIVE PENCE</textPath></text>
+<g transform="translate(96.74625 80.64750000000001) scale(0.465)" opacity=".8"><path d="M18 70L22 34L36 54L50 26L64 54L78 34L82 70Z" fill="#5d6873"/><rect x="18" y="72" width="64" height="8" rx="2" fill="#5d6873"/><circle cx="22" cy="32" r="4" fill="#5d6873"/><circle cx="50" cy="23" r="4" fill="#5d6873"/><circle cx="78" cy="32" r="4" fill="#5d6873"/></g>
+<text x="120" y="148.6" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-weight="800" font-size="21.5" fill="#5d6873">5</text>
+<path d="M84.225 93.16875Q120 59.1825 155.775 93.16875" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="3.6" stroke-linecap="round"/>
+</svg>

@@ -83,8 +83,8 @@ const { chromium } = require('playwright');
       openBrainGame('path');
       const r = window.__pathMaze.route(); window.__pathMaze.go([r[r.length - 1]]);
       if (window.__pathMaze.done()) throw Error('Finger Maze let the path go through walls');
-      // Test mode is the supported way to preview cross-grade content without exposing it to children.
-      state.testMode = true;
+      // Test mode plus "Show all games" previews cross-grade content without exposing it to children.
+      state.testMode = true; state.showAll = true;
       // word puzzles are cards inside Little Words rounds: finishing one answers the card
       const cvc = CATEGORIES.find((c) => c.id === 'cvc');
       for (const kind of ['ws', 'xw']) for (const lv of [2, 3]) {
@@ -111,7 +111,7 @@ const { chromium } = require('playwright');
         if (!R.locked || q.tries) throw Error('Card ' + q.key + ' did not finish cleanly');
       }
       document.querySelector('#quitBtn').click();
-      state.testMode = false;
+      state.testMode = false; state.showAll = false;
 
       return { sudokuWins: award - before, puzzleWins: puzzleAward - oldWins,
         brainCards: (renderHome(), document.querySelectorAll('#grid [data-game]').length) };

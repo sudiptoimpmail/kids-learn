@@ -4,7 +4,7 @@ const { chromium } = require('playwright');
   const errs = []; p.on('pageerror', e => errs.push(e.message));
   await p.goto('http://localhost:8765/index.html');
   await p.evaluate(() => localStorage.setItem('learnplay.v1', JSON.stringify({ voice: false, grade: 'prek' })));
-  await p.reload(); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(400);
+  await p.reload(); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(400);
   const r = await p.evaluate(async () => {
     const out = [];
     for (const [set, k] of [['big', 0], ['big', 1], ['small', 6], ['num', 7], ['num', 11]]) {

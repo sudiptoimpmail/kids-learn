@@ -59,7 +59,7 @@ function nsCoins(total, C) {
   }
   if (left) return null;
   const label = (v) => C.coins.find((c) => c[0] === v)[1];
-  return `<div class="ns-coins" aria-label="Count the coins">${out.map((v) => `<span class="ns-coin c${coins.indexOf(v)%4}">${nsCoinPicture(v,label(v),C.label || C.name)}</span>`).join('')}</div>`;
+  return `<div class="ns-coins" aria-label="Count the coins">${out.map((v) => `<span class="ns-coin c${coins.indexOf(v)%4}">${nsCoinPicture(v,label(v),C.label || C.name)}<b class="ns-coin-val">${label(v)}</b></span>`).join('')}</div>`;
 }
 
 function nsQ(key, text, sayQ, main, answer, wrong, n, optClass = 'opt-num') {

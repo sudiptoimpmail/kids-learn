@@ -5,7 +5,7 @@ const S = require('path').join(__dirname, 'out/');
   const errs = []; p.on('pageerror', e => errs.push(e.message));
   await p.goto('http://localhost:8765/index.html');
   await p.evaluate(() => localStorage.setItem('learnplay.v1', JSON.stringify({ voice: false, grade: 'g1', stars: 5 })));
-  await p.reload(); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(300);
+  await p.reload(); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(300);
   const key = (k) => p.evaluate((k) => document.querySelector(`#pinPad [data-k="${k}"]`).click(), k);
   const typeP = async (s) => { for (const c of s) { await key(c); await p.waitForTimeout(40); } await p.waitForTimeout(250); };
   await p.evaluate(() => document.getElementById('settingsBtn').click()); await p.waitForTimeout(200);
