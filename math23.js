@@ -77,7 +77,12 @@ function genFractions(level) {
     }
     const b = pick([2, 3, 4]), a = b === 2 ? 1 : 1 + rand(b - 1), pie = Math.random() < 0.5;
     const ans = fracWord(a, b);
-    const wrong = [fracWord(1, 2), fracWord(1, 3), fracWord(1, 4), fracWord(Math.min(a + 1, b - 1) || 1, b), fracWord(b - a, b)];
+    // "one half" and "two fourths" are equivalent: never show both as
+    // competing answers to the same picture, even though their words differ.
+    const wrong = [];
+    for (const otherDen of [2, 3, 4]) for (let otherNum = 1; otherNum < otherDen; otherNum++) {
+      if (otherNum * b !== a * otherDen) wrong.push(fracWord(otherNum, otherDen));
+    }
     return m23Q(`frac-word-${a}-${b}-${pie}`, 'What fraction is colored?', 'What fraction is colored?',
       pie ? nsPie(b, a) : m23Bar(b, a), ans, wrong, 2);
   }
