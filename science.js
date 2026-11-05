@@ -91,6 +91,40 @@ const SCIENCE = [
   [4, 'What is at the center of our solar system?', '☀️ the sun', '🌍 the Earth', '🌙 the moon', '🪐 Saturn'],
   [4, 'Which gas do plants take in from the air?', 'carbon dioxide', 'helium', 'smoke', 'steam'],
   [4, 'Which gas do people need to breathe?', 'oxygen', 'carbon dioxide', 'helium', 'smoke'],
+
+  // Additional observation, explanation and evidence questions.
+  [1, 'Which part of a plant holds it upright?', 'the stem', 'the roots', 'the flower', 'the seed'],
+  [1, 'What can you use to observe a tiny ant closely?', 'a magnifying glass', 'a hammer', 'a spoon', 'a pillow'],
+  [1, 'What happens to a puddle when sunshine warms it for a long time?', 'it may get smaller', 'it becomes a rock', 'it turns into sand', 'it grows leaves'],
+  [1, 'How can you tell which toy feels rough?', 'touch it carefully', 'look at the clock', 'listen to a song', 'smell a flower'],
+  [1, 'What do you hear during a thunderstorm?', 'thunder', 'sunlight', 'a rainbow', 'snow'],
+  [1, 'Which part of a flowering plant often attracts bees?', 'the flowers', 'the roots', 'the soil', 'the pot'],
+  [1, 'Which tool helps you observe the shape of a leaf?', 'a magnifying glass', 'a measuring cup', 'a fork', 'a wheel'],
+  [1, 'What happens when a shadow moves as the sun changes position?', 'the shadow changes position', 'the shadow becomes a stone', 'the tree melts', 'the sun turns off'],
+  [2, 'Which material can soak up spilled water?', 'a sponge', 'a glass marble', 'a metal spoon', 'a plastic block'],
+  [2, 'Which part of a new seedling usually grows downward first?', 'the root', 'the flower', 'the fruit', 'the leaf'],
+  [2, 'What can we do to test whether a magnet attracts an object?', 'move the magnet near it', 'put it in a freezer', 'paint it red', 'drop it in the sink'],
+  [2, 'What is one fair way to compare two toy cars rolling down a ramp?', 'start them from the same point', 'push one much harder', 'use two different slopes', 'stop one halfway'],
+  [2, 'Which animal has six legs when fully grown?', 'an ant', 'a spider', 'a crab', 'a dog'],
+  [2, 'Which tool tells us the temperature outside?', 'a thermometer', 'a compass', 'a ruler', 'a magnifying glass'],
+  [2, 'Why do many birds build nests?', 'to protect eggs and young', 'to make rain', 'to grow leaves', 'to find magnets'],
+  [2, 'Which natural material comes from trees?', 'wood', 'glass', 'steel', 'plastic'],
+  [3, 'What is a prediction in a science investigation?', 'a reasoned guess about what may happen', 'a measurement after a test', 'a kind of animal', 'the color of a notebook'],
+  [3, 'What should we change in a fair experiment with two seedlings?', 'only the factor being tested', 'every factor at once', 'the plant names only', 'nothing at all'],
+  [3, 'Why do we write down our observations?', 'to compare and remember evidence', 'to make plants grow faster', 'to stop rain', 'to change magnets'],
+  [3, 'Where does most water vapor come from during evaporation?', 'liquid water', 'solid rock', 'metal spoons', 'dry sand'],
+  [3, 'Which statement best describes a shadow?', 'a dark area where light is blocked', 'a type of gas', 'a sound wave', 'a source of heat'],
+  [3, 'What happens when light passes through clear glass?', 'most of it passes through', 'it turns into soil', 'it always stops completely', 'it becomes louder'],
+  [3, 'What happens when a plant is pollinated?', 'pollen reaches a flower part that can lead to seeds', 'its roots turn into metal', 'its leaves become rocks', 'its stem becomes water'],
+  [3, 'Why is a food chain shown with arrows?', 'to show the flow of food energy', 'to show which animal is tallest', 'to mark the weather', 'to count all the trees'],
+  [4, 'What is evidence in a science investigation?', 'observations and measurements that support a claim', 'a guess without testing', 'a story with no observations', 'a drawing of a star only'],
+  [4, 'How can we reduce friction between two moving parts?', 'use a suitable lubricant', 'add rough sand', 'press them together harder', 'remove every wheel'],
+  [4, 'What makes the pitch of a musical sound higher?', 'faster vibrations', 'slower vibrations', 'a darker color', 'more water'],
+  [4, 'Which is an example of erosion?', 'a river carrying soil away', 'a seed sprouting', 'a bird laying an egg', 'a candle giving light'],
+  [4, 'Which is an example of deposition?', 'a river leaving sand on a bank', 'ice melting into water', 'a magnet attracting iron', 'wind moving a kite'],
+  [4, 'What do we call a path through which electricity can flow?', 'a circuit', 'a fossil', 'a shadow', 'a lever'],
+  [4, 'Why can a closed electrical circuit light a bulb?', 'it makes a complete path for current', 'it makes the bulb heavier', 'it blocks all electricity', 'it changes wire into water'],
+  [4, 'What evidence can show that the ground changed over time?', 'layers of rocks and fossils', 'a painted fence', 'a paper airplane', 'a toy whistle'],
 ];
 // sort it into a group: [level, question, groups, items[name, emoji, group]]
 const SCI_SORT = [
@@ -135,5 +169,9 @@ function genScience(level) {
       hint: { html: '', say: 'Think about it!', remove: true },
     };
   }
-  return mcQuestion('sci', pickLevelled(SCIENCE, level), level);
+  const question = mcQuestion('sci', pickLevelled(SCIENCE, level), level);
+  // Older readers can read the full scientific prompt; reuse a genuine
+  // recorded instruction when a newly authored sentence lacks studio audio.
+  if (!CLIPS[clipKey(question.say)]) question.say = 'Find the answer!';
+  return question;
 }
