@@ -11,7 +11,7 @@ const {chromium} = require('playwright');
     const outcome = await page.evaluate(() => {
       const problems = [], counts = {};
       const ratio = (v) => {
-        const match = new RegExp('^([0-9]+)/([0-9]+)
+        const match = new RegExp('^([0-9]+)/([0-9]+)$').exec(String(v).trim());
         if (match && +match[2] > 0) return +match[1] / +match[2];
         const word = /^(one|two|three) (half|halves|third|thirds|fourth|fourths|quarter|quarters)$/.exec(String(v).trim().toLowerCase());
         if (!word) return null;
