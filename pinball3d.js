@@ -44,7 +44,7 @@ export function start(tableIndex) {
   const area = $('#gameArea');
   area.innerHTML = `<div class="pb-dmd"><div class="pb-dmd-top"><b class="pb-score">0</b><span class="pb-balls">● ● ●</span></div>
       <div class="pb-dmd-msg">${T.icon} ${T.name.toUpperCase()}</div><div class="pb-dmd-bot"><span>TARGET ${TARGET[lv - 1].toLocaleString()}</span><span class="pb-mult">×1</span></div></div>
-    <div class="b3-wrap pb-wrap"><canvas class="game-cv pb-cv"></canvas><div class="b3-msg" hidden></div><button class="pb-launch" aria-label="Pull down and release to launch the ball"><span class="pb-plunger-handle" aria-hidden="true"></span><span class="pb-launch-label">PULL</span></button></div></div>`;
+    <div class="b3-wrap pb-wrap"><canvas class="game-cv pb-cv"></canvas><div class="b3-msg" hidden></div><button class="pb-launch" aria-label="Pull down and release to launch the ball"><span class="pb-plunger-handle" aria-hidden="true"></span><span class="pb-launch-label">PULL</span></button></div>`;
   say('Tap to launch the ball!');
 
   const cv = $('.pb-cv', area), wrap = $('.b3-wrap', area);
