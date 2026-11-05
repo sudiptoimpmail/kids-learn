@@ -1186,3 +1186,21 @@ html, body { min-height: 100%; }
 @media(prefers-reduced-motion:reduce) {
  #play .options .opt {transition:none;}
 }
+
+
+/* Stable, offline picture surfaces for 84 illustrations and 16 photographs. */
+.gk-picture-choices .opt .gk-photo[src$=".svg"] {object-fit:contain;background:linear-gradient(160deg,#f2f7ff,#fff);padding:8px;}
+.reading-word-photo[src$=".svg"],.reading-photo[src$=".svg"],.pz-photo-pick[src$=".svg"],.pz-photo-peek[src$=".svg"] {object-fit:contain;background:linear-gradient(150deg,#eaf7ff,#f9fcff);padding:8px;}
+.visual-prompt-art {width:min(180px,32vw);height:min(120px,18vh);margin:4px auto;display:flex;justify-content:center;align-items:center;}
+.visual-prompt-icon {width:100%;height:100%;object-fit:contain;}
+.gk-picture-choices.visual-choices .opt {background:#fff;min-height:135px;overflow:hidden;gap:6px;}
+.gk-picture-choices.visual-choices .opt small {line-height:1.25;overflow-wrap:anywhere;text-align:center;}
+.dash-next {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(245px,100%),1fr));gap:13px;margin:8px 0 16px;}
+.dash-recommend {background:linear-gradient(160deg,#fff,#f4f8ff);border:2px solid #e0e8f7;border-radius:17px;padding:14px;box-shadow:0 4px 0 #d4def0;}
+.dash-recommend-head {display:flex;flex-wrap:wrap;gap:7px;align-items:center;}
+.dash-recommend-head b {font-size:17px;color:#263a5b;}
+.dash-recommend-head small {font-size:12px;margin-left:auto;color:#526987;}
+.dash-recommend-no {border-radius:50%;width:27px;height:27px;display:grid;place-items:center;background:#d4e5ff;color:#204878;font-weight:900;}
+.dash-recommend p {font-size:14px;line-height:1.45;margin:11px 0;color:#394864;}
+.dash-recommend .big-btn {min-height:44px;box-shadow:none;}
+@media(max-width:420px){.gk-picture-choices.visual-choices .opt {min-height:108px}.gk-picture-choices .opt .gk-photo[src$=".svg"]{height:92px}.visual-prompt-art{height:88px}}
