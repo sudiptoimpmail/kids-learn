@@ -55,3 +55,6 @@
     throw err;
   });
 })();
+
+// Hold the module's load lifecycle until all local JSON and classic engines are ready.
+await window.KidsLearnReady;
