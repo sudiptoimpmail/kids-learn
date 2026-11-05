@@ -1390,3 +1390,28 @@ html, body { min-height: 100%; }
 .w23-rose .e { right:8px; top:50%; transform:translateY(-50%); } .w23-rose .w { left:8px; top:50%; transform:translateY(-50%); }
 .w23-key { display:grid; gap:6px; background:#fff9db; border:3px solid #f59f00; border-radius:12px; padding:12px 18px; font-size:20px; text-align:left; }
 .w23-key span { display:inline-block; width:36px; text-align:center; font-size:24px; }
+/* 3D emoji pictures (Fluent Emoji) sit in the text like the emoji they replace */
+img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain; display:inline-block; pointer-events:none; -webkit-user-drag:none; user-select:none; }
+
+/* Whack-a-Mole: sunny lawn, dirt mounds and 3D critters (Phase 5 art) */
+.wm-field { background:
+  repeating-linear-gradient(100deg, #8fd16b 0 26px, #84c95f 26px 52px),
+  linear-gradient(#9be07a, #6fbf52) !important;
+  border:6px solid #5c9e45 !important; box-shadow: 0 10px 0 #3f7a33, inset 0 0 0 4px #b8ef9c55 !important; border-radius:30px !important; }
+.wm-hole { background: radial-gradient(ellipse 46% 30% at 50% 66%, #2b1c14 0 72%, #4a3022 86%, transparent 88%),
+  radial-gradient(ellipse 54% 38% at 50% 68%, #a8754c 0 80%, #7d5235 92%, transparent 94%) !important;
+  box-shadow:none !important; overflow:visible !important; }
+.wm-hole .wm-earth, .wm-hole .wm-rim { display:none; }
+.wm-hole::after { content:''; position:absolute; left:6%; right:6%; bottom:6%; height:30%; z-index:3; pointer-events:none;
+  background: radial-gradient(ellipse 50% 55% at 50% 0%, transparent 62%, #8c5e3b 64%, #a8754c 80%, transparent 82%); }
+.wm-hole .wm-pop { width:74% !important; height:74% !important; left:13% !important; bottom:-70% !important; clip-path: inset(-40% -20% 8% -20%); transition: bottom .18s cubic-bezier(.3,1.6,.6,1) !important; }
+.wm-hole.up .wm-pop { bottom:33% !important; }
+.wm-character.wm-3d { filter: drop-shadow(0 5px 3px #2b1c1455); }
+.wm-hole.bonk { animation:none !important; background: radial-gradient(ellipse 46% 30% at 50% 66%, #2b1c14 0 72%, #4a3022 86%, transparent 88%),
+  radial-gradient(ellipse 54% 38% at 50% 68%, #c08a5c 0 80%, #7d5235 92%, transparent 94%) !important; }
+.wm-hole.oops { animation: shake .3s !important; }
+.wm-fx { position:absolute; left:50%; top:10%; transform:translateX(-50%); z-index:6; display:flex; align-items:center; gap:4px; pointer-events:none; animation: wmfloat .65s ease-out forwards; }
+.wm-fx img { width:38px; height:38px; } .wm-fx b { font-size:24px; font-weight:1000; color:#fff; text-shadow:0 2px 0 #2b8a3e, 0 0 6px #2b8a3e; }
+.wm-fx .wm-minus { color:#fff; text-shadow:0 2px 0 #c92a2a, 0 0 6px #c92a2a; }
+@keyframes wmfloat { from { opacity:1; transform:translate(-50%,0) scale(.8); } to { opacity:0; transform:translate(-50%,-48px) scale(1.15); } }
+@media (prefers-reduced-motion: reduce) { .wm-fx { animation:none; opacity:0; } }

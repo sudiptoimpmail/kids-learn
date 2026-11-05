@@ -421,8 +421,10 @@ function startWhack() {
     const i = pick(free);
     const flower = lv >= 3 && Math.random() < 0.2;
     const el = holes[i].querySelector('.wm-pop');
-    const character = flower ? 'flower' : pick(ContentData.get('game-themes','WHACK_CHARACTERS'));
-    el.innerHTML = '<img class="wm-character" src="assets/games/' + character + '.svg" alt="" draggable="false">';
+    const character = flower ? 'flower' : pick(ContentData.get('game-themes','WHACK_CHARACTERS').concat(['rabbit']));
+    // 3D critters (Fluent Emoji): hamster "mole", hedgehog, mouse, rabbit; a daisy you must not tap
+    const pic = { mole: '1f439', hedgehog: '1f994', mouse: '1f42d', rabbit: '1f430', flower: '1f33c' }[character];
+    el.innerHTML = '<img class="wm-character' + (pic ? ' wm-3d' : '') + '" src="' + (pic ? 'assets/fluent/' + pic + '.webp' : 'assets/games/' + character + '.svg') + '" alt="" draggable="false">';
     holes[i].classList.add('up');
     holes[i].setAttribute('aria-label', flower ? 'Flower: do not tap' : 'Tap the animal!');
     const timer = later(() => { holes[i].classList.remove('up'); holes[i].setAttribute('aria-label', 'Empty garden hole'); up.delete(i); }, speedAt() * (0.8 + Math.random() * 0.4));
@@ -433,6 +435,9 @@ function startWhack() {
     const m = up.get(i); if (!m || !alive) return;
     clearTimeout(m.timer); up.delete(i);
     h.classList.remove('up'); h.setAttribute('aria-label', 'Empty garden hole'); h.classList.add(m.flower ? 'oops' : 'bonk');
+    // a little burst of stars (or a red −1 for the flower) floats up from the hole
+    const fx = document.createElement('span'); fx.className = 'wm-fx'; fx.innerHTML = m.flower ? '<b class="wm-minus">−1</b>' : '<img src="assets/fluent/1f4ab.webp" alt=""><b>+1</b>';
+    h.appendChild(fx); later(() => fx.remove(), 650);
     later(() => h.classList.remove('bonk', 'oops'), 300);
     if (m.flower) { score = Math.max(0, score - 1); sfx.no(); } else { score++; tone([520, 780], { dur: 0.05, gap: 0.05, vol: 0.12, type: 'square' }); }
     $('.wm-score', area).textContent = score;
