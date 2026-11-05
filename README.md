@@ -116,6 +116,12 @@ three.js (MIT license) is bundled in `vendor/` so the 3D games work offline. Wor
 
 Progress is stored only on the device (localStorage). No accounts, ads or tracking.
 
+## Offline-first optional learning packs
+
+All bundled games and questions remain free to play **without internet, ads, or purchase prompts**. The app includes a validated, locally persisted question-pack format for future optional curriculum expansions. An already installed extra pack works offline; new packs can be obtained only through the protected parent Settings area once a real native StoreKit/Google Billing adapter and verified download service are configured. The web build does not sell or unlock anything.
+
+The existing bundled question generators are kept in the JavaScript content files, while additional multiple-choice questions are stored as versioned JSON in IndexedDB. See [docs/offline-content-packs.md](docs/offline-content-packs.md) for the schema, approval constraints, parental gate, entitlement verification, and native art/audio download plan.
+
 ## Tests
 `sh tests/run.sh` runs the browser tests (needs Node, Playwright and Chrome): profiles and old-save migration, 3D clean-up, PIN, tracing (every line must be traced), dashboard, daily quest plans for every grade, short-round grading, hints vs mastery, saving after each answer, play rewards, bad backups, offline caching, and that every voice line has a recording.
 
