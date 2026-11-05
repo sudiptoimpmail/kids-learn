@@ -1,5 +1,6 @@
 /* Illustrated variations within existing educational categories.
-   Original self-contained SVG scenes, predictable hotspots, no external assets. */
+   Scene artwork is external SVG; hotspots and learning banks are external JSON.
+   This file contains only the interactive learning engine and drawing controls. */
 const IllustratedActivities = (() => {
   'use strict';
   const div = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
