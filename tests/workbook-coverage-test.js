@@ -25,6 +25,8 @@ assert.ok(d.order.some(row=>row[0].some(x=>x.includes('fox'))),'missing original
 for(const end of ['sh','ch','ck','nd','ng'])assert.ok(d.endings[end]?.length>=4,'ending practice missing: '+end);
 for(const vowel of ['long A','long E','long I','long O'])assert.ok(d.vowels[vowel].length>=10,'vowel word paths missing: '+vowel);
 const scene=d.illustrations.coverage();
+assert.equal(scene.hiddenWords.length,10,'Garden hunt should have ten printed target words');
+for(const word of originalCvc)assert.ok(scene.hiddenWords.includes(word),'hidden print word missing: '+word);
 assert.equal(scene.a.length,8,'the A hunt should have eight distinct target objects');
 for(const obj of ['apple','ant','acorn','airplane','arrow','axe','alligator','artist brush'])assert.ok(scene.a.includes(obj),'A object missing: '+obj);
 assert.equal(scene.circles.length,4);
