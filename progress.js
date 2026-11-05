@@ -159,6 +159,37 @@ function renderDashboard() {
     <div class="ds good"><h3>🌟 Doing well</h3>${good.length ? `<ul>${good.slice(0, 8).map(row).join('')}</ul>` : '<p class="note">Skills show here after 8 or more cards with mostly right answers.</p>'}</div>
     <div class="ds weak"><h3>🧩 Needs practice</h3>${weak.length ? `<ul>${weak.slice(0, 8).map(row).join('')}</ul>` : '<p class="note">Nothing stuck right now. 👍</p>'}</div>
     ${going.length ? `<div class="ds"><h3>📈 Getting there</h3><ul>${going.slice(0, 8).map(row).join('')}</ul></div>` : ''}`;
+  // Give parents a small, practical next step rather than only performance charts.
+  // Recommendations are derived locally from the child's saved skill results.
+  const defaults = {
+    prek: ['gk','phonics','shape2'], k: ['phonics','add','sent'],
+    g1: ['sent','add','numsense'], g2: ['sent','numsense','sci'],
+    g3: ['sent','mul','sci']
+  };
+  const priority = [...weak,...going].filter(x=>gradeRange(state.grade,x.cat)).map(x=>x.cat);
+  const candidates = [...new Set([...priority,...(defaults[state.grade]||defaults.k)])]
+    .filter(id=>gradeRange(state.grade,id)).slice(0,3);
+  const practiceTips = {
+    gk:'Name the pictures together. Ask what makes the answer special.',
+    phonics:'Say each sound slowly, then blend it into a word.',
+    shape2:'Find the same shape in your home and describe it.',
+    sent:'Read together and ask which sentence supports the answer.',
+    add:'Use toys or counters; explain how the groups combine.',
+    numsense:'Count, measure or compare real objects before tapping.',
+    sci:'Ask for a prediction and one observation that supports it.',
+    mul:'Use equal groups of small objects before writing a fact.'
+  };
+  $('#dashNext').innerHTML = candidates.map((id,i)=>{
+    const cat=CATEGORIES.find(x=>x.id===id);
+    if(!cat)return '';
+    const level=gradeRange(state.grade,id)[0];
+    const tip=practiceTips[id]||'Ask your child to explain how they decided.';
+    return `<div class="dash-recommend"><div class="dash-recommend-head"><span class="dash-recommend-no">${i+1}</span><b>${cat.icon} ${cat.title}</b><small>5-minute practice</small></div><p>${tip}</p><button class="big-btn small" data-practice="${id}" aria-label="Practice ${cat.title}">Start practice</button></div>`;
+  }).join('') + '<p class="note small">Practice is based on recent answers and the selected grade, not a standardized assessment. Talk, read, draw and explore together too.</p>';
+  $('#dashNext [data-practice]').forEach(button=>button.onclick=()=>{
+    sfx.tap();
+    startRound(button.dataset.practice,5);
+  });
   // subjects: level now and this week's accuracy
   const catWeek = {};
   for (const [, x] of week) for (const [c, v] of Object.entries(x.cats)) { const a = catWeek[c] || (catWeek[c] = [0, 0]); a[0] += v[0]; a[1] += v[2] != null ? v[2] : v[1]; }
