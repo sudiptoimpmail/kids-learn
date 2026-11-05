@@ -52,9 +52,12 @@ function genAdvancedPattern(level) {
   const correct = String(answer);
   const wrong = [...new Set([answer + 1, answer - 1, answer + 2, answer - 2, answer + 4, answer * 2])]
     .filter(n => n >= 0 && n !== answer).map(String).slice(0, 3);
-  return thinkingQuestion('advanced-pattern-' + kind + '-' + nums.join('-'), 'What number should come next?',
+  const q = thinkingQuestion('advanced-pattern-' + kind + '-' + nums.join('-'), 'What number should come next?',
     '<div class="think-pattern">' + nums.map(n => '<span>' + n + '</span>').join('') + '<span class="think-missing">?</span></div>',
     [correct, ...wrong], correct, reason, 'opt-num');
+  q.say = 'Which number comes next?'; // existing, prerecorded spoken prompt
+  q.hint.say = 'Think about it!'; // display the detailed reasoning without requesting an absent recording
+  return q;
 }
 
 function genPattern(level) {
