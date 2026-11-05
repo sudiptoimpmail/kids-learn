@@ -33,8 +33,13 @@ const TRACE_LINES = [
 ];
 // Grade 1 handwriting combines spelling patterns and fine-motor formation in the existing trace engine.
 const TRACE_WORDS = [
+  // Grade 1 vocabulary and consonant combinations from the illustrated
+  // references, with natural prerecorded audio for every word below.
   ['fish','🐟'],['wash','🫧'],['bench','🪑'],['lunch','🥪'],['rock','🪨'],['sand','🏖️'],
-  ['sick','🤒'],['rain','🌧️'],['cake','🍰'],['ship','⛵'],['chair','🪑'],['leaf','🍃']
+  ['sick','🤒'],['rain','🌧️'],['cake','🍰'],['ship','⛵'],['chair','🪑'],['leaf','🍃'],
+  ['wind','🌬️'],['jump','🐸'],['catch','🧤'],['bird','🐦'],['climb','🌳'],['water','💧'],
+  ['wolf','🐺'],['thin','✏️'],['wheel','🛞'],['sheep','🐑'],['frog','🐸'],['brick','🧱'],
+  ['grass','🌱'],['hand','✋'],['cat','🐱'],['dog','🐶'],['apple','🍎']
 ];
 // [shown character, sentence on screen, what the voice says, picture, count, path (lines only), start and end pictures]
 function traceItems(set) {
