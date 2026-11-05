@@ -186,7 +186,7 @@ function renderDashboard() {
     const tip=practiceTips[id]||'Ask your child to explain how they decided.';
     return `<div class="dash-recommend"><div class="dash-recommend-head"><span class="dash-recommend-no">${i+1}</span><b>${cat.icon} ${cat.title}</b><small>5-minute practice</small></div><p>${tip}</p><button class="big-btn small" data-practice="${id}" aria-label="Practice ${cat.title}">Start practice</button></div>`;
   }).join('') + '<p class="note small">Practice is based on recent answers and the selected grade, not a standardized assessment. Talk, read, draw and explore together too.</p>';
-  $('#dashNext [data-practice]').forEach(button=>button.onclick=()=>{
+  $$('#dashNext [data-practice]').forEach(button=>button.onclick=()=>{
     sfx.tap();
     startRound(button.dataset.practice,5);
   });
