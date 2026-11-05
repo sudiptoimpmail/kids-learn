@@ -14,7 +14,7 @@ const pick = a => a[Math.floor(Math.random()*a.length)];
 const sample = (a,n) => shuffle(a).slice(0,n);
 const ctx = vm.createContext({Math,Set,Object,Error,pick,shuffle,sample});
 vm.runInContext(fs.readFileSync('grade1words.js','utf8') +
-  '\nthis.testAPI = {G1_WORDS,G1_ACTIVE_WORDS,G1_EDITORIAL,G1_SHORT_WORDS,G1_BLEND_WORDS,G1_LONG_WORDS,G1_PICTURE_WORDS,genGrade1Read};',ctx);
+  '\nthis.testAPI = {G1_WORDS,G1_ACTIVE_WORDS,G1_READING_WORDS,G1_WORKBOOK_WORDS,G1_EDITORIAL,G1_SHORT_WORDS,G1_BLEND_WORDS,G1_LONG_WORDS,G1_PICTURE_WORDS,genGrade1Read};',ctx);
 const g = ctx.testAPI;
 assert.equal(g.G1_WORDS.length,243,'expected 243 unique requested tokens');
 assert.equal(new Set(g.G1_WORDS).size,g.G1_WORDS.length,'duplicate words');
@@ -41,11 +41,14 @@ const inspect = q => {
 for (const level of [1,2,3,4,5]) {
   for (let n=0;n<3500;n++) inspect(g.genGrade1Read(level));
 }
-for (const word of g.G1_ACTIVE_WORDS) {
+for (const word of g.G1_READING_WORDS) {
   const q = g.genGrade1Read(4,word);
   inspect(q);
   assert.equal(q.answer,word,'not reachable as correct answer '+word);
 }
+const photographedGrade1Words='wind leaf jump catch bird climb water wolf dog snake fish cat ant grapes hair watch black park mane sheep crib thin wheel chair frog brick grass nail gate paid page plate cave plane wave cane tail'.split(' ');
+for (const word of photographedGrade1Words) assert.ok(g.G1_READING_WORDS.includes(word),'photographed Grade 1 word missing: '+word);
+assert.ok(g.G1_WORKBOOK_WORDS.length >= 35,'photographed/contextual supplement too small');
 for (const word of g.G1_PICTURE_WORDS) assert.ok(g.G1_WORDS.includes(word),'spelling picture not requested '+word);
 assert.ok(g.G1_SHORT_WORDS.length>100 && g.G1_BLEND_WORDS.length>50 && g.G1_LONG_WORDS.length>55);
 // the word list is mixed into Letter Sounds rounds (no separate tile)
