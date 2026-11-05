@@ -30,6 +30,7 @@ const TRACE_LINES = [
   ['🟥', 'Square', 'Square. A square has 4 sides that are the same.', '', '', [[0.2, 0.2], [0.8, 0.2], [0.8, 0.8], [0.2, 0.8], [0.2, 0.2]]],
   ['🔺', 'Triangle', 'Triangle. A triangle has 3 sides.', '', '', [[0.5, 0.15], [0.86, 0.82], [0.14, 0.82], [0.5, 0.15]]],
   ['▭', 'Rectangle', 'Rectangle. A rectangle has 2 long sides and 2 short sides.', '', '', [[0.1, 0.3], [0.9, 0.3], [0.9, 0.74], [0.1, 0.74], [0.1, 0.3]]],
+  ['🥤', 'Straw path', 'Wavy line. A wavy line goes up and down.', '🧒', '🥤', wave((t) => [0.5 + 0.15 * Math.sin(t * Math.PI * 4), 0.14 + 0.73 * t], 80)],
 ];
 // Grade 1 handwriting combines spelling patterns and fine-motor formation in the existing trace engine.
 const TRACE_WORDS = [
@@ -106,9 +107,9 @@ function renderTrace(speak) {
   // behind its canvas for pre-writing motion paths, not in a separate game.
   pad.querySelector('.ia-trace-scene')?.remove();
   if ((TR.set === 'words' || TR.set === 'lines') && typeof IllustratedActivities !== 'undefined' &&
-      (TR.set === 'words' || ['Wavy line','Bumpy line','Zigzag line','Straight line'].includes(it[1]))) {
+      (TR.set === 'words' || ['Wavy line','Bumpy line','Zigzag line','Straight line','Straw path'].includes(it[1]))) {
     const scene = document.createElement('div'); scene.className = 'ia-trace-scene';
-    scene.innerHTML = IllustratedActivities.traceScene(TR.set === 'words' ? 'forest' : it[1] === 'Straight line' ? 'garden' : 'sports');
+    scene.innerHTML = IllustratedActivities.traceScene(TR.set === 'words' ? 'forest' : it[1] === 'Straw path' ? 'cafe' : it[1] === 'Straight line' ? 'garden' : 'sports');
     pad.insertBefore(scene, guide);
   }
   const W = pad.clientWidth;
