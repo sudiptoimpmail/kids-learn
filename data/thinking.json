@@ -1,0 +1,1417 @@
+{
+  "schema": 1,
+  "namespace": "thinking",
+  "datasets": {
+    "THINKING_PATTERN_SETS": [
+      [
+        "🔴",
+        "🔵",
+        "🟢",
+        "🟡"
+      ],
+      [
+        "🐱",
+        "🐶",
+        "🐸",
+        "🐻"
+      ],
+      [
+        "🍎",
+        "🍌",
+        "🍇",
+        "🍊"
+      ],
+      [
+        "⭐",
+        "🌙",
+        "☀️",
+        "🌈"
+      ],
+      [
+        "🚗",
+        "🚀",
+        "🚲",
+        "🚂"
+      ],
+      [
+        "🔺",
+        "🔵",
+        "🟨",
+        "💜"
+      ],
+      [
+        "🍕",
+        "🍩",
+        "🍋",
+        "🥕"
+      ],
+      [
+        "🐢",
+        "🦋",
+        "🐳",
+        "🦉"
+      ],
+      [
+        "🟥",
+        "🟦",
+        "🟩",
+        "🟨"
+      ],
+      [
+        "🎈",
+        "🎁",
+        "🏆",
+        "🎲"
+      ],
+      [
+        "🌵",
+        "🌳",
+        "🌷",
+        "🍀"
+      ],
+      [
+        "⚽",
+        "🏀",
+        "🏈",
+        "🎾"
+      ]
+    ],
+    "THINKING_PATTERNS": [
+      [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0
+      ],
+      [
+        0,
+        1,
+        2,
+        0,
+        1,
+        2,
+        0
+      ],
+      [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1
+      ]
+    ],
+    "THINKING_ODD": [
+      [
+        1,
+        [
+          "🐱",
+          "🐶",
+          "🐰"
+        ],
+        "🚗",
+        "The others are animals."
+      ],
+      [
+        1,
+        [
+          "🍎",
+          "🍌",
+          "🍓"
+        ],
+        "🚲",
+        "The others are fruits."
+      ],
+      [
+        1,
+        [
+          "🚗",
+          "🚂",
+          "🚲"
+        ],
+        "🐼",
+        "The others are vehicles."
+      ],
+      [
+        1,
+        [
+          "🌸",
+          "🌻",
+          "🌹"
+        ],
+        "⚽",
+        "The others are flowers."
+      ],
+      [
+        1,
+        [
+          "🐟",
+          "🐬",
+          "🦈"
+        ],
+        "🐻",
+        "The others live in water."
+      ],
+      [
+        1,
+        [
+          "🍰",
+          "🍩",
+          "🍪"
+        ],
+        "🧦",
+        "The others are foods."
+      ],
+      [
+        1,
+        [
+          "🥕",
+          "🥦",
+          "🌽"
+        ],
+        "🚗",
+        "The others are vegetables."
+      ],
+      [
+        1,
+        [
+          "👟",
+          "👢",
+          "🩴"
+        ],
+        "🍎",
+        "The others are footwear."
+      ],
+      [
+        1,
+        [
+          "🚀",
+          "✈️",
+          "🚁"
+        ],
+        "🌼",
+        "The others are vehicles."
+      ],
+      [
+        1,
+        [
+          "🖍️",
+          "✏️",
+          "🖊️"
+        ],
+        "🍉",
+        "The others are writing or drawing tools."
+      ],
+      [
+        1,
+        [
+          "🧸",
+          "🪀",
+          "🎲"
+        ],
+        "🥔",
+        "The others are toys."
+      ],
+      [
+        1,
+        [
+          "🎸",
+          "🥁",
+          "🎹"
+        ],
+        "🧤",
+        "The others are musical instruments."
+      ],
+      [
+        1,
+        [
+          "🦁",
+          "🐘",
+          "🦒"
+        ],
+        "🍓",
+        "The others are animals."
+      ],
+      [
+        1,
+        [
+          "🍞",
+          "🧀",
+          "🥚"
+        ],
+        "👒",
+        "The others are foods."
+      ],
+      [
+        1,
+        [
+          "🧤",
+          "🧣",
+          "🧥"
+        ],
+        "🍕",
+        "The others are clothing."
+      ],
+      [
+        1,
+        [
+          "🐥",
+          "🐔",
+          "🦆"
+        ],
+        "🚲",
+        "The others are birds."
+      ],
+      [
+        2,
+        [
+          "🦋",
+          "🐝",
+          "🐞"
+        ],
+        "🐘",
+        "The others are insects."
+      ],
+      [
+        2,
+        [
+          "🐶",
+          "🐱",
+          "🐰"
+        ],
+        "🌳",
+        "The others are animals."
+      ],
+      [
+        2,
+        [
+          "☀️",
+          "🌙",
+          "⭐"
+        ],
+        "🧀",
+        "The others are things we see in the sky."
+      ],
+      [
+        2,
+        [
+          "🥄",
+          "🍴",
+          "🥢"
+        ],
+        "👟",
+        "The others are used for eating."
+      ],
+      [
+        2,
+        [
+          "🚕",
+          "🚌",
+          "🚙"
+        ],
+        "🚢",
+        "The others travel on roads."
+      ],
+      [
+        2,
+        [
+          "👟",
+          "🧦",
+          "🥾"
+        ],
+        "🧤",
+        "The others are worn on your feet."
+      ],
+      [
+        3,
+        [
+          "🍎",
+          "🍐",
+          "🍊"
+        ],
+        "🥦",
+        "The others are fruits."
+      ],
+      [
+        3,
+        [
+          "🛏️",
+          "🛋️",
+          "🪑"
+        ],
+        "🥪",
+        "The others are furniture."
+      ],
+      [
+        3,
+        [
+          "🦅",
+          "🦆",
+          "🐧"
+        ],
+        "🦎",
+        "The others are birds."
+      ],
+      [
+        3,
+        [
+          "⚽",
+          "🏀",
+          "🏐"
+        ],
+        "🎸",
+        "The others are balls used in games."
+      ],
+      [
+        3,
+        [
+          "🖊️",
+          "✏️",
+          "🖍️"
+        ],
+        "🪥",
+        "The others are used for writing or drawing."
+      ],
+      [
+        3,
+        [
+          "🧥",
+          "👕",
+          "👖"
+        ],
+        "🍕",
+        "The others are clothing."
+      ],
+      [
+        2,
+        [
+          "🧴",
+          "🧽",
+          "🧹"
+        ],
+        "🍌",
+        "The others are things we use to clean."
+      ],
+      [
+        2,
+        [
+          "🚒",
+          "🚑",
+          "🚓"
+        ],
+        "🚜",
+        "The others help people in emergencies."
+      ],
+      [
+        2,
+        [
+          "📖",
+          "✏️",
+          "📏"
+        ],
+        "🍪",
+        "The others are school supplies."
+      ],
+      [
+        2,
+        [
+          "🛁",
+          "🪥",
+          "🧼"
+        ],
+        "🪁",
+        "The others help keep us clean."
+      ],
+      [
+        2,
+        [
+          "🐢",
+          "🐸",
+          "🐊"
+        ],
+        "🦋",
+        "The others can live in or near water."
+      ],
+      [
+        2,
+        [
+          "🥣",
+          "🍽️",
+          "🥄"
+        ],
+        "📷",
+        "The others are used at mealtime."
+      ],
+      [
+        2,
+        [
+          "🎸",
+          "🎺",
+          "🪕"
+        ],
+        "🎨",
+        "The others are musical instruments."
+      ],
+      [
+        2,
+        [
+          "🧥",
+          "🧤",
+          "🧣"
+        ],
+        "🩴",
+        "The others keep us warm in cold weather."
+      ],
+      [
+        2,
+        [
+          "🌂",
+          "☂️",
+          "🧥"
+        ],
+        "🏀",
+        "The others can protect us from rain."
+      ],
+      [
+        2,
+        [
+          "⛵",
+          "🚤",
+          "🚢"
+        ],
+        "🚲",
+        "The others travel on water."
+      ],
+      [
+        3,
+        [
+          "🦉",
+          "🦅",
+          "🐧"
+        ],
+        "🦇",
+        "The others are birds. A bat is a mammal."
+      ],
+      [
+        3,
+        [
+          "🦁",
+          "🐯",
+          "🐻"
+        ],
+        "🐊",
+        "The others are mammals. A crocodile is a reptile."
+      ],
+      [
+        3,
+        [
+          "🐙",
+          "🦀",
+          "🦐"
+        ],
+        "🐬",
+        "The others are invertebrates. A dolphin has a backbone."
+      ],
+      [
+        3,
+        [
+          "📏",
+          "⚖️",
+          "🌡️"
+        ],
+        "🔦",
+        "The others are tools used to measure."
+      ],
+      [
+        3,
+        [
+          "🧲",
+          "🔭",
+          "🔬"
+        ],
+        "🧁",
+        "The others are tools used to explore science."
+      ],
+      [
+        3,
+        [
+          "♻️",
+          "🗑️",
+          "🧹"
+        ],
+        "🎾",
+        "The others relate to managing waste and cleaning."
+      ],
+      [
+        3,
+        [
+          "📚",
+          "📰",
+          "📖"
+        ],
+        "🎧",
+        "The others are printed reading materials."
+      ],
+      [
+        3,
+        [
+          "🚶",
+          "🏃",
+          "🚴"
+        ],
+        "🛏️",
+        "The others are ways people can be physically active."
+      ],
+      [
+        3,
+        [
+          "🎨",
+          "🖍️",
+          "🖌️"
+        ],
+        "📏",
+        "The others are used to make art."
+      ],
+      [
+        3,
+        [
+          "🌳",
+          "🌲",
+          "🌴"
+        ],
+        "🌹",
+        "The others are trees. A rose is not a tree."
+      ],
+      [
+        3,
+        [
+          "🧃",
+          "🥛",
+          "💧"
+        ],
+        "🥖",
+        "The others are drinks or water."
+      ]
+    ],
+    "THINKING_SEQUENCES": [
+      [
+        1,
+        [
+          "🌱",
+          "💧",
+          "🌻"
+        ],
+        "First plant a seed, then water it, then it grows."
+      ],
+      [
+        1,
+        [
+          "🥚",
+          "🐣",
+          "🐥"
+        ],
+        "A chick hatches from an egg and grows."
+      ],
+      [
+        1,
+        [
+          "🌧️",
+          "💧",
+          "🌈"
+        ],
+        "Rain comes first. A rainbow can appear after rain."
+      ],
+      [
+        1,
+        [
+          "🪥",
+          "🦷",
+          "😁"
+        ],
+        "Brush your teeth to keep them clean."
+      ],
+      [
+        1,
+        [
+          "🥚",
+          "🐛",
+          "🦋"
+        ],
+        "A butterfly begins as an egg, then a caterpillar, then becomes a butterfly."
+      ],
+      [
+        1,
+        [
+          "🧦",
+          "👟",
+          "🚶"
+        ],
+        "Put on socks, then shoes, then go for a walk."
+      ],
+      [
+        1,
+        [
+          "🌅",
+          "🌞",
+          "🌇"
+        ],
+        "Morning comes before daytime and evening."
+      ],
+      [
+        1,
+        [
+          "🌱",
+          "🌿",
+          "🌳"
+        ],
+        "A little plant can grow into a tree."
+      ],
+      [
+        1,
+        [
+          "🐣",
+          "🐥",
+          "🐔"
+        ],
+        "A chick hatches and grows into a chicken."
+      ],
+      [
+        1,
+        [
+          "🛏️",
+          "😴",
+          "🌅"
+        ],
+        "Go to bed, sleep, and wake in the morning."
+      ],
+      [
+        1,
+        [
+          "🍞",
+          "🧀",
+          "🥪"
+        ],
+        "Use bread and cheese to make a sandwich."
+      ],
+      [
+        1,
+        [
+          "🧊",
+          "☀️",
+          "💧"
+        ],
+        "The warmth from sunshine can melt ice into water."
+      ],
+      [
+        1,
+        [
+          "✏️",
+          "🖍️",
+          "🖼️"
+        ],
+        "Draw, color, and finish your picture."
+      ],
+      [
+        1,
+        [
+          "✉️",
+          "📮",
+          "📬"
+        ],
+        "Write a letter, mail it, and it arrives."
+      ],
+      [
+        1,
+        [
+          "🛒",
+          "🍎",
+          "🏠"
+        ],
+        "Choose apples at the shop, then take them home."
+      ],
+      [
+        1,
+        [
+          "📦",
+          "🚚",
+          "🏠"
+        ],
+        "A parcel goes on the delivery truck and arrives at home."
+      ],
+      [
+        1,
+        [
+          "🧩",
+          "🧠",
+          "✅"
+        ],
+        "Look at a puzzle, think, and solve it."
+      ],
+      [
+        1,
+        [
+          "🪵",
+          "🪚",
+          "🪑"
+        ],
+        "Wood can be cut and used to make a chair."
+      ],
+      [
+        1,
+        [
+          "🐑",
+          "🧶",
+          "🧣"
+        ],
+        "Sheep give wool, and wool can be made into a scarf."
+      ],
+      [
+        1,
+        [
+          "🥚",
+          "🍳",
+          "🍽️"
+        ],
+        "An egg is cooked and served for a meal."
+      ],
+      [
+        1,
+        [
+          "🦷",
+          "🪥",
+          "✨"
+        ],
+        "Clean your teeth with a toothbrush to make them sparkle."
+      ],
+      [
+        1,
+        [
+          "🧑‍🍳",
+          "🥘",
+          "🍽️"
+        ],
+        "A cook makes food, then serves the meal."
+      ],
+      [
+        1,
+        [
+          "🧑‍🌾",
+          "🌱",
+          "🥕"
+        ],
+        "A farmer plants seeds, and vegetables grow."
+      ],
+      [
+        1,
+        [
+          "🧱",
+          "🏗️",
+          "🏠"
+        ],
+        "Bricks are used at a building site to make a house."
+      ],
+      [
+        1,
+        [
+          "🌙",
+          "😴",
+          "🌞"
+        ],
+        "Nighttime comes, we sleep, and then morning arrives."
+      ],
+      [
+        1,
+        [
+          "👋",
+          "🚌",
+          "🏫"
+        ],
+        "Say goodbye, ride the bus, and arrive at school."
+      ],
+      [
+        1,
+        [
+          "🐔",
+          "🥚",
+          "🐣"
+        ],
+        "A hen lays an egg and a chick hatches."
+      ],
+      [
+        1,
+        [
+          "🐈",
+          "🥣",
+          "😺"
+        ],
+        "A cat eats from its bowl and feels happy."
+      ],
+      [
+        1,
+        [
+          "🧸",
+          "🛏️",
+          "😴"
+        ],
+        "Get a teddy bear, climb into bed, and fall asleep."
+      ],
+      [
+        1,
+        [
+          "🌼",
+          "🐝",
+          "🍯"
+        ],
+        "A bee visits flowers and makes honey."
+      ],
+      [
+        1,
+        [
+          "⛅",
+          "🌧️",
+          "🌈"
+        ],
+        "Clouds bring rain, and a rainbow may appear afterward."
+      ],
+      [
+        1,
+        [
+          "🍞",
+          "🍯",
+          "🥪"
+        ],
+        "Spread honey on bread and make a sandwich."
+      ],
+      [
+        1,
+        [
+          "🦴",
+          "🐶",
+          "😋"
+        ],
+        "A puppy finds a bone and enjoys it."
+      ],
+      [
+        1,
+        [
+          "🧶",
+          "🪡",
+          "🧣"
+        ],
+        "Use yarn and a needle to make a scarf."
+      ],
+      [
+        1,
+        [
+          "🍂",
+          "❄️",
+          "🌷"
+        ],
+        "Autumn is followed by winter, then spring."
+      ],
+      [
+        1,
+        [
+          "📚",
+          "📖",
+          "🧠"
+        ],
+        "Choose a book, read it, and learn something."
+      ],
+      [
+        1,
+        [
+          "🌳",
+          "🍂",
+          "🌱"
+        ],
+        "Leaves fall from trees and new plants grow later."
+      ],
+      [
+        1,
+        [
+          "🏀",
+          "🏃",
+          "🏆"
+        ],
+        "Get ready for a game, play, and celebrate a win."
+      ],
+      [
+        1,
+        [
+          "🚦",
+          "🚗",
+          "🏠"
+        ],
+        "Wait at a traffic light, drive safely, and arrive home."
+      ],
+      [
+        2,
+        [
+          "📖",
+          "🧠",
+          "✅"
+        ],
+        "Read, think, and then answer."
+      ],
+      [
+        2,
+        [
+          "🧺",
+          "🫧",
+          "👕"
+        ],
+        "Put clothes in the basket, wash them, and then they are clean."
+      ],
+      [
+        3,
+        [
+          "📝",
+          "✉️",
+          "📮"
+        ],
+        "Write a letter, put it in an envelope, and mail it."
+      ],
+      [
+        3,
+        [
+          "🌰",
+          "🌱",
+          "🌳"
+        ],
+        "A seed sprouts and becomes a tree."
+      ],
+      [
+        3,
+        [
+          "☁️",
+          "🌧️",
+          "🌱"
+        ],
+        "Clouds can bring rain, and rain helps plants grow."
+      ],
+      [
+        2,
+        [
+          "🥕",
+          "🚿",
+          "🔪",
+          "🍲"
+        ],
+        "Wash the vegetables, prepare them with adult help, and cook a meal."
+      ],
+      [
+        2,
+        [
+          "👕",
+          "🫧",
+          "☀️",
+          "🧺"
+        ],
+        "Dirty clothes are washed, dried, and folded."
+      ],
+      [
+        2,
+        [
+          "📚",
+          "📖",
+          "🧠",
+          "🏫"
+        ],
+        "Choose a book, read and learn, then return it to the library."
+      ],
+      [
+        2,
+        [
+          "🧱",
+          "📏",
+          "🏗️",
+          "🏠"
+        ],
+        "Measure pieces, build walls and finish a home."
+      ],
+      [
+        2,
+        [
+          "☁️",
+          "🌧️",
+          "💧",
+          "☀️"
+        ],
+        "Clouds bring rain, puddles form, and sunlight can dry them."
+      ],
+      [
+        2,
+        [
+          "🐛",
+          "🍃",
+          "🟫",
+          "🦋"
+        ],
+        "A caterpillar eats leaves and forms a chrysalis before becoming a butterfly."
+      ],
+      [
+        2,
+        [
+          "🖍️",
+          "✂️",
+          "🧴",
+          "🖼️"
+        ],
+        "Draw, cut, glue and show the finished craft with a grown-up."
+      ],
+      [
+        2,
+        [
+          "🫘",
+          "💧",
+          "🌱",
+          "🌻"
+        ],
+        "A seed gets water, sprouts, then grows into a flowering plant."
+      ],
+      [
+        2,
+        [
+          "🧹",
+          "🗑️",
+          "🧽",
+          "✨"
+        ],
+        "Sweep, put rubbish in the bin, wipe the surface and finish cleaning."
+      ],
+      [
+        3,
+        [
+          "🔍",
+          "💭",
+          "🧪",
+          "📊"
+        ],
+        "Observe carefully, make a prediction, test it and record the results."
+      ],
+      [
+        3,
+        [
+          "📝",
+          "📐",
+          "🧱",
+          "✅"
+        ],
+        "Write a plan, measure the parts, build and check the result."
+      ],
+      [
+        3,
+        [
+          "☀️",
+          "💨",
+          "☁️",
+          "🌧️"
+        ],
+        "Sunlight warms water, it evaporates, clouds form and rain falls."
+      ],
+      [
+        3,
+        [
+          "🗺️",
+          "📍",
+          "🚶",
+          "🏫"
+        ],
+        "Find a place on the map, choose a route, travel and arrive."
+      ],
+      [
+        3,
+        [
+          "🧴",
+          "♻️",
+          "🏭",
+          "📒"
+        ],
+        "Collect recyclable materials, sort them, process them and make a new product."
+      ],
+      [
+        3,
+        [
+          "📋",
+          "🔢",
+          "📊",
+          "💡"
+        ],
+        "Collect answers, count them, draw a graph and explain what it shows."
+      ],
+      [
+        3,
+        [
+          "🌾",
+          "🚜",
+          "🥕",
+          "🍲"
+        ],
+        "A crop grows, it is harvested, it goes to the kitchen and becomes food."
+      ],
+      [
+        3,
+        [
+          "🏦",
+          "💰",
+          "🛍️",
+          "🎁"
+        ],
+        "Make a savings plan, save money, compare prices and choose a gift."
+      ],
+      [
+        3,
+        [
+          "🌳",
+          "🍂",
+          "🪱",
+          "🌱"
+        ],
+        "Leaves fall, decomposers break them down, and nutrients help plants grow."
+      ],
+      [
+        3,
+        [
+          "🌞",
+          "🧊",
+          "💧",
+          "💨"
+        ],
+        "Warmth can melt ice; liquid water can later evaporate."
+      ],
+      [
+        3,
+        [
+          "🧑‍🤝‍🧑",
+          "💬",
+          "🤝",
+          "😊"
+        ],
+        "Friends discuss a problem, listen, agree on a plan and work together."
+      ],
+      [
+        3,
+        [
+          "🧪",
+          "📏",
+          "📝",
+          "🔁"
+        ],
+        "Carry out a fair test, measure results, write findings and repeat to check."
+      ],
+      [
+        2,
+        [
+          "🎒",
+          "👟",
+          "🚶",
+          "🏫"
+        ],
+        "Pack your school bag, put on your shoes, travel safely, and arrive at school."
+      ],
+      [
+        2,
+        [
+          "🍎",
+          "🚿",
+          "🔪",
+          "🥗"
+        ],
+        "Wash the fruit and, with an adult, chop it before making a fruit salad."
+      ],
+      [
+        2,
+        [
+          "🧩",
+          "🔍",
+          "🧠",
+          "✅"
+        ],
+        "Look at a puzzle, find clues, think and solve it."
+      ],
+      [
+        2,
+        [
+          "🛏️",
+          "⏰",
+          "🪥",
+          "🥣"
+        ],
+        "Wake up, brush your teeth and eat breakfast before starting the day."
+      ],
+      [
+        2,
+        [
+          "🌧️",
+          "🌂",
+          "🚶",
+          "🏠"
+        ],
+        "Notice the rain, pick up your umbrella, walk home and get dry."
+      ],
+      [
+        2,
+        [
+          "✏️",
+          "🖍️",
+          "✂️",
+          "🖼️"
+        ],
+        "Sketch, color, cut with care and display your artwork."
+      ],
+      [
+        2,
+        [
+          "🪴",
+          "💧",
+          "🌱",
+          "🌻"
+        ],
+        "Put a seed in a pot, water it, watch it sprout and grow flowers."
+      ],
+      [
+        2,
+        [
+          "👕",
+          "🧺",
+          "🫧",
+          "☀️"
+        ],
+        "Collect dirty clothes, wash them and dry them."
+      ],
+      [
+        2,
+        [
+          "🥖",
+          "🧀",
+          "🥪",
+          "🍽️"
+        ],
+        "Gather bread and cheese, assemble a sandwich and serve it."
+      ],
+      [
+        2,
+        [
+          "📦",
+          "🏷️",
+          "🚚",
+          "🏠"
+        ],
+        "Pack an item, label the box, ship it and deliver it."
+      ],
+      [
+        3,
+        [
+          "🌱",
+          "🌻",
+          "🐝",
+          "🍯"
+        ],
+        "A seed becomes a flower, a bee visits the flower and makes honey."
+      ],
+      [
+        3,
+        [
+          "🔭",
+          "🌙",
+          "📝",
+          "📊"
+        ],
+        "Observe the moon, write what you see and compare your notes."
+      ],
+      [
+        3,
+        [
+          "🌤️",
+          "🌡️",
+          "📝",
+          "📉"
+        ],
+        "Check the weather, measure temperature, record and graph the result."
+      ],
+      [
+        3,
+        [
+          "📐",
+          "🏗️",
+          "🧱",
+          "🏠"
+        ],
+        "Measure and plan, prepare the site, assemble the walls and finish the house."
+      ],
+      [
+        3,
+        [
+          "💡",
+          "📋",
+          "🧪",
+          "✅"
+        ],
+        "Ask a question, make a plan, test your idea and reach a conclusion."
+      ],
+      [
+        3,
+        [
+          "🪴",
+          "📏",
+          "📝",
+          "📈"
+        ],
+        "Grow a plant, measure its height, write measurements and graph growth."
+      ],
+      [
+        3,
+        [
+          "💧",
+          "🧊",
+          "☀️",
+          "💨"
+        ],
+        "Freeze water into ice, warm it to liquid and let it evaporate."
+      ],
+      [
+        3,
+        [
+          "🛒",
+          "🧮",
+          "💵",
+          "🧾"
+        ],
+        "Choose an item, calculate the total, pay for it and receive a receipt."
+      ],
+      [
+        3,
+        [
+          "📗",
+          "🔍",
+          "📝",
+          "💬"
+        ],
+        "Read a question, research evidence, write an answer and explain it."
+      ]
+    ]
+  }
+}
