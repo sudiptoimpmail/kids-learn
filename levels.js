@@ -54,14 +54,32 @@ function startPlacement() {
   const ids = PLACE_POOL.filter((id) => state.grade && gradeRange(state.grade, id));
   const math = ids.filter((id) => ['add', 'sub', 'mul', 'frac', 'numsense'].includes(id)), read = ids.filter((id) => !math.includes(id));
   const chosen = [...sample(math, Math.min(2, math.length)), ...sample(read, Math.min(2, read.length))];
-  placePlan = chosen.flatMap((id) => [id, id]).map((id) => [id, gradeRange(state.grade, id)[1]]);
+  // Generate the entire assessment BEFORE startRound. A rejected duplicate must
+  // never consume a plan slot and silently introduce a fifth fallback section.
+  const used = new Set();
+  placePlan = chosen.flatMap((id) => {
+    const lv = gradeRange(state.grade, id)[1], gen = CATEGORIES.find((c) => c.id === id).gen;
+    return Array.from({length: 2}, () => {
+      let q, identity;
+      for (let tries = 0; tries < 100; tries++) {
+        q = gen(lv);
+        identity = id + '|' + q.text + '|' + String(q.answer) + '|' + String(q.main || '');
+        if (!used.has(identity)) break;
+      }
+      if (used.has(identity)) throw new Error('Not enough distinct placement cards for ' + id);
+      used.add(identity);
+      q.placeSection = id;
+      q.assessedLevel = lv;
+      q.key = 'place-' + placePlan.length + '-' + used.size + '-' + q.key;
+      return q;
+    });
+  });
   startRound('placement', placePlan.length);
 }
 function genPlacement() {
-  const [id, lv] = placePlan.length ? placePlan.shift() : ['add', 1];
-  const q = CATEGORIES.find((c) => c.id === id).gen(lv);
-  q.placeSection = id; q.key = 'place-' + q.key;
-  return q;
+  // Do not generate an unrelated "add" fallback when all eight cards are used.
+  if (!placePlan.length) throw new Error('Placement plan exhausted');
+  return placePlan.shift();
 }
 function applyPlacement(qs) {
   const by = {};
