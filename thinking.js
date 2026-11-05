@@ -39,7 +39,7 @@ function genAdvancedPattern(level) {
     answer = first * factor ** 5;
     reason = 'Multiply by the same number each time.';
   } else if (kind === 2) {
-    const base = 2 + rand(8), step = 2 + rand(4);
+    const step = 2 + rand(4), base = 3 * step + 1 + rand(6);
     nums = Array.from({ length: 5 }, (_, i) => base + (i % 2 === 0 ? i / 2 : -((i + 1) / 2) * step));
     answer = base - 3 * step;
     reason = 'Two number patterns take turns.';
@@ -50,7 +50,7 @@ function genAdvancedPattern(level) {
     reason = 'The jumps grow by two each time.';
   }
   const correct = String(answer);
-  const wrong = [...new Set([answer + 1, answer - 1, answer + 2, answer - 2, answer + 4, answer * 2])]
+  const wrong = [...new Set([answer + 1, answer + 2, answer + 3, answer - 1, answer - 2, answer + 4, answer * 2])]
     .filter(n => n >= 0 && n !== answer).map(String).slice(0, 3);
   const q = thinkingQuestion('advanced-pattern-' + kind + '-' + nums.join('-'), 'What number should come next?',
     '<div class="think-pattern">' + nums.map(n => '<span>' + n + '</span>').join('') + '<span class="think-missing">?</span></div>',
