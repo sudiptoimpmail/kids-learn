@@ -391,7 +391,7 @@ function renderQ() {
   if (q.order) renderOrder(q);
   if (q.blend && typeof wireBlend === 'function') wireBlend(q);
   if (q.letterSound && typeof wireLetter === 'function') wireLetter(q);
-  if (q.tap) $('#qMain [data-val]').forEach((g) => {
+  if (q.tap) $$('#qMain [data-val]').forEach((g) => {
     if (!g.dataset.val) return;
     g.onclick = () => choose(q, g.dataset.val, g);
     g.onkeydown = e => {
