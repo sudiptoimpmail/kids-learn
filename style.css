@@ -1095,3 +1095,18 @@ html, body { min-height: 100%; }
   .g-pinball .pb-dmd { padding-top:3px; padding-bottom:2px; }
   .g-pinball .pb-btns .pb-flip { height:50px; min-height:50px; }
 }
+
+
+/* Genuine interlocking puzzle outlines: complementary photo-masked tabs and recesses. */
+.pz-board { gap:0; padding:10px; overflow:visible; }
+.pzl-tile.jigsaw-piece { position:relative; border:0; border-radius:0; background:transparent; box-shadow:none; overflow:visible; isolation:auto; }
+.pzl-tile.jigsaw-piece .jigsaw-art { display:block; position:absolute; width:126%; height:126%; left:-13%; top:-13%; border-radius:0; overflow:visible; transform-origin:center center; z-index:1; pointer-events:none; }
+.pzl-tile.jigsaw-piece .jigsaw-svg { display:block; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 2px 2px #24193065); }
+.pzl-tile.jigsaw-piece .jigsaw-outline { stroke:rgba(255,255,255,.95); stroke-width:1.8; }
+.pzl-tile.jigsaw-piece .jigsaw-knob { display:none; }
+.pzl-tile.jigsaw-piece.picked { outline:none; transform:none; z-index:6; }
+.pzl-tile.jigsaw-piece.picked .jigsaw-svg { filter:drop-shadow(0 0 4px #4a28b0) drop-shadow(0 3px 2px #241930); }
+.pzl-tile.jigsaw-piece.ok { border:0; }
+.pzl-tile.jigsaw-piece:focus-visible { outline:3px solid #7048e8; outline-offset:3px; z-index:7; }
+.pz-board.solved .pzl-tile.jigsaw-piece { border-radius:0; }
+.pz-board.solved .jigsaw-art { overflow:visible; }
