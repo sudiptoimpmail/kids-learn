@@ -330,21 +330,16 @@ function renderProgress() {
     `<span class="dot ${i < R.i ? (q.ok ? 'ok' : 'meh') : i === R.i ? 'now' : ''}">${i < R.i ? (q.ok ? '⭐' : '✔︎') : ''}</span>`).join('');
 }
 
-/* ---------- 3D body view (loaded only when a body question appears) ---------- */
-const B3D = { view: null, mod: null };
-function dropBody3D() { if (B3D.view) { B3D.view.dispose(); B3D.view = null; } }
-// leaving the game: free the 3D graphics memory too (the model itself stays loaded)
-function releaseBody3D() { dropBody3D(); if (B3D.mod && B3D.mod.release) B3D.mod.release(); }
-async function mountBody3D(q) {
-  const host = document.createElement('div'); host.className = 'b3d-host'; host.innerHTML = '<div class="b3d-loading">🧍 Getting ready…</div>';
-  $('#qMain').appendChild(host);
-  try { B3D.mod = B3D.mod || await import('./body3d.js'); } catch (e) { host.innerHTML = '<div class="hint-note">3D is not available.</div>'; return; }
-  if (R.qs[R.i] !== q) return;                     // moved on while loading
-  dropBody3D();
-  B3D.view = B3D.mod.mount(host, {
-    layer: q.body3d.layer, highlight: q.body3d.highlight || null, focus: q.answer, tappable: q.body3d.tappable,
-    onTap: q.body3d.tap ? (names) => { if (R.locked) return; const el = document.createElement('i'); choose(q, names.includes(q.answer) ? q.answer : names[0], el); } : null,
-  });
+/* ---------- original 2D anatomy fallback; no external licensed model ---------- */
+function dropBody3D() {}
+function releaseBody3D() {}
+function mountBody3D(q) {
+  // Keep old QA/backups compatible if a legacy 3D question is requested.
+  // No dynamic code import, network access, or external anatomy mesh.
+  const spec=q.body3d;
+  $('#qMain').innerHTML = spec.layer === 'skin'
+    ? bodySVG(spec.highlight || null) : organSVG(spec.highlight || null);
+  q.tap=!!spec.tap;
 }
 
 function renderQ() {
