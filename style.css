@@ -1061,7 +1061,7 @@ body.test-mode .prog-row { gap:6px; }
 .pk-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:10px; }
 .pk-options .opt { padding:6px; background:#fff; min-height:110px; }
 .pk-photo { display:block; position:relative; overflow:hidden; border-radius:14px; width:100%; aspect-ratio:1; background:#f8f9fa; isolation:isolate; }
-.pk-photo::after { content:""; position:absolute; inset:0; background-image:url('assets/prek-atlas.webp');
+.pk-photo::after { content:""; position:absolute; inset:0; background-image:url('assets/prek-atlas.svg');
   background-repeat:no-repeat; background-size:400% 300%; background-position:var(--pk-x,0%) var(--pk-y,0%); }
 .pk-photo .pk-emoji { display:grid; place-items:center; width:100%; height:100%; font-size:clamp(30px,8vw,70px); }
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
@@ -1071,3 +1071,11 @@ body.test-mode .prog-row { gap:6px; }
   .pk-options { max-width:600px; margin:auto; }
   .pk-options .opt { min-height:140px; }
 }
+
+/* Photo-backed early reading: keep large picture targets clear on iPad. */
+.pk-photo.read-photo { display:inline-grid; vertical-align:middle; width:min(164px,36vw); max-width:100%; margin:0 auto; box-shadow:0 3px 0 #0001; }
+.opt .pk-photo.read-photo { width:min(130px,100%); }
+.hint-pic .pk-photo.read-photo { width:140px; }
+.miss-pic .pk-photo.read-photo { width:120px; }
+.spell-pic .pk-photo.read-photo { width:160px; }
+#qaUnlock[hidden] { display:none!important; }
