@@ -122,7 +122,28 @@ for(const [subject,book,levels] of [
       !q.choices.includes(q.answer)||
       new Set(q.choices.map(x=>String(x).trim().toLowerCase())).size!==q.choices.length)
       error('explorer-'+subject,q.id,'invalid answer/distractors');
-    if(q.asset && (!/^assets\\/(?:photos|illustrations)\\/[a-z0-9_-]+\\.(?:svg|jpg)$/.test(q.asset)||
+    if(q.asset && (!new RegExp('^assets/(?:photos|illustrations)/[a-z0-9_-]+[.](?:svg|jpg)
+        !fs.existsSync(path.join(root,q.asset))))
+      error('explorer-'+subject,q.id,'missing or disallowed offline media '+q.asset);
+  }
+  stats['explorer-'+subject]=book.length;
+  stats['explorer-'+subject+'-byLevel']=Object.fromEntries(levels.map(l=>[l,book.filter(q=>q.level===l).length]));
+}
+let scienceSortItems=0;
+for(const [level,prompt,groups,items] of science.SCI_SORT){
+  if(![1,2,3,4].includes(level)||!prompt||!Array.isArray(groups)||new Set(groups).size!==groups.length)
+    error('science-sort',prompt,'invalid group names');
+  for(const [name,picture,index] of items){
+    if(!name||!picture||!Number.isInteger(index)||index<0||index>=groups.length)
+      error('science-sort',prompt,'invalid group for '+name);
+    scienceSortItems++;
+  }
+}
+stats.scienceSortBanks=science.SCI_SORT.length;
+stats.scienceSortExamples=scienceSortItems;
+console.log(JSON.stringify({stats,structuralErrors:faults,editorialConcerns:concerns},null,2));
+if(faults.length)process.exitCode=1;
+).test(q.asset)||
         !fs.existsSync(path.join(root,q.asset))))
       error('explorer-'+subject,q.id,'missing or disallowed offline media '+q.asset);
   }
