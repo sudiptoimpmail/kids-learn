@@ -311,7 +311,7 @@ export function start(tableIndex) {
   cv.style.touchAction = 'none';
   cv.addEventListener('pointerdown', (e) => {
     e.preventDefault();
-    if (G.inLane) { launch(); return; }
+    // The shooter-lane launch button handles launch; table touches always work the flippers.
     const r = cv.getBoundingClientRect(), side = e.clientX - r.left < r.width / 2 ? 'L' : 'R';
     pointers.set(e.pointerId, side); press(side, true);
   });
