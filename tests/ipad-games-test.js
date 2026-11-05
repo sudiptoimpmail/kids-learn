@@ -41,7 +41,7 @@ const { chromium } = require('playwright');
     const after=await page.locator('.dr-layer').getAttribute('style')||'';
     assert.notEqual(before,after,'Zoom in should change drawing canvas transform');
     await page.locator('[data-t="reset"]').click();
-    assert.match(await page.locator('.dr-layer').getAttribute('style'),/scale\\(1\\)/);
+    assert.ok((await page.locator('.dr-layer').getAttribute('style')||'').includes('scale(1)'), 'Reset should restore 1x drawing zoom');
     await page.evaluate(()=>openGame('whack'));
     assert.equal(await page.locator('.wm-hole').count(),9);
     assert.equal(await page.locator('.wm-time').isVisible(),true);
