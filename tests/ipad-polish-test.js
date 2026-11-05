@@ -77,7 +77,7 @@ const { chromium } = require('playwright');
       const beforeAngle = tiles[0].querySelector('.jigsaw-art').style.transform;
       tiles[0].click(); tiles[0].click();
       check(!!area.querySelector('.jigsaw-art'), 'Puzzle rotation artwork missing');
-      check(tiles[0].querySelector('.jigsaw-art').style.transform !== beforeAngle,
+      check(area.querySelector('.jigsaw-piece .jigsaw-art').style.transform !== beforeAngle,
         'Tap-twice should rotate a selected piece by 90 degrees');
       check(area.querySelectorAll('.jigsaw-outline').length === 9,
         'Every puzzle piece must have a real interlocking silhouette');
