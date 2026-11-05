@@ -12,7 +12,12 @@ const {chromium} = require('playwright');
       const problems = [], counts = {};
       const ratio = (v) => {
         const match = new RegExp('^([0-9]+)/([0-9]+)
-        return match && +match[2] > 0 ? +match[1] / +match[2] : null;
+        if (match && +match[2] > 0) return +match[1] / +match[2];
+        const word = /^(one|two|three) (half|halves|third|thirds|fourth|fourths|quarter|quarters)$/.exec(String(v).trim().toLowerCase());
+        if (!word) return null;
+        const num = {one:1,two:2,three:3}[word[1]];
+        const den = /^half/.test(word[2]) ? 2 : /^third/.test(word[2]) ? 3 : 4;
+        return num / den;
       };
       for (const country of ['us','ca','uk','au','nz','in','ie']) {
         state.country = country;
@@ -39,6 +44,10 @@ const {chromium} = require('playwright');
       return {total:problems.length,examples:problems.slice(0,30),counts};
     });
     assert.equal(outcome.total,0,JSON.stringify(outcome.examples,null,2));
+    for (const country of ['us','ca','uk','au','nz','in','ie']) {
+      assert.ok(outcome.counts[country+'/fractions/1'] > 100, 'worded-fraction sample too small for '+country);
+      assert.ok(outcome.counts[country+'/fractions/2'] > 100, 'numeric-fraction sample too small for '+country);
+    }
     console.log('PASS fraction questions have exactly one mathematically correct choice across seven countries');
   } finally { await browser.close(); }
 })().catch(e=>{console.error(e);process.exitCode=1});
