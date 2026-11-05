@@ -36,13 +36,35 @@ const { chromium } = require('playwright');
     await page.screenshot({path:'tests/out/illustrated-k-sound-garden.png',fullPage:true});
     await page.locator('[data-object="bee"]').click();
     assert.equal(await page.evaluate(()=>R.mistakes),1,'Wrong picture should count');
-    for(const id of ['apple','ant','acorn','airplane']) await page.locator('[data-object="'+id+'"]').click();
+    for(const id of ['apple','ant','acorn','airplane','arrow','axe','alligator','artist brush']) await page.locator('[data-object="'+id+'"]').click();
     assert.equal(await page.evaluate(()=>R.locked),true,'A picture hunt should complete');
-    assert.equal((await prepare('k','shape2')).mode,'shapes');
+    assert.equal((await prepare('k','shape2',0.1)).mode,'shapes');
     await page.screenshot({path:'tests/out/illustrated-k-shape-room.png',fullPage:true});
+    assert.equal(await page.locator('[data-object="clock"]').isDisabled(),true,'Shape hunt waits until tracing');
+    await page.locator('.ia-trace-assist').click();
+    assert.equal(await page.evaluate(()=>R.qs[0].hintShown),true,'Tracing accommodation is treated as a hint');
     await page.locator('[data-object="door"]').click();
     for(const id of ['clock','plate','wheel','ball'])await page.locator('[data-object="'+id+'"]').click();
     assert.equal(await page.evaluate(()=>R.locked),true,'Round-picture hunt should complete');
+    assert.equal((await prepare('k','shape2',0.9)).mode,'squares');
+    // Simulate a continuous ordered pointer trace around the real SVG square.
+    await page.locator('.ia-trace-shape').scrollIntoViewIfNeeded();
+    await page.evaluate(()=>{
+      const svg=document.querySelector('.ia-trace-shape'),path=svg.querySelector('.ia-trace-guide');
+      const length=path.getTotalLength(),matrix=svg.getScreenCTM();
+      for(let i=0;i<70;i++){
+        const p=path.getPointAtLength(length*i/69).matrixTransform(matrix);
+        const ev=new PointerEvent(i===0?'pointerdown':i===69?'pointerup':'pointermove',{
+          bubbles:true,pointerId:7,pointerType:'pen',clientX:p.x,clientY:p.y
+        });
+        svg.dispatchEvent(ev);
+      }
+    });
+    assert.equal(await page.locator('.ia-shape-locked').count(),0,'Trace should unlock the picture hunt');
+    assert.equal(await page.evaluate(()=>R.qs[0].hintShown),false,'Real tracing should not use a hint');
+    await page.screenshot({path:'tests/out/illustrated-k-square-room.png',fullPage:true});
+    for(const id of ['window','picture frame','gift','cushion'])await page.locator('[data-object="'+id+'"]').click();
+    assert.equal(await page.evaluate(()=>R.locked),true,'Square tracing and shape finding complete');
     assert.equal((await prepare('g1','phonics')).mode,'longa');
     await page.screenshot({path:'tests/out/illustrated-g1-vowel-maze.png',fullPage:true});
     for(const k of [0,1,2,7,12,11,10,15,20,21,22,23,24]) await page.locator('.ia-stone').nth(k).click();
