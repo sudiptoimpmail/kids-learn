@@ -298,7 +298,7 @@ const FILL = [
 ];
 const fillFull = (f) => f[0].replace('___', f[1]);
 const OPPOSITES = [['up', 'down'], ['over', 'under'], ['yes', 'no'], ['hot', 'cold'], ['happy', 'sad'], ['good', 'bad'],
-  ['go', 'stop'], ['he', 'she'], ['boy', 'girl'], ['man', 'woman'], ['mother', 'father'], ['sister', 'brother'],
+  ['go', 'stop'], ['big', 'small'], ['fast', 'slow'], ['in', 'out'],
   ['huge', 'tiny'], ['take', 'give'], ['right', 'wrong']];
 const cap = (w) => w[0].toUpperCase() + w.slice(1);
 const firstLetterHint = (w) => ({ html: `<div class="hint-letters">${w[0]}<span class="faint">${'_'.repeat(w.length - 1)}</span></div>`, say: 'It starts with this letter!' });
@@ -328,7 +328,7 @@ function genSight(level) {
     const pair = shuffle(pick(OPPOSITES));
     const others = sample(OPPOSITES.flat().filter((w) => !pair.includes(w)), n);
     return {
-      key: `sight-opp-${pair[0]}`, text: `What is the opposite of <b>${pair[0]}</b>?`, say: ['What is the opposite of', `${pair[0]}?`],
+      key: `sight-opp-${pair[0]}`, text: `What is the opposite of <b>${pair[0]}</b>?`, say: CLIPS[clipKey(pair[0])] ? ['What is the opposite of', pair[0]] : 'What is the opposite?',
       main: `<div class="word sm">${pair[0]}</div>`,
       options: shuffle([pair[1], ...others]).map((w) => ({ v: w, html: w })),
       answer: pair[1], optClass: 'opt-word', hint: firstLetterHint(pair[1]),
@@ -561,7 +561,7 @@ function sentenceHintMarks(s, q, answer) {
 }
 function genSentence(level) {
   // 1st-grade workbook-style screens now and then: word box, read & fill, story order
-  if (level >= 2 && level <= 4 && Math.random() < 0.35 && typeof genGrade1Reading === 'function') return genGrade1Reading(level);
+  if (level >= 3 && level <= 4 && Math.random() < 0.35 && typeof genGrade1Reading === 'function') return genGrade1Reading(level);
   const all = READING();
   // mostly this level, sometimes one level easier for a quick win
   const exact = all.filter((x) => x[2] === level), near = all.filter((x) => x[2] === level - 1);
@@ -1077,9 +1077,13 @@ function mcQuestion(prefix, row, level) {
   };
 }
 const pickLevelled = (rows, level) => {
-  const pool = rows.filter((r) => r[0] <= level);
-  const exact = pool.filter((r) => r[0] === level);
-  return pick(exact.length && Math.random() < 0.7 ? exact : pool);
+  // Within a grade, teach mostly on-level material with some immediate-prior
+  // review. Do not send a Grade 2 reader back to Pre-K picture matching.
+  const eligible = rows.filter((r) => r[0] <= level);
+  const exact = eligible.filter((r) => r[0] === level);
+  const review = eligible.filter((r) => r[0] === level - 1);
+  return pick(exact.length && (Math.random() < 0.82 || !review.length) ? exact :
+    review.length ? review : eligible);
 };
 
 /* ---------------- BODY PARTS (outside) ---------------- */
@@ -1288,7 +1292,7 @@ const GK = [
   [1, 'What color is grass?', '🟢 green', '🔵 blue', '🟣 purple', '🔴 red'],
   [1, 'What color is a banana?', '🟡 yellow', '🔵 blue', '🟢 green', '⚫ black'],
   [1, 'Where does a fish live?', '🌊 in water', '🌳 in a tree', '🏜️ in the desert', '🪺 in a nest'],
-  [1, 'Where does a bird live?', '🪺 in a nest', '🌊 in water', '🕳️ in a hole', '🏠 in a car'],
+  [1, 'Where do many birds keep their eggs?', '🪺 in a nest', '🌊 in water', '🕳️ in a hole', '🏠 in a car'],
   [1, 'What do bees make?', '🍯 honey', '🥛 milk', '🧀 cheese', '🍞 bread'],
   [1, 'What do we use to brush our teeth?', '🪥 toothbrush', '🧹 broom', '🍴 fork', '🖍️ crayon'],
   [1, 'Which one is hot?', '🔥 fire', '🧊 ice', '❄️ snow', '🍦 ice cream'],
@@ -1360,6 +1364,37 @@ const GK = [
   [4, 'Which bird cannot fly?', '🐧 penguin', '🦅 eagle', '🦜 parrot', '🦉 owl'],
   [4, 'A scientist who studies dinosaurs is called a…', 'paleontologist', 'astronaut', 'chef', 'pilot'],
   [4, 'What do bees carry from flower to flower?', 'pollen', 'water', 'rocks', 'sand'],
+
+  // Additional recognition, calendar, community, inquiry and safety items.
+  [1, 'Which picture shows a cat?', '🐱 cat', '🐶 dog', '🐰 rabbit', '🐴 horse'],
+  [1, 'Which picture shows a dog?', '🐶 dog', '🐱 cat', '🐴 horse', '🐮 cow'],
+  [1, 'Which picture shows a car?', '🚗 car', '🚌 bus', '🚚 truck', '🚂 train'],
+  [1, 'Which picture shows a daisy?', '🌼 daisy', '🌷 tulip', '🌻 sunflower', '🌹 rose'],
+  [1, 'What should you do before crossing a street with a grown-up?', 'stop and look both ways', 'run without looking', 'close your eyes', 'play in the road'],
+  [1, 'Where should you put a banana peel?', 'in a bin or compost', 'on the floor', 'in a shoe', 'on the road'],
+  [2, 'Which day comes after Friday?', 'Saturday', 'Monday', 'Tuesday', 'Thursday'],
+  [2, 'Which day comes before Monday?', 'Sunday', 'Wednesday', 'Tuesday', 'Friday'],
+  [2, 'Which month comes after September?', 'October', 'November', 'July', 'April'],
+  [2, 'Which month comes after December?', 'January', 'February', 'June', 'October'],
+  [2, 'What does a librarian help you find?', 'books', 'airplane engines', 'traffic lights', 'fish in a pond'],
+  [2, 'Which sign tells cars to stop?', 'a stop sign', 'a speed limit sign', 'a street name sign', 'a parking sign'],
+  [2, 'Which tool helps us tell the time?', 'a clock', 'a ruler', 'a spoon', 'a magnet'],
+  [2, 'What can you do when a friend feels sad?', 'ask how to help', 'laugh at them', 'take their things', 'walk away every time'],
+  [3, 'Which month follows October?', 'November', 'September', 'December', 'August'],
+  [3, 'Which month comes just before May?', 'April', 'June', 'July', 'March'],
+  [3, 'How many hours are in one day?', '24', '12', '7', '60'],
+  [3, 'How many minutes are in one hour?', '60', '24', '12', '100'],
+  [3, 'Which direction is opposite north?', 'south', 'east', 'west', 'up'],
+  [3, 'What do the symbols on a map help us understand?', 'places and features', 'how food tastes', 'how loud music is', 'what a cat says'],
+  [3, 'What is one reason a community needs firefighters?', 'to respond to fires and emergencies', 'to sell ice cream', 'to steer airplanes', 'to build every school'],
+  [3, 'Which action helps save water?', 'turn off the tap while brushing', 'leave the tap running all day', 'spill water on the floor', 'wash one sock all day'],
+  [4, 'Which tool helps you find directions outside?', 'a compass', 'a thermometer', 'a stopwatch', 'a magnifying glass'],
+  [4, 'What is the purpose of a map legend?', 'to explain map symbols', 'to measure air temperature', 'to count stars', 'to name all plants'],
+  [4, 'Which is an example of renewable energy?', 'wind power', 'coal', 'gasoline', 'diesel'],
+  [4, 'Why is it helpful to check more than one reliable source?', 'to compare and confirm facts', 'to make facts disappear', 'to avoid reading', 'to turn guesses into proof'],
+  [4, 'What does it mean to recycle a material?', 'process it so it can be used again', 'throw it in a river', 'burn it anywhere', 'hide it in the garden'],
+  [4, 'How many sides does a hexagon have?', '6', '5', '7', '8'],
+  [4, 'Which ocean lies between Africa and Australia?', 'Indian Ocean', 'Arctic Ocean', 'Atlantic Ocean', 'Southern Ocean'],
 ];
 const genGK = (level) => {
   const q = mcQuestion('gk', pickLevelled(GK, level), level);

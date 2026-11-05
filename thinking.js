@@ -61,7 +61,22 @@ function genAdvancedPattern(level) {
 }
 
 function genPattern(level) {
-  if (level >= 3 && Math.random() < (level >= 4 ? 0.75 : 0.25)) return genAdvancedPattern(level);
+  // Grade 1: skip-counting by twos and fives, not multiplication/geometric sequences.
+  if (level === 3 && Math.random() < 0.4) {
+    const step = pick([2, 5]), start = 1 + rand(step);
+    const nums = Array.from({length:5}, (_,i)=>start + i*step);
+    const answer = String(start + 5*step);
+    const wrong = [...new Set([start+4*step,start+6*step,start+5*step+1,start+5*step-1])]
+      .filter(x=>String(x)!==answer && x>=0).map(String).slice(0,3);
+    const question = thinkingQuestion('pattern-skip-'+step+'-'+start,
+      'Which number comes next?', '<div class="think-pattern">'+
+      nums.map(n=>'<span>'+n+'</span>').join('')+'<span class="think-missing">?</span></div>',
+      [answer,...wrong], answer, 'Count by the same number each time.', 'opt-num');
+    question.say = 'Which number comes next?';
+    question.hint.say = 'Think about it!';
+    return question;
+  }
+  if (level >= 4 && Math.random() < 0.75) return genAdvancedPattern(level);
   if (level >= 4 && Math.random() < 0.65) {
     const step = pick(level >= 5 ? [2, 3, 4, 5, 10] : [1, 2, 5]);
     const start = level >= 5 ? 1 + rand(8) : 1 + rand(5);
@@ -166,23 +181,53 @@ const THINKING_SEQUENCES = [
   [3, ['📝', '✉️', '📮'], 'Write a letter, put it in an envelope, and mail it.'],
   [3, ['🌰', '🌱', '🌳'], 'A seed sprouts and becomes a tree.'],
   [3, ['☁️', '🌧️', '🌱'], 'Clouds can bring rain, and rain helps plants grow.'],
+
+  // Kindergarten: familiar four-step routines and observable changes.
+  [2, ['🥕', '🚿', '🔪', '🍲'], 'Wash the vegetables, prepare them with adult help, and cook a meal.'],
+  [2, ['👕', '🫧', '☀️', '🧺'], 'Dirty clothes are washed, dried, and folded.'],
+  [2, ['📚', '📖', '🧠', '🏫'], 'Choose a book, read and learn, then return it to the library.'],
+  [2, ['🧱', '📏', '🏗️', '🏠'], 'Measure pieces, build walls and finish a home.'],
+  [2, ['☁️', '🌧️', '💧', '☀️'], 'Clouds bring rain, puddles form, and sunlight can dry them.'],
+  [2, ['🐛', '🍃', '🟫', '🦋'], 'A caterpillar eats leaves and forms a chrysalis before becoming a butterfly.'],
+  [2, ['🖍️', '✂️', '🧴', '🖼️'], 'Draw, cut, glue and show the finished craft with a grown-up.'],
+  [2, ['🫘', '💧', '🌱', '🌻'], 'A seed gets water, sprouts, then grows into a flowering plant.'],
+  [2, ['🧹', '🗑️', '🧽', '✨'], 'Sweep, put rubbish in the bin, wipe the surface and finish cleaning.'],
+  // Grade 1–3: reason about evidence, projects, cycles and multiple connected events.
+  [3, ['🔍', '💭', '🧪', '📊'], 'Observe carefully, make a prediction, test it and record the results.'],
+  [3, ['📝', '📐', '🧱', '✅'], 'Write a plan, measure the parts, build and check the result.'],
+  [3, ['☀️', '💨', '☁️', '🌧️'], 'Sunlight warms water, it evaporates, clouds form and rain falls.'],
+  [3, ['🗺️', '📍', '🚶', '🏫'], 'Find a place on the map, choose a route, travel and arrive.'],
+  [3, ['🧴', '♻️', '🏭', '📒'], 'Collect recyclable materials, sort them, process them and make a new product.'],
+  [3, ['📋', '🔢', '📊', '💡'], 'Collect answers, count them, draw a graph and explain what it shows.'],
+  [3, ['🌾', '🚜', '🥕', '🍲'], 'A crop grows, it is harvested, it goes to the kitchen and becomes food.'],
+  [3, ['🏦', '💰', '🛍️', '🎁'], 'Make a savings plan, save money, compare prices and choose a gift.'],
+  [3, ['🌳', '🍂', '🪱', '🌱'], 'Leaves fall, decomposers break them down, and nutrients help plants grow.'],
+  [3, ['🌞', '🧊', '💧', '💨'], 'Warmth can melt ice; liquid water can later evaporate.'],
+  [3, ['🧑‍🤝‍🧑', '💬', '🤝', '😊'], 'Friends discuss a problem, listen, agree on a plan and work together.'],
+  [3, ['🧪', '📏', '📝', '🔁'], 'Carry out a fair test, measure results, write findings and repeat to check.'],
 ];
 function genSequence(level) {
   const pool = THINKING_SEQUENCES.filter((x) => x[0] <= level);
-  const [difficulty, steps, reason] = pick(pool);
+  const exact = pool.filter(row => row[0] === level);
+  const review = pool.filter(row => row[0] === level-1);
+  const [difficulty, steps, reason] = pick(exact.length && (Math.random() < 0.82 || !review.length) ? exact :
+    review.length ? review : pool);
   // Show either the missing middle event or the final event; older children can also
   // work backward from the last two events. This triples useful variations.
-  const missingAt = level <= 1 ? pick([1, 2]) : pick([0, 1, 2]);
+  const missingAt = level <= 1 ? pick([1, steps.length-1]) : rand(steps.length);
   const answer = steps[missingAt];
   // never offer a picture from a related sequence (seed → tree, egg → chicken): it could also be right
   const related = THINKING_SEQUENCES.filter((x) => x[1].some((e) => steps.includes(e))).flatMap((x) => x[1]);
   const others = [...new Set(THINKING_SEQUENCES.flatMap((x) => x[1]))]
     .filter((x) => x !== answer && !related.includes(x));
   const options = [answer, ...sample(others, level >= 2 ? 3 : 2)];
-  return thinkingQuestion(`sequence-${difficulty}-${steps.join('')}-${missingAt}`,
-    missingAt === 2 ? 'What happens next?' : 'What happens in the missing spot?',
-    `<div class="think-pattern">${steps.map((step, i) => `<span class="${i === missingAt ? 'think-missing' : ''}">${i === missingAt ? '?' : step}</span>`).join('<span>➜</span>')}</div>`,
+  const q = thinkingQuestion(`sequence-${difficulty}-${steps.join('')}-${missingAt}`,
+    missingAt === steps.length-1 ? 'What happens next?' : 'What happens in the missing spot?',
+    `<div class="think-pattern think-sequence">${steps.map((step, i) => `<span class="${i === missingAt ? 'think-missing' : ''}">${i === missingAt ? '?' : step}</span>`).join('<span>➜</span>')}</div>`,
     options, answer, reason);
+  q.say = missingAt === steps.length-1 ? 'What happens next?' : 'What happens in the missing spot?';
+  q.hint.say = 'Think about it!'; // detailed reasoning remains visible, with a real recorded hint
+  return q;
 }
 CATEGORIES.push(
   { id: 'pattern', title: 'Pattern Puzzle', sub: 'patterns & number sequences', icon: '🧩', color: '#7048e8', gen: genPattern, maxLevel: 5 },

@@ -123,3 +123,10 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 #qZoomSpace { position:relative; max-width:none; min-width:100%; }
 #qZoomInner { transform-origin:0 0; }
 @media (prefers-reduced-motion: reduce) { #qZoomInner { transition:none; } }
+
+
+/* Four-step story and inquiry sequence stays on one line on small iPads/phones. */
+#play .think-sequence {flex-wrap:nowrap; width:100%; max-width:710px; gap:clamp(2px,.6vw,7px);}
+#play .think-sequence > span {min-width:0; min-height:clamp(39px,7vw,65px); padding:3px; flex:1 1 0; font-size:clamp(21px,5.1vw,43px);}
+#play .think-sequence > span:nth-child(even) {flex:0 0 auto; min-width:0; min-height:0; padding:0 1px; font-size:clamp(14px,2.8vw,26px); background:transparent; color:#5c6490;}
+#play .think-sequence > span.think-missing {border-width:2px;}
