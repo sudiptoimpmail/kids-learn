@@ -223,7 +223,7 @@ function genSequence(level) {
   const options = [answer, ...sample(others, level >= 2 ? 3 : 2)];
   const q = thinkingQuestion(`sequence-${difficulty}-${steps.join('')}-${missingAt}`,
     missingAt === steps.length-1 ? 'What happens next?' : 'What happens in the missing spot?',
-    `<div class="think-pattern">${steps.map((step, i) => `<span class="${i === missingAt ? 'think-missing' : ''}">${i === missingAt ? '?' : step}</span>`).join('<span>➜</span>')}</div>`,
+    `<div class="think-pattern think-sequence">${steps.map((step, i) => `<span class="${i === missingAt ? 'think-missing' : ''}">${i === missingAt ? '?' : step}</span>`).join('<span>➜</span>')}</div>`,
     options, answer, reason);
   q.say = missingAt === steps.length-1 ? 'What happens next?' : 'What happens in the missing spot?';
   q.hint.say = 'Think about it!'; // detailed reasoning remains visible, with a real recorded hint
