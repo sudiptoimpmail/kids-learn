@@ -140,14 +140,11 @@ const THINKING_ODD = [
   [2, ['🧥', '🧤', '🧣'], '🩴', 'The others keep us warm in cold weather.'],
   [2, ['🌂', '☂️', '🧥'], '🏀', 'The others can protect us from rain.'],
   [2, ['⛵', '🚤', '🚢'], '🚲', 'The others travel on water.'],
-  [2, ['🏥', '🏫', '📚'], '🍔', 'The others are connected with community services or learning.'],
-  [2, ['🍴', '🥄', '🥢'], '🧸', 'The others help us eat food.'],
   // More demanding Grade 2/3 distinctions with a reason to explain.
   [3, ['🦉', '🦅', '🐧'], '🦇', 'The others are birds. A bat is a mammal.'],
   [3, ['🦁', '🐯', '🐻'], '🐊', 'The others are mammals. A crocodile is a reptile.'],
   [3, ['🐙', '🦀', '🦐'], '🐬', 'The others are invertebrates. A dolphin has a backbone.'],
   [3, ['📏', '⚖️', '🌡️'], '🔦', 'The others are tools used to measure.'],
-  [3, ['🪐', '🌍', '🔴'], '☄️', 'The others can represent planets. A comet is not a planet.'],
   [3, ['🧲', '🔭', '🔬'], '🧁', 'The others are tools used to explore science.'],
   [3, ['♻️', '🗑️', '🧹'], '🎾', 'The others relate to managing waste and cleaning.'],
   [3, ['📚', '📰', '📖'], '🎧', 'The others are printed reading materials.'],
@@ -162,8 +159,12 @@ function genOdd(level) {
   const [difficulty, similar, different, reason] = pick(pool);
   const chosen = level === 1 ? sample(similar, 2) : similar;
   const choices = [...chosen, different];
-  return thinkingQuestion(`odd-${difficulty}-${chosen.join('')}-${different}`,
+  const q = thinkingQuestion(`odd-${difficulty}-${chosen.join('')}-${different}`,
     'Which one does NOT belong?', '<div class="think-symbol">🔍</div>', choices, different, reason);
+  // The written explanation remains visible. This generic spoken hint already
+  // exists in the bundled recordings, including for newly authored prompts.
+  q.hint.say = 'Think about it!';
+  return q;
 }
 const THINKING_SEQUENCES = [
   [1, ['🌱', '💧', '🌻'], 'First plant a seed, then water it, then it grows.'],
