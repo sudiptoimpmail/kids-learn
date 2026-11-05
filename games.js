@@ -1254,6 +1254,24 @@ function startDraw(refIndex) {
   cv.width = cv.height = Math.round(W * dpr); cv.style.width = cv.style.height = W + 'px';
   const c = cv.getContext('2d'); c.scale(dpr, dpr); c.lineCap = c.lineJoin = 'round';
   let color = INK[0], size = 7, erase = false, strokes = [], cur = null;
+  // Keep gesture pointers separate from drawing strokes.
+  let zoom = 1, panX = 0, panY = 0, gesture = null;
+  const touches = new Map();
+  function view() {
+    const transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + zoom + ')';
+    cv.style.transform = transform;
+    const guide = $('.dr-guide', area);
+    if (guide) guide.style.transform = transform;
+    $('[data-dz="reset"]', area).textContent = zoom.toFixed(1) + '×';
+  }
+  function setZoom(next) {
+    zoom = Math.max(1, Math.min(3.5, next));
+    if (zoom === 1) { panX = 0; panY = 0; }
+    view();
+  }
+  $$('[data-dz]', area).forEach(b => {
+    b.onclick = () => setZoom(b.dataset.dz === 'reset' ? 1 : zoom * (b.dataset.dz === 'in' ? 1.35 : 1 / 1.35));
+  });
   const redraw = () => {
     c.clearRect(0, 0, W, W);
     for (const s of strokes) paint(s);
