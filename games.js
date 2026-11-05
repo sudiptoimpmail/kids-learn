@@ -1097,7 +1097,7 @@ function puzzleFills(p) {
   if (p.orig) { const f = { 0: '#d0ebff' }; p.orig.forEach((c, i) => (f[i + 1] = c)); return f; }
   const f = {}; for (let k = 0; k < 40; k++) f[k] = AUTO_FILL[k % AUTO_FILL.length]; return f;
 }
-const puzzleSize = () => GL('puzzle') + 1;   // level 1 = 2×2 … level 5 = 6×6
+const puzzleSize = () => [2, 2, 3, 3, 4][GL('puzzle') - 1]; // short puzzles: 4–16 pieces
 
 function startPuzzleMenu() {
   const area = $('#gameArea');
@@ -1117,27 +1117,31 @@ function startPuzzle(p) {
   let order;
   do { order = shuffle([...Array(N).keys()]); } while (order.every((v, i) => v === i));
   let pickA = null, solved = false;
+  // A handful of pieces begin rotated at harder levels; the child rotates by tapping a selected piece again.
+  const turns = Array.from({length:N}, () => GL('puzzle') >= 2 && Math.random() < 0.28 ? 1 + rand(3) : 0);
   const area = $('#gameArea');
   const tileSVG = (t) => `<svg viewBox="${(t % n) * part} ${Math.floor(t / n) * part} ${part} ${part}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`;
-  area.innerHTML = `<div class="g-msg">Put the picture back together!</div>
+  area.innerHTML = `<div class="g-msg">Put the picture back together! <small>Tap two pieces to swap. Tap a selected piece again to rotate.</small></div>
     <div class="pz-wrap"><div class="pz-board" style="grid-template-columns:repeat(${n},1fr)"></div>
     <div class="pz-peek"><svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg><small>Look!</small></div></div>
     <div class="color-btns"><button class="big-btn alt small ico" data-a="restart" aria-label="Restart">🔄 Restart</button><button class="big-btn alt small ico" data-a="pictures" aria-label="Pictures">🖼️ Pictures</button></div>`;
   say('Put the picture back together!');
   const board = $('.pz-board', area);
   function draw() {
-    board.innerHTML = order.map((t, i) => `<button class="pzl-tile ${t === i ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}">${tileSVG(t)}</button>`).join('');
+    board.innerHTML = order.map((t, i) => `<button class="pzl-tile jigsaw-piece ${t === i && turns[i] === 0 ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}" aria-label="Piece ${i + 1}; tap twice to rotate"><span class="jigsaw-art" style="transform:rotate(${turns[i] * 90}deg)">${tileSVG(t)}</span><span class="jigsaw-knob" aria-hidden="true"></span></button>`).join('');
   }
   board.addEventListener('click', (e) => {
     const b = e.target.closest('.pzl-tile'); if (!b || solved) return;
     const i = +b.dataset.i;
     if (pickA == null) { pickA = i; sfx.tap(); draw(); return; }
-    if (pickA !== i) {
+    if (pickA === i) { turns[i] = (turns[i] + 1) % 4; sfx.tap(); }
+    else {
       [order[pickA], order[i]] = [order[i], order[pickA]];
+      [turns[pickA], turns[i]] = [turns[i], turns[pickA]];
       tone([order[i] === i || order[pickA] === pickA ? 880 : 520], { dur: 0.06, vol: 0.1 });
     }
     pickA = null; draw();
-    if (order.every((v, j) => v === j)) {
+    if (order.every((v, j) => v === j && turns[j] === 0)) {
       solved = true;
       board.classList.add('solved');
       const up = gameLevelUp('puzzle', 1);
