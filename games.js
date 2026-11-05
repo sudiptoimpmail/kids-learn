@@ -1308,8 +1308,7 @@ function startDraw(refIndex) {
         zoom, panX, panY, cx: (points[0][0] + points[1][0]) / 2, cy: (points[0][1] + points[1][1]) / 2 };
       return;
     }
-    // When enlarged, one finger pans; Apple Pencil still paints.
-    if (zoom > 1 && e.pointerType === 'touch') return;
+    // One finger always draws; use two fingers to pan or zoom without ink.
     cur = { color, size: erase ? size * 2 : size, erase, pts: [pt(e)] };
     strokes.push(cur);
     paint(cur);
@@ -1326,9 +1325,6 @@ function startDraw(refIndex) {
       panY = gesture.panY + (points[0][1] + points[1][1]) / 2 - gesture.cy;
       view();
       return;
-    }
-    if (zoom > 1 && e.pointerType === 'touch') {
-      panX += e.clientX - old[0]; panY += e.clientY - old[1]; view(); return;
     }
     if (!cur) return;
     for (const ev of (e.getCoalescedEvents ? e.getCoalescedEvents() : [e])) cur.pts.push(pt(ev));
