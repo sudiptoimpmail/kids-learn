@@ -6,6 +6,7 @@ const {chromium} = require('playwright');
     for (const width of [320, 360, 390, 768]) {
       const page=await browser.newPage({viewport:{width,height:680},deviceScaleFactor:1});
       await page.goto('http://localhost:8765/index.html');
+      await page.waitForFunction(() => !!window.KidsLearnReady);
       await page.evaluate(()=>window.KidsLearnReady);
       const measurements=await page.evaluate(()=>{
         const words=ContentData.get('content','SYL').map(r=>r[0]);
@@ -34,7 +35,8 @@ const {chromium} = require('playwright');
     // Tap zones must remain data-val interactive controls, artwork is a separate offline file.
     const page=await browser.newPage();
     await page.goto('http://localhost:8765/index.html');
-    await page.evaluate(()=>window.KidsLearnReady);
+    await page.waitForFunction(() => !!window.KidsLearnReady);
+      await page.evaluate(()=>window.KidsLearnReady);
     const body=await page.evaluate(()=>bodySVG('nose'));
     assert.ok(body.includes('assets/body/child-front.webp'));
     assert.ok(body.includes('data-val="nose"'));
