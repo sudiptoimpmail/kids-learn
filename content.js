@@ -349,7 +349,7 @@ function genSpell(level) {
   } else {
     text = full ? 'Spell the word!' : 'Fill in the missing letters!';
     say = visualOnly ? 'Fill in the missing letters!' : [full ? 'Spell the word.' : 'Fill in the missing letters.', word];
-    main = `<div class="spell-pic">${EMOJI_OF[word] || G1_SPELL_PICTURES[word]}</div>` +
+    main = `<div class="spell-pic">${visualPath(word) ? visualImage(word,'reading-word-photo') : (EMOJI_OF[word] || G1_SPELL_PICTURES[word] || '')}</div>` +
       (visualOnly ? '' : `<button class="mini-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`);
   }
   return {
