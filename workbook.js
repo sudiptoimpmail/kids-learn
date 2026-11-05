@@ -129,6 +129,28 @@ const IllustratedActivities = (() => {
       '<path d="M4 -43 q3 -18 18 -15" fill="none" stroke="#4d8e46" stroke-width="5"/>')+
       bloom(70,409,'#ffe8a9',.8)+bloom(581,398,'#fff',.83),
       'Little fox beside an apple tree in a sunny park');
+    if(theme==='cafe')return wrap(
+      '<rect width="800" height="480" fill="#b7e5e9"/><path d="M0 290 H800 V480 H0Z" fill="#e6b56b"/>'+
+      '<path d="M0 287 H800" stroke="#ac7958" stroke-width="11"/>'+
+      '<rect x="0" y="350" width="800" height="130" fill="#e3aa65"/>'+
+      '<path d="M0 382 H800 M0 434 H800" stroke="#eec790" stroke-width="5"/>'+
+      '<circle cx="212" cy="114" r="57" fill="#e8b18b" stroke="#a37662" stroke-width="8"/>'+
+      '<path d="M155 107 Q151 35 205 37 Q272 38 268 100" fill="#8a6649" stroke="#704935" stroke-width="8"/>'+
+      '<circle cx="195" cy="115" r="5" fill="#40312c"/><circle cx="230" cy="115" r="5" fill="#40312c"/>'+
+      '<path d="M202 139 Q213 152 224 139" fill="none" stroke="#945f51" stroke-width="5"/>'+
+      '<path d="M167 187 Q213 164 255 187 L272 296 H156Z" fill="#8cb4dc" stroke="#5f81aa" stroke-width="8"/>'+
+      '<circle cx="600" cy="114" r="56" fill="#ba8069" stroke="#82594e" stroke-width="8"/>'+
+      '<path d="M550 89 Q571 22 649 72 L648 106 Q599 63 554 112" fill="#303f54"/>'+
+      '<circle cx="583" cy="116" r="5" fill="#35343b"/><circle cx="615" cy="116" r="5" fill="#35343b"/>'+
+      '<path d="M585 138 Q599 151 617 138" fill="none" stroke="#794e4b" stroke-width="5"/>'+
+      '<path d="M563 188 Q601 161 643 188 L656 296 H544Z" fill="#e6a66c" stroke="#a87651" stroke-width="8"/>'+
+      '<path d="M95 318 L260 318 L245 447 Q168 480 111 444Z" fill="#c2e3ca" stroke="#5b9480" stroke-width="9"/>'+
+      '<path d="M115 355 Q167 336 243 355" stroke="#80bba0" stroke-width="15" fill="none"/>'+
+      '<path d="M532 315 L699 315 L679 451 Q609 478 550 451Z" fill="#b594d4" stroke="#7b63a2" stroke-width="9"/>'+
+      '<path d="M550 355 Q622 332 677 355" stroke="#d8b7e9" stroke-width="14" fill="none"/>'+
+      '<ellipse cx="177" cy="318" rx="66" ry="28" fill="#f4efe0" stroke="#e5d1bd" stroke-width="6"/>'+
+      '<ellipse cx="611" cy="316" rx="69" ry="28" fill="#f6e7ee" stroke="#e6c4d4" stroke-width="6"/>',
+      'Two smiling children drinking smoothies through tracing paths');
     if(theme==='sports')return wrap(base()+
       el(103,375,.82,'<circle cy="-89" r="43" fill="#c18d6c" stroke="#885e51" stroke-width="6"/>'+
       '<path d="M-39 -110 Q-30 -151 20 -141 L50 -120 L-30 -114" fill="#f0614f" stroke="#af4b42" stroke-width="6"/>'+
@@ -402,7 +424,7 @@ const IllustratedActivities = (() => {
     }
     return stage;
   }
-  const traceScene=(mode)=>illustration(mode==='sports'?'sports':mode==='garden'?'garden':'park');
+  const traceScene=(mode)=>illustration(['sports','garden','cafe','forest'].includes(mode)?mode:'park');
   const coverage=()=>({a:scenes.sounds.correct.slice(), circles:scenes.shapes.correct.slice(), squares:scenes.squares.correct.slice(), forest:scenes.forest.items.map(x=>x[0])});
   return {available,make,mount,illustration,traceScene,coverage};
 })();
