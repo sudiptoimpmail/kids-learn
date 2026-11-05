@@ -996,3 +996,37 @@ body.test-mode .qa-nav { padding:8px 12px; font-size:14px; min-height:38px; back
 body.test-mode .qa-nav:disabled { opacity:.45; cursor:not-allowed; }
 body.test-mode .qa-position { padding:6px 8px; color:#574580; font-weight:900; white-space:nowrap; }
 body.test-mode .prog-row { gap:6px; }
+
+
+/* iPad landscape / home-screen safe areas: keep controls and score inside viewport. */
+html, body { min-height: 100%; }
+.screen { min-height: 100dvh; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+#game.active { min-height: 100dvh; }
+#game .game-area { min-height: 0; padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+#game .b3-wrap { min-height: 0; }
+.pb-dmd { padding: 4px 10px 3px; }
+.pb-dmd .pb-score { font-size: 23px; }
+.pb-dmd-msg { min-height: 16px; font-size: 12px; }
+.pb-dmd-bot { font-size: 11px; }
+.pb-wrap { position: relative; }
+.pb-wrap .pb-launch { position: absolute; right: 2%; bottom: 8%; z-index: 3; width: 23%; max-width: 105px; min-width: 68px; height: 58px; border-radius: 17px; background: #ffe066; color: #382415; font-size: 24px; font-weight: 900; border: 3px solid #fff; box-shadow: 0 5px 0 #7a4c18; touch-action: manipulation; }
+.pb-wrap .pb-launch span { display: block; font-size: 12px; }
+.pb-wrap .pb-launch[hidden] { display: none; }
+.pb-btns { gap: 10px; }
+.pb-btns .pb-flip { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 55px; height: 55px; border-radius: 16px; font-size: 28px; font-weight: 900; touch-action: none; }
+.pb-btns .pb-flip span { font-size: 16px; }
+.dr-tools { gap: 5px; align-items: center; }
+.dr-ink { width: 29px; height: 29px; }
+.dr-size { min-width: 53px; width: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 19px; }
+.dr-size small { font-size: 9px; line-height: 1; }
+.dr-zoom { display: flex; justify-content: center; align-items: center; gap: 8px; }
+.dr-zoom button { min-width: 44px; min-height: 36px; border-radius: 10px; background: white; font-weight: 900; }
+.dr-zoom span { font-size: 12px; font-weight: 700; color: var(--soft); }
+.dr-pad { touch-action: none; }
+.dr-cv, .dr-guide { transform-origin: 0 0; }
+.wm-final { width: 100%; min-height: min(64dvh,520px); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px; text-align: center; }
+.wm-final h2 { margin: 0; font-size: 30px; }
+.wm-final-icon { font-size: 64px; }
+.wm-final-score { font-size: clamp(72px, 15vw, 128px); line-height: 1; font-weight: 1000; color: #7048e8; }
+.wm-final p { margin: 0 0 10px; font-size: 22px; font-weight: 900; }
+@media (max-height: 760px) { #game .game-area { gap: 7px; margin-top: 5px; } .dr-top { gap: 6px; } .dr-pad { width: min(50dvh, 92vw); } .pb-dmd-msg { display:none; } }
