@@ -1361,6 +1361,12 @@ const genGK = (level) => {
     const noun = q.answer.split(' ').slice(1).join(' ');
     const parts = noun === 'sunflower' ? ['sun', 'flower'] : noun === 'airplane' ? ['air', 'plane'] : [noun];
     q.say = parts.every(part => CLIPS[clipKey(part)]) ? ['Find the picture of', ...parts] : 'Look at the picture!';
+    q.optClass = 'gk-picture-choices';
+    q.options.forEach(option => {
+      const space = option.html.indexOf(' ');
+      option.html = '<span class="gk-picture">' + option.html.slice(0, space) +
+        '</span><small>' + option.html.slice(space + 1) + '</small>';
+    });
   } else if (!CLIPS[clipKey(q.text)]) {
     // Newly added calendar questions remain readable offline without missing audio-file requests.
     q.say = 'Find the answer!';
