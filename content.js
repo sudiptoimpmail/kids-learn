@@ -250,7 +250,7 @@ function genSight(level) {
     const wrong = sample(pool.filter((w) => SIGHT_KIND[w.toLowerCase()] !== kind && w.toLowerCase() !== ans.toLowerCase()), n);
     const show = (w) => (atStart ? cap(w) : w === 'I' ? 'I' : w.toLowerCase());
     return {
-      key: `sight-fill-${sent}`, text: 'Which word fits?', say: 'Which word fits?',
+      key: `sight-fill-${sent}`, text: 'Which word fits in the blank?', say: 'Which word fits?',
       main: `<div class="sentence">${sent.replace('___', '<span class="blank wide">___</span>')}</div>`,
       options: shuffle([ans, ...wrong]).map((w) => ({ v: show(w), html: show(w) })),
       answer: show(ans), optClass: 'opt-word', fill: true, hint: firstLetterHint(ans.toLowerCase()),
@@ -432,10 +432,13 @@ function genSyllable(level) {
     text: 'How many claps?',
     say: `How many claps in ${w}?`,
     speak: w,
-    main: `<div class="word">${w}</div><button class="mini-speaker" data-speak="${w}">🔊</button>`,
-    options: opts.map((n) => ({ v: n, html: `${n}<small>${'👏'.repeat(n)}</small>` })),
+    // Scale long words to the available width, not to a fixed 76–120px font size.
+    // Old 11-letter words overflowed the phone card at 320–390px.
+    main: `<div class="word syl-word" style="--syl-font:${Math.min(18, 140 / w.length).toFixed(2)}vw" aria-label="${w}">${w}</div><button type="button" class="mini-speaker" data-speak="${w}" aria-label="Hear ${w}">🔊</button>`,
+    mainClass: 'syl-main',
+    options: opts.map((n) => ({ v: n, html: `<b>${n}</b><small aria-hidden="true">${'👏'.repeat(n)}</small>` })),
     answer: count,
-    optClass: 'opt-num',
+    optClass: 'opt-num syl-choices',
     hint: {
       html: `<div class="hint-pic sm">${e}</div><div class="hint-claps">${split.split('-').map((p) => `<span>👏<b>${p}</b></span>`).join('')}</div>`,
       say: split.split('-').join(', '),
