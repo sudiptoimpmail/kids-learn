@@ -11,8 +11,8 @@ const { chromium } = require('playwright');
         schema: 1, id:'grade-k-garden', entitlement:'kidslearn.garden.k',
         version:1, title:'Garden Math',
         questions:[{id:'count-01', category:'add', level:1, grades:['k'],
-          prompt:'How many flowers?', image:'assets/illustrations/flower.svg',
-          choices:['2','3','4'],answer:'3',explanation:'Count the flowers.'}]
+          prompt:'How many apples?', image:'assets/illustrations/apple.svg',
+          choices:['2','3','4'],answer:'3',explanation:'Count the apples.'}]
       };
       const invalid = structuredClone(sample);
       invalid.questions[0].choices = ['3','3','4'];
