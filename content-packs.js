@@ -50,7 +50,7 @@ const ContentPacks = (() => {
 
   function validate(pack) {
     if (!pack || typeof pack !== 'object' || Array.isArray(pack) ||
-        pack.schema !== 1 || !isSlug(pack.id) ||
+        pack.schema !== 1 || !isSlug(pack.id) || !isSlug(pack.entitlement) ||
         !Number.isSafeInteger(pack.version) || pack.version < 1 || !isText(pack.title, 80) ||
         !Array.isArray(pack.questions) || pack.questions.length < 1 || pack.questions.length > 4000 ||
         JSON.stringify(pack).length > MAX_PACK_BYTES) throw new Error('Invalid content pack');
