@@ -4,7 +4,7 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v57';
+const VERSION = PREFIX + 'v58';
 const AUDIO = PREFIX + 'audio';
 const FILES = ['./', 'index.html', 'style.css', 'ui-improvements.css', 'workbook.css', 'workbook.js', 'photos.js', 'illustrations.js', 'feature-flags.js', 'storage.js', 'grade1words.js', 'content.js', 'content-loader.js', 'content-packs.js', 'thinking.js', 'country.js', 'science.js', 'grammar.js', 'numsense.js', 'grade1.js', 'app.js', 'games.js', 'pathmaze.js', 'radialmaze.js', 'wordgames.js', 'trace.js', 'progress.js', 'ball3d.js', 'pinball3d.js', 'geo.js', 'art-engine.js', 'landmark-engine.js', 'story-engine.js', 'words.js', 'phonics.js', 'early-words.js', 'scene-engine.js', 'body3d.js', 'vendor/three.module.min.js', 'vendor/GLTFLoader.js', 'vendor/BufferGeometryUtils.js', 'vendor/meshopt_decoder.module.js', 'vendor/RoomEnvironment.js', 'vendor/body.glb', 'manifest.webmanifest', 'audio/clips.json', 'audio/silence.mp3',
   'assets/photos/cat.jpg', 'assets/photos/dog.jpg', 'assets/photos/rabbit.jpg', 'assets/photos/duck.jpg', 'assets/photos/elephant.jpg', 'assets/photos/tiger.jpg', 'assets/photos/butterfly.jpg', 'assets/photos/horse.jpg', 'assets/photos/sunflower.jpg', 'assets/photos/rose.jpg', 'assets/photos/tulip.jpg', 'assets/photos/daisy.jpg', 'assets/photos/car.jpg', 'assets/photos/airplane.jpg', 'assets/photos/helicopter.jpg', 'assets/photos/truck.jpg',
@@ -145,6 +145,13 @@ const FILES = ['./', 'index.html', 'style.css', 'ui-improvements.css', 'workbook
   'assets/landmarks/borobudur.svg',
   'assets/landmarks/milford.svg',
   'assets/landmarks/iguazu.svg',
+  'data/game-themes.json',
+  'assets/maze/duckling.svg',
+  'assets/maze/child.svg',
+  'assets/maze/bone.svg',
+  'assets/maze/bee.svg',
+  'assets/maze/cheese.svg',
+  'assets/maze/parking.svg',
   'icons/icon-180.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 const SCOPE = new URL('./', self.location).pathname;   // e.g. /kids-learn/ — never touch other apps on the same site
 
