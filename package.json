@@ -7,7 +7,8 @@
     "test": "sh tests/run.sh",
     "check": "node --check app.js && node --check games.js && node --check thinking.js && node --check progress.js && node --check numsense.js && node --check grammar.js && node --check science.js && node --check country.js && node --check storage.js && node --check pathmaze.js && node --check trace.js && node --check content-loader.js && node --check story-engine.js && node --check art-engine.js && node --check landmark-engine.js && node --check scene-engine.js && node --check content.js && node --check content-packs.js && node tests/content-assets-test.js && node --check grade1.js && node --check grade1words.js && node --check tests/g1readtest.js && node --check sw.js && node --check tests/child-regressions.js && node --check scripts/check-cache-version.cjs && node --check radialmaze.js && node --check workbook.js && node --check tests/workbook-test.js && node --check tests/qa-navigation-test.js && node --check tests/workbook-coverage-test.js && node --check feature-flags.js && node --check early-words.js && node --check tests/issue-audit-test.js && node --check tests/ipad-polish-test.js && node --check tests/grade-pinball-layout-test.js && node --check tests/curriculum-depth-test.js && node --check tests/visual-library-test.js && node --check scripts/audit-content.cjs && node --check tests/grade-ux-and-media-test.js && node --check tests/generated-curriculum-audit.js && node --check tests/grade23-content-test.js",
     "audit:content": "node scripts/audit-content.cjs",
-    "audit:grade23": "node tests/grade23-content-test.js"
+    "audit:grade23": "node tests/grade23-content-test.js",
+    "audit:curriculum": "node tests/curriculum-map-test.cjs"
   },
   "devDependencies": {
     "playwright": "^1.56.0"

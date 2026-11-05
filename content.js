@@ -5,6 +5,24 @@
      optClass, hint:{html, say}, speak (word for 🔊), tap (bool) }
    ========================================================= */
 
+/* Offline JSON owns grade, section, skill and authored-question routing. */
+const CURRICULUM_ROUTES = ContentData.get('curriculum-map','ROUTES');
+const CURRICULUM_PROFILES = ContentData.get('curriculum-map','PROFILES');
+const curriculumGrade = () => typeof state !== 'undefined' && state &&
+  Object.hasOwn(CURRICULUM_PROFILES,state.grade) ? state.grade : null;
+function curriculumRows(bank, level) {
+  const grade=curriculumGrade();
+  if (!grade) return [];
+  const rows=ContentData.get('grade23-extension',bank);
+  const routes=CURRICULUM_ROUTES[bank];
+  if (!Array.isArray(routes) || routes.length !== rows.length) throw Error('Curriculum routing mismatch: '+bank);
+  return rows.flatMap((row,i) => {
+    const route=routes[i];
+    return route.grade === grade && route.level <= level
+      ? [[route.level,...row.slice(1)]] : [];
+  });
+}
+
 const rand = (n) => Math.floor(Math.random() * n);
 const pick = (a) => a[rand(a.length)];
 const shuffle = (a) => {
@@ -370,8 +388,17 @@ const SENTENCES = ContentData.get('content','SENTENCES');
 const sentLevel = (x) => { if (typeof x !== 'string') return x[3] || sentLevel(x[0]); const n = x.split(' ').length; return n <= 5 ? 1 : n <= 8 && !/[.!?] [A-Z]/.test(x) ? 2 : 3; };
 
 // every reading item as [text, [[question, options], ...], level]
-const READING = () => READING.all || (READING.all = SENTENCES.map((x) => [x[0], [[x[1], x[2]]], sentLevel(x), x[4] === 'print-first'])
-  .concat(PATTERN_SENTENCES.map((x) => [x[0], [[x[1], x[2]]], x[3]]), STORIES.map((x) => [x[1], x[2], x[0], x[3] === true])));
+const READING = () => {
+  const grade=curriculumGrade()||'core';
+  READING.cache ||= new Map();
+  if (!READING.cache.has(grade)) READING.cache.set(grade,
+    SENTENCES.map(x => [x[0],[[x[1],x[2]]],sentLevel(x),x[4]==='print-first'])
+      .concat(PATTERN_SENTENCES.map(x => [x[0],[[x[1],x[2]]],x[3]]),
+        STORIES.map(x => [x[1],x[2],x[0],x[3]===true]),
+        curriculumRows('STORIES',6).map(x => [x[1],x[2],x[0],true]))
+  );
+  return READING.cache.get(grade);
+};
 // words that never point to an answer on their own
 const HINT_SKIP = new Set('a an the is are was were be to of and or in on at it its i you he she we they my his her their this that what who where when why how which do does did can has have had will with for from by so but not one some many much'.split(' '));
 const HINT_NUMS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
@@ -1013,7 +1040,7 @@ function genAnatomy3D(level) {
 
 /* ---------------- GENERAL KNOWLEDGE ---------------- */
 // Levels: 1 Pre-K · 2 Kindergarten · 3 1st grade · 4 2nd grade
-const GK = ContentData.get('content','GK').concat(ContentData.get('grade23-extension','GK'));
+const GK = ContentData.get('content','GK');
 /* Pre-K picture listening and recognition, with genuinely age-banded visual content.
    The bank is large, but each short question shows 2–4 related images, not a wall of thumbnails. */
 function genVisualRecognition(level) {
@@ -1039,7 +1066,7 @@ function genVisualRecognition(level) {
 }
 const genGK = (level) => {
   if (level <= 2 && Math.random() < (level === 1 ? 0.62 : 0.25)) return genVisualRecognition(level);
-  const q = mcQuestion('gk', pickLevelled(GK, level), level);
+  const q = mcQuestion('gk', pickLevelled(GK.concat(curriculumRows('GK',level)), level), level);
   // Pre-K children hear a recognizable prompt and a target word with prerecorded audio.
   if (q.text.startsWith('Which picture shows')) {
     const noun = q.answer.split(' ').slice(1).join(' ');
@@ -1665,7 +1692,7 @@ const CATEGORIES = [
 // multiplication/division start as equal groups and sharing in 2nd.
 // which games each grade sees, and the levels that suit it; a child starts in the middle of the range
 // and then moves up or down with how well she does (even past the range)
-const GRADES = ContentData.get('content','GRADES');
+const GRADES = ContentData.get('curriculum-map','GRADES');
 // where a child of this grade starts: the middle of the range (rounded down)
 const gradeStart = (r) => { const [a, b] = r.split('-').map(Number); return Math.floor((a + b) / 2); };
 const gradeRange = (grade, id) => { const r = GRADES[grade] && GRADES[grade].g[id]; return r ? r.split('-').map(Number) : null; };
