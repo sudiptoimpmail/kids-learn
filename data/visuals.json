@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "namespace": "visuals",
+  "datasets": {
+    "PHOTO_GROUPS": {
+      "animals": [
+        "cat",
+        "dog",
+        "rabbit",
+        "duck",
+        "elephant",
+        "tiger",
+        "butterfly",
+        "horse"
+      ],
+      "flowers": [
+        "sunflower",
+        "rose",
+        "tulip",
+        "daisy"
+      ],
+      "vehicles": [
+        "car",
+        "airplane",
+        "helicopter",
+        "truck"
+      ]
+    },
+    "PHOTO_PUZZLE_NAMES": [
+      "cat",
+      "dog",
+      "rabbit",
+      "duck",
+      "butterfly",
+      "horse",
+      "sunflower",
+      "rose",
+      "tulip",
+      "car",
+      "airplane",
+      "helicopter"
+    ],
+    "ILLUSTRATION_GROUPS": {
+      "animals": [
+        "lion",
+        "giraffe",
+        "zebra",
+        "panda",
+        "koala",
+        "fox",
+        "bear",
+        "monkey",
+        "frog",
+        "turtle",
+        "owl",
+        "penguin"
+      ],
+      "nature": [
+        "tree",
+        "cactus",
+        "mushroom",
+        "rainbow",
+        "cloud",
+        "sun",
+        "moon",
+        "star",
+        "leaf",
+        "snowflake",
+        "volcano",
+        "ocean"
+      ],
+      "transport": [
+        "bicycle",
+        "bus",
+        "train",
+        "rocket",
+        "taxi",
+        "sailboat",
+        "ship",
+        "fire_engine",
+        "police_car",
+        "tractor",
+        "scooter",
+        "ambulance"
+      ],
+      "food": [
+        "apple",
+        "banana",
+        "grapes",
+        "orange",
+        "strawberry",
+        "pineapple",
+        "watermelon",
+        "cherries",
+        "peach",
+        "lemon",
+        "pear",
+        "carrot"
+      ],
+      "objects": [
+        "books",
+        "pencil",
+        "scissors",
+        "backpack",
+        "clock",
+        "key",
+        "umbrella",
+        "balloon",
+        "kite",
+        "gift",
+        "toothbrush",
+        "soccer_ball"
+      ],
+      "places": [
+        "mountain",
+        "tent",
+        "house",
+        "school",
+        "hospital",
+        "slide",
+        "bridge",
+        "castle",
+        "globe",
+        "map",
+        "compass",
+        "camera"
+      ],
+      "science": [
+        "microscope",
+        "telescope",
+        "magnet",
+        "robot",
+        "lightbulb",
+        "battery",
+        "gear",
+        "test_tube",
+        "dna",
+        "atom",
+        "satellite",
+        "comet"
+      ]
+    }
+  }
+}
