@@ -1363,7 +1363,11 @@ const genGK = (level) => {
   // Pre-K children hear a recognizable prompt and a target word with prerecorded audio.
   if (q.text.startsWith('Which picture shows')) {
     const noun = q.answer.split(' ').slice(1).join(' ');
-    const parts = noun === 'sunflower' ? ['sun', 'flower'] : noun === 'airplane' ? ['air', 'plane'] : [noun];
+    // Child-facing picture names stay audible without introducing unrecorded phrases:
+    // syllabic clips sound out sunflower, airplane, tulip (two-lip), and daisy (day-zee).
+    const pictureSpeech = { sunflower: ['sun','flower'], airplane: ['air','plane'],
+      tulip: ['two','lip'], daisy: ['day','z'] };
+    const parts = pictureSpeech[noun] || [noun];
     q.say = parts.every(part => CLIPS[clipKey(part)]) ? ['Find the picture of', ...parts] : 'Look at the picture!';
     q.optClass = 'gk-picture-choices';
     if (PHOTO_SET.has(noun)) {
