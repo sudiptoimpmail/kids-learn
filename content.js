@@ -1359,7 +1359,8 @@ const genGK = (level) => {
   // Pre-K children hear a recognizable prompt and a target word with prerecorded audio.
   if (q.text.startsWith('Which picture shows')) {
     const noun = q.answer.split(' ').slice(1).join(' ');
-    q.say = CLIPS[clipKey(noun)] ? ['Find the picture of', noun] : 'Look at the picture!';
+    const parts = noun === 'sunflower' ? ['sun', 'flower'] : noun === 'airplane' ? ['air', 'plane'] : [noun];
+    q.say = parts.every(part => CLIPS[clipKey(part)]) ? ['Find the picture of', ...parts] : 'Look at the picture!';
   } else if (!CLIPS[clipKey(q.text)]) {
     // Newly added calendar questions remain readable offline without missing audio-file requests.
     q.say = 'Find the answer!';
