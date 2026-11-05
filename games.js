@@ -421,7 +421,7 @@ function startWhack() {
     const i = pick(free);
     const flower = lv >= 3 && Math.random() < 0.2;
     const el = holes[i].querySelector('.wm-pop');
-    const character = flower ? 'flower' : pick(['mole','mole','mole','hedgehog','mouse']);
+    const character = flower ? 'flower' : pick(ContentData.get('game-themes','WHACK_CHARACTERS'));
     el.innerHTML = '<img class="wm-character" src="assets/games/' + character + '.svg" alt="" draggable="false">';
     holes[i].classList.add('up');
     holes[i].setAttribute('aria-label', flower ? 'Flower: do not tap' : 'Tap the animal!');
