@@ -1293,9 +1293,9 @@ const GK = [
   [1, 'Which one is a fruit?', '🍎 apple', '🍞 bread', '🧀 cheese', '🥚 egg'],
   [1, 'When do we see the moon and stars?', '🌙 at night', '☀️ in the morning', '🍽️ at lunch'],
   [1, 'What should you do at a red light?', '🛑 stop', '🏃 go fast', '💃 dance'],
-  [1, 'Which day comes after Sunday?', 'Monday', 'Friday', 'Thursday', 'Saturday'],
-  [1, 'Which day comes before Friday?', 'Thursday', 'Monday', 'Sunday', 'Tuesday'],
-  [1, 'Which one is a weekday?', 'Monday', 'Saturday', 'Sunday', 'Christmas'],
+  [2, 'Which day comes after Sunday?', 'Monday', 'Friday', 'Thursday', 'Saturday'],
+  [2, 'Which day comes before Friday?', 'Thursday', 'Monday', 'Sunday', 'Tuesday'],
+  [2, 'Which one is a weekday?', 'Monday', 'Saturday', 'Sunday', 'Christmas'],
   [2, 'Which day comes after Wednesday?', 'Thursday', 'Monday', 'Tuesday', 'Sunday'],
   [2, 'Which day comes before Tuesday?', 'Monday', 'Wednesday', 'Friday', 'Saturday'],
   [2, 'Which day is between Friday and Sunday?', 'Saturday', 'Tuesday', 'Thursday', 'Monday'],
@@ -1363,7 +1363,11 @@ const genGK = (level) => {
   // Pre-K children hear a recognizable prompt and a target word with prerecorded audio.
   if (q.text.startsWith('Which picture shows')) {
     const noun = q.answer.split(' ').slice(1).join(' ');
-    const parts = noun === 'sunflower' ? ['sun', 'flower'] : noun === 'airplane' ? ['air', 'plane'] : [noun];
+    // Child-facing picture names stay audible without introducing unrecorded phrases:
+    // syllabic clips sound out sunflower, airplane, tulip (two-lip), and daisy (day-zee).
+    const pictureSpeech = { sunflower: ['sun','flower'], airplane: ['air','plane'],
+      tulip: ['two','lip'], daisy: ['day','z'] };
+    const parts = pictureSpeech[noun] || [noun];
     q.say = parts.every(part => CLIPS[clipKey(part)]) ? ['Find the picture of', ...parts] : 'Look at the picture!';
     q.optClass = 'gk-picture-choices';
     if (PHOTO_SET.has(noun)) {
