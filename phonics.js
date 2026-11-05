@@ -8,9 +8,7 @@
    The pictures and words come from the word lists in content.js.
    ========================================================= */
 // words whose picture could be read two ways, or whose first letter doesn't make its usual sound
-const PHON_SKIP = new Set(['red', 'sad', 'wet', 'hug', 'mud', 'hot', 'see', 'run', 'six', 'ten', 'kid', 'man', 'boy', 'girl', 'woman', 'blue', 'pink', 'cold',
-  'stop', 'food', 'tube', 'green', 'white', 'black', 'brown', 'home', 'mother', 'father', 'sister', 'brother', 'nurse', 'yellow', 'purple', 'pot', 'net', 'can',
-  'ram', 'lip', 'pin', 'hut', 'mask', 'vase', 'tent', 'swan', 'seal', 'gift', 'wing', 'yo-yo', 'puppy', 'woman', 'owl', 'pie', 'key', 'fly', 'toy', 'see']);
+const PHON_SKIP = new Set(ContentData.get('phonics','PHON_SKIP'));
 let PHON = null;
 function phonData() {
   if (PHON) return PHON;
@@ -28,19 +26,14 @@ function phonData() {
   };
   for (const x of uniq) for (const b of Object.keys(PHON.blends)) if (x[0].startsWith(b)) PHON.blends[b].push(x);
   // a few extra pictures for the sounds that have only one or two words in the lists
-  const extra = [['shell', '🐚'], ['shark', '🦈'], ['chick', '🐤'], ['cheese', '🧀'], ['cherry', '🍒'], ['thumb', '👍'], ['three', '3️⃣'], ['tractor', '🚜'],
-    ['dragon', '🐉'], ['broom', '🧹'], ['crown', '👑'], ['crayon', '🖍️'], ['fries', '🍟'], ['grapes', '🍇'], ['strawberry', '🍓'], ['snail', '🐌'], ['snowman', '⛄'],
-    ['sloth', '🦥'], ['cloud', '☁️'], ['clown', '🤡'], ['plane', '✈️'], ['plant', '🪴'], ['sheep', '🐑'],
-    ['shirt', '👕'], ['chair', '🪑'], ['train', '🚆'], ['truck', '🚚'], ['bread', '🍞'], ['brush', '🪥'], ['crab', '🦀'], ['frog', '🐸'], ['drum', '🥁'], ['star', '⭐'],
-    ['snake', '🐍'], ['sled', '🛷'], ['clock', '🕰️'], ['ship', '🚢'], ['shoe', '👟'], ['tree', '🌳']];
+const extra = ContentData.get('phonics','PHON_EXTRA');
   for (const x of extra) for (const b of Object.keys(PHON.blends)) if (x[0].startsWith(b) && !PHON.blends[b].some((y) => y[0] === x[0])) PHON.blends[b].push(x);
   for (const b of Object.keys(PHON.blends)) if (PHON.blends[b].length < 2) delete PHON.blends[b];
   return PHON;
 }
 // each letter's sound, as phonemes for the voice model (recorded into audio/ as "sound b" etc.)
 // stop sounds (b, d, k…) are kept short with no "uh" after them, the way phonics is taught
-const LETTER_SOUNDS = { a: 'ˈæ', b: 'b', c: 'k', d: 'd', e: 'ˈɛ', f: 'ˈf', g: 'ɡ', h: 'h', i: 'ˈɪ', j: 'dʒ', k: 'k', l: 'ˈl', m: 'ˈm', n: 'ˈn', o: 'ˈɑ', p: 'p',
-  q: 'kw', r: 'ˈɹ', s: 'ˈs', t: 't', u: 'ˈʌ', v: 'ˈv', w: 'w', x: 'ks', y: 'j', z: 'ˈz', sh: 'ˈʃ', ch: 'tʃ', th: 'ˈθ' };
+const LETTER_SOUNDS = ContentData.get('phonics','LETTER_SOUNDS');
 const soundClip = (l) => `sound ${l}`;
 // letter tiles: tap one to hear its sound; tap ▶ (or slide a finger across) to hear them blend into the word
 function wireBlend(q) {
@@ -80,7 +73,7 @@ const firstLetter = (w) => w[0];
 const tapLetter = (l, label = `${l.toUpperCase()} ${l}`) => `<button class="ph-letters tap" aria-label="Hear the sound">${label}</button><small class="ph-tip">👆 tap the letter to hear its sound</small>`;
 
 // workbook-style letter cards for beginners: tap every picture that starts with a letter, or follow a letter path
-const PH_PATH_THEMES = [['🦓', '🦓', 'baby zebra'], ['🐥', '🦆', 'duckling'], ['🐶', '🏠', 'puppy'], ['🐜', '🍓', 'ant'], ['🐰', '🥕', 'bunny']];
+const PH_PATH_THEMES = ContentData.get('phonics','PH_PATH_THEMES');
 function genPhonicsExtra(level) {
   const P = phonData();
   if (Math.random() < 0.55) {
@@ -115,7 +108,7 @@ function genPhonicsExtra(level) {
   };
 }
 // letters too easy to mix up for a beginner are never used as the wrong ones in a letter path
-const LOOKALIKE_SAFE = { b: 'dpq', d: 'bpq', p: 'bdq', q: 'bdp', m: 'nw', n: 'mu', u: 'nv', w: 'mv', i: 'lj', l: 'i', j: 'i' };
+const LOOKALIKE_SAFE = ContentData.get('phonics','LOOKALIKE_SAFE');
 function genPhonics(level) {
   if (level <= 2 && Math.random() < 0.3) return genPhonicsExtra(level);
   if (level >= 4 && Math.random() < 0.3 && typeof genGrade1Phonics === 'function') return genGrade1Phonics();
