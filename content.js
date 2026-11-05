@@ -1255,6 +1255,21 @@ function genAnatomy3D(level) {
 /* ---------------- GENERAL KNOWLEDGE ---------------- */
 // Levels: 1 Pre-K · 2 Kindergarten · 3 1st grade · 4 2nd grade
 const GK = [
+  [1, 'Which picture shows a rose?', '🌹 rose', '🌻 sunflower', '🌷 tulip', '🌼 daisy'],
+  [1, 'Which picture shows a sunflower?', '🌻 sunflower', '🌹 rose', '🌷 tulip', '🌸 blossom'],
+  [1, 'Which picture shows a tulip?', '🌷 tulip', '🌻 sunflower', '🌹 rose', '🌼 daisy'],
+  [1, 'Which picture shows a flower?', '🌼 flower', '🐶 dog', '🚗 car', '✈️ airplane'],
+  [1, 'Which picture shows an elephant?', '🐘 elephant', '🦒 giraffe', '🐻 bear', '🦁 lion'],
+  [1, 'Which picture shows a horse?', '🐴 horse', '🐮 cow', '🐑 sheep', '🐷 pig'],
+  [1, 'Which picture shows a tiger?', '🐯 tiger', '🦊 fox', '🐱 cat', '🐶 dog'],
+  [1, 'Which picture shows a butterfly?', '🦋 butterfly', '🐝 bee', '🐜 ant', '🐞 ladybug'],
+  [1, 'Which picture shows an airplane?', '✈️ airplane', '🚗 car', '🚂 train', '🚲 bicycle'],
+  [1, 'Which picture shows a helicopter?', '🚁 helicopter', '🚀 rocket', '⛵ sailboat', '🚍 bus'],
+  [1, 'Which picture shows a truck?', '🚚 truck', '🚗 car', '🚂 train', '🛵 scooter'],
+  [1, 'Which picture shows a train?', '🚂 train', '✈️ airplane', '🚌 bus', '🚁 helicopter'],
+  [1, 'Which picture shows a boat?', '⛵ sailboat', '🚁 helicopter', '🚗 car', '🚲 bicycle'],
+  [1, 'Which picture shows a rabbit?', '🐰 rabbit', '🐻 bear', '🐸 frog', '🐱 cat'],
+  [1, 'Which picture shows a duck?', '🦆 duck', '🐧 penguin', '🦉 owl', '🦜 parrot'],
   [1, 'Which animal says moo?', '🐮 cow', '🐶 dog', '🐱 cat', '🐷 pig'],
   [1, 'Which animal says woof?', '🐶 dog', '🐮 cow', '🦆 duck', '🐑 sheep'],
   [1, 'Which animal says quack?', '🦆 duck', '🐷 pig', '🐱 cat', '🐴 horse'],
