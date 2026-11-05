@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img"><title>Great Sphinx</title><rect width="120" height="120" fill="#fff3bf"/><path d="M0 92 H120 V120 H0 Z" fill="#ffd8a8"/><path d="M78 92 L98 52 L118 92 Z" fill="#f4c27a" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M10 92 V78 Q10 70 22 70 H58 V56 Q58 40 70 40 Q82 40 82 56 V72 L86 78 V92 Z" fill="#e0a85b" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M62 44 Q70 30 78 44 L80 62 L60 62 Z" fill="#4dabf7" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/><circle cx="67" cy="54" r="1.6" fill="#2b2140"/><circle cx="74" cy="54" r="1.6" fill="#2b2140"/>
+    <path d="M10 88 H40" stroke="#2b2140" stroke-width="1.4"/></svg>
