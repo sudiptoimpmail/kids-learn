@@ -22,6 +22,17 @@ const { chromium } = require('playwright');
       dangerous.questions[0].image = 'https://example.com/script.js';
       let rejectedImage = false;
       try { ContentPacks.validate(dangerous); } catch { rejectedImage=true; }
+      // Money identification appears in Kindergarten My Country lessons too.
+      let illustratedMoney = 0;
+      for (let i = 0; i < 120; i++) {
+        const q = genCountry(2);
+        if (!q.key.startsWith('home-coin-picture-')) continue;
+        illustratedMoney++;
+        if (!q.main.includes('ns-currency-picture') ||
+            q.options.filter(x => x.v === q.answer).length !== 1)
+          throw new Error('Invalid currency picture question');
+      }
+      if (!illustratedMoney) throw new Error('Local currency pictures never appeared');
       await ContentPacks.installVerified(sample);
       const picked = ContentPacks.choose('k','add',1);
       const wrongGrade = ContentPacks.choose('g1','add',1);
