@@ -44,3 +44,31 @@ const CURRICULUM_AREAS = {
 };
 CURRICULUM_AREAS.ie = { ...CURRICULUM_AREAS.uk, name: 'Primary Curriculum (Ireland)', region: 'SESE Geography: my province', home: 'SESE Geography: Ireland', community: 'SESE · SPHE: my community' };
 function curriculumArea(id) { const c = CURRICULUM_AREAS[levelsCC()] || CURRICULUM_AREAS.us; return c[id] || ''; }
+
+/* ---------- quick placement check: 8 cards at the top of the grade ----------
+   Two cards from each of four core sections. Both right first time → that section starts
+   at the top of the grade; one right → the middle; none → the start of the grade. */
+const PLACE_POOL = ['add', 'sub', 'mul', 'frac', 'numsense', 'sent', 'spell', 'words', 'phonics', 'cvc'];
+let placePlan = [];
+function startPlacement() {
+  const ids = PLACE_POOL.filter((id) => state.grade && gradeRange(state.grade, id));
+  const math = ids.filter((id) => ['add', 'sub', 'mul', 'frac', 'numsense'].includes(id)), read = ids.filter((id) => !math.includes(id));
+  const chosen = [...sample(math, Math.min(2, math.length)), ...sample(read, Math.min(2, read.length))];
+  placePlan = chosen.flatMap((id) => [id, id]).map((id) => [id, gradeRange(state.grade, id)[1]]);
+  startRound('placement', placePlan.length);
+}
+function genPlacement() {
+  const [id, lv] = placePlan.length ? placePlan.shift() : ['add', 1];
+  const q = CATEGORIES.find((c) => c.id === id).gen(lv);
+  q.placeSection = id; q.key = 'place-' + q.key;
+  return q;
+}
+function applyPlacement(qs) {
+  const by = {};
+  for (const q of qs) { const s = by[q.placeSection] || (by[q.placeSection] = [0, 0]); s[0]++; if (q.ok) s[1]++; }
+  for (const [id, [n, ok]] of Object.entries(by)) {
+    const r = gradeRange(state.grade, id); if (!r) continue;
+    state.levels[id] = ok >= n ? r[1] : ok > 0 ? gradeStart(r.join('-')) : r[0];
+  }
+  return Object.keys(by).length;
+}

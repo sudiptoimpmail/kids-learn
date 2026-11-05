@@ -155,12 +155,33 @@ function openBrainGame(id) {
   $$('#game .play-clock').forEach((x) => (x.hidden = true));
   openGame(id);
 }
+// Each game's levels per grade [first, last]: a child starts at the first level of their grade
+// and levels up only to the last, so a 3rd grader never plays toddler mazes or pre-K memory boards.
+// "Show all games" in Settings lifts the limits.
+const GAME_GRADES = {
+  path:    { prek: [1, 2], k: [2, 4], g1: [4, 6], g2: [6, 8], g3: [9, 11] },   // 3rd grade starts on the circular mazes
+  memory:  { prek: [1, 2], k: [2, 3], g1: [3, 4], g2: [4, 5], g3: [5, 5] },
+  puzzle:  { prek: [1, 2], k: [2, 3], g1: [3, 4], g2: [4, 5], g3: [5, 5] },
+  sudoku:  { prek: [1, 1], k: [1, 2], g1: [2, 3], g2: [3, 4], g3: [4, 5] },
+  c4:      { g1: [1, 2], g2: [2, 3], g3: [3, 3] },
+  ttt:     { prek: [1, 1], k: [1, 2], g1: [2, 3], g2: [3, 3], g3: [3, 3] },
+  pop:     { prek: [1, 2], k: [2, 3], g1: [3, 4], g2: [4, 5], g3: [5, 5] },
+  whack:   { prek: [1, 2], k: [2, 3], g1: [3, 4], g2: [4, 5], g3: [5, 5] },
+  ball:    { prek: [1, 2], k: [2, 3], g1: [3, 5], g2: [5, 7], g3: [6, 8] },
+  maze:    { prek: [1, 2], k: [2, 3], g1: [3, 5], g2: [5, 7], g3: [6, 8] },
+  pinball: { prek: [1, 1], k: [1, 2], g1: [2, 3], g2: [3, 4], g3: [4, 5] },
+  draw:    { prek: [1, 1], k: [1, 2], g1: [2, 3], g2: [3, 4], g3: [4, 4] },
+};
+const gameRange = (id) => (!state.showAll && state.grade && GAME_GRADES[id] && GAME_GRADES[id][state.grade]) || null;
+const clampGame = (id, lv) => { const r = gameRange(id); return r ? Math.min(r[1], Math.max(r[0], lv)) : lv; };
+const gameCap = (id) => { const r = gameRange(id); return r ? r[1] : (id === 'sudoku' ? 5 : GAME_MAX[id] || 1); };
 function GL(id) {
   if (id === 'maze' && state.gameLv && state.gameLv.maze == null && state.gameLv.ball > 1 && !state.ball3d) { state.gameLv.maze = state.gameLv.ball; state.gameLv.ball = 1; state.ball3d = true; }
   if (id === 'sudoku') return sdkLevel();
   if (id === 'color') return colorLevel();
-  if (id === 'path' && !(state.gameLv && state.gameLv.path)) return ({ prek: 1, k: 2, g1: 4, g2: 6, g3: 9 })[state.grade] || 1;
-  return (state.gameLv && state.gameLv[id]) || 1;
+  const saved = state.gameLv && state.gameLv[id];
+  const r = gameRange(id);
+  return clampGame(id, saved || (r ? r[0] : 1));
 }
 function gameLevelUp(id, needWins = 1) {
   if (isTestMode()) return false; // QA runs do not mutate earned levels or rewards
@@ -169,11 +190,13 @@ function gameLevelUp(id, needWins = 1) {
   if (brainMode && BRAIN_GAME_IDS.has(id) && typeof logBrainWin === 'function') logBrainWin(id);
   const lv = GL(id);
   let up = false;
-  if (lv < (GAME_MAX[id] || 1) && state.gameWins[id] % needWins === 0) { state.gameLv[id] = lv + 1; up = true; }
+  if (lv < gameCap(id) && state.gameWins[id] % needWins === 0) { state.gameLv[id] = lv + 1; up = true; }
   save(); renderPZ();
   return up;
 }
-const lvBadge = (id) => (GAME_MAX[id] || id === 'sudoku' ? gameDots(GL(id), GAME_MAX[id] || 5) : '');
+// dots show the step inside the child's grade range for that game
+const gameStepDots = (id) => { const r = gameRange(id), lv = GL(id); if (!r) return gameDots(lv, GAME_MAX[id] || 5); const n = r[1] - r[0] + 1, s = Math.min(n, lv - r[0] + 1); return `<span class="lv steps" aria-label="Step ${s} of ${n}">${'●'.repeat(s)}${'○'.repeat(n - s)}</span>`; };
+const lvBadge = (id) => (GAME_MAX[id] || id === 'sudoku' ? gameStepDots(id) : '');
 function renderPZ() {
   $('#pzGrid').innerHTML = GAMES.filter((g) => !BRAIN_GAME_IDS.has(g.id)).map((g) =>
     `<button class="tile pz-tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`).join('');
@@ -193,7 +216,7 @@ function openGame(id) {
   if (!g || (brainMode && !brainVisible(g))) return;
   curGame = g;
   document.body.style.setProperty('--theme', g.color);
-  $('#gameTitle').innerHTML = `${g.icon === BALL_ICON ? '🔵' : g.icon} ${g.title}${GAME_MAX[id] || id === 'sudoku' ? ` <small class="g-lv">${gameDots(GL(id), GAME_MAX[id] || 5).replace(/<\/?span[^>]*>/g, '')}</small>` : ''}`;
+  $('#gameTitle').innerHTML = `${g.icon === BALL_ICON ? '🔵' : g.icon} ${g.title}${GAME_MAX[id] || id === 'sudoku' ? ` <small class="g-lv">${gameStepDots(id).replace(/<\/?span[^>]*>/g, '')}</small>` : ''}`;
   $('#gameArea').innerHTML = '';
   $('#gameArea').className = 'game-area g-' + id;
   show('game');
@@ -954,7 +977,7 @@ const SDK_PICS6 = [['🍎', '🍌', '🍇', '🍓', '🍊', '🥝'], ['🐶', '�
 const distinct = (w) => new Set(w).size === w.length;
 const SDK_WORDS4 = W4.map((x) => x[0]).filter((w) => /^[a-z]{4}$/.test(w) && distinct(w));
 const SDK_WORDS6 = SPELLL.filter((w) => w.length === 6 && distinct(w));
-const sdkLevel = () => state.sdkLevel || ({ prek: 1, k: 1, g1: 2, g2: 3, g3: 4 }[state.grade] || 1);
+const sdkLevel = () => clampGame('sudoku', state.sdkLevel || (gameRange('sudoku') || [1])[0]);
 
 function sdkSolution(n) {
   // valid base grid, then shuffle rows/cols inside bands and stacks
@@ -1058,7 +1081,7 @@ function startSudoku(mode) {
     solved = true;
     sel = null; paint();
     $$('.sdk-cell', area).forEach((el, k) => { el.style.animationDelay = `${k * 30}ms`; el.classList.add('win'); });
-    const up = lv < 5;
+    const up = lv < gameCap('sudoku');
     if (!isTestMode()) {
       state.sdkWins = (state.sdkWins || 0) + 1;
       if (brainMode && typeof logBrainWin === 'function') logBrainWin('sudoku');
@@ -1273,22 +1296,28 @@ const SIMPLE_REFS = [
   ['Boat', '<path d="M35 125h130l-20 35H55zM100 125V40l45 70h-45"/>'],
   ['Cat Face', '<circle cx="100" cy="105" r="55"/><path d="M58 75l-8-45l35 25M142 75l8-45l-35 25"/><circle cx="80" cy="100" r="6"/><circle cx="120" cy="100" r="6"/><path d="M92 120l8 6l8-6M60 115h-25M60 125h-25M140 115h25M140 125h25"/>'],
 ];
+// Draw & Copy pictures, four tiers by age (data/drawings.json, original line art):
+// Pre-K big simple shapes · Kindergarten a few parts · Grade 1 animals with details · Grades 2–3 detailed scenes
+const DRAW_TIERS = ContentData.get('drawings', 'DRAW_TIERS');
+const drawSVG = (d, width = 6) => `<svg viewBox="0 0 200 200" class="ref-svg"><g fill="none" stroke="#2b2140" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round">${d}</g></svg>`;
 function drawRefs(lv) {
-  if (lv === 1) return SIMPLE_REFS.map(([name, d]) => ({ name, svg: `<svg viewBox="0 0 200 200" class="ref-svg"><g fill="none" stroke="#2b2140" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">${d}</g></svg>` }));
-  const pool = lv === 2 ? OM_PAGES.filter((p) => p.n <= 6) : lv === 3 ? OM_PAGES.filter((p) => p.n >= 4 && p.n <= 10) : OM_PAGES.filter((p) => p.n >= 9);
-  return pool.map((p) => ({ name: p.name, svg: `<svg viewBox="0 0 72 72" class="ref-svg om-ref">${p.l}</svg>` }));
+  const tier = DRAW_TIERS[Math.min(4, Math.max(1, lv)) - 1].map(([name, d]) => ({ name, d }));
+  const pool = lv <= 1 ? [...SIMPLE_REFS.map(([name, d]) => ({ name, d })), ...tier] : tier;
+  return pool.map((r) => ({ ...r, svg: drawSVG(r.d) }));
 }
+// the tracing guide fades as children grow: thick and dark → thick → thin and light → very light
+const DRAW_GUIDE = { 1: [14, 0.45], 2: [9, 0.3], 3: [4, 0.2], 4: [3, 0.1] };
 const INK = ['#2b2140', '#ff6b6b', '#ff922b', '#fcc419', '#40c057', '#20c997', '#4dabf7', '#7950f2', '#f783ac', '#a0522d'];
 
 function startDraw(refIndex) {
   const lv = GL('draw');
   const refs = drawRefs(lv);
   const ref = refs[refIndex != null ? refIndex % refs.length : Math.floor(Math.random() * refs.length)];
-  const trace = lv <= 2;
+  const trace = lv <= 3;   // level 4 copies, with only a very faint guide
   const area = $('#gameArea');
   area.innerHTML = `<div class="dr-top"><div class="dr-ref">${ref.svg}<small>${ref.name}</small></div>
-      <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>${trace ? 'Follow the gray lines with your finger.' : 'Look at the picture and draw your own!'}</small></div></div>
-    <div class="dr-zoom"><button data-dz="out" aria-label="Zoom out">−</button><button data-dz="reset" aria-label="Reset zoom">1×</button><button data-dz="in" aria-label="Zoom in">＋</button><span>Two fingers: zoom / move</span></div><div class="dr-pad">${trace ? `<div class="dr-guide" style="opacity:${lv === 1 ? 0.32 : 0.14}">${ref.svg}</div>` : ''}<canvas class="dr-cv"></canvas></div>
+      <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>${lv <= 2 ? 'Follow the gray lines with your finger.' : lv === 3 ? 'The lines are thin now. Go slowly!' : 'Look at the picture. The faint lines can help.'}</small></div></div>
+    <div class="dr-zoom"><button data-dz="out" aria-label="Zoom out">−</button><button data-dz="reset" aria-label="Reset zoom">1×</button><button data-dz="in" aria-label="Zoom in">＋</button><span>Two fingers: zoom / move</span></div><div class="dr-pad">${(([w, o]) => `<div class="dr-guide dr-guide-${Math.min(4, lv)}" style="opacity:${o}">${drawSVG(ref.d, w)}</div>`)(DRAW_GUIDE[Math.min(4, Math.max(1, lv))])}<canvas class="dr-cv"></canvas></div>
     <div class="dr-tools">${INK.map((c, i) => `<button class="dr-ink ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}"></button>`).join('')}
       <button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✎<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
       <button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>

@@ -5,6 +5,7 @@ const { chromium } = require('playwright');
   const b = await chromium.launch({ executablePath: process.env.CHROME_BIN || '/usr/bin/google-chrome' }); const p = await b.newPage({ viewport: { width: 390, height: 844 } });
   const errs = []; p.on('pageerror', e => errs.push(e.message));
   await p.goto('http://localhost:8765/index.html');
+  await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady);
   await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(400);
   const r = await p.evaluate(async () => {
     state.voice = false;

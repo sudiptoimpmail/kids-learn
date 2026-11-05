@@ -37,7 +37,7 @@ const { chromium } = require('playwright');
       if (state.sdkWins !== award) throw Error('Sudoku awarded repeated wins');
 
       state.gameLv = state.gameLv || {};
-      state.gameLv.puzzle = 1;
+      state.gameLv.puzzle = 1; state.showAll = true;   // the 2 × 2 board is below 2nd grade's range, so lift the grade limits for this check
       openGame('puzzle');
       startPuzzle(ALL_PICS[0]);
       const p = ALL_PICS[0], n = 2;
