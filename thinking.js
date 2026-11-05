@@ -235,6 +235,31 @@ const THINKING_SEQUENCES = [
   [3, ['🌞', '🧊', '💧', '💨'], 'Warmth can melt ice; liquid water can later evaporate.'],
   [3, ['🧑‍🤝‍🧑', '💬', '🤝', '😊'], 'Friends discuss a problem, listen, agree on a plan and work together.'],
   [3, ['🧪', '📏', '📝', '🔁'], 'Carry out a fair test, measure results, write findings and repeat to check.'],
+
+  // Additional four-step, real-world routines keep Kindergarten from repeating
+  // the same small set of timelines after a few rounds.
+  [2, ['🎒', '👟', '🚶', '🏫'], 'Pack your school bag, put on your shoes, travel safely, and arrive at school.'],
+  [2, ['🍎', '🚿', '🔪', '🥗'], 'Wash the fruit and, with an adult, chop it before making a fruit salad.'],
+  [2, ['🧩', '🔍', '🧠', '✅'], 'Look at a puzzle, find clues, think and solve it.'],
+  [2, ['🛏️', '⏰', '🪥', '🥣'], 'Wake up, brush your teeth and eat breakfast before starting the day.'],
+  [2, ['🌧️', '🌂', '🚶', '🏠'], 'Notice the rain, pick up your umbrella, walk home and get dry.'],
+  [2, ['✏️', '🖍️', '✂️', '🖼️'], 'Sketch, color, cut with care and display your artwork.'],
+  [2, ['🪴', '💧', '🌱', '🌻'], 'Put a seed in a pot, water it, watch it sprout and grow flowers.'],
+  [2, ['👕', '🧺', '🫧', '☀️'], 'Collect dirty clothes, wash them and dry them.'],
+  [2, ['🥖', '🧀', '🥪', '🍽️'], 'Gather bread and cheese, assemble a sandwich and serve it.'],
+  [2, ['📦', '🏷️', '🚚', '🏠'], 'Pack an item, label the box, ship it and deliver it.'],
+  // Grade 1–3 longer reasoning sequences: plan, observe and infer.
+  [3, ['🌱', '🌻', '🐝', '🍯'], 'A seed becomes a flower, a bee visits the flower and makes honey.'],
+  [3, ['🔭', '🌙', '📝', '📊'], 'Observe the moon, write what you see and compare your notes.'],
+  [3, ['🌤️', '🌡️', '📝', '📉'], 'Check the weather, measure temperature, record and graph the result.'],
+  [3, ['🏗️', '📐', '🧱', '🏠'], 'Plan the building, measure, assemble materials and finish the house.'],
+  [3, ['💡', '📋', '🧪', '✅'], 'Ask a question, make a plan, test your idea and reach a conclusion.'],
+  [3, ['🪴', '📏', '📝', '📈'], 'Grow a plant, measure its height, write measurements and graph growth.'],
+  [3, ['💧', '🧊', '☀️', '💨'], 'Freeze water into ice, warm it to liquid and let it evaporate.'],
+  [3, ['🛒', '💵', '🧮', '🧾'], 'Choose an item, check the price, calculate the total and receive a receipt.'],
+  [3, ['🐛', '🍃', '🟫', '🦋'], 'A caterpillar eats leaves, forms a chrysalis and emerges as a butterfly.'],
+  [3, ['📗', '🔍', '📝', '💬'], 'Read a question, research evidence, write an answer and explain it.'],
+
 ];
 function genSequence(level) {
   const pool = THINKING_SEQUENCES.filter((x) => x[0] <= level);
