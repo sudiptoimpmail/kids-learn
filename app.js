@@ -389,6 +389,15 @@ function mountBody3D(q) {
   q.tap=!!spec.tap;
 }
 
+const READING_PRESENTATION_POLICY = ContentData.get('curriculum-map', 'policy').presentation;
+function applyReadingPresentation() {
+  const presentation = (state.grade && GRADES[state.grade]?.presentation) || READING_PRESENTATION_POLICY;
+  // Grade policy owns typography; renderers just expose its values to CSS.
+  const play = $('#play');
+  play.style.setProperty('--grade-reading-scale', String(presentation.readingScale));
+  play.style.setProperty('--grade-reading-line-height', String(presentation.readingLineHeight));
+}
+
 function renderQ() {
   // Increment the navigation epoch so delayed feedback cannot advance a card revisited in QA.
   R.navToken = (R.navToken || 0) + 1;
@@ -397,6 +406,7 @@ function renderQ() {
   sayToken++; stopClip(); $('#pop').classList.remove('show'); $('#pop').replaceChildren();
   dropBody3D();
   const q = R.qs[R.i];
+  applyReadingPresentation();
   q.t0 = Date.now();
   q.tries = 0; q.hintShown = false; R.locked = false;
   renderProgress();
