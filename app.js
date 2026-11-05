@@ -26,6 +26,7 @@ const strongReader = () => levelOf('spell') >= 4 || levelOf('sent') >= 3 || (lev
 const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CATEGORIES.slice() : CATEGORIES.filter((c) => c.id !== 'cmp' // comparisons are mixed into math, not shown as a separate game
   && !sectionOff(c.id)
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
+  && !(c.id === 'region' && typeof myRegion === 'function' && !myRegion())
   && !(c.id === 'syl' && !state.showAll && strongReader())
   && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
 // auto level-up stops at the top of the child's grade (unless all games are shown)
@@ -264,7 +265,7 @@ function renderHome() {
     ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'gp', 'match', 'syl']],
     ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'frac', 'measure', 'mul', 'div', 'clock', 'shape2']],
     ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], 'brain'],
-    ['🌍 Science & World', ['sci', 'home', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
+    ['🌍 Science & World', ['sci', 'home', 'region', 'community', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
   ];
   const visible = visibleGames();
   const makeTile = (c) => {
@@ -272,7 +273,7 @@ function renderHome() {
     const lv = c.id === 'mix' || c.trace ? '' : `<span class="lv">Lv ${levelOf(c.id)}</span>`;
     const icon = c.id === 'home' && typeof myCountry === 'function' && myCountry() ? myCountry().flag : c.icon;
     return `<button class="tile" data-cat="${c.id}" style="--c:${c.color}">
-      ${lv}<span class="ti">${icon}</span><span class="tt">${c.title}</span><span class="ts">${c.sub}</span>
+      ${lv}<span class="ti">${icon}</span><span class="tt">${typeof localTileTitle === 'function' ? localTileTitle(c.id, c.title) : c.title}</span><span class="ts">${c.sub}</span>
       <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
   };
   // brain games (memory, puzzles, mazes …) sit right inside Brain Teasers: a tap opens the game
@@ -1070,6 +1071,7 @@ function openSettings() {
   renderGrades(); renderThemes(); $('#testMode').checked = isTestMode(); $('#testSection').hidden = !testFeatureAvailable();
   $('#countrySel').innerHTML = COUNTRY_ORDER.map((k) => `<option value="${k}">${COUNTRIES[k].flag} ${COUNTRIES[k].label}</option>`).join('') + '<option value="other">🌍 Somewhere else</option>';
   $('#countrySel').value = countryCode();
+  fillRegions();
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !state.hideClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
@@ -1179,10 +1181,22 @@ $('#tbGo').onclick = () => {
   state.levels[id] = keep;
 };
 
+// the state / province / nation / region list follows the chosen country
+function fillRegions() {
+  const C = typeof myCountry === 'function' && myCountry(), row = $('#regionRow');
+  if (!C || !C.regions || !C.regions.length) { row.hidden = true; return; }
+  row.hidden = false;
+  $('#regionLabel').textContent = REGION_WORD[countryCode()] || 'State';
+  $('#regionSel').innerHTML = C.regions.map((r) => `<option value="${esc(r[0])}">${esc(r[0].replace(/^the /, ''))}</option>`).join('');
+  $('#regionSel').value = (myRegion() || C.regions[0])[0];
+  state.region = $('#regionSel').value;
+}
 function collectSettings() {
   state.name = $('#nameInput').value.trim().slice(0, 20);
   state.voice = $('#voiceToggle').checked;
+  const countryChanged = state.country !== $('#countrySel').value;
   state.country = $('#countrySel').value;
+  if (countryChanged) { state.region = ''; fillRegions(); } else state.region = $('#regionSel').value;
   state.showAll = $('#showAll').checked;
   state.hideClock = !$('#optClock').checked;
   state.roundsPerPlay = +$('#roundsPerPlay').value; state.playMinutes = +$('#playMinutes').value; state.playAlways = $('#playAlways').checked; state.optAnatomy = $('#optAnatomy').checked; state.playMode = $('#playMode').value; state.playPerHour = +$('#playPerHour').value;
@@ -1265,7 +1279,7 @@ $('#testVoiceBtn').onclick = async () => {
 $('#resetBtn').onclick = () => {
   if (!confirm('Reset all stars, stickers and levels?')) return;
   // keep the grown-up settings (name, grade, voice, PIN, play rules, look); clear everything the child earned
-  const KEEP = ['name', 'avatar', 'grade', 'country', 'dailyGoal', 'voice', 'pinHash', 'theme', 'showAll', 'hideClock', 'optAnatomy', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'schema'];
+  const KEEP = ['name', 'avatar', 'grade', 'country', 'region', 'dailyGoal', 'voice', 'pinHash', 'theme', 'showAll', 'hideClock', 'optAnatomy', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'schema'];
   for (const k of Object.keys(state)) if (!KEEP.includes(k)) delete state[k];
   Object.assign(state, { stars: 0, stickers: [], levels: {}, best: {} });
   if (state.grade && GRADES[state.grade]) Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = gradeStart(r)));
