@@ -1405,11 +1405,14 @@ function genVisualRecognition(level) {
   const source = ILLUSTRATION_GROUPS[group];
   const correct = pick(source), options = shuffle([correct, ...sample(source.filter(x=>x!==correct),numOpts(level)-1)]);
   // Recorded-word speech only. Do not synthesize a phrase that does not exist in audio/clips.json.
-  const spoken = CLIPS[clipKey(correct.replace(/_/g,' '))]
+  const hasRecording = !!CLIPS[clipKey(correct.replace(/_/g,' '))];
+  const spoken = hasRecording
     ? ['Find the picture of', correct.replace(/_/g,' ')] : 'Look at the picture!';
   return {
-    key:'visual-'+group+'-'+correct, text:'Find the '+correct.replace(/_/g,' ')+'!',
-    say:spoken, main:'<div class="visual-prompt-art">'+visualImage(correct,'visual-prompt-icon')+'</div>',
+    key:'visual-'+group+'-'+correct, text:hasRecording ? 'Find the '+correct.replace(/_/g,' ')+'!' : 'Find the matching picture!',
+    say:spoken, main:hasRecording
+      ? '<div class="visual-listen" aria-hidden="true">🔊 <span>Listen and choose</span></div>'
+      : '<div class="visual-prompt-art">'+visualImage(correct,'visual-prompt-icon')+'</div>',
     options:options.map(name=>({v:name,html:visualImage(name,'gk-photo')+'<small>'+name.replace(/_/g,' ')+'</small>'})),
     answer:correct,optClass:'gk-picture-choices visual-choices',
     hint:{html:'<div class="hint-note">Look at the shapes and colors. Point to the matching picture!</div>',
