@@ -26,7 +26,7 @@ const { chromium } = require('playwright');
       const sequences=Array.from({length:50},()=>genSequence(3));
       if(!sequences.some(q=>(q.main.match(/think-pattern/g)||[]).length>0&&
           (q.main.match(/<span/g)||[]).length>=7))throw Error('Grade 1 sequence lacks four-step reasoning');
-      openGame('puzzle');startPuzzle(PHOTO_PUZZLES[0]);
+      state.gameLv.puzzle=1; openGame('puzzle');startPuzzle(PHOTO_PUZZLES[0]);
       if(document.querySelectorAll('.pzl-piece').length!==4)throw Error('Jigsaw piece count is not age appropriate');
       const firstPiece=document.querySelector('.pzl-piece'); firstPiece.click();firstPiece.click();
       if(!window.__jigsaw.rotations().some(Boolean))throw Error('Jigsaw did not rotate');
