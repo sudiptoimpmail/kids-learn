@@ -27,17 +27,7 @@ function grQ(key, text, main, answer, wrong, sayQ, n) {
 }
 // Curated combinations: never randomly generate statements such as
 // "The cold book can swim" or "The fluffy river can read".
-const GR_SIMPLE_SENTENCES = [
-  ['happy', 'dog', 'run'], ['little', 'cat', 'jump'], ['brave', 'girl', 'swim'],
-  ['happy', 'boy', 'play'], ['tall', 'teacher', 'read'], ['brave', 'farmer', 'climb'],
-  ['tiny', 'kitten', 'sleep'], ['big', 'dog', 'dig'], ['happy', 'girl', 'sing'],
-  ['little', 'boy', 'dance'], ['soft', 'kitten', 'hop'], ['funny', 'teacher', 'laugh'],
-  ['brave', 'boy', 'swim'], ['happy', 'teacher', 'write'], ['tiny', 'dog', 'run'],
-  ['tall', 'girl', 'throw'], ['little', 'boy', 'kick'], ['sleepy', 'kitten', 'sleep'],
-  ['happy', 'farmer', 'cook'], ['brave', 'girl', 'climb'], ['funny', 'boy', 'sing'],
-  ['tall', 'farmer', 'walk'], ['sleepy', 'cat', 'sleep'], ['happy', 'kid', 'draw'],
-  ['funny', 'dog', 'jump'], ['little', 'kid', 'read'], ['tiny', 'kitten', 'play']
-].filter(([adj, noun, verb]) => GR_ADJS.includes(adj) && GR_NOUNS.includes(noun) && GR_VERBS.includes(verb));
+const GR_SIMPLE_SENTENCES = ContentData.get('grammar','GR_SIMPLE_SENTENCES');
 
 function genGrammar(level) {
   const n = level >= 2 ? 3 : 2, t = Math.random(), big = (w) => `<div class="gr-word">${w}</div>`;

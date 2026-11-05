@@ -5,7 +5,7 @@ const { chromium } = require('playwright');
   const browser = await chromium.launch({executablePath:process.env.CHROME_BIN || '/usr/bin/google-chrome',args:['--no-sandbox']});
   try {
     const page = await browser.newPage();
-    await page.goto('http://localhost:8765/index.html');
+    await page.goto('http://localhost:8765/index.html'); await page.waitForFunction(() => !!window.KidsLearnReady); await page.evaluate(() => window.KidsLearnReady);
     const result = await page.evaluate(async () => {
       const sample = {
         schema: 1, id:'grade-k-garden', entitlement:'kidslearn.garden.k',
@@ -55,7 +55,7 @@ const { chromium } = require('playwright');
     assert.equal(result.summary[0].questions,1);
     assert.equal(result.bridgeHidden,true,'No native purchase adapter means no download button');
     assert.equal(result.noChildUpsell,true,'Child screens must never have purchasing links');
-    await page.reload();
+    await page.reload(); await page.waitForFunction(() => !!window.KidsLearnReady); await page.evaluate(() => window.KidsLearnReady);
     const retained = await page.evaluate(async () => {
       await ContentPacks.load();
       return ContentPacks.choose('k','add',1)?.key;

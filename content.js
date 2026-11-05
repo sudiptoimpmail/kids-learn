@@ -349,7 +349,7 @@ function genSpell(level) {
   } else {
     text = full ? 'Spell the word!' : 'Fill in the missing letters!';
     say = visualOnly ? 'Fill in the missing letters!' : [full ? 'Spell the word.' : 'Fill in the missing letters.', word];
-    main = `<div class="spell-pic">${EMOJI_OF[word] || G1_SPELL_PICTURES[word]}</div>` +
+    main = `<div class="spell-pic">${visualPath(word) ? visualImage(word,'reading-word-photo') : (EMOJI_OF[word] || G1_SPELL_PICTURES[word] || '')}</div>` +
       (visualOnly ? '' : `<button class="mini-speaker" data-speak="${word}" aria-label="Hear the word">🔊</button>`);
   }
   return {
@@ -593,7 +593,10 @@ function genWordProblem(level) {
     const op = Math.random() < 0.5 ? '+' : '−';
     const lv = Math.min(level, 3);
     const [a, b] = wpNumbers(lv, op);
-    parts = op === '+' ? pick(WP.add)(n, a, b, t) : pick(WP.sub[kind])(n, a, b, t);
+    // The authored story templates live in data/content.json; JS only supplies numbers.
+    const pattern = op === '+' ? pick(WP.add) : pick(WP.sub[kind]);
+    const values = {name:n,a,b,item:t};
+    parts = pattern.map(token => String(token).replace(/\{(name|a|b|item)\}/g, (_,key) => String(values[key])));
     ans = op === '+' ? a + b : a - b; key = `wp-${op}-${a}-${b}`;
     hint = mathHint(op, a, b, e);
     hint = { html: `<div class="hint-note big">${a} ${op} ${b} = ?</div>${hint.html}`, say: op === '+' ? 'It is an adding problem!' : 'It is a take away problem!' };
@@ -930,8 +933,7 @@ function bodySVG(highlight) {
 const BODY_PARTS = ContentData.get('content','BODY_PARTS');
 const BODY_FN = ContentData.get('content','BODY_FN');
 function genBody(level) {
-  // Pre-K and Kindergarten use the friendlier 2D illustrated body by default.
-  // 3D remains available for the separately gated Inside My Body activity.
+  // Friendly 2D silhouette for Pre-K/K; advanced 3D stays in anatomy activities.
   const parts = BODY_PARTS.filter((p) => p[1] <= level);
   const exact = parts.filter((p) => p[1] === level);
   const t = Math.random();

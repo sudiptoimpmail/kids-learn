@@ -101,7 +101,7 @@ Every word, question and praise is pre-recorded in a natural voice (`audio/`, ma
 If a phrase has no recording, the app falls back to the best voice installed on the device. For a better fallback on iPhone/iPad: **Settings → Accessibility → Spoken Content → Voices → English → download "Ava (Premium)" or "Zoe (Premium)"**.
 
 ## Edit content
-All words, sentences, vocabulary (`VOCAB`), jobs, flags, etc. live in `content.js` — add rows to the arrays. After changing files, bump `VERSION` in `sw.js` so installed copies update.
+All bundled questions, stories, vocabulary, geography and drawing geometry now live in versioned `data/*.json` files. Game logic remains in JavaScript. Photography, illustration, currency, workbook and landmark media are stored as individual files in `assets/`. `content-loader.js` loads the JSON before any engine starts, and the service worker precaches it for offline use. Update `sw.js` version when changing the bundled files, and run `node tests/content-assets-test.js` before release.
 
 3D body model: BodyParts3D © The Database Center for Life Science, Human Reference Atlas (HuBMAP) — CC BY 4.0; body shape MakeHuman (CC0); via [open-anatomy-3d](https://github.com/MervinR07/open-anatomy-3d) (CC BY 4.0). Changed for this app: clothes and hair added, lung surfaces made from the airway model, reproductive and other parts removed (`vendor/body.glb`). The credit is shown under the 3D view and in ⚙️.
 
@@ -112,7 +112,7 @@ Everything bundled allows commercial use. What each one asks:
 - **CC BY-SA 4.0** (keep the credit; pictures made *from* this art must also be shared under CC BY-SA): OpenMoji art used in coloring pages and landmarks.
 - **ODbL** (credit; share-alike for the data): world-countries region names.
 
-three.js (MIT license) is bundled in `vendor/` so the 3D games work offline. World map: Natural Earth (public domain) via world-atlas; regions from world-countries (ODbL). Coloring/landmark art: [OpenMoji](https://openmoji.org) (CC BY-SA 4.0) plus original drawings. To show real photos of landmarks, add them as `img/landmarks/<id>.jpg` (ids in `landmarks.js`).
+three.js (MIT license) is bundled in `vendor/` so the 3D games work offline. World map: Natural Earth (public domain) via world-atlas; regions from world-countries (ODbL). Coloring/landmark art: [OpenMoji](https://openmoji.org) (CC BY-SA 4.0) plus original drawings. Famous-place illustrations are bundled as `assets/landmarks/<id>.svg`; all 39 are available without network access.
 
 Progress is stored only on the device (localStorage). No accounts, ads or tracking.
 
@@ -120,7 +120,7 @@ Progress is stored only on the device (localStorage). No accounts, ads or tracki
 
 All bundled games and questions remain free to play **without internet, ads, or purchase prompts**. The app includes a validated, locally persisted question-pack format for future optional curriculum expansions. An already installed extra pack works offline; new packs can be obtained only through the protected parent Settings area once a real native StoreKit/Google Billing adapter and verified download service are configured. The web build does not sell or unlock anything.
 
-The existing bundled question generators are kept in the JavaScript content files, while additional multiple-choice questions are stored as versioned JSON in IndexedDB. See [docs/offline-content-packs.md](docs/offline-content-packs.md) for the schema, approval constraints, parental gate, entitlement verification, and native art/audio download plan.
+Bundled question banks are JSON files and local media assets, while JavaScript handles activity generation and interaction. Optional extra multiple-choice packs are versioned JSON stored in IndexedDB. See [docs/offline-content-packs.md](docs/offline-content-packs.md) for the schema, approval constraints, parental gate, entitlement verification, and native art/audio download plan.
 
 ## Tests
 `sh tests/run.sh` runs the browser tests (needs Node, Playwright and Chrome): profiles and old-save migration, 3D clean-up, PIN, tracing (every line must be traced), dashboard, daily quest plans for every grade, short-round grading, hints vs mastery, saving after each answer, play rewards, bad backups, offline caching, and that every voice line has a recording.

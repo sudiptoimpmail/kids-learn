@@ -1,15 +1,7 @@
 /* Offline learning illustrations: 84 licensed CC BY 4.0 Twemoji SVGs.
    16 original photographs remain separately available from photos.js.
    https://github.com/twitter/twemoji/blob/master/LICENSE-GRAPHICS */
-const ILLUSTRATION_GROUPS = Object.freeze({
-  animals: Object.freeze(["lion","giraffe","zebra","panda","koala","fox","bear","monkey","frog","turtle","owl","penguin"]),
-  nature: Object.freeze(["tree","cactus","mushroom","rainbow","cloud","sun","moon","star","leaf","snowflake","volcano","ocean"]),
-  transport: Object.freeze(["bicycle","bus","train","rocket","taxi","sailboat","ship","fire_engine","police_car","tractor","scooter","ambulance"]),
-  food: Object.freeze(["apple","banana","grapes","orange","strawberry","pineapple","watermelon","cherries","peach","lemon","pear","carrot"]),
-  objects: Object.freeze(["books","pencil","scissors","backpack","clock","key","umbrella","balloon","kite","gift","toothbrush","soccer_ball"]),
-  places: Object.freeze(["mountain","tent","house","school","hospital","slide","bridge","castle","globe","map","compass","camera"]),
-  science: Object.freeze(["microscope","telescope","magnet","robot","lightbulb","battery","gear","test_tube","dna","atom","satellite","comet"])
-});
+const ILLUSTRATION_GROUPS = Object.freeze(ContentData.get('visuals', 'ILLUSTRATION_GROUPS'));
 const ILLUSTRATION_NAMES = Object.freeze(Object.values(ILLUSTRATION_GROUPS).flat());
 const ILLUSTRATION_SET = new Set(ILLUSTRATION_NAMES);
 const VISUAL_NAMES = Object.freeze([...PHOTO_NAMES, ...ILLUSTRATION_NAMES]);

@@ -1,0 +1,30 @@
+name: Kids-Learn Offline Content & UI
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  browser-and-offline-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+      - name: Validate app JavaScript and JSON/media assets
+        run: npm run check
+      - name: Run full offline-first browser regression
+        env:
+          CHROME_BIN: /usr/bin/google-chrome
+        run: |
+          if [ ! -x "$CHROME_BIN" ]; then
+            export CHROME_BIN="$(node -e "process.stdout.write(require('playwright').chromium.executablePath())")"
+          fi
+          sh tests/run.sh
