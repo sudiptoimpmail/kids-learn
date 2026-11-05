@@ -65,6 +65,17 @@ const {chromium} = require('playwright');
         check(measures>=45,'Measurement and data insufficiently mixed at level '+level+': '+measures);
         check(kinds.size>=4,'Too few Number Sense formats at level '+level+': '+kinds.size);
       }
+      // The sequencing game must grow from three-picture preschool routines to
+      // evidence/problem-solving timelines; Grade 1 number patterns are not multiplication.
+      let fourEventRounds=0;
+      for(let i=0;i<300;i++){
+        const q=genSequence(3);
+        check(valid(q),'Invalid Grade 3 sequencing question: '+q?.key);
+        if((q.main.match(/<span/g)||[]).length>=7) fourEventRounds++;
+        const grade1Pattern=genPattern(3);
+        check(!grade1Pattern.key.startsWith('advanced-pattern'),'Grade 1 received multiplication-based pattern');
+      }
+      check(fourEventRounds>80,'Older-grade four-step sequences rarely selected: '+fourEventRounds);
       // K never gets Grade 1's longer word-box, passage or ordering cards.
       for(let i=0;i<500;i++) {
         const q=genSentence(2);
