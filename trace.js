@@ -5,17 +5,11 @@
    letter comes. "Write" mode hides the guide for a bigger challenge.
    ========================================================= */
 // how each letter name is spoken (the voice reads single letters oddly on their own)
-const LETTER_SAY = { A: 'A', B: 'B', C: 'C', D: 'D', E: 'E', F: 'F', G: 'G', H: 'H', I: 'I', J: 'J', K: 'K', L: 'L', M: 'M',
-  N: 'N', O: 'O', P: 'P', Q: 'Q', R: 'R', S: 'S', T: 'T', U: 'U', V: 'V', W: 'W', X: 'X', Y: 'Y', Z: 'Z' };   // capital letters say their names (the voice fixes 'A is for…')
-const ABC_BIG = [['apple', '🍎'], ['bear', '🐻'], ['cat', '🐱'], ['dog', '🐶'], ['egg', '🥚'], ['fish', '🐟'], ['grapes', '🍇'], ['hat', '🎩'], ['ice cream', '🍦'],
-  ['juice', '🧃'], ['kite', '🪁'], ['lion', '🦁'], ['moon', '🌙'], ['nest', '🪺'], ['octopus', '🐙'], ['pig', '🐷'], ['queen', '👸'], ['rainbow', '🌈'], ['sun', '☀️'],
-  ['tiger', '🐯'], ['umbrella', '☂️'], ['violin', '🎻'], ['whale', '🐳'], ['fox', '🦊'], ['yo-yo', '🪀'], ['zebra', '🦓']];
-const ABC_SMALL = [['ant', '🐜'], ['bee', '🐝'], ['car', '🚗'], ['duck', '🦆'], ['elephant', '🐘'], ['frog', '🐸'], ['goat', '🐐'], ['horse', '🐴'], ['igloo', '🛖'],
-  ['jet', '✈️'], ['key', '🔑'], ['leaf', '🍃'], ['monkey', '🐵'], ['nose', '👃'], ['owl', '🦉'], ['panda', '🐼'], ['quilt', '🛏️'], ['rabbit', '🐰'], ['snake', '🐍'],
-  ['turtle', '🐢'], ['up', '⬆️'], ['van', '🚐'], ['watermelon', '🍉'], ['box', '📦'], ['yarn', '🧶'], ['zoo', '🦒']];
-const NUM_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen',
-  'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
-const NUM_THINGS = [['apples', '🍎'], ['stars', '⭐'], ['balloons', '🎈'], ['ducks', '🦆'], ['cars', '🚗']];
+const LETTER_SAY = ContentData.get('trace','LETTER_SAY');   // capital letters say their names (the voice fixes 'A is for…')
+const ABC_BIG = ContentData.get('trace','ABC_BIG');
+const ABC_SMALL = ContentData.get('trace','ABC_SMALL');
+const NUM_WORDS = ContentData.get('trace','NUM_WORDS');
+const NUM_THINGS = ContentData.get('trace','NUM_THINGS');
 const capWord = (s) => s[0].toUpperCase() + s.slice(1);
 
 // pre-writing lines and shapes (fine motor): paths in a 0–1 box, from the first point to the last
@@ -33,15 +27,7 @@ const TRACE_LINES = [
   ['🥤', 'Straw path', 'Wavy line. A wavy line goes up and down.', '🧒', '🥤', wave((t) => [0.5 + 0.15 * Math.sin(t * Math.PI * 4), 0.14 + 0.73 * t], 80)],
 ];
 // Grade 1 handwriting combines spelling patterns and fine-motor formation in the existing trace engine.
-const TRACE_WORDS = [
-  // Grade 1 vocabulary and consonant combinations from the illustrated
-  // references, with natural prerecorded audio for every word below.
-  ['fish','🐟'],['wash','🫧'],['bench','🪑'],['lunch','🥪'],['rock','🪨'],['sand','🏖️'],
-  ['sick','🤒'],['rain','🌧️'],['cake','🍰'],['ship','⛵'],['chair','🪑'],['leaf','🍃'],
-  ['wind','🌬️'],['jump','🐸'],['catch','🧤'],['bird','🐦'],['climb','🌳'],['water','💧'],
-  ['wolf','🐺'],['thin','✏️'],['wheel','🛞'],['sheep','🐑'],['frog','🐸'],['brick','🧱'],
-  ['grass','🌱'],['hand','✋'],['cat','🐱'],['dog','🐶'],['apple','🍎']
-];
+const TRACE_WORDS = ContentData.get('trace','TRACE_WORDS');
 // [shown character, sentence on screen, what the voice says, picture, count, path (lines only), start and end pictures]
 function traceItems(set) {
   if (set === 'words') return TRACE_WORDS.map(([word, picture]) => [word, word, word, picture, 0]);
