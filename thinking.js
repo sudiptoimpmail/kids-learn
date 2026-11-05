@@ -126,13 +126,37 @@ const THINKING_SEQUENCES = [
   [3, ['📝', '✉️', '📮'], 'Write a letter, put it in an envelope, and mail it.'],
   [3, ['🌰', '🌱', '🌳'], 'A seed sprouts and becomes a tree.'],
   [3, ['☁️', '🌧️', '🌱'], 'Clouds can bring rain, and rain helps plants grow.'],
+  [2, ['🌳', '🪓', '🪵'], 'A tree is cut down and becomes wood.'],
+  [2, ['🌾', '🏭', '🍞'], 'Grain is processed into flour, which is baked into bread.'],
+  [2, ['🪴', '💧', '🌼'], 'Water helps a plant grow and bloom.'],
+  [2, ['📖', '🧠', '✏️'], 'Read, think, and write an answer.'],
+  [2, ['🧼', '🫧', '👐'], 'Soap and water help clean our hands.'],
+  [2, ['🔌', '🔋', '🔦'], 'Charge the battery so a flashlight can work.'],
+  [2, ['🧊', '☀️', '💦'], 'Heat from the sun melts the ice.'],
+  [2, ['🌽', '🍿', '🎬'], 'Corn is popped before a movie snack.'],
+  [2, ['🎨', '🖌️', '🖼️'], 'Pick colors, use a brush, and finish a painting.'],
+  [2, ['📦', '🚚', '🏡'], 'The delivery van carries the package to the house.'],
+  [3, ['🌱', '🌿', '🌼', '🍓'], 'A plant sprouts, grows leaves, flowers, and then fruit.'],
+  [3, ['🥣', '🥚', '🥄', '🥞'], 'Mix batter before cooking pancakes.'],
+  [3, ['🌧️', '🌊', '☀️', '🌈'], 'Rain forms puddles, then sunshine may make a rainbow.'],
+  [3, ['🛒', '🥕', '🔪', '🥘'], 'Shop for vegetables, prepare them, and cook a meal.'],
+  [3, ['🏗️', '🧱', '🏠', '🗝️'], 'Build a house from bricks before moving in.'],
+  [3, ['📸', '🖨️', '✂️', '📒'], 'Take a photo, print it, cut it, and put it in a book.'],
+  [3, ['📚', '📝', '✅', '🏆'], 'Study, take a test, complete it, and celebrate.'],
+  [3, ['🐛', '🪺', '🦋', '🌼'], 'A caterpillar makes a chrysalis, becomes a butterfly, and visits flowers.'],
+  [3, ['☁️', '🌧️', '🌱', '🌳'], 'Rain helps a seedling grow into a tree.'],
+  [3, ['🌅', '🥣', '🏫', '🌇'], 'Breakfast comes before school and the evening comes afterward.'],
+  [3, ['💡', '📐', '🔨', '🏠'], 'Have an idea, make a plan, build, and finish.'],
+  [3, ['🚦', '🚸', '🏫', '📚'], 'Wait at the crossing, go to school, and start learning.'],
 ];
 function genSequence(level) {
-  const pool = THINKING_SEQUENCES.filter((x) => x[0] <= level);
+  // At higher grades, give challenging chains most of the time instead of repeating pre-K questions.
+  const targetLevel = level <= 1 ? 1 : (Math.random() < 0.8 ? level : level - 1);
+  const pool = THINKING_SEQUENCES.filter((x) => x[0] === targetLevel);
   const [difficulty, steps, reason] = pick(pool);
   // Show either the missing middle event or the final event; older children can also
   // work backward from the last two events. This triples useful variations.
-  const missingAt = level <= 1 ? pick([1, 2]) : pick([0, 1, 2]);
+  const missingAt = level <= 1 ? pick([1, 2]) : rand(steps.length);
   const answer = steps[missingAt];
   // never offer a picture from a related sequence (seed → tree, egg → chicken): it could also be right
   const related = THINKING_SEQUENCES.filter((x) => x[1].some((e) => steps.includes(e))).flatMap((x) => x[1]);
