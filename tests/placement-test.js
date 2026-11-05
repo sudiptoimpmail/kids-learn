@@ -10,9 +10,9 @@ const { chromium } = require('playwright');
   const r = await p.evaluate(() => {
     state.testMode = false; state.grade = 'g3'; state.levels = {};
     startPlacement();
-    const n = R.qs.length, secs = [...new Set(R.qs.map((q) => q.placeSection))];
-    const unique = new Set(R.qs.map(q => q.text + '|' + q.answer + '|' + String(q.main || ''))).size;
-    const bySection = Object.fromEntries(secs.map(s => [s, R.qs.filter(q => q.placeSection === s).length]));
+    let n = R.qs.length, secs = [...new Set(R.qs.map((q) => q.placeSection))];
+    let unique = new Set(R.qs.map(q => q.text + '|' + q.answer + '|' + String(q.main || ''))).size;
+    let bySection = Object.fromEntries(secs.map(s => [s, R.qs.filter(q => q.placeSection === s).length]));
     // Sampling must never exhaust the plan and pull an unrelated fallback section.
     const stress = [];
     for (const grade of ['prek', 'k', 'g1', 'g2', 'g3']) {
@@ -27,6 +27,9 @@ const { chromium } = require('playwright');
     }
     state.grade = 'g3';
     startPlacement();
+    n = R.qs.length; secs = [...new Set(R.qs.map(q => q.placeSection))];
+    unique = new Set(R.qs.map(q => q.text + '|' + q.answer + '|' + String(q.main || ''))).size;
+    bySection = Object.fromEntries(secs.map(id => [id, R.qs.filter(q => q.placeSection === id).length]));
     const tops = R.qs.every((q) => q.level === 1 && q.placeSection);
     // first section all right, the rest all wrong
     R.qs.forEach((q) => (q.ok = q.placeSection === secs[0]));
