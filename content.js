@@ -571,7 +571,8 @@ function genSentence(level) {
   const long = s.length > 120 ? ' passage' : s.length > 60 ? ' long' : '';
   const marks = sentenceHintMarks(s, q, opts[0]);
   // Real imagery supports early passage comprehension without replacing the wording.
-  const subject = level <= 3 && PHOTO_NAMES.find(name => new RegExp('\\\\b' + name + '\\\\b', 'i').test(s));
+  const storyWords = s.toLowerCase().split(/[^a-z]+/);
+  const subject = level <= 3 && PHOTO_NAMES.find(name => storyWords.includes(name));
   const photo = subject ? '<div class="reading-photo-wrap">' + photoImage(subject, 'reading-photo') + '</div>' : '';
   return {
     key: `sent-${s}`, qkey: q,
