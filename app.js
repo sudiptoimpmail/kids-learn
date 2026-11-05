@@ -806,17 +806,17 @@ function finish() {
   let levelMsg = '';
   if (id !== 'mix' && !R.atLevel) {          // practice at an older level (quest) doesn't move her level
     const lv = levelOf(id);
-    // progress decides: great rounds move up (past her grade too, after two great rounds in a row),
-    // hard rounds move back down — even below her grade's starting level
+    // Adaptive levels stay inside the selected grade's curriculum scope.
+    // Parents can unlock wider levels with Show all games in Settings.
     state.good = state.good || {};
     if (rate <= 0.1) {
       state.good[id] = (state.good[id] || 0) + 1;
       if (lv < levelCap(id)) { state.levels[id] = lv + 1; state.good[id] = 0; levelMsg = `⬆️ Level up! Now level ${lv + 1}`; }
-      else if (lv < gameMax(id) && state.good[id] >= 2) { state.levels[id] = lv + 1; state.good[id] = 0; levelMsg = `🚀 Super! Trying a harder level: ${lv + 1}`; }
-      else if (lv < gameMax(id)) levelMsg = '⭐ One more great round unlocks a harder level!';
+      else if (!state.showAll && state.grade) levelMsg = '⭐ Great work! Try another skill for your grade.';
     } else {
       state.good[id] = 0;
-      if (rate >= 0.5 && n >= 5 && lv > 1) { state.levels[id] = lv - 1; levelMsg = `🙂 Let's practice level ${lv - 1} a bit more`; }
+      const floor = !state.showAll && state.grade ? (gradeRange(state.grade,id)||[1])[0] : 1;
+      if (rate >= 0.5 && n >= 5 && lv > floor) { state.levels[id] = lv - 1; levelMsg = `🙂 Let's practice level ${lv - 1} a bit more`; }
     }
   }
   const earned = earnPlay();
@@ -922,13 +922,16 @@ $('#learnQuiz').onclick = $('#learnQuiz2').onclick = () => { sfx.tap(); startRou
 /* ---------- grown-up difficulty slider (press and hold so little fingers don't change it) ---------- */
 function gradeHintFor(id, lv) {
   const g = Object.entries(GRADES).filter(([k]) => { const r = gradeRange(k, id); return r && lv >= r[0] && lv <= r[1]; }).map(([, v]) => v.label);
-  return g.length ? `Typical for: ${g.join(', ')}` : '';
+  const focus=CURRICULUM_PROFILES[state.grade]?.sections[id]?.skills?.slice(0,3).map(v=>v.replaceAll('-',' ')).join(' · ');
+  return [g.length?`Typical for: ${g.join(', ')}`:'',focus?`Skills: ${focus}`:''].filter(Boolean).join(' | ');
 }
 function openDiff() {
   if (!R || R.cat.id === 'mix') return;
   const id = R.cat.id, max = gameMax(id);
   const sl = $('#diffRange');
-  sl.max = max; sl.value = levelOf(id);
+  const range=!state.showAll&&!isTestMode()&&state.grade?gradeRange(state.grade,id):null;
+  sl.min=range?range[0]:1; sl.max=range?range[1]:max;
+  sl.value=Math.min(+sl.max,Math.max(+sl.min,levelOf(id)));
   const upd = () => { $('#diffVal').textContent = `Level ${sl.value} of ${max}`; $('#diffGrade').textContent = gradeHintFor(id, +sl.value); };
   sl.oninput = upd; upd();
   $('#diffName').textContent = `${R.cat.icon} ${R.cat.title}`;
