@@ -55,7 +55,7 @@ const {chromium}=require('playwright');
    const visuals=JSON.parse(fs.readFileSync('data/visuals.json','utf8')).datasets;
    assert.equal(Object.values(visuals.ILLUSTRATION_GROUPS).flat().length,84,'Illustration data manifest incomplete');
    const manifest=fs.readFileSync('sw.js','utf8');
-   const visualFiles=[...manifest.matchAll(/'assets\/illustrations\/([a-z_]+\.svg)'/g)].map(m=>m[1]);
+   const visualFiles=[...manifest.matchAll(/["']assets\/illustrations\/([a-z_]+\.svg)["']/g)].map(m=>m[1]);
    assert.equal(visualFiles.length,84,'Offline service worker must precache exactly 84 illustrations');
    assert.equal(new Set(visualFiles).size,84,'Duplicate service-worker art file');
    for(const file of visualFiles){
