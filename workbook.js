@@ -67,8 +67,13 @@ const IllustratedActivities = (() => {
       el(150,389,.9,'<ellipse cx="0" cy="-23" rx="43" ry="34" fill="#c49a72" stroke="#82634e" stroke-width="6"/>'+
         '<circle cx="-30" cy="-52" r="18" fill="#a88060" stroke="#82634e" stroke-width="5"/><circle cx="30" cy="-52" r="18" fill="#a88060" stroke="#82634e" stroke-width="5"/>'+
         '<circle cx="-13" cy="-22" r="4"/><circle cx="13" cy="-22" r="4"/><ellipse cy="-8" rx="13" ry="9" fill="#4b4849"/>')+
+      // Four additional clearly drawn A-objects form a genuine hidden-picture hunt.
+      el(112,265,.82,'<path d="M-48 19 L24 -20 L7 -41 L67 -42 L49 19 L39 -3 L-27 44Z" fill="#f3b14d" stroke="#9e6a38" stroke-width="6" stroke-linejoin="round"/>')+
+      el(432,300,.85,'<path d="M-30 56 L14 -53" stroke="#946a4a" stroke-width="16" stroke-linecap="round"/><path d="M4 -53 L43 -65 Q62 -20 31 -4 L-2 -16Z" fill="#d3e2e6" stroke="#667a83" stroke-width="7"/>')+
+      el(612,393,.8,'<path d="M-71 8 Q-55 -33 23 -29 Q77 -37 88 -11 L56 2 Q37 36 -19 31 L-60 18Z" fill="#66b85a" stroke="#397c50" stroke-width="7"/><path d="M-50 -15 Q-82 -13 -93 -34 M28 19 l8 19 M-14 21 l-8 21" fill="none" stroke="#397c50" stroke-width="10" stroke-linecap="round"/><circle cx="48" cy="-22" r="8" fill="#fff"/><circle cx="49" cy="-22" r="3"/><path d="M48 -4 l32 0 -12 10 -7 -7 -6 8Z" fill="#fff0db"/>')+
+      el(423,177,.9,'<path d="M-41 35 L39 -55" stroke="#b98c64" stroke-width="13" stroke-linecap="round"/><path d="M35 -52 L59 -76 Q74 -86 74 -57 Q72 -37 50 -34Z" fill="#cf6684" stroke="#963e65" stroke-width="6"/><path d="M-19 8 l13 13" stroke="#697b90" stroke-width="7"/>')+
       bloom(68,427,'#fff4ad',.8)+bloom(687,414,'#f9c2d2',.77),
-      'Illustrated garden with an apple, ant, acorn, airplane, bee and dog');
+      'Illustrated garden with eight hidden A objects and two distractors');
     if(theme==='room')return wrap(
       '<rect width="800" height="480" fill="#fff5df"/><rect y="330" width="800" height="150" fill="#e8c49f"/>'+
       '<path d="M0 330 H800" stroke="#ba8d71" stroke-width="13"/>'+
@@ -89,10 +94,32 @@ const IllustratedActivities = (() => {
       '<rect x="364" y="370" width="120" height="75" rx="8" fill="#718db5" stroke="#536d91" stroke-width="8"/>'+
       '<path d="M374 378 l95 59 M472 378 l-95 59" stroke="#e2eaf6" stroke-width="7"/>',
       'Bright playroom with circular clock, plate, wheel and ball, plus rectangular door and book');
+    if(theme==='square-room')return wrap(
+      '<rect width="800" height="480" fill="#fcf2dc"/><path d="M0 319 H800 V480 H0Z" fill="#eac19c"/>'+
+      '<path d="M0 318 H800" stroke="#b48961" stroke-width="12"/>'+
+      '<rect x="102" y="60" width="155" height="155" rx="3" fill="#b1e4f1" stroke="#9c7858" stroke-width="13"/>'+
+      '<path d="M179 67 V210 M111 139 H252" stroke="#9c7858" stroke-width="9"/>'+
+      '<rect x="495" y="66" width="132" height="132" fill="#fefbf4" stroke="#bd895c" stroke-width="16"/>'+
+      '<rect x="510" y="81" width="101" height="101" fill="#a7dfa7"/>'+
+      '<path d="M524 160 q27 -65 71 -5" stroke="#5e9f71" stroke-width="12" fill="none"/>'+
+      '<circle cx="443" cy="146" r="53" fill="#fffbf6" stroke="#aa8062" stroke-width="9"/>'+
+      '<path d="M443 146 V113 M443 146 L464 162" stroke="#516476" stroke-width="8" fill="none"/>'+
+      '<rect x="233" y="321" width="113" height="113" rx="3" fill="#e8b75e" stroke="#a97d48" stroke-width="9"/>'+
+      '<path d="M233 356 H346 M289 321 V434" stroke="#fce5a3" stroke-width="13"/>'+
+      '<rect x="589" y="323" width="111" height="111" rx="7" fill="#82bfe2" stroke="#4a8dad" stroke-width="9"/>'+
+      '<path d="M612 354 l65 59 M677 354 l-65 59" stroke="#d6f0f5" stroke-width="8"/>'+
+      '<circle cx="104" cy="383" r="48" fill="#f4a84e" stroke="#aa7547" stroke-width="9"/>'+
+      '<path d="M66 383 H142 M104 336 Q130 384 104 431" stroke="#fbe0a1" stroke-width="7" fill="none"/>',
+      'Illustrated classroom with square window, picture frame, gift and cushion, plus circular distractors');
     if(theme==='forest')return wrap(base()+tree(175,396,.88)+tree(752,396,.65)+
       '<path d="M503 346 Q634 362 568 420 Q536 441 599 480 H756 Q669 431 722 409 Q760 363 653 340Z" fill="url(#iaLake)" stroke="#69bfd6" stroke-width="6"/>'+
       '<path d="M557 403 q34 15 56 -2 M609 438 q23 5 43 -10" stroke="#eeffff" stroke-width="7" fill="none"/>'+
       bird(640,164,.8)+fox(175,431,.65).replace(/#e49252|#ed9d57|#e98d46|#ed9955/g,'#7d8e9f')+
+      // Recognizable action clues: wind, squirrel climbing, frog jumping, child catching.
+      el(392,63,1,'<path d="M-63 0 Q-8 -40 47 -4 Q75 15 38 31 M-49 29 Q5 1 41 30 M-4 -31 Q24 -58 68 -42" fill="none" stroke="#f5fff1" stroke-width="12" stroke-linecap="round"/>')+
+      el(141,224,.73,'<path d="M-16 2 Q-81 -31 -44 -73 Q-8 -84 7 -44" fill="#b7895d" stroke="#856245" stroke-width="8"/><ellipse cy="-16" rx="26" ry="33" fill="#c99c70" stroke="#856245" stroke-width="6"/><circle cx="5" cy="-48" r="22" fill="#d1a678" stroke="#856245" stroke-width="6"/><circle cx="12" cy="-53" r="4" fill="#342b2a"/><path d="M-17 12 l-21 18 M12 10 l22 -14" stroke="#856245" stroke-width="9" fill="none"/>')+
+      el(429,326,.83,'<ellipse cy="20" rx="43" ry="9" fill="#4b8b70" opacity=".18"/><ellipse cy="-24" rx="39" ry="23" fill="#7dc473" stroke="#3f8557" stroke-width="6"/><circle cx="25" cy="-39" r="24" fill="#87d27c" stroke="#3f8557" stroke-width="5"/><circle cx="33" cy="-47" r="5" fill="#243c34"/><path d="M-30 -15 l-33 35 M-7 1 l22 32" stroke="#3f8557" stroke-width="10" fill="none"/>')+
+      el(546,262,.69,'<circle cy="-76" r="28" fill="#d7a37e" stroke="#9b6f5b" stroke-width="5"/><path d="M-17 -50 L-29 37 L30 37 L17 -50Z" fill="#f5b45c" stroke="#a87552" stroke-width="6"/><path d="M-15 -43 l-52 -38 M18 -40 l52 -43 M-18 35 l-20 48 M20 35 l19 48" fill="none" stroke="#ae775d" stroke-width="13" stroke-linecap="round"/><circle cx="70" cy="-99" r="16" fill="#ef7e62" stroke="#a75a47" stroke-width="5"/><circle cx="11" cy="-79" r="3" fill="#3c3230"/>')+
       el(344,172,1,'<path d="M0 0 Q-30 -57 17 -66 Q70 -51 0 0Z" fill="#8bc879" stroke="#397d52" stroke-width="7"/><path d="M0 0 L25 -49" stroke="#367c4e" stroke-width="4"/>')+
       bloom(370,423,'#fff4b2',.68)+bloom(443,432,'#ffe1ed',.7),
       'Green woodland with leaf, bird, forest animal and winding stream');
@@ -119,12 +146,18 @@ const IllustratedActivities = (() => {
   }
   const scenes={
     sounds:{theme:'garden',items:[
-      ['apple',34,35],['ant',49,83],['acorn',77,53],['airplane',72,21],['bee',15,29],['dog',19,82]
-    ],correct:['apple','ant','acorn','airplane']},
+      ['apple',36,35],['ant',49,83],['acorn',77,53],['airplane',72,21],
+      ['arrow',14,55],['axe',54,62],['alligator',77,82],['artist brush',53,37],
+      ['bee',15,29],['dog',19,82]
+    ],correct:['apple','ant','acorn','airplane','arrow','axe','alligator','artist brush']},
     shapes:{theme:'room',items:[
       ['clock',24,27],['plate',73,30],['wheel',26,74],['ball',74,76],['door',89,51],['book',53,84]
     ],correct:['clock','plate','wheel','ball']},
-    forest:{theme:'forest',items:[['leaf',43,36],['bird',80,34],['wolf',22,83],['water',78,83]]}
+    squares:{theme:'square-room',items:[['window',22,28],['picture frame',70,28],['gift',36,79],['cushion',80,79],['clock',55,28],['ball',14,78]],correct:['window','picture frame','gift','cushion']},
+    forest:{theme:'forest',items:[
+      ['wind',49,13],['leaf',43,36],['climb',17,46],['bird',80,34],
+      ['jump',53,67],['catch',68,54],['wolf',22,83],['water',78,83]
+    ]}
   };
   const longA=['gate','name','date','hot','rope','fish','rain','mail','kite','pet','page','paid','lake','wave','net','cake','name','rain','bake','sun','make','plane','cane','rain','tail'];
   const zebraLetters=['Z','Z','Z','F','X','S','Z','Z','X','F','Z','Z','Z','Z','S','Z','Z','S','Z','X','Z','Z','Z','Z','Z'];
@@ -138,14 +171,15 @@ const IllustratedActivities = (() => {
   function make(grade,cat,level){
     if(!available(grade,cat,level))return null;
     let mode;
-    if(grade==='k')mode=cat==='shape2'?'shapes':(Math.random()<.55?'letters':'sounds');
+    if(grade==='k')mode=cat==='shape2'?(Math.random()<.5?'shapes':'squares'):(Math.random()<.55?'letters':'sounds');
     else mode=cat==='phonics'?'longa':cat==='match'?'forest':(Math.random()<.55?'sentence':'sequence');
     let text='', hint='Look at the picture!',theme='forest', answer='complete';
     if(mode==='letters'){text='Help the baby zebra! Follow the Z letters.';theme='savanna';}
     if(mode==='longa'){text='Follow the long A words to reach TAIL.';theme='forest';}
-    if(mode==='sounds'){text='Find four things whose names begin with A.';theme='garden';}
-    if(mode==='shapes'){text='Find all four round things in the room.';theme='room';}
-    if(mode==='forest'){const words=['leaf','bird','wolf','water'];answer=words[Math.floor(Math.random()*words.length)];text='Find: '+answer.toUpperCase();theme='forest';}
+    if(mode==='sounds'){text='Find the eight pictures whose names start with the letter A.';theme='garden';}
+    if(mode==='shapes'){text='Trace a circle, then find the four round things.';theme='room';}
+    if(mode==='squares'){text='Trace a square, then find four square things.';theme='square-room';}
+    if(mode==='forest'){const words=['wind','leaf','climb','bird','jump','catch','wolf','water'];answer=words[Math.floor(Math.random()*words.length)];text='Find: '+answer.toUpperCase();theme='forest';}
     if(mode==='sentence'){const sentences=[
       ['The fox can ____.','jump','run','swim','fly','park'],
       ['The bird can ____.','fly','run','bark','dig','forest'],
@@ -161,9 +195,10 @@ const IllustratedActivities = (() => {
       mode==='longa' ? 'Follow only words with the long A sound to reach TAIL.' :
       mode==='sounds' ? ['Tap all the pictures that start with','A'] :
       mode==='shapes' ? 'Tap all the circles you see.' :
+      mode==='squares' ? 'Look at the picture!' :
       mode==='forest' ? ['Find the word.', answer] : ['Read the story.','What happened first?'];
     return {key:'ill-'+mode+(mode==='forest'?'-'+answer:''),text,say:voice,
-      parts: ['shapes','sounds','sequence'].includes(mode) ? 4 : 1,
+      parts: ['shapes','squares','sounds','sequence'].includes(mode) ? 4 : 1,
       main:'',options:[],answer,illustrated:{mode,theme},mainClass:'ia-picture',hint:{html:'Look at the picture and try again.',say:hint}};
   }
   function setFeedback(host,message){
