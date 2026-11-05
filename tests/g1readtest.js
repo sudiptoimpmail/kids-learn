@@ -12,7 +12,9 @@ const shuffle = a => {
 };
 const pick = a => a[Math.floor(Math.random()*a.length)];
 const sample = (a,n) => shuffle(a).slice(0,n);
-const ctx = vm.createContext({Math,Set,Object,Error,pick,shuffle,sample});
+const contentData = { get:(namespace,key) =>
+  JSON.parse(fs.readFileSync('data/'+namespace+'.json','utf8')).datasets[key] };
+const ctx = vm.createContext({Math,Set,Object,Error,pick,shuffle,sample,ContentData:contentData});
 vm.runInContext(fs.readFileSync('grade1words.js','utf8') +
   '\nthis.testAPI = {G1_WORDS,G1_ACTIVE_WORDS,G1_READING_WORDS,G1_WORKBOOK_WORDS,G1_EDITORIAL,G1_SHORT_WORDS,G1_BLEND_WORDS,G1_LONG_WORDS,G1_PICTURE_WORDS,genGrade1Read};',ctx);
 const g = ctx.testAPI;
@@ -53,6 +55,6 @@ for (const word of g.G1_PICTURE_WORDS) assert.ok(g.G1_WORDS.includes(word),'spel
 assert.ok(g.G1_SHORT_WORDS.length>100 && g.G1_BLEND_WORDS.length>50 && g.G1_LONG_WORDS.length>55);
 // the word list is mixed into Letter Sounds rounds (no separate tile)
 assert.match(fs.readFileSync('phonics.js','utf8'),/genGrade1Read\(/);
-const html=fs.readFileSync('index.html','utf8');
-assert.ok(html.indexOf('src="grade1words.js"') < html.indexOf('src="content.js"'),'grade1 word bank must load first');
+const bootstrap=fs.readFileSync('content-loader.js','utf8');
+assert.ok(bootstrap.indexOf("'grade1words.js'") < bootstrap.indexOf("'content.js'"),'grade1 word bank must load first');
 console.log('PASS Grade 1 reading: '+g.G1_WORDS.length+' requested words, '+g.G1_ACTIVE_WORDS.length+' active, 5 levels, 17,500 randomized questions, '+g.G1_ACTIVE_WORDS.length+' forced-target cases');
