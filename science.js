@@ -7,7 +7,7 @@
    Fact questions use the same row format as GK: [level, question, right answer, wrong answers…].
    Sorting questions (living or not, solid/liquid/gas, animal groups …) are built from lists.
    ========================================================= */
-const SCIENCE = ContentData.get('science','SCIENCE');
+const SCIENCE = ContentData.get('science','SCIENCE').concat(ContentData.get('grade23-extension','SCIENCE'));
 // sort it into a group: [level, question, groups, items[name, emoji, group]]
 const SCI_SORT = ContentData.get('science','SCI_SORT');
 function genScience(level) {

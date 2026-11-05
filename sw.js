@@ -4,7 +4,7 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v61';
+const VERSION = PREFIX + 'v62';
 const AUDIO = PREFIX + 'audio';
 const FILES = [
   "./",
@@ -315,6 +315,7 @@ const FILES = [
   "data/upper-grade-stories.json",
   "data/landmark-photos.json",
   "assets/body/child-front.webp",
+  "data/grade23-extension.json",
 ];
 const SCOPE = new URL('./', self.location).pathname;   // e.g. /kids-learn/ — never touch other apps on the same site
 
