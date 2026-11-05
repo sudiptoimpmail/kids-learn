@@ -1132,7 +1132,7 @@ function startPuzzle(p) {
   const fills=p.photo?null:puzzleFills(p);
   let k=0;
   const body=p.photo
-    ? `<image href="assets/prek-atlas.webp" x="${-p.photo[0]*VB}" y="${-p.photo[1]*VB}" width="${VB*4}" height="${VB*3}" preserveAspectRatio="none"/>`
+    ? `<image href="assets/prek-atlas.svg" x="${-p.photo[0]*VB}" y="${-p.photo[1]*VB}" width="${VB*4}" height="${VB*3}" preserveAspectRatio="none"/>`
     : p.svg().replace(/class="r( bg)?"/g,()=>`class="r" style="fill:${fills[k++]||'#fff'}"`);
   let order;
   do {order=shuffle([...Array(N).keys()]);} while(order.every((v,i)=>v===i));
