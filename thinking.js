@@ -19,7 +19,7 @@ function thinkingQuestion(key, text, main, choices, answer, reason, optsClass = 
   const opts = shuffle(choices.map((x) => ({ v: x, html: x })));
   return { key, text, say: [text.replace(/<[^>]+>/g, '')], main, options: opts,
     answer, optClass: optsClass,
-    hint: { html: `<div class="hint-note">${reason}</div>`, say: [reason] } };
+    hint: { html: `<div class="hint-note">${reason}</div>`, say: (typeof CLIPS !== 'undefined' && CLIPS[clipKey(reason)]) ? [reason] : ['Think about it!'] } };
 }
 function genPattern(level) {
   if (level >= 4 && Math.random() < 0.65) {
@@ -164,7 +164,7 @@ function genSequence(level) {
     .filter((x) => x !== answer && !related.includes(x));
   const options = [answer, ...sample(others, level >= 2 ? 3 : 2)];
   return thinkingQuestion(`sequence-${difficulty}-${steps.join('')}-${missingAt}`,
-    missingAt === 2 ? 'What happens next?' : 'What happens in the missing spot?',
+    missingAt === steps.length - 1 ? 'What happens next?' : 'What happens in the missing spot?',
     `<div class="think-pattern">${steps.map((step, i) => `<span class="${i === missingAt ? 'think-missing' : ''}">${i === missingAt ? '?' : step}</span>`).join('<span>➜</span>')}</div>`,
     options, answer, reason);
 }
