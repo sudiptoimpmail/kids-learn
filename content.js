@@ -1274,8 +1274,17 @@ const GK = [
   [1, 'Which one is a fruit?', '🍎 apple', '🍞 bread', '🧀 cheese', '🥚 egg'],
   [1, 'When do we see the moon and stars?', '🌙 at night', '☀️ in the morning', '🍽️ at lunch'],
   [1, 'What should you do at a red light?', '🛑 stop', '🏃 go fast', '💃 dance'],
+  [1, 'Which one is an animal?', '🐶 dog', '🚗 car', '🌻 flower', '🚌 bus'],
+  [1, 'Which one is a flower?', '🌹 rose', '🐯 tiger', '🚁 helicopter', '🐶 dog'],
+  [1, 'Which one is a vehicle?', '🚌 bus', '🦁 lion', '🌹 rose', '🐘 elephant'],
   [2, 'How many days are in a week?', '7', '5', '10', '12'],
   [2, 'Which day comes after Monday?', 'Tuesday', 'Sunday', 'Friday', 'Saturday'],
+  [2, 'What day comes after Sunday?', 'Monday', 'Saturday', 'Friday', 'Wednesday'],
+  [2, 'What day comes before Friday?', 'Thursday', 'Tuesday', 'Sunday', 'Monday'],
+  [2, 'What are Saturday and Sunday called?', 'weekend', 'weekdays', 'months', 'seasons'],
+  [2, 'How many seasons are there?', '4', '2', '7', '12'],
+  [2, 'How many months are in a year?', '12', '7', '10', '4'],
+  [2, 'Which season comes after winter?', '🌷 spring', '☀️ summer', '🍂 fall', '❄️ winter'],
   [2, 'Which season is the coldest?', '❄️ winter', '☀️ summer', '🌸 spring', '🍂 fall'],
   [2, 'In which season do leaves fall off trees?', '🍂 fall', '☀️ summer', '🌸 spring', '❄️ winter'],
   [2, 'Which season is the hottest?', '☀️ summer', '❄️ winter', '🍂 fall', '🌸 spring'],
@@ -1295,6 +1304,13 @@ const GK = [
   [2, 'What number do you call in an emergency?', '911', '123', '411', '100'],
   [3, 'How many months are in a year?', '12', '7', '10', '24'],
   [3, 'Which month comes after January?', 'February', 'March', 'December', 'June'],
+  [3, 'Which month comes before June?', 'May', 'July', 'April', 'December'],
+  [3, 'What month follows September?', 'October', 'August', 'November', 'January'],
+  [3, 'Which two days make the weekend?', 'Saturday and Sunday', 'Monday and Tuesday', 'Wednesday and Thursday', 'Thursday and Friday'],
+  [3, 'Which day is two days after Tuesday?', 'Thursday', 'Wednesday', 'Friday', 'Monday'],
+  [3, 'What comes after March and April?', 'May', 'June', 'February', 'August'],
+  [3, 'What is the last month of the year?', 'December', 'November', 'January', 'October'],
+  [3, 'How many days are in a normal week?', '7', '6', '5', '8'],
   [3, 'Which planet do we live on?', '🌍 Earth', '🔴 Mars', '🪐 Saturn', '🌙 the Moon'],
   [3, 'What is the closest star to Earth?', '☀️ the Sun', '🌙 the Moon', '⭐ the North Star', '🪐 Saturn'],
   [3, 'What does a caterpillar turn into?', '🦋 a butterfly', '🐝 a bee', '🐦 a bird', '🐞 a ladybug'],
@@ -1309,6 +1325,10 @@ const GK = [
   [3, 'A baby kangaroo is called a…', 'joey', 'cub', 'chick', 'kitten'],
   [3, 'Which one is a solid?', '🧊 ice', '💧 water', '💨 air', '🧃 juice'],
   [3, 'Which one is a source of light?', '💡 a lamp', '🪨 a rock', '📖 a book', '🧦 a sock'],
+  [4, 'Which month comes three months after March?', 'June', 'May', 'July', 'September'],
+  [4, 'Which day falls two days before Monday?', 'Saturday', 'Sunday', 'Friday', 'Wednesday'],
+  [4, 'How many months make one quarter of a year?', '3', '2', '4', '6'],
+  [4, 'What day is it four days after Wednesday?', 'Sunday', 'Monday', 'Saturday', 'Friday'],
   [4, 'How many continents are there?', '7', '5', '10', '3'],
   [4, 'What is the largest ocean?', 'the Pacific Ocean', 'the Atlantic Ocean', 'the Indian Ocean', 'the Arctic Ocean'],
   [4, 'Which planet is the biggest?', '🪐 Jupiter', '🌍 Earth', '🔴 Mars', '☿ Mercury'],
@@ -1325,7 +1345,28 @@ const GK = [
   [4, 'A scientist who studies dinosaurs is called a…', 'paleontologist', 'astronaut', 'chef', 'pilot'],
   [4, 'What do bees carry from flower to flower?', 'pollen', 'water', 'rocks', 'sand'],
 ];
-const genGK = (level) => mcQuestion('gk', pickLevelled(GK, level), level);
+// Photo-first, narrated picture recognition for early learners. Coordinates refer to
+// assets/prek-atlas.webp, a 4-column × 3-row atlas of generated real-world imagery.
+const PREK_PHOTOS = [
+  ['sunflower','🌻',0,0,['sun','flower']], ['rose','🌹',1,0,['rose']],
+  ['tulip','🌷',2,0,[]], ['daisy','🌼',3,0,[]],
+  ['dog','🐶',0,1,['dog']], ['elephant','🐘',1,1,['elephant']],
+  ['tiger','🐯',2,1,['tiger']], ['lion','🦁',3,1,['lion']],
+  ['airplane','✈️',0,2,['plane']], ['bus','🚌',1,2,['bus']],
+  ['car','🚗',2,2,['car']], ['helicopter','🚁',3,2,['helicopter']]
+];
+const PREK_PHOTO_GROUPS = [PREK_PHOTOS.slice(0,4),PREK_PHOTOS.slice(4,8),PREK_PHOTOS.slice(8,12)];
+function genPrekPhoto() {
+  const group = pick(PREK_PHOTO_GROUPS), targets = group.filter(p=>p[4].length);
+  const correct = pick(targets), options = shuffle(group);
+  const tile = p=>`<span class="pk-photo" style="--pk-x:${p[2]*100/3}%;--pk-y:${p[3]*50}%"><span class="pk-emoji">${p[1]}</span></span><span class="sr-only">${p[0]}</span>`;
+  return { key:'gk-photo-'+correct[0], text:'Tap the '+correct[0]+'!', say:['Tap the',...correct[4]],
+    main:'', options:options.map(p=>({v:p[0],html:tile(p)})),answer:correct[0],
+    optClass:'opt-emoji pk-options',
+    hint:{html:'<div class="hint-note">Look carefully at each picture.</div>',say:'Look at the picture!'} };
+}
+const genGK = (level) => level === 1 && Math.random() < 0.65
+  ? genPrekPhoto() : mcQuestion('gk', pickLevelled(GK, level), level);
 
 /* ---------------- INSIDE MY BODY (optional) ---------------- */
 function organSVG(highlight) {
