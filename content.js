@@ -1077,9 +1077,13 @@ function mcQuestion(prefix, row, level) {
   };
 }
 const pickLevelled = (rows, level) => {
-  const pool = rows.filter((r) => r[0] <= level);
-  const exact = pool.filter((r) => r[0] === level);
-  return pick(exact.length && Math.random() < 0.7 ? exact : pool);
+  // Within a grade, teach mostly on-level material with some immediate-prior
+  // review. Do not send a Grade 2 reader back to Pre-K picture matching.
+  const eligible = rows.filter((r) => r[0] <= level);
+  const exact = eligible.filter((r) => r[0] === level);
+  const review = eligible.filter((r) => r[0] === level - 1);
+  return pick(exact.length && (Math.random() < 0.82 || !review.length) ? exact :
+    review.length ? review : eligible);
 };
 
 /* ---------------- BODY PARTS (outside) ---------------- */
