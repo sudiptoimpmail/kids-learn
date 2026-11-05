@@ -50,17 +50,44 @@ function curriculumArea(id) { const c = CURRICULUM_AREAS[levelsCC()] || CURRICUL
    at the top of the grade; one right → the middle; none → the start of the grade. */
 const PLACE_POOL = ['add', 'sub', 'mul', 'frac', 'numsense', 'sent', 'spell', 'words', 'phonics', 'cvc'];
 let placePlan = [];
+let placementRunning = false;
 function startPlacement() {
   const ids = PLACE_POOL.filter((id) => state.grade && gradeRange(state.grade, id));
   const math = ids.filter((id) => ['add', 'sub', 'mul', 'frac', 'numsense'].includes(id)), read = ids.filter((id) => !math.includes(id));
   const chosen = [...sample(math, Math.min(2, math.length)), ...sample(read, Math.min(2, read.length))];
-  placePlan = chosen.flatMap((id) => [id, id]).map((id) => [id, gradeRange(state.grade, id)[1]]);
-  startRound('placement', placePlan.length);
+  // Generate the entire assessment BEFORE startRound. A rejected duplicate must
+  // never consume a plan slot and silently introduce a fifth fallback section.
+  const used = new Set();
+  placePlan = chosen.flatMap((id) => {
+    const lv = gradeRange(state.grade, id)[1], gen = CATEGORIES.find((c) => c.id === id).gen;
+    return Array.from({length: 2}, () => {
+      let q, identity;
+      for (let tries = 0; tries < 100; tries++) {
+        q = gen(lv);
+        identity = id + '|' + q.text + '|' + String(q.answer) + '|' + String(q.main || '');
+        if (!used.has(identity)) break;
+      }
+      if (used.has(identity)) throw new Error('Not enough distinct placement cards for ' + id);
+      used.add(identity);
+      q.placeSection = id;
+      q.assessedLevel = lv;
+      q.key = 'place-' + placePlan.length + '-' + used.size + '-' + q.key;
+      return q;
+    });
+  });
+  placementRunning = true;
+  try { startRound('placement', placePlan.length); }
+  finally { placementRunning = false; placePlan = []; }
 }
 function genPlacement() {
-  const [id, lv] = placePlan.length ? placePlan.shift() : ['add', 1];
+  if (placePlan.length) return placePlan.shift();
+  // Standalone curriculum/voice audits sample category generators without
+  // launching an assessment; those previews must not mutate an active plan.
+  if (placementRunning) throw new Error('Placement plan exhausted during an assessment');
+  const id = PLACE_POOL.find((section) => state.grade && gradeRange(state.grade, section)) || 'add';
+  const lv = state.grade && gradeRange(state.grade, id) ? gradeRange(state.grade, id)[1] : 1;
   const q = CATEGORIES.find((c) => c.id === id).gen(lv);
-  q.placeSection = id; q.key = 'place-' + q.key;
+  q.placeSection = id; q.assessedLevel = lv; q.key = 'place-preview-' + q.key;
   return q;
 }
 function applyPlacement(qs) {
