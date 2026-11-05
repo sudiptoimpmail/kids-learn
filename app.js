@@ -17,11 +17,14 @@ Store.onError = () => { if (Store.warned) return; Store.warned = true; setTimeou
 const levelOf = (id) => state.levels[id] || (state.grade && GRADES[state.grade] && GRADES[state.grade].g[id] ? gradeStart(GRADES[state.grade].g[id]) : 1);
 const maxLevelOf = (id) => (CATEGORIES.find((c) => c.id === id) || {}).maxLevel || 3;
 const gameMax = maxLevelOf;
-const OPTIONAL = { clock: 'optClock', anatomy: 'optAnatomy' };  // off unless a parent turns them on in Settings
+const OPTIONAL = { anatomy: 'optAnatomy' };  // off unless a parent turns it on in Settings
+// telling time is core 1st–3rd grade math, so it is on unless a grown-up hides it
+const sectionOff = (id) => (id === 'clock' ? !!state.hideClock : OPTIONAL[id] && !state[OPTIONAL[id]]);
 // a child who reads and spells well doesn't need syllable clapping any more
 const strongReader = () => levelOf('spell') >= 4 || levelOf('sent') >= 3 || (levelOf('spell') >= 3 && (state.best.spell || 0) >= 3);
-const visibleGames = () => isTestMode() ? CATEGORIES.slice() : CATEGORIES.filter((c) => c.id !== 'cmp' // comparisons are mixed into math, not shown as a separate game
-  && !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
+// test mode keeps the child's grade; "Show all games" opens everything
+const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CATEGORIES.slice() : CATEGORIES.filter((c) => c.id !== 'cmp' // comparisons are mixed into math, not shown as a separate game
+  && !sectionOff(c.id)
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'syl' && !state.showAll && strongReader())
   && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
@@ -82,7 +85,16 @@ function getBuf(file) {
   bufs.set(file, p); p.catch(() => bufs.delete(file));
   return p;
 }
-function prefetch(text) { if (text) (Array.isArray(text) ? text.map(String) : splitSentences(text)).forEach((p) => { const f = CLIPS[clipKey(p)]; if (f) getBuf(f).catch(() => {}); }); }
+// numbers above 110 are said in pieces from recorded clips: 347 → "three hundred", "47"
+const HUNDREDS = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+const spokenNumber = (p) => {
+  const m = /^(\d{3})(\??)$/.exec(String(p).trim()); const n = m ? +m[1] : 0;
+  if (!m || n <= 110) return [p];
+  const h = Math.floor(n / 100), r = n % 100;
+  return r ? [`${HUNDREDS[h]} hundred`, r + m[2]] : [`${HUNDREDS[h]} hundred${m[2]}`];
+};
+const sayParts = (text) => (Array.isArray(text) ? text.map(String) : splitSentences(text)).flatMap(spokenNumber);
+function prefetch(text) { if (text) sayParts(text).forEach((p) => { const f = CLIPS[clipKey(p)]; if (f) getBuf(f).catch(() => {}); }); }
 function stopClip() { try { curSrc && curSrc.stop(); } catch {} curSrc = null; try { htmlPlayer.pause(); } catch {} }
 
 function htmlPlay(file, token = sayToken) {
@@ -128,7 +140,7 @@ async function say(text, opts = {}) {
   stopClip();
   if (!Object.keys(CLIPS).length) await Promise.race([clipsReady, sleep(4000)]);
   if (my !== sayToken) return;
-  const parts = Array.isArray(text) ? text.map(String) : splitSentences(text);
+  const parts = sayParts(text);
   if (Array.isArray(text)) text = text.join(' ');
   const files = parts.map((p) => CLIPS[clipKey(p)]);
   if (parts.length && files.every(Boolean)) {
@@ -290,7 +302,7 @@ function startRound(catId, count, browse = false, atLevel = null) {
     // Grade limits apply to individual questions, not only category tiles.
     // Adaptive progress can be above a grade's range from an older profile; clamp
     // ordinary child rounds, but preserve unrestricted explicit QA previews.
-    const range = state.grade && !state.showAll && !isTestMode() ? gradeRange(state.grade, c.id) : null;
+    const range = state.grade && !state.showAll && !browse ? gradeRange(state.grade, c.id) : null;   // the test browser previews any level
     const requestedLevel = atLevel || levelOf(c.id);
     const lv = range ? Math.min(range[1], Math.max(range[0], requestedLevel)) : requestedLevel;
     // Illustrated activities appear as variations in existing question rounds.
@@ -310,10 +322,11 @@ function startRound(catId, count, browse = false, atLevel = null) {
       return allowed && lv >= allowed[0] && lv <= allowed[1];
     });
     q.grades = Array.isArray(q.grades) ? q.grades.filter(g => eligibleGrades.includes(g)) : eligibleGrades;
-    if (!browse && !isTestMode() && state.grade && !state.showAll && !q.grades.includes(state.grade)) continue;
+    if (!browse && state.grade && !state.showAll && !q.grades.includes(state.grade)) continue;
     seen.add(q.key); q.cat = c; q.level = lv; qs.push(q);
   }
   if (!browse && !isTestMode()) { state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60); save(); }
+  if (!qs.length) { renderHome(); show('home'); return; }   // nothing for this grade (e.g. a stale link)
   R = { cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse, atLevel };
   $('#playTitle').textContent = `${cat.icon} ${cat.title}`;
   document.body.style.setProperty('--theme', cat.color);
@@ -393,7 +406,16 @@ function renderQ() {
   if (q.letterSound && typeof wireLetter === 'function') wireLetter(q);
   if (q.tap) $$('#qMain [data-val]').forEach((g) => {
     if (!g.dataset.val) return;
-    g.onclick = () => choose(q, g.dataset.val, g);
+    // Tap areas overlap (the eyes sit inside the head, a wrist on the hand). A tap is right
+    // when the finger lands anywhere inside the asked part, even if a smaller part is on top.
+    g.onclick = (e) => {
+      let val = g.dataset.val, el = g;
+      if (e && e.clientX != null && document.elementsFromPoint) {
+        const hit = document.elementsFromPoint(e.clientX, e.clientY).map((x) => x.closest && x.closest('#qMain [data-val]')).find((x) => x && String(x.dataset.val) === String(q.answer));
+        if (hit) { val = hit.dataset.val; el = hit; }
+      }
+      choose(q, val, el);
+    };
     g.onkeydown = e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); g.click(); }
     };
@@ -693,7 +715,7 @@ function renderFillIn(q) {
 // read the story, then finish each sentence with one of its words
 function renderPassageFill(q) {
   const wrap = document.createElement('div'); wrap.className = 'g1-fill';
-  wrap.innerHTML = q.passageFill.map((p, i) => `<div class="g1-q" data-i="${i}"><div class="g1-sent">${p.s.replace('___', '<span class="g1-blank">&nbsp;</span>')}</div>
+  wrap.innerHTML = q.passageFill.map((p, i) => `<div class="g1-q" data-i="${i}"><div class="g1-sent">${p.s.includes('___') ? p.s.replace('___', '<span class="g1-blank">&nbsp;</span>') : `${p.s} <span class="g1-blank">&nbsp;</span>`}</div>
     <div class="g1-opts">${p.options.map((o) => `<button class="g1-chip" data-o="${o}">${o}</button>`).join('')}</div></div>`).join('');
   $('#qMain').appendChild(wrap); $('#options').innerHTML = '';
   const done = new Set();
@@ -702,7 +724,7 @@ function renderPassageFill(q) {
     $$('.g1-chip', row).forEach((c) => (c.onclick = () => {
       if (!live(q) || done.has(i) || c.disabled) return;
       if (c.dataset.o === p.answer) {
-        done.add(i); const b = $('.g1-blank', row); b.textContent = p.answer; b.classList.add('ok'); row.classList.add('ok'); sfx.yes();
+        done.add(i); const b = $('.g1-blank', row); if (b) { b.textContent = p.answer; b.classList.add('ok'); } row.classList.add('ok'); sfx.yes();
         if (done.size === q.passageFill.length) matchDone(q);
       } else { c.disabled = true; partMiss(q, c); }
     }));
@@ -1043,7 +1065,7 @@ function openSettings() {
   renderGrades(); renderThemes(); $('#testMode').checked = isTestMode(); $('#testSection').hidden = !testFeatureAvailable();
   $('#countrySel').innerHTML = COUNTRY_ORDER.map((k) => `<option value="${k}">${COUNTRIES[k].flag} ${COUNTRIES[k].label}</option>`).join('') + '<option value="other">🌍 Somewhere else</option>';
   $('#countrySel').value = countryCode();
-  $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !!state.optClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
+  $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !state.hideClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
   renderTestBrowser();
@@ -1157,7 +1179,7 @@ function collectSettings() {
   state.voice = $('#voiceToggle').checked;
   state.country = $('#countrySel').value;
   state.showAll = $('#showAll').checked;
-  state.optClock = $('#optClock').checked;
+  state.hideClock = !$('#optClock').checked;
   state.roundsPerPlay = +$('#roundsPerPlay').value; state.playMinutes = +$('#playMinutes').value; state.playAlways = $('#playAlways').checked; state.optAnatomy = $('#optAnatomy').checked; state.playMode = $('#playMode').value; state.playPerHour = +$('#playPerHour').value;
   $$('#levels select').forEach((s) => (state.levels[s.dataset.id] = +s.value));
   save();
@@ -1238,7 +1260,7 @@ $('#testVoiceBtn').onclick = async () => {
 $('#resetBtn').onclick = () => {
   if (!confirm('Reset all stars, stickers and levels?')) return;
   // keep the grown-up settings (name, grade, voice, PIN, play rules, look); clear everything the child earned
-  const KEEP = ['name', 'avatar', 'grade', 'country', 'dailyGoal', 'voice', 'pinHash', 'theme', 'showAll', 'optClock', 'optAnatomy', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'schema'];
+  const KEEP = ['name', 'avatar', 'grade', 'country', 'dailyGoal', 'voice', 'pinHash', 'theme', 'showAll', 'hideClock', 'optAnatomy', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'schema'];
   for (const k of Object.keys(state)) if (!KEEP.includes(k)) delete state[k];
   Object.assign(state, { stars: 0, stickers: [], levels: {}, best: {} });
   if (state.grade && GRADES[state.grade]) Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = gradeStart(r)));

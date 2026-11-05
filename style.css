@@ -1312,3 +1312,16 @@ html, body { min-height: 100%; }
 .lm-info-card span {font-size:52px;line-height:1.1;}
 .lm-info-card b {font-size:clamp(21px,5vw,28px);overflow-wrap:anywhere;}
 .lm-info-card small {font-size:14px;font-weight:700;color:#4d5b65;}
+
+/* Grade 2–3 column addition / subtraction, written like a school worksheet */
+.col-sum { display:inline-grid; gap:2px; font-size:clamp(44px,11vw,76px); font-weight:900; font-variant-numeric:tabular-nums; line-height:1.05; padding:6px 18px; }
+.col-row { display:flex; justify-content:flex-end; }
+.col-sign, .col-d { display:inline-block; width:.72em; text-align:center; }
+.col-sign { margin-right:.12em; }
+.col-line { height:5px; border-radius:3px; background:currentColor; margin:4px 0 6px; }
+.col-d.qmark { color:var(--theme,#7950f2); opacity:.55; }
+.col-hint { text-align:left; font-size:18px; line-height:1.6; }
+/* counting money: each coin shows its value underneath, so the task is adding, not naming coins */
+.ns-coins .ns-coin { height:auto !important; display:flex; flex-direction:column; align-items:center; gap:2px; }
+.ns-coins .ns-coin .ns-currency-picture { width:100%; height:auto; aspect-ratio:1; }
+.ns-coin-val { font-size:15px; font-weight:900; color:#343a40; background:#fff; border-radius:999px; padding:1px 8px; box-shadow:0 1px 3px #0002; line-height:1.3; }

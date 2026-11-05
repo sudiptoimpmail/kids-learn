@@ -1,12 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="t"><title id="t">Illustrated United States 1¢ coin</title>
-    <defs><radialGradient id="metal" cx=".35" cy=".25" r=".85"><stop stop-color="#fffdf3"/><stop offset=".24" stop-color="#dce5f1"/><stop offset=".72" stop-color="#7d94b0"/><stop offset="1" stop-color="#3c5e85"/></radialGradient><filter id="s"><feGaussianBlur stdDeviation="4"/></filter></defs>
-    <ellipse cx="121" cy="223" rx="91" ry="10" fill="#304050" opacity=".15" filter="url(#s)"/>
-    <circle cx="120" cy="120" r="103" fill="url(#metal)" stroke="#3c5e85" stroke-width="5"/>
-    <circle cx="120" cy="120" r="88" fill="none" stroke="#fff" opacity=".55" stroke-width="3" stroke-dasharray="2 5"/>
-    <circle cx="120" cy="120" r="81" fill="none" stroke="#3c5e85" stroke-width="2" opacity=".44"/>
-    <path d="M56 88Q119 29 186 85" stroke="#fff" stroke-width="8" fill="none" opacity=".25" stroke-linecap="round"/>
-    <path d="M64 175Q120 206 176 175" stroke="#3c5e85" stroke-width="5" fill="none" opacity=".24" stroke-linecap="round"/>
-    <text x="120" y="122" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="61" fill="#3c5e85">1¢</text>
-    <text x="120" y="150" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="700" font-size="13" fill="#3c5e85">UNITED STATES</text>
-    <text x="120" y="172" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="600" font-size="10" fill="#3c5e85">COIN · LEARNING ART</text>
-  </svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="t"><title id="t">United States 1¢ coin</title>
+<defs><radialGradient id="m" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#ffe2c6"/><stop offset=".35" stop-color="#d98b57"/><stop offset=".85" stop-color="#a85a2c"/><stop offset="1" stop-color="#6e3517"/></radialGradient><path id="rim" d="M69.51749999999998 120A50.48250000000001 50.48250000000001 0 1 1 170.48250000000002 120"/><filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter></defs>
+<ellipse cx="122" cy="189.103125" rx="54.268687500000006" ry="4.417218750000001" fill="#1d2733" opacity=".18" filter="url(#s)"/>
+<circle cx="120" cy="120" r="63.103125000000006" fill="url(#m)" stroke="#6e3517" stroke-width="2.2086093750000004"/>
+<circle cx="120" cy="120" r="58.68590625000001" fill="none" stroke="#6e3517" stroke-opacity=".35" stroke-width="1.5" stroke-dasharray="1.5 2.5"/>
+
+<text font-family="system-ui,-apple-system,sans-serif" font-size="8.0" font-weight="700" letter-spacing="1" fill="#6e3517" fill-opacity=".85"><textPath href="#rim" startOffset="50%" text-anchor="middle">UNITED STATES OF AMERICA</textPath></text>
+<g transform="translate(95.38978125 78.35193749999999) scale(0.492)" opacity=".8"><path d="M22 22H78V52Q78 76 50 88Q22 76 22 52Z" fill="none" stroke="#6e3517" stroke-width="5"/><path d="M22 34H78" stroke="#6e3517" stroke-width="5"/><path d="M32 34V70" stroke="#6e3517" stroke-width="3"/><path d="M41 34V80" stroke="#6e3517" stroke-width="3"/><path d="M50 34V80" stroke="#6e3517" stroke-width="3"/><path d="M59 34V80" stroke="#6e3517" stroke-width="3"/><path d="M68 34V70" stroke="#6e3517" stroke-width="3"/></g>
+<text x="120" y="143.0" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-weight="800" font-size="12.6" fill="#6e3517">ONE CENT</text>
+<path d="M82.138125 91.60359375Q120 55.634812499999995 157.861875 91.60359375" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="3.8" stroke-linecap="round"/>
+</svg>

@@ -38,35 +38,7 @@ function countryRows(C) {
 }
 function genCountry(level) {
   const C = myCountry() || COUNTRIES.us;
-  // Learn to recognise locally relevant paper money as well as coins.
-  // Every banknote image is bundled separately and available without internet.
-  if (level >= 3 && C.notes?.length >= 4 && typeof nsBanknotePicture === 'function' && Math.random() < 0.26) {
-    const note = pick(C.notes);
-    const others = sample(C.notes.filter(c => c[0] !== note[0]), 3);
-    return {
-      key: 'home-note-picture-' + countryCode() + '-' + note[0],
-      text: 'How much is this banknote worth?', say: ['How much money?'],
-      main: nsBanknotePicture(note[0], note[1], C.label || C.name),
-      mainClass: 'ph-main',
-      options: shuffle([note, ...others]).map(c => ({v:c[1], html:c[1]})),
-      answer: note[1], optClass: 'opt-text',
-      hint: {html:'Look at the number on the banknote.', say:'Think about it!'}
-    };
-  }
-  // Early country lessons now show real, locally rendered denomination
-  // illustrations instead of relying on coin labels alone. No network needed.
-  if (level <= 2 && typeof nsCoinPicture === 'function' && C.coins && C.coins.length >= 3 && Math.random() < 0.24) {
-    const coin = pick(C.coins), others = sample(C.coins.filter(c => c[0] !== coin[0]), numOpts(level) - 1);
-    const opts = shuffle([coin, ...others]);
-    const name = C.label || C.name;
-    return {
-      key: 'home-coin-picture-' + countryCode() + '-' + coin[0],
-      text: 'How much is this coin worth?', say: ['How much money?'],
-      main: nsCoinPicture(coin[0], coin[1], name), mainClass: 'ph-main',
-      options: opts.map(c => ({v:c[1], html:c[1]})), answer: coin[1], optClass: 'opt-text',
-      hint: {html:'Look at the value shown on the coin.', say:'Think about it!'}
-    };
-  }
+  // Money is practised by counting (Number Sense), never by naming which coin or note a picture shows.
   if (level <= 2 && Math.random() < 0.15) {
     const others = sample(COUNTRY_ORDER.filter((k) => COUNTRIES[k] !== C), level >= 2 ? 3 : 2).map((k) => COUNTRIES[k].flag);
     const q = `Which flag is the flag of ${C.name}?`;

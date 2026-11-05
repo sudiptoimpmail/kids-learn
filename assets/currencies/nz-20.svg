@@ -1,12 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="t"><title id="t">Illustrated New Zealand 20c coin</title>
-    <defs><radialGradient id="metal" cx=".35" cy=".25" r=".85"><stop stop-color="#fffdf3"/><stop offset=".24" stop-color="#e4edf2"/><stop offset=".72" stop-color="#9ab2c2"/><stop offset="1" stop-color="#5f8298"/></radialGradient><filter id="s"><feGaussianBlur stdDeviation="4"/></filter></defs>
-    <ellipse cx="121" cy="223" rx="91" ry="10" fill="#304050" opacity=".15" filter="url(#s)"/>
-    <circle cx="120" cy="120" r="103" fill="url(#metal)" stroke="#5f8298" stroke-width="5"/>
-    <circle cx="120" cy="120" r="88" fill="none" stroke="#fff" opacity=".55" stroke-width="3" stroke-dasharray="2 5"/>
-    <circle cx="120" cy="120" r="81" fill="none" stroke="#5f8298" stroke-width="2" opacity=".44"/>
-    <path d="M56 88Q119 29 186 85" stroke="#fff" stroke-width="8" fill="none" opacity=".25" stroke-linecap="round"/>
-    <path d="M64 175Q120 206 176 175" stroke="#5f8298" stroke-width="5" fill="none" opacity=".24" stroke-linecap="round"/>
-    <text x="120" y="122" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="900" font-size="61" fill="#5f8298">20c</text>
-    <text x="120" y="150" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="700" font-size="13" fill="#5f8298">NEW ZEALAND</text>
-    <text x="120" y="172" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="600" font-size="10" fill="#5f8298">COIN · LEARNING ART</text>
-  </svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-labelledby="t"><title id="t">New Zealand 20c coin</title>
+<defs><radialGradient id="m" cx=".36" cy=".3" r=".8"><stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#e3e7ec"/><stop offset=".85" stop-color="#aab3bd"/><stop offset="1" stop-color="#5d6873"/></radialGradient><path id="rim" d="M62.3625 120A57.6375 57.6375 0 1 1 177.6375 120"/><filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"/></filter></defs>
+<ellipse cx="122" cy="198.046875" rx="61.9603125" ry="5.043281250000001" fill="#1d2733" opacity=".18" filter="url(#s)"/>
+<circle cx="120" cy="120" r="72.046875" fill="url(#m)" stroke="#5d6873" stroke-width="2.5216406250000003"/>
+<circle cx="120" cy="120" r="67.00359375000001" fill="none" stroke="#5d6873" stroke-opacity=".35" stroke-width="1.5" stroke-dasharray="1.5 2.5"/>
+
+<text font-family="system-ui,-apple-system,sans-serif" font-size="10.1" font-weight="700" letter-spacing="1" fill="#5d6873" fill-opacity=".85"><textPath href="#rim" startOffset="50%" text-anchor="middle">NEW ZEALAND</textPath></text>
+<g transform="translate(91.90171875 72.4490625) scale(0.562)" opacity=".8"><path d="M50 88Q48 50 60 16" fill="none" stroke="#5d6873" stroke-width="4"/><path d="M49 80Q31 74 25 66M49 80Q67 74 73 66" fill="none" stroke="#5d6873" stroke-width="3"/><path d="M50.4 71Q32.4 65 28.4 57M50.4 71Q68.4 65 72.4 57" fill="none" stroke="#5d6873" stroke-width="3"/><path d="M51.8 62Q33.8 56 31.799999999999997 48M51.8 62Q69.8 56 71.8 48" fill="none" stroke="#5d6873" stroke-width="3"/><path d="M53.2 53Q35.2 47 35.2 39M53.2 53Q71.2 47 71.2 39" fill="none" stroke="#5d6873" stroke-width="3"/><path d="M54.6 44Q36.6 38 38.6 30M54.6 44Q72.6 38 70.6 30" fill="none" stroke="#5d6873" stroke-width="3"/><path d="M56 35Q38 29 42 21M56 35Q74 29 70 21" fill="none" stroke="#5d6873" stroke-width="3"/><path d="M57.4 26Q39.4 20 45.4 12M57.4 26Q75.4 20 69.4 12" fill="none" stroke="#5d6873" stroke-width="3"/></g>
+<text x="120" y="154.5" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-weight="800" font-size="25.9" fill="#5d6873">20</text>
+<path d="M76.771875 87.57890624999999Q120 46.512187499999996 163.228125 87.57890624999999" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="4.3" stroke-linecap="round"/>
+</svg>

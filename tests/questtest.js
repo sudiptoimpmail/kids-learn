@@ -7,7 +7,7 @@ const S = require('path').join(__dirname, 'out/');
     const p = await b.newPage({ viewport: vp }); p.on('pageerror', e => errs.push(e.message));
     await p.goto('http://localhost:8765/index.html');
     await p.evaluate((g) => localStorage.setItem('learnplay.v1', JSON.stringify({ name: 'Shivika', voice: false, grade: g })), grade);
-    await p.reload(); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(400);
+    await p.reload(); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(400);
     console.log(name, 'plan:', await p.evaluate(() => questFor().steps.map(s => s.cat + '/' + s.why).join(', ')));
     await p.screenshot({ path: S + `quest_${name}.png` });
     // do every step

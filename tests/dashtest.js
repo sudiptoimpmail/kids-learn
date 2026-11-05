@@ -7,7 +7,7 @@ const S = require('path').join(__dirname, 'out/');
   const p = await b.newPage({ viewport: vp }); p.on('pageerror', e => errs.push(e.message));
   await p.goto('http://localhost:8765/index.html');
   await p.evaluate(() => localStorage.setItem('learnplay.v1', JSON.stringify({ name: 'Shivika', voice: false, grade: 'k', pinHash: '' })));
-  await p.reload(); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(300);
+  await p.reload(); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(300);
   // play real rounds: adding (mostly right), letter sounds (some wrong), sight words
   const r = await p.evaluate(async () => {
     const playRound = async (cat, wrongEvery) => {
