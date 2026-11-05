@@ -1,0 +1,655 @@
+{
+  "schema": 1,
+  "namespace": "landmarks",
+  "datasets": {
+    "LANDMARKS": [
+      [
+        "liberty",
+        "Statue of Liberty",
+        "United States",
+        "New York City",
+        1,
+        "om"
+      ],
+      [
+        "eiffel",
+        "Eiffel Tower",
+        "France",
+        "Paris",
+        1,
+        "om"
+      ],
+      [
+        "pyramid",
+        "Great Pyramid of Giza",
+        "Egypt",
+        "Giza, near Cairo",
+        1,
+        "om"
+      ],
+      [
+        "tajmahal",
+        "Taj Mahal",
+        "India",
+        "Agra",
+        1,
+        "draw"
+      ],
+      [
+        "cntower",
+        "CN Tower",
+        "Canada",
+        "Toronto",
+        1,
+        "draw"
+      ],
+      [
+        "niagara",
+        "Niagara Falls",
+        "Canada",
+        "between Canada and the United States",
+        1,
+        "draw"
+      ],
+      [
+        "greatwall",
+        "Great Wall of China",
+        "China",
+        "northern China",
+        1,
+        "draw"
+      ],
+      [
+        "bigben",
+        "Big Ben",
+        "United Kingdom",
+        "London",
+        1,
+        "draw"
+      ],
+      [
+        "opera",
+        "Sydney Opera House",
+        "Australia",
+        "Sydney",
+        1,
+        "draw"
+      ],
+      [
+        "fuji",
+        "Mount Fuji",
+        "Japan",
+        "near Tokyo",
+        1,
+        "om"
+      ],
+      [
+        "colosseum",
+        "Colosseum",
+        "Italy",
+        "Rome",
+        1,
+        "draw"
+      ],
+      [
+        "christ",
+        "Christ the Redeemer",
+        "Brazil",
+        "Rio de Janeiro",
+        2,
+        "draw"
+      ],
+      [
+        "goldengate",
+        "Golden Gate Bridge",
+        "United States",
+        "San Francisco",
+        2,
+        "draw"
+      ],
+      [
+        "machupicchu",
+        "Machu Picchu",
+        "Peru",
+        "the Andes mountains",
+        3,
+        "draw"
+      ],
+      [
+        "pisa",
+        "Leaning Tower of Pisa",
+        "Italy",
+        "Pisa",
+        3,
+        "draw"
+      ],
+      [
+        "stbasil",
+        "Saint Basil's Cathedral",
+        "Russia",
+        "Moscow",
+        3,
+        "draw"
+      ],
+      [
+        "brandenburg",
+        "Brandenburg Gate",
+        "Germany",
+        "Berlin",
+        3,
+        "draw"
+      ],
+      [
+        "tokyo",
+        "Tokyo Tower",
+        "Japan",
+        "Tokyo",
+        3,
+        "om"
+      ],
+      [
+        "amazon",
+        "Amazon Rainforest",
+        "Brazil",
+        "northern Brazil",
+        1,
+        "emoji",
+        "🦜🌳🐒",
+        "#b2f2bb"
+      ],
+      [
+        "grandcanyon",
+        "Grand Canyon",
+        "United States",
+        "Arizona",
+        1,
+        "emoji",
+        "🏜️",
+        "#ffd8a8"
+      ],
+      [
+        "uluru",
+        "Uluru",
+        "Australia",
+        "the middle of Australia",
+        2,
+        "emoji",
+        "🪨",
+        "#ffc9a0"
+      ],
+      [
+        "reef",
+        "Great Barrier Reef",
+        "Australia",
+        "the coast of Queensland",
+        1,
+        "emoji",
+        "🐠🪸🐢",
+        "#99e9f2"
+      ],
+      [
+        "parthenon",
+        "Parthenon",
+        "Greece",
+        "Athens",
+        2,
+        "emoji",
+        "🏛️",
+        "#d0ebff"
+      ],
+      [
+        "neuschwanstein",
+        "Neuschwanstein Castle",
+        "Germany",
+        "Bavaria",
+        2,
+        "emoji",
+        "🏰",
+        "#d3f9d8"
+      ],
+      [
+        "venice",
+        "Canals of Venice",
+        "Italy",
+        "Venice",
+        2,
+        "emoji",
+        "🛶",
+        "#a5d8ff"
+      ],
+      [
+        "chichen",
+        "Chichen Itza",
+        "Mexico",
+        "Yucatan",
+        2,
+        "draw"
+      ],
+      [
+        "sphinx",
+        "Great Sphinx",
+        "Egypt",
+        "Giza, near Cairo",
+        2,
+        "draw"
+      ],
+      [
+        "himeji",
+        "Himeji Castle",
+        "Japan",
+        "Himeji",
+        3,
+        "emoji",
+        "🌸🏯🌸",
+        "#ffdeeb"
+      ],
+      [
+        "forbidden",
+        "Forbidden City",
+        "China",
+        "Beijing",
+        3,
+        "emoji",
+        "🏮🏯🏮",
+        "#ffe3e3"
+      ],
+      [
+        "hagia",
+        "Hagia Sophia",
+        "Turkey",
+        "Istanbul",
+        3,
+        "emoji",
+        "🕌",
+        "#d0ebff"
+      ],
+      [
+        "cappadocia",
+        "Balloons of Cappadocia",
+        "Turkey",
+        "Cappadocia",
+        3,
+        "emoji",
+        "🎈🎈🎈",
+        "#ffe8cc"
+      ],
+      [
+        "sagrada",
+        "Sagrada Familia",
+        "Spain",
+        "Barcelona",
+        3,
+        "emoji",
+        "⛪",
+        "#fff3bf"
+      ],
+      [
+        "stonehenge",
+        "Stonehenge",
+        "United Kingdom",
+        "England",
+        3,
+        "draw"
+      ],
+      [
+        "towerbridge",
+        "Tower Bridge",
+        "United Kingdom",
+        "London",
+        3,
+        "draw"
+      ],
+      [
+        "safari",
+        "Maasai Mara",
+        "Kenya",
+        "southern Kenya",
+        3,
+        "emoji",
+        "🦓🦁🦒",
+        "#ffec99"
+      ],
+      [
+        "tablemtn",
+        "Table Mountain",
+        "South Africa",
+        "Cape Town",
+        3,
+        "emoji",
+        "⛰️",
+        "#c5f6fa"
+      ],
+      [
+        "borobudur",
+        "Borobudur Temple",
+        "Indonesia",
+        "Java",
+        3,
+        "emoji",
+        "🛕",
+        "#e6fcf5"
+      ],
+      [
+        "milford",
+        "Milford Sound",
+        "New Zealand",
+        "the South Island",
+        3,
+        "emoji",
+        "🏞️",
+        "#d3f9d8"
+      ],
+      [
+        "iguazu",
+        "Iguazu Falls",
+        "Argentina",
+        "between Argentina and Brazil",
+        3,
+        "emoji",
+        "🌈💦",
+        "#c3fae8"
+      ]
+    ],
+    "WORLD_ANIMALS": [
+      [
+        "panda",
+        "🐼",
+        "China",
+        "country",
+        1
+      ],
+      [
+        "kangaroo",
+        "🦘",
+        "Australia",
+        "country",
+        1
+      ],
+      [
+        "koala",
+        "🐨",
+        "Australia",
+        "country",
+        1
+      ],
+      [
+        "lion",
+        "🦁",
+        "Africa",
+        "continent",
+        1
+      ],
+      [
+        "giraffe",
+        "🦒",
+        "Africa",
+        "continent",
+        1
+      ],
+      [
+        "zebra",
+        "🦓",
+        "Africa",
+        "continent",
+        1
+      ],
+      [
+        "polar bear",
+        "🐻‍❄️",
+        "Canada",
+        "country",
+        1
+      ],
+      [
+        "penguin",
+        "🐧",
+        "Antarctica",
+        "continent",
+        1
+      ],
+      [
+        "tiger",
+        "🐯",
+        "India",
+        "country",
+        1
+      ],
+      [
+        "bald eagle",
+        "🦅",
+        "United States",
+        "country",
+        1
+      ],
+      [
+        "anaconda",
+        "🐍",
+        "Brazil",
+        "country",
+        2
+      ],
+      [
+        "sloth",
+        "🦥",
+        "South America",
+        "continent",
+        2
+      ],
+      [
+        "camel",
+        "🐪",
+        "Egypt",
+        "country",
+        1
+      ],
+      [
+        "gorilla",
+        "🦍",
+        "Africa",
+        "continent",
+        1
+      ],
+      [
+        "hippo",
+        "🦛",
+        "Africa",
+        "continent",
+        1
+      ],
+      [
+        "moose",
+        "🫎",
+        "Canada",
+        "country",
+        2
+      ],
+      [
+        "African elephant",
+        "🐘",
+        "Africa",
+        "continent",
+        1
+      ],
+      [
+        "llama",
+        "🦙",
+        "Peru",
+        "country",
+        3
+      ],
+      [
+        "macaw parrot",
+        "🦜",
+        "Brazil",
+        "country",
+        3
+      ],
+      [
+        "orangutan",
+        "🦧",
+        "Indonesia",
+        "country",
+        3
+      ],
+      [
+        "Komodo dragon",
+        "🦎",
+        "Indonesia",
+        "country",
+        3
+      ],
+      [
+        "bison",
+        "🦬",
+        "United States",
+        "country",
+        3
+      ],
+      [
+        "beaver",
+        "🦫",
+        "Canada",
+        "country",
+        3
+      ],
+      [
+        "peacock",
+        "🦚",
+        "India",
+        "country",
+        1
+      ],
+      [
+        "alligator",
+        "🐊",
+        "United States",
+        "country",
+        1
+      ],
+      [
+        "cheetah",
+        "🐆",
+        "Africa",
+        "continent",
+        2
+      ],
+      [
+        "rhino",
+        "🦏",
+        "Africa",
+        "continent",
+        2
+      ],
+      [
+        "wild turkey",
+        "🦃",
+        "United States",
+        "country",
+        2
+      ],
+      [
+        "monkey",
+        "🐒",
+        "South America",
+        "continent",
+        1
+      ],
+      [
+        "crocodile",
+        "🐊",
+        "Africa",
+        "continent",
+        3
+      ],
+      [
+        "jaguar",
+        "🐆",
+        "Brazil",
+        "country",
+        3
+      ],
+      [
+        "reindeer",
+        "🦌",
+        "Russia",
+        "country",
+        3
+      ],
+      [
+        "hedgehog",
+        "🦔",
+        "Europe",
+        "continent",
+        3
+      ],
+      [
+        "water buffalo",
+        "🐃",
+        "Asia",
+        "continent",
+        3
+      ],
+      [
+        "Asian elephant",
+        "🐘",
+        "India",
+        "country",
+        3
+      ],
+      [
+        "red fox",
+        "🦊",
+        "Europe",
+        "continent",
+        3
+      ],
+      [
+        "flamingo",
+        "🦩",
+        "Africa",
+        "continent",
+        3
+      ],
+      [
+        "snowy owl",
+        "🦉",
+        "Canada",
+        "country",
+        3
+      ]
+    ],
+    "LM_NO_THE": [
+      "uluru",
+      "fuji",
+      "machupicchu",
+      "bigben",
+      "hagia",
+      "milford",
+      "tablemtn",
+      "chichen",
+      "stonehenge",
+      "stbasil",
+      "christ",
+      "neuschwanstein",
+      "himeji",
+      "tokyo"
+    ],
+    "LM_PLURAL": [
+      "niagara",
+      "iguazu",
+      "venice",
+      "cappadocia"
+    ],
+    "LM_ALSO": {
+      "niagara": [
+        "United States"
+      ],
+      "amazon": [
+        "Peru"
+      ],
+      "iguazu": [
+        "Brazil"
+      ]
+    }
+  }
+}
