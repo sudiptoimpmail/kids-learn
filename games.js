@@ -1247,70 +1247,112 @@ function drawRefs(lv) {
 const INK = ['#2b2140', '#ff6b6b', '#ff922b', '#fcc419', '#40c057', '#20c997', '#4dabf7', '#7950f2', '#f783ac', '#a0522d'];
 
 function startDraw(refIndex) {
-  const lv = GL('draw');
-  const refs = drawRefs(lv);
+  const lv = GL('draw'), refs = drawRefs(lv);
   const ref = refs[refIndex != null ? refIndex % refs.length : Math.floor(Math.random() * refs.length)];
-  const trace = lv <= 2;
-  const area = $('#gameArea');
+  const trace = lv <= 2, area = $('#gameArea');
   area.innerHTML = `<div class="dr-top"><div class="dr-ref">${ref.svg}<small>${ref.name}</small></div>
-      <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>${trace ? 'Follow the gray lines with your finger.' : 'Look at the picture and draw your own!'}</small></div></div>
-    <div class="dr-pad">${trace ? `<div class="dr-guide" style="opacity:${lv === 1 ? 0.32 : 0.14}">${ref.svg}</div>` : ''}<canvas class="dr-cv"></canvas></div>
-    <div class="dr-tools">${INK.map((c, i) => `<button class="dr-ink ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}"></button>`).join('')}
-      <button class="dr-size" data-s="6">•</button><button class="dr-size on" data-s="12">●</button><button class="dr-size" data-s="22">⬤</button>
-      <button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>
-    <div class="color-btns"><button class="big-btn alt small ico" data-a="new" aria-label="New picture">🔄 New</button><button class="big-btn alt small ico" data-a="gallery" aria-label="My drawings">🖼️ Mine</button><button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
+      <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>Draw with one finger. Pinch or move with two fingers.</small></div></div>
+    <div class="dr-pad"><div class="dr-layer">${trace ? `<div class="dr-guide" style="opacity:${lv === 1 ? 0.32 : 0.14}">${ref.svg}</div>` : ''}<canvas class="dr-cv"></canvas></div></div>
+    <div class="dr-toolbar" aria-label="Drawing tools">
+      <div class="dr-tools dr-pencils">
+        <button class="dr-size on" data-s="2" data-brush="0" aria-label="Fine pencil" title="Fine pencil">✏️<small>Thin</small></button>
+        <button class="dr-size" data-s="6" data-brush="0" aria-label="Thick pencil" title="Thick pencil">✏️<small>Thick</small></button>
+        <button class="dr-size" data-s="12" data-brush="1" aria-label="Fine paintbrush" title="Fine brush">🖌️<small>Thin</small></button>
+        <button class="dr-size" data-s="25" data-brush="1" aria-label="Thick paintbrush" title="Thick brush">🖌️<small>Thick</small></button>
+      </div>
+      <div class="dr-colors" aria-label="Pencil colors">${INK.map((c,i)=>`<button class="dr-ink ${i===0?'on':''}" data-c="${c}" style="--sw:${c}" aria-label="Color ${i+1}"></button>`).join('')}</div>
+      <div class="dr-tools dr-actions">
+        <button class="dr-tool" data-t="erase" aria-label="Eraser" title="Eraser">🧽</button><button class="dr-tool" data-t="undo" aria-label="Undo" title="Undo">↩️</button>
+        <button class="dr-tool" data-t="clear" aria-label="Clear picture" title="Clear">🗑️</button>
+        <button class="dr-tool" data-t="out" aria-label="Zoom out">−</button><button class="dr-tool" data-t="reset" aria-label="Reset zoom">1×</button><button class="dr-tool" data-t="in" aria-label="Zoom in">＋</button>
+      </div>
+    </div>
+    <div class="color-btns dr-bottom"><button class="big-btn alt small ico" data-a="new">🔄 New</button><button class="big-btn alt small ico" data-a="gallery">🖼️ Mine</button><button class="big-btn small ico" data-a="done">✅ Done</button></div>`;
   say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
-  const cv = $('.dr-cv', area), pad = $('.dr-pad', area);
-  const dpr = Math.min(devicePixelRatio || 1, 2);
-  const W = pad.clientWidth;
-  cv.width = cv.height = Math.round(W * dpr); cv.style.width = cv.style.height = W + 'px';
+  const pad = $('.dr-pad', area), layer = $('.dr-layer', area), cv = $('.dr-cv', area);
+  const dpr = Math.min(devicePixelRatio || 1, 2), W = pad.clientWidth;
+  cv.width = cv.height = Math.round(W * dpr);
+  cv.style.width = cv.style.height = W + 'px';
   const c = cv.getContext('2d'); c.scale(dpr, dpr); c.lineCap = c.lineJoin = 'round';
-  let color = INK[0], size = 12, erase = false, strokes = [], cur = null;
-  const redraw = () => {
-    c.clearRect(0, 0, W, W);
-    for (const s of strokes) paint(s);
-  };
-  function paint(s) {
-    c.globalCompositeOperation = s.erase ? 'destination-out' : 'source-over';
-    c.strokeStyle = s.color; c.fillStyle = s.color; c.lineWidth = s.size;
-    const p = s.pts;
-    if (p.length === 1) { c.beginPath(); c.arc(p[0][0], p[0][1], s.size / 2, 0, 7); c.fill(); }
-    else {
-      c.beginPath(); c.moveTo(p[0][0], p[0][1]);
-      for (let i = 1; i < p.length - 1; i++) { const mx = (p[i][0] + p[i + 1][0]) / 2, my = (p[i][1] + p[i + 1][1]) / 2; c.quadraticCurveTo(p[i][0], p[i][1], mx, my); }
-      c.lineTo(p[p.length - 1][0], p[p.length - 1][1]); c.stroke();
-    }
-    c.globalCompositeOperation = 'source-over';
+  let color = INK[0], size = 2, brush = false, erase = false, strokes = [], cur = null, drawingId = null;
+  let zoom = 1, panX = 0, panY = 0, gesture = null;
+  const touches = new Map();
+  const clamp = (v,min,max) => Math.max(min, Math.min(max,v));
+  function transform() {
+    zoom = clamp(zoom,1,4);
+    const margin = (zoom-1)*W/2;
+    panX = clamp(panX,-margin,margin); panY = clamp(panY,-margin,margin);
+    layer.style.transform = `translate(${panX}px,${panY}px) scale(${zoom})`;
+    $('[data-t="reset"]',area).textContent = zoom.toFixed(1) + '×';
   }
-  const pt = (e) => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * (W / r.width), (e.clientY - r.top) * (W / r.height)]; };
-  cv.addEventListener('pointerdown', (e) => { e.preventDefault(); cv.setPointerCapture && cv.setPointerCapture(e.pointerId); cur = { color, size: erase ? size * 2 : size, erase, pts: [pt(e)] }; strokes.push(cur); paint(cur); });
-  cv.addEventListener('pointermove', (e) => {
-    if (!cur) return;
-    const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
-    for (const ev of evs) cur.pts.push(pt(ev));
-    redrawLast();
+  const redraw = () => { c.clearRect(0,0,W,W); strokes.forEach(paint); };
+  function paint(s) {
+    c.save();
+    c.globalCompositeOperation = s.erase ? 'destination-out' : 'source-over';
+    c.globalAlpha = s.erase ? 1 : (s.brush ? 0.78 : 1);
+    c.strokeStyle = c.fillStyle = s.color; c.lineWidth = s.size;
+    const p=s.pts;
+    if(p.length===1) { c.beginPath(); c.arc(p[0][0],p[0][1],s.size/2,0,7); c.fill(); }
+    else {
+      c.beginPath(); c.moveTo(p[0][0],p[0][1]);
+      for(let i=1;i<p.length-1;i++){ const mx=(p[i][0]+p[i+1][0])/2,my=(p[i][1]+p[i+1][1])/2; c.quadraticCurveTo(p[i][0],p[i][1],mx,my); }
+      c.lineTo(p[p.length-1][0],p[p.length-1][1]); c.stroke();
+    }
+    c.restore();
+  }
+  const pt=(e)=>{ const r=cv.getBoundingClientRect(); return [(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*W/r.height]; };
+  const pair=()=>[...touches.values()].slice(0,2);
+  const center=(p)=>[(p[0][0]+p[1][0])/2,(p[0][1]+p[1][1])/2];
+  const distance=(p)=>Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1])||1;
+  cv.addEventListener('pointerdown',(e)=>{
+    e.preventDefault(); if(e.pointerType==='mouse'&&e.button!==0)return;
+    cv.setPointerCapture?.(e.pointerId);
+    touches.set(e.pointerId,[e.clientX,e.clientY]);
+    if(touches.size>=2){
+      if(cur){strokes=strokes.filter(s=>s!==cur);cur=null;redraw();}
+      drawingId=null;const p=pair();gesture={dist:distance(p),mid:center(p),zoom,panX,panY};return;
+    }
+    if(gesture)return;
+    drawingId=e.pointerId;
+    cur={color,size:erase?size*1.7:size,brush,erase,pts:[pt(e)]};
+    strokes.push(cur);paint(cur);
   });
-  const end = () => { cur = null; };
-  cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
-  function redrawLast() { redraw(); }
-  $$('.dr-ink', area).forEach((b) => (b.onclick = () => { $$('.dr-ink', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); color = b.dataset.c; erase = false; $('[data-t="erase"]', area).classList.remove('on'); sfx.tap(); }));
-  $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; sfx.tap(); }));
-  $('[data-t="erase"]', area).onclick = (e) => { erase = !erase; e.currentTarget.classList.toggle('on', erase); sfx.tap(); };
-  $('[data-t="undo"]', area).onclick = () => { strokes.pop(); redraw(); sfx.tap(); };
-  $('[data-t="clear"]', area).onclick = () => { strokes = []; redraw(); sfx.tap(); };
-  area.querySelector('[data-a="new"]').onclick = () => { sfx.tap(); startDraw(); };
-  area.querySelector('[data-a="gallery"]').onclick = () => { sfx.tap(); drawGallery(); };
-  area.querySelector('[data-a="done"]').onclick = () => {
-    if (!strokes.length) { say('Draw something first!'); return; }
-    // save a small copy on a white background
-    const t = document.createElement('canvas'); t.width = t.height = 240;
-    const tc = t.getContext('2d'); tc.fillStyle = '#fff'; tc.fillRect(0, 0, 240, 240); tc.drawImage(cv, 0, 0, 240, 240);
-    state.drawings = [{ img: t.toDataURL('image/jpeg', 0.7), name: ref.name }, ...(state.drawings || [])].slice(0, 12);
-    const up = gameLevelUp('draw', 3);
-    gameWin(pick(['Beautiful drawing!', 'What a great drawing!', 'Awesome job!']));
-    endPanel(`What a great ${ref.name}!${up ? '' : '<br><small>Saved in My drawings 🖼️</small>'}`, '🎨', () => startDraw(), up);
+  cv.addEventListener('pointermove',(e)=>{
+    if(!touches.has(e.pointerId))return;
+    touches.set(e.pointerId,[e.clientX,e.clientY]);
+    if(touches.size>=2 && gesture){
+      const p=pair(),mid=center(p),newZoom=clamp(gesture.zoom*distance(p)/gesture.dist,1,4);
+      // Scale and move together; no paint strokes are created during a gesture.
+      panX=gesture.panX+(mid[0]-gesture.mid[0]);panY=gesture.panY+(mid[1]-gesture.mid[1]);
+      zoom=newZoom;transform();return;
+    }
+    if(!cur||drawingId!==e.pointerId||gesture)return;
+    for(const ev of (e.getCoalescedEvents?.()||[e]))cur.pts.push(pt(ev));
+    redraw();
+  });
+  const end=(e)=>{touches.delete(e.pointerId);if(drawingId===e.pointerId){cur=null;drawingId=null;}if(touches.size<2)gesture=null;};
+  cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+  $$('.dr-ink',area).forEach(b=>b.onclick=()=>{ $$('.dr-ink',area).forEach(x=>x.classList.remove('on')); b.classList.add('on');color=b.dataset.c;erase=false;$('[data-t="erase"]',area).classList.remove('on');sfx.tap(); });
+  $$('.dr-size',area).forEach(b=>b.onclick=()=>{ $$('.dr-size',area).forEach(x=>x.classList.remove('on'));b.classList.add('on');size=+b.dataset.s;brush=b.dataset.brush==='1';erase=false;$('[data-t="erase"]',area).classList.remove('on');sfx.tap(); });
+  $('[data-t="erase"]',area).onclick=e=>{erase=!erase;e.currentTarget.classList.toggle('on',erase);sfx.tap();};
+  $('[data-t="undo"]',area).onclick=()=>{strokes.pop();redraw();sfx.tap();};
+  $('[data-t="clear"]',area).onclick=()=>{strokes=[];redraw();sfx.tap();};
+  $('[data-t="in"]',area).onclick=()=>{zoom*=1.35;transform();};
+  $('[data-t="out"]',area).onclick=()=>{zoom/=1.35;transform();};
+  $('[data-t="reset"]',area).onclick=()=>{zoom=1;panX=panY=0;transform();};
+  area.querySelector('[data-a="new"]').onclick=()=>{sfx.tap();startDraw();};
+  area.querySelector('[data-a="gallery"]').onclick=()=>{sfx.tap();drawGallery();};
+  area.querySelector('[data-a="done"]').onclick=()=>{
+    if(!strokes.length){say('Draw something first!');return;}
+    const t=document.createElement('canvas');t.width=t.height=240;const tc=t.getContext('2d');
+    tc.fillStyle='#fff';tc.fillRect(0,0,240,240);tc.drawImage(cv,0,0,240,240);
+    state.drawings=[{img:t.toDataURL('image/jpeg',0.7),name:ref.name},...(state.drawings||[])].slice(0,12);
+    const up=gameLevelUp('draw',3);
+    gameWin(pick(['Beautiful drawing!','What a great drawing!','Awesome job!']));
+    endPanel(`What a great ${ref.name}!${up?'':'<br><small>Saved in My drawings 🖼️</small>'}`,'🎨',()=>startDraw(),up);
   };
 }
+
 function drawGallery() {
   const area = $('#gameArea');
   const list = state.drawings || [];
