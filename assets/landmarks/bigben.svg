@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img"><title>Big Ben</title><rect x="0" y="0" width="120" height="120" fill="#cfe9ff"/><rect x="0" y="100" width="120" height="20" fill="#74c0fc"/>
+    <rect x="60" y="72" width="60" height="28" fill="#e9c46a" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/><rect x="66" y="80" width="5" height="10" fill="#b5838d"/><rect x="76" y="80" width="5" height="10" fill="#b5838d"/><rect x="86" y="80" width="5" height="10" fill="#b5838d"/><rect x="96" y="80" width="5" height="10" fill="#b5838d"/><rect x="106" y="80" width="5" height="10" fill="#b5838d"/>
+    <rect x="34" y="34" width="22" height="66" fill="#e9c46a" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <rect x="31" y="30" width="28" height="22" fill="#d4a373" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <circle cx="45" cy="41" r="8" fill="#fff" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/><path d="M45 41 V36 M45 41 H49" stroke="#2b2140" stroke-width="1.4"/>
+    <path d="M31 30 L45 6 L59 30 Z" fill="#495057" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/><path d="M45 6 V1" stroke="#2b2140" stroke-width="1.6"/>
+    <rect x="39" y="60" width="12" height="6" fill="#b5838d"/><rect x="39" y="72" width="12" height="6" fill="#b5838d"/><rect x="39" y="84" width="12" height="6" fill="#b5838d"/></svg>
