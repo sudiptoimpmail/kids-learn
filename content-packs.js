@@ -57,8 +57,13 @@ const ContentPacks = (() => {
     const keys = new Set();
     for (const q of pack.questions) {
       if (!q || !isSlug(q.id) || keys.has(q.id) || !isSlug(q.category) ||
+          (typeof CATEGORIES !== 'undefined' && !CATEGORIES.some(c => c.id === q.category && c.gen && q.level <= (c.maxLevel || 3))) ||
           !Array.isArray(q.grades) || !q.grades.length ||
           !q.grades.every((g) => GRADES_ALLOWED.includes(g)) ||
+          (typeof gradeRange === 'function' && !q.grades.every((g) => {
+            const range = gradeRange(g, q.category);
+            return range && q.level >= range[0] && q.level <= range[1];
+          })) ||
           !Number.isSafeInteger(q.level) || q.level < 1 || q.level > 11 ||
           !isText(q.prompt, 350) || !isText(q.answer, 120) ||
           !Array.isArray(q.choices) || q.choices.length < 3 || q.choices.length > 4 ||
@@ -67,7 +72,8 @@ const ContentPacks = (() => {
           q.choices.filter((v) => v === q.answer).length !== 1 ||
           (q.explanation != null && !isText(q.explanation, 400)) ||
           (q.image != null && (typeof q.image !== 'string' ||
-            !/^assets\/(?:photos|illustrations)\/[a-z0-9_-]+\.(?:jpg|svg)$/.test(q.image)))) {
+            !/^assets\/(?:photos|illustrations)\/[a-z0-9_-]+\.(?:jpg|svg)$/.test(q.image) ||
+            (typeof visualPath === 'function' && visualPath(q.image.split('/').pop().split('.')[0]) !== q.image)))) {
         throw new Error('Pack contains a malformed or ambiguous question');
       }
       keys.add(q.id);
