@@ -204,6 +204,81 @@ const IllustratedActivities = (() => {
   function setFeedback(host,message){
     const out=host.querySelector('.ia-feedback'); if(out)out.textContent=message;
   }
+  // Guided trace-then-find: a workbook shape is physically traced in sequence
+  // before picture hotspots unlock. Samples are checked in stroke order so a
+  // scribble, a single tap, or tracing a small fragment cannot complete the step.
+  function mountShapeTrace(host,stage,kind,q,onComplete){
+    const isSquare=kind==='squares';
+    const path=isSquare?'M40 19 L120 19 L120 99 L40 99 L40 19':
+      'M80 18 C121 18 122 98 80 98 C38 98 39 18 80 18';
+    const box=document.createElement('div');
+    box.className='ia-shape-step';
+    box.innerHTML='<div class="ia-trace-heading"><b>1. Trace the '+(isSquare?'square':'circle')+'</b>'+
+      '<small>Start at the green dot. Follow the dots with your finger.</small></div>'+
+      '<svg class="ia-trace-shape" viewBox="0 0 160 120" role="img" aria-label="Trace the '+(isSquare?'square':'circle')+' from the green starting dot" tabindex="0">'+
+      '<path class="ia-trace-guide" d="'+path+'" fill="none" stroke="#9ca9bc" stroke-width="8" stroke-dasharray="3 11" stroke-linecap="round"/>'+
+      '<path class="ia-trace-ink" d="'+path+'" fill="none" stroke="#2fa86a" stroke-width="9" stroke-linecap="round"/>'+
+      '<circle cx="'+(isSquare?'40':'80')+'" cy="'+(isSquare?'19':'18')+'" r="9" fill="#45bb79" stroke="#fff" stroke-width="3"/>'+
+      '</svg>'+
+      '<button type="button" class="ia-trace-assist" aria-label="Use a hint and continue to shape finding">Need tracing help? Continue with a hint</button>';
+    host.insertBefore(box,stage);
+    stage.classList.add('ia-shape-locked');
+    const svg=box.querySelector('svg');
+    const target=box.querySelector('.ia-trace-guide');
+    const ink=box.querySelector('.ia-trace-ink');
+    const length=target.getTotalLength();
+    const samples=Array.from({length:64},(_,i)=>target.getPointAtLength(length*i/63));
+    ink.style.strokeDasharray=String(length);
+    ink.style.strokeDashoffset=String(length);
+    let last=-1,active=false,finished=false;
+    const location=e=>{
+      const m=svg.getScreenCTM();if(!m)return null;
+      const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;
+      return p.matrixTransform(m.inverse());
+    };
+    const finish=()=>{
+      if(finished)return;
+      finished=true;active=false;
+      ink.style.strokeDashoffset='0';
+      svg.classList.add('ia-trace-complete');
+      box.querySelector('.ia-trace-assist').hidden=true;
+      box.querySelector('.ia-trace-heading b').textContent='✓ Shape traced!';
+      stage.classList.remove('ia-shape-locked');
+      onComplete();
+    };
+    const move=e=>{
+      if(!active||finished)return;
+      const p=location(e);if(!p)return;
+      if(last===-1){
+        if(Math.hypot(p.x-samples[0].x,p.y-samples[0].y)>16)return;
+        last=0;
+      }
+      let best=last,bestDistance=Infinity;
+      // Only look forward a few samples; nearby segments on a corner cannot
+      // allow skipping the entire outline.
+      for(let i=last;i<=Math.min(last+7,samples.length-1);i++){
+        const d=Math.hypot(p.x-samples[i].x,p.y-samples[i].y);
+        if(d<bestDistance){bestDistance=d;best=i;}
+      }
+      if(bestDistance>17)return;
+      last=best;
+      ink.style.strokeDashoffset=String(length*(1-last/63));
+      if(last>=61)finish();
+    };
+    svg.addEventListener('pointerdown',e=>{
+      if(finished)return;
+      active=true;
+      try{svg.setPointerCapture(e.pointerId);}catch{}
+      move(e);
+    });
+    svg.addEventListener('pointermove',move);
+    svg.addEventListener('pointerup',()=>active=false);
+    svg.addEventListener('pointercancel',()=>active=false);
+    box.querySelector('.ia-trace-assist').addEventListener('click',()=>{
+      // A motor-skill accommodation is a hint, never an unassisted success.
+      q.hintShown=true;finish();
+    });
+  }
   function mount(q,host,actions){
     const mode=q.illustrated.mode;
     const info=scenes[mode];
@@ -218,11 +293,14 @@ const IllustratedActivities = (() => {
     const good=msg=>{setFeedback(host,msg);if(typeof sfx!=='undefined')sfx.tap();};
     if(info){
       const required=mode==='forest'?[q.answer]:info.correct;
+      const shapeTask=mode==='shapes'||mode==='squares';
+      let traceReady=!shapeTask;
       info.items.forEach(([id,x,y])=>{
         const btn=document.createElement('button');
         btn.type='button';btn.className='ia-hotspot';btn.style.left=x+'%';btn.style.top=y+'%';
         btn.dataset.object=id;btn.setAttribute('aria-label','Select '+id);
         btn.innerHTML='<span class="ia-hotspot-ring" aria-hidden="true"></span>';
+        if(shapeTask)btn.disabled=true;
         btn.addEventListener('click',()=>{
           if(btn.disabled)return;
           if(!required.includes(id)){actions.mistake();setFeedback(host,'Look closely. Try another picture.');return;}
@@ -232,7 +310,16 @@ const IllustratedActivities = (() => {
         });
         stage.append(btn);
       });
-      note.textContent=mode==='forest'?'Find the '+q.answer+'.':'Tap pictures to find all '+info.correct.length+'.';
+      if(shapeTask){
+        mountShapeTrace(host,stage,mode,q,()=>{
+          traceReady=true;
+          stage.querySelectorAll('.ia-hotspot').forEach(button=>button.disabled=false);
+          setFeedback(host,'Now find the '+info.correct.length+' matching shapes in the picture.');
+        });
+      }
+      note.textContent=mode==='forest'?'Find the '+q.answer+'.':
+        shapeTask?'Step 1: Trace the shape. Step 2: Find all four matching objects.':
+        'Tap pictures to find all '+info.correct.length+'.';
     }else if(mode==='letters'||mode==='longa'){
       const labels=mode==='letters'?zebraLetters:longA;
       const valid=v=>mode==='letters'?v==='Z':/^(gate|name|date|rain|mail|paid|page|lake|cake|make|tail|wave|bake|plane|cane)$/.test(v);
