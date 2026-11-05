@@ -1109,56 +1109,85 @@ function puzzleFills(p) {
   if (p.orig) { const f = { 0: '#d0ebff' }; p.orig.forEach((c, i) => (f[i + 1] = c)); return f; }
   const f = {}; for (let k = 0; k < 40; k++) f[k] = AUTO_FILL[k % AUTO_FILL.length]; return f;
 }
-const puzzleSize = () => GL('puzzle') + 1;   // level 1 = 2×2 … level 5 = 6×6
+const puzzleSize = () => [2, 2, 3, 3, 4][Math.min(5, GL('puzzle')) - 1]; // 4 → 9 → 16 pieces, never overwhelming
+const PHOTO_PUZZLES = [
+  { id:'photo-sunflower',name:'Sunflower',photo:[0,0] },{ id:'photo-dog',name:'Dog',photo:[0,1] },
+  { id:'photo-elephant',name:'Elephant',photo:[1,1] },{ id:'photo-plane',name:'Airplane',photo:[0,2] },
+  { id:'photo-tiger',name:'Tiger',photo:[2,1] },{ id:'photo-car',name:'Car',photo:[2,2] },
+];
 
 function startPuzzleMenu() {
   const area = $('#gameArea');
   const size = puzzleSize();
-  const PUZ = ALL_PICS.filter((p) => p.orig || !p.om);
-  area.innerHTML = `<div class="g-msg">Pick a picture · ${size}×${size} puzzle</div><div class="pic-grid">${PUZ.map((p) =>
-    `<button class="pic-pick" data-p="${p.id}">${picSVG(p, puzzleFills(p))}<span>${p.name}</span></button>`).join('')}</div>`;
+  const PUZ = [...PHOTO_PUZZLES, ...ALL_PICS.filter((p) => p.orig || !p.om)];
+  area.innerHTML = `<div class="g-msg">Pick a picture · ${size*size} chunky pieces</div><div class="pic-grid">${PUZ.map(p=>
+    `<button class="pic-pick" data-p="${p.id}">${p.photo ? `<span class="pk-photo" style="--pk-x:${p.photo[0]*100/3}%;--pk-y:${p.photo[1]*50}%"></span>` : picSVG(p,puzzleFills(p))}<span>${p.name}</span></button>`).join('')}</div>`;
   say('Pick a picture!');
-  $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startPuzzle(ALL_PICS.find((p) => p.id === b.dataset.p)); }));
+  $('.pic-pick', area).forEach(b=>b.onclick=()=>{sfx.tap();startPuzzle(PUZ.find(p=>p.id===b.dataset.p));});
 }
 
 function startPuzzle(p) {
-  const n = puzzleSize(), N = n * n, VB = p.vb || 200, part = VB / n;
-  const fills = puzzleFills(p);
-  let k = 0;
-  const body = p.svg().replace(/class="r( bg)?"/g, () => `class="r" style="fill:${fills[k++] || '#fff'}"`);
+  const n=puzzleSize(), N=n*n, VB=p.photo ? 200 : (p.vb||200), part=VB/n, lv=GL('puzzle'), area=$('#gameArea');
+  const fills=p.photo?null:puzzleFills(p);
+  let k=0;
+  const body=p.photo
+    ? `<image href="assets/prek-atlas.webp" x="${-p.photo[0]*VB}" y="${-p.photo[1]*VB}" width="${VB*4}" height="${VB*3}" preserveAspectRatio="none"/>`
+    : p.svg().replace(/class="r( bg)?"/g,()=>`class="r" style="fill:${fills[k++]||'#fff'}"`);
   let order;
-  do { order = shuffle([...Array(N).keys()]); } while (order.every((v, i) => v === i));
-  let pickA = null, solved = false;
-  const area = $('#gameArea');
-  const tileSVG = (t) => `<svg viewBox="${(t % n) * part} ${Math.floor(t / n) * part} ${part} ${part}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`;
-  area.innerHTML = `<div class="g-msg">Put the picture back together!</div>
-    <div class="pz-wrap"><div class="pz-board" style="grid-template-columns:repeat(${n},1fr)"></div>
-    <div class="pz-peek"><svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg><small>Look!</small></div></div>
-    <div class="color-btns"><button class="big-btn alt small ico" data-a="restart" aria-label="Restart">🔄 Restart</button><button class="big-btn alt small ico" data-a="pictures" aria-label="Pictures">🖼️ Pictures</button></div>`;
-  say('Put the picture back together!');
-  const board = $('.pz-board', area);
-  function draw() {
-    board.innerHTML = order.map((t, i) => `<button class="pzl-tile ${t === i ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}">${tileSVG(t)}</button>`).join('');
+  do {order=shuffle([...Array(N).keys()]);} while(order.every((v,i)=>v===i));
+  let picked=null, solved=false;
+  // Each neighboring side gets a complementary tab and socket. The outer edges
+  // are flat, like a die-cut cardboard puzzle, rather than square image tiles.
+  const edge=(r,c)=>((r*5+c*7)%2===0?1:-1);
+  const rot=Array.from({length:N},()=>lv<=1?0:Math.floor(Math.random()*4)*90);
+  const shape=(t)=>{
+    const row=Math.floor(t/n),col=t%n;
+    const sides=[row===0?0:-edge(row-1,col),col===n-1?0:edge(row,col),row===n-1?0:edge(row,col),col===0?0:-edge(row,col-1)];
+    let d='M 0 0';
+    [[0,0,1,0],[1,0,0,1],[1,1,-1,0],[0,1,0,-1]].forEach(([x,y,dx,dy],i)=>{
+      const s=sides[i], p=part, normalX=-dy, normalY=dx;
+      const P=(u,v=0)=>`${((x+dx*u)*p+normalX*v).toFixed(2)} ${((y+dy*u)*p+normalY*v).toFixed(2)}`;
+      if(!s){d+=' L '+P(1);return;}
+      const bump=s*p*.21;
+      d+=' L '+P(.29)+' C '+P(.38,0)+' '+P(.34,bump*.35)+' '+P(.38,bump*.46);
+      d+=' C '+P(.32,bump)+' '+P(.43,bump*1.2)+' '+P(.5,bump*1.2);
+      d+=' C '+P(.57,bump*1.2)+' '+P(.68,bump)+' '+P(.62,bump*.46);
+      d+=' C '+P(.66,bump*.35)+' '+P(.62,0)+' '+P(.71,0)+' L '+P(1);
+    });
+    return d+' Z';
+  };
+  const tile=(t,i)=>{
+    const id='jp-'+i, x=(t%n)*part, y=Math.floor(t/n)*part;
+    return `<svg class="pzl-art" viewBox="${-part*.21} ${-part*.21} ${part*1.42} ${part*1.42}" aria-hidden="true" style="transform:rotate(${rot[t]}deg)">
+      <defs><clipPath id="${id}"><path d="${shape(t)}"/></clipPath></defs>
+      <g clip-path="url(#${id})"><g transform="translate(${-x} ${-y})">${body}</g></g>
+      <path d="${shape(t)}" fill="none" stroke="#fffdf6" stroke-width="${part*.03}" stroke-linejoin="round"/>
+      <path d="${shape(t)}" fill="none" stroke="#493625" stroke-opacity=".38" stroke-width="${part*.008}"/>
+    </svg>`;
+  };
+  area.innerHTML=`<div class="g-msg">Fit the ${N} pieces! <small>Tap a piece, then another to swap. Tap the same piece twice to rotate.</small></div>
+    <div class="pz-wrap"><div class="pz-board jigsaw" style="grid-template-columns:repeat(${n},1fr)" aria-label="${N} piece jigsaw"></div>
+      <div class="pz-peek"><svg viewBox="0 0 ${VB} ${VB}" class="pic">${body}</svg><small>Picture</small></div></div>
+    <div class="color-btns"><button class="big-btn alt small" data-a="restart">🔄 Restart</button><button class="big-btn alt small" data-a="pictures">🖼️ Pictures</button></div>`;
+  const board=$('.pz-board',area);
+  const draw=()=>{board.innerHTML=order.map((t,i)=>`<button class="pzl-tile pzl-piece ${picked===i?'picked':''}" data-i="${i}" aria-label="Piece ${i+1}, rotated ${rot[t]} degrees">${tile(t,i)}</button>`).join('');};
+  function checkWin(){
+    if(solved || !order.every((t,i)=>t===i&&rot[t]===0))return;
+    solved=true;board.classList.add('solved');
+    const up=gameLevelUp('puzzle',1);
+    gameWin(pick(['Awesome job!','You did it!','Fantastic!']));
+    later(()=>endPanel(up?'Great! The next puzzle has more pieces.':'You finished the jigsaw!','🧩',startPuzzleMenu,up),1150);
   }
-  board.addEventListener('click', (e) => {
-    const b = e.target.closest('.pzl-tile'); if (!b || solved) return;
-    const i = +b.dataset.i;
-    if (pickA == null) { pickA = i; sfx.tap(); draw(); return; }
-    if (pickA !== i) {
-      [order[pickA], order[i]] = [order[i], order[pickA]];
-      tone([order[i] === i || order[pickA] === pickA ? 880 : 520], { dur: 0.06, vol: 0.1 });
-    }
-    pickA = null; draw();
-    if (order.every((v, j) => v === j)) {
-      solved = true;
-      board.classList.add('solved');
-      const up = gameLevelUp('puzzle', 1);
-      gameWin(pick(['Awesome job!', 'You did it!', 'Fantastic!']));
-      later(() => endPanel(up ? `You did it! Next: ${puzzleSize()}×${puzzleSize()} puzzles` : 'You did it!', '🧩', startPuzzleMenu, up), 1300);
-    }
+  board.addEventListener('click',e=>{
+    const b=e.target.closest('.pzl-piece');if(!b||solved)return;
+    const i=+b.dataset.i;
+    if(picked==null){picked=i;sfx.tap();}
+    else if(picked===i){rot[order[i]]=(rot[order[i]]+90)%360;picked=null;tone([650],{dur:.06,vol:.1});}
+    else{[order[picked],order[i]]=[order[i],order[picked]];picked=null;tone([680],{dur:.06,vol:.1});}
+    draw();checkWin();
   });
-  area.querySelector('[data-a="restart"]').onclick = () => { gameSession++; startPuzzle(p); };
-  area.querySelector('[data-a="pictures"]').onclick = () => { gameSession++; startPuzzleMenu(); };
+  area.querySelector('[data-a="restart"]').onclick=()=>{gameSession++;startPuzzle(p);};
+  area.querySelector('[data-a="pictures"]').onclick=()=>{gameSession++;startPuzzleMenu();};
   draw();
 }
 
