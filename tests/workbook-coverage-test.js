@@ -36,7 +36,12 @@ assert.equal(scene.squares.length,4);
 for(const obj of ['wind','leaf','jump','catch','climb','bird','water','wolf'])assert.ok(scene.forest.includes(obj),'forest object/action missing: '+obj);
 for(const name of ['garden','forest','room','square-room','savanna','sports','park','cafe']){
   const svg=d.illustrations.illustration(name);
-  assert.ok(svg.includes('<svg')&&svg.includes('</svg>')&&svg.length>1800,'missing illustrated scene: '+name);
+  assert.ok(svg.includes('<svg') && svg.includes('</svg>') &&
+    svg.includes('assets/workbook/'+name+'.svg'), 'missing external picture reference: '+name);
+  const external='assets/workbook/'+name+'.svg';
+  assert.ok(fs.existsSync(external), 'Missing standalone workbook picture '+external);
+  const drawing=fs.readFileSync(external,'utf8');
+  assert.ok(drawing.includes('viewBox') && drawing.length>1800, 'Invalid authored workbook picture '+external);
 }
 const traceWords=JSON.parse(fs.readFileSync('data/trace.json','utf8')).datasets.TRACE_WORDS.map(row => row[0]);
 const clips=JSON.parse(fs.readFileSync('audio/clips.json','utf8'));
