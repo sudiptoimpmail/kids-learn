@@ -1242,9 +1242,9 @@ function startDraw(refIndex) {
   const area = $('#gameArea');
   area.innerHTML = `<div class="dr-top"><div class="dr-ref">${ref.svg}<small>${ref.name}</small></div>
       <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>${trace ? 'Follow the gray lines with your finger.' : 'Look at the picture and draw your own!'}</small></div></div>
-    <div class="dr-pad">${trace ? `<div class="dr-guide" style="opacity:${lv === 1 ? 0.32 : 0.14}">${ref.svg}</div>` : ''}<canvas class="dr-cv"></canvas></div>
+    <div class="dr-zoom"><button data-dz="out" aria-label="Zoom out">−</button><button data-dz="reset" aria-label="Reset zoom">1×</button><button data-dz="in" aria-label="Zoom in">＋</button><span>Two fingers: zoom / move</span></div><div class="dr-pad">${trace ? `<div class="dr-guide" style="opacity:${lv === 1 ? 0.32 : 0.14}">${ref.svg}</div>` : ''}<canvas class="dr-cv"></canvas></div>
     <div class="dr-tools">${INK.map((c, i) => `<button class="dr-ink ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}"></button>`).join('')}
-      <button class="dr-size" data-s="6">•</button><button class="dr-size on" data-s="12">●</button><button class="dr-size" data-s="22">⬤</button>
+      <button class="dr-size" data-s="3" aria-label="Thin pencil">✎<small>Thin</small></button><button class="dr-size on" data-s="7" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" aria-label="Thick brush">🖌<small>Thick</small></button>
       <button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>
     <div class="color-btns"><button class="big-btn alt small ico" data-a="new" aria-label="New picture">🔄 New</button><button class="big-btn alt small ico" data-a="gallery" aria-label="My drawings">🖼️ Mine</button><button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
   say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
@@ -1253,7 +1253,7 @@ function startDraw(refIndex) {
   const W = pad.clientWidth;
   cv.width = cv.height = Math.round(W * dpr); cv.style.width = cv.style.height = W + 'px';
   const c = cv.getContext('2d'); c.scale(dpr, dpr); c.lineCap = c.lineJoin = 'round';
-  let color = INK[0], size = 12, erase = false, strokes = [], cur = null;
+  let color = INK[0], size = 7, erase = false, strokes = [], cur = null;
   const redraw = () => {
     c.clearRect(0, 0, W, W);
     for (const s of strokes) paint(s);
