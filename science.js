@@ -163,7 +163,7 @@ function genScience(level) {
     const [name, e, gi] = pick(items);
     const opts = groups.map((g) => ({ v: g, html: g }));
     return {
-      key: `sci-${q}-${name}`, text: q, say: [q, `${name}?`],
+      key: `sci-${q}-${name}`, text: q, say: [q, CLIPS[clipKey(`${name}?`)] ? `${name}?` : 'Find the answer!'],
       main: `<div class="sci-item"><span>${e}</span><b>${name}</b></div>`, mainClass: 'ph-main',
       options: opts, answer: groups[gi], optClass: 'opt-text',
       hint: { html: '', say: 'Think about it!', remove: true },
