@@ -12,6 +12,7 @@ assert.equal(icons.length,84,'84 learning picture subjects required');
 assert.equal(new Set(icons).size,84,'unique learning icons');
 assert.ok(!fs.existsSync('vendor/body.glb'),'Third-party CC BY anatomical GLB is still bundled');
 assert.ok(!fs.existsSync('body3d.js'),'Deprecated CC BY anatomical renderer still bundled');
+assert.ok(!read('app.js').includes("import('./body3d.js')"),'Dead runtime import for removed anatomy renderer');
 assert.ok(!fs.existsSync('assets/illustrations/ATTRIBUTION.md'),'Obsolete third-party SVG attribution/source still bundled');
 for(const name of icons){
  const f='assets/illustrations/'+name+'.svg',svg=read(f);
