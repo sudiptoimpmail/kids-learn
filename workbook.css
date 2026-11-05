@@ -45,3 +45,16 @@
 
 /* The Grade 1 word tracing tab must remain hidden for younger profiles. */
 #trace .tr-tab[hidden] { display:none !important; }
+
+/* Touch-first two-step shape page: trace the printed outline, then find it in the scene. */
+.ia-shape-step { width:min(100%,420px); margin:0 auto 14px; padding:11px 12px 8px; background:#fffaf0; border:3px solid #e8c28b; border-radius:19px; text-align:center; color:#4a4738; }
+.ia-trace-heading { display:flex; flex-direction:column; gap:3px; }
+.ia-trace-heading b { font-weight:900; font-size:1.12rem; }
+.ia-trace-heading small { font-size:.85rem; color:#5b6465; }
+.ia-trace-shape { width:min(100%,230px); height:auto; display:block; margin:4px auto; overflow:visible; touch-action:none; cursor:crosshair; }
+.ia-trace-ink { pointer-events:none; transition:stroke-dashoffset .07s linear; }
+.ia-trace-assist { color:#43616b; padding:7px 12px; background:#eef7ff; border:2px solid #aac7de; border-radius:11px; font-size:.84rem; font-weight:700; }
+.ia-shape-locked { filter:saturate(.62); }
+.ia-shape-locked .ia-hotspot { pointer-events:none; }
+.ia-shape-step .ia-trace-complete { opacity:.85; }
+@media (prefers-reduced-motion:reduce) { .ia-trace-ink {transition:none;} }
