@@ -18,7 +18,8 @@ const gameMax = maxLevelOf;
 const OPTIONAL = { clock: 'optClock', anatomy: 'optAnatomy' };  // off unless a parent turns them on in Settings
 // a child who reads and spells well doesn't need syllable clapping any more
 const strongReader = () => levelOf('spell') >= 4 || levelOf('sent') >= 3 || (levelOf('spell') >= 3 && (state.best.spell || 0) >= 3);
-const visibleGames = () => isTestMode() ? CATEGORIES.slice() : CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
+const visibleGames = () => isTestMode() ? CATEGORIES.slice() : CATEGORIES.filter((c) => c.id !== 'cmp' // comparisons are mixed into math, not shown as a separate game
+  && !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'syl' && !state.showAll && strongReader())
   && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
@@ -284,7 +285,12 @@ function startRound(catId, count, browse = false, atLevel = null) {
   const recent = new Set(state.recent[cat.id] || []);
   while (qs.length < N && guard++ < 600) {
     const c = cat.gen ? cat : real[Math.floor(Math.random() * real.length)];
-    const lv = atLevel || levelOf(c.id);
+    // Grade limits apply to individual questions, not only category tiles.
+    // Adaptive progress can be above a grade's range from an older profile; clamp
+    // ordinary child rounds, but preserve unrestricted explicit QA previews.
+    const range = state.grade && !state.showAll && !isTestMode() ? gradeRange(state.grade, c.id) : null;
+    const requestedLevel = atLevel || levelOf(c.id);
+    const lv = range ? Math.min(range[1], Math.max(range[0], requestedLevel)) : requestedLevel;
     // Illustrated activities appear as variations in existing question rounds.
     const illustrated = typeof IllustratedActivities !== 'undefined' &&
       IllustratedActivities.available(state.grade, c.id, lv) && (qs.length % 4 === 1 || (qs.length === 0 && Math.random() < 0.45));
@@ -293,7 +299,15 @@ function startRound(catId, count, browse = false, atLevel = null) {
     if (q.illustrated && seen.has(q.key)) q = c.gen(lv);
     if (seen.has(q.key) && guard < 500) continue;
     if (!browse && recent.has(q.key) && guard < 350) continue;
-    seen.add(q.key); q.cat = c; q.level = atLevel || levelOf(c.id); qs.push(q);
+    // Every delivered question carries its permitted grade set. Explicit per-item
+    // restrictions may narrow it further; never surface an older-grade card in Pre-K.
+    const eligibleGrades = Object.keys(GRADES).filter(grade => {
+      const allowed = gradeRange(grade, c.id);
+      return allowed && lv >= allowed[0] && lv <= allowed[1];
+    });
+    q.grades = Array.isArray(q.grades) ? q.grades.filter(g => eligibleGrades.includes(g)) : eligibleGrades;
+    if (!browse && !isTestMode() && state.grade && !state.showAll && !q.grades.includes(state.grade)) continue;
+    seen.add(q.key); q.cat = c; q.level = lv; qs.push(q);
   }
   if (!browse && !isTestMode()) { state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60); save(); }
   R = { cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse, atLevel };

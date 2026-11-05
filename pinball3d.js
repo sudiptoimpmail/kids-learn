@@ -24,7 +24,7 @@ const TABLES = [
   { name: 'Pirate Cove', icon: '🏴‍☠️', art: ['🏴‍☠️', '⚓', '🦜'], base: ['#0b5d6e', '#06394a'], ink: '#ffe8a3', glow: '#ffd43b', wall: '#8d5a2b', rubber: '#f1f3f5', flip: '#ff922b', bump: ['#ffd43b', '#ff8787', '#63e6be'], bumpIcons: ['💰', '🦜', '🐙'],
     bumpers: [[2.3, 13.5], [3.4, 11.6], [7.1, 13.9]], ramps: [RAMP_CENTER], drops: [[2.5, 8.6, 4.4, 8.6, 3]], spinners: [[0.1, 12.2, 1.35, 12.2]],
     rollovers: [[2.7, 15.9], [3.9, 16.6], [5.1, 16.8]], standups: [], saucers: [[7.25, 10.6, -5, -4]] },
-  { name: 'Candy Carnival', icon: '🍭', art: ['🍭', '🍩', '🧁'], base: ['#ff9fca', '#ffd6e8'], ink: '#ffffff', glow: '#fff3bf', wall: '#e64980', rubber: '#ffffff', flip: '#7048e8', bump: ['#4dabf7', '#ffd43b', '#69db7c', '#ff922b'], bumpIcons: ['🍬', '🍩', '🧁', '🍪'],
+  { name: 'Candy Carnival', icon: '🍭', art: ['🍭', '🍩', '🧁'], base: ['#651d58', '#391341'], ink: '#fff6d4', glow: '#ffe066', wall: '#e64980', rubber: '#ffffff', flip: '#7048e8', bump: ['#4dabf7', '#ffd43b', '#69db7c', '#ff922b'], bumpIcons: ['🍬', '🍩', '🧁', '🍪'],
     bumpers: [[4.4, 14.6], [3.1, 13.0], [5.7, 13.0], [4.4, 11.4]], ramps: [RAMP_RIGHT], drops: [], spinners: [[3.85, 8.6, 4.95, 8.6]],
     rollovers: [[3.0, 16.4], [5.8, 16.4]], standups: [[1.15, 10.4, 0], [2.3, 15.6, -0.6], [6.4, 15.9, 0.6]], saucers: [[1.6, 13.5, 4, -4]] },
   { name: 'Jungle Temple', icon: '🐒', art: ['🐒', '🦁', '🌴'], base: ['#2b8a3e', '#1b4d2a'], ink: '#d8f5a2', glow: '#fff3bf', wall: '#8d5a2b', rubber: '#f8f9fa', flip: '#ffd43b', bump: ['#ff922b', '#ff6b6b', '#fcc419'], bumpIcons: ['🦁', '🐒', '🦜'],
@@ -44,8 +44,7 @@ export function start(tableIndex) {
   const area = $('#gameArea');
   area.innerHTML = `<div class="pb-dmd"><div class="pb-dmd-top"><b class="pb-score">0</b><span class="pb-balls">● ● ●</span></div>
       <div class="pb-dmd-msg">${T.icon} ${T.name.toUpperCase()}</div><div class="pb-dmd-bot"><span>TARGET ${TARGET[lv - 1].toLocaleString()}</span><span class="pb-mult">×1</span></div></div>
-    <div class="b3-wrap pb-wrap"><canvas class="game-cv pb-cv"></canvas><div class="b3-msg" hidden></div><button class="pb-launch" aria-label="Launch ball from plunger">🚀<span>LAUNCH</span></button></div>
-    <div class="pb-btns"><button class="pb-flip" data-f="L" aria-label="Left flipper">↖<span>LEFT</span></button><button class="pb-flip" data-f="R" aria-label="Right flipper">↗<span>RIGHT</span></button></div>`;
+    <div class="b3-wrap pb-wrap"><canvas class="game-cv pb-cv"></canvas><div class="b3-msg" hidden></div><button class="pb-launch" aria-label="Pull down and release to launch the ball"><span class="pb-plunger-handle" aria-hidden="true"></span><span class="pb-launch-label">PULL</span></button></div>`;
   say('Tap to launch the ball!');
 
   const cv = $('.pb-cv', area), wrap = $('.b3-wrap', area);
@@ -313,15 +312,38 @@ export function start(tableIndex) {
     e.preventDefault();
     // The shooter-lane launch button handles launch; table touches always work the flippers.
     const r = cv.getBoundingClientRect(), side = e.clientX - r.left < r.width / 2 ? 'L' : 'R';
+    cv.setPointerCapture?.(e.pointerId);
     pointers.set(e.pointerId, side); press(side, true);
   });
   const release = (e) => { const side = pointers.get(e.pointerId); if (side) { pointers.delete(e.pointerId); if (![...pointers.values()].includes(side)) press(side, false); } };
-  cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', release);
-  $$('.pb-flip', area).forEach((b) => {
-    b.addEventListener('pointerdown', (e) => { e.preventDefault(); press(b.dataset.f, true); });
-    ['pointerup', 'pointercancel', 'pointerleave'].forEach((ev) => b.addEventListener(ev, () => press(b.dataset.f, false)));
+  cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', release); cv.addEventListener('lostpointercapture', release);
+  // Touch either half of the playfield to operate its physical flipper.
+  // A dedicated plunger lives next to the launch lane. Drag downward and let go.
+  const launcher = $('.pb-launch', area);
+  let pull = null;
+  launcher.addEventListener('pointerdown', e => {
+    if (!G.inLane || G.over) return;
+    e.preventDefault(); e.stopPropagation();
+    launcher.setPointerCapture?.(e.pointerId);
+    pull = { id:e.pointerId, y:e.clientY };
+    launcher.classList.add('pulling');
   });
-  $('.pb-launch', area).onclick = launch;
+  launcher.addEventListener('pointermove', e => {
+    if (!pull || pull.id !== e.pointerId) return;
+    launcher.style.setProperty('--pull', Math.min(30, Math.max(0,e.clientY-pull.y)) + 'px');
+  });
+  const releasePlunger = e => {
+    if (!pull || pull.id !== e.pointerId) return;
+    e.preventDefault(); e.stopPropagation();
+    pull = null; launcher.classList.remove('pulling');
+    launcher.style.removeProperty('--pull');
+    launch();
+  };
+  launcher.addEventListener('pointerup', releasePlunger);
+  launcher.addEventListener('pointercancel', e => {
+    if (!pull || pull.id !== e.pointerId) return;
+    pull = null; launcher.classList.remove('pulling'); launcher.style.removeProperty('--pull');
+  });
   const key = (e) => { const on = e.type === 'keydown'; if (e.key === 'ArrowLeft' || e.key === 'z') press('L', on); if (e.key === 'ArrowRight' || e.key === '/') press('R', on); if (on && (e.key === ' ' || e.key === 'ArrowDown')) launch(); };
   addEventListener('keydown', key); addEventListener('keyup', key);
 

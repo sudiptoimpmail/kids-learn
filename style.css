@@ -1110,3 +1110,28 @@ html, body { min-height: 100%; }
 .pzl-tile.jigsaw-piece:focus-visible { outline:3px solid #7048e8; outline-offset:3px; z-index:7; }
 .pz-board.solved .pzl-tile.jigsaw-piece { border-radius:0; }
 .pz-board.solved .jigsaw-art { overflow:visible; }
+
+
+/* Pinball uses the playfield itself for left/right flippers; no duplicate button bar. */
+.g-pinball .pb-wrap { width:100%; }
+.g-pinball .pb-dmd { padding-block:3px; }
+.g-pinball .pb-wrap .pb-launch { right:1%; bottom:5%; width:14%; min-width:56px; max-width:82px; height:98px; border-radius:24px; border:3px solid #fff7d6; background:linear-gradient(100deg,#fff5ae,#ffd43b 55%,#f59f00); box-shadow:inset 0 3px 5px #fff9,0 5px 0 #78480d; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; gap:4px; padding:8px 3px; touch-action:none; user-select:none; }
+.g-pinball .pb-launch[hidden] { display:none; }
+.g-pinball .pb-plunger-handle { width:33px; height:33px; border-radius:50%; background:radial-gradient(circle at 35% 25%,#fff,#f59f00 60%,#a84b0b); border:3px solid #8c4a17; box-shadow:0 3px 0 #753c15; transform:translateY(var(--pull,0px)); transition:transform .12s ease-out; }
+.g-pinball .pb-launch.pulling .pb-plunger-handle { transition:none; }
+.g-pinball .pb-launch-label { font:900 12px/1 system-ui,sans-serif; color:#4d290c; text-shadow:none; }
+.g-pinball .pb-launch:not(.pulling) .pb-plunger-handle { animation:pb-ready 1.6s ease-in-out infinite; }
+@keyframes pb-ready { 0%,100% {transform:translateY(0)} 55% {transform:translateY(16px)} }
+@media (prefers-reduced-motion:reduce){.g-pinball .pb-launch:not(.pulling) .pb-plunger-handle{animation:none}}
+/* Compact question card: answers stay outside it, and hints appear below choices. */
+#play .card { padding:14px 16px; border-top-width:5px; }
+#play .q-text { line-height:1.35; }
+#play .q-main:empty { display:none; }
+#play .q-main { min-height:0; margin:10px auto 2px; }
+#play .options { margin-top:12px; align-content:start; }
+#play .hint-box { width:100%; margin-top:12px; align-self:stretch; }
+@media (min-width:1000px) and (orientation:landscape) {
+ #play.active {grid-template-areas:"top top" "prog prog" "card opts" "card hint"; grid-template-rows:auto auto minmax(0,auto) auto; align-content:start;}
+ #play .hint-box {grid-area:hint; align-self:start;}
+ #play .options {align-self:start;}
+}
