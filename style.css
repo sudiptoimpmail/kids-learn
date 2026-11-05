@@ -1275,3 +1275,27 @@ html, body { min-height: 100%; }
   .q-main.syl-main .mini-speaker { font-size:22px; padding:6px 14px; }
   .options.syl-choices .opt small { letter-spacing:-1px; }
 }
+
+/* Body Parts: accessible hit-map over separately bundled high-quality child art. */
+.body-fig.body-photo-map {
+  display:block; margin-inline:auto;
+  width:min(285px,70vw,40dvh); height:auto; max-width:100%;
+  border-radius:22px; overflow:visible;
+  filter:drop-shadow(0 7px 7px #3b5b7922);
+}
+.body-photo-map > image { pointer-events:none; }
+.body-photo-map .body-hit ellipse {
+  fill:#fff; fill-opacity:0.001;
+  stroke:#2878d1; stroke-width:0; pointer-events:all;
+  transition:fill-opacity .2s,stroke-width .2s;
+}
+.body-photo-map .body-hit.hl ellipse {
+  fill:#fff7ad; fill-opacity:.48; stroke-width:2.7;
+  filter:drop-shadow(0 0 5px #fff3a2);
+}
+.body-photo-map .body-hit:focus-visible ellipse {
+  stroke:#2878d1; stroke-width:3; fill-opacity:.08;
+}
+.hint-mini .body-photo-map { width:min(145px,34vw); pointer-events:none; }
+.q-main.body-main { overflow:visible; }
+@media (min-width:700px) { .body-fig.body-photo-map { width:340px; } }
