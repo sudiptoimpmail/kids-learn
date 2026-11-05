@@ -38,11 +38,7 @@ for(const name of ['garden','forest','room','square-room','savanna','sports','pa
   const svg=d.illustrations.illustration(name);
   assert.ok(svg.includes('<svg')&&svg.includes('</svg>')&&svg.length>1800,'missing illustrated scene: '+name);
 }
-const trace=fs.readFileSync('trace.js','utf8');
-const from=trace.indexOf('const TRACE_WORDS = [');
-const to=trace.indexOf('\n];',from);
-assert.ok(from>0&&to>from);
-const traceWords=[...trace.slice(from,to).matchAll(/\['([a-z]+)',/g)].map(x=>x[1]);
+const traceWords=JSON.parse(fs.readFileSync('data/trace.json','utf8')).datasets.TRACE_WORDS.map(row => row[0]);
 const clips=JSON.parse(fs.readFileSync('audio/clips.json','utf8'));
 assert.ok(traceWords.length>=28,'too few Grade 1 handwriting words');
 for(const word of traceWords)assert.ok(clips[word],'tracing word has no natural audio: '+word);
