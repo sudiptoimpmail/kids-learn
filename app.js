@@ -262,7 +262,7 @@ function renderHome() {
   if (typeof renderQuest === 'function') renderQuest();
   const groups = [
     ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'match', 'syl']],
-    ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'mul', 'div', 'clock', 'shape2']],
+    ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'frac', 'measure', 'mul', 'div', 'clock', 'shape2']],
     ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], 'brain'],
     ['🌍 Science & World', ['sci', 'home', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
   ];

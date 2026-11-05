@@ -7,7 +7,7 @@
     'feature-flags.js','storage.js','geo.js','art-engine.js','landmark-engine.js',
     'story-engine.js','words.js','phonics.js','early-words.js','grade1words.js',
     'photos.js','illustrations.js','content.js','content-packs.js',
-    'thinking.js','country.js','science.js','grammar.js','numsense.js',
+    'thinking.js','country.js','science.js','grammar.js','numsense.js','math23.js',
     'grade1.js','app.js','scene-engine.js','games.js','pathmaze.js',
     'radialmaze.js','wordgames.js','trace.js','progress.js','workbook.js'
   ];

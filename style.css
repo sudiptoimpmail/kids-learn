@@ -1325,3 +1325,21 @@ html, body { min-height: 100%; }
 .ns-coins .ns-coin { height:auto !important; display:flex; flex-direction:column; align-items:center; gap:2px; }
 .ns-coins .ns-coin .ns-currency-picture { width:100%; height:auto; aspect-ratio:1; }
 .ns-coin-val { font-size:15px; font-weight:900; color:#343a40; background:#fff; border-radius:999px; padding:1px 8px; box-shadow:0 1px 3px #0002; line-height:1.3; }
+
+/* Grade 2–3 math: fractions, number lines, rulers, graphs, area */
+.m23-bar { width:min(300px,80vw); height:auto; display:block; margin:6px auto; }
+.opt .m23-bar { width:100%; margin:0; }
+.m23-line { width:min(420px,88vw); height:auto; }
+.m23-ruler { width:min(440px,90vw); height:auto; display:block; margin:4px auto; }
+.m23-graph { width:min(400px,88vw); height:auto; }
+.m23-area { width:min(240px,64vw); height:auto; }
+.m23-cmp, .m23-eq { display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; }
+.m23-cmp > div { width:min(170px,38vw); text-align:center; }
+.m23-cmp .m23-bar { width:100%; }
+.m23-eq { flex-direction:column; gap:4px; }
+.m23-pict { display:grid; gap:6px; font-size:20px; text-align:left; }
+.m23-pict > div { display:flex; gap:10px; align-items:center; } .m23-pict span { min-width:140px; font-weight:800; }
+.m23-pict small { font-weight:800; color:#495057; }
+.m23-rect { position:relative; width:var(--w); height:var(--h); background:#d0ebff; border:4px solid #1c7ed6; border-radius:4px; margin:30px auto 10px; }
+.m23-rect .m23-top { position:absolute; top:-30px; left:0; right:0; text-align:center; font-weight:900; }
+.m23-rect .m23-side { position:absolute; right:-70px; top:50%; transform:translateY(-50%); font-weight:900; width:64px; text-align:left; }

@@ -833,7 +833,7 @@ function clockSVG(h, m, cls = 'clock') {
 const timeStr = (h, m) => `${h}:${String(m).padStart(2, '0')}`;
 function randTime(level) {
   const h = 1 + rand(12);
-  const mins = level === 1 ? [0] : level === 2 ? [0, 30] : level === 3 ? [0, 15, 30, 45] : Array.from({ length: 12 }, (_, i) => i * 5);
+  const mins = level === 1 ? [0] : level === 2 ? [0, 30] : level === 3 ? [0, 15, 30, 45] : level === 4 ? Array.from({ length: 12 }, (_, i) => i * 5) : Array.from({ length: 60 }, (_, i) => i);   // level 5+: to the minute
   return [h, pick(mins)];
 }
 function genClock(level) {
@@ -1687,11 +1687,13 @@ const CATEGORIES = [
   { id: 'sub', title: 'Subtraction', sub: '5 − 2 · 642 − 358', icon: '➖', color: '#f783ac', gen: genSub, maxLevel: 8 },
   { id: 'story', title: 'Word Problems', sub: 'math stories', icon: '📝', color: '#4c6ef5', gen: genWordProblem, maxLevel: 5 },
   { id: 'cmp', title: 'Compare', sub: '7 > 3 · 2 < 9', icon: '🐊', color: '#40c057', gen: genCompare, maxLevel: 5 },
-  { id: 'mul', title: 'Multiply', sub: '3 × 4 = ?', icon: '✖️', color: '#fa5252', gen: genMul, maxLevel: 5 },
+  { id: 'mul', title: 'Multiply', sub: '3 × 4 = ?', icon: '✖️', color: '#fa5252', gen: (l) => genMulPlus(l), maxLevel: 6 },
   { id: 'div', title: 'Divide', sub: 'share equally', icon: '➗', color: '#15aabf', gen: genDiv, maxLevel: 5 },
-  { id: 'clock', title: 'Clock', sub: 'tell the time', icon: '🕐', color: '#7950f2', gen: genClock, maxLevel: 4 },
+  { id: 'clock', title: 'Clock', sub: 'tell the time', icon: '🕐', color: '#7950f2', gen: (l) => genClockPlus(l), maxLevel: 6 },
+  { id: 'frac', title: 'Fractions', sub: '½ · ⅓ · ¼', icon: '🍕', color: '#f59f00', gen: (l) => genFractions(l), maxLevel: 4 },
+  { id: 'measure', title: 'Measure & Graphs', sub: 'rulers · graphs · area', icon: '📏', color: '#1098ad', gen: (l) => genMeasure(l), maxLevel: 4 },
   { id: 'shape2', title: 'Shapes', sub: 'flat & 3D shapes', icon: '🔺', color: '#ffa94d', gen: genShapes, maxLevel: 4 },
-  { id: 'numsense', title: 'Number Sense', sub: 'place value · fractions · money', icon: '🧮', color: '#0ca678', gen: (l) => genNumSense(l), maxLevel: 5 },
+  { id: 'numsense', title: 'Number Sense', sub: 'place value · fractions · money', icon: '🧮', color: '#0ca678', gen: (l) => genNumSensePlus(l), maxLevel: 5 },
   { id: 'sci', title: 'Science', sub: 'living things · matter · space', icon: '🔬', color: '#1098ad', gen: (l) => genScience(l), maxLevel: 4 },
   { id: 'home', title: 'My Country', sub: 'symbols · places · facts', icon: '🏳️', color: '#e03131', gen: (l) => genCountry(l), maxLevel: 4 },
   { id: 'body', title: 'Body Parts', sub: 'nose · knees · elbows', icon: '🙋', color: '#ff8787', gen: genBody },

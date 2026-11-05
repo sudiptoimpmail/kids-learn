@@ -4,7 +4,7 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v63';
+const VERSION = PREFIX + 'v64';
 const AUDIO = PREFIX + 'audio';
 const FILES = [
   "./",
@@ -26,6 +26,7 @@ const FILES = [
   "science.js",
   "grammar.js",
   "numsense.js",
+  "math23.js",
   "grade1.js",
   "app.js",
   "games.js",
