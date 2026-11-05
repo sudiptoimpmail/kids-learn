@@ -40,11 +40,10 @@ const { chromium } = require('playwright');
       state.gameLv.puzzle = 1;
       openGame('puzzle');
       startPuzzle(ALL_PICS[0]);
-      const p = ALL_PICS[0], n = 2, part = p.vb / n;
+      const p = ALL_PICS[0], n = 2;
       const board = document.querySelector('.pz-board');
       function tileAt(i) {
-        const v = board.children[i].querySelector('svg').getAttribute('viewBox').split(/\s+/).map(Number);
-        return Math.round(v[0] / part) + n * Math.round(v[1] / part);
+        return Number(board.children[i].dataset.piece);
       }
       const oldWins = (state.gameWins && state.gameWins.puzzle) || 0;
       for (let i = 0; i < n * n; i++) {
