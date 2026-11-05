@@ -1288,16 +1288,55 @@ function startDraw(refIndex) {
     }
     c.globalCompositeOperation = 'source-over';
   }
-  const pt = (e) => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * (W / r.width), (e.clientY - r.top) * (W / r.height)]; };
-  cv.addEventListener('pointerdown', (e) => { e.preventDefault(); cv.setPointerCapture && cv.setPointerCapture(e.pointerId); cur = { color, size: erase ? size * 2 : size, erase, pts: [pt(e)] }; strokes.push(cur); paint(cur); });
-  cv.addEventListener('pointermove', (e) => {
-    if (!cur) return;
-    const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
-    for (const ev of evs) cur.pts.push(pt(ev));
-    redrawLast();
+  const pt = e => {
+    const r = pad.getBoundingClientRect();
+    return [(e.clientX - r.left - panX) * W / r.width / zoom,
+            (e.clientY - r.top - panY) * W / r.height / zoom];
+  };
+  pad.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    pad.setPointerCapture?.(e.pointerId);
+    touches.set(e.pointerId, [e.clientX, e.clientY]);
+    if (touches.size > 1) {
+      if (cur) { strokes.pop(); cur = null; redraw(); }
+      const points = [...touches.values()];
+      gesture = { distance: Math.hypot(points[0][0] - points[1][0], points[0][1] - points[1][1]),
+        zoom, panX, panY, cx: (points[0][0] + points[1][0]) / 2, cy: (points[0][1] + points[1][1]) / 2 };
+      return;
+    }
+    // When enlarged, one finger pans; Apple Pencil still paints.
+    if (zoom > 1 && e.pointerType === 'touch') return;
+    cur = { color, size: erase ? size * 2 : size, erase, pts: [pt(e)] };
+    strokes.push(cur);
+    paint(cur);
   });
-  const end = () => { cur = null; };
-  cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+  pad.addEventListener('pointermove', e => {
+    if (!touches.has(e.pointerId)) return;
+    const old = touches.get(e.pointerId);
+    touches.set(e.pointerId, [e.clientX, e.clientY]);
+    if (touches.size > 1 && gesture) {
+      const points = [...touches.values()];
+      const distance = Math.hypot(points[0][0] - points[1][0], points[0][1] - points[1][1]);
+      zoom = Math.max(1, Math.min(3.5, gesture.zoom * distance / Math.max(1, gesture.distance)));
+      panX = gesture.panX + (points[0][0] + points[1][0]) / 2 - gesture.cx;
+      panY = gesture.panY + (points[0][1] + points[1][1]) / 2 - gesture.cy;
+      view();
+      return;
+    }
+    if (zoom > 1 && e.pointerType === 'touch') {
+      panX += e.clientX - old[0]; panY += e.clientY - old[1]; view(); return;
+    }
+    if (!cur) return;
+    for (const ev of (e.getCoalescedEvents ? e.getCoalescedEvents() : [e])) cur.pts.push(pt(ev));
+    redraw();
+  });
+  const end = e => {
+    touches.delete(e.pointerId);
+    cur = null;
+    if (touches.size < 2) gesture = null;
+  };
+  pad.addEventListener('pointerup', end);
+  pad.addEventListener('pointercancel', end);
   function redrawLast() { redraw(); }
   $$('.dr-ink', area).forEach((b) => (b.onclick = () => { $$('.dr-ink', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); color = b.dataset.c; erase = false; $('[data-t="erase"]', area).classList.remove('on'); sfx.tap(); }));
   $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; sfx.tap(); }));
