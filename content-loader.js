@@ -34,17 +34,16 @@
       },
       namespaces: () => [...data.keys()]
     });
-    // Preserve the classic script/global scope semantics and dependency order.
-    for (const path of SCRIPTS) {
-      await new Promise((resolve, reject) => {
-        const el = document.createElement('script');
-        el.src = path;
-        el.async = false;
-        el.onload = resolve;
-        el.onerror = () => reject(new Error('Could not load ' + path));
-        document.body.appendChild(el);
-      });
-    }
+    // Fetch bundled engines in parallel while executing classic scripts in order.
+    // async=false on dynamically inserted scripts retains dependency ordering.
+    await Promise.all(SCRIPTS.map(path => new Promise((resolve, reject) => {
+      const el = document.createElement('script');
+      el.src = path;
+      el.async = false;
+      el.onload = resolve;
+      el.onerror = () => reject(new Error('Could not load ' + path));
+      document.body.appendChild(el);
+    })));
     if (status) status.textContent = '';
     if (play) play.disabled = false;
     return true;
