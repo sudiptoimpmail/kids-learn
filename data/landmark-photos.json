@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "namespace": "landmark-photos",
+  "datasets": {
+    "ids": [],
+    "status": "pending-curated-photographs",
+    "acceptedLicense": [
+      "CC0",
+      "Public Domain",
+      "CC BY 4.0 (with attribution)",
+      "CC BY-SA 4.0 (with attribution and share-alike compliance)"
+    ],
+    "minimumWidth": 480,
+    "minimumHeight": 320
+  }
+}

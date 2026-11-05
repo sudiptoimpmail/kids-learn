@@ -1,0 +1,818 @@
+{
+  "schema": 1,
+  "namespace": "upper-grade-stories",
+  "datasets": {
+    "STORIES": [
+      [
+        4,
+        "Mina planted beans in two pots on her porch. She watered both pots each morning, but one stayed in the shade. After a week, the sunny plant had grown taller. Mina wrote the heights in her notebook.",
+        [
+          [
+            "What did Mina keep the same for both plants?",
+            [
+              "how often she watered them",
+              "how much sunlight they received",
+              "the height of the plants"
+            ]
+          ],
+          [
+            "What was different about the two pots?",
+            [
+              "the amount of sunlight",
+              "the kind of seed",
+              "the day they were planted"
+            ]
+          ],
+          [
+            "Why did Mina write down their heights?",
+            [
+              "to compare how they grew",
+              "to change the color of the beans",
+              "to remember which pot was heavier"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Leo checked out a book about whales. When it was time to return the book, he could not find it in his bag. He searched his desk and discovered it under a drawing folder. He returned it before the library closed.",
+        [
+          [
+            "Where did Leo find the book?",
+            [
+              "under a drawing folder",
+              "inside his shoe",
+              "on the library roof"
+            ]
+          ],
+          [
+            "Why was Leo searching?",
+            [
+              "he needed to return the book",
+              "he wanted a new folder",
+              "he was counting books"
+            ]
+          ],
+          [
+            "What does the story show about Leo?",
+            [
+              "he took responsibility for the book",
+              "he stopped caring about the library",
+              "he borrowed the same book twice"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "A bicycle tire felt soft after riding over a sharp stone. Dad helped Amir inspect it and find a tiny hole in the inner tube. They patched the hole, added air and checked that the tire stayed firm. Amir wore his helmet before riding again.",
+        [
+          [
+            "What caused the tire to lose air?",
+            [
+              "a tiny hole in the tube",
+              "a missing bicycle bell",
+              "a loose helmet"
+            ]
+          ],
+          [
+            "What did they do after patching the hole?",
+            [
+              "added air and checked the tire",
+              "painted the bicycle",
+              "bought a new helmet"
+            ]
+          ],
+          [
+            "Which detail shows they tested their repair?",
+            [
+              "they checked that the tire stayed firm",
+              "they looked at a sharp stone",
+              "Amir wore his helmet"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "The class sorted used paper, cans and bottles into separate bins. At the end of the day, one bin contained 12 paper items and another held 8 cans. The children made a picture graph to show what they collected.",
+        [
+          [
+            "How many more paper items than cans were collected?",
+            [
+              "4",
+              "8",
+              "20"
+            ]
+          ],
+          [
+            "Why did the class make a picture graph?",
+            [
+              "to compare the collected items",
+              "to tell the weather",
+              "to draw the school building"
+            ]
+          ],
+          [
+            "What did the children sort?",
+            [
+              "paper, cans and bottles",
+              "food, shoes and pencils",
+              "leaves, soil and seeds"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Three paper airplanes flew across the classroom. Ana's plane traveled 7 floor tiles, Ben's traveled 5 and Jo's traveled 9. The children used the same starting line and measured every flight in tiles.",
+        [
+          [
+            "Whose plane traveled farthest?",
+            [
+              "Jo's",
+              "Ana's",
+              "Ben's"
+            ]
+          ],
+          [
+            "How much farther did Ana's plane travel than Ben's?",
+            [
+              "2 tiles",
+              "4 tiles",
+              "12 tiles"
+            ]
+          ],
+          [
+            "Why was using the same starting line helpful?",
+            [
+              "it made the distances easier to compare",
+              "it changed the color of the planes",
+              "it made every plane fly the same distance"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "At a museum, Isha saw a fossil shaped like a leaf. A guide explained that fossils can show us what living things were like long ago. Isha sketched the fossil and wrote down its shape.",
+        [
+          [
+            "What did Isha see at the museum?",
+            [
+              "a leaf-shaped fossil",
+              "a living dinosaur",
+              "a new bicycle"
+            ]
+          ],
+          [
+            "What can fossils tell us?",
+            [
+              "about living things from long ago",
+              "tomorrow's weather",
+              "how to build a kite"
+            ]
+          ],
+          [
+            "Why did Isha sketch the fossil?",
+            [
+              "to record what she observed",
+              "to turn it into a leaf",
+              "to make the fossil larger"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Each autumn, some geese leave the cold northern lakes. They travel to places where food and open water are easier to find. When warmer weather returns, many geese fly north again.",
+        [
+          [
+            "Why do many geese travel south?",
+            [
+              "to find food and open water",
+              "to build houses",
+              "to learn to swim"
+            ]
+          ],
+          [
+            "What happens when warmer weather returns?",
+            [
+              "many fly north again",
+              "all geese stop flying forever",
+              "the lakes turn into deserts"
+            ]
+          ],
+          [
+            "What is this seasonal journey called?",
+            [
+              "migration",
+              "evaporation",
+              "erosion"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "A picnic was planned for noon, but dark clouds appeared at eleven. The family checked the forecast and moved the picnic to a shelter near the playground. When the rain began, everyone stayed dry and enjoyed lunch.",
+        [
+          [
+            "Why did the family change its picnic spot?",
+            [
+              "rain was expected",
+              "the playground had disappeared",
+              "lunch was not ready"
+            ]
+          ],
+          [
+            "Where did they eat lunch?",
+            [
+              "under a shelter",
+              "in the middle of the field",
+              "on the wet swings"
+            ]
+          ],
+          [
+            "What helped the family make its decision?",
+            [
+              "checking the weather forecast",
+              "counting their sandwiches",
+              "measuring their shoes"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "In a neighborhood pond, students noticed that thick green algae covered more of the surface than last month. Their teacher explained that extra nutrients from fertilizers can increase algae growth. The class compared photographs from two months and wrote a list of questions to investigate. They did not assume one cause without collecting more evidence.",
+        [
+          [
+            "Why did the class compare photographs?",
+            [
+              "to notice changes in the pond",
+              "to choose a new camera",
+              "to count classroom desks"
+            ]
+          ],
+          [
+            "Which statement shows careful scientific thinking?",
+            [
+              "They gathered evidence before deciding on a cause.",
+              "They knew the answer without observing.",
+              "They measured only the color of their notebooks."
+            ]
+          ],
+          [
+            "What might help algae grow too much?",
+            [
+              "extra nutrients entering the water",
+              "the absence of sunlight everywhere",
+              "fewer nutrients in every case"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "A road map from fifty years ago showed a bridge on the east side of town. On a current map, the bridge was farther north. A historian explained that roads and bridges are sometimes changed as communities grow. Priya compared the maps and marked both bridge locations with different colors.",
+        [
+          [
+            "What did Priya compare?",
+            [
+              "an old map and a current map",
+              "two recipes",
+              "two music recordings"
+            ]
+          ],
+          [
+            "What conclusion can Priya reasonably make?",
+            [
+              "the town's roads have changed over time",
+              "all old maps are incorrect",
+              "bridges can never be moved"
+            ]
+          ],
+          [
+            "Why did she use different colors?",
+            [
+              "to distinguish the two locations",
+              "to change the real bridge",
+              "to show the weather"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Three groups filled identical jars with soil, leaves and fruit scraps. One jar was kept dry, and the others received different amounts of water. Over several weeks, the children measured how quickly the scraps broke down. They recorded temperature and moisture so they could explain differences fairly.",
+        [
+          [
+            "What did the children investigate?",
+            [
+              "how moisture affects decomposition",
+              "which jar is most colorful",
+              "how fast fruit grows on trees"
+            ]
+          ],
+          [
+            "Why did the groups use identical jars?",
+            [
+              "to make the comparison fairer",
+              "to guarantee identical results",
+              "to stop leaves from decomposing"
+            ]
+          ],
+          [
+            "Which evidence would best support a conclusion?",
+            [
+              "recorded changes over several weeks",
+              "one guess before the experiment",
+              "the names of the children"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "At the science fair, Noor built a maze for a metal paper clip. She placed a magnet beneath a cardboard sheet and moved it slowly. The paper clip followed without the magnet touching it. Noor tried the same activity with a plastic button, which did not move in the same way.",
+        [
+          [
+            "What moved the paper clip through the maze?",
+            [
+              "magnetic force",
+              "a hidden string",
+              "the color of the cardboard"
+            ]
+          ],
+          [
+            "Why did Noor test a plastic button?",
+            [
+              "to compare how different materials respond",
+              "to make the maze bigger",
+              "to turn the magnet into plastic"
+            ]
+          ],
+          [
+            "What did the two tests suggest?",
+            [
+              "the materials responded differently to the magnet",
+              "all objects are attracted equally",
+              "cardboard blocks every magnetic force"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "After heavy rain, the stream near Maya's school became wider and faster. The class studied a map showing which paths were on higher ground. Instead of walking beside the water, they chose a safer route to the park. Later they discussed why rivers need room to rise during storms.",
+        [
+          [
+            "Why did the class avoid the stream path?",
+            [
+              "the water was higher and faster",
+              "the path was painted blue",
+              "they forgot their maps"
+            ]
+          ],
+          [
+            "What did the higher-ground map help them do?",
+            [
+              "choose a safer route",
+              "predict the color of the stream",
+              "make the stream deeper"
+            ]
+          ],
+          [
+            "Which statement is supported by the story?",
+            [
+              "Heavy rain can change river conditions.",
+              "Streams always stay the same width.",
+              "Maps cannot help with safety."
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "A town planned a new playground. Some children who used wheelchairs explained that loose gravel made it difficult to move. Designers compared surfaces and tested routes with families before choosing a smoother path. The final plan included a wide entrance and places where everyone could play together.",
+        [
+          [
+            "Why did the designers change the path?",
+            [
+              "to improve accessibility for more children",
+              "to make the entrance narrower",
+              "to prevent any children from playing"
+            ]
+          ],
+          [
+            "What helped the designers make a better decision?",
+            [
+              "listening to families and testing routes",
+              "choosing the cheapest color",
+              "building before asking questions"
+            ]
+          ],
+          [
+            "What does accessibility mean in this passage?",
+            [
+              "making spaces usable for different people",
+              "keeping playgrounds locked",
+              "painting every surface the same color"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "On a sunny afternoon, two thermometers were placed near the same school. One stood over dark pavement and the other beneath a leafy tree. The pavement reading was higher, even though both thermometers were outdoors. Students repeated the measurements at the same time on three more days. They reasoned that shade and surface materials could affect local temperatures, but they wanted more evidence before reaching a firm conclusion.",
+        [
+          [
+            "What variable did the students compare?",
+            [
+              "pavement and shaded locations",
+              "different cities",
+              "different brands of notebooks"
+            ]
+          ],
+          [
+            "Why did they repeat the measurements?",
+            [
+              "to check whether the pattern was consistent",
+              "to make both places the same temperature",
+              "to stop the sun from shining"
+            ]
+          ],
+          [
+            "Which claim is best supported?",
+            [
+              "Shade and surface type can influence nearby temperatures.",
+              "All trees lower temperature by exactly ten degrees.",
+              "Dark pavement always has the same temperature."
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Kai built a simple circuit with a battery, a switch and a small lamp. When he closed the switch, the lamp turned on. Opening the switch made the lamp go dark. He noticed that a disconnected wire had the same effect because the electrical path was broken. Before changing the design, Kai drew a diagram and labeled each component so classmates could check his explanation.",
+        [
+          [
+            "What did closing the switch do?",
+            [
+              "completed the circuit",
+              "removed the battery",
+              "changed the lamp into a magnet"
+            ]
+          ],
+          [
+            "Why did the lamp go dark when a wire disconnected?",
+            [
+              "the electrical path was broken",
+              "the lamp became too heavy",
+              "the switch changed color"
+            ]
+          ],
+          [
+            "How did the diagram help the class?",
+            [
+              "it showed the circuit parts and connections",
+              "it guaranteed the lamp would last forever",
+              "it measured the classroom temperature"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Two bean seedlings were placed in equal-size pots filled with the same soil. The students gave both plants equal water, but one received six hours of sunlight and the other received two. Each Friday they measured stem height and counted leaves. After four weeks, the group compared its observations, discussed other possible explanations and planned a second trial. They understood that one short test was not enough to prove every plant would behave the same way.",
+        [
+          [
+            "Which factor was intentionally changed?",
+            [
+              "hours of sunlight",
+              "type of soil",
+              "amount of water"
+            ]
+          ],
+          [
+            "Which two observations were recorded?",
+            [
+              "stem height and number of leaves",
+              "soil color and classroom music",
+              "pot price and plant names"
+            ]
+          ],
+          [
+            "Why did the students plan another trial?",
+            [
+              "to test whether the result could be repeated",
+              "to avoid recording evidence",
+              "to guarantee the plants grew equally"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "A robotics team tested two small bridge designs made from the same number of paper strips. The first design used a flat deck, while the second folded strips into triangular supports. The students added washers one at a time until each bridge bent. The supported bridge held more washers in their test. They recorded the results rather than claiming that every triangular bridge must be strongest in every situation.",
+        [
+          [
+            "What was different between the bridges?",
+            [
+              "their support shapes",
+              "the number of paper strips",
+              "the number of testers"
+            ]
+          ],
+          [
+            "How did the team compare their strength?",
+            [
+              "added washers until each bridge bent",
+              "counted how many students liked the design",
+              "measured only the bridge color"
+            ]
+          ],
+          [
+            "Why was the team's conclusion cautious?",
+            [
+              "one test does not prove all designs behave alike",
+              "washers cannot be counted",
+              "triangles are never useful"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "During a beach cleanup, volunteers collected tiny plastic fragments along with bottles and wrappers. A marine biologist explained that small fragments can be eaten by animals and may move through a food web. The volunteers recorded the types of litter they found and shared their results with the community. They also discussed reducing waste before it reaches rivers and the ocean.",
+        [
+          [
+            "Why are tiny plastic fragments concerning?",
+            [
+              "animals may swallow them",
+              "they make all fish grow faster",
+              "they dissolve into fresh air immediately"
+            ]
+          ],
+          [
+            "What evidence did the volunteers record?",
+            [
+              "the types of litter collected",
+              "the favorite sports of visitors",
+              "the shape of the nearby clouds"
+            ]
+          ],
+          [
+            "Which action addresses the problem before litter enters the ocean?",
+            [
+              "reducing waste upstream",
+              "adding more plastic wrappers",
+              "hiding litter under sand"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "For ten days, Nia used a rain gauge to measure precipitation. She wrote each amount in a table and then made a bar graph. Most days had little rain, but one storm day was much wetter. The tall bar made the unusual day easy to see. Nia explained that a graph helps show patterns, but the data alone did not tell her why the storm occurred.",
+        [
+          [
+            "What was Nia measuring?",
+            [
+              "rainfall",
+              "wind speed",
+              "length of daylight"
+            ]
+          ],
+          [
+            "Why was one bar much taller?",
+            [
+              "one day had much more rain",
+              "the ruler changed color",
+              "the graph was printed sideways"
+            ]
+          ],
+          [
+            "What could Nia NOT determine from the graph alone?",
+            [
+              "the cause of the storm",
+              "which day had the most rain",
+              "which day had the least rain"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "A neighborhood garden collected rainwater in a covered barrel. The gardeners measured how much water their vegetables needed each week. When rain was scarce, they used stored water carefully and added mulch to slow evaporation from the soil. At a meeting, they compared two watering plans and chose one that would save water without leaving plants dry.",
+        [
+          [
+            "Why did the gardeners use mulch?",
+            [
+              "to slow water loss from the soil",
+              "to make soil disappear",
+              "to stop all plants from needing light"
+            ]
+          ],
+          [
+            "What information helped them choose a watering plan?",
+            [
+              "water needs and stored supply",
+              "the colors of the garden tools",
+              "the names of nearby roads"
+            ]
+          ],
+          [
+            "What was the main goal of their plan?",
+            [
+              "conserve water while keeping plants healthy",
+              "empty the rain barrel every morning",
+              "grow plants without any water"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Archaeologists found pieces of clay pottery near the remains of an old settlement. Some fragments had patterns made by pressing lines into wet clay. Researchers photographed the pieces, measured them and compared the patterns with objects from other nearby sites. They proposed possible explanations about how the pottery was used, but made clear that the evidence did not reveal every detail of the past.",
+        [
+          [
+            "What did researchers compare?",
+            [
+              "patterns on pottery from different sites",
+              "modern school uniforms",
+              "the number of clouds"
+            ]
+          ],
+          [
+            "Why did researchers document the fragments?",
+            [
+              "to preserve evidence for study",
+              "to turn clay into metal",
+              "to make every pattern identical"
+            ]
+          ],
+          [
+            "Which conclusion is most reasonable?",
+            [
+              "objects can give clues about earlier lives",
+              "one fragment proves every historical detail",
+              "pottery can only be used for decoration"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "A small town considered installing solar panels near its library. Students learned that panels generate more electricity in stronger sunlight, while cloudy weather can reduce output. They compared monthly estimates and discussed ways to store or obtain energy when sunlight was limited. Their report included both advantages and limitations instead of saying the panels would solve every energy problem.",
+        [
+          [
+            "What can reduce the panels' electricity production?",
+            [
+              "limited sunlight",
+              "a larger library card",
+              "the number of books on a shelf"
+            ]
+          ],
+          [
+            "Why did students discuss energy storage?",
+            [
+              "electricity is still needed when sunlight is low",
+              "solar panels work only at night",
+              "clouds are made of batteries"
+            ]
+          ],
+          [
+            "What made the report balanced?",
+            [
+              "it described benefits and limitations",
+              "it ignored all challenges",
+              "it used guesses without evidence"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "At dusk, bats flew above an orchard searching for insects. The farmer had once believed that bats were pests, but learned that many bats eat large numbers of insects. After talking with a wildlife specialist, the farmer installed a small bat house away from busy paths. The orchard team then observed how many bats visited over the following weeks.",
+        [
+          [
+            "What did the farmer learn about many bats?",
+            [
+              "they eat insects",
+              "they are all unable to fly",
+              "they make fruit grow instantly"
+            ]
+          ],
+          [
+            "Why did the team watch the orchard over time?",
+            [
+              "to collect evidence about bat visits",
+              "to make the bats change colors",
+              "to count only the trees"
+            ]
+          ],
+          [
+            "What lesson does the passage suggest?",
+            [
+              "new evidence can change a person's opinion",
+              "every bat eats the same food",
+              "animals should never be observed"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Every clear evening, Priya drew the moon's visible shape in a journal. Over several weeks, the bright portion appeared to change. Her teacher explained that the moon reflects sunlight and its appearance depends on the positions of the sun, Earth and moon. Priya arranged her drawings in date order and looked for a repeating pattern rather than expecting the shape to stay the same.",
+        [
+          [
+            "Why did the moon appear to change shape?",
+            [
+              "we see different portions of its sunlit half",
+              "the moon turned into a different planet",
+              "it stopped reflecting light"
+            ]
+          ],
+          [
+            "How did putting the drawings in date order help?",
+            [
+              "it revealed a pattern over time",
+              "it changed the moon's orbit",
+              "it made every drawing identical"
+            ]
+          ],
+          [
+            "What is the moon's light mainly?",
+            [
+              "reflected sunlight",
+              "light from its own fires",
+              "light from ocean waves"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "A class built a simple filter using gravel, sand and a coffee filter. Muddy water became clearer after passing through the layers. The teacher reminded the class that clearer water is not necessarily safe to drink, because tiny germs and dissolved substances may remain. Students compared the water before and after filtering and wrote questions for future investigations.",
+        [
+          [
+            "What change did the students observe?",
+            [
+              "the water looked clearer",
+              "the water turned into ice",
+              "the filter created clean drinking water"
+            ]
+          ],
+          [
+            "Why did the teacher warn the class?",
+            [
+              "clear water can still contain germs or dissolved substances",
+              "sand always makes water safe",
+              "all muddy water is harmless"
+            ]
+          ],
+          [
+            "Which question would be useful to investigate next?",
+            [
+              "What else must be removed to make water safe?",
+              "How can we drink the water without testing?",
+              "How can we avoid recording results?"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "The student council wanted to make the schoolyard more welcoming. Some children asked for quiet benches; others wanted more room to play basketball. The council counted how many students used each area, interviewed classmates and drew two possible layouts. Before recommending a plan, they considered cost, accessibility and how each group would share the space. Their proposal explained its reasons rather than claiming everyone had the same preference.",
+        [
+          [
+            "Why did the council interview students?",
+            [
+              "to understand different needs",
+              "to make everyone choose basketball",
+              "to avoid drawing plans"
+            ]
+          ],
+          [
+            "Which consideration makes a playground more welcoming?",
+            [
+              "accessibility for different users",
+              "requiring identical preferences",
+              "closing every quiet area"
+            ]
+          ],
+          [
+            "What evidence supported their proposal?",
+            [
+              "counts, interviews and layout comparisons",
+              "only the council president's favorite color",
+              "a guess with no observations"
+            ]
+          ]
+        ]
+      ]
+    ]
+  }
+}

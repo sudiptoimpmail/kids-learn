@@ -391,7 +391,13 @@ function renderQ() {
   if (q.order) renderOrder(q);
   if (q.blend && typeof wireBlend === 'function') wireBlend(q);
   if (q.letterSound && typeof wireLetter === 'function') wireLetter(q);
-  if (q.tap) $$('#qMain [data-val]').forEach((g) => { if (g.dataset.val) g.onclick = () => choose(q, g.dataset.val, g); });
+  if (q.tap) $$('#qMain [data-val]').forEach((g) => {
+    if (!g.dataset.val) return;
+    g.onclick = () => choose(q, g.dataset.val, g);
+    g.onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); g.click(); }
+    };
+  });
   $$('[data-speak]', $('#qMain')).forEach((b) => (b.onclick = () => { sfx.tap(); say(b.dataset.speak, { rate: 0.8 }); }));
   // nudge the hint after a while, but never show the picture by itself
   clearTimeout(R.nudge);

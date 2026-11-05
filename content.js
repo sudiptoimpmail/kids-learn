@@ -250,7 +250,7 @@ function genSight(level) {
     const wrong = sample(pool.filter((w) => SIGHT_KIND[w.toLowerCase()] !== kind && w.toLowerCase() !== ans.toLowerCase()), n);
     const show = (w) => (atStart ? cap(w) : w === 'I' ? 'I' : w.toLowerCase());
     return {
-      key: `sight-fill-${sent}`, text: 'Which word fits?', say: 'Which word fits?',
+      key: `sight-fill-${sent}`, text: 'Which word fits in the blank?', say: 'Which word fits?',
       main: `<div class="sentence">${sent.replace('___', '<span class="blank wide">___</span>')}</div>`,
       options: shuffle([ans, ...wrong]).map((w) => ({ v: show(w), html: show(w) })),
       answer: show(ans), optClass: 'opt-word', fill: true, hint: firstLetterHint(ans.toLowerCase()),
@@ -432,10 +432,13 @@ function genSyllable(level) {
     text: 'How many claps?',
     say: `How many claps in ${w}?`,
     speak: w,
-    main: `<div class="word">${w}</div><button class="mini-speaker" data-speak="${w}">🔊</button>`,
-    options: opts.map((n) => ({ v: n, html: `${n}<small>${'👏'.repeat(n)}</small>` })),
+    // Scale long words to the available width, not to a fixed 76–120px font size.
+    // Old 11-letter words overflowed the phone card at 320–390px.
+    main: `<div class="word syl-word" style="--syl-font:${Math.min(18, 140 / w.length).toFixed(2)}vw" aria-label="${w}">${w}</div><button type="button" class="mini-speaker" data-speak="${w}" aria-label="Hear ${w}">🔊</button>`,
+    mainClass: 'syl-main',
+    options: opts.map((n) => ({ v: n, html: `<b>${n}</b><small aria-hidden="true">${'👏'.repeat(n)}</small>` })),
     answer: count,
-    optClass: 'opt-num',
+    optClass: 'opt-num syl-choices',
     hint: {
       html: `<div class="hint-pic sm">${e}</div><div class="hint-claps">${split.split('-').map((p) => `<span>👏<b>${p}</b></span>`).join('')}</div>`,
       say: split.split('-').join(', '),
@@ -892,39 +895,45 @@ const pickLevelled = (rows, level) => {
 /* ---------------- BODY PARTS (outside) ---------------- */
 // Clothed child figure; every tappable part is a <g data-val="...">.
 function bodySVG(highlight) {
-  const skin = '#ffd8b5', shirt = '#4dabf7', shorts = '#845ef7';
-  const P = (name, inner) => `<g data-val="${name}" class="bp${highlight === name ? ' hl' : ''}">${inner}</g>`;
-  const hit = (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="transparent"/>`;
-  return `<svg viewBox="0 0 200 310" class="body-fig">
-    ${P('ears', `<ellipse cx="66" cy="64" rx="8" ry="11" fill="${skin}" stroke="#c8906a" stroke-width="1.5"/><ellipse cx="134" cy="64" rx="8" ry="11" fill="${skin}" stroke="#c8906a" stroke-width="1.5"/>`)}
-    ${P('neck', `<rect x="91" y="90" width="18" height="16" fill="${skin}"/>`)}
-    ${P('head', `<circle cx="100" cy="62" r="32" fill="${skin}" stroke="#c8906a" stroke-width="1.5"/>`)}
-    ${P('hair', `<path d="M68 60Q66 22 100 22Q134 22 132 60Q124 38 100 38Q76 38 68 60Z" fill="#6b4226"/>`)}
-    ${P('eyebrows', `${hit(78, 44, 44, 10)}<path d="M82 51q7-5 14 0M104 51q7-5 14 0" stroke="#6b4226" stroke-width="3" fill="none" stroke-linecap="round"/>`)}
-    ${P('eyes', `${hit(78, 54, 44, 16)}<ellipse cx="89" cy="62" rx="6.5" ry="7" fill="#fff"/><circle cx="89" cy="63" r="3.6" fill="#2b2140"/><ellipse cx="111" cy="62" rx="6.5" ry="7" fill="#fff"/><circle cx="111" cy="63" r="3.6" fill="#2b2140"/>`)}
-    ${P('cheeks', `<circle cx="80" cy="76" r="6" fill="#ffa8a8" opacity=".8"/><circle cx="120" cy="76" r="6" fill="#ffa8a8" opacity=".8"/>`)}
-    ${P('nose', `${hit(93, 66, 14, 13)}<ellipse cx="100" cy="73" rx="4" ry="5" fill="#f4b183"/>`)}
-    ${P('mouth', `${hit(88, 78, 24, 10)}<path d="M90 81q10 8 20 0" stroke="#c92a2a" stroke-width="3" fill="#ff8787" stroke-linecap="round"/>`)}
-    ${P('chin', `${hit(90, 88, 20, 6)}`)}
-    ${P('arms', `<rect x="46" y="112" width="15" height="40" rx="7" fill="${shirt}"/><rect x="47" y="158" width="13" height="32" rx="6" fill="${skin}"/><rect x="139" y="112" width="15" height="40" rx="7" fill="${shirt}"/><rect x="140" y="158" width="13" height="32" rx="6" fill="${skin}"/>`)}
-    ${P('elbows', `<circle cx="53.5" cy="155" r="7.5" fill="${skin}" stroke="#c8906a"/><circle cx="146.5" cy="155" r="7.5" fill="${skin}" stroke="#c8906a"/>`)}
-    ${P('wrists', `<rect x="46" y="188" width="15" height="7" rx="3" fill="#ffc9a3" stroke="#c8906a"/><rect x="139" y="188" width="15" height="7" rx="3" fill="#ffc9a3" stroke="#c8906a"/>`)}
-    ${P('hands', `<circle cx="53.5" cy="204" r="10" fill="${skin}" stroke="#c8906a"/><circle cx="146.5" cy="204" r="10" fill="${skin}" stroke="#c8906a"/>`)}
-    ${P('chest', `<path d="M62 106h76l-4 30H66z" fill="${shirt}"/>`)}
-    ${P('tummy', `<path d="M66 136h68l-4 44H70z" fill="#74c0fc"/><circle cx="100" cy="160" r="2" fill="#1971c2"/>`)}
-    ${P('shoulders', `<circle cx="62" cy="112" r="11" fill="#339af0"/><circle cx="138" cy="112" r="11" fill="#339af0"/>`)}
-    <rect x="70" y="178" width="60" height="30" rx="5" fill="${shorts}"/>
-    ${P('legs', `<rect x="75" y="206" width="20" height="34" rx="8" fill="${skin}"/><rect x="105" y="206" width="20" height="34" rx="8" fill="${skin}"/><rect x="76" y="252" width="18" height="28" rx="7" fill="${skin}"/><rect x="106" y="252" width="18" height="28" rx="7" fill="${skin}"/>`)}
-    ${P('knees', `<circle cx="85" cy="246" r="9" fill="#ffc9a3" stroke="#c8906a"/><circle cx="115" cy="246" r="9" fill="#ffc9a3" stroke="#c8906a"/>`)}
-    ${P('ankles', `<rect x="77" y="278" width="16" height="7" rx="3" fill="#ffc9a3" stroke="#c8906a"/><rect x="107" y="278" width="16" height="7" rx="3" fill="#ffc9a3" stroke="#c8906a"/>`)}
-    ${P('feet', `<ellipse cx="80" cy="294" rx="16" ry="8" fill="#f03e3e"/><ellipse cx="120" cy="294" rx="16" ry="8" fill="#f03e3e"/>`)}
+  // Artwork is a standalone SVG asset. Only the tappable educational hit zones
+  // are constructed here: no character illustration is embedded in JS.
+  // Bottom-to-top priority: a child's smaller facial / joint targets win over
+  // the broad head, arm and leg regions on touch devices.
+  const zones = [
+    ['legs',79,237,17,52],['legs',122,237,17,52],
+    ['arms',50,144,18,40],['arms',150,144,18,40],
+    ['chest',100,132,34,23],['tummy',100,167,32,25],
+    ['head',100,66,42,45],['shoulders',65,115,15,16],['shoulders',135,115,15,16],
+    ['neck',100,101,15,14],['hair',100,25,39,20],
+    ['ears',58,65,12,16],['ears',142,65,12,16],
+    ['hands',27,181,22,18],['hands',173,181,22,18],
+    ['feet',69,293,25,15],['feet',130,293,26,15],
+    ['elbows',45,155,15,15],['elbows',155,155,15,15],
+    ['knees',80,241,17,15],['knees',122,241,17,15],
+    ['wrists',36,175,13,13],['wrists',164,175,13,13],
+    ['ankles',78,271,15,11],['ankles',119,271,15,11],
+    ['chin',100,96,15,9],['cheeks',70,81,14,11],['cheeks',130,81,14,11],
+    ['eyes',83,65,13,12],['eyes',117,65,13,12],
+    ['nose',100,76,10,11],['mouth',100,91,19,12],['eyebrows',82,53,17,8],['eyebrows',118,53,17,8]
+  ];
+  const grouped = new Map();
+  for (const [name,x,y,rx,ry] of zones) {
+    const zone = `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}"/>`;
+    grouped.set(name, (grouped.get(name) || '') + zone);
+  }
+  return `<svg viewBox="0 0 200 310" class="body-fig body-photo-map" role="group"
+     aria-label="Tap the named body part on the child illustration">
+    <image href="assets/body/child-front.webp" width="200" height="310" aria-hidden="true"/>
+    ${[...grouped].map(([name,shape]) => `<g data-val="${name}"
+      class="bp body-hit${highlight === name ? ' hl' : ''}"
+      aria-label="${name}" role="button" tabindex="0">${shape}</g>`).join('')}
   </svg>`;
 }
 // [name, level, picture] — picture used for "find the picture" cards
 const BODY_PARTS = ContentData.get('content','BODY_PARTS');
 const BODY_FN = ContentData.get('content','BODY_FN');
 function genBody(level) {
-  if (HAS3D) return genBody3D(level);
+  // Friendly 2D silhouette for Pre-K/K; advanced 3D stays in anatomy activities.
   const parts = BODY_PARTS.filter((p) => p[1] <= level);
   const exact = parts.filter((p) => p[1] === level);
   const t = Math.random();
@@ -1506,35 +1515,71 @@ function genAnimals(level) {
 
 /* ---------------- FAMOUS PLACES ---------------- */
 function genPlaces(level) {
-  const pool = LANDMARKS.filter((l) => l[4] <= level);
-  const exact = pool.filter((l) => l[4] === level);
+  const pool = LANDMARKS.filter(l => l[4] <= level);
+  const exact = pool.filter(l => l[4] === level);
   const L = pick(exact.length && Math.random() < 0.6 ? exact : pool);
   const [id, name, country, city] = L;
-  const n = numOpts(level) - 1;
-  const mapHint = { html: `<div class="hint-map">${worldSVG({ hl: country, level: 3 })}</div><div class="hint-note">📍 ${city}</div>`, say: 'Look at the orange place on the map!' };
-  const type = pick(['where', 'where', 'which', 'name']);
+  const n = numOpts(level)-1;
+  const mapHint = {html: `<div class="hint-map">${worldSVG({hl:country,level:3})}</div><div class="hint-note">📍 ${city}</div>`,
+    say: 'Look at the orange place on the map!'};
+  const illustrated = !landmarkHasPhoto(id);
+  const illustrationNote = `<div class="lm-info-card" aria-label="Place explorer">
+    <span aria-hidden="true">🧭</span><b>${name}</b><small>Find this place on the world map</small></div>`;
+  // A simplified cartoon is not an acceptable visual-identification target.
+  // Reserve "name the picture" and "which picture" modes for licensed,
+  // accuracy-reviewed actual photographs bundled in the app.
+  const pictured = pool.filter(l => landmarkHasPhoto(l[0]));
+  const photoCompatible = !illustrated && pictured.length >= n+1;
+  const type = photoCompatible
+    ? pick(['where','where','city','which','name'])
+    : pick(['where','where','city','name-text']);
   if (type === 'which') {
-    const others = sample(LANDMARKS.filter((x) => x[2] !== country && !(LM_ALSO[x[0]] || []).includes(country) && x[4] <= Math.max(level, 2)), n);
-    return {
-      key: `lm-which-${id}`, text: `Which one is in <b>${theC(country)}</b>? ${COUNTRY_FLAG[country] || ''}`, say: ['Which one is in', `${theC(country)}?`],
-      main: '', mainClass: 'empty', options: shuffle([L, ...others]).map((x) => ({ v: x[0], html: landmarkArt(x[0], 'small') })), answer: id,
-      optClass: 'opt-svg lm-opts', hint: mapHint,
+    const others=sample(pictured.filter(x=>x[2]!==country && !(LM_ALSO[x[0]]||[]).includes(country)),n);
+    if(others.length===n)return {
+      key:`lm-which-${id}`, text:`Which picture is in <b>${theC(country)}</b>?`,
+      say:['Which one is in', `${theC(country)}?`],
+      main:'',mainClass:'empty',
+      options:shuffle([L,...others]).map(x=>({v:x[0],html:landmarkArt(x[0],'small')})),
+      answer:id,optClass:'opt-svg lm-opts',hint:mapHint
     };
   }
   if (type === 'name') {
-    const others = sample(pool.filter((x) => x[0] !== id), n);
+    const others=sample(pictured.filter(x=>x[0]!==id),n);
     return {
-      key: `lm-name-${id}`, text: 'What is this famous place called?', say: 'What is this famous place called?',
-      main: landmarkArt(id), mainClass: 'lm-main', options: shuffle([L, ...others]).map((x) => ({ v: x[0], html: x[1] })), answer: id,
-      optClass: 'opt-text', hint: { html: `<div class="hint-note">📍 ${city}, ${country} ${COUNTRY_FLAG[country] || ''}</div>`, say: 'Think about where it is!' },
+      key:`lm-name-${id}`, text:'What is this famous place called?',
+      say:'What is this famous place called?',main:landmarkArt(id),mainClass:'lm-main',
+      options:shuffle([L,...others]).map(x=>({v:x[0],html:x[1]})),
+      answer:id,optClass:'opt-text',
+      hint:{html:`<div class="hint-note">📍 ${city}, ${country}</div>`,say:'Think about where it is!'}
     };
   }
-  const not = LM_ALSO[id] || [];
-  const wrong = sample(famousCountries(Math.max(level, 2)).filter((x) => x !== country && !not.includes(x)), n);
+  if (type === 'city') {
+    const poolCities=[...new Set(pool.filter(x=>x[3]!==city).map(x=>x[3]))];
+    const wrong=sample(poolCities,n);
+    if(wrong.length===n) return {
+      key:`lm-city-${id}`,text:`Which city or area is <b>${name}</b> in?`,
+      say:'Find the answer.',main:illustrated?illustrationNote:landmarkArt(id),
+      mainClass:'lm-main',options:shuffle([city,...wrong]).map(v=>({v,html:v})),
+      answer:city,optClass:'opt-text',hint:mapHint
+    };
+  }
+  if(type === 'name-text'){
+    const others=sample(pool.filter(x=>x[0]!==id && x[2]!==country),n);
+    if(others.length===n)return {
+      key:`lm-nametext-${id}`,text:`Which famous place is in <b>${theC(country)}</b>?`,
+      say:['Which one is in', `${theC(country)}?`],
+      main:'',mainClass:'empty',
+      options:shuffle([L,...others]).map(x=>({v:x[0],html:x[1]})),
+      answer:id,optClass:'opt-text',hint:mapHint
+    };
+  }
+  const not=LM_ALSO[id]||[];
+  const wrong=sample(famousCountries(Math.max(level,2)).filter(x=>x!==country && !not.includes(x)),n);
   return {
-    key: `lm-where-${id}`, text: lmWhere(id, `<b>${name}</b>`), say: lmWhere(id, name),
-    main: landmarkArt(id), mainClass: 'lm-main', options: shuffle([country, ...wrong]).map((x) => ({ v: x, html: `${COUNTRY_FLAG[x] || ''} ${x}` })), answer: country,
-    optClass: 'opt-text', hint: mapHint,
+    key:`lm-where-${id}`,text:lmWhere(id,`<b>${name}</b>`),say:lmWhere(id,name),
+    main:illustrated?illustrationNote:landmarkArt(id),mainClass:'lm-main',
+    options:shuffle([country,...wrong]).map(x=>({v:x,html:`${COUNTRY_FLAG[x]||''} ${x}`})),
+    answer:country,optClass:'opt-text',hint:mapHint
   };
 }
 
