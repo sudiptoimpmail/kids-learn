@@ -181,6 +181,8 @@ const IllustratedActivities = (() => {
       ['jump',53,67],['catch',68,54],['wolf',22,83],['water',78,83]
     ]}
   };
+  const HIDDEN_CVC_WORDS=Object.freeze(['cub','fan','can','map','wig','bat','cap','cat','ham','bag']);
+  const HIDDEN_CVC_DISTRACTORS=Object.freeze(['sun','dog','ship']);
   const longA=['gate','name','date','hot','rope','fish','rain','mail','kite','pet','page','paid','lake','wave','net','cake','name','rain','bake','sun','make','plane','cane','rain','tail'];
   const zebraLetters=['Z','Z','Z','F','X','S','Z','Z','X','F','Z','Z','Z','Z','S','Z','Z','S','Z','X','Z','Z','Z','Z','Z'];
   const route=[0,1,2,7,12,11,10,15,20,21,22,23,24];
@@ -188,19 +190,20 @@ const IllustratedActivities = (() => {
   const edges=[...route.slice(1).map((v,i)=>[route[i],v]),...branches];
   function available(grade,cat,level){
     return (grade==='k'&&['phonics','shape2'].includes(cat))||
-      (grade==='g1' && (cat==='phonics'||cat==='match'||cat==='sent'));
+      (grade==='g1' && (cat==='phonics'||cat==='match'||cat==='sent'||cat==='cvc'));
   }
   function make(grade,cat,level){
     if(!available(grade,cat,level))return null;
     let mode;
     if(grade==='k')mode=cat==='shape2'?(Math.random()<.5?'shapes':'squares'):(Math.random()<.55?'letters':'sounds');
-    else mode=cat==='phonics'?'longa':cat==='match'?'forest':(Math.random()<.55?'sentence':'sequence');
+    else mode=cat==='phonics'?'longa':cat==='match'?'forest':cat==='cvc'?'wordhunt':(Math.random()<.55?'sentence':'sequence');
     let text='', hint='Look at the picture!',theme='forest', answer='complete';
     if(mode==='letters'){text='Help the baby zebra! Follow the Z letters.';theme='savanna';}
     if(mode==='longa'){text='Follow the long A words to reach TAIL.';theme='forest';}
     if(mode==='sounds'){text='Find the eight pictures whose names start with the letter A.';theme='garden';}
     if(mode==='shapes'){text='Trace a circle, then find the four round things.';theme='room';}
     if(mode==='squares'){text='Trace a square, then find four square things.';theme='square-room';}
+    if(mode==='wordhunt'){text='Find the ten hidden words in the garden.';theme='garden';}
     if(mode==='forest'){const words=['wind','leaf','climb','bird','jump','catch','wolf','water'];answer=words[Math.floor(Math.random()*words.length)];text='Find: '+answer.toUpperCase();theme='forest';}
     if(mode==='sentence'){const sentences=[
       ['The fox can ____.','jump','run','swim','fly','park'],
@@ -218,9 +221,9 @@ const IllustratedActivities = (() => {
       mode==='sounds' ? ['Tap all the pictures that start with','A'] :
       mode==='shapes' ? 'Tap all the circles you see.' :
       mode==='squares' ? 'Look at the picture!' :
-      mode==='forest' ? ['Find the word.', answer] : ['Read the story.','What happened first?'];
+      mode==='forest' ? ['Find the word.', answer] : mode==='wordhunt' ? 'Find the word.' : ['Read the story.','What happened first?'];
     return {key:'ill-'+mode+(mode==='forest'?'-'+answer:''),text,say:voice,
-      parts: ['shapes','squares','sounds','sequence'].includes(mode) ? 4 : 1,
+      parts: ['shapes','squares','sounds','sequence','wordhunt'].includes(mode) ? 4 : 1,
       main:'',options:[],answer,illustrated:{mode,theme},mainClass:'ia-picture',hint:{html:'Look at the picture and try again.',say:hint}};
   }
   function setFeedback(host,message){
@@ -342,6 +345,43 @@ const IllustratedActivities = (() => {
       note.textContent=mode==='forest'?'Find the '+q.answer+'.':
         shapeTask?'Step 1: Trace the shape. Step 2: Find all four matching objects.':
         'Tap pictures to find all '+info.correct.length+'.';
+    }else if(mode==='wordhunt'){
+      const words=HIDDEN_CVC_WORDS.slice();
+      const all=words.concat(HIDDEN_CVC_DISTRACTORS);
+      const locations=[
+        [15,26],[37,24],[60,24],[83,25],
+        [15,52],[38,52],[61,52],[84,52],
+        [27,80],[72,80],[49,79],[7,74],[93,76]
+      ];
+      const bank=document.createElement('div');
+      bank.className='ia-wordhunt-bank';
+      bank.innerHTML='<strong>Find and circle all ten:</strong> '+words.map(w=>'<span data-target="'+div(w)+'">'+div(w)+'</span>').join(' ');
+      host.insertBefore(bank,stage);
+      const found=document.createElement('div');
+      found.className='ia-found-words';
+      found.setAttribute('aria-live','polite');
+      found.textContent='Found: 0 / 10';
+      host.append(found);
+      all.forEach((word,i)=>{
+        const [x,y]=locations[i];
+        const button=document.createElement('button');button.type='button';
+        button.className='ia-hidden-word';button.dataset.word=word;
+        button.textContent=word;button.setAttribute('aria-label','Find word '+word);
+        button.style.left=x+'%';button.style.top=y+'%';
+        button.addEventListener('click',()=>{
+          if(button.disabled)return;
+          if(!words.includes(word)){
+            actions.mistake();setFeedback(host,'That word is not in the word bank. Try another.');return;
+          }
+          button.disabled=true;button.classList.add('ia-found');progress.add(word);
+          bank.querySelectorAll('[data-target]').forEach(b=>{if(b.dataset.target===word)b.classList.add('ia-found');});
+          found.textContent='Found: '+progress.size+' / '+words.length;
+          if(progress.size===words.length)correctAnswer(button);
+          else good('You found '+word+'! Look for the next word.');
+        });
+        stage.append(button);
+      });
+      note.textContent='Look carefully. Tap the small words hidden around the garden.';
     }else if(mode==='letters'||mode==='longa'){
       const labels=mode==='letters'?zebraLetters:longA;
       const valid=v=>mode==='letters'?v==='Z':/^(gate|name|date|rain|mail|paid|page|lake|cake|make|tail|wave|bake|plane|cane)$/.test(v);
@@ -425,6 +465,6 @@ const IllustratedActivities = (() => {
     return stage;
   }
   const traceScene=(mode)=>illustration(['sports','garden','cafe','forest'].includes(mode)?mode:'park');
-  const coverage=()=>({a:scenes.sounds.correct.slice(), circles:scenes.shapes.correct.slice(), squares:scenes.squares.correct.slice(), forest:scenes.forest.items.map(x=>x[0])});
+  const coverage=()=>({hiddenWords:HIDDEN_CVC_WORDS.slice(), a:scenes.sounds.correct.slice(), circles:scenes.shapes.correct.slice(), squares:scenes.squares.correct.slice(), forest:scenes.forest.items.map(x=>x[0])});
   return {available,make,mount,illustration,traceScene,coverage};
 })();
