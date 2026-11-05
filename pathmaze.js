@@ -63,6 +63,9 @@ function startPathMaze() {
   area.querySelector('[data-a="zoom-out"]').onclick = () => zoom.by(1 / 1.4);
   const mid = ([x, y]) => [ox + (x + 0.5) * cell, oy + (y + 0.5) * cell];
   let path = [start], drawing = false, done = false, hint = null;
+  const gardenTexture = new Image();
+  gardenTexture.onload = () => { if (gameSession === session) draw(); };
+  gardenTexture.src = 'assets/games/meadow.svg';
   const session = gameSession;
   function draw() {
     c.clearRect(0, 0, w, h);
@@ -70,6 +73,11 @@ function startPathMaze() {
     const board = c.createLinearGradient(0, oy, 0, oy + rows * cell);
     board.addColorStop(0, '#ecfbe6'); board.addColorStop(1, '#c8efcd');
     c.fillStyle = board; c.fillRect(ox - 6, oy - 6, cell * cols + 12, cell * rows + 12);
+    if (gardenTexture.complete && gardenTexture.naturalWidth) {
+      c.save(); c.globalAlpha = 0.23;
+      c.drawImage(gardenTexture, ox - 6, oy - 6, cell * cols + 12, cell * rows + 12);
+      c.restore();
+    }
     c.fillStyle = 'rgba(255,255,255,.23)';
     for (let rr = 0; rr < rows; rr++) for (let cc = 0; cc < cols; cc++) {
       if ((rr + cc) % 2 === 0) c.fillRect(ox + cc * cell, oy + rr * cell, cell, cell);
