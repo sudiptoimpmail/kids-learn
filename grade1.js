@@ -50,6 +50,8 @@ const G1_PHRASES = [
   ['sock', '🧦', 'a ___ on my foot'], ['duck', '🦆', 'the ___ can swim'], ['nest', '🪺', 'three eggs in a ___'], ['bus', '🚌', 'ride the ___ to school'],
   ['hat', '🎩', 'a ___ on his head'], ['star', '⭐', 'a ___ in the sky'], ['lamp', '💡', 'turn on the ___'], ['bread', '🍞', 'jam on the ___'],
   ['chair', '🪑', 'sit on a ___'], ['sheep', '🐑', 'a ___ on the farm'], ['wheel', '🛞', 'a ___ on the car'], ['shell', '🐚', 'a ___ by the sea'],
+  ['thin', '✏️', 'a ___ pencil'], ['brick', '🧱', 'one red ___'], ['crib', '🛏️', 'a baby in a ___'], ['grass', '🌱', 'green ___ in the yard'],
+  ['mane', '🐴', 'the horse has a ___'], ['frog', '🐸', 'a ___ by the pond'],
   ['clock', '🕰️', 'the ___ says it is time'], ['brush', '🪥', 'a ___ for my teeth'], ['snail', '🐌', 'a slow ___ on a leaf'], ['train', '🚆', 'the ___ on the track'],
 ];
 function genWordBox(level) {
@@ -71,6 +73,8 @@ const G1_PASSAGES = [
   [['Mom and I bake a cake.', 'We add eggs and milk.', 'The cake is in the oven.', 'Now it smells good!'], [['Mom and I bake a ___.', 'cake', 'pie', 'pizza'], ['We add eggs and ___.', 'milk', 'jam', 'salt'], ['The cake is in the ___.', 'oven', 'box', 'sink']], '👩🍰'],
   [['The farm has a red barn.', 'Six hens live in the barn.', 'The hens lay eggs.', 'Ana picks up the eggs.'], [['The barn is ___.', 'red', 'blue', 'small'], ['___ hens live in the barn.', 'Six', 'Two', 'Ten'], ['Ana picks up the ___.', 'eggs', 'hens', 'apples']], '🐔🥚'],
   [['Leo has new boots.', 'His boots are green.', 'It rains all day.', 'Leo jumps in the puddles.'], [['Leo has new ___.', 'boots', 'socks', 'hats'], ['His boots are ___.', 'green', 'red', 'old'], ['Leo jumps in the ___.', 'puddles', 'bed', 'snow']], '🥾🌧️'],
+  [['Nora has a dog named Pip.', 'Pip has one black spot.', 'They run together in the park.', 'Pip is a happy dog.'], [['Pip has one ___ spot.', 'black', 'brown', 'white'], ['Nora and Pip run in the ___.', 'park', 'house', 'sea'], ['Pip is a ___ dog.', 'happy', 'sad', 'big']], '🐕🌳'],
+  [['A fox found grapes on a tall vine.', 'The fox jumped but did not reach them.', 'The grapes were too high.', 'The fox walked away.'], [['The fox found ___.', 'grapes', 'apples', 'pears'], ['The grapes were too ___.', 'high', 'low', 'soft'], ['The fox ___ away.', 'walked', 'swam', 'flew']], '🦊🍇'],
 ];
 function genPassageFill() {
   const [lines, qs, pic] = pick(G1_PASSAGES);
@@ -92,6 +96,7 @@ const G1_ORDER = [
   [['The caterpillar ate leaves.', 'It made a chrysalis.', 'It slept a long time.', 'A butterfly flew away.'], ['🐛', '🫛', '💤', '🦋']],
   [['We made a snowball.', 'We rolled it big.', 'We put on a hat.', 'Our snowman was done!'], ['❄️', '⚪', '🎩', '⛄']],
   [['Ava got her toothbrush.', 'She put on toothpaste.', 'She brushed her teeth.', 'She smiled big.'], ['🪥', '🧴', '🦷', '😁']],
+  [['A fox saw grapes hanging on a vine.', 'The fox tried to reach them.', 'It could not reach the grapes.', 'The fox walked away.'], ['🦊🍇', '🦊⬆️', '🍇', '🦊🚶']],
 ];
 function genStoryOrder() {
   const [lines, pics] = pick(G1_ORDER);
