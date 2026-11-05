@@ -1236,3 +1236,9 @@ html, body { min-height: 100%; }
   box-shadow:none;padding:0;}
 .ns-currency-picture{display:block;width:100%;height:100%;filter:drop-shadow(0 3px 2px #27334335);}
 @media(prefers-reduced-motion:reduce){.wm-pop{transition:none;}.wm-hole.bonk,.wm-hole.oops{animation:none;}}
+
+/* Data-only optional lesson packs; shown only in protected parent settings. */
+#contentPacksSync[hidden] { display:none !important; }
+#contentPacksSettings { padding:12px 14px;border:1px solid #d8e6db;border-radius:16px;background:#f7fbf6; }
+#contentPacksSettings small { display:block;margin:5px 0 8px;line-height:1.45; }
+.pack-question-image { display:block;max-width:min(240px,65vw);max-height:210px;object-fit:contain;margin:6px auto; }
