@@ -37,7 +37,7 @@ const { chromium } = require('playwright');
       if (state.sdkWins !== award) throw Error('Sudoku awarded repeated wins');
 
       state.gameLv = state.gameLv || {};
-      state.gameLv.puzzle = 1; state.showAll = true;   // the 2 × 2 board is below 2nd grade's range, so lift the grade limits for this check
+      state.gameLv.puzzle = 1; state.grade = 'prek';   // the 2 × 2 board is a Pre-K level
       openGame('puzzle');
       startPuzzle(ALL_PICS[0]);
       const p = ALL_PICS[0], n = 2;
@@ -69,6 +69,7 @@ const { chromium } = require('playwright');
       if (area.querySelector('.end-panel'))
         throw Error('Stale puzzle result appeared over chooser');
 
+      state.grade = 'g2';
       openBrainGame('memory');
       if (!area.querySelector('.mem-board')) throw Error('Memory did not open');
       openBrainGame('c4');

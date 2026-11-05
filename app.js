@@ -23,7 +23,17 @@ const sectionOff = (id) => (id === 'clock' ? !!state.hideClock : OPTIONAL[id] &&
 // a child who reads and spells well doesn't need syllable clapping any more
 const strongReader = () => levelOf('spell') >= 4 || levelOf('sent') >= 3 || (levelOf('spell') >= 3 && (state.best.spell || 0) >= 3);
 // test mode keeps the child's grade; "Show all games" opens everything
-const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CATEGORIES.filter((c) => c.id !== 'placement') : CATEGORIES.filter((c) => c.id !== 'cmp' && c.id !== 'placement' // comparisons are mixed into math, not shown as a separate game
+// "Show all games" unlocks harder sections only: a section that ends before the child's grade
+// (Tracing, Little Words, Clap It, Body Parts, Jobs …) never comes back for an older child.
+const GRADE_ORDER = ['prek', 'k', 'g1', 'g2', 'g3'];
+const belowGrade = (id) => {
+  if (!state.grade || id === 'mix' || gradeRange(state.grade, id)) return false;
+  const gi = GRADE_ORDER.indexOf(state.grade);
+  return GRADE_ORDER.some((g, i) => i < gi && gradeRange(g, id)) && !GRADE_ORDER.some((g, i) => i > gi && gradeRange(g, id));
+};
+// with Show all games, levels keep the grade's start but may go above the grade
+const openRange = (id) => { const r = state.grade && gradeRange(state.grade, id); return r ? (state.showAll ? [r[0], gameMax(id)] : r) : null; };
+const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CATEGORIES.filter((c) => c.id !== 'placement' && !belowGrade(c.id)) : CATEGORIES.filter((c) => c.id !== 'cmp' && c.id !== 'placement' && !belowGrade(c.id) // comparisons are mixed into math, not shown as a separate game
   && !sectionOff(c.id)
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'region' && typeof myRegion === 'function' && !myRegion())
@@ -305,7 +315,7 @@ function startRound(catId, count, browse = false, atLevel = null) {
     // Grade limits apply to individual questions, not only category tiles.
     // Adaptive progress can be above a grade's range from an older profile; clamp
     // ordinary child rounds, but preserve unrestricted explicit QA previews.
-    const range = state.grade && !state.showAll && !browse ? gradeRange(state.grade, c.id) : null;   // the test browser previews any level
+    const range = !browse ? openRange(c.id) : null;   // the test browser previews any level
     const requestedLevel = atLevel || levelOf(c.id);
     const lv = range ? Math.min(range[1], Math.max(range[0], requestedLevel)) : requestedLevel;
     // Illustrated activities appear as variations in existing question rounds.
@@ -843,7 +853,7 @@ function finish() {
       else if (!state.showAll && state.grade) levelMsg = '⭐ Great work! Try another skill for your grade.';
     } else {
       state.good[id] = 0;
-      const floor = !state.showAll && state.grade ? (gradeRange(state.grade,id)||[1])[0] : 1;
+      const floor = state.grade ? (gradeRange(state.grade,id)||[1])[0] : 1;
       if (rate >= 0.5 && n >= 5 && lv > floor) { state.levels[id] = lv - 1; levelMsg = "🙂 Let's practice the step before a bit more"; }
     }
   }
@@ -957,7 +967,7 @@ function openDiff() {
   if (!R || R.cat.id === 'mix') return;
   const id = R.cat.id, max = gameMax(id);
   const sl = $('#diffRange');
-  const range=!state.showAll&&!isTestMode()&&state.grade?gradeRange(state.grade,id):null;
+  const range=!isTestMode()?openRange(id):null;
   sl.min=range?range[0]:1; sl.max=range?range[1]:max;
   sl.value=Math.min(+sl.max,Math.max(+sl.min,levelOf(id)));
   const upd = () => { $('#diffVal').textContent = `Level ${sl.value} of ${max}`; $('#diffGrade').textContent = gradeHintFor(id, +sl.value); };

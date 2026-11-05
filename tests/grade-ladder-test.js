@@ -26,6 +26,11 @@ const ladder = (name, rows, max) => {
     tiers: DRAW_TIERS.map((t) => t.length),
     starts: (() => { const out = {}; for (const g of ['prek', 'g3']) { state.grade = g; state.gameLv = {}; state.sdkLevel = 0; out[g] = Object.fromEntries(Object.keys(GAME_GRADES).map((id) => [id, GL(id)])); } return out; })(),
     capped: (() => { state.grade = 'k'; state.gameLv = { memory: 5 }; return GL('memory'); })(),
+    // Show all games never brings back younger sections or easier game levels
+    showAll: (() => { state.grade = 'g3'; state.showAll = true; state.testMode = false; state.gameLv = { draw: 1, memory: 1 }; renderHome();
+      const tiles = [...document.querySelectorAll('#grid .tile[data-cat]')].map((t) => t.dataset.cat);
+      const out = { young: tiles.filter((x) => ['trace', 'cvc', 'body', 'jobs', 'syl', 'sight', 'w4'].includes(x)), draw: GL('draw'), memory: GL('memory'), harder: GL('path') };
+      state.showAll = false; return out; })(),
   }));
   for (const [id, { max, rows }] of Object.entries(r.sections)) {
     rows.sort((a, b) => ORDER.indexOf(a[0]) - ORDER.indexOf(b[0]));
@@ -39,6 +44,9 @@ const ladder = (name, rows, max) => {
   }
   for (const id of Object.keys(r.games)) assert.ok(r.starts.g3[id] > r.starts.prek[id] || r.games[id].rows[0][0] !== 'prek', `game ${id}: 3rd grade starts no higher than Pre-K`);
   assert.equal(r.capped, 3, 'a Kindergarten child is kept inside the Kindergarten range of a game');
+  assert.deepEqual(r.showAll.young, [], 'Show all games must not bring Tracing or other younger sections to 3rd grade');
+  assert.equal(r.showAll.draw, 4, '3rd grade Draw & Copy stays on the 3rd-grade pictures');
+  assert.equal(r.showAll.memory, 5, '3rd grade Memory Match keeps the 3rd-grade board');
   assert.deepEqual(r.tiers, [12, 12, 12, 12], 'four tiers of drawing templates');
   await b.close();
   console.log(`PASS ${Object.keys(r.sections).length} sections and ${Object.keys(r.games).length} games climb grade by grade; 48 drawing templates in 4 age tiers`);

@@ -172,7 +172,8 @@ const GAME_GRADES = {
   pinball: { prek: [1, 1], k: [1, 2], g1: [2, 3], g2: [3, 4], g3: [4, 5] },
   draw:    { prek: [1, 1], k: [1, 2], g1: [2, 3], g2: [3, 4], g3: [4, 4] },
 };
-const gameRange = (id) => (!state.showAll && state.grade && GAME_GRADES[id] && GAME_GRADES[id][state.grade]) || null;
+// Show all games lifts the top of the range but keeps the grade's starting level
+const gameRange = (id) => { const r = state.grade && GAME_GRADES[id] && GAME_GRADES[id][state.grade]; return !r ? null : state.showAll ? [r[0], id === 'sudoku' ? 5 : GAME_MAX[id] || r[1]] : r; };
 const clampGame = (id, lv) => { const r = gameRange(id); return r ? Math.min(r[1], Math.max(r[0], lv)) : lv; };
 const gameCap = (id) => { const r = gameRange(id); return r ? r[1] : (id === 'sudoku' ? 5 : GAME_MAX[id] || 1); };
 function GL(id) {
@@ -1313,10 +1314,10 @@ function startDraw(refIndex) {
   const lv = GL('draw');
   const refs = drawRefs(lv);
   const ref = refs[refIndex != null ? refIndex % refs.length : Math.floor(Math.random() * refs.length)];
-  const trace = lv <= 3;   // level 4 copies, with only a very faint guide
+  const trace = lv <= 2;   // 2nd grade and up draw (copy); their guide lines are thin, then very faint
   const area = $('#gameArea');
   area.innerHTML = `<div class="dr-top"><div class="dr-ref">${ref.svg}<small>${ref.name}</small></div>
-      <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>${lv <= 2 ? 'Follow the gray lines with your finger.' : lv === 3 ? 'The lines are thin now. Go slowly!' : 'Look at the picture. The faint lines can help.'}</small></div></div>
+      <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>${lv <= 2 ? 'Follow the gray lines with your finger.' : lv === 3 ? 'Look at the picture. The thin lines can help.' : 'Look at the picture. The faint lines can help.'}</small></div></div>
     <div class="dr-zoom"><button data-dz="out" aria-label="Zoom out">−</button><button data-dz="reset" aria-label="Reset zoom">1×</button><button data-dz="in" aria-label="Zoom in">＋</button><span>Two fingers: zoom / move</span></div><div class="dr-pad">${(([w, o]) => `<div class="dr-guide dr-guide-${Math.min(4, lv)}" style="opacity:${o}">${drawSVG(ref.d, w)}</div>`)(DRAW_GUIDE[Math.min(4, Math.max(1, lv))])}<canvas class="dr-cv"></canvas></div>
     <div class="dr-tools">${INK.map((c, i) => `<button class="dr-ink ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}"></button>`).join('')}
       <button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✎<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
