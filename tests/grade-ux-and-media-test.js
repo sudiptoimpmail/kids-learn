@@ -36,7 +36,7 @@ const {chromium} = require('playwright');
     await page.goto('http://localhost:8765/index.html');
     await page.evaluate(()=>window.KidsLearnReady);
     const body=await page.evaluate(()=>bodySVG('nose'));
-    assert.ok(body.includes('assets/body/child-front.svg'));
+    assert.ok(body.includes('assets/body/child-front.webp'));
     assert.ok(body.includes('data-val="nose"'));
     assert.ok(!body.includes('<path'), 'Legacy art should not live in question-generation code');
     const prompt=await page.evaluate(()=>genSight(2));
