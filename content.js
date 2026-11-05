@@ -5,6 +5,24 @@
      optClass, hint:{html, say}, speak (word for 🔊), tap (bool) }
    ========================================================= */
 
+/* Offline JSON owns grade, section, skill and authored-question routing. */
+const CURRICULUM_ROUTES = ContentData.get('curriculum-map','ROUTES');
+const CURRICULUM_PROFILES = ContentData.get('curriculum-map','PROFILES');
+const curriculumGrade = () => typeof state !== 'undefined' && state &&
+  Object.hasOwn(CURRICULUM_PROFILES,state.grade) ? state.grade : null;
+function curriculumRows(bank, level) {
+  const grade=curriculumGrade();
+  if (!grade) return [];
+  const rows=ContentData.get('grade23-extension',bank);
+  const routes=CURRICULUM_ROUTES[bank];
+  if (!Array.isArray(routes) || routes.length !== rows.length) throw Error('Curriculum routing mismatch: '+bank);
+  return rows.flatMap((row,i) => {
+    const route=routes[i];
+    return route.grade === grade && route.level <= level
+      ? [[route.level,...row.slice(1)]] : [];
+  });
+}
+
 const rand = (n) => Math.floor(Math.random() * n);
 const pick = (a) => a[rand(a.length)];
 const shuffle = (a) => {
@@ -370,8 +388,17 @@ const SENTENCES = ContentData.get('content','SENTENCES');
 const sentLevel = (x) => { if (typeof x !== 'string') return x[3] || sentLevel(x[0]); const n = x.split(' ').length; return n <= 5 ? 1 : n <= 8 && !/[.!?] [A-Z]/.test(x) ? 2 : 3; };
 
 // every reading item as [text, [[question, options], ...], level]
-const READING = () => READING.all || (READING.all = SENTENCES.map((x) => [x[0], [[x[1], x[2]]], sentLevel(x), x[4] === 'print-first'])
-  .concat(PATTERN_SENTENCES.map((x) => [x[0], [[x[1], x[2]]], x[3]]), STORIES.map((x) => [x[1], x[2], x[0], x[3] === true])));
+const READING = () => {
+  const grade=curriculumGrade()||'core';
+  READING.cache ||= new Map();
+  if (!READING.cache.has(grade)) READING.cache.set(grade,
+    SENTENCES.map(x => [x[0],[[x[1],x[2]]],sentLevel(x),x[4]==='print-first'])
+      .concat(PATTERN_SENTENCES.map(x => [x[0],[[x[1],x[2]]],x[3]]),
+        STORIES.map(x => [x[1],x[2],x[0],x[3]===true]),
+        curriculumRows('STORIES',6).map(x => [x[1],x[2],x[0],true]))
+  );
+  return READING.cache.get(grade);
+};
 // words that never point to an answer on their own
 const HINT_SKIP = new Set('a an the is are was were be to of and or in on at it its i you he she we they my his her their this that what who where when why how which do does did can has have had will with for from by so but not one some many much'.split(' '));
 const HINT_NUMS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
@@ -1004,7 +1031,7 @@ function genBody(level) {
 }
 
 /* ---------------- 3D BODY questions (used when the device can show 3D) ---------------- */
-const HAS3D = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
+const HAS3D = false; // No third-party 3D anatomical mesh is bundled.
 // body part → what is inside it (shown after a right answer from level 2)
 const INSIDE = ContentData.get('content','INSIDE');
 const BODY3_PARTS = ContentData.get('content','BODY3_PARTS');
@@ -1059,7 +1086,7 @@ function genAnatomy3D(level) {
 
 /* ---------------- GENERAL KNOWLEDGE ---------------- */
 // Levels: 1 Pre-K · 2 Kindergarten · 3 1st grade · 4 2nd grade
-const GK = ContentData.get('content','GK').concat(ContentData.get('grade23-extension','GK'));
+const GK = ContentData.get('content','GK');
 /* Pre-K picture listening and recognition, with genuinely age-banded visual content.
    The bank is large, but each short question shows 2–4 related images, not a wall of thumbnails. */
 function genVisualRecognition(level) {
@@ -1085,7 +1112,7 @@ function genVisualRecognition(level) {
 }
 const genGK = (level) => {
   if (level <= 2 && Math.random() < (level === 1 ? 0.62 : 0.25)) return genVisualRecognition(level);
-  const q = mcQuestion('gk', pickLevelled(GK, level), level);
+  const q = mcQuestion('gk', pickLevelled(GK.concat(curriculumRows('GK',level)), level), level);
   // Pre-K children hear a recognizable prompt and a target word with prerecorded audio.
   if (q.text.startsWith('Which picture shows')) {
     const noun = q.answer.split(' ').slice(1).join(' ');
@@ -1119,23 +1146,27 @@ const genGK = (level) => {
 
 /* ---------------- INSIDE MY BODY (optional) ---------------- */
 function organSVG(highlight) {
-  const O = (name, inner) => `<g data-val="${name}" class="org${highlight === name ? ' hl' : ''}">${inner}</g>`;
-  return `<svg viewBox="0 0 200 300" class="organ-fig">
-    <path d="M100 8c-30 0-46 22-46 46s14 40 30 46v10c-32 6-50 22-54 46v120h140V156c-4-24-22-40-54-46v-10c16-6 30-22 30-46S130 8 100 8z" fill="#fff0e6" stroke="#e8b796" stroke-width="2"/>
-    ${O('brain', `<path d="M70 50c-6-18 12-30 24-24c6-10 26-8 30 4c16-2 22 16 12 24c6 12-8 22-18 16c-6 8-24 8-30 0c-12 6-26-6-18-20z" fill="#f9a8c8" stroke="#d6336c" stroke-width="2"/><path d="M88 40q6 6 0 12M108 36q-4 8 4 14M120 52q-8 0-8 8" stroke="#d6336c" stroke-width="1.6" fill="none"/>`)}
-    ${O('lungs', `<path d="M92 128c-24-2-34 22-34 48c0 14 6 20 16 18c12-2 18-10 18-22z" fill="#ffc9c9" stroke="#e03131" stroke-width="2"/><path d="M108 128c24-2 34 22 34 48c0 14-6 20-16 18c-12-2-18-10-18-22z" fill="#ffc9c9" stroke="#e03131" stroke-width="2"/>`)}
-    ${O('heart', `<path d="M110 162c-4-10-18-8-18 2c0 10 12 16 18 22c6-6 18-12 18-22c0-10-14-12-18-2z" fill="#e03131" stroke="#a51111" stroke-width="2"/>`)}
-    ${O('stomach', `<path d="M118 200c18-4 26 10 20 24c-6 14-26 14-36 6c-8-6-2-14 6-12c8 2 14-2 10-10z" fill="#ffd8a8" stroke="#e8590c" stroke-width="2"/>`)}
-    ${O('intestines', `<path d="M70 236h60v40H70z" fill="#ffe8cc" stroke="#d9480f" stroke-width="2" rx="10"/><path d="M76 246h46M122 246q6 6 0 10H78q-6 4 0 10h44" stroke="#d9480f" stroke-width="2" fill="none"/>`)}
-    <path d="M100 100v12" stroke="#e8b796" stroke-width="4"/>
+  // External offline art. JavaScript owns only tappable educational regions.
+  const zones = [
+    ['brain',100,48,33,28],['lungs',76,158,19,39],['lungs',124,158,19,39],
+    ['heart',110,173,18,22],['liver',81,206,30,19],['stomach',127,219,20,23],
+    ['kidneys',78,228,13,18],['kidneys',125,240,13,18],
+    ['spine',100,125,8,22],['intestines',101,262,28,22]
+  ];
+  return `<svg viewBox="0 0 200 300" class="organ-fig" role="group"
+     aria-label="Choose the organ in the illustration">
+    <image href="assets/body/organ-diagram.svg" x="0" y="0" width="200" height="300" aria-hidden="true"/>
+    ${zones.map(([name,x,y,rx,ry])=>`<g data-val="${name}" role="button" tabindex="0" aria-label="${name}"
+      class="org${highlight===name?' hl':''}"><ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}"/></g>`).join('')}
   </svg>`;
 }
-const ORGANS = [['brain', 1], ['heart', 1], ['lungs', 1], ['stomach', 1], ['intestines', 2]];
+
+const ORGANS = [['brain',1], ['heart',1], ['lungs',1], ['stomach',1], ['intestines',2], ['liver',3], ['kidneys',3], ['spine',3]];
 const ANATOMY = ContentData.get('content','ANATOMY');
 function genAnatomy(level) {
   if (HAS3D) return genAnatomy3D(level);
   const t = Math.random();
-  const organs = ORGANS.filter((o) => o[1] <= Math.min(level + 1, 2));
+  const organs = ORGANS.filter((o) => o[1] <= Math.min(level + 1, 3));
   if (t < 0.25) {
     const o = pick(organs)[0];
     return {
@@ -1713,7 +1744,7 @@ const CATEGORIES = [
 // multiplication/division start as equal groups and sharing in 2nd.
 // which games each grade sees, and the levels that suit it; a child starts in the middle of the range
 // and then moves up or down with how well she does (even past the range)
-const GRADES = ContentData.get('content','GRADES');
+const GRADES = ContentData.get('curriculum-map','GRADES');
 // where a child of this grade starts: the middle of the range (rounded down)
 const gradeStart = (r) => { const [a, b] = r.split('-').map(Number); return Math.floor((a + b) / 2); };
 const gradeRange = (grade, id) => { const r = GRADES[grade] && GRADES[grade].g[id]; return r ? r.split('-').map(Number) : null; };

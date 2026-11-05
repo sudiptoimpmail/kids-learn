@@ -1371,3 +1371,8 @@ html, body { min-height: 100%; }
 @keyframes explorer-reveal {from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:370px){.options.explorer-choices{grid-template-columns:minmax(0,1fr)}.explorer-body{gap:7px}.explorer-card{padding:12px}}
 @media(prefers-reduced-motion:reduce){.explorer-explanation{animation:none}}
+/* Original flat anatomy illustration; tappable overlays remain in JS only. */
+.organ-fig {width:min(240px,65vw);height:auto;display:block;margin-inline:auto;}
+.organ-fig .org ellipse{fill:#fff;fill-opacity:0.001;stroke-width:0;pointer-events:all;}
+.organ-fig .org.hl ellipse{fill:#fff4a0;fill-opacity:.46;stroke:#f0a943;stroke-width:3;}
+.organ-fig .org:focus-visible ellipse{stroke:#246aa7;stroke-width:3;}

@@ -2,7 +2,7 @@
 
 A flash-card learning game for Pre-K through 3rd grade, built as an installable iPhone/iPad web app (no App Store needed).
 
-**Grade setting:** ⚙️ → Grade (Pre-K, Kindergarten, 1st, 2nd, 3rd). Each grade shows the games that fit it (e.g. Multiply/Divide from 2nd) and starts every game at that grade's level. **Levels follow her progress:** a great round moves her up; at the top of her grade, two great rounds in a row move her past it; a hard round moves her back down (even below her grade). Turn on **Show all games** to see everything. The ranges live in `GRADES` in `content.js`.
+**Grade setting:** ⚙️ → Grade (Pre-K, Kindergarten, 1st, 2nd, 3rd). Each grade shows the games that fit it (e.g. Multiply/Divide from 2nd) and starts every game at that grade's level. **Levels follow her progress within the selected grade:** a strong round increases difficulty up to that grade's maximum and a hard round offers easier practice within the grade. A grown-up can enable Show all games to explore other levels. Turn on **Show all games** to see everything. The grade-to-section ranges, learning objectives and question routes live in `data/curriculum-map.json`.
 
 **🎚️ Difficulty slider (grown-ups):** on any question screen, **press and hold** the 🎚️ Lv button for a second to open a slider (Easier ↔ Harder) that shows which grade each level suits.
 
@@ -30,7 +30,7 @@ The first thing on the home screen: a short guided mix for today (about 10–12 
 | 🕐 Clock (optional) | Hidden by default — turn on in ⚙️ → Clock game. Read an analog clock or pick the clock for a time: o'clock → half past → quarter past/to → 5 minutes |
 | 🙋 Body Parts | **Realistic 3D person** in a t-shirt, shorts and shoes (spin with a finger). The camera zooms in on the face for eyes, nose, eyebrows… Tap the part (tapping near a part counts; tapping an eye also counts as the head). Level 1 big parts → 2 neck, shoulders, elbows, knees, chin, fingers → 3 eyebrows, cheeks, wrists, ankles. From level 2 a right answer shows **what's inside** with an x-ray ("Inside your knee is your kneecap!"). Falls back to a 2D drawing on devices without 3D |
 | 💡 Did You Know? | General knowledge for every grade, 4 levels: animal sounds & colors → seasons, days, baby animals, 911 → planets, plants, months → continents, magnets, states of water. 💡 Hint removes a wrong answer |
-| 🫀 Inside My Body (optional) | Off by default — turn on in ⚙️. **Realistic 3D anatomy** (real brain, heart, lungs, liver, intestines, kidneys, skeleton, arteries and veins) inside a see-through x-ray body. Hidden parts (like the kidneys) show up when the others fade. 4 levels: brain, heart, lungs, stomach → liver, intestines, skull, ribs, backbone → kidneys, jaw, collarbone, hip bone, thigh bone (femur), kneecap, shin bone, **arteries (red) & veins (blue)** → arm/forearm/hand/foot bones, shoulder blade, bladder, pancreas and more science facts |
+| 🫀 Inside My Body (optional) | Off by default — turn on in ⚙️. **Original interactive 2D anatomy** with tappable brain, heart, lungs, liver, stomach, intestines and kidneys. No third-party 3D anatomy model is bundled.
 | 🔺 Shapes | 2D shapes, finding shapes, counting sides |
 | 🧊 3D Shapes | Cube, sphere, cylinder, cone, pyramid, prism; flat vs solid; real-life objects |
 | 🧑‍🚒 Jobs | Who does what |
@@ -103,16 +103,10 @@ If a phrase has no recording, the app falls back to the best voice installed on 
 ## Edit content
 All bundled questions, stories, vocabulary, geography and drawing geometry now live in versioned `data/*.json` files. Game logic remains in JavaScript. Photography, illustration, currency, workbook and landmark media are stored as individual files in `assets/`. `content-loader.js` loads the JSON before any engine starts, and the service worker precaches it for offline use. Update `sw.js` version when changing the bundled files, and run `node tests/content-assets-test.js` before release.
 
-3D body model: BodyParts3D © The Database Center for Life Science, Human Reference Atlas (HuBMAP) — CC BY 4.0; body shape MakeHuman (CC0); via [open-anatomy-3d](https://github.com/MervinR07/open-anatomy-3d) (CC BY 4.0). Changed for this app: clothes and hair added, lung surfaces made from the airway model, reproductive and other parts removed (`vendor/body.glb`). The credit is shown under the 3D view and in ⚙️.
+## Assets and cost policy
+All bundled learning icons have been replaced with locally authored SVG wrappers using system-provided emoji glyphs. The 47 coloring subjects and 39 landmark schematic illustrations are original geometric drawings. The 2D Body Parts and anatomy illustrations are local original media. There are no third-party CC BY / CC BY-SA illustrations or anatomy meshes included in this release.
 
-## Licenses (for selling the app later)
-Everything bundled allows commercial use. What each one asks:
-- **MIT / Apache / CC0 / public domain** (no conditions beyond keeping notices): three.js and its loaders, meshoptimizer decoder, Kokoro voice model (Apache 2.0), MakeHuman body, Natural Earth map shapes.
-- **CC BY 4.0** (keep the credit): the 3D anatomy model.
-- **CC BY-SA 4.0** (keep the credit; pictures made *from* this art must also be shared under CC BY-SA): OpenMoji art used in coloring pages and landmarks.
-- **ODbL** (credit; share-alike for the data): world-countries region names.
-
-three.js (MIT license) is bundled in `vendor/` so the 3D games work offline. World map: Natural Earth (public domain) via world-atlas; regions from world-countries (ODbL). Coloring/landmark art: [OpenMoji](https://openmoji.org) (CC BY-SA 4.0) plus original drawings. Famous-place illustrations are bundled as `assets/landmarks/<id>.svg`; all 39 are available without network access.
+**No stock-art fees, royalties, API image dependencies, or runtime downloads are needed to play.** The remaining JavaScript libraries and map/audio dependencies have their own permissive/public-data licensing terms. Those are software/data obligations, not stock-image license fees. See the asset provenance audit and retain legal notices for open-source code.
 
 Progress is stored only on the device (localStorage). No accounts, ads or tracking.
 
@@ -127,3 +121,7 @@ Bundled question banks are JSON files and local media assets, while JavaScript h
 
 ## Plans
 The grade-by-grade plan (what each grade sees and ideas to add) and the launch architecture (native app storage, accounts, subscriptions) are in [docs/launch-architecture.md](docs/launch-architecture.md).
+
+## Grade-to-skill routing
+
+[`data/curriculum-map.json`](data/curriculum-map.json) is the source of truth for grade visibility, section levels, skill goals and the intended grade for each authored Grade 2–3 extension question. Grade 2 and Grade 3 do not inherit each other's new question banks solely because they share a numeric level. Authored text and routes are offline JSON; the JavaScript generators remain implementation logic.

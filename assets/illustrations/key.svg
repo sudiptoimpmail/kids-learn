@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#C1694F" d="M32.614 3.414C28.31-.89 21.332-.89 17.027 3.414c-3.391 3.392-4.098 8.439-2.144 12.535l-3.916 3.915c-.64.641-.841 1.543-.625 2.359l-1.973 1.972c-.479-.48-1.252-.48-1.731 0l-1.731 1.732c-.479.479-.479 1.253 0 1.732l-.867.864c-.479-.478-1.253-.478-1.731 0l-.866.867c-.479.479-.479 1.253 0 1.732.015.016.036.02.051.033-.794 1.189-.668 2.812.382 3.863 1.195 1.195 3.134 1.195 4.329 0L20.08 21.144c4.097 1.955 9.144 1.247 12.535-2.146 4.302-4.302 4.302-11.28-.001-15.584zm-1.731 5.195c-.957.956-2.509.956-3.464 0-.956-.956-.956-2.507 0-3.464.955-.956 2.507-.956 3.464 0 .956.957.956 2.508 0 3.464z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="t" data-origin="kids-learn-self-authored-icon">
+<title id="t">key</title>
+<defs><radialGradient id="paper" cx=".35" cy=".22" r=".9"><stop stop-color="#ffffff"/><stop offset=".68" stop-color="#f3e0fd"/><stop offset="1" stop-color="#d0b3f6"/></radialGradient><linearGradient id="edge" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#896dc1"/></linearGradient></defs>
+<circle cx="128" cy="130" r="112" fill="url(#paper)" stroke="url(#edge)" stroke-width="6"/>
+<path d="M57 64Q74 44 94 49" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".75"/>
+<circle cx="211" cy="72" r="11" fill="#fff" opacity=".85"/><circle cx="47" cy="166" r="6" fill="#fff" opacity=".85"/>
+<text x="128" y="173" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif" font-size="131">🔑</text>
+<path d="M83 220Q129 231 173 220" stroke="#896dc1" stroke-width="5" fill="none" stroke-linecap="round" opacity=".35"/>
+</svg>

@@ -65,7 +65,7 @@ const {chromium}=require('playwright');
      assert.ok(svg.includes('<svg')&&svg.includes('viewBox'),'Invalid SVG: '+path);
      assert.ok(!/https?:\/\//.test(svg.replace(/xmlns="[^"]*"/g,'')),'External asset dependency in '+path);
    }
-   assert.ok(fs.existsSync('assets/illustrations/ATTRIBUTION.md'),'Missing required CC BY 4.0 attribution');
+   assert.ok(visualFiles.every(name => fs.readFileSync('assets/illustrations/'+name,'utf8').includes('data-origin="kids-learn-self-authored-icon"')),'Unexpected third-party illustration file');
    assert.deepEqual(errors,[],errors.join('\n'));
    console.log('PASS 100 locally stored assets, offline manifest, child-level visual questions, puzzles and parent practice cards');
  }finally{await browser.close()}

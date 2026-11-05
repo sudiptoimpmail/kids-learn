@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#77B255" d="M25.999 24c-.198 0-.397-.059-.572-.181-6.543-4.58-12.166-12.366-15.397-17.439 1.699 10.528.997 16.458.962 16.744-.068.548-.562.93-1.115.868-.548-.068-.937-.567-.869-1.115.009-.079.936-8.033-1.986-21.668-.105-.487.166-.978.634-1.148.466-.172.991.028 1.226.468.079.148 8.007 14.873 17.691 21.652.453.316.562.94.246 1.392-.194.279-.504.427-.82.427z"/><path fill="#5C913B" d="M26.547 8.818c-3.476.96-5.051 2.546-10.749.667-4.72-1.557-7.037-4.207-6.345-6.305.692-2.098 3.18-3.163 7.9-1.606 4.749 1.567 4.123 3.466 9.194 7.244z"/><circle fill="#BE1931" cx="26" cy="28" r="8"/><circle fill="#BE1931" cx="11" cy="28" r="8"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="t" data-origin="kids-learn-self-authored-icon">
+<title id="t">cherries</title>
+<defs><radialGradient id="paper" cx=".35" cy=".22" r=".9"><stop stop-color="#ffffff"/><stop offset=".68" stop-color="#fff2d4"/><stop offset="1" stop-color="#f9c88c"/></radialGradient><linearGradient id="edge" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#e28e75"/></linearGradient></defs>
+<circle cx="128" cy="130" r="112" fill="url(#paper)" stroke="url(#edge)" stroke-width="6"/>
+<path d="M57 64Q74 44 94 49" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".75"/>
+<circle cx="211" cy="72" r="11" fill="#fff" opacity=".85"/><circle cx="47" cy="166" r="6" fill="#fff" opacity=".85"/>
+<text x="128" y="173" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif" font-size="131">🍒</text>
+<path d="M83 220Q129 231 173 220" stroke="#e28e75" stroke-width="5" fill="none" stroke-linecap="round" opacity=".35"/>
+</svg>

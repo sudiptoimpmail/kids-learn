@@ -4,7 +4,7 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v64';
+const VERSION = PREFIX + 'v66';
 const AUDIO = PREFIX + 'audio';
 const FILES = [
   "./",
@@ -45,13 +45,11 @@ const FILES = [
   "phonics.js",
   "early-words.js",
   "scene-engine.js",
-  "body3d.js",
   "vendor/three.module.min.js",
   "vendor/GLTFLoader.js",
   "vendor/BufferGeometryUtils.js",
   "vendor/meshopt_decoder.module.js",
   "vendor/RoomEnvironment.js",
-  "vendor/body.glb",
   "manifest.webmanifest",
   "audio/clips.json",
   "audio/silence.mp3",
@@ -155,7 +153,6 @@ const FILES = [
   "assets/illustrations/atom.svg",
   "assets/illustrations/satellite.svg",
   "assets/illustrations/comet.svg",
-  "assets/illustrations/ATTRIBUTION.md",
   "data/content.json",
   "data/thinking.json",
   "data/science.json",
@@ -316,10 +313,12 @@ const FILES = [
   "data/upper-grade-stories.json",
   "data/landmark-photos.json",
   "assets/body/child-front.webp",
+  "assets/body/organ-diagram.svg",
   "data/grade23-extension.json",
   "data/explorer-math.json",
   "data/explorer-science.json",
   "explorer-engine.js",
+  "data/curriculum-map.json",
 ];
 const SCOPE = new URL('./', self.location).pathname;   // e.g. /kids-learn/ — never touch other apps on the same site
 
