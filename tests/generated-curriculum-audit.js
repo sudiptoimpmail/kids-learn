@@ -8,7 +8,8 @@ const {chromium}=require('playwright');
  try{
   const page=await browser.newPage();
   await page.goto('http://localhost:8765/index.html');
-  await page.evaluate(()=>window.KidsLearnReady);
+  await page.waitForFunction(() => !!window.KidsLearnReady);
+      await page.evaluate(()=>window.KidsLearnReady);
   const result=await page.evaluate(()=>{
     const errors=[],samples={},assets=new Set();
     for(const grade of ['prek','k','g1','g2','g3']){
