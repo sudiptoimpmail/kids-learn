@@ -1,546 +1,548 @@
 {
   "schema": 1,
   "namespace": "explorer-science",
-  "questions": [
-    {
-      "id": "g2-seed-shade",
-      "level": 3,
-      "domain": "Plant Lab",
-      "context": "Two seedlings have the same soil and water. One grows in bright light; the other stays in shade.",
-      "prompt": "What should the class measure to compare their growth?",
-      "choices": [
-        "the seedlings' heights each day",
-        "the colors of their pots",
-        "the students' shoe sizes"
-      ],
-      "answer": "the seedlings' heights each day",
-      "explanation": "Measuring growth over time gives evidence for comparing the plants.",
-      "asset": "assets/illustrations/leaf.svg"
-    },
-    {
-      "id": "g2-magnet-test",
-      "level": 3,
-      "domain": "Materials Lab",
-      "context": "A magnet picks up a steel paper clip but not a wooden pencil.",
-      "prompt": "Which claim is best supported by the observation?",
-      "choices": [
-        "the paper clip was attracted to the magnet",
-        "all materials are attracted to magnets",
-        "wood is heavier than steel"
-      ],
-      "answer": "the paper clip was attracted to the magnet",
-      "explanation": "The test only shows how the two objects responded.",
-      "asset": "assets/illustrations/magnet.svg"
-    },
-    {
-      "id": "g2-puddle-sun",
-      "level": 3,
-      "domain": "Water Watch",
-      "context": "A small puddle is marked with chalk. It becomes smaller during a warm sunny afternoon without anyone wiping it.",
-      "prompt": "What most likely happened to some of the water?",
-      "choices": [
-        "it evaporated into the air",
-        "it turned into solid rock",
-        "it became more liquid water"
-      ],
-      "answer": "it evaporated into the air",
-      "explanation": "Liquid water can change into water vapor.",
-      "asset": "assets/illustrations/sun.svg"
-    },
-    {
-      "id": "g2-shadow-direction",
-      "level": 3,
-      "domain": "Light Lab",
-      "context": "A flashlight points at a toy dinosaur. Its shadow falls on the wall behind the toy.",
-      "prompt": "What caused the shadow?",
-      "choices": [
-        "the toy blocked some of the light",
-        "the wall made its own darkness",
-        "the flashlight produced cold air"
-      ],
-      "answer": "the toy blocked some of the light",
-      "explanation": "Shadows form when an object blocks light.",
-      "asset": "assets/illustrations/lightbulb.svg"
-    },
-    {
-      "id": "g2-grow-prediction",
-      "level": 3,
-      "domain": "Investigation",
-      "context": "Students predict which surface a toy car will roll farthest on: carpet, tile or grass.",
-      "prompt": "What should they do after making a prediction?",
-      "choices": [
-        "test each surface using the same starting position",
-        "choose the result they like best",
-        "change the toy car for every surface"
-      ],
-      "answer": "test each surface using the same starting position",
-      "explanation": "A fair test holds other important conditions constant.",
-      "asset": "assets/photos/car.jpg"
-    },
-    {
-      "id": "g2-pond-food",
-      "level": 3,
-      "domain": "Food Web",
-      "context": "Small fish eat water insects, and a heron eats the fish.",
-      "prompt": "Which animal could be affected if there were fewer water insects?",
-      "choices": [
-        "the small fish",
-        "a mountain goat",
-        "a houseplant indoors"
-      ],
-      "answer": "the small fish",
-      "explanation": "With less insect food, the small fish may have difficulty finding enough to eat.",
-      "asset": "assets/illustrations/ocean.svg"
-    },
-    {
-      "id": "g2-animal-habitat",
-      "level": 3,
-      "domain": "Habitats",
-      "context": "A beaver builds its home beside a freshwater stream.",
-      "prompt": "Which feature of the habitat helps the beaver most?",
-      "choices": [
-        "water and nearby woody plants",
-        "a dry desert without trees",
-        "snow on every day of the year"
-      ],
-      "answer": "water and nearby woody plants",
-      "explanation": "The stream and plants help meet the beaver's needs.",
-      "asset": "assets/illustrations/tree.svg"
-    },
-    {
-      "id": "g2-wind-sock",
-      "level": 3,
-      "domain": "Weather Watch",
-      "context": "A windsock points toward the east because the wind blows it in that direction.",
-      "prompt": "What is a windsock useful for observing?",
-      "choices": [
-        "the direction the air is moving",
-        "the exact weight of every cloud",
-        "how hot the sun is"
-      ],
-      "answer": "the direction the air is moving",
-      "explanation": "The windsock moves with flowing air.",
-      "asset": "assets/illustrations/cloud.svg"
-    },
-    {
-      "id": "g2-fossil-layer",
-      "level": 3,
-      "domain": "Earth Detective",
-      "context": "Students find a shell-shaped fossil in a rock that formed long ago.",
-      "prompt": "What does the fossil provide?",
-      "choices": [
-        "evidence that a living thing existed in the past",
-        "proof of tomorrow's weather",
-        "the exact age of every nearby rock"
-      ],
-      "answer": "evidence that a living thing existed in the past",
-      "explanation": "Fossils preserve clues about past living things.",
-      "asset": "assets/illustrations/mountain.svg"
-    },
-    {
-      "id": "g2-gravity-ball",
-      "level": 3,
-      "domain": "Motion Lab",
-      "context": "Maya drops two similar balls from the same height.",
-      "prompt": "What pulls the balls toward the ground?",
-      "choices": [
-        "gravity",
-        "sound",
-        "electric light"
-      ],
-      "answer": "gravity",
-      "explanation": "Gravity pulls objects toward Earth.",
-      "asset": "assets/illustrations/soccer_ball.svg"
-    },
-    {
-      "id": "g2-materials-umbrella",
-      "level": 3,
-      "domain": "Design Lab",
-      "context": "A student tests cloth, paper and plastic to build a rain cover.",
-      "prompt": "Which material property matters most?",
-      "choices": [
-        "how well the material keeps water out",
-        "whether the material smells like flowers",
-        "how many letters are in its name"
-      ],
-      "answer": "how well the material keeps water out",
-      "explanation": "A rain cover needs to resist water.",
-      "asset": "assets/illustrations/umbrella.svg"
-    },
-    {
-      "id": "g2-moon-light",
-      "level": 3,
-      "domain": "Space Watch",
-      "context": "The moon looks bright in the night sky.",
-      "prompt": "Where does most of the light we see from the moon come from?",
-      "choices": [
-        "sunlight reflected from its surface",
-        "a fire burning on the moon",
-        "light emitted by the moon itself"
-      ],
-      "answer": "sunlight reflected from its surface",
-      "explanation": "The moon reflects sunlight.",
-      "asset": "assets/illustrations/moon.svg"
-    },
-    {
-      "id": "g2-living-classification",
-      "level": 3,
-      "domain": "Classify",
-      "context": "A seedling uses water, grows and makes new leaves.",
-      "prompt": "Which observation shows it is a living thing?",
-      "choices": [
-        "it grows and responds to its environment",
-        "it is green in color",
-        "it fits inside a pot"
-      ],
-      "answer": "it grows and responds to its environment",
-      "explanation": "Growth is one of several characteristics of living things.",
-      "asset": "assets/illustrations/leaf.svg"
-    },
-    {
-      "id": "g2-melting-choc",
-      "level": 3,
-      "domain": "States of Matter",
-      "context": "A piece of chocolate softens and melts in a warm room.",
-      "prompt": "What changed?",
-      "choices": [
-        "its physical state",
-        "its name",
-        "the number of atoms in it"
-      ],
-      "answer": "its physical state",
-      "explanation": "Melting changes a solid into a liquid without creating a new substance.",
-      "asset": "assets/illustrations/sun.svg"
-    },
-    {
-      "id": "g2-plant-cycle",
-      "level": 3,
-      "domain": "Life Cycle",
-      "context": "A sunflower makes seeds after it grows and flowers.",
-      "prompt": "What can happen to a seed when conditions are suitable?",
-      "choices": [
-        "it can germinate and become a new plant",
-        "it turns into a plastic bottle",
-        "it produces sunlight"
-      ],
-      "answer": "it can germinate and become a new plant",
-      "explanation": "Germination begins the growth of a new plant.",
-      "asset": "assets/illustrations/sun.svg"
-    },
-    {
-      "id": "g2-sound-vibration",
-      "level": 3,
-      "domain": "Sound Lab",
-      "context": "A stretched rubber band makes a sound when plucked.",
-      "prompt": "What is the band doing while it makes the sound?",
-      "choices": [
-        "vibrating",
-        "becoming heavier",
-        "making a shadow"
-      ],
-      "answer": "vibrating",
-      "explanation": "Sound is produced by vibrations.",
-      "asset": "assets/illustrations/gear.svg"
-    },
-    {
-      "id": "g2-fair-plant-test",
-      "level": 3,
-      "domain": "Fair Test",
-      "context": "One bean plant gets lots of water and another gets much less. They are different varieties and grow in different soil.",
-      "prompt": "Why is it hard to tell whether water caused any difference?",
-      "choices": [
-        "more than one important condition changed",
-        "both plants were measured",
-        "the plants are alive"
-      ],
-      "answer": "more than one important condition changed",
-      "explanation": "A fair comparison should change one main factor at a time.",
-      "asset": "assets/illustrations/leaf.svg"
-    },
-    {
-      "id": "g2-weather-record",
-      "level": 3,
-      "domain": "Data & Evidence",
-      "context": "A class records outdoor temperature at the same time each day for 10 days.",
-      "prompt": "What can the records help show?",
-      "choices": [
-        "how temperatures changed across the days",
-        "which student is tallest",
-        "the exact weather next year"
-      ],
-      "answer": "how temperatures changed across the days",
-      "explanation": "Repeated observations can reveal patterns over time.",
-      "asset": "assets/illustrations/cloud.svg"
-    },
-    {
-      "id": "g3-erosion",
-      "level": 4,
-      "domain": "Earth Science",
-      "context": "After heavy rain, a hillside has new grooves where soil washed downhill.",
-      "prompt": "Which process is shown?",
-      "choices": [
-        "erosion",
-        "germination",
-        "reflection"
-      ],
-      "answer": "erosion",
-      "explanation": "Moving water can carry away soil and rock particles.",
-      "asset": "assets/illustrations/mountain.svg"
-    },
-    {
-      "id": "g3-insulation",
-      "level": 4,
-      "domain": "Design Challenge",
-      "context": "Two identical cups hold warm water. One has a thick sleeve and stays warmer longer.",
-      "prompt": "Which conclusion fits the observation?",
-      "choices": [
-        "the sleeve slowed heat transfer",
-        "the sleeve created extra hot water",
-        "the sleeve made water disappear"
-      ],
-      "answer": "the sleeve slowed heat transfer",
-      "explanation": "Insulation slows the transfer of thermal energy.",
-      "asset": null
-    },
-    {
-      "id": "g3-ramp-friction",
-      "level": 4,
-      "domain": "Motion Lab",
-      "context": "A toy car travels farther on a smooth ramp than on the same ramp covered with rough felt.",
-      "prompt": "What is a likely reason?",
-      "choices": [
-        "rough felt creates more friction",
-        "felt makes gravity stop",
-        "the car no longer has wheels"
-      ],
-      "answer": "rough felt creates more friction",
-      "explanation": "Friction resists motion and can change how far an object travels.",
-      "asset": "assets/photos/car.jpg"
-    },
-    {
-      "id": "g3-magnet-distance",
-      "level": 4,
-      "domain": "Force Lab",
-      "context": "A paper clip moves toward a magnet even before the magnet touches it.",
-      "prompt": "What does this show?",
-      "choices": [
-        "magnetic force can act at a distance",
-        "magnets need to touch every object",
-        "metal paper clips always move away"
-      ],
-      "answer": "magnetic force can act at a distance",
-      "explanation": "Magnetic forces can act without direct contact.",
-      "asset": "assets/illustrations/magnet.svg"
-    },
-    {
-      "id": "g3-light-reflect",
-      "level": 4,
-      "domain": "Light Lab",
-      "context": "A student shines a flashlight onto a mirror, and the light changes direction.",
-      "prompt": "Which process explains the change?",
-      "choices": [
-        "reflection",
-        "evaporation",
-        "erosion"
-      ],
-      "answer": "reflection",
-      "explanation": "Light can bounce off reflective surfaces.",
-      "asset": "assets/illustrations/lightbulb.svg"
-    },
-    {
-      "id": "g3-pollinators",
-      "level": 4,
-      "domain": "Ecosystems",
-      "context": "Bees visit flowering plants. Fewer bees visit the garden this season.",
-      "prompt": "What effect might occur?",
-      "choices": [
-        "some plants may produce fewer seeds",
-        "all plants stop using sunlight",
-        "the soil instantly freezes"
-      ],
-      "answer": "some plants may produce fewer seeds",
-      "explanation": "Some flowering plants rely on animal pollinators.",
-      "asset": "assets/photos/daisy.jpg"
-    },
-    {
-      "id": "g3-soil-growth",
-      "level": 4,
-      "domain": "Fair Test",
-      "context": "Two groups grow radishes under equal light and water. One uses sandy soil, the other uses clay-rich soil.",
-      "prompt": "Which factor are they testing?",
-      "choices": [
-        "soil type",
-        "length of daylight",
-        "amount of water"
-      ],
-      "answer": "soil type",
-      "explanation": "Soil type is the intentionally changed variable.",
-      "asset": "assets/illustrations/leaf.svg"
-    },
-    {
-      "id": "g3-circuit-open",
-      "level": 4,
-      "domain": "Circuit Lab",
-      "context": "A lamp connected to a battery turns off when a switch opens.",
-      "prompt": "Why does the lamp go out?",
-      "choices": [
-        "the path for electric current is broken",
-        "the battery loses all its mass",
-        "the light turns into sound"
-      ],
-      "answer": "the path for electric current is broken",
-      "explanation": "A closed circuit is needed for current to flow.",
-      "asset": "assets/illustrations/battery.svg"
-    },
-    {
-      "id": "g3-water-cycle",
-      "level": 4,
-      "domain": "Water Cycle",
-      "context": "Moist air cools, and tiny droplets form on the outside of a cold glass.",
-      "prompt": "Which process made the droplets?",
-      "choices": [
-        "condensation",
-        "erosion",
-        "magnetism"
-      ],
-      "answer": "condensation",
-      "explanation": "Water vapor cools and changes to liquid drops.",
-      "asset": "assets/illustrations/cloud.svg"
-    },
-    {
-      "id": "g3-shadow-length",
-      "level": 4,
-      "domain": "Sky Observation",
-      "context": "A student measures a flagpole's shadow at noon and again late in the afternoon.",
-      "prompt": "What can cause the shadow to change length?",
-      "choices": [
-        "the Sun's apparent position in the sky",
-        "a change in the flagpole's name",
-        "the age of the sidewalk"
-      ],
-      "answer": "the Sun's apparent position in the sky",
-      "explanation": "The angle of incoming sunlight changes during the day.",
-      "asset": "assets/illustrations/sun.svg"
-    },
-    {
-      "id": "g3-fossil-evidence",
-      "level": 4,
-      "domain": "Fossil Detective",
-      "context": "Two kinds of fossil footprints appear in an ancient rock layer.",
-      "prompt": "What can scientists most reasonably learn?",
-      "choices": [
-        "some animals moved through that area in the past",
-        "the exact colors of every animal",
-        "today's rainfall in that place"
-      ],
-      "answer": "some animals moved through that area in the past",
-      "explanation": "Tracks preserve evidence of ancient movement.",
-      "asset": "assets/illustrations/mountain.svg"
-    },
-    {
-      "id": "g3-food-chain-change",
-      "level": 4,
-      "domain": "Ecosystems",
-      "context": "Grass is eaten by rabbits, and foxes eat rabbits. The rabbit population becomes much smaller.",
-      "prompt": "Which change could follow?",
-      "choices": [
-        "foxes may find less food",
-        "grass will instantly disappear",
-        "foxes will stop needing food"
-      ],
-      "answer": "foxes may find less food",
-      "explanation": "Food-web changes can affect consumers higher in the chain.",
-      "asset": "assets/illustrations/fox.svg"
-    },
-    {
-      "id": "g3-controlled-experiment",
-      "level": 4,
-      "domain": "Scientific Method",
-      "context": "A student compares how quickly sugar dissolves in cold and warm water. She uses equal sugar amounts and equal water volumes.",
-      "prompt": "What is the changed variable?",
-      "choices": [
-        "water temperature",
-        "amount of sugar",
-        "amount of water"
-      ],
-      "answer": "water temperature",
-      "explanation": "Only water temperature is deliberately varied.",
-      "asset": "assets/illustrations/test_tube.svg"
-    },
-    {
-      "id": "g3-data-repeat",
-      "level": 4,
-      "domain": "Evidence",
-      "context": "A class launches paper planes. A new design goes farther once, but not in later trials.",
-      "prompt": "What should the class do before claiming it is better?",
-      "choices": [
-        "repeat fair tests and compare the results",
-        "report only the longest flight",
-        "ignore the flights that went a shorter distance"
-      ],
-      "answer": "repeat fair tests and compare the results",
-      "explanation": "Repeated tests reduce the influence of unusual results.",
-      "asset": "assets/photos/airplane.jpg"
-    },
-    {
-      "id": "g3-renewable-energy",
-      "level": 4,
-      "domain": "Energy Lab",
-      "context": "Solar panels generate electricity on a bright day but less on a cloudy one.",
-      "prompt": "Which factor affects their output?",
-      "choices": [
-        "the amount of sunlight reaching them",
-        "the library's opening hours",
-        "the number of pencils nearby"
-      ],
-      "answer": "the amount of sunlight reaching them",
-      "explanation": "Solar panels use energy from sunlight.",
-      "asset": "assets/illustrations/sun.svg"
-    },
-    {
-      "id": "g3-flood-map",
-      "level": 4,
-      "domain": "Earth Systems",
-      "context": "A river rises after a storm. A map shows lower land near the banks.",
-      "prompt": "Which area is more likely to flood first?",
-      "choices": [
-        "low ground near the river",
-        "a distant hilltop",
-        "the upper floor of a tall building"
-      ],
-      "answer": "low ground near the river",
-      "explanation": "Water can spread over nearby low-lying land when rivers rise.",
-      "asset": "assets/illustrations/map.svg"
-    },
-    {
-      "id": "g3-ecosystem-balance",
-      "level": 4,
-      "domain": "Habitats",
-      "context": "A new road divides a forest into two smaller habitats.",
-      "prompt": "Why might this be a problem for some animals?",
-      "choices": [
-        "it can make it harder to reach food or mates",
-        "every animal prefers living near cars",
-        "roads increase the number of trees"
-      ],
-      "answer": "it can make it harder to reach food or mates",
-      "explanation": "Habitat fragmentation can limit animal movement.",
-      "asset": "assets/illustrations/tree.svg"
-    },
-    {
-      "id": "g3-engineering-cycle",
-      "level": 4,
-      "domain": "Engineering",
-      "context": "A bridge model fails under a load. The team studies where it bent and changes the supports.",
-      "prompt": "What should the team do next?",
-      "choices": [
-        "test the improved model again",
-        "claim it is perfect without testing",
-        "remove all measurements"
-      ],
-      "answer": "test the improved model again",
-      "explanation": "Engineering designs are revised and tested based on evidence.",
-      "asset": "assets/illustrations/bridge.svg"
-    }
-  ]
+  "datasets": {
+    "questions": [
+      {
+        "id": "g2-seed-shade",
+        "level": 3,
+        "domain": "Plant Lab",
+        "context": "Two seedlings have the same soil and water. One grows in bright light; the other stays in shade.",
+        "prompt": "What should the class measure to compare their growth?",
+        "choices": [
+          "the seedlings' heights each day",
+          "the colors of their pots",
+          "the students' shoe sizes"
+        ],
+        "answer": "the seedlings' heights each day",
+        "explanation": "Measuring growth over time gives evidence for comparing the plants.",
+        "asset": "assets/illustrations/leaf.svg"
+      },
+      {
+        "id": "g2-magnet-test",
+        "level": 3,
+        "domain": "Materials Lab",
+        "context": "A magnet picks up a steel paper clip but not a wooden pencil.",
+        "prompt": "Which claim is best supported by the observation?",
+        "choices": [
+          "the paper clip was attracted to the magnet",
+          "all materials are attracted to magnets",
+          "wood is heavier than steel"
+        ],
+        "answer": "the paper clip was attracted to the magnet",
+        "explanation": "The test only shows how the two objects responded.",
+        "asset": "assets/illustrations/magnet.svg"
+      },
+      {
+        "id": "g2-puddle-sun",
+        "level": 3,
+        "domain": "Water Watch",
+        "context": "A small puddle is marked with chalk. It becomes smaller during a warm sunny afternoon without anyone wiping it.",
+        "prompt": "What most likely happened to some of the water?",
+        "choices": [
+          "it evaporated into the air",
+          "it turned into solid rock",
+          "it became more liquid water"
+        ],
+        "answer": "it evaporated into the air",
+        "explanation": "Liquid water can change into water vapor.",
+        "asset": "assets/illustrations/sun.svg"
+      },
+      {
+        "id": "g2-shadow-direction",
+        "level": 3,
+        "domain": "Light Lab",
+        "context": "A flashlight points at a toy dinosaur. Its shadow falls on the wall behind the toy.",
+        "prompt": "What caused the shadow?",
+        "choices": [
+          "the toy blocked some of the light",
+          "the wall made its own darkness",
+          "the flashlight produced cold air"
+        ],
+        "answer": "the toy blocked some of the light",
+        "explanation": "Shadows form when an object blocks light.",
+        "asset": "assets/illustrations/lightbulb.svg"
+      },
+      {
+        "id": "g2-grow-prediction",
+        "level": 3,
+        "domain": "Investigation",
+        "context": "Students predict which surface a toy car will roll farthest on: carpet, tile or grass.",
+        "prompt": "What should they do after making a prediction?",
+        "choices": [
+          "test each surface using the same starting position",
+          "choose the result they like best",
+          "change the toy car for every surface"
+        ],
+        "answer": "test each surface using the same starting position",
+        "explanation": "A fair test holds other important conditions constant.",
+        "asset": "assets/photos/car.jpg"
+      },
+      {
+        "id": "g2-pond-food",
+        "level": 3,
+        "domain": "Food Web",
+        "context": "Small fish eat water insects, and a heron eats the fish.",
+        "prompt": "Which animal could be affected if there were fewer water insects?",
+        "choices": [
+          "the small fish",
+          "a mountain goat",
+          "a houseplant indoors"
+        ],
+        "answer": "the small fish",
+        "explanation": "With less insect food, the small fish may have difficulty finding enough to eat.",
+        "asset": "assets/illustrations/ocean.svg"
+      },
+      {
+        "id": "g2-animal-habitat",
+        "level": 3,
+        "domain": "Habitats",
+        "context": "A beaver builds its home beside a freshwater stream.",
+        "prompt": "Which feature of the habitat helps the beaver most?",
+        "choices": [
+          "water and nearby woody plants",
+          "a dry desert without trees",
+          "snow on every day of the year"
+        ],
+        "answer": "water and nearby woody plants",
+        "explanation": "The stream and plants help meet the beaver's needs.",
+        "asset": "assets/illustrations/tree.svg"
+      },
+      {
+        "id": "g2-wind-sock",
+        "level": 3,
+        "domain": "Weather Watch",
+        "context": "A windsock points toward the east because the wind blows it in that direction.",
+        "prompt": "What is a windsock useful for observing?",
+        "choices": [
+          "the direction the air is moving",
+          "the exact weight of every cloud",
+          "how hot the sun is"
+        ],
+        "answer": "the direction the air is moving",
+        "explanation": "The windsock moves with flowing air.",
+        "asset": "assets/illustrations/cloud.svg"
+      },
+      {
+        "id": "g2-fossil-layer",
+        "level": 3,
+        "domain": "Earth Detective",
+        "context": "Students find a shell-shaped fossil in a rock that formed long ago.",
+        "prompt": "What does the fossil provide?",
+        "choices": [
+          "evidence that a living thing existed in the past",
+          "proof of tomorrow's weather",
+          "the exact age of every nearby rock"
+        ],
+        "answer": "evidence that a living thing existed in the past",
+        "explanation": "Fossils preserve clues about past living things.",
+        "asset": "assets/illustrations/mountain.svg"
+      },
+      {
+        "id": "g2-gravity-ball",
+        "level": 3,
+        "domain": "Motion Lab",
+        "context": "Maya drops two similar balls from the same height.",
+        "prompt": "What pulls the balls toward the ground?",
+        "choices": [
+          "gravity",
+          "sound",
+          "electric light"
+        ],
+        "answer": "gravity",
+        "explanation": "Gravity pulls objects toward Earth.",
+        "asset": "assets/illustrations/soccer_ball.svg"
+      },
+      {
+        "id": "g2-materials-umbrella",
+        "level": 3,
+        "domain": "Design Lab",
+        "context": "A student tests cloth, paper and plastic to build a rain cover.",
+        "prompt": "Which material property matters most?",
+        "choices": [
+          "how well the material keeps water out",
+          "whether the material smells like flowers",
+          "how many letters are in its name"
+        ],
+        "answer": "how well the material keeps water out",
+        "explanation": "A rain cover needs to resist water.",
+        "asset": "assets/illustrations/umbrella.svg"
+      },
+      {
+        "id": "g2-moon-light",
+        "level": 3,
+        "domain": "Space Watch",
+        "context": "The moon looks bright in the night sky.",
+        "prompt": "Where does most of the light we see from the moon come from?",
+        "choices": [
+          "sunlight reflected from its surface",
+          "a fire burning on the moon",
+          "light emitted by the moon itself"
+        ],
+        "answer": "sunlight reflected from its surface",
+        "explanation": "The moon reflects sunlight.",
+        "asset": "assets/illustrations/moon.svg"
+      },
+      {
+        "id": "g2-living-classification",
+        "level": 3,
+        "domain": "Classify",
+        "context": "A seedling uses water, grows and makes new leaves.",
+        "prompt": "Which observation shows it is a living thing?",
+        "choices": [
+          "it grows and responds to its environment",
+          "it is green in color",
+          "it fits inside a pot"
+        ],
+        "answer": "it grows and responds to its environment",
+        "explanation": "Growth is one of several characteristics of living things.",
+        "asset": "assets/illustrations/leaf.svg"
+      },
+      {
+        "id": "g2-melting-choc",
+        "level": 3,
+        "domain": "States of Matter",
+        "context": "A piece of chocolate softens and melts in a warm room.",
+        "prompt": "What changed?",
+        "choices": [
+          "its physical state",
+          "its name",
+          "the number of atoms in it"
+        ],
+        "answer": "its physical state",
+        "explanation": "Melting changes a solid into a liquid without creating a new substance.",
+        "asset": "assets/illustrations/sun.svg"
+      },
+      {
+        "id": "g2-plant-cycle",
+        "level": 3,
+        "domain": "Life Cycle",
+        "context": "A sunflower makes seeds after it grows and flowers.",
+        "prompt": "What can happen to a seed when conditions are suitable?",
+        "choices": [
+          "it can germinate and become a new plant",
+          "it turns into a plastic bottle",
+          "it produces sunlight"
+        ],
+        "answer": "it can germinate and become a new plant",
+        "explanation": "Germination begins the growth of a new plant.",
+        "asset": "assets/illustrations/sun.svg"
+      },
+      {
+        "id": "g2-sound-vibration",
+        "level": 3,
+        "domain": "Sound Lab",
+        "context": "A stretched rubber band makes a sound when plucked.",
+        "prompt": "What is the band doing while it makes the sound?",
+        "choices": [
+          "vibrating",
+          "becoming heavier",
+          "making a shadow"
+        ],
+        "answer": "vibrating",
+        "explanation": "Sound is produced by vibrations.",
+        "asset": "assets/illustrations/gear.svg"
+      },
+      {
+        "id": "g2-fair-plant-test",
+        "level": 3,
+        "domain": "Fair Test",
+        "context": "One bean plant gets lots of water and another gets much less. They are different varieties and grow in different soil.",
+        "prompt": "Why is it hard to tell whether water caused any difference?",
+        "choices": [
+          "more than one important condition changed",
+          "both plants were measured",
+          "the plants are alive"
+        ],
+        "answer": "more than one important condition changed",
+        "explanation": "A fair comparison should change one main factor at a time.",
+        "asset": "assets/illustrations/leaf.svg"
+      },
+      {
+        "id": "g2-weather-record",
+        "level": 3,
+        "domain": "Data & Evidence",
+        "context": "A class records outdoor temperature at the same time each day for 10 days.",
+        "prompt": "What can the records help show?",
+        "choices": [
+          "how temperatures changed across the days",
+          "which student is tallest",
+          "the exact weather next year"
+        ],
+        "answer": "how temperatures changed across the days",
+        "explanation": "Repeated observations can reveal patterns over time.",
+        "asset": "assets/illustrations/cloud.svg"
+      },
+      {
+        "id": "g3-erosion",
+        "level": 4,
+        "domain": "Earth Science",
+        "context": "After heavy rain, a hillside has new grooves where soil washed downhill.",
+        "prompt": "Which process is shown?",
+        "choices": [
+          "erosion",
+          "germination",
+          "reflection"
+        ],
+        "answer": "erosion",
+        "explanation": "Moving water can carry away soil and rock particles.",
+        "asset": "assets/illustrations/mountain.svg"
+      },
+      {
+        "id": "g3-insulation",
+        "level": 4,
+        "domain": "Design Challenge",
+        "context": "Two identical cups hold warm water. One has a thick sleeve and stays warmer longer.",
+        "prompt": "Which conclusion fits the observation?",
+        "choices": [
+          "the sleeve slowed heat transfer",
+          "the sleeve created extra hot water",
+          "the sleeve made water disappear"
+        ],
+        "answer": "the sleeve slowed heat transfer",
+        "explanation": "Insulation slows the transfer of thermal energy.",
+        "asset": null
+      },
+      {
+        "id": "g3-ramp-friction",
+        "level": 4,
+        "domain": "Motion Lab",
+        "context": "A toy car travels farther on a smooth ramp than on the same ramp covered with rough felt.",
+        "prompt": "What is a likely reason?",
+        "choices": [
+          "rough felt creates more friction",
+          "felt makes gravity stop",
+          "the car no longer has wheels"
+        ],
+        "answer": "rough felt creates more friction",
+        "explanation": "Friction resists motion and can change how far an object travels.",
+        "asset": "assets/photos/car.jpg"
+      },
+      {
+        "id": "g3-magnet-distance",
+        "level": 4,
+        "domain": "Force Lab",
+        "context": "A paper clip moves toward a magnet even before the magnet touches it.",
+        "prompt": "What does this show?",
+        "choices": [
+          "magnetic force can act at a distance",
+          "magnets need to touch every object",
+          "metal paper clips always move away"
+        ],
+        "answer": "magnetic force can act at a distance",
+        "explanation": "Magnetic forces can act without direct contact.",
+        "asset": "assets/illustrations/magnet.svg"
+      },
+      {
+        "id": "g3-light-reflect",
+        "level": 4,
+        "domain": "Light Lab",
+        "context": "A student shines a flashlight onto a mirror, and the light changes direction.",
+        "prompt": "Which process explains the change?",
+        "choices": [
+          "reflection",
+          "evaporation",
+          "erosion"
+        ],
+        "answer": "reflection",
+        "explanation": "Light can bounce off reflective surfaces.",
+        "asset": "assets/illustrations/lightbulb.svg"
+      },
+      {
+        "id": "g3-pollinators",
+        "level": 4,
+        "domain": "Ecosystems",
+        "context": "Bees visit flowering plants. Fewer bees visit the garden this season.",
+        "prompt": "What effect might occur?",
+        "choices": [
+          "some plants may produce fewer seeds",
+          "all plants stop using sunlight",
+          "the soil instantly freezes"
+        ],
+        "answer": "some plants may produce fewer seeds",
+        "explanation": "Some flowering plants rely on animal pollinators.",
+        "asset": "assets/photos/daisy.jpg"
+      },
+      {
+        "id": "g3-soil-growth",
+        "level": 4,
+        "domain": "Fair Test",
+        "context": "Two groups grow radishes under equal light and water. One uses sandy soil, the other uses clay-rich soil.",
+        "prompt": "Which factor are they testing?",
+        "choices": [
+          "soil type",
+          "length of daylight",
+          "amount of water"
+        ],
+        "answer": "soil type",
+        "explanation": "Soil type is the intentionally changed variable.",
+        "asset": "assets/illustrations/leaf.svg"
+      },
+      {
+        "id": "g3-circuit-open",
+        "level": 4,
+        "domain": "Circuit Lab",
+        "context": "A lamp connected to a battery turns off when a switch opens.",
+        "prompt": "Why does the lamp go out?",
+        "choices": [
+          "the path for electric current is broken",
+          "the battery loses all its mass",
+          "the light turns into sound"
+        ],
+        "answer": "the path for electric current is broken",
+        "explanation": "A closed circuit is needed for current to flow.",
+        "asset": "assets/illustrations/battery.svg"
+      },
+      {
+        "id": "g3-water-cycle",
+        "level": 4,
+        "domain": "Water Cycle",
+        "context": "Moist air cools, and tiny droplets form on the outside of a cold glass.",
+        "prompt": "Which process made the droplets?",
+        "choices": [
+          "condensation",
+          "erosion",
+          "magnetism"
+        ],
+        "answer": "condensation",
+        "explanation": "Water vapor cools and changes to liquid drops.",
+        "asset": "assets/illustrations/cloud.svg"
+      },
+      {
+        "id": "g3-shadow-length",
+        "level": 4,
+        "domain": "Sky Observation",
+        "context": "A student measures a flagpole's shadow at noon and again late in the afternoon.",
+        "prompt": "What can cause the shadow to change length?",
+        "choices": [
+          "the Sun's apparent position in the sky",
+          "a change in the flagpole's name",
+          "the age of the sidewalk"
+        ],
+        "answer": "the Sun's apparent position in the sky",
+        "explanation": "The angle of incoming sunlight changes during the day.",
+        "asset": "assets/illustrations/sun.svg"
+      },
+      {
+        "id": "g3-fossil-evidence",
+        "level": 4,
+        "domain": "Fossil Detective",
+        "context": "Two kinds of fossil footprints appear in an ancient rock layer.",
+        "prompt": "What can scientists most reasonably learn?",
+        "choices": [
+          "some animals moved through that area in the past",
+          "the exact colors of every animal",
+          "today's rainfall in that place"
+        ],
+        "answer": "some animals moved through that area in the past",
+        "explanation": "Tracks preserve evidence of ancient movement.",
+        "asset": "assets/illustrations/mountain.svg"
+      },
+      {
+        "id": "g3-food-chain-change",
+        "level": 4,
+        "domain": "Ecosystems",
+        "context": "Grass is eaten by rabbits, and foxes eat rabbits. The rabbit population becomes much smaller.",
+        "prompt": "Which change could follow?",
+        "choices": [
+          "foxes may find less food",
+          "grass will instantly disappear",
+          "foxes will stop needing food"
+        ],
+        "answer": "foxes may find less food",
+        "explanation": "Food-web changes can affect consumers higher in the chain.",
+        "asset": "assets/illustrations/fox.svg"
+      },
+      {
+        "id": "g3-controlled-experiment",
+        "level": 4,
+        "domain": "Scientific Method",
+        "context": "A student compares how quickly sugar dissolves in cold and warm water. She uses equal sugar amounts and equal water volumes.",
+        "prompt": "What is the changed variable?",
+        "choices": [
+          "water temperature",
+          "amount of sugar",
+          "amount of water"
+        ],
+        "answer": "water temperature",
+        "explanation": "Only water temperature is deliberately varied.",
+        "asset": "assets/illustrations/test_tube.svg"
+      },
+      {
+        "id": "g3-data-repeat",
+        "level": 4,
+        "domain": "Evidence",
+        "context": "A class launches paper planes. A new design goes farther once, but not in later trials.",
+        "prompt": "What should the class do before claiming it is better?",
+        "choices": [
+          "repeat fair tests and compare the results",
+          "report only the longest flight",
+          "ignore the flights that went a shorter distance"
+        ],
+        "answer": "repeat fair tests and compare the results",
+        "explanation": "Repeated tests reduce the influence of unusual results.",
+        "asset": "assets/photos/airplane.jpg"
+      },
+      {
+        "id": "g3-renewable-energy",
+        "level": 4,
+        "domain": "Energy Lab",
+        "context": "Solar panels generate electricity on a bright day but less on a cloudy one.",
+        "prompt": "Which factor affects their output?",
+        "choices": [
+          "the amount of sunlight reaching them",
+          "the library's opening hours",
+          "the number of pencils nearby"
+        ],
+        "answer": "the amount of sunlight reaching them",
+        "explanation": "Solar panels use energy from sunlight.",
+        "asset": "assets/illustrations/sun.svg"
+      },
+      {
+        "id": "g3-flood-map",
+        "level": 4,
+        "domain": "Earth Systems",
+        "context": "A river rises after a storm. A map shows lower land near the banks.",
+        "prompt": "Which area is more likely to flood first?",
+        "choices": [
+          "low ground near the river",
+          "a distant hilltop",
+          "the upper floor of a tall building"
+        ],
+        "answer": "low ground near the river",
+        "explanation": "Water can spread over nearby low-lying land when rivers rise.",
+        "asset": "assets/illustrations/map.svg"
+      },
+      {
+        "id": "g3-ecosystem-balance",
+        "level": 4,
+        "domain": "Habitats",
+        "context": "A new road divides a forest into two smaller habitats.",
+        "prompt": "Why might this be a problem for some animals?",
+        "choices": [
+          "it can make it harder to reach food or mates",
+          "every animal prefers living near cars",
+          "roads increase the number of trees"
+        ],
+        "answer": "it can make it harder to reach food or mates",
+        "explanation": "Habitat fragmentation can limit animal movement.",
+        "asset": "assets/illustrations/tree.svg"
+      },
+      {
+        "id": "g3-engineering-cycle",
+        "level": 4,
+        "domain": "Engineering",
+        "context": "A bridge model fails under a load. The team studies where it bent and changes the supports.",
+        "prompt": "What should the team do next?",
+        "choices": [
+          "test the improved model again",
+          "claim it is perfect without testing",
+          "remove all measurements"
+        ],
+        "answer": "test the improved model again",
+        "explanation": "Engineering designs are revised and tested based on evidence.",
+        "asset": "assets/illustrations/bridge.svg"
+      }
+    ]
+  }
 }
