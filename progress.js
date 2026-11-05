@@ -194,9 +194,10 @@ function renderDashboard() {
   const catWeek = {};
   for (const [, x] of week) for (const [c, v] of Object.entries(x.cats)) { const a = catWeek[c] || (catWeek[c] = [0, 0]); a[0] += v[0]; a[1] += v[2] != null ? v[2] : v[1]; }
   const shown = CATEGORIES.filter((c) => c.gen && c.id !== 'mix' && (catWeek[c.id] || state.levels[c.id]));
-  $('#dashSubjects').innerHTML = `<table><tr><th>Game</th><th>Level</th><th>This week</th></tr>${shown.map((c) => {
+  $('#dashSubjects').innerHTML = `${typeof CURRICULUM_AREAS !== 'undefined' ? `<p class="curr-name">Matched to: <b>${(CURRICULUM_AREAS[levelsCC()] || CURRICULUM_AREAS.us).name}</b></p>` : ''}<table><tr><th>Game</th><th>Level</th><th>This week</th></tr>${shown.map((c) => {
     const w = catWeek[c.id];
-    return `<tr><td>${c.icon} ${c.title}<small>${skillName(c.id, levelOf(c.id))}</small></td><td>${levelOf(c.id)}<small>/${maxLevelOf(c.id)}</small></td><td>${w ? `${w[0]} cards · ${Math.round(w[1] / w[0] * 100)}%` : '—'}</td></tr>`;
+    const area = typeof curriculumArea === 'function' ? curriculumArea(c.id) : '';
+    return `<tr><td>${c.icon} ${typeof localTileTitle === 'function' ? localTileTitle(c.id, c.title) : c.title}<small>${skillName(c.id, levelOf(c.id))}</small>${area ? `<small class="curr-area">📘 ${area}</small>` : ''}</td><td>${levelOf(c.id)}<small>/${maxLevelOf(c.id)}</small></td><td>${w ? `${w[0]} cards · ${Math.round(w[1] / w[0] * 100)}%` : '—'}</td></tr>`;
   }).join('')}</table>`;
   // summary in plain words
   const bySubject = {};

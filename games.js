@@ -173,7 +173,7 @@ function gameLevelUp(id, needWins = 1) {
   save(); renderPZ();
   return up;
 }
-const lvBadge = (id) => (GAME_MAX[id] || id === 'sudoku' ? `<span class="lv">Lv ${GL(id)}</span>` : '');
+const lvBadge = (id) => (GAME_MAX[id] || id === 'sudoku' ? gameDots(GL(id), GAME_MAX[id] || 5) : '');
 function renderPZ() {
   $('#pzGrid').innerHTML = GAMES.filter((g) => !BRAIN_GAME_IDS.has(g.id)).map((g) =>
     `<button class="tile pz-tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`).join('');
@@ -193,7 +193,7 @@ function openGame(id) {
   if (!g || (brainMode && !brainVisible(g))) return;
   curGame = g;
   document.body.style.setProperty('--theme', g.color);
-  $('#gameTitle').innerHTML = `${g.icon === BALL_ICON ? '🔵' : g.icon} ${g.title}${GAME_MAX[id] || id === 'sudoku' ? ` <small class="g-lv">Lv ${GL(id)}</small>` : ''}`;
+  $('#gameTitle').innerHTML = `${g.icon === BALL_ICON ? '🔵' : g.icon} ${g.title}${GAME_MAX[id] || id === 'sudoku' ? ` <small class="g-lv">${gameDots(GL(id), GAME_MAX[id] || 5).replace(/<\/?span[^>]*>/g, '')}</small>` : ''}`;
   $('#gameArea').innerHTML = '';
   $('#gameArea').className = 'game-area g-' + id;
   show('game');

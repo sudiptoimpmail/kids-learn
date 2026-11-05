@@ -17,6 +17,7 @@ const { chromium } = require('playwright');
 
     // An in-tab service worker upgrade/reload must never demand a second Let's Play tap.
     await page.reload();
+    await page.waitForFunction(() => !!window.KidsLearnReady); await page.evaluate(() => window.KidsLearnReady); await page.waitForTimeout(200);
     assert.equal(await page.locator('#splash').evaluate(x => x.classList.contains('gone')), true,
       'splash reappeared after reload and would require a second tap');
 
