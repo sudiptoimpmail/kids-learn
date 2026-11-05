@@ -328,7 +328,7 @@ function genSight(level) {
     const pair = shuffle(pick(OPPOSITES));
     const others = sample(OPPOSITES.flat().filter((w) => !pair.includes(w)), n);
     return {
-      key: `sight-opp-${pair[0]}`, text: `What is the opposite of <b>${pair[0]}</b>?`, say: ['What is the opposite of', `${pair[0]}?`],
+      key: `sight-opp-${pair[0]}`, text: `What is the opposite of <b>${pair[0]}</b>?`, say: CLIPS[clipKey(pair[0])] ? ['What is the opposite of', pair[0]] : 'What is the opposite?',
       main: `<div class="word sm">${pair[0]}</div>`,
       options: shuffle([pair[1], ...others]).map((w) => ({ v: w, html: w })),
       answer: pair[1], optClass: 'opt-word', hint: firstLetterHint(pair[1]),
