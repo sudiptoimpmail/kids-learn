@@ -28,7 +28,6 @@ const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CAT
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'region' && typeof myRegion === 'function' && !myRegion())
   && !(c.id === 'check' && !(typeof checkFor === 'function' && checkFor()))
-  && !(c.id === 'lang' && !(typeof langPack === 'function' && langPack()))
   && !(c.id === 'syl' && !state.showAll && strongReader())
   && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
 // auto level-up stops at the top of the child's grade (unless all games are shown)
@@ -264,7 +263,7 @@ function renderHome() {
   if (typeof renderToday === 'function') renderToday();
   if (typeof renderQuest === 'function') renderQuest();
   const groups = [
-    ['📝 Practice', ['check', 'lang']],
+    ['📝 Practice', ['check']],
     ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'gp', 'match', 'syl']],
     ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'frac', 'measure', 'mul', 'div', 'clock', 'shape2']],
     ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], 'brain'],

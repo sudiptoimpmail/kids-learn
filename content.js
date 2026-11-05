@@ -1729,7 +1729,6 @@ const CATEGORIES = [
   { id: 'sci', title: 'Science', sub: 'living things · matter · space', icon: '🔬', color: '#1098ad', gen: (l) => genSciencePlus(l), maxLevel: 4 },
   { id: 'community', title: 'Our Community', sub: 'rules · maps · money choices', icon: '🏘️', color: '#2b8a3e', gen: (l) => genCommunity(l), maxLevel: 3 },
   { id: 'check', title: 'Test Practice', sub: 'reading · maths', icon: '📝', color: '#495057', gen: () => genCheck(), maxLevel: 1, roundLen: 10 },
-  { id: 'lang', title: 'Words', sub: 'numbers · colours', icon: '🗣️', color: '#0b7285', gen: (l) => genLangWords(l), maxLevel: 2 },
   { id: 'region', title: 'My State', sub: 'capital · places · facts', icon: '🗺️', color: '#c2255c', gen: (l) => genRegion(l), maxLevel: 3 },
   { id: 'home', title: 'My Country', sub: 'symbols · places · facts', icon: '🏳️', color: '#e03131', gen: (l) => genCountry(l), maxLevel: 4 },
   { id: 'body', title: 'Body Parts', sub: 'nose · knees · elbows', icon: '🙋', color: '#ff8787', gen: genBody },
