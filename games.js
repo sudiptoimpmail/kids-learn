@@ -1124,7 +1124,7 @@ function startPuzzleMenu() {
   area.innerHTML = `<div class="g-msg">Pick a picture · ${size*size} chunky pieces</div><div class="pic-grid">${PUZ.map(p=>
     `<button class="pic-pick" data-p="${p.id}">${p.photo ? `<span class="pk-photo" style="--pk-x:${p.photo[0]*100/3}%;--pk-y:${p.photo[1]*50}%"></span>` : picSVG(p,puzzleFills(p))}<span>${p.name}</span></button>`).join('')}</div>`;
   say('Pick a picture!');
-  $('.pic-pick', area).forEach(b=>b.onclick=()=>{sfx.tap();startPuzzle(PUZ.find(p=>p.id===b.dataset.p));});
+  $$('.pic-pick', area).forEach(b=>b.onclick=()=>{sfx.tap();startPuzzle(PUZ.find(p=>p.id===b.dataset.p));});
 }
 
 function startPuzzle(p) {
