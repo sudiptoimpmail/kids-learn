@@ -403,5 +403,6 @@ const IllustratedActivities = (() => {
     return stage;
   }
   const traceScene=(mode)=>illustration(mode==='sports'?'sports':mode==='garden'?'garden':'park');
-  return {available,make,mount,illustration,traceScene};
+  const coverage=()=>({a:scenes.sounds.correct.slice(), circles:scenes.shapes.correct.slice(), squares:scenes.squares.correct.slice(), forest:scenes.forest.items.map(x=>x[0])});
+  return {available,make,mount,illustration,traceScene,coverage};
 })();
