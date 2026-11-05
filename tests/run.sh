@@ -4,7 +4,7 @@
 cd "$(dirname "$0")/.." && mkdir -p tests/out
 python3 -m http.server 8765 >/dev/null 2>&1 & SERVER=$!; sleep 1
 FAILED=0
-for t in grade-pinball-layout-test ipad-polish-test qa-navigation-test workbook-coverage-test workbook-test issue-audit-test g1readtest child-regressions learningtest brain-games-test kidtest lifetest pintest tracetest tracetest2 tracetest3 dashtest questtest badbackup reviewtest swtest voiceaudit; do
+for t in curriculum-depth-test grade-pinball-layout-test ipad-polish-test qa-navigation-test workbook-coverage-test workbook-test issue-audit-test g1readtest child-regressions learningtest brain-games-test kidtest lifetest pintest tracetest tracetest2 tracetest3 dashtest questtest badbackup reviewtest swtest voiceaudit; do
   echo "== $t"; node "tests/$t.js" || { echo "FAILED: $t" >&2; FAILED=1; }
 done
 kill $SERVER
