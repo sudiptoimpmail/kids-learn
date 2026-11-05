@@ -18,7 +18,8 @@ const gameMax = maxLevelOf;
 const OPTIONAL = { clock: 'optClock', anatomy: 'optAnatomy' };  // off unless a parent turns them on in Settings
 // a child who reads and spells well doesn't need syllable clapping any more
 const strongReader = () => levelOf('spell') >= 4 || levelOf('sent') >= 3 || (levelOf('spell') >= 3 && (state.best.spell || 0) >= 3);
-const visibleGames = () => isTestMode() ? CATEGORIES.slice() : CATEGORIES.filter((c) => !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
+const visibleGames = () => isTestMode() ? CATEGORIES.slice() : CATEGORIES.filter((c) => c.id !== 'cmp' // comparisons are mixed into math, not shown as a separate game
+  && !(OPTIONAL[c.id] && !state[OPTIONAL[c.id]])
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'syl' && !state.showAll && strongReader())
   && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
