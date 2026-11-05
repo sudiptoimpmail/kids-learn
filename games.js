@@ -409,8 +409,8 @@ function startWhack() {
   const speedAt = () => Math.max(420, upMs * (1 - 0.5 * Math.min(1, (Date.now() - t0) / 30000)));
 
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Tap ${target} moles! <b class="wm-score">0</b> 🐹 · <span class="wm-time">30</span>s${lv >= 3 ? '<small>Don\'t tap the 🌸!</small>' : ''}</div>
-    <div class="wm-field">${Array.from({ length: 9 }, (_, i) => `<button class="wm-hole" data-i="${i}"><span class="wm-pop"></span></button>`).join('')}</div>`;
+  area.innerHTML = `<div class="g-msg wm-banner"><span class="wm-heading">🌿 Mole Meadow</span><span class="wm-task">Catch ${target} friendly critters!</span><span class="wm-hud"><span>⭐ <b class="wm-score">0</b> / ${target}</span><span>⏱ <b class="wm-time">30</b>s</span></span>${lv >= 3 ? '<small>Let the flowers grow — tap only the animals!</small>' : '<small>Tap the animals when they peek out!</small>'}</div>
+    <div class="wm-field">${Array.from({ length: 9 }, (_, i) => `<button type="button" class="wm-hole" data-i="${i}" aria-label="Garden hole ${i+1}"><span class="wm-earth"></span><span class="wm-pop"></span><span class="wm-rim"></span></button>`).join('')}</div>`;
   say('Tap the moles!');
   const holes = $$('.wm-hole', area);
   let score = 0, alive = true, t0 = Date.now(), tick = 0;
@@ -423,14 +423,15 @@ function startWhack() {
     const el = holes[i].querySelector('.wm-pop');
     el.textContent = flower ? '🌸' : pick(['🐹', '🐹', '🐹', '🦔', '🐭']);
     holes[i].classList.add('up');
-    const timer = later(() => { holes[i].classList.remove('up'); up.delete(i); }, speedAt() * (0.8 + Math.random() * 0.4));
+    holes[i].setAttribute('aria-label', flower ? 'Flower: do not tap' : 'Tap the animal!');
+    const timer = later(() => { holes[i].classList.remove('up'); holes[i].setAttribute('aria-label', 'Empty garden hole'); up.delete(i); }, speedAt() * (0.8 + Math.random() * 0.4));
     up.set(i, { timer, flower });
   }
   holes.forEach((h, i) => h.addEventListener('pointerdown', (e) => {
     e.preventDefault();
     const m = up.get(i); if (!m || !alive) return;
     clearTimeout(m.timer); up.delete(i);
-    h.classList.remove('up'); h.classList.add(m.flower ? 'oops' : 'bonk');
+    h.classList.remove('up'); h.setAttribute('aria-label', 'Empty garden hole'); h.classList.add(m.flower ? 'oops' : 'bonk');
     later(() => h.classList.remove('bonk', 'oops'), 300);
     if (m.flower) { score = Math.max(0, score - 1); sfx.no(); } else { score++; tone([520, 780], { dur: 0.05, gap: 0.05, vol: 0.12, type: 'square' }); }
     $('.wm-score', area).textContent = score;
