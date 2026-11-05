@@ -7,7 +7,9 @@ const ROUND = 10;
 const KEY = 'learnplay.v1';
 
 /* ---------- saved progress ---------- */
-const state = Object.assign({ name: '', voice: true, stars: 0, stickers: [], levels: {}, best: {} }, Store.load());   // device settings + the active child
+const state = Object.assign({ name: '', voice: true, stars: 0, stickers: [], levels: {}, best: {} }, Store.load());
+// Missing or unavailable premium packs must never block the bundled, free curriculum.
+void ContentPacks.load();   // device settings + the active child
 const save = () => Store.save(state);
 // if progress can't be saved (storage full), tell the grown-ups once instead of losing stars quietly
 Store.onError = () => { if (Store.warned) return; Store.warned = true; setTimeout(() => { const n = document.createElement('div'); n.className = 'save-warn'; n.textContent = '⚠️ Progress could not be saved on this device (storage may be full). Grown-ups: ⚙️ → Save a backup.'; n.onclick = () => n.remove(); document.body.appendChild(n); }, 0); };   // storage.js decides where it goes (web now, native app later)
@@ -294,7 +296,9 @@ function startRound(catId, count, browse = false, atLevel = null) {
     // Illustrated activities appear as variations in existing question rounds.
     const illustrated = typeof IllustratedActivities !== 'undefined' &&
       IllustratedActivities.available(state.grade, c.id, lv) && (qs.length % 4 === 1 || (qs.length === 0 && Math.random() < 0.45));
-    let q = (illustrated && IllustratedActivities.make(state.grade, c.id, lv)) || c.gen(lv);
+    const added = !illustrated && Math.random() < 0.35 &&
+      ContentPacks.choose(state.grade, c.id, lv, [...seen, ...(!browse && guard < 350 ? recent : [])]);
+    let q = (illustrated && IllustratedActivities.make(state.grade, c.id, lv)) || added || c.gen(lv);
     // Keep a single occurrence of each illustrated exercise per round.
     if (q.illustrated && seen.has(q.key)) q = c.gen(lv);
     if (seen.has(q.key) && guard < 500) continue;
@@ -1037,6 +1041,34 @@ function openSettings() {
   $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen).map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
   renderTestBrowser();
+  // This section is accessible only after the parent PIN. No child-facing paywall.
+  ContentPacks.load().then(() => {
+    const packs = ContentPacks.summary(), box = $('#contentPacksStatus');
+    if (box) box.textContent = packs.length
+      ? packs.map(p => p.title + ' (v' + p.version + ', ' + p.questions + ' questions)').join(' · ') + ' — ready offline.'
+      : 'Your included lessons are ready offline. No extra packs downloaded.';
+  });
+  const nativePacks = window.KidsLearnPurchases;
+  const sync = $('#contentPacksSync');
+  sync.hidden = !(nativePacks && typeof nativePacks.downloadOwnedPacks === 'function');
+  if (!sync.hidden) sync.onclick = async () => {
+    sync.disabled = true;
+    const status = $('#contentPacksStatus');
+    status.textContent = 'Checking purchased lesson updates…';
+    try {
+      // The native bridge MUST check Apple/Google entitlements and authorize
+      // each data-only payload with the publisher service before returning it.
+      const verified = await nativePacks.downloadOwnedPacks();
+      if (!Array.isArray(verified)) throw new Error('Invalid download response');
+      for (const pack of verified) await ContentPacks.installVerified(pack);
+      status.textContent = verified.length
+        ? 'Saved ' + verified.length + ' purchased learning pack(s). Ready offline.'
+        : 'All your downloaded lessons are up to date.';
+    } catch (error) {
+      status.textContent = 'Could not check updates. The included and previously saved lessons still work offline.';
+      console.warn('Learning pack update failed', error);
+    } finally { sync.disabled = false; }
+  };
   show('settings');
 }
 
