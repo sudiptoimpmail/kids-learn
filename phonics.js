@@ -145,7 +145,8 @@ function genPhonics(level) {
         key: `ph-mid-${target[0]}-${right[0]}`, text: `Which picture has the same <b>middle sound</b> as <b>${target[0]}</b>?`,
         say: ['Which picture has the same middle sound as', `${target[0]}?`],
         main: `<div class="ph-word"><span class="ph-e">${target[1]}</span>${target[0][0]}<b>${target[0][1]}</b>${target[0][2]}</div>`, mainClass: 'ph-main',
-        options: opts.map(picOpt), answer: right[0], optClass: 'opt-emoji', hint: namesHint(opts, `Listen for the middle sound in ${target[0]}.`),
+        options: opts.map(picOpt), answer: right[0], optClass: 'opt-emoji',
+        hint: { html: namesHint(opts, '').html, say: ['Which picture has the same middle sound as', target[0], ...opts.map(o => o[0])] },
       };
     }
   }
