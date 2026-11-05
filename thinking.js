@@ -252,12 +252,11 @@ const THINKING_SEQUENCES = [
   [3, ['🌱', '🌻', '🐝', '🍯'], 'A seed becomes a flower, a bee visits the flower and makes honey.'],
   [3, ['🔭', '🌙', '📝', '📊'], 'Observe the moon, write what you see and compare your notes.'],
   [3, ['🌤️', '🌡️', '📝', '📉'], 'Check the weather, measure temperature, record and graph the result.'],
-  [3, ['🏗️', '📐', '🧱', '🏠'], 'Plan the building, measure, assemble materials and finish the house.'],
+  [3, ['📐', '🏗️', '🧱', '🏠'], 'Measure and plan, prepare the site, assemble the walls and finish the house.'],
   [3, ['💡', '📋', '🧪', '✅'], 'Ask a question, make a plan, test your idea and reach a conclusion.'],
   [3, ['🪴', '📏', '📝', '📈'], 'Grow a plant, measure its height, write measurements and graph growth.'],
   [3, ['💧', '🧊', '☀️', '💨'], 'Freeze water into ice, warm it to liquid and let it evaporate.'],
-  [3, ['🛒', '💵', '🧮', '🧾'], 'Choose an item, check the price, calculate the total and receive a receipt.'],
-  [3, ['🐛', '🍃', '🟫', '🦋'], 'A caterpillar eats leaves, forms a chrysalis and emerges as a butterfly.'],
+  [3, ['🛒', '🧮', '💵', '🧾'], 'Choose an item, calculate the total, pay for it and receive a receipt.'],
   [3, ['📗', '🔍', '📝', '💬'], 'Read a question, research evidence, write an answer and explain it.'],
 
 ];
