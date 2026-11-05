@@ -2,7 +2,7 @@
 
 A flash-card learning game for Pre-K through 3rd grade, built as an installable iPhone/iPad web app (no App Store needed).
 
-**Grade setting:** ⚙️ → Grade (Pre-K, Kindergarten, 1st, 2nd, 3rd). Each grade shows the games that fit it (e.g. Multiply/Divide from 2nd) and starts every game at that grade's level. **Levels follow her progress:** a great round moves her up; at the top of her grade, two great rounds in a row move her past it; a hard round moves her back down (even below her grade). Turn on **Show all games** to see everything. The grade-to-section ranges, learning objectives and question routes live in `data/curriculum-map.json`.
+**Grade setting:** ⚙️ → Grade (Pre-K, Kindergarten, 1st, 2nd, 3rd). Each grade shows the games that fit it (e.g. Multiply/Divide from 2nd) and starts every game at that grade's level. **Levels follow her progress within the selected grade:** a strong round increases difficulty up to that grade's maximum and a hard round offers easier practice within the grade. A grown-up can enable Show all games to explore other levels. Turn on **Show all games** to see everything. The grade-to-section ranges, learning objectives and question routes live in `data/curriculum-map.json`.
 
 **🎚️ Difficulty slider (grown-ups):** on any question screen, **press and hold** the 🎚️ Lv button for a second to open a slider (Easier ↔ Harder) that shows which grade each level suits.
 
