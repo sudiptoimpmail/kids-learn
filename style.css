@@ -1074,3 +1074,8 @@ html, body { min-height: 100%; }
   .reading-photo-wrap { width:min(145px,36vw); }
   .gk-picture-choices .opt .gk-photo { height:80px; }
 }
+
+
+.pz-more { width:100%; max-width:540px; background:#fffaf0; border:2px solid #e0d4b7; border-radius:16px; padding:10px; }
+.pz-more summary { padding:8px; cursor:pointer; font-size:16px; font-weight:900; }
+.pz-more[open] .pic-grid { padding-top:12px; }
