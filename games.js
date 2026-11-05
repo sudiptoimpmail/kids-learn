@@ -1103,8 +1103,12 @@ function startPuzzleMenu() {
   const area = $('#gameArea');
   const size = puzzleSize();
   const PUZ = [...PHOTO_PUZZLE, ...ALL_PICS.filter((p) => p.orig || !p.om)];
-  area.innerHTML = `<div class="g-msg">Pick a picture · ${size}×${size} puzzle</div><div class="pic-grid">${PUZ.map((p) =>
-    `<button class="pic-pick" data-p="${p.id}">${p.photo ? photoImage(p.photo,'pz-photo-pick') : picSVG(p, puzzleFills(p))}<span>${p.name}</span></button>`).join('')}</div>`;
+  const pictureButton = p => `<button class="pic-pick" data-p="${p.id}">${p.photo ? photoImage(p.photo,'pz-photo-pick') : picSVG(p, puzzleFills(p))}<span>${p.name}</span></button>`;
+  area.innerHTML = `<div class="g-msg">Pick a picture · ${size}×${size} puzzle</div>
+    <div class="pic-grid">${PHOTO_PUZZLE.map(pictureButton).join('')}</div>
+    <details class="pz-more"><summary>More illustrated pictures</summary>
+      <div class="pic-grid">${PUZ.filter(p => !p.photo).map(pictureButton).join('')}</div>
+    </details>`;
   say('Pick a picture!');
   $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startPuzzle(PUZ.find((p) => p.id === b.dataset.p)); }));
 }
