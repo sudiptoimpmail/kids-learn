@@ -1079,3 +1079,19 @@ html, body { min-height: 100%; }
 .pz-more { width:100%; max-width:540px; background:#fffaf0; border:2px solid #e0d4b7; border-radius:16px; padding:10px; }
 .pz-more summary { padding:8px; cursor:pointer; font-size:16px; font-weight:900; }
 .pz-more[open] .pic-grid { padding-top:12px; }
+
+
+/* Landscape iPad: reserve space for the header, palette and footer before sizing the canvas. */
+@media (orientation: landscape) and (min-width:700px) and (max-height:950px) {
+  #game .g-draw { gap:7px; margin-top:5px; }
+  .g-draw .dr-top, .g-draw .dr-tools { width:min(520px,75vw); }
+  .g-draw .dr-pad { width:min(480px, calc(100dvh - 340px), 70vw); }
+  .g-draw .dr-say b { font-size:18px; }
+  .g-draw .dr-ref { width:70px; }
+  .g-draw .dr-zoom { gap:5px; }
+  .g-draw .dr-tools { gap:4px; }
+  .g-draw .dr-tool { height:36px; }
+  .g-draw .color-btns .big-btn { min-height:38px; }
+  .g-pinball .pb-dmd { padding-top:3px; padding-bottom:2px; }
+  .g-pinball .pb-btns .pb-flip { height:50px; min-height:50px; }
+}
