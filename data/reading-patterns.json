@@ -1,0 +1,1308 @@
+{
+  "schema": 1,
+  "namespace": "reading-patterns",
+  "datasets": {
+    "PATTERN_SENTENCES": [
+      [
+        "The hat is black.",
+        "What color is the hat?",
+        [
+          "black ⚫",
+          "blue 🔵",
+          "yellow 🟡"
+        ],
+        1
+      ],
+      [
+        "The hat is blue.",
+        "What color is the hat?",
+        [
+          "blue 🔵",
+          "red 🔴",
+          "yellow 🟡"
+        ],
+        1
+      ],
+      [
+        "The hat is red.",
+        "What color is the hat?",
+        [
+          "red 🔴",
+          "blue 🔵",
+          "yellow 🟡"
+        ],
+        1
+      ],
+      [
+        "The cup is yellow.",
+        "What color is the cup?",
+        [
+          "yellow 🟡",
+          "blue 🔵",
+          "green 🟢"
+        ],
+        1
+      ],
+      [
+        "The cup is pink.",
+        "What color is the cup?",
+        [
+          "pink 🩷",
+          "blue 🔵",
+          "green 🟢"
+        ],
+        1
+      ],
+      [
+        "The cup is red.",
+        "What color is the cup?",
+        [
+          "red 🔴",
+          "pink 🩷",
+          "yellow 🟡"
+        ],
+        1
+      ],
+      [
+        "The bag is black.",
+        "What color is the bag?",
+        [
+          "black ⚫",
+          "red 🔴",
+          "pink 🩷"
+        ],
+        1
+      ],
+      [
+        "The bag is green.",
+        "What color is the bag?",
+        [
+          "green 🟢",
+          "yellow 🟡",
+          "blue 🔵"
+        ],
+        1
+      ],
+      [
+        "The bag is pink.",
+        "What color is the bag?",
+        [
+          "pink 🩷",
+          "blue 🔵",
+          "yellow 🟡"
+        ],
+        1
+      ],
+      [
+        "The van is red.",
+        "What color is the van?",
+        [
+          "red 🔴",
+          "green 🟢",
+          "black ⚫"
+        ],
+        1
+      ],
+      [
+        "The van is blue.",
+        "What color is the van?",
+        [
+          "blue 🔵",
+          "red 🔴",
+          "pink 🩷"
+        ],
+        1
+      ],
+      [
+        "The van is black.",
+        "What color is the van?",
+        [
+          "black ⚫",
+          "red 🔴",
+          "yellow 🟡"
+        ],
+        1
+      ],
+      [
+        "The bed is yellow.",
+        "What color is the bed?",
+        [
+          "yellow 🟡",
+          "pink 🩷",
+          "green 🟢"
+        ],
+        1
+      ],
+      [
+        "The bed is green.",
+        "What color is the bed?",
+        [
+          "green 🟢",
+          "black ⚫",
+          "blue 🔵"
+        ],
+        1
+      ],
+      [
+        "The bed is blue.",
+        "What color is the bed?",
+        [
+          "blue 🔵",
+          "yellow 🟡",
+          "black ⚫"
+        ],
+        1
+      ],
+      [
+        "The box is yellow.",
+        "What color is the box?",
+        [
+          "yellow 🟡",
+          "black ⚫",
+          "red 🔴"
+        ],
+        1
+      ],
+      [
+        "The box is green.",
+        "What color is the box?",
+        [
+          "green 🟢",
+          "red 🔴",
+          "pink 🩷"
+        ],
+        1
+      ],
+      [
+        "The box is blue.",
+        "What color is the box?",
+        [
+          "blue 🔵",
+          "black ⚫",
+          "red 🔴"
+        ],
+        1
+      ],
+      [
+        "The pen is black.",
+        "What color is the pen?",
+        [
+          "black ⚫",
+          "yellow 🟡",
+          "pink 🩷"
+        ],
+        1
+      ],
+      [
+        "The pen is yellow.",
+        "What color is the pen?",
+        [
+          "yellow 🟡",
+          "red 🔴",
+          "green 🟢"
+        ],
+        1
+      ],
+      [
+        "The pen is blue.",
+        "What color is the pen?",
+        [
+          "blue 🔵",
+          "red 🔴",
+          "pink 🩷"
+        ],
+        1
+      ],
+      [
+        "The mug is pink.",
+        "What color is the mug?",
+        [
+          "pink 🩷",
+          "black ⚫",
+          "yellow 🟡"
+        ],
+        1
+      ],
+      [
+        "The mug is red.",
+        "What color is the mug?",
+        [
+          "red 🔴",
+          "black ⚫",
+          "green 🟢"
+        ],
+        1
+      ],
+      [
+        "The mug is blue.",
+        "What color is the mug?",
+        [
+          "blue 🔵",
+          "green 🟢",
+          "black ⚫"
+        ],
+        1
+      ],
+      [
+        "I see eight cats.",
+        "How many cats?",
+        [
+          "8",
+          "4",
+          "3"
+        ],
+        1
+      ],
+      [
+        "I see seven cats.",
+        "How many cats?",
+        [
+          "7",
+          "8",
+          "5"
+        ],
+        1
+      ],
+      [
+        "I see nine cats.",
+        "How many cats?",
+        [
+          "9",
+          "5",
+          "3"
+        ],
+        1
+      ],
+      [
+        "I see five dogs.",
+        "How many dogs?",
+        [
+          "5",
+          "3",
+          "9"
+        ],
+        1
+      ],
+      [
+        "I see ten dogs.",
+        "How many dogs?",
+        [
+          "10",
+          "4",
+          "9"
+        ],
+        1
+      ],
+      [
+        "I see four dogs.",
+        "How many dogs?",
+        [
+          "4",
+          "5",
+          "6"
+        ],
+        1
+      ],
+      [
+        "I see eight hens.",
+        "How many hens?",
+        [
+          "8",
+          "9",
+          "3"
+        ],
+        1
+      ],
+      [
+        "I see nine hens.",
+        "How many hens?",
+        [
+          "9",
+          "4",
+          "2"
+        ],
+        1
+      ],
+      [
+        "I see six hens.",
+        "How many hens?",
+        [
+          "6",
+          "3",
+          "4"
+        ],
+        1
+      ],
+      [
+        "I see eight pigs.",
+        "How many pigs?",
+        [
+          "8",
+          "7",
+          "6"
+        ],
+        1
+      ],
+      [
+        "I see two pigs.",
+        "How many pigs?",
+        [
+          "2",
+          "7",
+          "3"
+        ],
+        1
+      ],
+      [
+        "I see nine pigs.",
+        "How many pigs?",
+        [
+          "9",
+          "7",
+          "3"
+        ],
+        1
+      ],
+      [
+        "I see seven bugs.",
+        "How many bugs?",
+        [
+          "7",
+          "2",
+          "4"
+        ],
+        1
+      ],
+      [
+        "I see three bugs.",
+        "How many bugs?",
+        [
+          "3",
+          "7",
+          "9"
+        ],
+        1
+      ],
+      [
+        "I see two bugs.",
+        "How many bugs?",
+        [
+          "2",
+          "5",
+          "7"
+        ],
+        1
+      ],
+      [
+        "I see three ducks.",
+        "How many ducks?",
+        [
+          "3",
+          "10",
+          "6"
+        ],
+        1
+      ],
+      [
+        "I see two ducks.",
+        "How many ducks?",
+        [
+          "2",
+          "5",
+          "9"
+        ],
+        1
+      ],
+      [
+        "I see eight ducks.",
+        "How many ducks?",
+        [
+          "8",
+          "5",
+          "6"
+        ],
+        1
+      ],
+      [
+        "I see six frogs.",
+        "How many frogs?",
+        [
+          "6",
+          "9",
+          "4"
+        ],
+        1
+      ],
+      [
+        "I see four frogs.",
+        "How many frogs?",
+        [
+          "4",
+          "7",
+          "8"
+        ],
+        1
+      ],
+      [
+        "I see two frogs.",
+        "How many frogs?",
+        [
+          "2",
+          "9",
+          "7"
+        ],
+        1
+      ],
+      [
+        "I see two fish.",
+        "How many fish?",
+        [
+          "2",
+          "9",
+          "4"
+        ],
+        1
+      ],
+      [
+        "I see eight fish.",
+        "How many fish?",
+        [
+          "8",
+          "7",
+          "4"
+        ],
+        1
+      ],
+      [
+        "I see six fish.",
+        "How many fish?",
+        [
+          "6",
+          "10",
+          "8"
+        ],
+        1
+      ],
+      [
+        "The cat is on the mat.",
+        "Where is the cat?",
+        [
+          "on the mat",
+          "on the log",
+          "on the rug"
+        ],
+        1
+      ],
+      [
+        "The cat is in the van.",
+        "Where is the cat?",
+        [
+          "in the van",
+          "in the box",
+          "on the log"
+        ],
+        1
+      ],
+      [
+        "The dog is on the bed.",
+        "Where is the dog?",
+        [
+          "on the bed",
+          "in the box",
+          "in the pen"
+        ],
+        1
+      ],
+      [
+        "The dog is in the tub.",
+        "Where is the dog?",
+        [
+          "in the tub",
+          "on the mat",
+          "in the pen"
+        ],
+        1
+      ],
+      [
+        "The pig is in the van.",
+        "Where is the pig?",
+        [
+          "in the van",
+          "on the bed",
+          "on the rug"
+        ],
+        1
+      ],
+      [
+        "The pig is in the pen.",
+        "Where is the pig?",
+        [
+          "in the pen",
+          "in the van",
+          "on the log"
+        ],
+        1
+      ],
+      [
+        "The hen is in the pen.",
+        "Where is the hen?",
+        [
+          "in the pen",
+          "in the tub",
+          "on the rug"
+        ],
+        1
+      ],
+      [
+        "The hen is on the bed.",
+        "Where is the hen?",
+        [
+          "on the bed",
+          "in the tub",
+          "on the log"
+        ],
+        1
+      ],
+      [
+        "The fox is on the rug.",
+        "Where is the fox?",
+        [
+          "on the rug",
+          "in the van",
+          "on the bed"
+        ],
+        1
+      ],
+      [
+        "The fox is in the van.",
+        "Where is the fox?",
+        [
+          "in the van",
+          "on the bed",
+          "on the mat"
+        ],
+        1
+      ],
+      [
+        "The bug is on the log.",
+        "Where is the bug?",
+        [
+          "on the log",
+          "on the mat",
+          "on the bed"
+        ],
+        1
+      ],
+      [
+        "The bug is in the van.",
+        "Where is the bug?",
+        [
+          "in the van",
+          "on the bed",
+          "on the mat"
+        ],
+        1
+      ],
+      [
+        "The rat is on the log.",
+        "Where is the rat?",
+        [
+          "on the log",
+          "in the tub",
+          "on the rug"
+        ],
+        1
+      ],
+      [
+        "The rat is in the pen.",
+        "Where is the rat?",
+        [
+          "in the pen",
+          "on the rug",
+          "on the mat"
+        ],
+        1
+      ],
+      [
+        "The kid is in the pen.",
+        "Where is the kid?",
+        [
+          "in the pen",
+          "on the rug",
+          "on the mat"
+        ],
+        1
+      ],
+      [
+        "The kid is on the rug.",
+        "Where is the kid?",
+        [
+          "on the rug",
+          "on the mat",
+          "in the pen"
+        ],
+        1
+      ],
+      [
+        "Sam has a fan.",
+        "What does Sam have?",
+        [
+          "a fan 🪭",
+          "a kite 🪁",
+          "a map 🗺️"
+        ],
+        1
+      ],
+      [
+        "Sam has a kite.",
+        "What does Sam have?",
+        [
+          "a kite 🪁",
+          "a doll 🪆",
+          "a ring 💍"
+        ],
+        1
+      ],
+      [
+        "Pam has a ring.",
+        "What does Pam have?",
+        [
+          "a ring 💍",
+          "a doll 🪆",
+          "a key 🔑"
+        ],
+        1
+      ],
+      [
+        "Pam has a bun.",
+        "What does Pam have?",
+        [
+          "a bun 🥯",
+          "a ring 💍",
+          "a key 🔑"
+        ],
+        1
+      ],
+      [
+        "Tom has a fan.",
+        "What does Tom have?",
+        [
+          "a fan 🪭",
+          "a ring 💍",
+          "a key 🔑"
+        ],
+        1
+      ],
+      [
+        "Tom has a bun.",
+        "What does Tom have?",
+        [
+          "a bun 🥯",
+          "a kite 🪁",
+          "a jet ✈️"
+        ],
+        1
+      ],
+      [
+        "Ben has a map.",
+        "What does Ben have?",
+        [
+          "a map 🗺️",
+          "a bun 🥯",
+          "a fan 🪭"
+        ],
+        1
+      ],
+      [
+        "Ben has a bun.",
+        "What does Ben have?",
+        [
+          "a bun 🥯",
+          "a fan 🪭",
+          "a ball ⚽"
+        ],
+        1
+      ],
+      [
+        "Meg has a doll.",
+        "What does Meg have?",
+        [
+          "a doll 🪆",
+          "a jet ✈️",
+          "a kite 🪁"
+        ],
+        1
+      ],
+      [
+        "Meg has a fan.",
+        "What does Meg have?",
+        [
+          "a fan 🪭",
+          "a ball ⚽",
+          "a bun 🥯"
+        ],
+        1
+      ],
+      [
+        "Jim has a map.",
+        "What does Jim have?",
+        [
+          "a map 🗺️",
+          "a doll 🪆",
+          "a drum 🥁"
+        ],
+        1
+      ],
+      [
+        "Jim has a bun.",
+        "What does Jim have?",
+        [
+          "a bun 🥯",
+          "a key 🔑",
+          "a kite 🪁"
+        ],
+        1
+      ],
+      [
+        "Kim has a kite.",
+        "What does Kim have?",
+        [
+          "a kite 🪁",
+          "a drum 🥁",
+          "a jet ✈️"
+        ],
+        1
+      ],
+      [
+        "Kim has a drum.",
+        "What does Kim have?",
+        [
+          "a drum 🥁",
+          "a map 🗺️",
+          "a bun 🥯"
+        ],
+        1
+      ],
+      [
+        "Dan has a kite.",
+        "What does Dan have?",
+        [
+          "a kite 🪁",
+          "a doll 🪆",
+          "a key 🔑"
+        ],
+        1
+      ],
+      [
+        "Dan has a jet.",
+        "What does Dan have?",
+        [
+          "a jet ✈️",
+          "a doll 🪆",
+          "a map 🗺️"
+        ],
+        1
+      ],
+      [
+        "Liz has a ball.",
+        "What does Liz have?",
+        [
+          "a ball ⚽",
+          "a doll 🪆",
+          "a kite 🪁"
+        ],
+        1
+      ],
+      [
+        "Liz has a drum.",
+        "What does Liz have?",
+        [
+          "a drum 🥁",
+          "a ball ⚽",
+          "a kite 🪁"
+        ],
+        1
+      ],
+      [
+        "Max has a kite.",
+        "What does Max have?",
+        [
+          "a kite 🪁",
+          "a bun 🥯",
+          "a drum 🥁"
+        ],
+        1
+      ],
+      [
+        "Max has a key.",
+        "What does Max have?",
+        [
+          "a key 🔑",
+          "a ring 💍",
+          "a jet ✈️"
+        ],
+        1
+      ],
+      [
+        "The frog can jump.",
+        "What can the frog do?",
+        [
+          "jump",
+          "nap",
+          "sing"
+        ],
+        1
+      ],
+      [
+        "The frog can swim.",
+        "What can the frog do?",
+        [
+          "swim",
+          "cook",
+          "buzz"
+        ],
+        1
+      ],
+      [
+        "The bird can fly.",
+        "What can the bird do?",
+        [
+          "fly",
+          "jump",
+          "dig"
+        ],
+        1
+      ],
+      [
+        "The bird can sing.",
+        "What can the bird do?",
+        [
+          "sing",
+          "buzz",
+          "fly"
+        ],
+        1
+      ],
+      [
+        "The fish can swim.",
+        "What can the fish do?",
+        [
+          "swim",
+          "buzz",
+          "jump"
+        ],
+        1
+      ],
+      [
+        "The dog can dig.",
+        "What can the dog do?",
+        [
+          "dig",
+          "cook",
+          "fly"
+        ],
+        1
+      ],
+      [
+        "The dog can run.",
+        "What can the dog do?",
+        [
+          "run",
+          "cook",
+          "clap"
+        ],
+        1
+      ],
+      [
+        "The cat can nap.",
+        "What can the cat do?",
+        [
+          "nap",
+          "swim",
+          "buzz"
+        ],
+        1
+      ],
+      [
+        "The duck can swim.",
+        "What can the duck do?",
+        [
+          "swim",
+          "sing",
+          "jump"
+        ],
+        1
+      ],
+      [
+        "The bee can buzz.",
+        "What can the bee do?",
+        [
+          "buzz",
+          "sing",
+          "clap"
+        ],
+        1
+      ],
+      [
+        "The baby can clap.",
+        "What can the baby do?",
+        [
+          "clap",
+          "fly",
+          "read"
+        ],
+        1
+      ],
+      [
+        "The horse can trot.",
+        "What can the horse do?",
+        [
+          "trot",
+          "read",
+          "cook"
+        ],
+        1
+      ],
+      [
+        "The little red hen sat next to the barn.",
+        "Where did the hen sit?",
+        [
+          "next to the barn",
+          "under the tree",
+          "behind the house"
+        ],
+        2
+      ],
+      [
+        "The little red hen sat on top of the hill.",
+        "Where did the hen sit?",
+        [
+          "on top of the hill",
+          "behind the house",
+          "under the tree"
+        ],
+        2
+      ],
+      [
+        "The little red hen sat under the tree.",
+        "Where did the hen sit?",
+        [
+          "under the tree",
+          "in the garden",
+          "next to the barn"
+        ],
+        2
+      ],
+      [
+        "The big brown dog sat by the pond.",
+        "Where did the dog sit?",
+        [
+          "by the pond",
+          "in the garden",
+          "behind the house"
+        ],
+        2
+      ],
+      [
+        "The big brown dog sat on top of the hill.",
+        "Where did the dog sit?",
+        [
+          "on top of the hill",
+          "behind the house",
+          "under the tree"
+        ],
+        2
+      ],
+      [
+        "The big brown dog sat behind the house.",
+        "Where did the dog sit?",
+        [
+          "behind the house",
+          "in the garden",
+          "under the tree"
+        ],
+        2
+      ],
+      [
+        "The fat pink pig sat by the pond.",
+        "Where did the pig sit?",
+        [
+          "by the pond",
+          "behind the house",
+          "under the tree"
+        ],
+        2
+      ],
+      [
+        "The fat pink pig sat next to the barn.",
+        "Where did the pig sit?",
+        [
+          "next to the barn",
+          "on top of the hill",
+          "behind the house"
+        ],
+        2
+      ],
+      [
+        "The fat pink pig sat in the garden.",
+        "Where did the pig sit?",
+        [
+          "in the garden",
+          "behind the house",
+          "next to the barn"
+        ],
+        2
+      ],
+      [
+        "The small gray mouse sat in the garden.",
+        "Where did the mouse sit?",
+        [
+          "in the garden",
+          "by the pond",
+          "on top of the hill"
+        ],
+        2
+      ],
+      [
+        "The small gray mouse sat next to the barn.",
+        "Where did the mouse sit?",
+        [
+          "next to the barn",
+          "under the tree",
+          "in the garden"
+        ],
+        2
+      ],
+      [
+        "The small gray mouse sat on top of the hill.",
+        "Where did the mouse sit?",
+        [
+          "on top of the hill",
+          "in the garden",
+          "by the pond"
+        ],
+        2
+      ],
+      [
+        "The happy green frog sat next to the barn.",
+        "Where did the frog sit?",
+        [
+          "next to the barn",
+          "on top of the hill",
+          "in the garden"
+        ],
+        2
+      ],
+      [
+        "The happy green frog sat behind the house.",
+        "Where did the frog sit?",
+        [
+          "behind the house",
+          "next to the barn",
+          "by the pond"
+        ],
+        2
+      ],
+      [
+        "The happy green frog sat on top of the hill.",
+        "Where did the frog sit?",
+        [
+          "on top of the hill",
+          "by the pond",
+          "behind the house"
+        ],
+        2
+      ],
+      [
+        "The sleepy black cat sat next to the barn.",
+        "Where did the cat sit?",
+        [
+          "next to the barn",
+          "under the tree",
+          "by the pond"
+        ],
+        2
+      ],
+      [
+        "The sleepy black cat sat by the pond.",
+        "Where did the cat sit?",
+        [
+          "by the pond",
+          "in the garden",
+          "behind the house"
+        ],
+        2
+      ],
+      [
+        "The sleepy black cat sat on top of the hill.",
+        "Where did the cat sit?",
+        [
+          "on top of the hill",
+          "by the pond",
+          "under the tree"
+        ],
+        2
+      ],
+      [
+        "Lily ate a muffin at the park.",
+        "What did Lily eat?",
+        [
+          "a muffin 🧁",
+          "an apple 🍎",
+          "a banana 🍌"
+        ],
+        2
+      ],
+      [
+        "Lily ate some grapes before bed.",
+        "What did Lily eat?",
+        [
+          "some grapes 🍇",
+          "a sandwich 🥪",
+          "a banana 🍌"
+        ],
+        2
+      ],
+      [
+        "Omar ate a banana for lunch.",
+        "What did Omar eat?",
+        [
+          "a banana 🍌",
+          "some soup 🍲",
+          "an apple 🍎"
+        ],
+        2
+      ],
+      [
+        "Omar ate a carrot at the park.",
+        "What did Omar eat?",
+        [
+          "a carrot 🥕",
+          "some soup 🍲",
+          "a pear 🍐"
+        ],
+        2
+      ],
+      [
+        "Rosa ate a sandwich for lunch.",
+        "What did Rosa eat?",
+        [
+          "a sandwich 🥪",
+          "some grapes 🍇",
+          "an apple 🍎"
+        ],
+        2
+      ],
+      [
+        "Rosa ate a banana before bed.",
+        "What did Rosa eat?",
+        [
+          "a banana 🍌",
+          "a carrot 🥕",
+          "a pear 🍐"
+        ],
+        2
+      ],
+      [
+        "Jack ate an apple before bed.",
+        "What did Jack eat?",
+        [
+          "an apple 🍎",
+          "a sandwich 🥪",
+          "some grapes 🍇"
+        ],
+        2
+      ],
+      [
+        "Jack ate some grapes at the park.",
+        "What did Jack eat?",
+        [
+          "some grapes 🍇",
+          "a muffin 🧁",
+          "an apple 🍎"
+        ],
+        2
+      ],
+      [
+        "Nina ate some grapes after school.",
+        "What did Nina eat?",
+        [
+          "some grapes 🍇",
+          "some soup 🍲",
+          "a pear 🍐"
+        ],
+        2
+      ],
+      [
+        "Nina ate a sandwich after school.",
+        "What did Nina eat?",
+        [
+          "a sandwich 🥪",
+          "an apple 🍎",
+          "a banana 🍌"
+        ],
+        2
+      ],
+      [
+        "Leo ate an apple for lunch.",
+        "What did Leo eat?",
+        [
+          "an apple 🍎",
+          "some grapes 🍇",
+          "a banana 🍌"
+        ],
+        2
+      ],
+      [
+        "Leo ate a banana for lunch.",
+        "What did Leo eat?",
+        [
+          "a banana 🍌",
+          "some grapes 🍇",
+          "a sandwich 🥪"
+        ],
+        2
+      ],
+      [
+        "Ava ate a banana before bed.",
+        "What did Ava eat?",
+        [
+          "a banana 🍌",
+          "a muffin 🧁",
+          "some grapes 🍇"
+        ],
+        2
+      ],
+      [
+        "Ava ate a muffin for lunch.",
+        "What did Ava eat?",
+        [
+          "a muffin 🧁",
+          "a carrot 🥕",
+          "a pear 🍐"
+        ],
+        2
+      ],
+      [
+        "Raj ate a carrot after school.",
+        "What did Raj eat?",
+        [
+          "a carrot 🥕",
+          "some soup 🍲",
+          "an apple 🍎"
+        ],
+        2
+      ],
+      [
+        "Raj ate a pear in the car.",
+        "What did Raj eat?",
+        [
+          "a pear 🍐",
+          "an apple 🍎",
+          "a muffin 🧁"
+        ],
+        2
+      ]
+    ]
+  }
+}
