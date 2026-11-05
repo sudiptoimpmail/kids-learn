@@ -996,3 +996,78 @@ body.test-mode .qa-nav { padding:8px 12px; font-size:14px; min-height:38px; back
 body.test-mode .qa-nav:disabled { opacity:.45; cursor:not-allowed; }
 body.test-mode .qa-position { padding:6px 8px; color:#574580; font-weight:900; white-space:nowrap; }
 body.test-mode .prog-row { gap:6px; }
+
+/* 2026 tablet gameplay refresh: compact, safe-area-aware game screens. */
+#game.screen.active { min-height: 100dvh; height: auto; padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px)); }
+#game .game-area { min-width: 0; min-height: 0; gap: 8px; margin-top: 6px; padding-bottom: env(safe-area-inset-bottom, 0px); }
+#game .play-top { flex: 0 0 auto; }
+@media (max-height: 820px) {
+  #game.screen.active { padding-top: max(6px, env(safe-area-inset-top, 0px)); }
+  #game .game-area { gap: 6px; }
+  #game .g-msg { font-size: 17px; line-height: 1.15; }
+  #game .g-msg small { font-size: 12px; }
+}
+.pb-dmd { padding: 3px 10px !important; border-radius: 10px; box-shadow: inset 0 0 0 2px #2b1d0f; }
+.pb-dmd-top { gap: 6px; min-height: 30px; align-items: center; }
+.pb-dmd .pb-score { font-size: clamp(19px, 3.5vw, 26px); line-height: 1; letter-spacing: 0; min-width: 0; }
+.pb-dmd-msg { font-size: clamp(11px, 2.5vw, 14px); min-height: 0; flex: 1; text-align: center; line-height: 1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pb-dmd-bot { font-size: 10px; margin-top: 1px; line-height: 1; }
+.pb-wrap { position: relative; }
+.pb-plunger { position: absolute; z-index: 5; right: 2%; bottom: 12%; min-height: 68px; min-width: 64px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px;
+  border-radius: 22px; background: #fff2b5f2; border: 3px solid #d17b15; color: #673800;
+  font-size: 29px; font-weight: 900; box-shadow: 0 4px 0 #9c5117; touch-action: none; }
+.pb-plunger small { font-size: 12px; line-height: 1; }
+.pb-plunger[hidden] { display: none !important; }
+.pb-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 1px 3px 5px; }
+.pb-btns .pb-flip { min-width: 0; min-height: 60px; height: clamp(60px, 8dvh, 74px);
+  border-radius: 22px 22px 12px 12px; font-size: 28px; display:flex; justify-content:center; align-items:center; gap:10px;
+  font-weight:900; border: 3px solid #ffffff90; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; }
+.pb-flip span { font-size: clamp(15px, 2.8vw, 22px); letter-spacing:.07em; }
+.pb-btns .pb-flip:active { background:#4930b5; }
+.wm-hud { display:flex; width:100%; align-items:center; justify-content:center; flex-wrap:wrap; gap:12px; }
+.wm-hud .wm-pace { color:#7a4c28; font-size:14px; }
+.wm-final { display:grid; place-items:center; gap:4px; font-weight:900; font-size:24px; }
+.wm-final strong { display:block; font-size:clamp(56px,11vw,94px); color:#995522; line-height:1.05; }
+.ep-title:has(.wm-final) { display:grid; gap:12px; }
+.dr-pad { width:min(520px,94vw,max(270px,calc(100dvh - 340px))); max-width:100%; margin-inline:auto; }
+.dr-layer { position:absolute; inset:0; width:100%; height:100%; transform-origin:center center; }
+.dr-layer .dr-guide { z-index:0; }
+.dr-layer .dr-cv { inset:0; z-index:1; }
+.dr-top { margin:0 auto; gap:8px; width:min(520px,94vw); }
+.dr-ref { width:72px; padding:4px; }
+.dr-say b { font-size:clamp(17px,3vw,22px); }
+.dr-say small { font-size:12px; }
+.dr-toolbar { display:flex; flex-direction:column; align-items:center; width:min(520px,94vw); gap:5px; margin:0 auto; }
+.dr-toolbar .dr-tools { width:100%; display:flex; flex-wrap:nowrap; gap:5px; justify-content:center; }
+.dr-pencils .dr-size { flex:1; min-width:0; width:auto; height:46px; display:flex; flex-direction:column; justify-content:center; align-items:center; gap:0; font-size:17px; }
+.dr-size small { display:block; font-size:11px; font-weight:800; line-height:1.05; }
+.dr-colors { display:flex; align-items:center; justify-content:flex-start; gap:6px; overflow-x:auto; max-width:100%; padding:5px 6px; scrollbar-width:thin; }
+.dr-colors .dr-ink { flex:0 0 28px; width:28px; height:28px; min-height:28px; }
+.dr-colors .dr-ink.on { box-shadow:0 0 0 2px #fff,0 0 0 4px var(--ink); }
+.dr-actions .dr-tool { flex:1; width:auto; min-width:0; height:40px; font-size:19px; }
+.dr-actions [data-t="reset"] { font-size:14px; font-weight:900; }
+.dr-bottom { margin-top:2px; }
+.dr-bottom .big-btn { min-height:40px; padding:4px 8px; font-size:17px; }
+.pz-board.jigsaw { gap:0; padding:0; background:#e9dec9; overflow:visible; border:6px solid #c89b6e; border-radius:10px; box-shadow:0 7px 0 #956d45; }
+.pz-board.jigsaw .pzl-piece { position:relative; overflow:visible; border-radius:0; background:transparent; padding:0; box-shadow:none; z-index:1; }
+.pz-board.jigsaw .pzl-piece.picked { transform:none; z-index:20; outline:3px solid #f59f00; }
+.pz-board.jigsaw .pzl-piece .pzl-art { position:absolute; width:142%; height:142%; max-width:none; left:-21%; top:-21%; overflow:visible; pointer-events:none; filter: drop-shadow(0 2px 2px #0004); }
+.pz-board.jigsaw.solved .pzl-piece .pzl-art { filter:none; }
+.pz-board.jigsaw .pzl-piece:nth-child(even) { z-index:2; }
+.pz-board.jigsaw .pzl-piece.picked { z-index:20; }
+.pz-peek .pk-photo { width:100%; aspect-ratio:1; }
+.pic-pick .pk-photo { width:100%; aspect-ratio:1; display:block; }
+.pk-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:10px; }
+.pk-options .opt { padding:6px; background:#fff; min-height:110px; }
+.pk-photo { display:block; position:relative; overflow:hidden; border-radius:14px; width:100%; aspect-ratio:1; background:#f8f9fa; isolation:isolate; }
+.pk-photo::after { content:""; position:absolute; inset:0; background-image:url('assets/prek-atlas.webp');
+  background-repeat:no-repeat; background-size:400% 300%; background-position:var(--pk-x,0%) var(--pk-y,0%); }
+.pk-photo .pk-emoji { display:grid; place-items:center; width:100%; height:100%; font-size:clamp(30px,8vw,70px); }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media (min-width:700px) {
+  #game.screen.active { max-width:900px; }
+  .pz-board.jigsaw { width:min(500px,58vw); }
+  .pk-options { max-width:600px; margin:auto; }
+  .pk-options .opt { min-height:140px; }
+}
