@@ -1248,7 +1248,7 @@ function startDraw(refIndex) {
       <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>${trace ? 'Follow the gray lines with your finger.' : 'Look at the picture and draw your own!'}</small></div></div>
     <div class="dr-zoom"><button data-dz="out" aria-label="Zoom out">−</button><button data-dz="reset" aria-label="Reset zoom">1×</button><button data-dz="in" aria-label="Zoom in">＋</button><span>Two fingers: zoom / move</span></div><div class="dr-pad">${trace ? `<div class="dr-guide" style="opacity:${lv === 1 ? 0.32 : 0.14}">${ref.svg}</div>` : ''}<canvas class="dr-cv"></canvas></div>
     <div class="dr-tools">${INK.map((c, i) => `<button class="dr-ink ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}"></button>`).join('')}
-      <button class="dr-size" data-s="3" aria-label="Thin pencil">✎<small>Thin</small></button><button class="dr-size on" data-s="7" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" aria-label="Thick brush">🖌<small>Thick</small></button>
+      <button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✎<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
       <button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>
     <div class="color-btns"><button class="big-btn alt small ico" data-a="new" aria-label="New picture">🔄 New</button><button class="big-btn alt small ico" data-a="gallery" aria-label="My drawings">🖼️ Mine</button><button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
   say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
@@ -1257,7 +1257,7 @@ function startDraw(refIndex) {
   const W = pad.clientWidth;
   cv.width = cv.height = Math.round(W * dpr); cv.style.width = cv.style.height = W + 'px';
   const c = cv.getContext('2d'); c.scale(dpr, dpr); c.lineCap = c.lineJoin = 'round';
-  let color = INK[0], size = 7, erase = false, strokes = [], cur = null;
+  let color = INK[0], size = 7, tool = "pencil", erase = false, strokes = [], cur = null;
   // Keep gesture pointers separate from drawing strokes.
   let zoom = 1, panX = 0, panY = 0, gesture = null;
   const touches = new Map();
@@ -1283,6 +1283,8 @@ function startDraw(refIndex) {
   function paint(s) {
     c.globalCompositeOperation = s.erase ? 'destination-out' : 'source-over';
     c.strokeStyle = s.color; c.fillStyle = s.color; c.lineWidth = s.size;
+    c.globalAlpha = s.erase ? 1 : s.tool === "brush" ? 0.66 : 1;
+    c.shadowColor = s.tool === "brush" ? s.color : "transparent"; c.shadowBlur = s.tool === "brush" ? s.size * 0.22 : 0;
     const p = s.pts;
     if (p.length === 1) { c.beginPath(); c.arc(p[0][0], p[0][1], s.size / 2, 0, 7); c.fill(); }
     else {
@@ -1290,7 +1292,7 @@ function startDraw(refIndex) {
       for (let i = 1; i < p.length - 1; i++) { const mx = (p[i][0] + p[i + 1][0]) / 2, my = (p[i][1] + p[i + 1][1]) / 2; c.quadraticCurveTo(p[i][0], p[i][1], mx, my); }
       c.lineTo(p[p.length - 1][0], p[p.length - 1][1]); c.stroke();
     }
-    c.globalCompositeOperation = 'source-over';
+    c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1; c.shadowBlur = 0;
   }
   const pt = e => {
     const r = pad.getBoundingClientRect();
@@ -1309,7 +1311,7 @@ function startDraw(refIndex) {
       return;
     }
     // One finger always draws; use two fingers to pan or zoom without ink.
-    cur = { color, size: erase ? size * 2 : size, erase, pts: [pt(e)] };
+    cur = { color, size: erase ? size * 2 : size, tool, erase, pts: [pt(e)] };
     strokes.push(cur);
     paint(cur);
   });
@@ -1339,7 +1341,7 @@ function startDraw(refIndex) {
   pad.addEventListener('pointercancel', end);
   function redrawLast() { redraw(); }
   $$('.dr-ink', area).forEach((b) => (b.onclick = () => { $$('.dr-ink', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); color = b.dataset.c; erase = false; $('[data-t="erase"]', area).classList.remove('on'); sfx.tap(); }));
-  $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; sfx.tap(); }));
+  $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; tool = b.dataset.tool || 'pencil'; sfx.tap(); }));
   $('[data-t="erase"]', area).onclick = (e) => { erase = !erase; e.currentTarget.classList.toggle('on', erase); sfx.tap(); };
   $('[data-t="undo"]', area).onclick = () => { strokes.pop(); redraw(); sfx.tap(); };
   $('[data-t="clear"]', area).onclick = () => { strokes = []; redraw(); sfx.tap(); };
