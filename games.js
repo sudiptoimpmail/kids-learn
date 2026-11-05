@@ -1124,9 +1124,38 @@ function startPuzzle(p) {
   // A handful of pieces begin rotated at harder levels; the child rotates by tapping a selected piece again.
   const turns = Array.from({length:N}, () => GL('puzzle') >= 2 && Math.random() < 0.28 ? 1 + rand(3) : 0);
   const area = $('#gameArea');
-  const tileSVG = (t) => p.photo
-    ? `<span class="pz-photo-slice" style="background-image:url('assets/photos/${p.photo}.jpg');background-size:${n * 100}% ${n * 100}%;background-position:${(t % n) * 100 / (n - 1)}% ${Math.floor(t / n) * 100 / (n - 1)}%"></span>`
-    : `<svg viewBox="${(t % n) * part} ${Math.floor(t / n) * part} ${part} ${part}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`;
+  // Each photo/illustration fragment has an actual complementary tab/notch silhouette.
+  // Shape is attached to the ORIGINAL image location, not the scrambled board position.
+  const side = (t, edge) => {
+    const row = Math.floor(t / n), col = t % n;
+    const parity = (r, c) => (r + c) % 2 ? -1 : 1;
+    return edge === 'top' ? (row ? -parity(row - 1, col) : 0)
+      : edge === 'right' ? (col < n - 1 ? parity(row, col) : 0)
+      : edge === 'bottom' ? (row < n - 1 ? parity(row, col) : 0)
+      : col ? -parity(row, col - 1) : 0;
+  };
+  const pieceShape = t => {
+    const top = side(t, 'top'), right = side(t, 'right');
+    const bottom = side(t, 'bottom'), left = side(t, 'left');
+    let path = 'M0 0';
+    path += top ? ` L35 0 C35 ${-11*top} 42 ${-11*top} 50 ${-11*top} C58 ${-11*top} 65 ${-11*top} 65 0 L100 0` : ' L100 0';
+    path += right ? ` L100 35 C${100+11*right} 35 ${100+11*right} 42 ${100+11*right} 50 C${100+11*right} 58 ${100+11*right} 65 100 65 L100 100` : ' L100 100';
+    path += bottom ? ` L65 100 C65 ${100+11*bottom} 58 ${100+11*bottom} 50 ${100+11*bottom} C42 ${100+11*bottom} 35 ${100+11*bottom} 35 100 L0 100` : ' L0 100';
+    path += left ? ` L0 65 C${-11*left} 65 ${-11*left} 58 ${-11*left} 50 C${-11*left} 42 ${-11*left} 35 0 35 L0 0` : ' L0 0';
+    return path + ' Z';
+  };
+  const tileSVG = (t) => {
+    const x = -(t % n) * 100, y = -Math.floor(t / n) * 100;
+    const shape = pieceShape(t), id = 'pzl-clip-' + t;
+    const image = p.photo
+      ? `<image href="assets/photos/${p.photo}.jpg" x="${x}" y="${y}" width="${n*100}" height="${n*100}" preserveAspectRatio="none"/>`
+      : `<svg x="${x}" y="${y}" width="${n*100}" height="${n*100}" viewBox="0 0 ${VB} ${VB}" preserveAspectRatio="none">${body}</svg>`;
+    return `<svg class="jigsaw-svg" viewBox="-13 -13 126 126" aria-hidden="true">
+      <defs><clipPath id="${id}"><path d="${shape}"/></clipPath></defs>
+      <g clip-path="url(#${id})">${image}</g>
+      <path class="jigsaw-outline" d="${shape}" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+    </svg>`;
+  };
   area.innerHTML = `<div class="g-msg">Put the picture back together! <small>Tap two pieces to swap. Tap a selected piece again to rotate.</small></div>
     <div class="pz-wrap"><div class="pz-board" style="grid-template-columns:repeat(${n},1fr)"></div>
     <div class="pz-peek">${p.photo ? photoImage(p.photo,'pz-photo-peek') : `<svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`}<small>Look!</small></div></div>
@@ -1134,7 +1163,7 @@ function startPuzzle(p) {
   say('Put the picture back together!');
   const board = $('.pz-board', area);
   function draw() {
-    board.innerHTML = order.map((t, i) => `<button class="pzl-tile jigsaw-piece ${t === i && turns[i] === 0 ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}" aria-label="Piece ${i + 1}; tap twice to rotate"><span class="jigsaw-art" style="transform:rotate(${turns[i] * 90}deg)">${tileSVG(t)}</span><span class="jigsaw-knob" aria-hidden="true"></span></button>`).join('');
+    board.innerHTML = order.map((t, i) => `<button class="pzl-tile jigsaw-piece ${t === i && turns[i] === 0 ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}" aria-label="Piece ${i + 1}; tap twice to rotate"><span class="jigsaw-art" style="transform:rotate(${turns[i] * 90}deg)">${tileSVG(t)}</span></button>`).join('');
   }
   board.addEventListener('click', (e) => {
     const b = e.target.closest('.pzl-tile'); if (!b || solved) return;
