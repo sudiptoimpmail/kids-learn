@@ -1,0 +1,1222 @@
+{
+  "schema": 1,
+  "namespace": "world23",
+  "datasets": {
+    "COMMUNITY": [
+      [
+        1,
+        "Which is a need, not a want?",
+        "water",
+        "a video game",
+        "candy",
+        "a toy robot"
+      ],
+      [
+        1,
+        "Which is a need, not a want?",
+        "a warm coat in winter",
+        "a new bike",
+        "stickers",
+        "a trip to the fair"
+      ],
+      [
+        1,
+        "Which is a want, not a need?",
+        "a toy car",
+        "food",
+        "a safe home",
+        "clean water"
+      ],
+      [
+        1,
+        "Why do we have rules at school?",
+        "to keep everyone safe and fair",
+        "to make school boring",
+        "so teachers can play",
+        "so no one learns"
+      ],
+      [
+        1,
+        "What should you do with litter in the park?",
+        "put it in a bin",
+        "leave it on the grass",
+        "throw it in the pond",
+        "hide it under a bench"
+      ],
+      [
+        1,
+        "Which person helps put out fires?",
+        "a firefighter",
+        "a baker",
+        "a pilot",
+        "a librarian"
+      ],
+      [
+        1,
+        "Which is a good citizen?",
+        "someone who helps a neighbor",
+        "someone who breaks a window",
+        "someone who skips the line",
+        "someone who drops litter"
+      ],
+      [
+        1,
+        "Which is a service, not a good?",
+        "a haircut",
+        "a loaf of bread",
+        "a pair of shoes",
+        "a book"
+      ],
+      [
+        1,
+        "Which is a good, not a service?",
+        "an apple",
+        "a doctor's check-up",
+        "a bus ride",
+        "a music lesson"
+      ],
+      [
+        2,
+        "A farmer grows carrots and sells them. The farmer is a…",
+        "producer",
+        "consumer",
+        "citizen",
+        "voter"
+      ],
+      [
+        2,
+        "You buy a sandwich at a shop. You are a…",
+        "consumer",
+        "producer",
+        "mayor",
+        "farmer"
+      ],
+      [
+        2,
+        "Mia wants a $20 game but has $12. What can she do?",
+        "save her money until she has enough",
+        "take the game",
+        "give up saving",
+        "borrow without asking"
+      ],
+      [
+        2,
+        "What is a law?",
+        "a rule everyone in a place must follow",
+        "a game for children",
+        "a kind of map",
+        "a type of money"
+      ],
+      [
+        2,
+        "Why do people vote?",
+        "to choose leaders and decide things together",
+        "to buy food",
+        "to win prizes",
+        "to finish school"
+      ],
+      [
+        2,
+        "Which helps the community?",
+        "planting trees in the park",
+        "drawing on walls",
+        "wasting water",
+        "being rude to helpers"
+      ],
+      [
+        2,
+        "What is a community?",
+        "a group of people who live or work in the same place",
+        "a kind of weather",
+        "one single house",
+        "a type of food"
+      ],
+      [
+        2,
+        "Which is a natural resource?",
+        "water",
+        "a plastic chair",
+        "a car",
+        "a computer"
+      ],
+      [
+        2,
+        "What does 'scarce' mean?",
+        "there is not enough",
+        "there is too much",
+        "it is free",
+        "it is new"
+      ],
+      [
+        3,
+        "Why do people trade?",
+        "to get things they cannot make themselves",
+        "to make things harder",
+        "because money is bad",
+        "to stop working"
+      ],
+      [
+        3,
+        "What do taxes help pay for?",
+        "schools, roads and parks",
+        "toys for one family",
+        "private holidays",
+        "a person's own house"
+      ],
+      [
+        3,
+        "Which is an example of an opportunity cost?",
+        "you pick a book, so you can't buy the ball",
+        "you get a gift",
+        "you find a coin",
+        "you share your lunch"
+      ],
+      [
+        3,
+        "What is a primary source?",
+        "something made by a person who was there",
+        "a story made up later",
+        "a cartoon",
+        "a guess"
+      ],
+      [
+        3,
+        "Which is a human-made feature?",
+        "a bridge",
+        "a river",
+        "a mountain",
+        "a lake"
+      ],
+      [
+        3,
+        "Which is a natural feature?",
+        "a waterfall",
+        "a highway",
+        "a school",
+        "a farm field"
+      ],
+      [
+        3,
+        "How did people travel long ago, before cars?",
+        "by horse, wagon or boat",
+        "by airplane",
+        "by electric scooter",
+        "by subway"
+      ]
+    ],
+    "TIMELINES": [
+      [
+        "Grandma was a baby.",
+        "Grandma went to school.",
+        "Grandma had children.",
+        "Grandma has grandchildren."
+      ],
+      [
+        "The seed was planted.",
+        "A small sprout grew.",
+        "The plant grew leaves.",
+        "The plant grew flowers."
+      ],
+      [
+        "People rode horses.",
+        "People drove the first cars.",
+        "People flew in airplanes.",
+        "People use electric cars."
+      ],
+      [
+        "Letters were written by hand.",
+        "Telephones were invented.",
+        "People sent e-mails.",
+        "People send video calls."
+      ],
+      [
+        "I was born.",
+        "I learned to walk.",
+        "I started school.",
+        "I am in grade 3."
+      ]
+    ],
+    "GOV": {
+      "us": [
+        [
+          "Who leads a city or town?",
+          "a mayor",
+          "a president",
+          "a king",
+          "a principal"
+        ],
+        [
+          "Who leads a state?",
+          "a governor",
+          "a mayor",
+          "a queen",
+          "a coach"
+        ],
+        [
+          "Who leads the whole country?",
+          "the President",
+          "a governor",
+          "a mayor",
+          "a judge"
+        ],
+        [
+          "Which group makes the country's laws?",
+          "Congress",
+          "the school board",
+          "the police",
+          "the city zoo"
+        ],
+        [
+          "Where does the President live and work?",
+          "the White House",
+          "the Capitol of a state",
+          "a castle",
+          "a school"
+        ]
+      ],
+      "ca": [
+        [
+          "Who leads a city or town?",
+          "a mayor",
+          "a premier",
+          "a prime minister",
+          "a principal"
+        ],
+        [
+          "Who leads a province?",
+          "a premier",
+          "a mayor",
+          "a president",
+          "a coach"
+        ],
+        [
+          "Who leads the government of Canada?",
+          "the Prime Minister",
+          "a premier",
+          "a mayor",
+          "a president"
+        ],
+        [
+          "Which group makes Canada's laws?",
+          "Parliament",
+          "the school board",
+          "the police",
+          "the city zoo"
+        ],
+        [
+          "What is the capital city of Canada?",
+          "Ottawa",
+          "Toronto",
+          "Vancouver",
+          "Montreal"
+        ]
+      ],
+      "uk": [
+        [
+          "Who leads the UK government?",
+          "the Prime Minister",
+          "the mayor",
+          "a president",
+          "a head teacher"
+        ],
+        [
+          "Who is the head of state of the UK?",
+          "the King",
+          "the Prime Minister",
+          "a mayor",
+          "a judge"
+        ],
+        [
+          "Which group makes the UK's laws?",
+          "Parliament",
+          "the school council",
+          "the police",
+          "a museum"
+        ],
+        [
+          "Who makes decisions for a local area, like bins and parks?",
+          "the local council",
+          "the King",
+          "a football club",
+          "a supermarket"
+        ],
+        [
+          "Where does Parliament meet?",
+          "Westminster in London",
+          "Edinburgh Castle",
+          "Cardiff Bay beach",
+          "a school hall"
+        ]
+      ],
+      "au": [
+        [
+          "Who leads a city or town council?",
+          "a mayor",
+          "a premier",
+          "a prime minister",
+          "a principal"
+        ],
+        [
+          "Who leads a state government?",
+          "a premier",
+          "a mayor",
+          "a president",
+          "a coach"
+        ],
+        [
+          "Who leads the Australian government?",
+          "the Prime Minister",
+          "a premier",
+          "a mayor",
+          "a president"
+        ],
+        [
+          "Which group makes Australia's laws?",
+          "Parliament",
+          "the school council",
+          "the police",
+          "the zoo"
+        ],
+        [
+          "Where does the Australian Parliament meet?",
+          "Canberra",
+          "Sydney",
+          "Perth",
+          "Darwin"
+        ]
+      ],
+      "nz": [
+        [
+          "Who leads a city or district council?",
+          "a mayor",
+          "the Prime Minister",
+          "a president",
+          "a principal"
+        ],
+        [
+          "Who leads the New Zealand government?",
+          "the Prime Minister",
+          "a mayor",
+          "a president",
+          "a coach"
+        ],
+        [
+          "Which group makes New Zealand's laws?",
+          "Parliament",
+          "the school board",
+          "the police",
+          "the zoo"
+        ],
+        [
+          "Where does Parliament meet?",
+          "Wellington",
+          "Auckland",
+          "Christchurch",
+          "Queenstown"
+        ],
+        [
+          "What is the Māori word for New Zealand?",
+          "Aotearoa",
+          "Kia ora",
+          "Whānau",
+          "Kai"
+        ]
+      ],
+      "in": [
+        [
+          "Who leads a village panchayat?",
+          "a sarpanch",
+          "the Prime Minister",
+          "a president",
+          "a principal"
+        ],
+        [
+          "Who leads a state government?",
+          "a Chief Minister",
+          "a sarpanch",
+          "a mayor",
+          "a coach"
+        ],
+        [
+          "Who leads the government of India?",
+          "the Prime Minister",
+          "a Chief Minister",
+          "a sarpanch",
+          "a mayor"
+        ],
+        [
+          "Which group makes India's laws?",
+          "Parliament",
+          "the school board",
+          "the police",
+          "the zoo"
+        ],
+        [
+          "Who is the head of state of India?",
+          "the President",
+          "the Prime Minister",
+          "a Chief Minister",
+          "a sarpanch"
+        ]
+      ],
+      "ie": [
+        [
+          "Who leads the government of Ireland?",
+          "the Taoiseach",
+          "the President",
+          "a mayor",
+          "a principal"
+        ],
+        [
+          "Who is the head of state of Ireland?",
+          "the President",
+          "the Taoiseach",
+          "a mayor",
+          "a judge"
+        ],
+        [
+          "What is the name of Ireland's parliament?",
+          "the Oireachtas",
+          "Congress",
+          "the Senate House",
+          "Westminster"
+        ],
+        [
+          "Who looks after local things like parks and libraries?",
+          "the county council",
+          "the President",
+          "a football club",
+          "a shop"
+        ]
+      ]
+    },
+    "REGION_FACTS": {
+      "Michigan": [
+        [
+          1,
+          "What is the capital of Michigan?",
+          "Lansing",
+          "Detroit",
+          "Grand Rapids",
+          "Ann Arbor"
+        ],
+        [
+          1,
+          "Which part of Michigan looks like a mitten?",
+          "the Lower Peninsula",
+          "the Upper Peninsula",
+          "Lake Superior",
+          "Mackinac Island"
+        ],
+        [
+          1,
+          "How many peninsulas does Michigan have?",
+          "two",
+          "one",
+          "three",
+          "five"
+        ],
+        [
+          1,
+          "What is the state bird of Michigan?",
+          "the American robin",
+          "the bald eagle",
+          "the cardinal",
+          "the loon"
+        ],
+        [
+          1,
+          "Which big bridge joins Michigan's two peninsulas?",
+          "the Mackinac Bridge",
+          "the Golden Gate Bridge",
+          "the Ambassador Bridge",
+          "the Brooklyn Bridge"
+        ],
+        [
+          2,
+          "Which is the largest city in Michigan?",
+          "Detroit",
+          "Lansing",
+          "Flint",
+          "Marquette"
+        ],
+        [
+          2,
+          "Detroit is called the Motor City because it is famous for making…",
+          "cars",
+          "boats",
+          "airplanes",
+          "trains"
+        ],
+        [
+          2,
+          "Which Great Lake does NOT touch Michigan?",
+          "Lake Ontario",
+          "Lake Superior",
+          "Lake Michigan",
+          "Lake Huron"
+        ],
+        [
+          2,
+          "What is Michigan's state tree?",
+          "the white pine",
+          "the palm tree",
+          "the maple",
+          "the oak"
+        ],
+        [
+          2,
+          "What is Michigan's state stone?",
+          "the Petoskey stone",
+          "marble",
+          "granite",
+          "a diamond"
+        ],
+        [
+          2,
+          "On which Michigan island are most cars not allowed?",
+          "Mackinac Island",
+          "Belle Isle",
+          "Isle Royale",
+          "Beaver Island"
+        ],
+        [
+          2,
+          "What is a nickname for Michigan?",
+          "the Great Lakes State",
+          "the Sunshine State",
+          "the Lone Star State",
+          "the Garden State"
+        ],
+        [
+          3,
+          "Which Native peoples, the Three Fires, have lived in Michigan for a very long time?",
+          "the Ojibwe, Odawa and Potawatomi",
+          "the Maya and Aztec",
+          "the Inca",
+          "the Vikings"
+        ],
+        [
+          3,
+          "In which year did Michigan become a state?",
+          "1837",
+          "1776",
+          "1900",
+          "1492"
+        ],
+        [
+          3,
+          "What do the Soo Locks in Sault Ste. Marie help ships do?",
+          "move between Lake Superior and Lake Huron",
+          "fly",
+          "dig for iron",
+          "catch fish"
+        ],
+        [
+          3,
+          "What is the longest river in Michigan?",
+          "the Grand River",
+          "the Mississippi River",
+          "the Detroit River",
+          "the Nile"
+        ],
+        [
+          3,
+          "Which country is Michigan's neighbor across the Detroit River?",
+          "Canada",
+          "Mexico",
+          "England",
+          "Japan"
+        ],
+        [
+          3,
+          "What is Michigan's state reptile?",
+          "the painted turtle",
+          "the alligator",
+          "the rattlesnake",
+          "the iguana"
+        ]
+      ],
+      "Ontario": [
+        [
+          1,
+          "What is the capital of Ontario?",
+          "Toronto",
+          "Ottawa",
+          "Hamilton",
+          "London"
+        ],
+        [
+          1,
+          "Which famous waterfall is in Ontario?",
+          "Niagara Falls",
+          "Angel Falls",
+          "Victoria Falls",
+          "Iguazu Falls"
+        ],
+        [
+          1,
+          "Canada's capital city, Ottawa, is in which province?",
+          "Ontario",
+          "Quebec",
+          "Alberta",
+          "Manitoba"
+        ],
+        [
+          2,
+          "What is Ontario's provincial flower?",
+          "the white trillium",
+          "the rose",
+          "the lotus",
+          "the tulip"
+        ],
+        [
+          2,
+          "What is Ontario's provincial bird?",
+          "the common loon",
+          "the robin",
+          "the parrot",
+          "the penguin"
+        ],
+        [
+          2,
+          "Which tall tower is in Toronto?",
+          "the CN Tower",
+          "the Eiffel Tower",
+          "the Space Needle",
+          "Big Ben"
+        ],
+        [
+          2,
+          "Which Great Lake is NOT next to Ontario?",
+          "Lake Michigan",
+          "Lake Ontario",
+          "Lake Erie",
+          "Lake Superior"
+        ],
+        [
+          3,
+          "In which year did Ontario join Canada at Confederation?",
+          "1867",
+          "1492",
+          "1950",
+          "2000"
+        ],
+        [
+          3,
+          "Which large bay is to the north of Ontario?",
+          "Hudson Bay",
+          "the Bay of Bengal",
+          "Botany Bay",
+          "the Bay of Fundy"
+        ],
+        [
+          3,
+          "Which province has the most people?",
+          "Ontario",
+          "Prince Edward Island",
+          "Yukon",
+          "Nova Scotia"
+        ]
+      ],
+      "England": [
+        [
+          1,
+          "What is the capital of England?",
+          "London",
+          "Cardiff",
+          "Edinburgh",
+          "Belfast"
+        ],
+        [
+          2,
+          "Who is the patron saint of England?",
+          "St George",
+          "St David",
+          "St Andrew",
+          "St Patrick"
+        ],
+        [
+          2,
+          "What is the national flower of England?",
+          "the rose",
+          "the thistle",
+          "the daffodil",
+          "the lotus"
+        ]
+      ],
+      "Scotland": [
+        [
+          1,
+          "What is the capital of Scotland?",
+          "Edinburgh",
+          "Glasgow",
+          "London",
+          "Cardiff"
+        ],
+        [
+          2,
+          "Who is the patron saint of Scotland?",
+          "St Andrew",
+          "St George",
+          "St David",
+          "St Patrick"
+        ],
+        [
+          2,
+          "What is the national flower of Scotland?",
+          "the thistle",
+          "the rose",
+          "the daffodil",
+          "the tulip"
+        ],
+        [
+          3,
+          "Which animal is Scotland's national animal?",
+          "the unicorn",
+          "the lion",
+          "the dragon",
+          "the kangaroo"
+        ]
+      ],
+      "Wales": [
+        [
+          1,
+          "What is the capital of Wales?",
+          "Cardiff",
+          "Swansea",
+          "London",
+          "Belfast"
+        ],
+        [
+          2,
+          "Who is the patron saint of Wales?",
+          "St David",
+          "St George",
+          "St Andrew",
+          "St Patrick"
+        ],
+        [
+          2,
+          "What animal is on the flag of Wales?",
+          "a red dragon",
+          "a lion",
+          "a unicorn",
+          "an eagle"
+        ],
+        [
+          3,
+          "Which flower do people wear on St David's Day?",
+          "the daffodil",
+          "the rose",
+          "the thistle",
+          "the poppy"
+        ]
+      ],
+      "Northern Ireland": [
+        [
+          1,
+          "What is the capital of Northern Ireland?",
+          "Belfast",
+          "Dublin",
+          "Cardiff",
+          "Edinburgh"
+        ],
+        [
+          2,
+          "Which famous rocks on the coast of Northern Ireland look like steps?",
+          "the Giant's Causeway",
+          "the White Cliffs of Dover",
+          "Uluru",
+          "the Grand Canyon"
+        ]
+      ],
+      "New South Wales": [
+        [
+          1,
+          "What is the capital of New South Wales?",
+          "Sydney",
+          "Canberra",
+          "Melbourne",
+          "Brisbane"
+        ],
+        [
+          2,
+          "Which famous building with white sails is in Sydney?",
+          "the Opera House",
+          "Big Ben",
+          "the CN Tower",
+          "the Taj Mahal"
+        ]
+      ],
+      "Victoria": [
+        [
+          1,
+          "What is the capital of Victoria?",
+          "Melbourne",
+          "Sydney",
+          "Hobart",
+          "Perth"
+        ]
+      ],
+      "Queensland": [
+        [
+          1,
+          "What is the capital of Queensland?",
+          "Brisbane",
+          "Cairns",
+          "Sydney",
+          "Darwin"
+        ],
+        [
+          2,
+          "Which huge coral reef is off the coast of Queensland?",
+          "the Great Barrier Reef",
+          "the Red Sea Reef",
+          "the Belize Reef",
+          "the Ningaloo Reef"
+        ]
+      ],
+      "the Northern Territory": [
+        [
+          1,
+          "What is the capital of the Northern Territory?",
+          "Darwin",
+          "Alice Springs",
+          "Perth",
+          "Adelaide"
+        ],
+        [
+          2,
+          "Which giant red rock is in the Northern Territory?",
+          "Uluru",
+          "Ayers Hill",
+          "Table Mountain",
+          "the Matterhorn"
+        ]
+      ],
+      "Maharashtra": [
+        [
+          1,
+          "What is the capital of Maharashtra?",
+          "Mumbai",
+          "Pune",
+          "Nagpur",
+          "Delhi"
+        ],
+        [
+          2,
+          "Which famous arch is in Mumbai?",
+          "the Gateway of India",
+          "India Gate",
+          "the Charminar",
+          "the Arc de Triomphe"
+        ]
+      ],
+      "West Bengal": [
+        [
+          1,
+          "What is the capital of West Bengal?",
+          "Kolkata",
+          "Darjeeling",
+          "Patna",
+          "Chennai"
+        ],
+        [
+          2,
+          "Which big forest with tigers is in West Bengal?",
+          "the Sundarbans",
+          "the Amazon",
+          "the Black Forest",
+          "Gir Forest"
+        ]
+      ],
+      "Tamil Nadu": [
+        [
+          1,
+          "What is the capital of Tamil Nadu?",
+          "Chennai",
+          "Madurai",
+          "Bengaluru",
+          "Hyderabad"
+        ]
+      ],
+      "Karnataka": [
+        [
+          1,
+          "What is the capital of Karnataka?",
+          "Bengaluru",
+          "Mysuru",
+          "Chennai",
+          "Mumbai"
+        ]
+      ]
+    },
+    "SCIENCE23": [
+      [
+        2,
+        "Which word describes how a rock feels?",
+        "hard",
+        "bendy",
+        "runny",
+        "stretchy"
+      ],
+      [
+        2,
+        "Which material is best for a raincoat?",
+        "plastic",
+        "paper",
+        "cotton wool",
+        "bread"
+      ],
+      [
+        2,
+        "What happens to chocolate on a hot day?",
+        "it melts",
+        "it freezes",
+        "it grows",
+        "it turns to rock"
+      ],
+      [
+        2,
+        "Can you change a block tower into a car using the same blocks?",
+        "yes, objects can be taken apart and built into new things",
+        "no, blocks only make towers",
+        "only if you add glue",
+        "only adults can"
+      ],
+      [
+        2,
+        "Which change can be undone?",
+        "water freezing into ice",
+        "an egg being cooked",
+        "wood being burned",
+        "bread being toasted"
+      ],
+      [
+        2,
+        "What do bees carry from flower to flower?",
+        "pollen",
+        "sand",
+        "water",
+        "leaves"
+      ],
+      [
+        2,
+        "How can a burr seed travel to a new place?",
+        "by sticking to an animal's fur",
+        "by swimming",
+        "by walking",
+        "by flying like a bird"
+      ],
+      [
+        2,
+        "Which habitat has the most living things?",
+        "a rainforest",
+        "a parking lot",
+        "a desert rock",
+        "an ice sheet"
+      ],
+      [
+        2,
+        "Which animal is best suited to a desert?",
+        "a camel",
+        "a polar bear",
+        "a penguin",
+        "a seal"
+      ],
+      [
+        2,
+        "What slowly makes a canyon over a very long time?",
+        "a river wearing away the rock",
+        "wind blowing a door shut",
+        "snow falling once",
+        "people walking"
+      ],
+      [
+        2,
+        "Which body of water is salty?",
+        "an ocean",
+        "a pond",
+        "a river",
+        "a puddle of rain"
+      ],
+      [
+        2,
+        "What can stop wind and water from wearing away a hill?",
+        "plants with roots",
+        "more rain",
+        "removing all the grass",
+        "digging holes"
+      ],
+      [
+        3,
+        "What happens when you push a swing harder?",
+        "it moves higher and faster",
+        "it stops",
+        "it moves slower",
+        "nothing changes"
+      ],
+      [
+        3,
+        "Two magnets pull together. Which ends are facing?",
+        "a north pole and a south pole",
+        "two north poles",
+        "two south poles",
+        "no poles at all"
+      ],
+      [
+        3,
+        "Which object would a magnet pick up?",
+        "a paper clip",
+        "a wooden spoon",
+        "a plastic cup",
+        "a rubber band"
+      ],
+      [
+        3,
+        "A ball rolls and stops on grass. What slowed it down?",
+        "friction",
+        "magnetism",
+        "sunlight",
+        "sound"
+      ],
+      [
+        3,
+        "If forces on a box are balanced, the box…",
+        "stays still or keeps moving the same way",
+        "speeds up",
+        "flies away",
+        "gets smaller"
+      ],
+      [
+        3,
+        "What is the correct order of a frog's life cycle?",
+        "egg, tadpole, froglet, frog",
+        "frog, egg, froglet, tadpole",
+        "tadpole, egg, frog, froglet",
+        "egg, frog, tadpole, froglet"
+      ],
+      [
+        3,
+        "What is the correct order of a butterfly's life cycle?",
+        "egg, caterpillar, chrysalis, butterfly",
+        "egg, butterfly, chrysalis, caterpillar",
+        "caterpillar, egg, butterfly, chrysalis",
+        "chrysalis, egg, caterpillar, butterfly"
+      ],
+      [
+        3,
+        "Which is a trait a puppy gets from its parents?",
+        "fur color",
+        "knowing a trick",
+        "its name",
+        "the toy it likes"
+      ],
+      [
+        3,
+        "Which is something you learn, not inherit?",
+        "riding a bike",
+        "eye color",
+        "hair color",
+        "the shape of your ears"
+      ],
+      [
+        3,
+        "Why do some animals in a group survive better than others?",
+        "their traits help them find food or hide",
+        "they are always the biggest",
+        "they sleep the most",
+        "they have names"
+      ],
+      [
+        3,
+        "A fossil of a fish is found on a mountain. What does that tell us?",
+        "the area was once covered by water",
+        "fish can climb",
+        "it rained fish",
+        "someone dropped it"
+      ],
+      [
+        3,
+        "What can fossils tell us?",
+        "what living things were like long ago",
+        "what will happen tomorrow",
+        "how tall a person is",
+        "the weather next week"
+      ],
+      [
+        3,
+        "What is the difference between weather and climate?",
+        "weather is today; climate is the usual pattern over many years",
+        "they are exactly the same",
+        "climate changes every hour",
+        "weather lasts for 100 years"
+      ],
+      [
+        3,
+        "Which tool measures temperature?",
+        "a thermometer",
+        "a ruler",
+        "a scale",
+        "a clock"
+      ],
+      [
+        3,
+        "Which tool measures rainfall?",
+        "a rain gauge",
+        "a thermometer",
+        "a magnet",
+        "a magnifier"
+      ],
+      [
+        4,
+        "What can people do to stay safe when a big storm is coming?",
+        "stay indoors and follow warnings",
+        "go to the beach",
+        "climb a tall tree",
+        "fly a kite"
+      ],
+      [
+        4,
+        "Which design helps a house stay safe in a flood?",
+        "building it on stilts",
+        "painting it red",
+        "making the windows bigger",
+        "removing the roof"
+      ],
+      [
+        4,
+        "An animal's habitat is cut down. What might happen?",
+        "the animal may move, change or die out",
+        "the animal grows bigger",
+        "nothing ever changes",
+        "the animal turns into a plant"
+      ],
+      [
+        4,
+        "Which body part helps a duck swim?",
+        "webbed feet",
+        "long claws",
+        "a shell",
+        "a trunk"
+      ],
+      [
+        4,
+        "Why do many trees lose their leaves in autumn?",
+        "to save water and energy for winter",
+        "because they are tired",
+        "to scare animals",
+        "because of the moon"
+      ],
+      [
+        4,
+        "Which is a renewable energy source?",
+        "sunlight",
+        "coal",
+        "oil",
+        "gas"
+      ]
+    ]
+  }
+}

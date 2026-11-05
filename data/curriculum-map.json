@@ -95,7 +95,8 @@
           "home": "2-3",
           "pattern": "2-3",
           "odd": "2-3",
-          "sequence": "2-3"
+          "sequence": "2-3",
+          "community": "1-1"
         }
       },
       "g2": {
@@ -131,7 +132,9 @@
           "sequence": "3-3",
           "frac": "1-2",
           "measure": "1-3",
-          "gp": "1-2"
+          "gp": "1-2",
+          "community": "1-2",
+          "region": "1-2"
         }
       },
       "g3": {
@@ -164,7 +167,9 @@
           "sequence": "3-3",
           "frac": "2-4",
           "measure": "2-4",
-          "gp": "2-3"
+          "gp": "2-3",
+          "community": "2-3",
+          "region": "1-3"
         }
       }
     },
@@ -1061,6 +1066,24 @@
             ],
             "approach": "play-and-practice",
             "bank": "THINKING_SEQUENCES"
+          },
+          "community": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "needs-and-wants",
+              "goods-and-services",
+              "rules-and-laws",
+              "citizenship",
+              "government-roles",
+              "map-skills",
+              "timelines",
+              "economics-choices"
+            ],
+            "approach": "play-and-practice",
+            "bank": "world23"
           }
         }
       },
@@ -1361,10 +1384,18 @@
               3
             ],
             "skills": [
-              "simple-investigations",
-              "matter",
+              "forces-and-magnets",
+              "fossils",
               "habitats",
-              "weather"
+              "inherited-traits",
+              "landforms-and-erosion",
+              "life-cycles",
+              "matter",
+              "natural-hazards",
+              "plants-and-pollination",
+              "simple-investigations",
+              "weather",
+              "weather-and-climate"
             ],
             "approach": "guided-investigation",
             "bank": "SCIENCE"
@@ -1468,6 +1499,38 @@
             ],
             "approach": "guided-investigation",
             "bank": "language23"
+          },
+          "community": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "needs-and-wants",
+              "goods-and-services",
+              "rules-and-laws",
+              "citizenship",
+              "government-roles",
+              "map-skills",
+              "timelines",
+              "economics-choices"
+            ],
+            "approach": "guided-investigation",
+            "bank": "world23"
+          },
+          "region": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "state-or-province-geography",
+              "capitals",
+              "local-history",
+              "state-symbols"
+            ],
+            "approach": "guided-investigation",
+            "bank": "world23"
           }
         }
       },
@@ -1744,10 +1807,20 @@
               4
             ],
             "skills": [
-              "fair-tests",
-              "forces-and-motion",
+              "ecosystems",
               "energy",
-              "ecosystems"
+              "fair-tests",
+              "forces-and-magnets",
+              "forces-and-motion",
+              "fossils",
+              "habitats",
+              "inherited-traits",
+              "landforms-and-erosion",
+              "life-cycles",
+              "matter",
+              "natural-hazards",
+              "plants-and-pollination",
+              "weather-and-climate"
             ],
             "approach": "reason-explain",
             "bank": "SCIENCE"
@@ -1851,6 +1924,38 @@
             ],
             "approach": "reason-explain",
             "bank": "language23"
+          },
+          "community": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "needs-and-wants",
+              "goods-and-services",
+              "rules-and-laws",
+              "citizenship",
+              "government-roles",
+              "map-skills",
+              "timelines",
+              "economics-choices"
+            ],
+            "approach": "reason-explain",
+            "bank": "world23"
+          },
+          "region": {
+            "levels": [
+              1,
+              3
+            ],
+            "skills": [
+              "state-or-province-geography",
+              "capitals",
+              "local-history",
+              "state-symbols"
+            ],
+            "approach": "reason-explain",
+            "bank": "world23"
           }
         }
       }
