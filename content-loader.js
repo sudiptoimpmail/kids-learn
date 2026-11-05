@@ -1,0 +1,57 @@
+/* Offline-first bootstrap: data is JSON, scripts contain only rendering/game logic.
+   Bundled JSON must be loaded BEFORE question generators run. No eval or remote scripts. */
+(() => {
+  'use strict';
+  const NAMESPACES = ['content', 'thinking', 'science', 'grammar', 'grade1', 'words'];
+  const SCRIPTS = [
+    'feature-flags.js','storage.js','geo.js','art.js','landmarks.js',
+    'stories.js','words.js','phonics.js','early-words.js','grade1words.js',
+    'photos.js','illustrations.js','content.js','content-packs.js',
+    'thinking.js','country.js','science.js','grammar.js','numsense.js',
+    'grade1.js','app.js','scenes.js','games.js','pathmaze.js',
+    'radialmaze.js','wordgames.js','trace.js','progress.js','workbook.js'
+  ];
+  const status = document.getElementById('loadStatus');
+  const play = document.getElementById('startBtn');
+  window.KidsLearnReady = (async () => {
+    const data = new Map();
+    await Promise.all(NAMESPACES.map(async (name) => {
+      const response = await fetch('data/' + name + '.json');
+      if (!response.ok) throw Error('Missing offline data: ' + name);
+      const payload = await response.json();
+      if (payload.schema !== 1 || payload.namespace !== name ||
+          !payload.datasets || Array.isArray(payload.datasets) ||
+          typeof payload.datasets !== 'object') throw Error('Invalid offline data: ' + name);
+      data.set(name, payload.datasets);
+    }));
+    window.ContentData = Object.freeze({
+      get(namespace, key) {
+        const values = data.get(namespace);
+        if (!values || !Object.prototype.hasOwnProperty.call(values, key)) {
+          throw new Error('Required bundled content is missing: ' + namespace + '/' + key);
+        }
+        return values[key];
+      },
+      namespaces: () => [...data.keys()]
+    });
+    // Preserve the classic script/global scope semantics and dependency order.
+    for (const path of SCRIPTS) {
+      await new Promise((resolve, reject) => {
+        const el = document.createElement('script');
+        el.src = path;
+        el.async = false;
+        el.onload = resolve;
+        el.onerror = () => reject(new Error('Could not load ' + path));
+        document.body.appendChild(el);
+      });
+    }
+    if (status) status.textContent = '';
+    if (play) play.disabled = false;
+    return true;
+  })().catch(err => {
+    console.error('Kids-Learn could not load required offline content', err);
+    if (status) status.textContent = 'Could not open learning content. Reconnect once and try again.';
+    if (play) { play.disabled = true; }
+    throw err;
+  });
+})();
