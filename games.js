@@ -404,51 +404,67 @@ function startPop() {
 // Moles pop up; tap them before they hide. Faster each level; from level 3, don't tap the 🌸.
 function startWhack() {
   const lv = GL('whack');
-  const target = [8, 11, 14, 16, 18][lv - 1];
-  const upMs = [1800, 1450, 1200, 1000, 850][lv - 1];
+  const target = [8, 11, 14, 17, 20][lv - 1];
+  const baseUp = [1800, 1550, 1350, 1170, 1030][lv - 1];
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Tap ${target} moles! <b class="wm-score">0</b> 🐹 · <span class="wm-time">30</span>s${lv >= 3 ? '<small>Don\'t tap the 🌸!</small>' : ''}</div>
-    <div class="wm-field">${Array.from({ length: 9 }, (_, i) => `<button class="wm-hole" data-i="${i}"><span class="wm-pop"></span></button>`).join('')}</div>`;
+  area.innerHTML = `<div class="g-msg wm-hud">🐹 <b class="wm-score">0</b> / ${target} <span>⏱ <b class="wm-time">30</b>s</span><small class="wm-pace">Warm up</small></div>
+    <div class="wm-field">${Array.from({ length: 9 }, (_, i) => `<button class="wm-hole" data-i="${i}" aria-label="Whack hole ${i + 1}"><span class="wm-pop"></span></button>`).join('')}</div>
+    ${lv >= 3 ? '<small class="note">Avoid the flowers 🌸!</small>' : ''}`;
   say('Tap the moles!');
-  const holes = $$('.wm-hole', area);
-  let score = 0, alive = true, t0 = Date.now(), tick = 0;
-  const up = new Map();
+  const holes = $$('.wm-hole', area), up = new Map();
+  let score = 0, alive = true, started = performance.now(), spawnTimer = 0, clock = 0;
+  // Speed rises continuously during the round, as well as from hits and grade level.
+  const pace = () => Math.min(3.1, 1 + (performance.now() - started) / 30000 * 1.15 + score / 22);
+  const interval = () => Math.max(230, Math.round(baseUp * 0.55 / pace()));
   function popUp() {
+    if (!alive) return;
     const free = holes.map((_, i) => i).filter((i) => !up.has(i));
     if (!free.length) return;
-    const i = pick(free);
-    const flower = lv >= 3 && Math.random() < 0.2;
-    const el = holes[i].querySelector('.wm-pop');
-    el.textContent = flower ? '🌸' : pick(['🐹', '🐹', '🐹', '🦔', '🐭']);
-    holes[i].classList.add('up');
-    const timer = later(() => { holes[i].classList.remove('up'); up.delete(i); }, upMs * (0.8 + Math.random() * 0.4));
-    up.set(i, { timer, flower });
+    const i = pick(free), flower = lv >= 3 && Math.random() < 0.17;
+    const h = holes[i], el = h.querySelector('.wm-pop');
+    el.textContent = flower ? '🌸' : pick(['🐹', '🐹', '🐭', '🦔']);
+    h.classList.add('up');
+    const timeout = later(() => { h.classList.remove('up'); up.delete(i); }, Math.round(baseUp / pace() * (0.82 + Math.random() * 0.3)));
+    up.set(i, { timer: timeout, flower });
+  }
+  function schedule() {
+    if (!alive) return;
+    popUp();
+    if (lv >= 3 && pace() > 1.9 && Math.random() < 0.33) popUp();
+    spawnTimer = later(schedule, interval());
   }
   holes.forEach((h, i) => h.addEventListener('pointerdown', (e) => {
     e.preventDefault();
     const m = up.get(i); if (!m || !alive) return;
     clearTimeout(m.timer); up.delete(i);
     h.classList.remove('up'); h.classList.add(m.flower ? 'oops' : 'bonk');
-    later(() => h.classList.remove('bonk', 'oops'), 300);
-    if (m.flower) { score = Math.max(0, score - 1); sfx.no(); } else { score++; tone([520, 780], { dur: 0.05, gap: 0.05, vol: 0.12, type: 'square' }); }
+    later(() => h.classList.remove('bonk', 'oops'), 280);
+    if (m.flower) { score = Math.max(0, score - 1); sfx.no(); }
+    else { score++; tone([520, 780], { dur: 0.05, gap: 0.05, vol: 0.12, type: 'square' }); }
     $('.wm-score', area).textContent = score;
   }));
-  tick = setInterval(() => {
-    const left = Math.max(0, 30 - Math.floor((Date.now() - t0) / 1000));
-    $('.wm-time', area).textContent = left;
-    if (left <= 0) return finish();
-    if (Math.random() < 0.75) popUp();
-    if (lv >= 4 && Math.random() < 0.35) popUp();
-  }, Math.round(upMs * 0.55));
-  function finish() {
-    alive = false; clearInterval(tick); up.forEach((m) => clearTimeout(m.timer)); up.clear();
+  clock = setInterval(() => {
+    if (!alive) return;
+    const remaining = Math.max(0, 30 - (performance.now() - started) / 1000);
+    $('.wm-time', area).textContent = Math.ceil(remaining);
+    $('.wm-pace', area).textContent = pace() < 1.5 ? 'Warm up' : pace() < 2.25 ? 'Faster!' : 'Super fast!';
+    if (remaining <= 0) finish();
+  }, 100);
+  function stop() {
+    alive = false; clearInterval(clock); clearTimeout(spawnTimer);
+    up.forEach((m) => clearTimeout(m.timer)); up.clear();
     holes.forEach((h) => h.classList.remove('up'));
-    const won = score >= target;
-    const lvUp = won ? gameLevelUp('whack', 1) : false;
-    gameWin(won ? 'Awesome job!' : 'Great job!');
-    endPanel(`You got ${score} moles!${won ? '' : `<br><small>Get ${target} to reach the next level</small>`}`, '🐹', startWhack, lvUp);
   }
-  gameCleanup = () => { alive = false; clearInterval(tick); up.forEach((m) => clearTimeout(m.timer)); };
+  function finish() {
+    if (!alive) return;
+    stop();
+    const won = score >= target;
+    const lvUp = won ? gameLevelUp('whack', 1) : (save(), false);
+    gameWin(won ? 'Awesome job!' : 'Great job!');
+    endPanel(`<span class="wm-final">Final Score <strong>${score}</strong></span><small>${won ? 'Target reached!' : 'Target: ' + target} · Keep practicing!</small>`, '🐹', startWhack, lvUp);
+  }
+  schedule();
+  gameCleanup = stop;
 }
 
 /* ======================= ROLLING BALL 3D (loads ball3d.js + three.js only when opened) ======================= */
