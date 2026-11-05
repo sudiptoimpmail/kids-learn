@@ -188,14 +188,14 @@ function genWords(list, level, kind) {
   if (type === 'xword') return { key: `${kind}-xw-${rand(1e6)}`, text: 'Fill in the crossword!', say: ['Fill in the crossword!', 'Tap a box, then tap a letter.'],
     main: '', mainClass: 'puzzle-main', options: [], answer: 'done', optClass: 'spell-tray',
     puzzle: { kind: 'xword', words: level >= 3 ? 3 : 2, lv: level >= 3 ? 2 : 1 }, hint: { html: '', say: '' } };
-  const picHint = { html: `<div class="hint-pic">${PHOTO_SET.has(w) ? photoImage(w,'reading-word-photo') : e}</div>`, say: 'Look at the picture!' };
+  const picHint = { html: `<div class="hint-pic">${visualPath(w) ? visualImage(w,'reading-word-photo') : e}</div>`, say: 'Look at the picture!' };
 
   if (type === 'pic') {
     // look at the picture, pick its word from words that look alike (man · pan · cat)
     const others = similarWords(wordPool.filter(([x]) => x.length === w.length), w, n, 3);
     return {
       key: `${kind}-pic-${w}`, text: 'Which word matches the picture?', say: 'Which word matches the picture?',
-      main: `<div class="spell-pic">${PHOTO_SET.has(w) ? photoImage(w,'reading-word-photo') : e}</div>`,
+      main: `<div class="spell-pic">${visualPath(w) ? visualImage(w,'reading-word-photo') : e}</div>`,
       options: shuffle([w, ...others.map((o) => o[0])]).map((x) => ({ v: x, html: x })), answer: w, optClass: 'opt-word',
       hint: readingHint(w),
     };
@@ -572,8 +572,8 @@ function genSentence(level) {
   const marks = sentenceHintMarks(s, q, opts[0]);
   // Real imagery supports early passage comprehension without replacing the wording.
   const storyWords = s.toLowerCase().split(/[^a-z]+/);
-  const subject = level <= 3 && PHOTO_NAMES.find(name => storyWords.includes(name));
-  const photo = subject ? '<div class="reading-photo-wrap">' + photoImage(subject, 'reading-photo') + '</div>' : '';
+  const subject = level <= 3 && VISUAL_NAMES.find(name => storyWords.includes(name));
+  const photo = subject ? '<div class="reading-photo-wrap">' + visualImage(subject, 'reading-photo') + '</div>' : '';
   return {
     key: `sent-${s}`, qkey: q,
     text: '📖 Read, then answer',     // the question is shown once, under the sentence
@@ -1396,7 +1396,31 @@ const GK = [
   [4, 'How many sides does a hexagon have?', '6', '5', '7', '8'],
   [4, 'Which ocean lies between Africa and Australia?', 'Indian Ocean', 'Arctic Ocean', 'Atlantic Ocean', 'Southern Ocean'],
 ];
+/* Pre-K picture listening and recognition, with genuinely age-banded visual content.
+   The bank is large, but each short question shows 2–4 related images, not a wall of thumbnails. */
+function genVisualRecognition(level) {
+  const topics = level <= 1 ? ['animals','transport','food','objects','nature'] :
+    ['animals','transport','food','objects','nature','places']; // Kindergarten: familiar places, not molecular science equipment
+  const group = pick(topics);
+  const source = ILLUSTRATION_GROUPS[group];
+  const correct = pick(source), options = shuffle([correct, ...sample(source.filter(x=>x!==correct),numOpts(level)-1)]);
+  // Recorded-word speech only. Do not synthesize a phrase that does not exist in audio/clips.json.
+  const hasRecording = !!CLIPS[clipKey(correct.replace(/_/g,' '))];
+  const spoken = hasRecording
+    ? ['Find the picture of', correct.replace(/_/g,' ')] : 'Look at the picture!';
+  return {
+    key:'visual-'+group+'-'+correct, text:hasRecording ? 'Find the '+correct.replace(/_/g,' ')+'!' : 'Find the matching picture!',
+    say:spoken, main:hasRecording
+      ? '<div class="visual-listen" aria-hidden="true">🔊 <span>Listen and choose</span></div>'
+      : '<div class="visual-prompt-art">'+visualImage(correct,'visual-prompt-icon')+'</div>',
+    options:options.map(name=>({v:name,html:visualImage(name,'gk-photo')+'<small>'+name.replace(/_/g,' ')+'</small>'})),
+    answer:correct,optClass:'gk-picture-choices visual-choices',
+    hint:{html:'<div class="hint-note">Look at the shapes and colors. Point to the matching picture!</div>',
+      say:'Look at the picture!'}
+  };
+}
 const genGK = (level) => {
+  if (level <= 2 && Math.random() < (level === 1 ? 0.62 : 0.25)) return genVisualRecognition(level);
   const q = mcQuestion('gk', pickLevelled(GK, level), level);
   // Pre-K children hear a recognizable prompt and a target word with prerecorded audio.
   if (q.text.startsWith('Which picture shows')) {

@@ -1102,10 +1102,10 @@ const puzzleSize = () => [2, 2, 3, 3, 4][GL('puzzle') - 1]; // short puzzles: 4�
 function startPuzzleMenu() {
   const area = $('#gameArea');
   const size = puzzleSize();
-  const PUZ = [...PHOTO_PUZZLE, ...ALL_PICS.filter((p) => p.orig || !p.om)];
-  const pictureButton = p => `<button class="pic-pick" data-p="${p.id}">${p.photo ? photoImage(p.photo,'pz-photo-pick') : picSVG(p, puzzleFills(p))}<span>${p.name}</span></button>`;
+  const PUZ = [...PHOTO_PUZZLE, ...ILLUSTRATION_PUZZLE, ...ALL_PICS.filter((p) => p.orig || !p.om)];
+  const pictureButton = p => `<button class="pic-pick" data-p="${p.id}">${p.photo || p.art ? visualImage(p.photo || p.art,'pz-photo-pick') : picSVG(p, puzzleFills(p))}<span>${p.name}</span></button>`;
   area.innerHTML = `<div class="g-msg">Pick a picture · ${size}×${size} puzzle</div>
-    <div class="pic-grid">${PHOTO_PUZZLE.map(pictureButton).join('')}</div>
+    <div class="pic-grid">${[...PHOTO_PUZZLE, ...sample(ILLUSTRATION_PUZZLE, 12)].map(pictureButton).join('')}</div>
     <details class="pz-more"><summary>More illustrated pictures</summary>
       <div class="pic-grid">${PUZ.filter(p => !p.photo).map(pictureButton).join('')}</div>
     </details>`;
@@ -1117,7 +1117,7 @@ function startPuzzle(p) {
   const n = puzzleSize(), N = n * n, VB = p.vb || 200, part = VB / n;
   const fills = puzzleFills(p);
   let k = 0;
-  const body = p.photo ? '' : p.svg().replace(/class="r( bg)?"/g, () => `class="r" style="fill:${fills[k++] || '#fff'}"`);
+  const body = p.photo || p.art ? '' : p.svg().replace(/class="r( bg)?"/g, () => `class="r" style="fill:${fills[k++] || '#fff'}"`);
   let order;
   do { order = shuffle([...Array(N).keys()]); } while (order.every((v, i) => v === i));
   let pickA = null, solved = false;
@@ -1147,8 +1147,8 @@ function startPuzzle(p) {
   const tileSVG = (t) => {
     const x = -(t % n) * 100, y = -Math.floor(t / n) * 100;
     const shape = pieceShape(t), id = 'pzl-clip-' + t;
-    const image = p.photo
-      ? `<image href="assets/photos/${p.photo}.jpg" x="${x}" y="${y}" width="${n*100}" height="${n*100}" preserveAspectRatio="none"/>`
+    const image = p.photo || p.art
+      ? `<image href="${visualPath(p.photo || p.art)}" x="${x}" y="${y}" width="${n*100}" height="${n*100}" preserveAspectRatio="none"/>`
       : `<svg x="${x}" y="${y}" width="${n*100}" height="${n*100}" viewBox="0 0 ${VB} ${VB}" preserveAspectRatio="none">${body}</svg>`;
     return `<svg class="jigsaw-svg" viewBox="-13 -13 126 126" aria-hidden="true">
       <defs><clipPath id="${id}"><path d="${shape}"/></clipPath></defs>
@@ -1158,7 +1158,7 @@ function startPuzzle(p) {
   };
   area.innerHTML = `<div class="g-msg">Put the picture back together! <small>Tap two pieces to swap. Tap a selected piece again to rotate.</small></div>
     <div class="pz-wrap"><div class="pz-board" style="grid-template-columns:repeat(${n},1fr)"></div>
-    <div class="pz-peek">${p.photo ? photoImage(p.photo,'pz-photo-peek') : `<svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`}<small>Look!</small></div></div>
+    <div class="pz-peek">${p.photo || p.art ? visualImage(p.photo || p.art,'pz-photo-peek') : `<svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`}<small>Look!</small></div></div>
     <div class="color-btns"><button class="big-btn alt small ico" data-a="restart" aria-label="Restart">🔄 Restart</button><button class="big-btn alt small ico" data-a="pictures" aria-label="Pictures">🖼️ Pictures</button></div>`;
   say('Put the picture back together!');
   const board = $('.pz-board', area);
