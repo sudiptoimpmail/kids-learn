@@ -38,6 +38,21 @@ function countryRows(C) {
 }
 function genCountry(level) {
   const C = myCountry() || COUNTRIES.us;
+  // Learn to recognise locally relevant paper money as well as coins.
+  // Every banknote image is bundled separately and available without internet.
+  if (level >= 3 && C.notes?.length >= 4 && typeof nsBanknotePicture === 'function' && Math.random() < 0.26) {
+    const note = pick(C.notes);
+    const others = sample(C.notes.filter(c => c[0] !== note[0]), 3);
+    return {
+      key: 'home-note-picture-' + countryCode() + '-' + note[0],
+      text: 'How much is this banknote worth?', say: ['How much money?'],
+      main: nsBanknotePicture(note[0], note[1], C.label || C.name),
+      mainClass: 'ph-main',
+      options: shuffle([note, ...others]).map(c => ({v:c[1], html:c[1]})),
+      answer: note[1], optClass: 'opt-text',
+      hint: {html:'Look at the number on the banknote.', say:'Think about it!'}
+    };
+  }
   // Early country lessons now show real, locally rendered denomination
   // illustrations instead of relying on coin labels alone. No network needed.
   if (level <= 2 && typeof nsCoinPicture === 'function' && C.coins && C.coins.length >= 3 && Math.random() < 0.24) {
