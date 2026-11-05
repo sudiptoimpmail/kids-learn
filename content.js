@@ -1400,7 +1400,7 @@ const GK = [
    The bank is large, but each short question shows 2–4 related images, not a wall of thumbnails. */
 function genVisualRecognition(level) {
   const topics = level <= 1 ? ['animals','transport','food','objects','nature'] :
-    ['animals','transport','food','objects','nature','places','science'];
+    ['animals','transport','food','objects','nature','places']; // Kindergarten: familiar places, not molecular science equipment
   const group = pick(topics);
   const source = ILLUSTRATION_GROUPS[group];
   const correct = pick(source), options = shuffle([correct, ...sample(source.filter(x=>x!==correct),numOpts(level)-1)]);
