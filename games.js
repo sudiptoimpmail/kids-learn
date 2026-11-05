@@ -406,6 +406,8 @@ function startWhack() {
   const lv = GL('whack');
   const target = [8, 11, 14, 16, 18][lv - 1];
   const upMs = [1800, 1450, 1200, 1000, 850][lv - 1];
+  const speedAt = () => Math.max(420, upMs * (1 - 0.5 * Math.min(1, (Date.now() - t0) / 30000)));
+
   const area = $('#gameArea');
   area.innerHTML = `<div class="g-msg">Tap ${target} moles! <b class="wm-score">0</b> 🐹 · <span class="wm-time">30</span>s${lv >= 3 ? '<small>Don\'t tap the 🌸!</small>' : ''}</div>
     <div class="wm-field">${Array.from({ length: 9 }, (_, i) => `<button class="wm-hole" data-i="${i}"><span class="wm-pop"></span></button>`).join('')}</div>`;
@@ -421,7 +423,7 @@ function startWhack() {
     const el = holes[i].querySelector('.wm-pop');
     el.textContent = flower ? '🌸' : pick(['🐹', '🐹', '🐹', '🦔', '🐭']);
     holes[i].classList.add('up');
-    const timer = later(() => { holes[i].classList.remove('up'); up.delete(i); }, upMs * (0.8 + Math.random() * 0.4));
+    const timer = later(() => { holes[i].classList.remove('up'); up.delete(i); }, speedAt() * (0.8 + Math.random() * 0.4));
     up.set(i, { timer, flower });
   }
   holes.forEach((h, i) => h.addEventListener('pointerdown', (e) => {
@@ -437,16 +439,18 @@ function startWhack() {
     const left = Math.max(0, 30 - Math.floor((Date.now() - t0) / 1000));
     $('.wm-time', area).textContent = left;
     if (left <= 0) return finish();
-    if (Math.random() < 0.75) popUp();
+    if (Math.random() < 0.75 + 0.2 * (1 - speedAt() / upMs)) popUp();
     if (lv >= 4 && Math.random() < 0.35) popUp();
-  }, Math.round(upMs * 0.55));
+  }, Math.round(upMs * 0.42));
   function finish() {
     alive = false; clearInterval(tick); up.forEach((m) => clearTimeout(m.timer)); up.clear();
     holes.forEach((h) => h.classList.remove('up'));
     const won = score >= target;
     const lvUp = won ? gameLevelUp('whack', 1) : false;
     gameWin(won ? 'Awesome job!' : 'Great job!');
-    endPanel(`You got ${score} moles!${won ? '' : `<br><small>Get ${target} to reach the next level</small>`}`, '🐹', startWhack, lvUp);
+    area.innerHTML = `<div class="wm-final" role="status"><div class="wm-final-icon">🐹</div><h2>Time’s up!</h2><div class="wm-final-score">${score}</div><p>Moles caught</p><button class="big-btn" data-a="again">Play again</button><button class="big-btn alt" data-a="back">Back to games</button></div>`;
+    area.querySelector('[data-a="again"]').onclick = startWhack;
+    area.querySelector('[data-a="back"]').onclick = () => $('#gameBack').click();
   }
   gameCleanup = () => { alive = false; clearInterval(tick); up.forEach((m) => clearTimeout(m.timer)); };
 }
