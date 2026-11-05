@@ -50,6 +50,7 @@ function curriculumArea(id) { const c = CURRICULUM_AREAS[levelsCC()] || CURRICUL
    at the top of the grade; one right → the middle; none → the start of the grade. */
 const PLACE_POOL = ['add', 'sub', 'mul', 'frac', 'numsense', 'sent', 'spell', 'words', 'phonics', 'cvc'];
 let placePlan = [];
+let placementRunning = false;
 function startPlacement() {
   const ids = PLACE_POOL.filter((id) => state.grade && gradeRange(state.grade, id));
   const math = ids.filter((id) => ['add', 'sub', 'mul', 'frac', 'numsense'].includes(id)), read = ids.filter((id) => !math.includes(id));
@@ -74,12 +75,20 @@ function startPlacement() {
       return q;
     });
   });
-  startRound('placement', placePlan.length);
+  placementRunning = true;
+  try { startRound('placement', placePlan.length); }
+  finally { placementRunning = false; placePlan = []; }
 }
 function genPlacement() {
-  // Do not generate an unrelated "add" fallback when all eight cards are used.
-  if (!placePlan.length) throw new Error('Placement plan exhausted');
-  return placePlan.shift();
+  if (placePlan.length) return placePlan.shift();
+  // Standalone curriculum/voice audits sample category generators without
+  // launching an assessment; those previews must not mutate an active plan.
+  if (placementRunning) throw new Error('Placement plan exhausted during an assessment');
+  const id = PLACE_POOL.find((section) => state.grade && gradeRange(state.grade, section)) || 'add';
+  const lv = state.grade && gradeRange(state.grade, id) ? gradeRange(state.grade, id)[1] : 1;
+  const q = CATEGORIES.find((c) => c.id === id).gen(lv);
+  q.placeSection = id; q.assessedLevel = lv; q.key = 'place-preview-' + q.key;
+  return q;
 }
 function applyPlacement(qs) {
   const by = {};
