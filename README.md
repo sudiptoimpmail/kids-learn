@@ -30,7 +30,7 @@ The first thing on the home screen: a short guided mix for today (about 10–12 
 | 🕐 Clock (optional) | Hidden by default — turn on in ⚙️ → Clock game. Read an analog clock or pick the clock for a time: o'clock → half past → quarter past/to → 5 minutes |
 | 🙋 Body Parts | **Realistic 3D person** in a t-shirt, shorts and shoes (spin with a finger). The camera zooms in on the face for eyes, nose, eyebrows… Tap the part (tapping near a part counts; tapping an eye also counts as the head). Level 1 big parts → 2 neck, shoulders, elbows, knees, chin, fingers → 3 eyebrows, cheeks, wrists, ankles. From level 2 a right answer shows **what's inside** with an x-ray ("Inside your knee is your kneecap!"). Falls back to a 2D drawing on devices without 3D |
 | 💡 Did You Know? | General knowledge for every grade, 4 levels: animal sounds & colors → seasons, days, baby animals, 911 → planets, plants, months → continents, magnets, states of water. 💡 Hint removes a wrong answer |
-| 🫀 Inside My Body (optional) | Off by default — turn on in ⚙️. **Realistic 3D anatomy** (real brain, heart, lungs, liver, intestines, kidneys, skeleton, arteries and veins) inside a see-through x-ray body. Hidden parts (like the kidneys) show up when the others fade. 4 levels: brain, heart, lungs, stomach → liver, intestines, skull, ribs, backbone → kidneys, jaw, collarbone, hip bone, thigh bone (femur), kneecap, shin bone, **arteries (red) & veins (blue)** → arm/forearm/hand/foot bones, shoulder blade, bladder, pancreas and more science facts |
+| 🫀 Inside My Body (optional) | Off by default — turn on in ⚙️. **Original interactive 2D anatomy** with tappable brain, heart, lungs, liver, stomach, intestines and kidneys. No third-party 3D anatomy model is bundled.
 | 🔺 Shapes | 2D shapes, finding shapes, counting sides |
 | 🧊 3D Shapes | Cube, sphere, cylinder, cone, pyramid, prism; flat vs solid; real-life objects |
 | 🧑‍🚒 Jobs | Who does what |
@@ -103,16 +103,10 @@ If a phrase has no recording, the app falls back to the best voice installed on 
 ## Edit content
 All bundled questions, stories, vocabulary, geography and drawing geometry now live in versioned `data/*.json` files. Game logic remains in JavaScript. Photography, illustration, currency, workbook and landmark media are stored as individual files in `assets/`. `content-loader.js` loads the JSON before any engine starts, and the service worker precaches it for offline use. Update `sw.js` version when changing the bundled files, and run `node tests/content-assets-test.js` before release.
 
-3D body model: BodyParts3D © The Database Center for Life Science, Human Reference Atlas (HuBMAP) — CC BY 4.0; body shape MakeHuman (CC0); via [open-anatomy-3d](https://github.com/MervinR07/open-anatomy-3d) (CC BY 4.0). Changed for this app: clothes and hair added, lung surfaces made from the airway model, reproductive and other parts removed (`vendor/body.glb`). The credit is shown under the 3D view and in ⚙️.
+## Assets and cost policy
+All bundled learning icons have been replaced with locally authored SVG wrappers using system-provided emoji glyphs. The 47 coloring subjects and 39 landmark schematic illustrations are original geometric drawings. The 2D Body Parts and anatomy illustrations are local original media. There are no third-party CC BY / CC BY-SA illustrations or anatomy meshes included in this release.
 
-## Licenses (for selling the app later)
-Everything bundled allows commercial use. What each one asks:
-- **MIT / Apache / CC0 / public domain** (no conditions beyond keeping notices): three.js and its loaders, meshoptimizer decoder, Kokoro voice model (Apache 2.0), MakeHuman body, Natural Earth map shapes.
-- **CC BY 4.0** (keep the credit): the 3D anatomy model.
-- **CC BY-SA 4.0** (keep the credit; pictures made *from* this art must also be shared under CC BY-SA): OpenMoji art used in coloring pages and landmarks.
-- **ODbL** (credit; share-alike for the data): world-countries region names.
-
-three.js (MIT license) is bundled in `vendor/` so the 3D games work offline. World map: Natural Earth (public domain) via world-atlas; regions from world-countries (ODbL). Coloring/landmark art: [OpenMoji](https://openmoji.org) (CC BY-SA 4.0) plus original drawings. Famous-place illustrations are bundled as `assets/landmarks/<id>.svg`; all 39 are available without network access.
+**No stock-art fees, royalties, API image dependencies, or runtime downloads are needed to play.** The remaining JavaScript libraries and map/audio dependencies have their own permissive/public-data licensing terms. Those are software/data obligations, not stock-image license fees. See the asset provenance audit and retain legal notices for open-source code.
 
 Progress is stored only on the device (localStorage). No accounts, ads or tracking.
 
