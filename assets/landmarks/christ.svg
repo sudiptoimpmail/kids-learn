@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img"><title>Christ the Redeemer</title><rect x="0" y="0" width="120" height="120" fill="#cfe9ff"/><path d="M0 120 V92 Q30 70 60 64 Q90 70 120 92 V120 Z" fill="#51cf66" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <rect x="54" y="56" width="12" height="10" fill="#dee2e6" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M56 56 L57 30 H63 L64 56 Z" fill="#f1f3f5" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M28 32 H92 V37 H63 V32 H57 V37 H28 Z" fill="#f1f3f5" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <circle cx="60" cy="25" r="5" fill="#f1f3f5" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M100 30 q8 -6 16 0 q-8 4 -16 0z M6 44 q8 -6 14 -1 q-7 4 -14 1z" fill="#fff"/></svg>
