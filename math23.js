@@ -35,9 +35,33 @@ function m23Line(a, b, wholes = 1) {
     <line x1="${x0}" y1="42" x2="${x1}" y2="42" stroke="#343a40" stroke-width="3"/>${ticks}${labels}
     <circle cx="${x0 + a * dx}" cy="42" r="9" fill="#e64980" stroke="#fff" stroke-width="3"/></svg>`;
 }
+// Equivalent fractions are the SAME answer, even when they have different
+// numerators and denominators (for example 1/2 and 2/4).
+const m23FractionValue = value => {
+  const m = /^([0-9]+)\/([1-9][0-9]*)$/.exec(String(value).trim());
+  return m ? Number(m[1]) / Number(m[2]) : null;
+};
+const m23DifferentFraction = (a, b) => {
+  const x = m23FractionValue(a), y = m23FractionValue(b);
+  return x == null || y == null ? String(a) !== String(b) : Math.abs(x - y) > 1e-10;
+};
 const m23Q = (key, text, say, main, answer, wrong, level, optClass = 'opt-text') => {
   const n = level >= 2 ? 3 : 2;
-  const opts = shuffle([String(answer), ...sample([...new Set(wrong.map(String))].filter((x) => x !== String(answer)), n)]);
+  const candidates = [...new Set(wrong.map(String))].filter(x => m23DifferentFraction(x, answer));
+  const distinct = [];
+  for (const candidate of shuffle(candidates)) {
+    if (distinct.every(x => m23DifferentFraction(x, candidate))) distinct.push(candidate);
+  }
+  // A numeric-fraction exercise can always generate enough distinct wrong
+  // answers without offering a second equivalent correct fraction.
+  if (m23FractionValue(answer) != null) {
+    const [numerator, denominator] = String(answer).split('/').map(Number);
+    for (let k = 1; distinct.length < n && k < 30; k++) {
+      const extra = frac(numerator + k, denominator);
+      if (m23DifferentFraction(extra, answer) && distinct.every(x => m23DifferentFraction(x, extra))) distinct.push(extra);
+    }
+  }
+  const opts = shuffle([String(answer), ...distinct.slice(0, n)]);
   return { key, text, say, main, mainClass: 'ph-main', answer: String(answer), optClass,
     options: opts.map((o) => ({ v: o, html: /^\d+\/\d+$/.test(o) ? fracHTML(...o.split('/')) : o })),
     hint: { html: '', say: 'Think about it!', remove: true } };
@@ -53,7 +77,12 @@ function genFractions(level) {
     }
     const b = pick([2, 3, 4]), a = b === 2 ? 1 : 1 + rand(b - 1), pie = Math.random() < 0.5;
     const ans = fracWord(a, b);
-    const wrong = [fracWord(1, 2), fracWord(1, 3), fracWord(1, 4), fracWord(Math.min(a + 1, b - 1) || 1, b), fracWord(b - a, b)];
+    // "one half" and "two fourths" are equivalent: never show both as
+    // competing answers to the same picture, even though their words differ.
+    const wrong = [];
+    for (const otherDen of [2, 3, 4]) for (let otherNum = 1; otherNum < otherDen; otherNum++) {
+      if (otherNum * b !== a * otherDen) wrong.push(fracWord(otherNum, otherDen));
+    }
     return m23Q(`frac-word-${a}-${b}-${pie}`, 'What fraction is colored?', 'What fraction is colored?',
       pie ? nsPie(b, a) : m23Bar(b, a), ans, wrong, 2);
   }
@@ -65,7 +94,7 @@ function genFractions(level) {
         [frac(b - a, b), frac(a, b + 1), frac(b, a), frac(a + 1, b)].filter((x) => !/^0\//.test(x)), level, 'opt-num');
     }
     const pool = [[b - a, b], [a, b + 2], [Math.max(1, a - 1), b], [a, Math.max(2, b - 1)], [Math.min(b - 1, a + 1), b], [1, b + 1]]
-      .filter(([x, y]) => x > 0 && x < y && !(x === a && y === b))
+      .filter(([x, y]) => x > 0 && x < y && x * b !== a * y)
       .filter(([x, y], i, all) => all.findIndex(([u, v]) => u === x && v === y) === i);
     const others = sample(pool, 3);
     const cands = shuffle([[a, b], ...others]);
