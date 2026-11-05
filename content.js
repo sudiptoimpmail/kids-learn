@@ -1354,7 +1354,18 @@ const GK = [
   [4, 'A scientist who studies dinosaurs is called a…', 'paleontologist', 'astronaut', 'chef', 'pilot'],
   [4, 'What do bees carry from flower to flower?', 'pollen', 'water', 'rocks', 'sand'],
 ];
-const genGK = (level) => mcQuestion('gk', pickLevelled(GK, level), level);
+const genGK = (level) => {
+  const q = mcQuestion('gk', pickLevelled(GK, level), level);
+  // Pre-K children hear a recognizable prompt and a target word with prerecorded audio.
+  if (q.text.startsWith('Which picture shows')) {
+    const noun = q.answer.replace(/^\\S+\\s+/, '');
+    q.say = CLIPS[clipKey(noun)] ? ['Find the picture of', noun] : 'Look at the picture!';
+  } else if (!CLIPS[clipKey(q.text)]) {
+    // Newly added calendar questions remain readable offline without missing audio-file requests.
+    q.say = 'Find the answer!';
+  }
+  return q;
+};
 
 /* ---------------- INSIDE MY BODY (optional) ---------------- */
 function organSVG(highlight) {
