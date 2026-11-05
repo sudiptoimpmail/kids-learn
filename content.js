@@ -188,14 +188,15 @@ function genWords(list, level, kind) {
   if (type === 'xword') return { key: `${kind}-xw-${rand(1e6)}`, text: 'Fill in the crossword!', say: ['Fill in the crossword!', 'Tap a box, then tap a letter.'],
     main: '', mainClass: 'puzzle-main', options: [], answer: 'done', optClass: 'spell-tray',
     puzzle: { kind: 'xword', words: level >= 3 ? 3 : 2, lv: level >= 3 ? 2 : 1 }, hint: { html: '', say: '' } };
-  const picHint = { html: `<div class="hint-pic">${e}</div>`, say: 'Look at the picture!' };
+  const picture = learningPicture(w, e);
+  const picHint = { html: `<div class="hint-pic">${picture}</div>`, say: 'Look at the picture!' };
 
   if (type === 'pic') {
     // look at the picture, pick its word from words that look alike (man · pan · cat)
     const others = similarWords(wordPool.filter(([x]) => x.length === w.length), w, n, 3);
     return {
       key: `${kind}-pic-${w}`, text: 'Which word matches the picture?', say: 'Which word matches the picture?',
-      main: `<div class="spell-pic">${e}</div>`,
+      main: `<div class="spell-pic">${picture}</div>`, 
       options: shuffle([w, ...others.map((o) => o[0])]).map((x) => ({ v: x, html: x })), answer: w, optClass: 'opt-word',
       hint: readingHint(w),
     };
@@ -205,7 +206,7 @@ function genWords(list, level, kind) {
     let mixed; do { mixed = shuffle(w.split('')); } while (mixed.join('') === w && new Set(w).size > 1);
     return {
       key: `${kind}-scr-${w}`, text: 'Unscramble the letters!', say: 'Unscramble the letters!', speak: w,
-      main: `<div class="spell-pic">${e}</div><div class="scrambled">${mixed.join(' ')}</div>`,
+      main: `<div class="spell-pic">${picture}</div><div class="scrambled">${mixed.join(' ')}</div>`,
       options: [], answer: w, optClass: 'spell-tray',
       spell: { word: w, blanks: w.split('').map((_, i) => i), tiles: mixed },
       hint: { html: '', say: w, slow: true },
@@ -219,7 +220,7 @@ function genWords(list, level, kind) {
       text: 'Read the word. Tap the picture!',
       say: 'Read the word, and tap the picture!',
       main: `<div class="word" style="font-size:min(var(--wfs), ${Math.floor(125 / w.length)}vw)">${w}</div>`,
-      options: shuffle([[w, e], ...others]).map(([ow, oe]) => ({ v: ow, html: oe })),
+      options: shuffle([[w, e], ...others]).map(([ow, oe]) => ({ v: ow, html: learningPicture(ow, oe) })), 
       answer: w,
       optClass: 'opt-emoji',
       hint: readingHint(w),
@@ -255,7 +256,7 @@ function genWords(list, level, kind) {
     say: `Which letter is missing? ${w}.`,
     speak: w,
     // the picture is shown too: c_t could be cat, cot or cut — the picture says which
-    main: `${clear ? `<div class="miss-pic">${e}</div>` : ''}<div class="word" style="font-size:min(var(--wfs), ${Math.floor(125 / w.length)}vw)">${shown}</div>`,
+    main: `${clear ? `<div class="miss-pic">${picture}</div>` : ''}<div class="word" style="font-size:min(var(--wfs), ${Math.floor(125 / w.length)}vw)">${shown}</div>`,
     options: opts.map((l) => ({ v: l, html: l })),
     answer: letter,
     optClass: 'opt-letter',
