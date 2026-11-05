@@ -85,6 +85,9 @@ const { chromium } = require('playwright');
     // The original handwriting category retains its engine, with illustrated scenes behind paths.
     await page.evaluate(()=>{TR.set='lines';TR.i=1;openTrace();});
     assert.equal(await page.locator('#trPad .ia-trace-scene').count(),1,'Illustration behind existing tracing canvas');
+    await page.evaluate(()=>{TR.set='lines';TR.i=9;renderTrace(false);});
+    assert.equal(await page.locator('#trPic .tr-word').innerText(),'Straw path');
+    assert.equal(await page.locator('#trPad .ia-trace-scene').count(),1,'The straw trace is integrated with original cafe artwork');
     await page.evaluate(()=>{state.grade='g1';TR.set='words';TR.i=0;renderTrace(false);});
     assert.equal(await page.locator('#trace .tr-tab[data-set="words"]').isVisible(),true);
     assert.equal(await page.locator('#trPic .tr-word').innerText(),'fish');
