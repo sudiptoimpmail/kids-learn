@@ -61,7 +61,22 @@ function genAdvancedPattern(level) {
 }
 
 function genPattern(level) {
-  if (level >= 3 && Math.random() < (level >= 4 ? 0.75 : 0.25)) return genAdvancedPattern(level);
+  // Grade 1: skip-counting by twos and fives, not multiplication/geometric sequences.
+  if (level === 3 && Math.random() < 0.4) {
+    const step = pick([2, 5]), start = 1 + rand(step);
+    const nums = Array.from({length:5}, (_,i)=>start + i*step);
+    const answer = String(start + 5*step);
+    const wrong = [...new Set([start+4*step,start+6*step,start+5*step+1,start+5*step-1])]
+      .filter(x=>String(x)!==answer && x>=0).map(String).slice(0,3);
+    const question = thinkingQuestion('pattern-skip-'+step+'-'+start,
+      'Which number comes next?', '<div class="think-pattern">'+
+      nums.map(n=>'<span>'+n+'</span>').join('')+'<span class="think-missing">?</span></div>',
+      [answer,...wrong], answer, 'Count by the same number each time.', 'opt-num');
+    question.say = 'Which number comes next?';
+    question.hint.say = 'Think about it!';
+    return question;
+  }
+  if (level >= 4 && Math.random() < 0.75) return genAdvancedPattern(level);
   if (level >= 4 && Math.random() < 0.65) {
     const step = pick(level >= 5 ? [2, 3, 4, 5, 10] : [1, 2, 5]);
     const start = level >= 5 ? 1 + rand(8) : 1 + rand(5);
