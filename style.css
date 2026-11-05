@@ -1030,3 +1030,14 @@ html, body { min-height: 100%; }
 .wm-final-score { font-size: clamp(72px, 15vw, 128px); line-height: 1; font-weight: 1000; color: #7048e8; }
 .wm-final p { margin: 0 0 10px; font-size: 22px; font-weight: 900; }
 @media (max-height: 760px) { #game .game-area { gap: 7px; margin-top: 5px; } .dr-top { gap: 6px; } .dr-pad { width: min(50dvh, 92vw); } .pb-dmd-msg { display:none; } }
+
+
+/* A short, tactile jigsaw look: rounded-piece silhouettes and raised knobs. */
+.pz-board { gap: 6px; padding: 6px; }
+.pzl-tile.jigsaw-piece { position: relative; isolation: isolate; overflow: visible; border: 3px solid #fff; border-radius: 17% 21% 17% 21%; box-shadow: 0 3px 0 #b3a6ce, 0 2px 8px #0002; }
+.pzl-tile.jigsaw-piece .jigsaw-art { display: block; width: 100%; height: 100%; transition: transform .2s ease; overflow: hidden; border-radius: 12%; }
+.pzl-tile.jigsaw-piece .jigsaw-knob { position: absolute; width: 30%; height: 17%; left: 35%; top: -13%; border: 3px solid white; border-bottom: none; background: #e4d4ff; border-radius: 75% 75% 20% 20%; z-index: 2; pointer-events: none; }
+.pzl-tile.jigsaw-piece.picked { outline: 4px solid #7048e8; outline-offset: 1px; transform: scale(1.03); z-index: 3; }
+.pzl-tile.jigsaw-piece.ok { border-color: #51cf66; }
+.pz-board.solved .pzl-tile.jigsaw-piece { border-radius: 0; gap: 0; }
+.pz-board.solved .jigsaw-knob { display: none; }
