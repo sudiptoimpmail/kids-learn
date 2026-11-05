@@ -990,3 +990,9 @@ header.top { align-items: center; }
 /* PIN screen: a big, clear way back for kids */
 .pin-box { position: relative; padding-top: 64px; }
 .pin-back { position: absolute; left: 12px; top: 12px; padding: 10px 16px; border-radius: 16px; background: #ffe066; color: #5c3c00; font-size: 20px; font-weight: 900; box-shadow: 0 4px 0 #f0b400; }
+
+/* Test mode preview navigation – hidden from all child profiles. */
+body.test-mode .qa-nav { padding:8px 12px; font-size:14px; min-height:38px; background:#fef9c3; color:#473618; border:2px solid #b9a14e; }
+body.test-mode .qa-nav:disabled { opacity:.45; cursor:not-allowed; }
+body.test-mode .qa-position { padding:6px 8px; color:#574580; font-weight:900; white-space:nowrap; }
+body.test-mode .prog-row { gap:6px; }
