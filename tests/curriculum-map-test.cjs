@@ -13,8 +13,18 @@ const map=read('curriculum-map');
 const core=read('content'), ext=read('grade23-extension');
 const names=['prek','k','g1','g2','g3'], sections=new Set(), ids=new Set();
 assert.equal(core.GRADES,undefined,'No second source of truth for grade ranges');
+const fallbackPresentation = map.policy.presentation;
+assert.ok(fallbackPresentation && fallbackPresentation.readingScale > 1, 'Missing default reading presentation');
+let previousScale = Infinity;
 for(const name of names){
   assert.ok(map.GRADES[name]&&map.PROFILES[name],name+' must have a profile');
+  const presentation = map.GRADES[name].presentation;
+  assert.ok(presentation && Number.isFinite(presentation.readingScale) && presentation.readingScale > 1 && presentation.readingScale <= 1.6,
+    name+' must define a child-readable scale');
+  assert.ok(Number.isFinite(presentation.readingLineHeight) && presentation.readingLineHeight >= 1.4 && presentation.readingLineHeight <= 1.7,
+    name+' must define readable line spacing');
+  assert.ok(presentation.readingScale < previousScale, name+' should use a progressively denser reading scale');
+  previousScale = presentation.readingScale;
   for(const [section,r] of Object.entries(map.GRADES[name].g)){
     const profile=map.PROFILES[name].sections[section];
     assert.ok(profile,name+'/'+section+' missing curriculum skill profile');
