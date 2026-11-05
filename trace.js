@@ -46,7 +46,7 @@ const TRACE_WORDS = [
 function traceItems(set) {
   if (set === 'words') return TRACE_WORDS.map(([word, picture]) => [word, word, word, picture, 0]);
   if (set === 'lines') return TRACE_LINES.map(([chip, name, spoken, a, b, path]) => [chip, name, spoken, a && b ? `${a} ➜ ${b}` : chip, 0, path, a, b]);
-  if (set === 'num') return Array.from({ length: 20 }, (_, i) => {
+  if (set === 'num') return Array.from({ length: state.grade === 'prek' && !state.showAll ? 10 : 20 }, (_, i) => {
     const n = i + 1, [things, e] = NUM_THINGS[i % NUM_THINGS.length];
     const w = n === 1 ? things.replace(/s$/, '') : things;
     return [String(n), `${n} ${w}`, `${capWord(NUM_WORDS[n])}. ${capWord(NUM_WORDS[n])} ${w}.`, e.repeat(n), n];
