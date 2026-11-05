@@ -14,7 +14,13 @@ const save = () => Store.save(state);
 // if progress can't be saved (storage full), tell the grown-ups once instead of losing stars quietly
 Store.onError = () => { if (Store.warned) return; Store.warned = true; setTimeout(() => { const n = document.createElement('div'); n.className = 'save-warn'; n.textContent = '⚠️ Progress could not be saved on this device (storage may be full). Grown-ups: ⚙️ → Save a backup.'; n.onclick = () => n.remove(); document.body.appendChild(n); }, 0); };   // storage.js decides where it goes (web now, native app later)
 // a game never played yet starts in the middle of the child's grade range
-const levelOf = (id) => state.levels[id] || (state.grade && GRADES[state.grade] && GRADES[state.grade].g[id] ? gradeStart(GRADES[state.grade].g[id]) : 1);
+const levelOf = (id) => {
+  const r = state.grade && gradeRange(state.grade, id);
+  const saved = state.levels[id] || (r ? r[0] : 1);
+  // The badge, generator and mastery feedback must agree even after a child
+  // changes grade or an older saved profile contains a higher/lower step.
+  return r && !state.showAll ? Math.max(r[0], Math.min(r[1], saved)) : saved;
+};
 const maxLevelOf = (id) => (CATEGORIES.find((c) => c.id === id) || {}).maxLevel || 3;
 const gameMax = maxLevelOf;
 const OPTIONAL = { anatomy: 'optAnatomy' };  // off unless a parent turns it on in Settings
@@ -304,12 +310,20 @@ function startRound(catId, count, browse = false, atLevel = null) {
   sayToken++; stopClip(); $('#pop').classList.remove('show'); $('#pop').replaceChildren();
   const cat = CATEGORIES.find((c) => c.id === catId);
   const real = visibleGames().filter((c) => c.gen);
-  const qs = [], seen = new Set();
+  const qs = [], seen = new Set(), seenContent = new Set();
   let guard = 0;
   const N = count || cat.roundLen || ROUND;
   // questions seen in the last few rounds are skipped while there are fresh ones to ask
   state.recent = state.recent || {};
   const recent = new Set(state.recent[cat.id] || []);
+  state.recentContent = state.recentContent || {};
+  const recentContent = new Set(state.recentContent[cat.id] || []);
+  const fingerprint = (q) => {
+    const raw = String(q.text || '') + '|' + String(q.answer) + '|' + String(q.main || '');
+    let hash = 2166136261;
+    for (let i = 0; i < raw.length; i++) hash = Math.imul(hash ^ raw.charCodeAt(i), 16777619);
+    return String(hash >>> 0);
+  };
   while (qs.length < N && guard++ < 600) {
     const c = cat.gen ? cat : real[Math.floor(Math.random() * real.length)];
     // Grade limits apply to individual questions, not only category tiles.
@@ -326,8 +340,11 @@ function startRound(catId, count, browse = false, atLevel = null) {
     let q = (illustrated && IllustratedActivities.make(state.grade, c.id, lv)) || added || c.gen(lv);
     // Keep a single occurrence of each illustrated exercise per round.
     if (q.illustrated && seen.has(q.key)) q = c.gen(lv);
-    if (seen.has(q.key) && guard < 500) continue;
-    if (!browse && recent.has(q.key) && guard < 350) continue;
+    const contentId = fingerprint(q);
+    // Never repeat an identical question in one round, even after exhausting
+    // retries. Return a shorter round rather than teaching the same card twice.
+    if (seen.has(q.key) || seenContent.has(contentId)) continue;
+    if (!browse && guard < 350 && (recent.has(q.key) || recentContent.has(contentId))) continue;
     // Every delivered question carries its permitted grade set. Explicit per-item
     // restrictions may narrow it further; never surface an older-grade card in Pre-K.
     const eligibleGrades = Object.keys(GRADES).filter(grade => {
@@ -336,9 +353,13 @@ function startRound(catId, count, browse = false, atLevel = null) {
     });
     q.grades = Array.isArray(q.grades) ? q.grades.filter(g => eligibleGrades.includes(g)) : eligibleGrades;
     if (!browse && state.grade && !state.showAll && !q.grades.includes(state.grade)) continue;
-    seen.add(q.key); q.cat = c; q.level = lv; qs.push(q);
+    seen.add(q.key); seenContent.add(contentId); q.cat = c; q.level = lv; qs.push(q);
   }
-  if (!browse && !isTestMode()) { state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60); save(); }
+  if (!browse && !isTestMode()) {
+    state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60);
+    state.recentContent[cat.id] = [...(state.recentContent[cat.id] || []), ...qs.map(fingerprint)].slice(-60);
+    save();
+  }
   if (!qs.length) { renderHome(); show('home'); return; }   // nothing for this grade (e.g. a stale link)
   R = { cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse, atLevel };
   $('#playTitle').textContent = `${cat.icon} ${typeof editionTitle === 'function' ? editionTitle(cat.id, localTileTitle(cat.id, cat.title)) : cat.title}`;
