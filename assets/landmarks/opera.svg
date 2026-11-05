@@ -1,7 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img"><title>Sydney Opera House</title><rect x="0" y="0" width="120" height="120" fill="#cfe9ff"/><rect x="0" y="90" width="120" height="30" fill="#4dabf7"/>
-    <rect x="10" y="82" width="100" height="10" fill="#e9c46a" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
-    <path d="M18 82 Q24 44 50 40 Q40 60 44 82 Z" fill="#fff" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
-    <path d="M40 82 Q48 36 78 32 Q64 56 68 82 Z" fill="#fff" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
-    <path d="M64 82 Q74 46 100 46 Q88 64 92 82 Z" fill="#fff" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
-    <path d="M86 82 Q94 62 108 60 Q100 70 104 82 Z" fill="#fff" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
-    <path d="M30 70 L42 52 M54 66 L70 44 M78 70 L94 54" stroke="#ced4da" stroke-width="1.2"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" role="img" aria-labelledby="t" data-origin="kids-learn-original-landmark-schematic"><title id="t">Illustration of Sydney Opera House — not a photograph</title>
+<rect width="240" height="160" fill="#bfe9f2"/><circle cx="207" cy="27" r="15" fill="#fff3b8" opacity=".9"/><path d="M0 128Q48 110 96 130T240 128V160H0Z" fill="#83cadd"/>
+<path d="M58 108Q74 55 119 46L105 110Z" fill="#f4ede6" stroke="#6a6278" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M96 112Q133 37 172 52L143 113Z" fill="#f6f1e8" stroke="#6a6278" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M127 113Q168 76 192 102L186 116Z" fill="#f5ede1" stroke="#6a6278" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><path d="M48 117H196" fill="none" stroke="#8aa7ac" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/><path d="M0 147H240" fill="none" stroke="#ffffff" stroke-opacity=".25" stroke-width="3"/></svg>

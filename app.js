@@ -262,7 +262,7 @@ function renderHome() {
   if (typeof renderQuest === 'function') renderQuest();
   const groups = [
     ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'match', 'syl']],
-    ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'mul', 'div', 'clock', 'shape2']],
+    ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'frac', 'measure', 'mul', 'div', 'clock', 'shape2']],
     ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], 'brain'],
     ['🌍 Science & World', ['sci', 'home', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
   ];
@@ -343,21 +343,16 @@ function renderProgress() {
     `<span class="dot ${i < R.i ? (q.ok ? 'ok' : 'meh') : i === R.i ? 'now' : ''}">${i < R.i ? (q.ok ? '⭐' : '✔︎') : ''}</span>`).join('');
 }
 
-/* ---------- 3D body view (loaded only when a body question appears) ---------- */
-const B3D = { view: null, mod: null };
-function dropBody3D() { if (B3D.view) { B3D.view.dispose(); B3D.view = null; } }
-// leaving the game: free the 3D graphics memory too (the model itself stays loaded)
-function releaseBody3D() { dropBody3D(); if (B3D.mod && B3D.mod.release) B3D.mod.release(); }
-async function mountBody3D(q) {
-  const host = document.createElement('div'); host.className = 'b3d-host'; host.innerHTML = '<div class="b3d-loading">🧍 Getting ready…</div>';
-  $('#qMain').appendChild(host);
-  try { B3D.mod = B3D.mod || await import('./body3d.js'); } catch (e) { host.innerHTML = '<div class="hint-note">3D is not available.</div>'; return; }
-  if (R.qs[R.i] !== q) return;                     // moved on while loading
-  dropBody3D();
-  B3D.view = B3D.mod.mount(host, {
-    layer: q.body3d.layer, highlight: q.body3d.highlight || null, focus: q.answer, tappable: q.body3d.tappable,
-    onTap: q.body3d.tap ? (names) => { if (R.locked) return; const el = document.createElement('i'); choose(q, names.includes(q.answer) ? q.answer : names[0], el); } : null,
-  });
+/* ---------- original 2D anatomy fallback; no external licensed model ---------- */
+function dropBody3D() {}
+function releaseBody3D() {}
+function mountBody3D(q) {
+  // Keep old QA/backups compatible if a legacy 3D question is requested.
+  // No dynamic code import, network access, or external anatomy mesh.
+  const spec=q.body3d;
+  $('#qMain').innerHTML = spec.layer === 'skin'
+    ? bodySVG(spec.highlight || null) : organSVG(spec.highlight || null);
+  q.tap=!!spec.tap;
 }
 
 function renderQ() {
@@ -774,10 +769,17 @@ function choose(q, v, el) {
     if (q.fill) { const b = $('.blank'); if (b) { b.textContent = q.answer; b.classList.add('filled'); } }
     $$('.qmark').forEach((m) => { m.textContent = q.answer; m.classList.add('filled'); });
     celebrate(first);
+    if (q.explorer && q.explanation) {
+      const why = document.createElement('div');
+      why.className = 'explorer-explanation';
+      why.setAttribute('role', 'status');
+      why.textContent = q.explanation;
+      $('#qMain').appendChild(why);
+    }
     if (q.reveal && B3D.view) {
       setTimeout(onCard(q, () => { if (B3D.view) { B3D.view.reveal(q.reveal); say(q.reveal.text); } }), 1200);
       setTimeout(onCard(q, next), 4600);
-    } else setTimeout(onCard(q, next), first ? 1900 : 1600);
+    } else setTimeout(onCard(q, next), q.explorer ? 4300 : first ? 1900 : 1600);
   } else {
     q.tries++; R.mistakes++; R.streak = 0;
     el.classList.add('wrong'); el.disabled = true;
@@ -828,17 +830,17 @@ function finish() {
   let levelMsg = '';
   if (id !== 'mix' && !R.atLevel) {          // practice at an older level (quest) doesn't move her level
     const lv = levelOf(id);
-    // progress decides: great rounds move up (past her grade too, after two great rounds in a row),
-    // hard rounds move back down — even below her grade's starting level
+    // Adaptive levels stay inside the selected grade's curriculum scope.
+    // Parents can unlock wider levels with Show all games in Settings.
     state.good = state.good || {};
     if (rate <= 0.1) {
       state.good[id] = (state.good[id] || 0) + 1;
       if (lv < levelCap(id)) { state.levels[id] = lv + 1; state.good[id] = 0; levelMsg = `⬆️ Level up! Now level ${lv + 1}`; }
-      else if (lv < gameMax(id) && state.good[id] >= 2) { state.levels[id] = lv + 1; state.good[id] = 0; levelMsg = `🚀 Super! Trying a harder level: ${lv + 1}`; }
-      else if (lv < gameMax(id)) levelMsg = '⭐ One more great round unlocks a harder level!';
+      else if (!state.showAll && state.grade) levelMsg = '⭐ Great work! Try another skill for your grade.';
     } else {
       state.good[id] = 0;
-      if (rate >= 0.5 && n >= 5 && lv > 1) { state.levels[id] = lv - 1; levelMsg = `🙂 Let's practice level ${lv - 1} a bit more`; }
+      const floor = !state.showAll && state.grade ? (gradeRange(state.grade,id)||[1])[0] : 1;
+      if (rate >= 0.5 && n >= 5 && lv > floor) { state.levels[id] = lv - 1; levelMsg = `🙂 Let's practice level ${lv - 1} a bit more`; }
     }
   }
   const earned = earnPlay();
@@ -944,13 +946,16 @@ $('#learnQuiz').onclick = $('#learnQuiz2').onclick = () => { sfx.tap(); startRou
 /* ---------- grown-up difficulty slider (press and hold so little fingers don't change it) ---------- */
 function gradeHintFor(id, lv) {
   const g = Object.entries(GRADES).filter(([k]) => { const r = gradeRange(k, id); return r && lv >= r[0] && lv <= r[1]; }).map(([, v]) => v.label);
-  return g.length ? `Typical for: ${g.join(', ')}` : '';
+  const focus=CURRICULUM_PROFILES[state.grade]?.sections[id]?.skills?.slice(0,3).map(v=>v.replaceAll('-',' ')).join(' · ');
+  return [g.length?`Typical for: ${g.join(', ')}`:'',focus?`Skills: ${focus}`:''].filter(Boolean).join(' | ');
 }
 function openDiff() {
   if (!R || R.cat.id === 'mix') return;
   const id = R.cat.id, max = gameMax(id);
   const sl = $('#diffRange');
-  sl.max = max; sl.value = levelOf(id);
+  const range=!state.showAll&&!isTestMode()&&state.grade?gradeRange(state.grade,id):null;
+  sl.min=range?range[0]:1; sl.max=range?range[1]:max;
+  sl.value=Math.min(+sl.max,Math.max(+sl.min,levelOf(id)));
   const upd = () => { $('#diffVal').textContent = `Level ${sl.value} of ${max}`; $('#diffGrade').textContent = gradeHintFor(id, +sl.value); };
   sl.oninput = upd; upd();
   $('#diffName').textContent = `${R.cat.icon} ${R.cat.title}`;

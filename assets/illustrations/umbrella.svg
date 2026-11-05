@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#66757F" d="M9 28.5c0-.828.672-1.5 1.5-1.5s1.5.672 1.5 1.5v.5s0 3 3 3 3-3 3-3V3.5c0-.829.671-1.5 1.5-1.5s1.5.671 1.5 1.5V29s0 6-6 6-6-6-6-6v-.5z"/><path fill="#744EAA" d="M19.5 4C28.612 4 36 9.82 36 17c0 0 0 2-1 2s-3-2-3-2H7s-2 2-3 2-1-2-1-2C3 9.82 10.387 4 19.5 4z"/><path fill="#9266CC" d="M19.5 4C26.403 4 32 9.82 32 17c0 0 0 2-2 2s-5-2-5-2H14s-3 2-5 2-2-2-2-2C7 9.82 12.596 4 19.5 4z"/><path fill="#744EAA" d="M19.5 4C23.09 4 25 9.82 25 17c0 0-3 2-5 2h-1c-2 0-5-2-5-2 0-7.18 1.91-13 5.5-13z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="t" data-origin="kids-learn-self-authored-icon">
+<title id="t">umbrella</title>
+<defs><radialGradient id="paper" cx=".35" cy=".22" r=".9"><stop stop-color="#ffffff"/><stop offset=".68" stop-color="#f3e0fd"/><stop offset="1" stop-color="#d0b3f6"/></radialGradient><linearGradient id="edge" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#896dc1"/></linearGradient></defs>
+<circle cx="128" cy="130" r="112" fill="url(#paper)" stroke="url(#edge)" stroke-width="6"/>
+<path d="M57 64Q74 44 94 49" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".75"/>
+<circle cx="211" cy="72" r="11" fill="#fff" opacity=".85"/><circle cx="47" cy="166" r="6" fill="#fff" opacity=".85"/>
+<text x="128" y="173" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif" font-size="131">☂️</text>
+<path d="M83 220Q129 231 173 220" stroke="#896dc1" stroke-width="5" fill="none" stroke-linecap="round" opacity=".35"/>
+</svg>

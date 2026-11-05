@@ -1,1 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36"><path fill="#FFD983" d="M30.312.776C32 19 20 32 .776 30.312c8.199 7.717 21.091 7.588 29.107-.429C37.9 21.867 38.03 8.975 30.312.776z"/><path d="M30.705 15.915c-.453.454-.453 1.189 0 1.644.454.453 1.189.453 1.643 0 .454-.455.455-1.19 0-1.644-.453-.454-1.189-.454-1.643 0zm-16.022 14.38c-.682.681-.682 1.783 0 2.465.68.682 1.784.682 2.464 0 .681-.682.681-1.784 0-2.465-.68-.682-1.784-.682-2.464 0zm13.968-2.147c-1.135 1.135-2.974 1.135-4.108 0-1.135-1.135-1.135-2.975 0-4.107 1.135-1.136 2.974-1.136 4.108 0 1.135 1.133 1.135 2.973 0 4.107z" fill="#FFCC4D"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="t" data-origin="kids-learn-self-authored-icon">
+<title id="t">moon</title>
+<defs><radialGradient id="paper" cx=".35" cy=".22" r=".9"><stop stop-color="#ffffff"/><stop offset=".68" stop-color="#d9f4df"/><stop offset="1" stop-color="#91daba"/></radialGradient><linearGradient id="edge" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#4e9a7f"/></linearGradient></defs>
+<circle cx="128" cy="130" r="112" fill="url(#paper)" stroke="url(#edge)" stroke-width="6"/>
+<path d="M57 64Q74 44 94 49" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".75"/>
+<circle cx="211" cy="72" r="11" fill="#fff" opacity=".85"/><circle cx="47" cy="166" r="6" fill="#fff" opacity=".85"/>
+<text x="128" y="173" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif" font-size="131">🌙</text>
+<path d="M83 220Q129 231 173 220" stroke="#4e9a7f" stroke-width="5" fill="none" stroke-linecap="round" opacity=".35"/>
+</svg>

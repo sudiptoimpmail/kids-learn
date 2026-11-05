@@ -15,9 +15,11 @@ const read = name => {
   assert.ok(obj.datasets && typeof obj.datasets==='object',name+': datasets');
   return obj.datasets;
 };
+const curriculum=read('curriculum-map');
 const content=read('content'), science=read('science'), country=read('country'),
   stories=read('stories'), upperStories=read('upper-grade-stories'), reading=read('reading-patterns'),
-  thinking=read('thinking'), grade1=read('grade1'), landmarks=read('landmarks'), extension=read('grade23-extension');
+  thinking=read('thinking'), grade1=read('grade1'), landmarks=read('landmarks'), extension=read('grade23-extension'),
+  explorerMath=read('explorer-math'), explorerScience=read('explorer-science');
 const faults=[], concerns=[], stats={};
 const error=(bank,key,why)=>faults.push(bank+'/'+key+': '+why);
 const choices=(bank,key,question,answers,level)=>{
@@ -98,13 +100,47 @@ stats.syllables=content.SYL.length;stats.sightFill=content.FILL.length;stats.rea
 stats.grade1Passages=grade1.G1_PASSAGES.length;
 stats.oddOneOut=thinking.THINKING_ODD.length+extension.THINKING_ODD.length;
 stats.sequencing=thinking.THINKING_SEQUENCES.length+extension.THINKING_SEQUENCES.length;
-stats.grade2Sections=Object.keys(content.GRADES.g2.g).length+3;
-stats.grade3Sections=Object.keys(content.GRADES.g3.g).length+3;
+stats.grade2Sections=Object.keys(curriculum.GRADES.g2.g).length+3;
+stats.grade3Sections=Object.keys(curriculum.GRADES.g3.g).length+3;
 const byLevel={};for(const [level] of stories.STORIES.concat(upperStories.STORIES,extension.STORIES))byLevel[level]=(byLevel[level]||0)+1;stats.storiesByLevel=byLevel;
 if((byLevel[6]||0)<20)concerns.push('Grade 3 level 6 reading has only '+(byLevel[6]||0)+' passages; target at least 20 editorially reviewed texts');
 for(const g of ['g2','g3']){
-  const ranges=content.GRADES[g].g;
+  const ranges=curriculum.GRADES[g].g;
   if(ranges.flags==='3-3'&&ranges.maps==='3-3')concerns.push(g+': map and flag questions do not progress beyond level 3');
 }
+// Grade 2–3 mission books are JSON-only: validate every answer and media path.
+for(const [subject,book,levels] of [
+  ['math',explorerMath.questions,[4,5]],['science',explorerScience.questions,[3,4]]
+]){
+  if(!Array.isArray(book)||book.length<25)error('explorer-'+subject,'all','less than 25 authored missions');
+  const ids=new Set();
+  for(const q of book){
+    if(!q||!q.id||ids.has(q.id))error('explorer-'+subject,q?.id,'duplicate or missing id');
+    ids.add(q?.id);
+    if(!levels.includes(q.level)||!q.domain||!q.context||!q.prompt||!q.explanation)
+      error('explorer-'+subject,q.id,'invalid grade-level fields');
+    if(!Array.isArray(q.choices)||q.choices.length<3||q.choices.length>5||
+      !q.choices.includes(q.answer)||
+      new Set(q.choices.map(x=>String(x).trim().toLowerCase())).size!==q.choices.length)
+      error('explorer-'+subject,q.id,'invalid answer/distractors');
+    if(q.asset && (!new RegExp('^assets/(?:photos|illustrations)/[a-z0-9_-]+[.](?:svg|jpg)$').test(q.asset)||
+        !fs.existsSync(path.join(root,q.asset))))
+      error('explorer-'+subject,q.id,'missing or disallowed offline media '+q.asset);
+  }
+  stats['explorer-'+subject]=book.length;
+  stats['explorer-'+subject+'-byLevel']=Object.fromEntries(levels.map(l=>[l,book.filter(q=>q.level===l).length]));
+}
+let scienceSortItems=0;
+for(const [level,prompt,groups,items] of science.SCI_SORT){
+  if(![1,2,3,4].includes(level)||!prompt||!Array.isArray(groups)||new Set(groups).size!==groups.length)
+    error('science-sort',prompt,'invalid group names');
+  for(const [name,picture,index] of items){
+    if(!name||!picture||!Number.isInteger(index)||index<0||index>=groups.length)
+      error('science-sort',prompt,'invalid group for '+name);
+    scienceSortItems++;
+  }
+}
+stats.scienceSortBanks=science.SCI_SORT.length;
+stats.scienceSortExamples=scienceSortItems;
 console.log(JSON.stringify({stats,structuralErrors:faults,editorialConcerns:concerns},null,2));
 if(faults.length)process.exitCode=1;

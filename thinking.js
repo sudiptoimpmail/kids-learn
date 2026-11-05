@@ -85,9 +85,9 @@ function genPattern(level) {
 }
 // Each row describes three items with the same property and one outlier.
 // Levels: obvious categories -> habitats/objects -> properties & functions.
-const THINKING_ODD = ContentData.get('thinking','THINKING_ODD').concat(ContentData.get('grade23-extension','THINKING_ODD'));
+const THINKING_ODD = ContentData.get('thinking','THINKING_ODD');
 function genOdd(level) {
-  const pool = THINKING_ODD.filter((x) => x[0] <= level);
+  const pool = THINKING_ODD.concat(curriculumRows('THINKING_ODD',level)).filter(x=>x[0] <= level);
   const [difficulty, similar, different, reason] = pick(pool);
   const chosen = level === 1 ? sample(similar, 2) : similar;
   const choices = [...chosen, different];
@@ -98,9 +98,9 @@ function genOdd(level) {
   q.hint.say = 'Think about it!';
   return q;
 }
-const THINKING_SEQUENCES = ContentData.get('thinking','THINKING_SEQUENCES').concat(ContentData.get('grade23-extension','THINKING_SEQUENCES'));
+const THINKING_SEQUENCES = ContentData.get('thinking','THINKING_SEQUENCES');
 function genSequence(level) {
-  const pool = THINKING_SEQUENCES.filter((x) => x[0] <= level);
+  const pool = THINKING_SEQUENCES.concat(curriculumRows('THINKING_SEQUENCES',level)).filter(x=>x[0] <= level);
   const exact = pool.filter(row => row[0] === level);
   const review = pool.filter(row => row[0] === level-1);
   const [difficulty, steps, reason] = pick(exact.length && (Math.random() < 0.82 || !review.length) ? exact :
@@ -110,8 +110,8 @@ function genSequence(level) {
   const missingAt = level <= 1 ? pick([1, steps.length-1]) : rand(steps.length);
   const answer = steps[missingAt];
   // never offer a picture from a related sequence (seed → tree, egg → chicken): it could also be right
-  const related = THINKING_SEQUENCES.filter((x) => x[1].some((e) => steps.includes(e))).flatMap((x) => x[1]);
-  const others = [...new Set(THINKING_SEQUENCES.flatMap((x) => x[1]))]
+  const related = pool.filter(x=>x[1].some(e=>steps.includes(e))).flatMap(x=>x[1]);
+  const others = [...new Set(pool.flatMap(x=>x[1]))]
     .filter((x) => x !== answer && !related.includes(x));
   const options = [answer, ...sample(others, level >= 2 ? 3 : 2)];
   const q = thinkingQuestion(`sequence-${difficulty}-${steps.join('')}-${missingAt}`,
@@ -127,10 +127,4 @@ CATEGORIES.push(
   { id: 'odd', title: 'Odd One Out', sub: 'sort, group & explain', icon: '🔍', color: '#e8590c', gen: genOdd, maxLevel: 3 },
   { id: 'sequence', title: 'What Comes Next?', sub: 'order & cause and effect', icon: '🪴', color: '#0b7285', gen: genSequence, maxLevel: 3 },
 );
-for (const [grade, levels] of Object.entries({
-  prek: { pattern: '1-1', odd: '1-1', sequence: '1-1' },
-  k: { pattern: '1-2', odd: '1-2', sequence: '1-2' },
-  g1: { pattern: '2-3', odd: '2-3', sequence: '2-3' },
-  g2: { pattern: '3-4', odd: '3-3', sequence: '3-3' },
-  g3: { pattern: '4-5', odd: '3-3', sequence: '3-3' },
-})) Object.assign(GRADES[grade].g, levels);
+// Grade visibility and level ranges are now defined in data/curriculum-map.json.
