@@ -40,20 +40,13 @@ const { chromium } = require('playwright');
       state.gameLv.puzzle = 1;
       openGame('puzzle');
       startPuzzle(ALL_PICS[0]);
-      const p = ALL_PICS[0], n = 2, part = p.vb / n;
       const board = document.querySelector('.pz-board');
-      function tileAt(i) {
-        const v = board.children[i].querySelector('svg').getAttribute('viewBox').split(/\s+/).map(Number);
-        return Math.round(v[0] / part) + n * Math.round(v[1] / part);
-      }
       const oldWins = (state.gameWins && state.gameWins.puzzle) || 0;
-      for (let i = 0; i < n * n; i++) {
-        if (tileAt(i) === i) continue;
-        const j = [...Array(n * n).keys()].find(k => tileAt(k) === i);
-        if (j == null) throw Error('Could not find puzzle tile');
-        board.children[i].click();
-        board.children[j].click();
-      }
+      if (board.children.length !== 4) throw Error('Level 1 should have four jigsaw pieces');
+      if (!window.__jigsaw || !board.querySelector('.pzl-art')) throw Error('Jigsaw pieces missing');
+      board.children[0].click(); board.children[0].click();
+      if (!window.__jigsaw.rotations().some(Boolean)) throw Error('Jigsaw piece did not rotate');
+      window.__jigsaw.solve();
       if (((state.gameWins && state.gameWins.puzzle) || 0) !== oldWins + 1)
         throw Error('Picture Puzzle did not award one win');
       const puzzleAward = state.gameWins.puzzle;
