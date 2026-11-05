@@ -75,7 +75,7 @@ const { chromium } = require('playwright');
       const tiles=area.querySelectorAll('.jigsaw-piece');
       check(tiles.length===9, 'Grade-appropriate jigsaw count missing');
       const beforeAngle = tiles[0].querySelector('.jigsaw-art').style.transform;
-      tiles[0].click(); tiles[0].click();
+      tiles[0].click(); area.querySelector('.jigsaw-piece').click();
       check(!!area.querySelector('.jigsaw-art'), 'Puzzle rotation artwork missing');
       check(area.querySelector('.jigsaw-piece .jigsaw-art').style.transform !== beforeAngle,
         'Tap-twice should rotate a selected piece by 90 degrees');
