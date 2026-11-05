@@ -13,6 +13,8 @@ const { chromium } = require('playwright');
       const asset=await fetch('assets/prek-atlas.svg');
       const svg=await asset.text();
       if(!asset.ok || !svg.includes('data:image/webp;base64,'))throw Error('Generated photo atlas not available offline');
+      const atlasImage = new Image(); atlasImage.src='assets/prek-atlas.svg'; await atlasImage.decode();
+      if(atlasImage.naturalWidth!==256 || atlasImage.naturalHeight!==192)throw Error('Generated photo atlas cannot be rendered');
       if(traceItems('num').length!==10)throw Error('Pre-K number tracing not limited to 1–10');
       const photo=genPrekPhoto();
       if(photo.options.length!==4 || !photo.options.every(o=>o.html.includes('pk-photo')))throw Error('Pre-K photo choices missing');
