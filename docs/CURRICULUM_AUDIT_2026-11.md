@@ -23,7 +23,7 @@ A child can revisit earlier material; that is different from exposing a young ch
 - General Knowledge: **127** authored multiple-choice question rows across four levels; additional procedural variation from photo-based presentation.
 - Science: **111** authored fact questions plus **6** sorting templates with numerous individual classification items.
 - Reading: **94** base sentence/comprehension rows, **22** illustrated multi-question passages, **19** story-ordering scenarios and **29** word-box phrase targets, plus other workbook and word-generation variations.
-- Thinking: **44** temporal/cause-effect sequences, **28** odd-one-out sets, multiple repeating-pattern templates and procedural number patterns.
+- Thinking: **65** temporal/cause-effect sequences (including 21 added multi-step routines and inquiry cycles), **28** odd-one-out sets, multiple repeating-pattern templates, Grade 1 skip-counting patterns and older-grade procedural number patterns.
 - Sight words: **47** targeted words in the base list, with sentence and meaning variations.
 - Pictures: **16** original AI-generated locally stored JPGs (8 animals, 4 flowers, 4 vehicles); **12** selected as rotating photographic puzzle themes.
 - Tracing: alphabet capitals/lowercase, numbers 1–20, and a bank of recorded Grade 1 handwriting words.
