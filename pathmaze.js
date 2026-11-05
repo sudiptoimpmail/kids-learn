@@ -12,7 +12,7 @@ const PATH_THEMES = [
   ['🚗', '🅿️', 'Drive the car to the parking spot!'],
   ['🐵', '🍌', 'Take the monkey to the banana!'],
 ];
-const PATH_SIZES = [[3, 4], [4, 5], [5, 6], [6, 7], [7, 9], [8, 10], [9, 12], [12, 15], [12, 16], [14, 19], [16, 22]];   // columns × rows per level
+const PATH_SIZES = [[4, 5], [5, 6], [6, 7], [7, 8], [8, 10], [9, 12], [10, 14], [12, 16], [12, 18], [14, 20], [16, 22]];   // columns × rows per level
 function makeMaze(cols, rows) {
   // walls[r][c] = { n, e, s, w } — true means a wall
   const W = Array.from({ length: rows }, () => Array.from({ length: cols }, () => ({ n: true, e: true, s: true, w: true })));
