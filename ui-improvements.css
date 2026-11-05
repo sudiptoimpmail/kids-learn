@@ -159,11 +159,17 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
    fine print beneath the shorter instruction or comprehension question.
    Applies to ordinary sentences, Grade 1 story/ordering cards, Grade 2–3
    passage cards and Explorer mission contexts on iPhone and iPad. */
-#play { --reading-copy-size: clamp(25px, 4.1vw, 36px); }
+#play {
+  /* Viewport-based instruction size is shared. Grade-specific reading scale
+     and leading are supplied by the curriculum configuration at render time. */
+  --reading-prompt-size: clamp(22px, 3vw, 31px);
+  --reading-copy-size: calc(var(--reading-prompt-size) * var(--grade-reading-scale, 1));
+}
+#play .q-text { font-size: var(--reading-prompt-size); }
 #play .sentence.long,
 #play .sentence.passage {
   font-size: var(--reading-copy-size);
-  line-height: 1.5;
+  line-height: var(--grade-reading-line-height, 1.5);
   font-weight: 750;
   overflow-wrap: break-word;
   max-width: 36ch;
@@ -172,14 +178,14 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
   width: 100%;
   box-sizing: border-box;
   font-size: var(--reading-copy-size);
-  line-height: 1.5;
+  line-height: var(--grade-reading-line-height, 1.5);
   font-weight: 700;
   overflow-wrap: break-word;
 }
 #play .g1-passage p { margin: .25em 0; }
 #play .explorer-body p {
   font-size: var(--reading-copy-size);
-  line-height: 1.48;
+  line-height: var(--grade-reading-line-height, 1.5);
   font-weight: 700;
   overflow-wrap: break-word;
 }
