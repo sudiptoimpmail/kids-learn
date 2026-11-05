@@ -9,6 +9,7 @@ const { chromium } = require('playwright');
     page.on('pageerror', e => errors.push(e.message));
     await page.goto('http://localhost:8765/index.html');
     await page.locator('#startBtn').click();
+    await page.evaluate(() => clipsReady);
     const result = await page.evaluate(() => {
       state.voice = false; state.grade = 'k';
       state.gameLv = state.gameLv || {};
