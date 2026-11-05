@@ -12,27 +12,13 @@ const IllustratedActivities = (() => {
     return '<svg class="ia-illustration" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" role="img" aria-label="' + div(label) + '">' +
       '<image href="assets/workbook/' + theme + '.svg" x="0" y="0" width="800" height="480" preserveAspectRatio="xMidYMid meet"/></svg>';
   }
-  const scenes={
-    sounds:{theme:'garden',items:[
-      ['apple',36,35],['ant',49,83],['acorn',77,53],['airplane',72,21],
-      ['arrow',14,55],['axe',54,62],['alligator',77,82],['artist brush',53,37],
-      ['bee',15,29],['dog',19,82]
-    ],correct:['apple','ant','acorn','airplane','arrow','axe','alligator','artist brush']},
-    shapes:{theme:'room',items:[
-      ['clock',24,27],['plate',73,30],['wheel',26,74],['ball',74,76],['door',89,51],['book',53,84]
-    ],correct:['clock','plate','wheel','ball']},
-    squares:{theme:'square-room',items:[['window',22,28],['picture frame',70,28],['gift',36,79],['cushion',80,79],['clock',55,28],['ball',14,78]],correct:['window','picture frame','gift','cushion']},
-    forest:{theme:'forest',items:[
-      ['wind',49,13],['leaf',43,36],['climb',17,46],['bird',80,34],
-      ['jump',53,67],['catch',68,54],['wolf',22,83],['water',78,83]
-    ]}
-  };
-  const HIDDEN_CVC_WORDS=Object.freeze(['cub','fan','can','map','wig','bat','cap','cat','ham','bag']);
-  const HIDDEN_CVC_DISTRACTORS=Object.freeze(['sun','dog','ship']);
-  const longA=['gate','name','date','hot','rope','fish','rain','mail','kite','pet','page','paid','lake','wave','net','cake','name','rain','bake','sun','make','plane','cane','rain','tail'];
-  const zebraLetters=['Z','Z','Z','F','X','S','Z','Z','X','F','Z','Z','Z','Z','S','Z','Z','S','Z','X','Z','Z','Z','Z','Z'];
-  const route=[0,1,2,7,12,11,10,15,20,21,22,23,24];
-  const branches=[[1,6],[6,11],[7,8],[12,13],[13,18],[15,16],[16,17],[17,18],[18,23],[3,8],[8,9]];
+  const scenes = ContentData.get('workbook','scenes');
+  const HIDDEN_CVC_WORDS = Object.freeze(ContentData.get('workbook','HIDDEN_CVC_WORDS'));
+  const HIDDEN_CVC_DISTRACTORS = Object.freeze(ContentData.get('workbook','HIDDEN_CVC_DISTRACTORS'));
+  const longA = ContentData.get('workbook','longA');
+  const zebraLetters = ContentData.get('workbook','zebraLetters');
+  const route = ContentData.get('workbook','route');
+  const branches = ContentData.get('workbook','branches');
   const edges=[...route.slice(1).map((v,i)=>[route[i],v]),...branches];
   function available(grade,cat,level){
     return (grade==='k'&&['phonics','shape2'].includes(cat))||
