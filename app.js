@@ -256,7 +256,7 @@ function renderHome() {
   $('#hello').textContent = state.name ? `Hi, ${state.name}!` : 'Hi there!' + ' ' + ((THEMES[state.theme] || THEMES.rainbow).mascot);
   $('#starCount').textContent = state.stars;
   $('#stickerCount').textContent = state.stickers.length;
-  $('#gradeLabel').textContent = state.grade ? GRADES[state.grade].label : 'Pick grade';
+  $('#gradeLabel').textContent = state.grade ? gradeName(state.grade) : 'Pick grade';
   $('#gradeChip').classList.toggle('pulse', !state.grade);
   if (typeof renderPlayBanner === 'function') renderPlayBanner();
   if (typeof renderToday === 'function') renderToday();
@@ -270,7 +270,7 @@ function renderHome() {
   const visible = visibleGames();
   const makeTile = (c) => {
     const best = Math.min(3, state.best[c.id] || 0);
-    const lv = c.id === 'mix' || c.trace ? '' : `<span class="lv">Lv ${levelOf(c.id)}</span>`;
+    const lv = c.id === 'mix' || c.trace ? '' : stepDots(c.id);
     const icon = c.id === 'home' && typeof myCountry === 'function' && myCountry() ? myCountry().flag : c.icon;
     return `<button class="tile" data-cat="${c.id}" style="--c:${c.color}">
       ${lv}<span class="ti">${icon}</span><span class="tt">${typeof localTileTitle === 'function' ? localTileTitle(c.id, c.title) : c.title}</span><span class="ts">${c.sub}</span>
@@ -336,7 +336,7 @@ function startRound(catId, count, browse = false, atLevel = null) {
 }
 
 function renderProgress() {
-  $('#diffLv').textContent = R.cat.id === 'mix' ? '' : `Lv ${levelOf(R.cat.id)}`;
+  $('#diffLv').textContent = R.cat.id === 'mix' ? '' : (([s, n]) => `Step ${s} of ${n}`)(gradeStep(R.cat.id));
   $('#diffBtn').hidden = R.cat.id === 'mix';
   $('#qaPosition').textContent = (R.i + 1) + ' / ' + R.qs.length;
   $('#prevBtn').disabled = R.i === 0;
@@ -946,7 +946,7 @@ $('#learnQuiz').onclick = $('#learnQuiz2').onclick = () => { sfx.tap(); startRou
 
 /* ---------- grown-up difficulty slider (press and hold so little fingers don't change it) ---------- */
 function gradeHintFor(id, lv) {
-  const g = Object.entries(GRADES).filter(([k]) => { const r = gradeRange(k, id); return r && lv >= r[0] && lv <= r[1]; }).map(([, v]) => v.label);
+  const g = Object.entries(GRADES).filter(([k]) => { const r = gradeRange(k, id); return r && lv >= r[0] && lv <= r[1]; }).map(([k]) => gradeName(k));
   const focus=CURRICULUM_PROFILES[state.grade]?.sections[id]?.skills?.slice(0,3).map(v=>v.replaceAll('-',' ')).join(' · ');
   return [g.length?`Typical for: ${g.join(', ')}`:'',focus?`Skills: ${focus}`:''].filter(Boolean).join(' | ');
 }
@@ -1057,7 +1057,7 @@ function syncPlayMode() {
 $('#playMode').onchange = syncPlayMode;
 function renderGrades() {
   $('#gradeBtns').innerHTML = Object.entries(GRADES).map(([k, g]) =>
-    `<button class="grade-btn ${state.grade === k ? 'on' : ''}" data-g="${k}">${g.label}</button>`).join('');
+    `<button class="grade-btn ${state.grade === k ? 'on' : ''}" data-g="${k}">${gradeName(k)}</button>`).join('');
   $$('#gradeBtns .grade-btn').forEach((b) => (b.onclick = () => {
     sfx.tap(); state.grade = b.dataset.g; state.levels = {}; Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = gradeStart(r))); save();
     renderGrades();
@@ -1222,7 +1222,7 @@ function switchKid(id) {
 function openWho() {
   const kids = Store.kids();
   $('#whoGrid').innerHTML = kids.map((k) => `<button class="who-kid ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}">
-    <span class="who-av">${esc(k.avatar || '🦄')}</span><b>${esc(k.name || 'Player')}</b><small>${k.grade ? GRADES[k.grade].label : ''}</small></button>`).join('');
+    <span class="who-av">${esc(k.avatar || '🦄')}</span><b>${esc(k.name || 'Player')}</b><small>${k.grade ? gradeName(k.grade) : ''}</small></button>`).join('');
   $$('#whoGrid .who-kid').forEach((b) => (b.onclick = () => { sfx.tap(); switchKid(b.dataset.id); $('#whoSheet').hidden = true; say("Let's play!"); }));
   $('#whoSheet').hidden = false;
 }
