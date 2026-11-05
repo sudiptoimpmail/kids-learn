@@ -188,14 +188,14 @@ function genWords(list, level, kind) {
   if (type === 'xword') return { key: `${kind}-xw-${rand(1e6)}`, text: 'Fill in the crossword!', say: ['Fill in the crossword!', 'Tap a box, then tap a letter.'],
     main: '', mainClass: 'puzzle-main', options: [], answer: 'done', optClass: 'spell-tray',
     puzzle: { kind: 'xword', words: level >= 3 ? 3 : 2, lv: level >= 3 ? 2 : 1 }, hint: { html: '', say: '' } };
-  const picHint = { html: `<div class="hint-pic">${e}</div>`, say: 'Look at the picture!' };
+  const picHint = { html: `<div class="hint-pic">${PHOTO_SET.has(w) ? photoImage(w,'reading-word-photo') : e}</div>`, say: 'Look at the picture!' };
 
   if (type === 'pic') {
     // look at the picture, pick its word from words that look alike (man · pan · cat)
     const others = similarWords(wordPool.filter(([x]) => x.length === w.length), w, n, 3);
     return {
       key: `${kind}-pic-${w}`, text: 'Which word matches the picture?', say: 'Which word matches the picture?',
-      main: `<div class="spell-pic">${e}</div>`,
+      main: `<div class="spell-pic">${PHOTO_SET.has(w) ? photoImage(w,'reading-word-photo') : e}</div>`,
       options: shuffle([w, ...others.map((o) => o[0])]).map((x) => ({ v: x, html: x })), answer: w, optClass: 'opt-word',
       hint: readingHint(w),
     };
@@ -570,6 +570,10 @@ function genSentence(level) {
   const words = s.split(' ').map((w, i) => `<span class="sw" data-i="${i}">${w}</span>`).join(' ');
   const long = s.length > 120 ? ' passage' : s.length > 60 ? ' long' : '';
   const marks = sentenceHintMarks(s, q, opts[0]);
+  // Real imagery supports early passage comprehension without replacing the wording.
+  const storyWords = s.toLowerCase().split(/[^a-z]+/);
+  const subject = level <= 3 && PHOTO_NAMES.find(name => storyWords.includes(name));
+  const photo = subject ? '<div class="reading-photo-wrap">' + photoImage(subject, 'reading-photo') + '</div>' : '';
   return {
     key: `sent-${s}`, qkey: q,
     text: '📖 Read, then answer',     // the question is shown once, under the sentence
@@ -577,7 +581,7 @@ function genSentence(level) {
     // do not synthesize question text whose audio has not been recorded.
     say: printFirst ? 'Find the answer.' : '',
     readQ: printFirst ? null : q,
-    main: `<div class="sentence${long}">${words}</div><div class="question-line">${q}</div>`,
+    main: `<div class="sentence${long}">${words}</div>${photo}<div class="question-line">${q}</div>`,
     options: shuffle(opts).map((o) => ({ v: o, html: o })),
     answer: opts[0],
     optClass: 'opt-text',
@@ -1255,6 +1259,21 @@ function genAnatomy3D(level) {
 /* ---------------- GENERAL KNOWLEDGE ---------------- */
 // Levels: 1 Pre-K · 2 Kindergarten · 3 1st grade · 4 2nd grade
 const GK = [
+  [1, 'Which picture shows a rose?', '🌹 rose', '🌻 sunflower', '🌷 tulip', '🌼 daisy'],
+  [1, 'Which picture shows a sunflower?', '🌻 sunflower', '🌹 rose', '🌷 tulip', '🌸 blossom'],
+  [1, 'Which picture shows a tulip?', '🌷 tulip', '🌻 sunflower', '🌹 rose', '🌼 daisy'],
+  [1, 'Which picture shows a flower?', '🌼 flower', '🐶 dog', '🚗 car', '✈️ airplane'],
+  [1, 'Which picture shows an elephant?', '🐘 elephant', '🦒 giraffe', '🐻 bear', '🦁 lion'],
+  [1, 'Which picture shows a horse?', '🐴 horse', '🐮 cow', '🐑 sheep', '🐷 pig'],
+  [1, 'Which picture shows a tiger?', '🐯 tiger', '🦊 fox', '🐱 cat', '🐶 dog'],
+  [1, 'Which picture shows a butterfly?', '🦋 butterfly', '🐝 bee', '🐜 ant', '🐞 ladybug'],
+  [1, 'Which picture shows an airplane?', '✈️ airplane', '🚗 car', '🚂 train', '🚲 bicycle'],
+  [1, 'Which picture shows a helicopter?', '🚁 helicopter', '🚀 rocket', '⛵ sailboat', '🚍 bus'],
+  [1, 'Which picture shows a truck?', '🚚 truck', '🚗 car', '🚂 train', '🛵 scooter'],
+  [1, 'Which picture shows a train?', '🚂 train', '✈️ airplane', '🚌 bus', '🚁 helicopter'],
+  [1, 'Which picture shows a boat?', '⛵ sailboat', '🚁 helicopter', '🚗 car', '🚲 bicycle'],
+  [1, 'Which picture shows a rabbit?', '🐰 rabbit', '🐻 bear', '🐸 frog', '🐱 cat'],
+  [1, 'Which picture shows a duck?', '🦆 duck', '🐧 penguin', '🦉 owl', '🦜 parrot'],
   [1, 'Which animal says moo?', '🐮 cow', '🐶 dog', '🐱 cat', '🐷 pig'],
   [1, 'Which animal says woof?', '🐶 dog', '🐮 cow', '🦆 duck', '🐑 sheep'],
   [1, 'Which animal says quack?', '🦆 duck', '🐷 pig', '🐱 cat', '🐴 horse'],
@@ -1274,6 +1293,15 @@ const GK = [
   [1, 'Which one is a fruit?', '🍎 apple', '🍞 bread', '🧀 cheese', '🥚 egg'],
   [1, 'When do we see the moon and stars?', '🌙 at night', '☀️ in the morning', '🍽️ at lunch'],
   [1, 'What should you do at a red light?', '🛑 stop', '🏃 go fast', '💃 dance'],
+  [1, 'Which day comes after Sunday?', 'Monday', 'Friday', 'Thursday', 'Saturday'],
+  [1, 'Which day comes before Friday?', 'Thursday', 'Monday', 'Sunday', 'Tuesday'],
+  [1, 'Which one is a weekday?', 'Monday', 'Saturday', 'Sunday', 'Christmas'],
+  [2, 'Which day comes after Wednesday?', 'Thursday', 'Monday', 'Tuesday', 'Sunday'],
+  [2, 'Which day comes before Tuesday?', 'Monday', 'Wednesday', 'Friday', 'Saturday'],
+  [2, 'Which day is between Friday and Sunday?', 'Saturday', 'Tuesday', 'Thursday', 'Monday'],
+  [2, 'Which month comes after March?', 'April', 'May', 'January', 'December'],
+  [2, 'Which month comes before December?', 'November', 'September', 'January', 'June'],
+  [2, 'Which month comes after June?', 'July', 'March', 'October', 'January'],
   [2, 'How many days are in a week?', '7', '5', '10', '12'],
   [2, 'Which day comes after Monday?', 'Tuesday', 'Sunday', 'Friday', 'Saturday'],
   [2, 'Which season is the coldest?', '❄️ winter', '☀️ summer', '🌸 spring', '🍂 fall'],
@@ -1293,6 +1321,11 @@ const GK = [
   [2, 'Which animal has black and white stripes?', '🦓 zebra', '🐘 elephant', '🐻 bear', '🐸 frog'],
   [2, 'How many legs does a spider have?', '8', '6', '4', '10'],
   [2, 'What number do you call in an emergency?', '911', '123', '411', '100'],
+  [3, 'How many days are in February in most years?', '28', '30', '31', '27'],
+  [3, 'Which month begins the year?', 'January', 'March', 'September', 'December'],
+  [3, 'What month comes before September?', 'August', 'October', 'June', 'May'],
+  [3, 'How many months are in one season?', '3', '5', '7', '12'],
+  [3, 'What is the fourth day of the week if Monday is first?', 'Thursday', 'Wednesday', 'Friday', 'Tuesday'],
   [3, 'How many months are in a year?', '12', '7', '10', '24'],
   [3, 'Which month comes after January?', 'February', 'March', 'December', 'June'],
   [3, 'Which planet do we live on?', '🌍 Earth', '🔴 Mars', '🪐 Saturn', '🌙 the Moon'],
@@ -1325,7 +1358,34 @@ const GK = [
   [4, 'A scientist who studies dinosaurs is called a…', 'paleontologist', 'astronaut', 'chef', 'pilot'],
   [4, 'What do bees carry from flower to flower?', 'pollen', 'water', 'rocks', 'sand'],
 ];
-const genGK = (level) => mcQuestion('gk', pickLevelled(GK, level), level);
+const genGK = (level) => {
+  const q = mcQuestion('gk', pickLevelled(GK, level), level);
+  // Pre-K children hear a recognizable prompt and a target word with prerecorded audio.
+  if (q.text.startsWith('Which picture shows')) {
+    const noun = q.answer.split(' ').slice(1).join(' ');
+    const parts = noun === 'sunflower' ? ['sun', 'flower'] : noun === 'airplane' ? ['air', 'plane'] : [noun];
+    q.say = parts.every(part => CLIPS[clipKey(part)]) ? ['Find the picture of', ...parts] : 'Look at the picture!';
+    q.optClass = 'gk-picture-choices';
+    if (PHOTO_SET.has(noun)) {
+      // All answers must be photographs from the same category, not a mixture of emoji and photos.
+      const alternatives = shuffle(photoGroup(noun).filter(name => name !== noun)).slice(0, numOpts(level) - 1);
+      q.answer = noun;
+      q.options = shuffle([noun, ...alternatives]).map(name => ({
+        v: name, html: photoImage(name, 'gk-photo') + '<small>' + name + '</small>'
+      }));
+    } else {
+      q.options.forEach(option => {
+        const space = option.html.indexOf(' ');
+        option.html = '<span class="gk-picture">' + option.html.slice(0, space) +
+          '</span><small>' + option.html.slice(space + 1) + '</small>';
+      });
+    }
+  } else if (!CLIPS[clipKey(q.text)]) {
+    // Newly added calendar questions remain readable offline without missing audio-file requests.
+    q.say = 'Find the answer!';
+  }
+  return q;
+};
 
 /* ---------------- INSIDE MY BODY (optional) ---------------- */
 function organSVG(highlight) {

@@ -996,3 +996,102 @@ body.test-mode .qa-nav { padding:8px 12px; font-size:14px; min-height:38px; back
 body.test-mode .qa-nav:disabled { opacity:.45; cursor:not-allowed; }
 body.test-mode .qa-position { padding:6px 8px; color:#574580; font-weight:900; white-space:nowrap; }
 body.test-mode .prog-row { gap:6px; }
+
+
+/* iPad landscape / home-screen safe areas: keep controls and score inside viewport. */
+html, body { min-height: 100%; }
+.screen { min-height: 100dvh; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+#game.active { min-height: 100dvh; }
+#game .game-area { min-height: 0; padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+#game .b3-wrap { min-height: 0; }
+.pb-dmd { padding: 4px 10px 3px; }
+.pb-dmd .pb-score { font-size: 23px; }
+.pb-dmd-msg { min-height: 16px; font-size: 12px; }
+.pb-dmd-bot { font-size: 11px; }
+.pb-wrap { position: relative; }
+.pb-wrap .pb-launch { position: absolute; right: 2%; bottom: 8%; z-index: 3; width: 23%; max-width: 105px; min-width: 68px; height: 58px; border-radius: 17px; background: #ffe066; color: #382415; font-size: 24px; font-weight: 900; border: 3px solid #fff; box-shadow: 0 5px 0 #7a4c18; touch-action: manipulation; }
+.pb-wrap .pb-launch span { display: block; font-size: 12px; }
+.pb-wrap .pb-launch[hidden] { display: none; }
+.pb-btns { gap: 10px; }
+.pb-btns .pb-flip { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 55px; height: 55px; border-radius: 16px; font-size: 28px; font-weight: 900; touch-action: none; }
+.pb-btns .pb-flip span { font-size: 16px; }
+.dr-tools { gap: 5px; align-items: center; }
+.dr-ink { width: 29px; height: 29px; }
+.dr-size { min-width: 53px; width: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 19px; }
+.dr-size small { font-size: 9px; line-height: 1; }
+.dr-zoom { display: flex; justify-content: center; align-items: center; gap: 8px; }
+.dr-zoom button { min-width: 44px; min-height: 36px; border-radius: 10px; background: white; font-weight: 900; }
+.dr-zoom span { font-size: 12px; font-weight: 700; color: var(--soft); }
+.dr-pad { touch-action: none; }
+.dr-cv, .dr-guide { transform-origin: 0 0; }
+.wm-final { width: 100%; min-height: min(64dvh,520px); display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px; text-align: center; }
+.wm-final h2 { margin: 0; font-size: 30px; }
+.wm-final-icon { font-size: 64px; }
+.wm-final-score { font-size: clamp(72px, 15vw, 128px); line-height: 1; font-weight: 1000; color: #7048e8; }
+.wm-final p { margin: 0 0 10px; font-size: 22px; font-weight: 900; }
+@media (max-height: 760px) { #game .game-area { gap: 7px; margin-top: 5px; } .dr-top { gap: 6px; } .dr-pad { width: min(50dvh, 92vw); } .pb-dmd-msg { display:none; } }
+
+
+/* A short, tactile jigsaw look: rounded-piece silhouettes and raised knobs. */
+.pz-board { gap: 6px; padding: 6px; }
+.pzl-tile.jigsaw-piece { position: relative; isolation: isolate; overflow: visible; border: 3px solid #fff; border-radius: 17% 21% 17% 21%; box-shadow: 0 3px 0 #b3a6ce, 0 2px 8px #0002; }
+.pzl-tile.jigsaw-piece .jigsaw-art { display: block; width: 100%; height: 100%; transition: transform .2s ease; overflow: hidden; border-radius: 12%; }
+.pzl-tile.jigsaw-piece .jigsaw-knob { position: absolute; width: 30%; height: 17%; left: 35%; top: -13%; border: 3px solid white; border-bottom: none; background: #e4d4ff; border-radius: 75% 75% 20% 20%; z-index: 2; pointer-events: none; }
+.pzl-tile.jigsaw-piece.picked { outline: 4px solid #7048e8; outline-offset: 1px; transform: scale(1.03); z-index: 3; }
+.pzl-tile.jigsaw-piece.ok { border-color: #51cf66; }
+.pz-board.solved .pzl-tile.jigsaw-piece { border-radius: 0; gap: 0; }
+.pz-board.solved .jigsaw-knob { display: none; }
+
+
+/* Picture-first answer cards for PreK non-readers. */
+.options.gk-picture-choices { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; width:100%; }
+.gk-picture-choices .opt { display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:140px; gap:4px; padding:9px; background:linear-gradient(#fff,#fff8e6); border:3px solid #e3e7f4; border-radius:22px; }
+.gk-picture-choices .opt .gk-picture { font-size:clamp(62px,10vw,100px); line-height:1.1; filter:drop-shadow(0 4px 3px #0002); }
+.gk-picture-choices .opt small { font-size:15px; font-weight:900; color:#51436f; }
+@media(max-height:730px){ .gk-picture-choices .opt { min-height:95px; } .gk-picture-choices .opt .gk-picture { font-size:55px; } }
+
+
+/* Self-contained photographed learning illustrations; all images precached for offline iPad use. */
+.gk-picture-choices .opt .gk-photo {
+  display:block; width:100%; max-width:230px; height:clamp(100px, 18vw, 170px);
+  aspect-ratio:1; object-fit:cover; border-radius:15px;
+  box-shadow:0 3px 0 #d5c5ac;
+}
+.reading-word-photo { display:block; width:min(230px,54vw); aspect-ratio:1; object-fit:cover; border-radius:21px; box-shadow:0 4px 0 #d9c9ad; margin:0 auto; }
+.reading-photo-wrap { width:min(230px,65vw); margin:8px auto; }
+.reading-photo { display:block; width:100%; aspect-ratio:5/3; object-fit:cover; border-radius:15px; box-shadow:0 4px 0 #d5c5b2; }
+.pz-photo-pick { display:block; width:100%; aspect-ratio:1; object-fit:cover; border-radius:12px; }
+.pz-photo-peek { display:block; width:100%; aspect-ratio:1; object-fit:cover; border-radius:10px; box-shadow:0 3px 0 #ded8cc; }
+.pzl-tile .pz-photo-slice { display:block; width:100%; height:100%; background-repeat:no-repeat; border-radius:inherit; }
+.pzl-tile .jigsaw-art { overflow:hidden; }
+@media (max-width:440px) {
+  .gk-picture-choices .opt .gk-photo { height:105px; }
+  .reading-photo-wrap { width:min(175px,54vw); }
+  .pz-photo-peek { width:72px; }
+  .pz-board { min-width:0; }
+}
+@media (max-height:720px) {
+  .reading-photo-wrap { width:min(145px,36vw); }
+  .gk-picture-choices .opt .gk-photo { height:80px; }
+}
+
+
+.pz-more { width:100%; max-width:540px; background:#fffaf0; border:2px solid #e0d4b7; border-radius:16px; padding:10px; }
+.pz-more summary { padding:8px; cursor:pointer; font-size:16px; font-weight:900; }
+.pz-more[open] .pic-grid { padding-top:12px; }
+
+
+/* Landscape iPad: reserve space for the header, palette and footer before sizing the canvas. */
+@media (orientation: landscape) and (min-width:700px) and (max-height:950px) {
+  #game .g-draw { gap:7px; margin-top:5px; }
+  .g-draw .dr-top, .g-draw .dr-tools { width:min(520px,75vw); }
+  .g-draw .dr-pad { width:min(480px, calc(100dvh - 340px), 70vw); }
+  .g-draw .dr-say b { font-size:18px; }
+  .g-draw .dr-ref { width:70px; }
+  .g-draw .dr-zoom { gap:5px; }
+  .g-draw .dr-tools { gap:4px; }
+  .g-draw .dr-tool { height:36px; }
+  .g-draw .color-btns .big-btn { min-height:38px; }
+  .g-pinball .pb-dmd { padding-top:3px; padding-bottom:2px; }
+  .g-pinball .pb-btns .pb-flip { height:50px; min-height:50px; }
+}

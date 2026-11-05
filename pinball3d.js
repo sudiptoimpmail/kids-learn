@@ -40,13 +40,12 @@ const TABLES = [
 
 export function start(tableIndex) {
   const lv = GL('pinball');
-  const T = TABLES[tableIndex != null ? tableIndex : Math.floor(Math.random() * TABLES.length)];
+  const T = TABLES[tableIndex != null ? tableIndex : Math.floor(Math.random() * 3)]; // Three child-friendly tables, randomized each new game
   const area = $('#gameArea');
   area.innerHTML = `<div class="pb-dmd"><div class="pb-dmd-top"><b class="pb-score">0</b><span class="pb-balls">● ● ●</span></div>
       <div class="pb-dmd-msg">${T.icon} ${T.name.toUpperCase()}</div><div class="pb-dmd-bot"><span>TARGET ${TARGET[lv - 1].toLocaleString()}</span><span class="pb-mult">×1</span></div></div>
-    <div class="b3-wrap pb-wrap"><canvas class="game-cv pb-cv"></canvas><div class="b3-msg" hidden></div></div>
-    <div class="pb-btns"><button class="pb-flip" data-f="L">◀</button><button class="pb-launch">🚀 Launch</button><button class="pb-flip" data-f="R">▶</button></div>
-    <div class="color-btns"><button class="big-btn alt small" data-a="skin">🎰 New table</button></div>`;
+    <div class="b3-wrap pb-wrap"><canvas class="game-cv pb-cv"></canvas><div class="b3-msg" hidden></div><button class="pb-launch" aria-label="Launch ball from plunger">🚀<span>LAUNCH</span></button></div>
+    <div class="pb-btns"><button class="pb-flip" data-f="L" aria-label="Left flipper">↖<span>LEFT</span></button><button class="pb-flip" data-f="R" aria-label="Right flipper">↗<span>RIGHT</span></button></div>`;
   say('Tap to launch the ball!');
 
   const cv = $('.pb-cv', area), wrap = $('.b3-wrap', area);
@@ -301,10 +300,10 @@ export function start(tableIndex) {
   const ballsTxt = () => ($('.pb-balls', area).textContent = '● '.repeat(Math.max(0, G.balls)).trim());
   function launch() {
     if (!G.inLane || G.over) return;
-    G.inLane = false; G.vy = 15.5 + Math.random() * 5; G.vx = 0; G.saver = SAVER[lv - 1];
+    G.inLane = false; $('.pb-launch', area).hidden = true; G.vy = 15.5 + Math.random() * 5; G.vx = 0; G.saver = SAVER[lv - 1];
     tone([220, 330, 440], { dur: 0.06, gap: 0.04, vol: 0.12, type: 'sawtooth' });
   }
-  function resetBall() { G.x = 9.55; G.y = 0.6; G.vx = G.vy = 0; G.h = 0; G.inLane = true; G.ride = null; G.held = null; G.still = 0; }
+  function resetBall() { $('.pb-launch', area).hidden = false; G.x = 9.55; G.y = 0.6; G.vx = G.vy = 0; G.h = 0; G.inLane = true; G.ride = null; G.held = null; G.still = 0; }
 
   /* ---------------- input ---------------- */
   const press = (side, on) => { const f = flips[side]; if (on && !f.pressed) tone([side === 'L' ? 300 : 340], { dur: 0.03, vol: 0.06 }); f.pressed = on; };
@@ -312,7 +311,7 @@ export function start(tableIndex) {
   cv.style.touchAction = 'none';
   cv.addEventListener('pointerdown', (e) => {
     e.preventDefault();
-    if (G.inLane) { launch(); return; }
+    // The shooter-lane launch button handles launch; table touches always work the flippers.
     const r = cv.getBoundingClientRect(), side = e.clientX - r.left < r.width / 2 ? 'L' : 'R';
     pointers.set(e.pointerId, side); press(side, true);
   });
@@ -325,7 +324,6 @@ export function start(tableIndex) {
   $('.pb-launch', area).onclick = launch;
   const key = (e) => { const on = e.type === 'keydown'; if (e.key === 'ArrowLeft' || e.key === 'z') press('L', on); if (e.key === 'ArrowRight' || e.key === '/') press('R', on); if (on && (e.key === ' ' || e.key === 'ArrowDown')) launch(); };
   addEventListener('keydown', key); addEventListener('keyup', key);
-  area.querySelector('[data-a="skin"]').onclick = () => { cleanup(); start((TABLES.indexOf(T) + 1 + Math.floor(Math.random() * (TABLES.length - 1))) % TABLES.length); };
 
   /* ---------------- physics ---------------- */
   function collideSeg(s, rest = 0.45) {

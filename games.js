@@ -406,6 +406,8 @@ function startWhack() {
   const lv = GL('whack');
   const target = [8, 11, 14, 16, 18][lv - 1];
   const upMs = [1800, 1450, 1200, 1000, 850][lv - 1];
+  const speedAt = () => Math.max(420, upMs * (1 - 0.5 * Math.min(1, (Date.now() - t0) / 30000)));
+
   const area = $('#gameArea');
   area.innerHTML = `<div class="g-msg">Tap ${target} moles! <b class="wm-score">0</b> 🐹 · <span class="wm-time">30</span>s${lv >= 3 ? '<small>Don\'t tap the 🌸!</small>' : ''}</div>
     <div class="wm-field">${Array.from({ length: 9 }, (_, i) => `<button class="wm-hole" data-i="${i}"><span class="wm-pop"></span></button>`).join('')}</div>`;
@@ -421,7 +423,7 @@ function startWhack() {
     const el = holes[i].querySelector('.wm-pop');
     el.textContent = flower ? '🌸' : pick(['🐹', '🐹', '🐹', '🦔', '🐭']);
     holes[i].classList.add('up');
-    const timer = later(() => { holes[i].classList.remove('up'); up.delete(i); }, upMs * (0.8 + Math.random() * 0.4));
+    const timer = later(() => { holes[i].classList.remove('up'); up.delete(i); }, speedAt() * (0.8 + Math.random() * 0.4));
     up.set(i, { timer, flower });
   }
   holes.forEach((h, i) => h.addEventListener('pointerdown', (e) => {
@@ -437,16 +439,18 @@ function startWhack() {
     const left = Math.max(0, 30 - Math.floor((Date.now() - t0) / 1000));
     $('.wm-time', area).textContent = left;
     if (left <= 0) return finish();
-    if (Math.random() < 0.75) popUp();
+    if (Math.random() < 0.75 + 0.2 * (1 - speedAt() / upMs)) popUp();
     if (lv >= 4 && Math.random() < 0.35) popUp();
-  }, Math.round(upMs * 0.55));
+  }, Math.round(upMs * 0.42));
   function finish() {
     alive = false; clearInterval(tick); up.forEach((m) => clearTimeout(m.timer)); up.clear();
     holes.forEach((h) => h.classList.remove('up'));
     const won = score >= target;
     const lvUp = won ? gameLevelUp('whack', 1) : false;
     gameWin(won ? 'Awesome job!' : 'Great job!');
-    endPanel(`You got ${score} moles!${won ? '' : `<br><small>Get ${target} to reach the next level</small>`}`, '🐹', startWhack, lvUp);
+    area.innerHTML = `<div class="wm-final" role="status"><div class="wm-final-icon">🐹</div><h2>Time’s up!</h2><div class="wm-final-score">${score}</div><p>Moles caught</p><button class="big-btn" data-a="again">Play again</button><button class="big-btn alt" data-a="back">Back to games</button></div>`;
+    area.querySelector('[data-a="again"]').onclick = startWhack;
+    area.querySelector('[data-a="back"]').onclick = () => $('#gameBack').click();
   }
   gameCleanup = () => { alive = false; clearInterval(tick); up.forEach((m) => clearTimeout(m.timer)); };
 }
@@ -1093,47 +1097,57 @@ function puzzleFills(p) {
   if (p.orig) { const f = { 0: '#d0ebff' }; p.orig.forEach((c, i) => (f[i + 1] = c)); return f; }
   const f = {}; for (let k = 0; k < 40; k++) f[k] = AUTO_FILL[k % AUTO_FILL.length]; return f;
 }
-const puzzleSize = () => GL('puzzle') + 1;   // level 1 = 2×2 … level 5 = 6×6
+const puzzleSize = () => [2, 2, 3, 3, 4][GL('puzzle') - 1]; // short puzzles: 4–16 pieces
 
 function startPuzzleMenu() {
   const area = $('#gameArea');
   const size = puzzleSize();
-  const PUZ = ALL_PICS.filter((p) => p.orig || !p.om);
-  area.innerHTML = `<div class="g-msg">Pick a picture · ${size}×${size} puzzle</div><div class="pic-grid">${PUZ.map((p) =>
-    `<button class="pic-pick" data-p="${p.id}">${picSVG(p, puzzleFills(p))}<span>${p.name}</span></button>`).join('')}</div>`;
+  const PUZ = [...PHOTO_PUZZLE, ...ALL_PICS.filter((p) => p.orig || !p.om)];
+  const pictureButton = p => `<button class="pic-pick" data-p="${p.id}">${p.photo ? photoImage(p.photo,'pz-photo-pick') : picSVG(p, puzzleFills(p))}<span>${p.name}</span></button>`;
+  area.innerHTML = `<div class="g-msg">Pick a picture · ${size}×${size} puzzle</div>
+    <div class="pic-grid">${PHOTO_PUZZLE.map(pictureButton).join('')}</div>
+    <details class="pz-more"><summary>More illustrated pictures</summary>
+      <div class="pic-grid">${PUZ.filter(p => !p.photo).map(pictureButton).join('')}</div>
+    </details>`;
   say('Pick a picture!');
-  $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startPuzzle(ALL_PICS.find((p) => p.id === b.dataset.p)); }));
+  $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startPuzzle(PUZ.find((p) => p.id === b.dataset.p)); }));
 }
 
 function startPuzzle(p) {
   const n = puzzleSize(), N = n * n, VB = p.vb || 200, part = VB / n;
   const fills = puzzleFills(p);
   let k = 0;
-  const body = p.svg().replace(/class="r( bg)?"/g, () => `class="r" style="fill:${fills[k++] || '#fff'}"`);
+  const body = p.photo ? '' : p.svg().replace(/class="r( bg)?"/g, () => `class="r" style="fill:${fills[k++] || '#fff'}"`);
   let order;
   do { order = shuffle([...Array(N).keys()]); } while (order.every((v, i) => v === i));
   let pickA = null, solved = false;
+  // A handful of pieces begin rotated at harder levels; the child rotates by tapping a selected piece again.
+  const turns = Array.from({length:N}, () => GL('puzzle') >= 2 && Math.random() < 0.28 ? 1 + rand(3) : 0);
   const area = $('#gameArea');
-  const tileSVG = (t) => `<svg viewBox="${(t % n) * part} ${Math.floor(t / n) * part} ${part} ${part}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`;
-  area.innerHTML = `<div class="g-msg">Put the picture back together!</div>
+  const tileSVG = (t) => p.photo
+    ? `<span class="pz-photo-slice" style="background-image:url('assets/photos/${p.photo}.jpg');background-size:${n * 100}% ${n * 100}%;background-position:${(t % n) * 100 / (n - 1)}% ${Math.floor(t / n) * 100 / (n - 1)}%"></span>`
+    : `<svg viewBox="${(t % n) * part} ${Math.floor(t / n) * part} ${part} ${part}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`;
+  area.innerHTML = `<div class="g-msg">Put the picture back together! <small>Tap two pieces to swap. Tap a selected piece again to rotate.</small></div>
     <div class="pz-wrap"><div class="pz-board" style="grid-template-columns:repeat(${n},1fr)"></div>
-    <div class="pz-peek"><svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg><small>Look!</small></div></div>
+    <div class="pz-peek">${p.photo ? photoImage(p.photo,'pz-photo-peek') : `<svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`}<small>Look!</small></div></div>
     <div class="color-btns"><button class="big-btn alt small ico" data-a="restart" aria-label="Restart">🔄 Restart</button><button class="big-btn alt small ico" data-a="pictures" aria-label="Pictures">🖼️ Pictures</button></div>`;
   say('Put the picture back together!');
   const board = $('.pz-board', area);
   function draw() {
-    board.innerHTML = order.map((t, i) => `<button class="pzl-tile ${t === i ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}">${tileSVG(t)}</button>`).join('');
+    board.innerHTML = order.map((t, i) => `<button class="pzl-tile jigsaw-piece ${t === i && turns[i] === 0 ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}" aria-label="Piece ${i + 1}; tap twice to rotate"><span class="jigsaw-art" style="transform:rotate(${turns[i] * 90}deg)">${tileSVG(t)}</span><span class="jigsaw-knob" aria-hidden="true"></span></button>`).join('');
   }
   board.addEventListener('click', (e) => {
     const b = e.target.closest('.pzl-tile'); if (!b || solved) return;
     const i = +b.dataset.i;
     if (pickA == null) { pickA = i; sfx.tap(); draw(); return; }
-    if (pickA !== i) {
+    if (pickA === i) { turns[i] = (turns[i] + 1) % 4; sfx.tap(); }
+    else {
       [order[pickA], order[i]] = [order[i], order[pickA]];
+      [turns[pickA], turns[i]] = [turns[i], turns[pickA]];
       tone([order[i] === i || order[pickA] === pickA ? 880 : 520], { dur: 0.06, vol: 0.1 });
     }
     pickA = null; draw();
-    if (order.every((v, j) => v === j)) {
+    if (order.every((v, j) => v === j && turns[j] === 0)) {
       solved = true;
       board.classList.add('solved');
       const up = gameLevelUp('puzzle', 1);
@@ -1238,9 +1252,9 @@ function startDraw(refIndex) {
   const area = $('#gameArea');
   area.innerHTML = `<div class="dr-top"><div class="dr-ref">${ref.svg}<small>${ref.name}</small></div>
       <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>${trace ? 'Follow the gray lines with your finger.' : 'Look at the picture and draw your own!'}</small></div></div>
-    <div class="dr-pad">${trace ? `<div class="dr-guide" style="opacity:${lv === 1 ? 0.32 : 0.14}">${ref.svg}</div>` : ''}<canvas class="dr-cv"></canvas></div>
+    <div class="dr-zoom"><button data-dz="out" aria-label="Zoom out">−</button><button data-dz="reset" aria-label="Reset zoom">1×</button><button data-dz="in" aria-label="Zoom in">＋</button><span>Two fingers: zoom / move</span></div><div class="dr-pad">${trace ? `<div class="dr-guide" style="opacity:${lv === 1 ? 0.32 : 0.14}">${ref.svg}</div>` : ''}<canvas class="dr-cv"></canvas></div>
     <div class="dr-tools">${INK.map((c, i) => `<button class="dr-ink ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}"></button>`).join('')}
-      <button class="dr-size" data-s="6">•</button><button class="dr-size on" data-s="12">●</button><button class="dr-size" data-s="22">⬤</button>
+      <button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✎<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
       <button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>
     <div class="color-btns"><button class="big-btn alt small ico" data-a="new" aria-label="New picture">🔄 New</button><button class="big-btn alt small ico" data-a="gallery" aria-label="My drawings">🖼️ Mine</button><button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
   say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
@@ -1249,7 +1263,25 @@ function startDraw(refIndex) {
   const W = pad.clientWidth;
   cv.width = cv.height = Math.round(W * dpr); cv.style.width = cv.style.height = W + 'px';
   const c = cv.getContext('2d'); c.scale(dpr, dpr); c.lineCap = c.lineJoin = 'round';
-  let color = INK[0], size = 12, erase = false, strokes = [], cur = null;
+  let color = INK[0], size = 7, tool = "pencil", erase = false, strokes = [], cur = null;
+  // Keep gesture pointers separate from drawing strokes.
+  let zoom = 1, panX = 0, panY = 0, gesture = null;
+  const touches = new Map();
+  function view() {
+    const transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + zoom + ')';
+    cv.style.transform = transform;
+    const guide = $('.dr-guide', area);
+    if (guide) guide.style.transform = transform;
+    $('[data-dz="reset"]', area).textContent = zoom.toFixed(1) + '×';
+  }
+  function setZoom(next) {
+    zoom = Math.max(1, Math.min(3.5, next));
+    if (zoom === 1) { panX = 0; panY = 0; }
+    view();
+  }
+  $$('[data-dz]', area).forEach(b => {
+    b.onclick = () => setZoom(b.dataset.dz === 'reset' ? 1 : zoom * (b.dataset.dz === 'in' ? 1.35 : 1 / 1.35));
+  });
   const redraw = () => {
     c.clearRect(0, 0, W, W);
     for (const s of strokes) paint(s);
@@ -1257,6 +1289,8 @@ function startDraw(refIndex) {
   function paint(s) {
     c.globalCompositeOperation = s.erase ? 'destination-out' : 'source-over';
     c.strokeStyle = s.color; c.fillStyle = s.color; c.lineWidth = s.size;
+    c.globalAlpha = s.erase ? 1 : s.tool === "brush" ? 0.66 : 1;
+    c.shadowColor = s.tool === "brush" ? s.color : "transparent"; c.shadowBlur = s.tool === "brush" ? s.size * 0.22 : 0;
     const p = s.pts;
     if (p.length === 1) { c.beginPath(); c.arc(p[0][0], p[0][1], s.size / 2, 0, 7); c.fill(); }
     else {
@@ -1264,21 +1298,56 @@ function startDraw(refIndex) {
       for (let i = 1; i < p.length - 1; i++) { const mx = (p[i][0] + p[i + 1][0]) / 2, my = (p[i][1] + p[i + 1][1]) / 2; c.quadraticCurveTo(p[i][0], p[i][1], mx, my); }
       c.lineTo(p[p.length - 1][0], p[p.length - 1][1]); c.stroke();
     }
-    c.globalCompositeOperation = 'source-over';
+    c.globalCompositeOperation = 'source-over'; c.globalAlpha = 1; c.shadowBlur = 0;
   }
-  const pt = (e) => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) * (W / r.width), (e.clientY - r.top) * (W / r.height)]; };
-  cv.addEventListener('pointerdown', (e) => { e.preventDefault(); cv.setPointerCapture && cv.setPointerCapture(e.pointerId); cur = { color, size: erase ? size * 2 : size, erase, pts: [pt(e)] }; strokes.push(cur); paint(cur); });
-  cv.addEventListener('pointermove', (e) => {
-    if (!cur) return;
-    const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [e];
-    for (const ev of evs) cur.pts.push(pt(ev));
-    redrawLast();
+  const pt = e => {
+    const r = pad.getBoundingClientRect();
+    return [(e.clientX - r.left - panX) * W / r.width / zoom,
+            (e.clientY - r.top - panY) * W / r.height / zoom];
+  };
+  pad.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    pad.setPointerCapture?.(e.pointerId);
+    touches.set(e.pointerId, [e.clientX, e.clientY]);
+    if (touches.size > 1) {
+      if (cur) { strokes.pop(); cur = null; redraw(); }
+      const points = [...touches.values()];
+      gesture = { distance: Math.hypot(points[0][0] - points[1][0], points[0][1] - points[1][1]),
+        zoom, panX, panY, cx: (points[0][0] + points[1][0]) / 2, cy: (points[0][1] + points[1][1]) / 2 };
+      return;
+    }
+    // One finger always draws; use two fingers to pan or zoom without ink.
+    cur = { color, size: erase ? size * 2 : size, tool, erase, pts: [pt(e)] };
+    strokes.push(cur);
+    paint(cur);
   });
-  const end = () => { cur = null; };
-  cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+  pad.addEventListener('pointermove', e => {
+    if (!touches.has(e.pointerId)) return;
+    const old = touches.get(e.pointerId);
+    touches.set(e.pointerId, [e.clientX, e.clientY]);
+    if (touches.size > 1 && gesture) {
+      const points = [...touches.values()];
+      const distance = Math.hypot(points[0][0] - points[1][0], points[0][1] - points[1][1]);
+      zoom = Math.max(1, Math.min(3.5, gesture.zoom * distance / Math.max(1, gesture.distance)));
+      panX = gesture.panX + (points[0][0] + points[1][0]) / 2 - gesture.cx;
+      panY = gesture.panY + (points[0][1] + points[1][1]) / 2 - gesture.cy;
+      view();
+      return;
+    }
+    if (!cur) return;
+    for (const ev of (e.getCoalescedEvents ? e.getCoalescedEvents() : [e])) cur.pts.push(pt(ev));
+    redraw();
+  });
+  const end = e => {
+    touches.delete(e.pointerId);
+    cur = null;
+    if (touches.size < 2) gesture = null;
+  };
+  pad.addEventListener('pointerup', end);
+  pad.addEventListener('pointercancel', end);
   function redrawLast() { redraw(); }
   $$('.dr-ink', area).forEach((b) => (b.onclick = () => { $$('.dr-ink', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); color = b.dataset.c; erase = false; $('[data-t="erase"]', area).classList.remove('on'); sfx.tap(); }));
-  $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; sfx.tap(); }));
+  $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; tool = b.dataset.tool || 'pencil'; sfx.tap(); }));
   $('[data-t="erase"]', area).onclick = (e) => { erase = !erase; e.currentTarget.classList.toggle('on', erase); sfx.tap(); };
   $('[data-t="undo"]', area).onclick = () => { strokes.pop(); redraw(); sfx.tap(); };
   $('[data-t="clear"]', area).onclick = () => { strokes = []; redraw(); sfx.tap(); };
