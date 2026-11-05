@@ -8,6 +8,7 @@ const {chromium} = require('playwright');
     const page = await browser.newPage();
     await page.goto('http://localhost:8765/index.html');
     await page.waitForFunction(() => !!window.KidsLearnReady);
+    await page.evaluate(() => window.KidsLearnReady);
     const outcome = await page.evaluate(() => {
       const problems = [], counts = {};
       const ratio = (v) => {
