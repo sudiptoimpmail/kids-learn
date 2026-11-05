@@ -58,3 +58,6 @@
 .ia-shape-locked .ia-hotspot { pointer-events:none; }
 .ia-shape-step .ia-trace-complete { opacity:.85; }
 @media (prefers-reduced-motion:reduce) { .ia-trace-ink {transition:none;} }
+
+/* Keep the café illustration legible beneath the existing validated finger-tracing canvas. */
+.ia-trace-scene {opacity:.47;}
