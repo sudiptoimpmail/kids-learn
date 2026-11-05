@@ -2547,19 +2547,65 @@
     ],
     "WP": {
       "add": [
-        null,
-        null,
-        null
+        [
+          "{name} has",
+          "{a}",
+          "{item}.",
+          "{name} gets",
+          "{b}",
+          "more.",
+          "How many now?"
+        ],
+        [
+          "There are",
+          "{a}",
+          "{item} in a box.",
+          "You put in",
+          "{b}",
+          "more.",
+          "How many are in the box?"
+        ],
+        [
+          "{name} found",
+          "{a}",
+          "{item}.",
+          "Then {name} found",
+          "{b}",
+          "more.",
+          "How many in all?"
+        ]
       ],
       "sub": {
         "food": [
-          null
+          [
+            "{name} has",
+            "{a}",
+            "{item}.",
+            "{name} eats",
+            "{b}.",
+            "How many are left?"
+          ]
         ],
         "fly": [
-          null
+          [
+            "There are",
+            "{a}",
+            "{item}.",
+            "{b}",
+            "fly away.",
+            "How many are left?"
+          ]
         ],
         "toy": [
-          null
+          [
+            "{name} has",
+            "{a}",
+            "{item}.",
+            "{name} gives",
+            "{b}",
+            "to a friend.",
+            "How many are left?"
+          ]
         ]
       }
     },
