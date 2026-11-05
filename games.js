@@ -1189,6 +1189,10 @@ function startPuzzle(p) {
   });
   area.querySelector('[data-a="restart"]').onclick=()=>{gameSession++;startPuzzle(p);};
   area.querySelector('[data-a="pictures"]').onclick=()=>{gameSession++;startPuzzleMenu();};
+  if (testFeatureAvailable()) window.__jigsaw = {
+    order:()=>order.slice(), rotations:()=>rot.slice(),
+    solve:()=>{ order=[...Array(N).keys()]; rot.fill(0); draw(); checkWin(); }
+  };
   draw();
 }
 
