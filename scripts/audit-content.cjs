@@ -16,7 +16,7 @@ const read = name => {
   return obj.datasets;
 };
 const content=read('content'), science=read('science'), country=read('country'),
-  stories=read('stories'), reading=read('reading-patterns'),
+  stories=read('stories'), upperStories=read('upper-grade-stories'), reading=read('reading-patterns'),
   thinking=read('thinking'), grade1=read('grade1'), landmarks=read('landmarks');
 const faults=[], concerns=[], stats={};
 const error=(bank,key,why)=>faults.push(bank+'/'+key+': '+why);
@@ -57,7 +57,7 @@ for(const [i,r] of reading.PATTERN_SENTENCES.entries()){
   choices('reading-patterns',i,q,opts,level);
   if(!passage)error('reading-patterns',i,'missing passage');
 }
-for(const [i,r] of stories.STORIES.entries()){
+for(const [i,r] of stories.STORIES.concat(upperStories.STORIES).entries()){
   const [level,passage,qs]=r;
   if(typeof passage!=='string'||passage.length<45)error('stories',i,'short or missing story');
   if(!Array.isArray(qs)||!qs.length)error('stories',i,'missing comprehension questions');
@@ -94,13 +94,13 @@ for(const r of landmarks.LANDMARKS){
 }
 stats.landmarks=landmarks.LANDMARKS.length; stats.landmarkIllustrations=landmarkIllustrations;stats.landmarkPhotos=landmarkPhotos;
 if(landmarkPhotos<stats.landmarks)concerns.push('Famous Places: '+(stats.landmarks-landmarkPhotos)+' places lack locally bundled real photographs; illustration-only image recognition is not release-ready');
-stats.syllables=content.SYL.length;stats.sightFill=content.FILL.length;stats.readingPassages=stories.STORIES.length;stats.science=science.SCIENCE.length;
+stats.syllables=content.SYL.length;stats.sightFill=content.FILL.length;stats.readingPassages=stories.STORIES.length+upperStories.STORIES.length;stats.science=science.SCIENCE.length;
 stats.grade1Passages=grade1.G1_PASSAGES.length;
 stats.oddOneOut=thinking.THINKING_ODD.length;
 stats.sequencing=thinking.THINKING_SEQUENCES.length;
 stats.grade2Sections=Object.keys(content.GRADES.g2.g).length+3;
 stats.grade3Sections=Object.keys(content.GRADES.g3.g).length+3;
-const byLevel={};for(const [level] of stories.STORIES)byLevel[level]=(byLevel[level]||0)+1;stats.storiesByLevel=byLevel;
+const byLevel={};for(const [level] of stories.STORIES.concat(upperStories.STORIES))byLevel[level]=(byLevel[level]||0)+1;stats.storiesByLevel=byLevel;
 if((byLevel[6]||0)<20)concerns.push('Grade 3 level 6 reading has only '+(byLevel[6]||0)+' passages; target at least 20 editorially reviewed texts');
 for(const g of ['g2','g3']){
   const ranges=content.GRADES[g].g;
