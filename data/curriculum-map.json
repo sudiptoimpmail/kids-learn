@@ -60,7 +60,9 @@
           "home": "1-2",
           "pattern": "1-2",
           "odd": "1-2",
-          "sequence": "1-2"
+          "sequence": "1-2",
+          "check": "1-1",
+          "lang": "1-1"
         }
       },
       "g1": {
@@ -96,7 +98,9 @@
           "pattern": "2-3",
           "odd": "2-3",
           "sequence": "2-3",
-          "community": "1-1"
+          "community": "1-1",
+          "check": "1-1",
+          "lang": "1-2"
         }
       },
       "g2": {
@@ -134,7 +138,9 @@
           "measure": "1-3",
           "gp": "1-2",
           "community": "1-2",
-          "region": "1-2"
+          "region": "1-2",
+          "check": "1-1",
+          "lang": "2-2"
         }
       },
       "g3": {
@@ -169,7 +175,9 @@
           "measure": "2-4",
           "gp": "2-3",
           "community": "2-3",
-          "region": "1-3"
+          "region": "1-3",
+          "check": "1-1",
+          "lang": "2-2"
         }
       }
     },
@@ -731,6 +739,33 @@
             ],
             "approach": "play-and-practice",
             "bank": "THINKING_SEQUENCES"
+          },
+          "check": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "national-check-practice",
+              "reading",
+              "mathematics"
+            ],
+            "approach": "play-and-practice",
+            "bank": "mixed"
+          },
+          "lang": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "te-reo-maori-words",
+              "hindi-words",
+              "numbers",
+              "colours"
+            ],
+            "approach": "play-and-practice",
+            "bank": "editions"
           }
         }
       },
@@ -1084,6 +1119,33 @@
             ],
             "approach": "play-and-practice",
             "bank": "world23"
+          },
+          "check": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "national-check-practice",
+              "reading",
+              "mathematics"
+            ],
+            "approach": "play-and-practice",
+            "bank": "mixed"
+          },
+          "lang": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "te-reo-maori-words",
+              "hindi-words",
+              "numbers",
+              "colours"
+            ],
+            "approach": "play-and-practice",
+            "bank": "editions"
           }
         }
       },
@@ -1531,6 +1593,33 @@
             ],
             "approach": "guided-investigation",
             "bank": "world23"
+          },
+          "check": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "national-check-practice",
+              "reading",
+              "mathematics"
+            ],
+            "approach": "guided-investigation",
+            "bank": "mixed"
+          },
+          "lang": {
+            "levels": [
+              2,
+              2
+            ],
+            "skills": [
+              "te-reo-maori-words",
+              "hindi-words",
+              "numbers",
+              "colours"
+            ],
+            "approach": "guided-investigation",
+            "bank": "editions"
           }
         }
       },
@@ -1956,6 +2045,33 @@
             ],
             "approach": "reason-explain",
             "bank": "world23"
+          },
+          "check": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "national-check-practice",
+              "reading",
+              "mathematics"
+            ],
+            "approach": "reason-explain",
+            "bank": "mixed"
+          },
+          "lang": {
+            "levels": [
+              2,
+              2
+            ],
+            "skills": [
+              "te-reo-maori-words",
+              "hindi-words",
+              "numbers",
+              "colours"
+            ],
+            "approach": "reason-explain",
+            "bank": "editions"
           }
         }
       }
