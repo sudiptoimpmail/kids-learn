@@ -1135,3 +1135,25 @@ html, body { min-height: 100%; }
  #play .hint-box {grid-area:hint; align-self:start;}
  #play .options {align-self:start;}
 }
+
+
+/* Curriculum review: consistent tactile measurement and graph visuals. */
+.md-unit-row {display:flex; flex-wrap:nowrap; justify-content:center; max-width:100%; gap:2px; padding:16px 5px; overflow:hidden;}
+.md-unit {width:clamp(12px,3.5vw,26px); height:clamp(27px,6vw,44px); flex:0 1 26px; background:linear-gradient(135deg,#ffd43b,#ffa94d);border:2px solid #7d4e1f;border-radius:4px;box-shadow:0 3px 0 #9b632b;}
+.md-ribbons {display:grid;gap:18px;width:min(480px,100%);padding:16px;border:2px solid #b6c5ec;border-radius:18px;background:#f8faff;}
+.md-ribbons>div {display:flex;align-items:center;gap:12px;min-height:38px;text-align:left;}
+.md-ribbons b {font-size:26px;color:#29364f;}
+.md-ribbon {display:block;height:27px;border:3px solid #ae2143;border-radius:4px 14px 14px 4px;background:linear-gradient(#ff8ca3,#e64980);}
+.md-ribbon.md-blue {background:linear-gradient(#74c0fc,#228be6);border-color:#1452a6;}
+.md-graph {display:grid;gap:11px;width:min(540px,100%);padding:15px;background:#f9fbff;border:2px solid #bed4f4;border-radius:18px;}
+.md-graph-row {display:grid;grid-template-columns:minmax(75px,1fr) minmax(110px,3fr) 30px;align-items:center;gap:8px;text-align:left;font-size:clamp(15px,2.5vw,21px);font-weight:850;}
+.md-graph-bar {height:25px;background:#e5efff;border-radius:8px;overflow:hidden;}
+.md-graph-bar i {display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,#51cf66,#2b8a3e);}
+.md-graph-row:nth-child(2) .md-graph-bar i {background:linear-gradient(90deg,#ffd43b,#e67700);}
+.md-graph-row:nth-child(3) .md-graph-bar i {background:linear-gradient(90deg,#74c0fc,#1864ab);}
+.md-rectangle {display:grid;grid-template-columns:auto auto;grid-template-areas:"width width" "grid height";align-items:center;justify-content:center;gap:6px 12px;margin:12px auto;}
+.md-width {grid-area:width;text-align:center;font-weight:900;color:#364e8b;}
+.md-height {grid-area:height;writing-mode:vertical-rl;font-weight:900;color:#364e8b;}
+.md-grid {grid-area:grid;display:grid;width:max-content;border:2px solid #285c91;background:#e9f3ff;}
+.md-grid i {width:18px;height:18px;border:1px solid #477d9d;background:#9dd7e3;}
+@media(max-height:700px){.md-graph{padding:8px;gap:6px}.md-ribbons{padding:8px;gap:9px}}
