@@ -920,7 +920,7 @@ function bodySVG(highlight) {
   }
   return `<svg viewBox="0 0 200 310" class="body-fig body-photo-map" role="group"
      aria-label="Tap the named body part on the child illustration">
-    <image href="assets/body/child-front.svg" width="200" height="310" aria-hidden="true"/>
+    <image href="assets/body/child-front.webp" width="200" height="310" aria-hidden="true"/>
     ${[...grouped].map(([name,shape]) => `<g data-val="${name}"
       class="bp body-hit${highlight === name ? ' hl' : ''}"
       aria-label="${name}" role="button" tabindex="0">${shape}</g>`).join('')}
