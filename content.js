@@ -188,14 +188,14 @@ function genWords(list, level, kind) {
   if (type === 'xword') return { key: `${kind}-xw-${rand(1e6)}`, text: 'Fill in the crossword!', say: ['Fill in the crossword!', 'Tap a box, then tap a letter.'],
     main: '', mainClass: 'puzzle-main', options: [], answer: 'done', optClass: 'spell-tray',
     puzzle: { kind: 'xword', words: level >= 3 ? 3 : 2, lv: level >= 3 ? 2 : 1 }, hint: { html: '', say: '' } };
-  const picHint = { html: `<div class="hint-pic">${e}</div>`, say: 'Look at the picture!' };
+  const picHint = { html: `<div class="hint-pic">${PHOTO_SET.has(w) ? photoImage(w,'reading-word-photo') : e}</div>`, say: 'Look at the picture!' };
 
   if (type === 'pic') {
     // look at the picture, pick its word from words that look alike (man · pan · cat)
     const others = similarWords(wordPool.filter(([x]) => x.length === w.length), w, n, 3);
     return {
       key: `${kind}-pic-${w}`, text: 'Which word matches the picture?', say: 'Which word matches the picture?',
-      main: `<div class="spell-pic">${e}</div>`,
+      main: `<div class="spell-pic">${PHOTO_SET.has(w) ? photoImage(w,'reading-word-photo') : e}</div>`,
       options: shuffle([w, ...others.map((o) => o[0])]).map((x) => ({ v: x, html: x })), answer: w, optClass: 'opt-word',
       hint: readingHint(w),
     };
@@ -570,6 +570,9 @@ function genSentence(level) {
   const words = s.split(' ').map((w, i) => `<span class="sw" data-i="${i}">${w}</span>`).join(' ');
   const long = s.length > 120 ? ' passage' : s.length > 60 ? ' long' : '';
   const marks = sentenceHintMarks(s, q, opts[0]);
+  // Real imagery supports early passage comprehension without replacing the wording.
+  const subject = level <= 3 && PHOTO_NAMES.find(name => new RegExp('\\\\b' + name + '\\\\b', 'i').test(s));
+  const photo = subject ? '<div class="reading-photo-wrap">' + photoImage(subject, 'reading-photo') + '</div>' : '';
   return {
     key: `sent-${s}`, qkey: q,
     text: '📖 Read, then answer',     // the question is shown once, under the sentence
@@ -577,7 +580,7 @@ function genSentence(level) {
     // do not synthesize question text whose audio has not been recorded.
     say: printFirst ? 'Find the answer.' : '',
     readQ: printFirst ? null : q,
-    main: `<div class="sentence${long}">${words}</div><div class="question-line">${q}</div>`,
+    main: `<div class="sentence${long}">${words}</div>${photo}<div class="question-line">${q}</div>`,
     options: shuffle(opts).map((o) => ({ v: o, html: o })),
     answer: opts[0],
     optClass: 'opt-text',
@@ -1362,11 +1365,20 @@ const genGK = (level) => {
     const parts = noun === 'sunflower' ? ['sun', 'flower'] : noun === 'airplane' ? ['air', 'plane'] : [noun];
     q.say = parts.every(part => CLIPS[clipKey(part)]) ? ['Find the picture of', ...parts] : 'Look at the picture!';
     q.optClass = 'gk-picture-choices';
-    q.options.forEach(option => {
-      const space = option.html.indexOf(' ');
-      option.html = '<span class="gk-picture">' + option.html.slice(0, space) +
-        '</span><small>' + option.html.slice(space + 1) + '</small>';
-    });
+    if (PHOTO_SET.has(noun)) {
+      // All answers must be photographs from the same category, not a mixture of emoji and photos.
+      const alternatives = shuffle(photoGroup(noun).filter(name => name !== noun)).slice(0, numOpts(level) - 1);
+      q.answer = noun;
+      q.options = shuffle([noun, ...alternatives]).map(name => ({
+        v: name, html: photoImage(name, 'gk-photo') + '<small>' + name + '</small>'
+      }));
+    } else {
+      q.options.forEach(option => {
+        const space = option.html.indexOf(' ');
+        option.html = '<span class="gk-picture">' + option.html.slice(0, space) +
+          '</span><small>' + option.html.slice(space + 1) + '</small>';
+      });
+    }
   } else if (!CLIPS[clipKey(q.text)]) {
     // Newly added calendar questions remain readable offline without missing audio-file requests.
     q.say = 'Find the answer!';
