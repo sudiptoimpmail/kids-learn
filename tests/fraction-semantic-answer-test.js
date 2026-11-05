@@ -11,7 +11,38 @@ const {chromium} = require('playwright');
     const outcome = await page.evaluate(() => {
       const problems = [], counts = {};
       const ratio = (v) => {
-        const match = /^(\\d+)\\/(\\d+)$/.exec(String(v).trim());
+        const match = new RegExp('^([0-9]+)/([0-9]+)
+        return match && +match[2] > 0 ? +match[1] / +match[2] : null;
+      };
+      for (const country of ['us','ca','uk','au','nz','in','ie']) {
+        state.country = country;
+        for (const [name,gen,levels] of [
+          ['fractions',genFractions,[1,2,3,4]],
+          ['number-sense',genNumSense,[4,5]]
+        ]) for (const level of levels) {
+          const id = country+'/'+name+'/'+level;
+          let checked = 0;
+          for (let i=0; i<250; i++) {
+            const q = gen(level);
+            const correct = ratio(q.answer);
+            if (correct == null || !Array.isArray(q.options)) continue;
+            checked++;
+            const matches = q.options.filter(o => {
+              const v = ratio(o.v);
+              return v != null && Math.abs(v-correct)<1e-10;
+            });
+            if (matches.length !== 1) problems.push(id+' '+q.key+' multiple equivalent answers: '+q.options.map(o=>o.v).join(', '));
+          }
+          counts[id] = checked;
+        }
+      }
+      return {total:problems.length,examples:problems.slice(0,30),counts};
+    });
+    assert.equal(outcome.total,0,JSON.stringify(outcome.examples,null,2));
+    console.log('PASS fraction questions have exactly one mathematically correct choice across seven countries');
+  } finally { await browser.close(); }
+})().catch(e=>{console.error(e);process.exitCode=1});
+).exec(String(v).trim());
         return match && +match[2] > 0 ? +match[1] / +match[2] : null;
       };
       for (const country of ['us','ca','uk','au','nz','in','ie']) {
