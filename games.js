@@ -1163,7 +1163,7 @@ function startPuzzle(p) {
   say('Put the picture back together!');
   const board = $('.pz-board', area);
   function draw() {
-    board.innerHTML = order.map((t, i) => `<button class="pzl-tile jigsaw-piece ${t === i && turns[i] === 0 ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}" aria-label="Piece ${i + 1}; tap twice to rotate"><span class="jigsaw-art" style="transform:rotate(${turns[i] * 90}deg)">${tileSVG(t)}</span></button>`).join('');
+    board.innerHTML = order.map((t, i) => `<button class="pzl-tile jigsaw-piece ${t === i && turns[i] === 0 ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}" data-piece="${t}" aria-label="Piece ${i + 1}; tap twice to rotate"><span class="jigsaw-art" style="transform:rotate(${turns[i] * 90}deg)">${tileSVG(t)}</span></button>`).join('');
   }
   board.addEventListener('click', (e) => {
     const b = e.target.closest('.pzl-tile'); if (!b || solved) return;
