@@ -234,6 +234,20 @@ function countryRows(C) {
 }
 function genCountry(level) {
   const C = myCountry() || COUNTRIES.us;
+  // Early country lessons now show real, locally rendered denomination
+  // illustrations instead of relying on coin labels alone. No network needed.
+  if (level <= 2 && typeof nsCoinPicture === 'function' && C.coins && C.coins.length >= 3 && Math.random() < 0.24) {
+    const coin = pick(C.coins), others = sample(C.coins.filter(c => c[0] !== coin[0]), numOpts(level) - 1);
+    const opts = shuffle([coin, ...others]);
+    const name = C.label || C.name;
+    return {
+      key: 'home-coin-picture-' + countryCode() + '-' + coin[0],
+      text: 'How much is this coin worth?', say: ['How much money?'],
+      main: nsCoinPicture(coin[0], coin[1], name), mainClass: 'ph-main',
+      options: opts.map(c => ({v:c[1], html:c[1]})), answer: coin[1], optClass: 'opt-text',
+      hint: {html:'Look at the value shown on the coin.', say:'Think about it!'}
+    };
+  }
   if (level <= 2 && Math.random() < 0.15) {
     const others = sample(COUNTRY_ORDER.filter((k) => COUNTRIES[k] !== C), level >= 2 ? 3 : 2).map((k) => COUNTRIES[k].flag);
     const q = `Which flag is the flag of ${C.name}?`;

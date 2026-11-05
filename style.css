@@ -1204,3 +1204,41 @@ html, body { min-height: 100%; }
 .dash-recommend p {font-size:14px;line-height:1.45;margin:11px 0;color:#394864;}
 .dash-recommend .big-btn {min-height:44px;box-shadow:none;}
 @media(max-width:420px){.gk-picture-choices.visual-choices .opt {min-height:108px}.gk-picture-choices .opt .gk-photo[src$=".svg"]{height:92px}.visual-prompt-art{height:88px}}
+
+/* Storybook mini-game polish: visual only; game logic remains completely offline. */
+.wm-banner{display:grid;justify-items:center;gap:7px;width:min(560px,95vw);margin:0 auto 14px;padding:12px 16px;border-radius:24px;background:linear-gradient(130deg,#fffce9,#e7fae5);box-shadow:0 5px 0 #bfdcbd;}
+.wm-heading{display:block;font-size:clamp(22px,5.4vw,32px);font-weight:950;color:#2d6547;}
+.wm-task{font-size:clamp(16px,3.8vw,21px);font-weight:800;color:#5b6652;}
+.wm-hud{width:100%;display:flex;justify-content:space-around;gap:10px;font-size:18px;font-weight:900;}
+.wm-hud>span{background:#fff;padding:8px 14px;border-radius:16px;box-shadow:0 3px 0 #d5e8d4;}
+.wm-field{position:relative;isolation:isolate;overflow:hidden;margin:0 auto;background:
+  radial-gradient(circle at 20% 11%,#fff7 0 3px,transparent 4px),
+  radial-gradient(circle at 78% 24%,#fff8 0 4px,transparent 5px),
+  linear-gradient(145deg,#d7f59e,#8ddd8d 58%,#6fcf96);
+  box-shadow:inset 0 3px 14px #2d7c361c,0 9px 0 #469d64,0 15px 24px #234b3826;
+  border:5px solid #f5f9d4;border-radius:30px;padding:clamp(10px,3.5vw,22px);gap:clamp(8px,2.5vw,16px);}
+.wm-hole{border:0;outline-offset:3px;box-shadow:inset 0 9px 8px #291a1977,0 4px 0 #4f8d4d;cursor:pointer;
+  background:radial-gradient(ellipse at 50% 55%,#513323 0 53%,#96724b 62%,#d2ac6c 74%,transparent 76%);}
+.wm-hole:focus-visible{outline:4px solid #1c7ed6;}
+.wm-earth{position:absolute;inset:11% 13% 17%;border-radius:50%;pointer-events:none;
+  border:5px solid #b58e57;box-shadow:0 -3px 0 #f6d8a1,inset 0 5px 10px #130e0b;}
+.wm-pop{z-index:2;left:0;right:0;bottom:-92%;font-size:clamp(45px,13vw,90px);
+  filter:drop-shadow(0 4px 2px #0002);transition:bottom .18s cubic-bezier(.18,1.5,.38,1);}
+.wm-hole.up .wm-pop{bottom:11%;}
+.wm-rim{position:absolute;z-index:3;left:7%;right:7%;bottom:1%;height:29%;border-radius:50% 50% 48% 48%;
+  background:linear-gradient(#9d7648,#704932);box-shadow:inset 0 3px 0 #ebbf7c;pointer-events:none;}
+.wm-hole.bonk{animation:bounce .3s;background:radial-gradient(ellipse,#ffda73,#b98b45);}
+.wm-hole.oops{animation:shake .3s;background:radial-gradient(ellipse,#ffc8c8,#cc6767);}
+.pm-view{background:linear-gradient(165deg,#f2ffe8,#c6e8ae);border:5px solid #f8f3d9;
+  box-shadow:0 6px 0 #75b785,0 10px 24px #215d4029;border-radius:24px;}
+.pm-cv{box-shadow:none;border-radius:20px;}
+.ns-coin{width:clamp(68px,18vw,92px);height:clamp(68px,18vw,92px);background:transparent!important;
+  box-shadow:none;padding:0;}
+.ns-currency-picture{display:block;width:100%;height:100%;filter:drop-shadow(0 3px 2px #27334335);}
+@media(prefers-reduced-motion:reduce){.wm-pop{transition:none;}.wm-hole.bonk,.wm-hole.oops{animation:none;}}
+
+/* Data-only optional lesson packs; shown only in protected parent settings. */
+#contentPacksSync[hidden] { display:none !important; }
+#contentPacksSettings { padding:12px 14px;border:1px solid #d8e6db;border-radius:16px;background:#f7fbf6; }
+#contentPacksSettings small { display:block;margin:5px 0 8px;line-height:1.45; }
+.pack-question-image { display:block;max-width:min(240px,65vw);max-height:210px;object-fit:contain;margin:6px auto; }

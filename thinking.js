@@ -127,14 +127,44 @@ const THINKING_ODD = [
   [3, ['⚽', '🏀', '🏐'], '🎸', 'The others are balls used in games.'],
   [3, ['🖊️', '✏️', '🖍️'], '🪥', 'The others are used for writing or drawing.'],
   [3, ['🧥', '👕', '👖'], '🍕', 'The others are clothing.'],
+
+  // Expanded Kindergarten and Grade 1 classification: what things are for,
+  // where they belong, and shared attributes rather than repeated labels.
+  [2, ['🧴', '🧽', '🧹'], '🍌', 'The others are things we use to clean.'],
+  [2, ['🚒', '🚑', '🚓'], '🚜', 'The others help people in emergencies.'],
+  [2, ['📖', '✏️', '📏'], '🍪', 'The others are school supplies.'],
+  [2, ['🛁', '🪥', '🧼'], '🪁', 'The others help keep us clean.'],
+  [2, ['🐢', '🐸', '🐊'], '🦋', 'The others can live in or near water.'],
+  [2, ['🥣', '🍽️', '🥄'], '📷', 'The others are used at mealtime.'],
+  [2, ['🎸', '🎺', '🪕'], '🎨', 'The others are musical instruments.'],
+  [2, ['🧥', '🧤', '🧣'], '🩴', 'The others keep us warm in cold weather.'],
+  [2, ['🌂', '☂️', '🧥'], '🏀', 'The others can protect us from rain.'],
+  [2, ['⛵', '🚤', '🚢'], '🚲', 'The others travel on water.'],
+  // More demanding Grade 2/3 distinctions with a reason to explain.
+  [3, ['🦉', '🦅', '🐧'], '🦇', 'The others are birds. A bat is a mammal.'],
+  [3, ['🦁', '🐯', '🐻'], '🐊', 'The others are mammals. A crocodile is a reptile.'],
+  [3, ['🐙', '🦀', '🦐'], '🐬', 'The others are invertebrates. A dolphin has a backbone.'],
+  [3, ['📏', '⚖️', '🌡️'], '🔦', 'The others are tools used to measure.'],
+  [3, ['🧲', '🔭', '🔬'], '🧁', 'The others are tools used to explore science.'],
+  [3, ['♻️', '🗑️', '🧹'], '🎾', 'The others relate to managing waste and cleaning.'],
+  [3, ['📚', '📰', '📖'], '🎧', 'The others are printed reading materials.'],
+  [3, ['🚶', '🏃', '🚴'], '🛏️', 'The others are ways people can be physically active.'],
+  [3, ['🎨', '🖍️', '🖌️'], '📏', 'The others are used to make art.'],
+  [3, ['🌳', '🌲', '🌴'], '🌹', 'The others are trees. A rose is not a tree.'],
+  [3, ['🧃', '🥛', '💧'], '🥖', 'The others are drinks or water.'],
+
 ];
 function genOdd(level) {
   const pool = THINKING_ODD.filter((x) => x[0] <= level);
   const [difficulty, similar, different, reason] = pick(pool);
   const chosen = level === 1 ? sample(similar, 2) : similar;
   const choices = [...chosen, different];
-  return thinkingQuestion(`odd-${difficulty}-${chosen.join('')}-${different}`,
+  const q = thinkingQuestion(`odd-${difficulty}-${chosen.join('')}-${different}`,
     'Which one does NOT belong?', '<div class="think-symbol">🔍</div>', choices, different, reason);
+  // The written explanation remains visible. This generic spoken hint already
+  // exists in the bundled recordings, including for newly authored prompts.
+  q.hint.say = 'Think about it!';
+  return q;
 }
 const THINKING_SEQUENCES = [
   [1, ['🌱', '💧', '🌻'], 'First plant a seed, then water it, then it grows.'],
@@ -205,6 +235,30 @@ const THINKING_SEQUENCES = [
   [3, ['🌞', '🧊', '💧', '💨'], 'Warmth can melt ice; liquid water can later evaporate.'],
   [3, ['🧑‍🤝‍🧑', '💬', '🤝', '😊'], 'Friends discuss a problem, listen, agree on a plan and work together.'],
   [3, ['🧪', '📏', '📝', '🔁'], 'Carry out a fair test, measure results, write findings and repeat to check.'],
+
+  // Additional four-step, real-world routines keep Kindergarten from repeating
+  // the same small set of timelines after a few rounds.
+  [2, ['🎒', '👟', '🚶', '🏫'], 'Pack your school bag, put on your shoes, travel safely, and arrive at school.'],
+  [2, ['🍎', '🚿', '🔪', '🥗'], 'Wash the fruit and, with an adult, chop it before making a fruit salad.'],
+  [2, ['🧩', '🔍', '🧠', '✅'], 'Look at a puzzle, find clues, think and solve it.'],
+  [2, ['🛏️', '⏰', '🪥', '🥣'], 'Wake up, brush your teeth and eat breakfast before starting the day.'],
+  [2, ['🌧️', '🌂', '🚶', '🏠'], 'Notice the rain, pick up your umbrella, walk home and get dry.'],
+  [2, ['✏️', '🖍️', '✂️', '🖼️'], 'Sketch, color, cut with care and display your artwork.'],
+  [2, ['🪴', '💧', '🌱', '🌻'], 'Put a seed in a pot, water it, watch it sprout and grow flowers.'],
+  [2, ['👕', '🧺', '🫧', '☀️'], 'Collect dirty clothes, wash them and dry them.'],
+  [2, ['🥖', '🧀', '🥪', '🍽️'], 'Gather bread and cheese, assemble a sandwich and serve it.'],
+  [2, ['📦', '🏷️', '🚚', '🏠'], 'Pack an item, label the box, ship it and deliver it.'],
+  // Grade 1–3 longer reasoning sequences: plan, observe and infer.
+  [3, ['🌱', '🌻', '🐝', '🍯'], 'A seed becomes a flower, a bee visits the flower and makes honey.'],
+  [3, ['🔭', '🌙', '📝', '📊'], 'Observe the moon, write what you see and compare your notes.'],
+  [3, ['🌤️', '🌡️', '📝', '📉'], 'Check the weather, measure temperature, record and graph the result.'],
+  [3, ['📐', '🏗️', '🧱', '🏠'], 'Measure and plan, prepare the site, assemble the walls and finish the house.'],
+  [3, ['💡', '📋', '🧪', '✅'], 'Ask a question, make a plan, test your idea and reach a conclusion.'],
+  [3, ['🪴', '📏', '📝', '📈'], 'Grow a plant, measure its height, write measurements and graph growth.'],
+  [3, ['💧', '🧊', '☀️', '💨'], 'Freeze water into ice, warm it to liquid and let it evaporate.'],
+  [3, ['🛒', '🧮', '💵', '🧾'], 'Choose an item, calculate the total, pay for it and receive a receipt.'],
+  [3, ['📗', '🔍', '📝', '💬'], 'Read a question, research evidence, write an answer and explain it.'],
+
 ];
 function genSequence(level) {
   const pool = THINKING_SEQUENCES.filter((x) => x[0] <= level);

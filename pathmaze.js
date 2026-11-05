@@ -66,14 +66,21 @@ function startPathMaze() {
   const session = gameSession;
   function draw() {
     c.clearRect(0, 0, w, h);
-    c.fillStyle = '#fff9db'; c.fillRect(ox - 6, oy - 6, cell * cols + 12, cell * rows + 12);
+    // Layered storybook garden board: readable lanes, lightly textured grass and round paths.
+    const board = c.createLinearGradient(0, oy, 0, oy + rows * cell);
+    board.addColorStop(0, '#ecfbe6'); board.addColorStop(1, '#c8efcd');
+    c.fillStyle = board; c.fillRect(ox - 6, oy - 6, cell * cols + 12, cell * rows + 12);
+    c.fillStyle = 'rgba(255,255,255,.23)';
+    for (let rr = 0; rr < rows; rr++) for (let cc = 0; cc < cols; cc++) {
+      if ((rr + cc) % 2 === 0) c.fillRect(ox + cc * cell, oy + rr * cell, cell, cell);
+    }
     // hint: soft dots along the way
     if (hint) { c.fillStyle = '#ffd43b'; for (const p of hint) { const [x, y] = mid(p); c.beginPath(); c.arc(x, y, cell * 0.12, 0, 7); c.fill(); } }
     // the child's path
-    c.lineCap = c.lineJoin = 'round'; c.strokeStyle = '#4dabf7'; c.lineWidth = cell * 0.42;
+    c.lineCap = c.lineJoin = 'round'; c.strokeStyle = '#56aee3'; c.lineWidth = cell * 0.42;
     c.beginPath(); path.forEach((p, i) => { const [x, y] = mid(p); i ? c.lineTo(x, y) : c.moveTo(x, y); }); if (path.length === 1) { const [x, y] = mid(path[0]); c.lineTo(x + 0.01, y); } c.stroke();
     // walls
-    c.strokeStyle = '#7c4a1e'; c.lineWidth = Math.max(4, cell * 0.12);
+    c.strokeStyle = '#367954'; c.lineWidth = Math.max(3, cell * 0.105);
     c.beginPath();
     for (let r = 0; r < rows; r++) for (let q = 0; q < cols; q++) {
       const x = ox + q * cell, y = oy + r * cell, k = W[r][q];
