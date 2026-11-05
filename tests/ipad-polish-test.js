@@ -59,6 +59,16 @@ const { chromium } = require('playwright');
         for(const p of (Array.isArray(q.hint.say)?q.hint.say:[q.hint.say]))
           check(!!CLIPS[clipKey(p)], 'Missing pattern hint audio: '+p);
       }
+      // Dynamic middle-vowel hints must be assembled from recorded clips.
+      let middleVowelCases = 0;
+      for (let i = 0; i < 400; i++) {
+        const card = genPhonics(4);
+        if (!card.key.startsWith('ph-mid-')) continue;
+        middleVowelCases++;
+        for (const phrase of card.hint.say)
+          check(!!CLIPS[clipKey(phrase)], 'Unrecorded middle-vowel hint: ' + phrase);
+      }
+      check(middleVowelCases > 5, 'Could not exercise middle-vowel phonics audio');
       state.gameLv.draw = 2;
       openGame('draw');
       const area=document.querySelector('#gameArea');
