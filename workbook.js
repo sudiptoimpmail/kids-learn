@@ -278,7 +278,7 @@ const IllustratedActivities = (() => {
             '<circle cx="140" cy="28" r="31" fill="#71af6b"/>':'')+
           '<circle cx="140" cy="'+appleY+'" r="17" fill="#e65350" stroke="#a94141" stroke-width="4"/>'+
           '<path d="M139 '+(appleY-16)+' q5 -11 17 -9" stroke="#427e3d" stroke-width="5" fill="none"/>'+
-          fox(x,y,card.id===2?.29:.36)+motion+
+          '<image href="assets/illustrations/fox.svg" x="'+(x-33)+'" y="'+(y-63)+'" width="68" height="75"/>'+motion+
           '</svg></span><b class="ia-event-number" aria-hidden="true">?</b>';
         b.setAttribute('aria-label',card.desc);
         b.addEventListener('click',()=>{
