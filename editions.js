@@ -5,10 +5,7 @@
        US 3rd grade state tests · Ontario EQAO (Grade 3) · England phonics check (Year 1) and
        multiplication tables check (Year 4) · NAPLAN (Year 3) · NZ reading and maths ·
        India NIPUN Bharat (Classes 1–3) · Ireland standardised tests
-   - Word packs: te reo Māori (New Zealand) and Hindi (India). These are read, not spoken:
-     the app's voice is English, so the words wait for native-speaker recordings.
    ========================================================= */
-const ED = (k) => ContentData.get('editions', k);
 const edCC = () => (typeof countryCode === 'function' ? countryCode() : 'us');
 const ZED_COUNTRIES = new Set(['uk', 'au', 'nz', 'in', 'ie']);
 const ZED = { 'z': 'zed', 'z says': 'zed says', 'z is for zebra': 'zed is for zebra', 'little z': 'little zed', 'z is for zoo': 'zed is for zoo' };
@@ -58,30 +55,11 @@ function genCheck() {
   return language();
 }
 
-/* ---------- word packs: te reo Māori and Hindi ---------- */
-function langPack() { return edCC() === 'nz' ? 'maori' : edCC() === 'in' ? 'hindi' : null; }
-function genLangWords(level) {
-  const pack = langPack(), rows = pack === 'hindi' ? ED('HINDI').map(([w, r, en, k]) => [`${w} <small>(${r})</small>`, en, k, w]) : ED('MAORI').map(([w, en, k]) => [w, en, k, w]);
-  const kinds = level <= 1 ? ['number', 'colour'] : ['number', 'colour', 'word'];
-  const pool = rows.filter((r) => kinds.includes(r[2])), [word, en, kind, raw] = pick(pool);
-  const same = pool.filter((r) => r[2] === kind && r[1] !== en);
-  const name = pack === 'hindi' ? 'Hindi' : 'te reo Māori';
-  if (Math.random() < 0.5) {
-    const opts = shuffle([en, ...sample(same.map((r) => r[1]), level <= 1 ? 2 : 3)]);
-    return { key: `lang-${pack}-mean-${raw}`, text: `What does this ${name} word mean?`, say: 'What does this word mean?', main: `<div class="gr-word ed-word no-fx">${word}</div>`, mainClass: 'ph-main',
-      options: opts.map((v) => ({ v, html: v })), answer: en, optClass: 'opt-text', hint: { html: '', say: 'Think about it!', remove: true } };
-  }
-  const others = sample(same, level <= 1 ? 2 : 3);
-  return { key: `lang-${pack}-pick-${raw}`, text: `Which is the ${name} word for <b>${en}</b>?`, say: 'Find the answer!', main: '', mainClass: 'empty',
-    options: shuffle([[word, raw], ...others.map((r) => [r[0], r[3]])]).map(([html, v]) => ({ v, html: `<span class="no-fx">${html}</span>` })), answer: raw, optClass: 'opt-text', hint: { html: '', say: 'Think about it!', remove: true } };
-}
 function editionTitle(id, title) {
   if (id === 'check') { const c = checkFor(); return c ? c[0] : title; }
-  if (id === 'lang') return langPack() === 'hindi' ? 'Hindi Words' : 'Te Reo Māori';
   return title;
 }
 function editionSub(id, sub) {
   if (id === 'check') { const c = checkFor(); return c ? c[1] : sub; }
-  if (id === 'lang') return langPack() === 'hindi' ? 'नमस्ते · numbers · colours' : 'kia ora · numbers · colours';
   return sub;
 }
