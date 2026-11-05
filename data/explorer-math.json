@@ -1,936 +1,938 @@
 {
   "schema": 1,
   "namespace": "explorer-math",
-  "questions": [
-    {
-      "id": "g2-library-books",
-      "level": 4,
-      "domain": "Data",
-      "context": "Library checkouts: Monday 18 books; Tuesday 24 books; Wednesday 21 books.",
-      "prompt": "How many more books were checked out on Tuesday than Monday?",
-      "choices": [
-        "6 books",
-        "3 books",
-        "42 books",
-        "9 books"
-      ],
-      "answer": "6 books",
-      "explanation": "Subtract 18 from 24 to compare the days."
-    },
-    {
-      "id": "g2-seed-packets",
-      "level": 4,
-      "domain": "Equal groups",
-      "context": "Each packet holds 5 sunflower seeds. A class has 4 packets.",
-      "prompt": "How many seeds are there in all?",
-      "choices": [
-        "20 seeds",
-        "9 seeds",
-        "15 seeds",
-        "25 seeds"
-      ],
-      "answer": "20 seeds",
-      "explanation": "Four groups of five make 20."
-    },
-    {
-      "id": "g2-paint-length",
-      "level": 4,
-      "domain": "Measurement",
-      "context": "An art ribbon is 65 centimeters long. Riya cuts away 28 centimeters.",
-      "prompt": "How much ribbon is left?",
-      "choices": [
-        "37 centimeters",
-        "43 centimeters",
-        "47 centimeters",
-        "93 centimeters"
-      ],
-      "answer": "37 centimeters",
-      "explanation": "65 minus 28 equals 37 centimeters."
-    },
-    {
-      "id": "g2-muffin-trays",
-      "level": 4,
-      "domain": "Arrays",
-      "context": "A tray has 3 rows of muffins with 4 muffins in each row.",
-      "prompt": "How many muffins are on the tray?",
-      "choices": [
-        "12",
-        "7",
-        "16",
-        "9"
-      ],
-      "answer": "12",
-      "explanation": "Three equal rows of four contain 12 muffins."
-    },
-    {
-      "id": "g2-playground-time",
-      "level": 4,
-      "domain": "Time",
-      "context": "Recess starts at 10:15 AM and lasts 20 minutes.",
-      "prompt": "When does recess end?",
-      "choices": [
-        "10:35 AM",
-        "10:25 AM",
-        "10:45 AM",
-        "11:15 AM"
-      ],
-      "answer": "10:35 AM",
-      "explanation": "Add 20 minutes to 10:15 AM."
-    },
-    {
-      "id": "g2-bus-seats",
-      "level": 4,
-      "domain": "Two-step",
-      "context": "A bus has 35 students. Eight get off, and 6 get on.",
-      "prompt": "How many students are on the bus now?",
-      "choices": [
-        "33",
-        "27",
-        "41",
-        "49"
-      ],
-      "answer": "33",
-      "explanation": "35 − 8 + 6 = 33."
-    },
-    {
-      "id": "g2-plant-growth",
-      "level": 4,
-      "domain": "Measurement",
-      "context": "A plant was 14 centimeters tall last week and 23 centimeters tall today.",
-      "prompt": "How much did it grow?",
-      "choices": [
-        "9 centimeters",
-        "7 centimeters",
-        "37 centimeters",
-        "11 centimeters"
-      ],
-      "answer": "9 centimeters",
-      "explanation": "Subtract the old height from the new height."
-    },
-    {
-      "id": "g2-sticker-equals",
-      "level": 4,
-      "domain": "Equal groups",
-      "context": "Four friends divide 28 stickers equally.",
-      "prompt": "How many stickers does each friend get?",
-      "choices": [
-        "7 stickers",
-        "6 stickers",
-        "8 stickers",
-        "24 stickers"
-      ],
-      "answer": "7 stickers",
-      "explanation": "28 divided into four equal groups gives 7 per group."
-    },
-    {
-      "id": "g2-population-chart",
-      "level": 4,
-      "domain": "Graphs",
-      "context": "A class chart shows: red votes 12, blue votes 16, green votes 9.",
-      "prompt": "Which color received the most votes?",
-      "choices": [
-        "blue",
-        "red",
-        "green",
-        "all were equal"
-      ],
-      "answer": "blue",
-      "explanation": "16 is greater than 12 and 9."
-    },
-    {
-      "id": "g2-pizza-quarters",
-      "level": 4,
-      "domain": "Fractions",
-      "context": "A circular pizza is cut into 4 equal slices. One slice is eaten.",
-      "prompt": "What fraction of the whole pizza was eaten?",
-      "choices": [
-        "1/4",
-        "1/2",
-        "1/3",
-        "3/4"
-      ],
-      "answer": "1/4",
-      "explanation": "One of four equal parts is one quarter."
-    },
-    {
-      "id": "g2-meter-centimeter",
-      "level": 4,
-      "domain": "Measurement",
-      "context": "One meter equals 100 centimeters. A poster is 70 centimeters wide.",
-      "prompt": "How many more centimeters are needed to reach one meter?",
-      "choices": [
-        "30 centimeters",
-        "70 centimeters",
-        "100 centimeters",
-        "170 centimeters"
-      ],
-      "answer": "30 centimeters",
-      "explanation": "100 − 70 = 30."
-    },
-    {
-      "id": "g2-farm-eggs",
-      "level": 4,
-      "domain": "Two-step",
-      "context": "A farmer collects 16 eggs in the morning and 13 at noon. Five break.",
-      "prompt": "How many unbroken eggs remain?",
-      "choices": [
-        "24",
-        "29",
-        "34",
-        "21"
-      ],
-      "answer": "24",
-      "explanation": "16 + 13 = 29, then 29 − 5 = 24."
-    },
-    {
-      "id": "g2-ten-more",
-      "level": 4,
-      "domain": "Place value",
-      "context": "A number has 5 tens and 8 ones.",
-      "prompt": "What is 10 more than the number?",
-      "choices": [
-        "68",
-        "59",
-        "48",
-        "158"
-      ],
-      "answer": "68",
-      "explanation": "58 plus one more ten equals 68."
-    },
-    {
-      "id": "g2-leaf-collection",
-      "level": 4,
-      "domain": "Compare",
-      "context": "Ava found 42 leaves. Ben found 37 leaves.",
-      "prompt": "How many leaves must Ben find to have as many as Ava?",
-      "choices": [
-        "5",
-        "15",
-        "79",
-        "7"
-      ],
-      "answer": "5",
-      "explanation": "42 − 37 = 5."
-    },
-    {
-      "id": "g2-time-elapsed",
-      "level": 4,
-      "domain": "Time",
-      "context": "A reading session begins at 2:40 PM and ends at 3:05 PM.",
-      "prompt": "How long is the reading session?",
-      "choices": [
-        "25 minutes",
-        "15 minutes",
-        "35 minutes",
-        "65 minutes"
-      ],
-      "answer": "25 minutes",
-      "explanation": "20 minutes reach 3:00, then 5 more minutes."
-    },
-    {
-      "id": "g2-garden-area",
-      "level": 4,
-      "domain": "Arrays",
-      "context": "A garden has 4 rows with 6 plants in each row.",
-      "prompt": "How many plants are there?",
-      "choices": [
-        "24",
-        "10",
-        "20",
-        "28"
-      ],
-      "answer": "24",
-      "explanation": "4 groups of 6 make 24."
-    },
-    {
-      "id": "g2-marble-count",
-      "level": 4,
-      "domain": "Two-step",
-      "context": "A jar holds 30 marbles. Tom adds 12, then takes out 9.",
-      "prompt": "How many marbles are in the jar?",
-      "choices": [
-        "33",
-        "21",
-        "42",
-        "51"
-      ],
-      "answer": "33",
-      "explanation": "30 + 12 − 9 = 33."
-    },
-    {
-      "id": "g2-coin-sums",
-      "level": 4,
-      "domain": "Money",
-      "context": "You have three US quarters and one dime.",
-      "prompt": "How much money do you have?",
-      "choices": [
-        "85¢",
-        "35¢",
-        "75¢",
-        "90¢"
-      ],
-      "answer": "85¢",
-      "explanation": "Three quarters are 75 cents; add a dime."
-    },
-    {
-      "id": "g2-parade-blocks",
-      "level": 4,
-      "domain": "Measurement",
-      "context": "The parade route crosses 6 blocks. Each block is about 100 meters.",
-      "prompt": "About how many meters long is the route?",
-      "choices": [
-        "600 meters",
-        "106 meters",
-        "60 meters",
-        "1,000 meters"
-      ],
-      "answer": "600 meters",
-      "explanation": "Six groups of 100 meters are 600 meters."
-    },
-    {
-      "id": "g2-coin-change",
-      "level": 4,
-      "domain": "Money",
-      "context": "A pencil costs 65¢. You pay with one dollar.",
-      "prompt": "How much change should you receive?",
-      "choices": [
-        "35¢",
-        "45¢",
-        "25¢",
-        "65¢"
-      ],
-      "answer": "35¢",
-      "explanation": "100 cents − 65 cents = 35 cents."
-    },
-    {
-      "id": "g2-half-and-quarter",
-      "level": 4,
-      "domain": "Fractions",
-      "context": "Two equal quarters of a chocolate bar are shaded.",
-      "prompt": "What fraction of the whole bar is shaded?",
-      "choices": [
-        "1/2",
-        "1/4",
-        "3/4",
-        "2/3"
-      ],
-      "answer": "1/2",
-      "explanation": "Two fourths equal one half."
-    },
-    {
-      "id": "g2-juice-amounts",
-      "level": 4,
-      "domain": "Data",
-      "context": "Water poured into cups: Mia 200 mL; Leo 150 mL; Noor 250 mL.",
-      "prompt": "How much more water does Noor have than Leo?",
-      "choices": [
-        "100 mL",
-        "50 mL",
-        "400 mL",
-        "150 mL"
-      ],
-      "answer": "100 mL",
-      "explanation": "250 − 150 = 100 milliliters."
-    },
-    {
-      "id": "g2-morning-steps",
-      "level": 4,
-      "domain": "Number line",
-      "context": "A frog starts on number 13. It jumps forward 7, then back 4.",
-      "prompt": "Which number does it land on?",
-      "choices": [
-        "16",
-        "20",
-        "24",
-        "10"
-      ],
-      "answer": "16",
-      "explanation": "Start at 13, add 7, then subtract 4."
-    },
-    {
-      "id": "g2-shop-pattern",
-      "level": 4,
-      "domain": "Reasoning",
-      "context": "A toy costs $8. A ball costs $5. You have $20.",
-      "prompt": "Can you buy both and have at least $5 left?",
-      "choices": [
-        "yes, $7 left",
-        "yes, $3 left",
-        "no, only $2 left",
-        "no, they cost $21"
-      ],
-      "answer": "yes, $7 left",
-      "explanation": "$8 + $5 is $13; $20 − $13 is $7."
-    },
-    {
-      "id": "g2-crayon-box",
-      "level": 4,
-      "domain": "Equal groups",
-      "context": "There are 5 crayons in each box and 6 boxes.",
-      "prompt": "How many crayons are there in all?",
-      "choices": [
-        "30",
-        "11",
-        "25",
-        "35"
-      ],
-      "answer": "30",
-      "explanation": "Six groups of five make 30 crayons."
-    },
-    {
-      "id": "g2-shape-sides",
-      "level": 4,
-      "domain": "Geometry",
-      "context": "A picture uses 3 separate triangles. Each has 3 sides.",
-      "prompt": "How many triangle sides are there altogether?",
-      "choices": [
-        "9",
-        "6",
-        "12",
-        "3"
-      ],
-      "answer": "9",
-      "explanation": "Three sets of three sides total nine."
-    },
-    {
-      "id": "g2-weather-days",
-      "level": 4,
-      "domain": "Graphs",
-      "context": "A week had 3 sunny days, 2 cloudy days and 2 rainy days.",
-      "prompt": "How many days were NOT sunny?",
-      "choices": [
-        "4",
-        "3",
-        "5",
-        "7"
-      ],
-      "answer": "4",
-      "explanation": "Add cloudy and rainy days: 2 + 2 = 4."
-    },
-    {
-      "id": "g2-lunch-schedule",
-      "level": 4,
-      "domain": "Time",
-      "context": "Lunch begins at 12:10 PM and ends at 12:40 PM.",
-      "prompt": "How many minutes does lunch last?",
-      "choices": [
-        "30 minutes",
-        "20 minutes",
-        "40 minutes",
-        "50 minutes"
-      ],
-      "answer": "30 minutes",
-      "explanation": "Count from 12:10 to 12:40."
-    },
-    {
-      "id": "g2-scale-clues",
-      "level": 4,
-      "domain": "Data",
-      "context": "The balance scale shows an apple is heavier than a grape, and a melon is heavier than the apple.",
-      "prompt": "Which object is the heaviest?",
-      "choices": [
-        "melon",
-        "grape",
-        "apple",
-        "all are equal"
-      ],
-      "answer": "melon",
-      "explanation": "The melon is heavier than the apple, which is heavier than the grape."
-    },
-    {
-      "id": "g2-photo-albums",
-      "level": 4,
-      "domain": "Two-step",
-      "context": "A photo album has 4 pages with 6 pictures each. Two pictures are removed.",
-      "prompt": "How many pictures remain?",
-      "choices": [
-        "22",
-        "24",
-        "26",
-        "18"
-      ],
-      "answer": "22",
-      "explanation": "Four pages hold 24; remove two to get 22."
-    },
-    {
-      "id": "g3-field-perimeter",
-      "level": 5,
-      "domain": "Perimeter",
-      "context": "A rectangular field is 12 meters long and 7 meters wide.",
-      "prompt": "What is its perimeter?",
-      "choices": [
-        "38 meters",
-        "19 meters",
-        "84 square meters",
-        "24 meters"
-      ],
-      "answer": "38 meters",
-      "explanation": "Add all four sides: 12 + 7 + 12 + 7 = 38 meters."
-    },
-    {
-      "id": "g3-tile-area",
-      "level": 5,
-      "domain": "Area",
-      "context": "A rectangular floor is 9 tiles long and 6 tiles wide.",
-      "prompt": "What is its area in square tiles?",
-      "choices": [
-        "54 square tiles",
-        "30 square tiles",
-        "15 square tiles",
-        "60 square tiles"
-      ],
-      "answer": "54 square tiles",
-      "explanation": "Area is length multiplied by width, 9 × 6."
-    },
-    {
-      "id": "g3-equivalent-fraction",
-      "level": 5,
-      "domain": "Fractions",
-      "context": "One picture shades 2 of 4 equal parts. Another picture divides a matching whole into 8 equal parts.",
-      "prompt": "How many eighths must be shaded to show the same amount?",
-      "choices": [
-        "4 eighths",
-        "2 eighths",
-        "6 eighths",
-        "8 eighths"
-      ],
-      "answer": "4 eighths",
-      "explanation": "Two fourths equal one half, which is four eighths."
-    },
-    {
-      "id": "g3-bus-groups",
-      "level": 5,
-      "domain": "Division",
-      "context": "A museum group has 72 students and 8 students sit at each activity table.",
-      "prompt": "How many tables are needed?",
-      "choices": [
-        "9 tables",
-        "8 tables",
-        "10 tables",
-        "64 tables"
-      ],
-      "answer": "9 tables",
-      "explanation": "72 ÷ 8 = 9."
-    },
-    {
-      "id": "g3-planting-rows",
-      "level": 5,
-      "domain": "Multiplication",
-      "context": "A garden has 7 rows of 8 carrot plants.",
-      "prompt": "How many carrot plants are there?",
-      "choices": [
-        "56",
-        "48",
-        "15",
-        "64"
-      ],
-      "answer": "56",
-      "explanation": "7 × 8 = 56."
-    },
-    {
-      "id": "g3-water-bottles",
-      "level": 5,
-      "domain": "Multi-step",
-      "context": "A shop has 6 packs of water with 8 bottles each. It sells 15 bottles.",
-      "prompt": "How many bottles remain?",
-      "choices": [
-        "33",
-        "48",
-        "41",
-        "39"
-      ],
-      "answer": "33",
-      "explanation": "6 × 8 = 48. Then 48 − 15 = 33."
-    },
-    {
-      "id": "g3-supply-division",
-      "level": 5,
-      "domain": "Remainders",
-      "context": "There are 50 markers to put into boxes of 6.",
-      "prompt": "How many full boxes can be filled?",
-      "choices": [
-        "8 full boxes",
-        "9 full boxes",
-        "7 full boxes",
-        "6 full boxes"
-      ],
-      "answer": "8 full boxes",
-      "explanation": "Eight groups of six use 48 markers; two remain."
-    },
-    {
-      "id": "g3-fraction-share",
-      "level": 5,
-      "domain": "Fractions",
-      "context": "A ribbon is 18 inches long. Mia uses one-third of it.",
-      "prompt": "How many inches does she use?",
-      "choices": [
-        "6 inches",
-        "9 inches",
-        "3 inches",
-        "12 inches"
-      ],
-      "answer": "6 inches",
-      "explanation": "One third of 18 is 18 ÷ 3 = 6."
-    },
-    {
-      "id": "g3-graph-difference",
-      "level": 5,
-      "domain": "Data",
-      "context": "A picture graph shows 7 bicycles and 12 scooters. Each symbol represents one vehicle.",
-      "prompt": "How many more scooters than bicycles?",
-      "choices": [
-        "5",
-        "19",
-        "7",
-        "12"
-      ],
-      "answer": "5",
-      "explanation": "Subtract 7 bicycles from 12 scooters."
-    },
-    {
-      "id": "g3-liquid-volume",
-      "level": 5,
-      "domain": "Measurement",
-      "context": "A bottle holds 750 mL. A cup holds 250 mL.",
-      "prompt": "How many full cups make 750 mL?",
-      "choices": [
-        "3 cups",
-        "2 cups",
-        "4 cups",
-        "5 cups"
-      ],
-      "answer": "3 cups",
-      "explanation": "750 ÷ 250 = 3."
-    },
-    {
-      "id": "g3-distance-trip",
-      "level": 5,
-      "domain": "Two-step",
-      "context": "A family drives 48 miles to a park and 48 miles home. They also drive 6 miles at the park.",
-      "prompt": "What is the total distance?",
-      "choices": [
-        "102 miles",
-        "96 miles",
-        "54 miles",
-        "108 miles"
-      ],
-      "answer": "102 miles",
-      "explanation": "48 + 48 + 6 = 102 miles."
-    },
-    {
-      "id": "g3-price-comparison",
-      "level": 5,
-      "domain": "Money",
-      "context": "Two books cost $7 each and a notebook costs $4.",
-      "prompt": "How much do all three items cost?",
-      "choices": [
-        "$18",
-        "$14",
-        "$11",
-        "$21"
-      ],
-      "answer": "$18",
-      "explanation": "2 × $7 = $14; add $4."
-    },
-    {
-      "id": "g3-quarter-pizza",
-      "level": 5,
-      "domain": "Fractions",
-      "context": "One pizza is cut into 8 equal slices. Three slices are eaten.",
-      "prompt": "How many slices are left, as a fraction of the whole?",
-      "choices": [
-        "5/8",
-        "3/8",
-        "1/2",
-        "3/5"
-      ],
-      "answer": "5/8",
-      "explanation": "Eight minus three leaves five eighths."
-    },
-    {
-      "id": "g3-rectangle-compare",
-      "level": 5,
-      "domain": "Area",
-      "context": "Rectangle A is 4 by 9 square units. Rectangle B is 6 by 6 square units.",
-      "prompt": "What do their areas have in common?",
-      "choices": [
-        "both have an area of 36 square units",
-        "both have the same perimeter",
-        "both are squares",
-        "both have an area of 24 square units"
-      ],
-      "answer": "both have an area of 36 square units",
-      "explanation": "4 × 9 and 6 × 6 are both 36."
-    },
-    {
-      "id": "g3-estimation",
-      "level": 5,
-      "domain": "Estimation",
-      "context": "A theater has 29 rows with 11 seats in each row.",
-      "prompt": "About how many seats are there?",
-      "choices": [
-        "about 300",
-        "about 100",
-        "about 30",
-        "about 900"
-      ],
-      "answer": "about 300",
-      "explanation": "Round 29 to 30 and 11 to 10, then multiply."
-    },
-    {
-      "id": "g3-clock-arrival",
-      "level": 5,
-      "domain": "Time",
-      "context": "A movie starts at 4:35 PM and lasts 1 hour 20 minutes.",
-      "prompt": "When does it finish?",
-      "choices": [
-        "5:55 PM",
-        "5:35 PM",
-        "6:15 PM",
-        "5:45 PM"
-      ],
-      "answer": "5:55 PM",
-      "explanation": "4:35 plus 1 hour is 5:35, plus 20 minutes is 5:55."
-    },
-    {
-      "id": "g3-budget",
-      "level": 5,
-      "domain": "Money",
-      "context": "Tara has $30. She buys a $12 toy and a $9 puzzle.",
-      "prompt": "How much money remains?",
-      "choices": [
-        "$9",
-        "$21",
-        "$12",
-        "$11"
-      ],
-      "answer": "$9",
-      "explanation": "12 + 9 = 21; 30 − 21 = 9."
-    },
-    {
-      "id": "g3-fraction-length",
-      "level": 5,
-      "domain": "Fractions",
-      "context": "A 24-inch ribbon is divided into 4 equal pieces.",
-      "prompt": "How long is each piece?",
-      "choices": [
-        "6 inches",
-        "4 inches",
-        "8 inches",
-        "20 inches"
-      ],
-      "answer": "6 inches",
-      "explanation": "24 ÷ 4 = 6."
-    },
-    {
-      "id": "g3-number-pattern",
-      "level": 5,
-      "domain": "Patterns",
-      "context": "A sequence is 6, 12, 18, 24, __.",
-      "prompt": "What number belongs in the blank?",
-      "choices": [
-        "30",
-        "26",
-        "28",
-        "36"
-      ],
-      "answer": "30",
-      "explanation": "Each step adds six."
-    },
-    {
-      "id": "g3-table-missing",
-      "level": 5,
-      "domain": "Tables",
-      "context": "A team scores 14, 12 and 19 points in three rounds.",
-      "prompt": "How many points does it score in total?",
-      "choices": [
-        "45 points",
-        "31 points",
-        "35 points",
-        "55 points"
-      ],
-      "answer": "45 points",
-      "explanation": "Add 14 + 12 + 19 = 45."
-    },
-    {
-      "id": "g3-bird-groups",
-      "level": 5,
-      "domain": "Multiplication",
-      "context": "Nine nests have 4 eggs in each nest.",
-      "prompt": "How many eggs are there?",
-      "choices": [
-        "36",
-        "13",
-        "32",
-        "40"
-      ],
-      "answer": "36",
-      "explanation": "9 × 4 = 36."
-    },
-    {
-      "id": "g3-division-check",
-      "level": 5,
-      "domain": "Division",
-      "context": "A student says 63 ÷ 7 = 9.",
-      "prompt": "Which multiplication checks this answer?",
-      "choices": [
-        "7 × 9 = 63",
-        "7 + 9 = 16",
-        "63 × 9 = 567",
-        "9 − 7 = 2"
-      ],
-      "answer": "7 × 9 = 63",
-      "explanation": "Multiplication reverses the division."
-    },
-    {
-      "id": "g3-lesson-share",
-      "level": 5,
-      "domain": "Two-step",
-      "context": "A class has 32 cards. Four students share them equally, then each receives 2 extra cards.",
-      "prompt": "How many cards does each student have now?",
-      "choices": [
-        "10 cards",
-        "8 cards",
-        "12 cards",
-        "6 cards"
-      ],
-      "answer": "10 cards",
-      "explanation": "32 ÷ 4 = 8, then add 2."
-    },
-    {
-      "id": "g3-bicycle-route",
-      "level": 5,
-      "domain": "Data",
-      "context": "Route A has 4 miles uphill and 3 miles downhill. Route B has 5 miles uphill and 1 mile downhill.",
-      "prompt": "Which route is shorter?",
-      "choices": [
-        "Route B by 1 mile",
-        "Route A by 1 mile",
-        "they are the same length",
-        "Route B by 3 miles"
-      ],
-      "answer": "Route B by 1 mile",
-      "explanation": "Route A is 7 miles, Route B is 6 miles."
-    },
-    {
-      "id": "g3-map-grid",
-      "level": 5,
-      "domain": "Coordinates",
-      "context": "On a simple grid, you start at (2,3) and move 3 squares right without moving up or down.",
-      "prompt": "Where do you end?",
-      "choices": [
-        "(5,3)",
-        "(2,6)",
-        "(3,5)",
-        "(5,6)"
-      ],
-      "answer": "(5,3)",
-      "explanation": "Moving right increases the first coordinate."
-    },
-    {
-      "id": "g3-fraction-compare",
-      "level": 5,
-      "domain": "Fractions",
-      "context": "The same-sized cakes are divided into equal slices. Cake A has 3/4 left; cake B has 2/4 left.",
-      "prompt": "Which cake has more left?",
-      "choices": [
-        "Cake A",
-        "Cake B",
-        "both have the same amount",
-        "not enough information"
-      ],
-      "answer": "Cake A",
-      "explanation": "Three fourths is greater than two fourths."
-    },
-    {
-      "id": "g3-rectangle-side",
-      "level": 5,
-      "domain": "Perimeter",
-      "context": "A rectangle has perimeter 30 cm and length 9 cm.",
-      "prompt": "What is its width?",
-      "choices": [
-        "6 cm",
-        "12 cm",
-        "21 cm",
-        "3 cm"
-      ],
-      "answer": "6 cm",
-      "explanation": "The two lengths total 18, leaving 12 for two equal widths."
-    },
-    {
-      "id": "g3-weekly-reading",
-      "level": 5,
-      "domain": "Multiplication",
-      "context": "Liam reads 9 pages every evening for 7 evenings.",
-      "prompt": "How many pages does he read in all?",
-      "choices": [
-        "63 pages",
-        "16 pages",
-        "72 pages",
-        "54 pages"
-      ],
-      "answer": "63 pages",
-      "explanation": "9 × 7 = 63."
-    },
-    {
-      "id": "g3-temperature-chart",
-      "level": 5,
-      "domain": "Data",
-      "context": "Morning temperature was 12°C, afternoon 19°C, and evening 15°C.",
-      "prompt": "How much warmer was afternoon than morning?",
-      "choices": [
-        "7°C",
-        "3°C",
-        "31°C",
-        "4°C"
-      ],
-      "answer": "7°C",
-      "explanation": "19 − 12 = 7 degrees."
-    },
-    {
-      "id": "g3-bookshelves",
-      "level": 5,
-      "domain": "Two-step",
-      "context": "A library has 5 shelves with 9 books each. It moves 13 books to another room.",
-      "prompt": "How many books remain on the shelves?",
-      "choices": [
-        "32 books",
-        "45 books",
-        "58 books",
-        "36 books"
-      ],
-      "answer": "32 books",
-      "explanation": "5 × 9 = 45; 45 − 13 = 32."
-    },
-    {
-      "id": "g3-mass-apples",
-      "level": 5,
-      "domain": "Measurement",
-      "context": "Four identical apples each have a mass of 150 grams.",
-      "prompt": "What is their total mass?",
-      "choices": [
-        "600 grams",
-        "450 grams",
-        "154 grams",
-        "1,500 grams"
-      ],
-      "answer": "600 grams",
-      "explanation": "4 × 150 = 600 grams."
-    },
-    {
-      "id": "g3-miles-compare",
-      "level": 5,
-      "domain": "Compare",
-      "context": "Jules bikes 3 miles on Monday, 5 on Tuesday and 4 on Wednesday. Kim bikes 10 miles in all.",
-      "prompt": "How many more miles did Jules bike?",
-      "choices": [
-        "2 miles",
-        "12 miles",
-        "4 miles",
-        "5 miles"
-      ],
-      "answer": "2 miles",
-      "explanation": "Jules biked 12 miles; 12 − 10 = 2."
-    }
-  ]
+  "datasets": {
+    "questions": [
+      {
+        "id": "g2-library-books",
+        "level": 4,
+        "domain": "Data",
+        "context": "Library checkouts: Monday 18 books; Tuesday 24 books; Wednesday 21 books.",
+        "prompt": "How many more books were checked out on Tuesday than Monday?",
+        "choices": [
+          "6 books",
+          "3 books",
+          "42 books",
+          "9 books"
+        ],
+        "answer": "6 books",
+        "explanation": "Subtract 18 from 24 to compare the days."
+      },
+      {
+        "id": "g2-seed-packets",
+        "level": 4,
+        "domain": "Equal groups",
+        "context": "Each packet holds 5 sunflower seeds. A class has 4 packets.",
+        "prompt": "How many seeds are there in all?",
+        "choices": [
+          "20 seeds",
+          "9 seeds",
+          "15 seeds",
+          "25 seeds"
+        ],
+        "answer": "20 seeds",
+        "explanation": "Four groups of five make 20."
+      },
+      {
+        "id": "g2-paint-length",
+        "level": 4,
+        "domain": "Measurement",
+        "context": "An art ribbon is 65 centimeters long. Riya cuts away 28 centimeters.",
+        "prompt": "How much ribbon is left?",
+        "choices": [
+          "37 centimeters",
+          "43 centimeters",
+          "47 centimeters",
+          "93 centimeters"
+        ],
+        "answer": "37 centimeters",
+        "explanation": "65 minus 28 equals 37 centimeters."
+      },
+      {
+        "id": "g2-muffin-trays",
+        "level": 4,
+        "domain": "Arrays",
+        "context": "A tray has 3 rows of muffins with 4 muffins in each row.",
+        "prompt": "How many muffins are on the tray?",
+        "choices": [
+          "12",
+          "7",
+          "16",
+          "9"
+        ],
+        "answer": "12",
+        "explanation": "Three equal rows of four contain 12 muffins."
+      },
+      {
+        "id": "g2-playground-time",
+        "level": 4,
+        "domain": "Time",
+        "context": "Recess starts at 10:15 AM and lasts 20 minutes.",
+        "prompt": "When does recess end?",
+        "choices": [
+          "10:35 AM",
+          "10:25 AM",
+          "10:45 AM",
+          "11:15 AM"
+        ],
+        "answer": "10:35 AM",
+        "explanation": "Add 20 minutes to 10:15 AM."
+      },
+      {
+        "id": "g2-bus-seats",
+        "level": 4,
+        "domain": "Two-step",
+        "context": "A bus has 35 students. Eight get off, and 6 get on.",
+        "prompt": "How many students are on the bus now?",
+        "choices": [
+          "33",
+          "27",
+          "41",
+          "49"
+        ],
+        "answer": "33",
+        "explanation": "35 − 8 + 6 = 33."
+      },
+      {
+        "id": "g2-plant-growth",
+        "level": 4,
+        "domain": "Measurement",
+        "context": "A plant was 14 centimeters tall last week and 23 centimeters tall today.",
+        "prompt": "How much did it grow?",
+        "choices": [
+          "9 centimeters",
+          "7 centimeters",
+          "37 centimeters",
+          "11 centimeters"
+        ],
+        "answer": "9 centimeters",
+        "explanation": "Subtract the old height from the new height."
+      },
+      {
+        "id": "g2-sticker-equals",
+        "level": 4,
+        "domain": "Equal groups",
+        "context": "Four friends divide 28 stickers equally.",
+        "prompt": "How many stickers does each friend get?",
+        "choices": [
+          "7 stickers",
+          "6 stickers",
+          "8 stickers",
+          "24 stickers"
+        ],
+        "answer": "7 stickers",
+        "explanation": "28 divided into four equal groups gives 7 per group."
+      },
+      {
+        "id": "g2-population-chart",
+        "level": 4,
+        "domain": "Graphs",
+        "context": "A class chart shows: red votes 12, blue votes 16, green votes 9.",
+        "prompt": "Which color received the most votes?",
+        "choices": [
+          "blue",
+          "red",
+          "green",
+          "all were equal"
+        ],
+        "answer": "blue",
+        "explanation": "16 is greater than 12 and 9."
+      },
+      {
+        "id": "g2-pizza-quarters",
+        "level": 4,
+        "domain": "Fractions",
+        "context": "A circular pizza is cut into 4 equal slices. One slice is eaten.",
+        "prompt": "What fraction of the whole pizza was eaten?",
+        "choices": [
+          "1/4",
+          "1/2",
+          "1/3",
+          "3/4"
+        ],
+        "answer": "1/4",
+        "explanation": "One of four equal parts is one quarter."
+      },
+      {
+        "id": "g2-meter-centimeter",
+        "level": 4,
+        "domain": "Measurement",
+        "context": "One meter equals 100 centimeters. A poster is 70 centimeters wide.",
+        "prompt": "How many more centimeters are needed to reach one meter?",
+        "choices": [
+          "30 centimeters",
+          "70 centimeters",
+          "100 centimeters",
+          "170 centimeters"
+        ],
+        "answer": "30 centimeters",
+        "explanation": "100 − 70 = 30."
+      },
+      {
+        "id": "g2-farm-eggs",
+        "level": 4,
+        "domain": "Two-step",
+        "context": "A farmer collects 16 eggs in the morning and 13 at noon. Five break.",
+        "prompt": "How many unbroken eggs remain?",
+        "choices": [
+          "24",
+          "29",
+          "34",
+          "21"
+        ],
+        "answer": "24",
+        "explanation": "16 + 13 = 29, then 29 − 5 = 24."
+      },
+      {
+        "id": "g2-ten-more",
+        "level": 4,
+        "domain": "Place value",
+        "context": "A number has 5 tens and 8 ones.",
+        "prompt": "What is 10 more than the number?",
+        "choices": [
+          "68",
+          "59",
+          "48",
+          "158"
+        ],
+        "answer": "68",
+        "explanation": "58 plus one more ten equals 68."
+      },
+      {
+        "id": "g2-leaf-collection",
+        "level": 4,
+        "domain": "Compare",
+        "context": "Ava found 42 leaves. Ben found 37 leaves.",
+        "prompt": "How many leaves must Ben find to have as many as Ava?",
+        "choices": [
+          "5",
+          "15",
+          "79",
+          "7"
+        ],
+        "answer": "5",
+        "explanation": "42 − 37 = 5."
+      },
+      {
+        "id": "g2-time-elapsed",
+        "level": 4,
+        "domain": "Time",
+        "context": "A reading session begins at 2:40 PM and ends at 3:05 PM.",
+        "prompt": "How long is the reading session?",
+        "choices": [
+          "25 minutes",
+          "15 minutes",
+          "35 minutes",
+          "65 minutes"
+        ],
+        "answer": "25 minutes",
+        "explanation": "20 minutes reach 3:00, then 5 more minutes."
+      },
+      {
+        "id": "g2-garden-area",
+        "level": 4,
+        "domain": "Arrays",
+        "context": "A garden has 4 rows with 6 plants in each row.",
+        "prompt": "How many plants are there?",
+        "choices": [
+          "24",
+          "10",
+          "20",
+          "28"
+        ],
+        "answer": "24",
+        "explanation": "4 groups of 6 make 24."
+      },
+      {
+        "id": "g2-marble-count",
+        "level": 4,
+        "domain": "Two-step",
+        "context": "A jar holds 30 marbles. Tom adds 12, then takes out 9.",
+        "prompt": "How many marbles are in the jar?",
+        "choices": [
+          "33",
+          "21",
+          "42",
+          "51"
+        ],
+        "answer": "33",
+        "explanation": "30 + 12 − 9 = 33."
+      },
+      {
+        "id": "g2-coin-sums",
+        "level": 4,
+        "domain": "Money",
+        "context": "You have three US quarters and one dime.",
+        "prompt": "How much money do you have?",
+        "choices": [
+          "85¢",
+          "35¢",
+          "75¢",
+          "90¢"
+        ],
+        "answer": "85¢",
+        "explanation": "Three quarters are 75 cents; add a dime."
+      },
+      {
+        "id": "g2-parade-blocks",
+        "level": 4,
+        "domain": "Measurement",
+        "context": "The parade route crosses 6 blocks. Each block is about 100 meters.",
+        "prompt": "About how many meters long is the route?",
+        "choices": [
+          "600 meters",
+          "106 meters",
+          "60 meters",
+          "1,000 meters"
+        ],
+        "answer": "600 meters",
+        "explanation": "Six groups of 100 meters are 600 meters."
+      },
+      {
+        "id": "g2-coin-change",
+        "level": 4,
+        "domain": "Money",
+        "context": "A pencil costs 65¢. You pay with one dollar.",
+        "prompt": "How much change should you receive?",
+        "choices": [
+          "35¢",
+          "45¢",
+          "25¢",
+          "65¢"
+        ],
+        "answer": "35¢",
+        "explanation": "100 cents − 65 cents = 35 cents."
+      },
+      {
+        "id": "g2-half-and-quarter",
+        "level": 4,
+        "domain": "Fractions",
+        "context": "Two equal quarters of a chocolate bar are shaded.",
+        "prompt": "What fraction of the whole bar is shaded?",
+        "choices": [
+          "1/2",
+          "1/4",
+          "3/4",
+          "2/3"
+        ],
+        "answer": "1/2",
+        "explanation": "Two fourths equal one half."
+      },
+      {
+        "id": "g2-juice-amounts",
+        "level": 4,
+        "domain": "Data",
+        "context": "Water poured into cups: Mia 200 mL; Leo 150 mL; Noor 250 mL.",
+        "prompt": "How much more water does Noor have than Leo?",
+        "choices": [
+          "100 mL",
+          "50 mL",
+          "400 mL",
+          "150 mL"
+        ],
+        "answer": "100 mL",
+        "explanation": "250 − 150 = 100 milliliters."
+      },
+      {
+        "id": "g2-morning-steps",
+        "level": 4,
+        "domain": "Number line",
+        "context": "A frog starts on number 13. It jumps forward 7, then back 4.",
+        "prompt": "Which number does it land on?",
+        "choices": [
+          "16",
+          "20",
+          "24",
+          "10"
+        ],
+        "answer": "16",
+        "explanation": "Start at 13, add 7, then subtract 4."
+      },
+      {
+        "id": "g2-shop-pattern",
+        "level": 4,
+        "domain": "Reasoning",
+        "context": "A toy costs $8. A ball costs $5. You have $20.",
+        "prompt": "Can you buy both and have at least $5 left?",
+        "choices": [
+          "yes, $7 left",
+          "yes, $3 left",
+          "no, only $2 left",
+          "no, they cost $21"
+        ],
+        "answer": "yes, $7 left",
+        "explanation": "$8 + $5 is $13; $20 − $13 is $7."
+      },
+      {
+        "id": "g2-crayon-box",
+        "level": 4,
+        "domain": "Equal groups",
+        "context": "There are 5 crayons in each box and 6 boxes.",
+        "prompt": "How many crayons are there in all?",
+        "choices": [
+          "30",
+          "11",
+          "25",
+          "35"
+        ],
+        "answer": "30",
+        "explanation": "Six groups of five make 30 crayons."
+      },
+      {
+        "id": "g2-shape-sides",
+        "level": 4,
+        "domain": "Geometry",
+        "context": "A picture uses 3 separate triangles. Each has 3 sides.",
+        "prompt": "How many triangle sides are there altogether?",
+        "choices": [
+          "9",
+          "6",
+          "12",
+          "3"
+        ],
+        "answer": "9",
+        "explanation": "Three sets of three sides total nine."
+      },
+      {
+        "id": "g2-weather-days",
+        "level": 4,
+        "domain": "Graphs",
+        "context": "A week had 3 sunny days, 2 cloudy days and 2 rainy days.",
+        "prompt": "How many days were NOT sunny?",
+        "choices": [
+          "4",
+          "3",
+          "5",
+          "7"
+        ],
+        "answer": "4",
+        "explanation": "Add cloudy and rainy days: 2 + 2 = 4."
+      },
+      {
+        "id": "g2-lunch-schedule",
+        "level": 4,
+        "domain": "Time",
+        "context": "Lunch begins at 12:10 PM and ends at 12:40 PM.",
+        "prompt": "How many minutes does lunch last?",
+        "choices": [
+          "30 minutes",
+          "20 minutes",
+          "40 minutes",
+          "50 minutes"
+        ],
+        "answer": "30 minutes",
+        "explanation": "Count from 12:10 to 12:40."
+      },
+      {
+        "id": "g2-scale-clues",
+        "level": 4,
+        "domain": "Data",
+        "context": "The balance scale shows an apple is heavier than a grape, and a melon is heavier than the apple.",
+        "prompt": "Which object is the heaviest?",
+        "choices": [
+          "melon",
+          "grape",
+          "apple",
+          "all are equal"
+        ],
+        "answer": "melon",
+        "explanation": "The melon is heavier than the apple, which is heavier than the grape."
+      },
+      {
+        "id": "g2-photo-albums",
+        "level": 4,
+        "domain": "Two-step",
+        "context": "A photo album has 4 pages with 6 pictures each. Two pictures are removed.",
+        "prompt": "How many pictures remain?",
+        "choices": [
+          "22",
+          "24",
+          "26",
+          "18"
+        ],
+        "answer": "22",
+        "explanation": "Four pages hold 24; remove two to get 22."
+      },
+      {
+        "id": "g3-field-perimeter",
+        "level": 5,
+        "domain": "Perimeter",
+        "context": "A rectangular field is 12 meters long and 7 meters wide.",
+        "prompt": "What is its perimeter?",
+        "choices": [
+          "38 meters",
+          "19 meters",
+          "84 square meters",
+          "24 meters"
+        ],
+        "answer": "38 meters",
+        "explanation": "Add all four sides: 12 + 7 + 12 + 7 = 38 meters."
+      },
+      {
+        "id": "g3-tile-area",
+        "level": 5,
+        "domain": "Area",
+        "context": "A rectangular floor is 9 tiles long and 6 tiles wide.",
+        "prompt": "What is its area in square tiles?",
+        "choices": [
+          "54 square tiles",
+          "30 square tiles",
+          "15 square tiles",
+          "60 square tiles"
+        ],
+        "answer": "54 square tiles",
+        "explanation": "Area is length multiplied by width, 9 × 6."
+      },
+      {
+        "id": "g3-equivalent-fraction",
+        "level": 5,
+        "domain": "Fractions",
+        "context": "One picture shades 2 of 4 equal parts. Another picture divides a matching whole into 8 equal parts.",
+        "prompt": "How many eighths must be shaded to show the same amount?",
+        "choices": [
+          "4 eighths",
+          "2 eighths",
+          "6 eighths",
+          "8 eighths"
+        ],
+        "answer": "4 eighths",
+        "explanation": "Two fourths equal one half, which is four eighths."
+      },
+      {
+        "id": "g3-bus-groups",
+        "level": 5,
+        "domain": "Division",
+        "context": "A museum group has 72 students and 8 students sit at each activity table.",
+        "prompt": "How many tables are needed?",
+        "choices": [
+          "9 tables",
+          "8 tables",
+          "10 tables",
+          "64 tables"
+        ],
+        "answer": "9 tables",
+        "explanation": "72 ÷ 8 = 9."
+      },
+      {
+        "id": "g3-planting-rows",
+        "level": 5,
+        "domain": "Multiplication",
+        "context": "A garden has 7 rows of 8 carrot plants.",
+        "prompt": "How many carrot plants are there?",
+        "choices": [
+          "56",
+          "48",
+          "15",
+          "64"
+        ],
+        "answer": "56",
+        "explanation": "7 × 8 = 56."
+      },
+      {
+        "id": "g3-water-bottles",
+        "level": 5,
+        "domain": "Multi-step",
+        "context": "A shop has 6 packs of water with 8 bottles each. It sells 15 bottles.",
+        "prompt": "How many bottles remain?",
+        "choices": [
+          "33",
+          "48",
+          "41",
+          "39"
+        ],
+        "answer": "33",
+        "explanation": "6 × 8 = 48. Then 48 − 15 = 33."
+      },
+      {
+        "id": "g3-supply-division",
+        "level": 5,
+        "domain": "Remainders",
+        "context": "There are 50 markers to put into boxes of 6.",
+        "prompt": "How many full boxes can be filled?",
+        "choices": [
+          "8 full boxes",
+          "9 full boxes",
+          "7 full boxes",
+          "6 full boxes"
+        ],
+        "answer": "8 full boxes",
+        "explanation": "Eight groups of six use 48 markers; two remain."
+      },
+      {
+        "id": "g3-fraction-share",
+        "level": 5,
+        "domain": "Fractions",
+        "context": "A ribbon is 18 inches long. Mia uses one-third of it.",
+        "prompt": "How many inches does she use?",
+        "choices": [
+          "6 inches",
+          "9 inches",
+          "3 inches",
+          "12 inches"
+        ],
+        "answer": "6 inches",
+        "explanation": "One third of 18 is 18 ÷ 3 = 6."
+      },
+      {
+        "id": "g3-graph-difference",
+        "level": 5,
+        "domain": "Data",
+        "context": "A picture graph shows 7 bicycles and 12 scooters. Each symbol represents one vehicle.",
+        "prompt": "How many more scooters than bicycles?",
+        "choices": [
+          "5",
+          "19",
+          "7",
+          "12"
+        ],
+        "answer": "5",
+        "explanation": "Subtract 7 bicycles from 12 scooters."
+      },
+      {
+        "id": "g3-liquid-volume",
+        "level": 5,
+        "domain": "Measurement",
+        "context": "A bottle holds 750 mL. A cup holds 250 mL.",
+        "prompt": "How many full cups make 750 mL?",
+        "choices": [
+          "3 cups",
+          "2 cups",
+          "4 cups",
+          "5 cups"
+        ],
+        "answer": "3 cups",
+        "explanation": "750 ÷ 250 = 3."
+      },
+      {
+        "id": "g3-distance-trip",
+        "level": 5,
+        "domain": "Two-step",
+        "context": "A family drives 48 miles to a park and 48 miles home. They also drive 6 miles at the park.",
+        "prompt": "What is the total distance?",
+        "choices": [
+          "102 miles",
+          "96 miles",
+          "54 miles",
+          "108 miles"
+        ],
+        "answer": "102 miles",
+        "explanation": "48 + 48 + 6 = 102 miles."
+      },
+      {
+        "id": "g3-price-comparison",
+        "level": 5,
+        "domain": "Money",
+        "context": "Two books cost $7 each and a notebook costs $4.",
+        "prompt": "How much do all three items cost?",
+        "choices": [
+          "$18",
+          "$14",
+          "$11",
+          "$21"
+        ],
+        "answer": "$18",
+        "explanation": "2 × $7 = $14; add $4."
+      },
+      {
+        "id": "g3-quarter-pizza",
+        "level": 5,
+        "domain": "Fractions",
+        "context": "One pizza is cut into 8 equal slices. Three slices are eaten.",
+        "prompt": "How many slices are left, as a fraction of the whole?",
+        "choices": [
+          "5/8",
+          "3/8",
+          "1/2",
+          "3/5"
+        ],
+        "answer": "5/8",
+        "explanation": "Eight minus three leaves five eighths."
+      },
+      {
+        "id": "g3-rectangle-compare",
+        "level": 5,
+        "domain": "Area",
+        "context": "Rectangle A is 4 by 9 square units. Rectangle B is 6 by 6 square units.",
+        "prompt": "What do their areas have in common?",
+        "choices": [
+          "both have an area of 36 square units",
+          "both have the same perimeter",
+          "both are squares",
+          "both have an area of 24 square units"
+        ],
+        "answer": "both have an area of 36 square units",
+        "explanation": "4 × 9 and 6 × 6 are both 36."
+      },
+      {
+        "id": "g3-estimation",
+        "level": 5,
+        "domain": "Estimation",
+        "context": "A theater has 29 rows with 11 seats in each row.",
+        "prompt": "About how many seats are there?",
+        "choices": [
+          "about 300",
+          "about 100",
+          "about 30",
+          "about 900"
+        ],
+        "answer": "about 300",
+        "explanation": "Round 29 to 30 and 11 to 10, then multiply."
+      },
+      {
+        "id": "g3-clock-arrival",
+        "level": 5,
+        "domain": "Time",
+        "context": "A movie starts at 4:35 PM and lasts 1 hour 20 minutes.",
+        "prompt": "When does it finish?",
+        "choices": [
+          "5:55 PM",
+          "5:35 PM",
+          "6:15 PM",
+          "5:45 PM"
+        ],
+        "answer": "5:55 PM",
+        "explanation": "4:35 plus 1 hour is 5:35, plus 20 minutes is 5:55."
+      },
+      {
+        "id": "g3-budget",
+        "level": 5,
+        "domain": "Money",
+        "context": "Tara has $30. She buys a $12 toy and a $9 puzzle.",
+        "prompt": "How much money remains?",
+        "choices": [
+          "$9",
+          "$21",
+          "$12",
+          "$11"
+        ],
+        "answer": "$9",
+        "explanation": "12 + 9 = 21; 30 − 21 = 9."
+      },
+      {
+        "id": "g3-fraction-length",
+        "level": 5,
+        "domain": "Fractions",
+        "context": "A 24-inch ribbon is divided into 4 equal pieces.",
+        "prompt": "How long is each piece?",
+        "choices": [
+          "6 inches",
+          "4 inches",
+          "8 inches",
+          "20 inches"
+        ],
+        "answer": "6 inches",
+        "explanation": "24 ÷ 4 = 6."
+      },
+      {
+        "id": "g3-number-pattern",
+        "level": 5,
+        "domain": "Patterns",
+        "context": "A sequence is 6, 12, 18, 24, __.",
+        "prompt": "What number belongs in the blank?",
+        "choices": [
+          "30",
+          "26",
+          "28",
+          "36"
+        ],
+        "answer": "30",
+        "explanation": "Each step adds six."
+      },
+      {
+        "id": "g3-table-missing",
+        "level": 5,
+        "domain": "Tables",
+        "context": "A team scores 14, 12 and 19 points in three rounds.",
+        "prompt": "How many points does it score in total?",
+        "choices": [
+          "45 points",
+          "31 points",
+          "35 points",
+          "55 points"
+        ],
+        "answer": "45 points",
+        "explanation": "Add 14 + 12 + 19 = 45."
+      },
+      {
+        "id": "g3-bird-groups",
+        "level": 5,
+        "domain": "Multiplication",
+        "context": "Nine nests have 4 eggs in each nest.",
+        "prompt": "How many eggs are there?",
+        "choices": [
+          "36",
+          "13",
+          "32",
+          "40"
+        ],
+        "answer": "36",
+        "explanation": "9 × 4 = 36."
+      },
+      {
+        "id": "g3-division-check",
+        "level": 5,
+        "domain": "Division",
+        "context": "A student says 63 ÷ 7 = 9.",
+        "prompt": "Which multiplication checks this answer?",
+        "choices": [
+          "7 × 9 = 63",
+          "7 + 9 = 16",
+          "63 × 9 = 567",
+          "9 − 7 = 2"
+        ],
+        "answer": "7 × 9 = 63",
+        "explanation": "Multiplication reverses the division."
+      },
+      {
+        "id": "g3-lesson-share",
+        "level": 5,
+        "domain": "Two-step",
+        "context": "A class has 32 cards. Four students share them equally, then each receives 2 extra cards.",
+        "prompt": "How many cards does each student have now?",
+        "choices": [
+          "10 cards",
+          "8 cards",
+          "12 cards",
+          "6 cards"
+        ],
+        "answer": "10 cards",
+        "explanation": "32 ÷ 4 = 8, then add 2."
+      },
+      {
+        "id": "g3-bicycle-route",
+        "level": 5,
+        "domain": "Data",
+        "context": "Route A has 4 miles uphill and 3 miles downhill. Route B has 5 miles uphill and 1 mile downhill.",
+        "prompt": "Which route is shorter?",
+        "choices": [
+          "Route B by 1 mile",
+          "Route A by 1 mile",
+          "they are the same length",
+          "Route B by 3 miles"
+        ],
+        "answer": "Route B by 1 mile",
+        "explanation": "Route A is 7 miles, Route B is 6 miles."
+      },
+      {
+        "id": "g3-map-grid",
+        "level": 5,
+        "domain": "Coordinates",
+        "context": "On a simple grid, you start at (2,3) and move 3 squares right without moving up or down.",
+        "prompt": "Where do you end?",
+        "choices": [
+          "(5,3)",
+          "(2,6)",
+          "(3,5)",
+          "(5,6)"
+        ],
+        "answer": "(5,3)",
+        "explanation": "Moving right increases the first coordinate."
+      },
+      {
+        "id": "g3-fraction-compare",
+        "level": 5,
+        "domain": "Fractions",
+        "context": "The same-sized cakes are divided into equal slices. Cake A has 3/4 left; cake B has 2/4 left.",
+        "prompt": "Which cake has more left?",
+        "choices": [
+          "Cake A",
+          "Cake B",
+          "both have the same amount",
+          "not enough information"
+        ],
+        "answer": "Cake A",
+        "explanation": "Three fourths is greater than two fourths."
+      },
+      {
+        "id": "g3-rectangle-side",
+        "level": 5,
+        "domain": "Perimeter",
+        "context": "A rectangle has perimeter 30 cm and length 9 cm.",
+        "prompt": "What is its width?",
+        "choices": [
+          "6 cm",
+          "12 cm",
+          "21 cm",
+          "3 cm"
+        ],
+        "answer": "6 cm",
+        "explanation": "The two lengths total 18, leaving 12 for two equal widths."
+      },
+      {
+        "id": "g3-weekly-reading",
+        "level": 5,
+        "domain": "Multiplication",
+        "context": "Liam reads 9 pages every evening for 7 evenings.",
+        "prompt": "How many pages does he read in all?",
+        "choices": [
+          "63 pages",
+          "16 pages",
+          "72 pages",
+          "54 pages"
+        ],
+        "answer": "63 pages",
+        "explanation": "9 × 7 = 63."
+      },
+      {
+        "id": "g3-temperature-chart",
+        "level": 5,
+        "domain": "Data",
+        "context": "Morning temperature was 12°C, afternoon 19°C, and evening 15°C.",
+        "prompt": "How much warmer was afternoon than morning?",
+        "choices": [
+          "7°C",
+          "3°C",
+          "31°C",
+          "4°C"
+        ],
+        "answer": "7°C",
+        "explanation": "19 − 12 = 7 degrees."
+      },
+      {
+        "id": "g3-bookshelves",
+        "level": 5,
+        "domain": "Two-step",
+        "context": "A library has 5 shelves with 9 books each. It moves 13 books to another room.",
+        "prompt": "How many books remain on the shelves?",
+        "choices": [
+          "32 books",
+          "45 books",
+          "58 books",
+          "36 books"
+        ],
+        "answer": "32 books",
+        "explanation": "5 × 9 = 45; 45 − 13 = 32."
+      },
+      {
+        "id": "g3-mass-apples",
+        "level": 5,
+        "domain": "Measurement",
+        "context": "Four identical apples each have a mass of 150 grams.",
+        "prompt": "What is their total mass?",
+        "choices": [
+          "600 grams",
+          "450 grams",
+          "154 grams",
+          "1,500 grams"
+        ],
+        "answer": "600 grams",
+        "explanation": "4 × 150 = 600 grams."
+      },
+      {
+        "id": "g3-miles-compare",
+        "level": 5,
+        "domain": "Compare",
+        "context": "Jules bikes 3 miles on Monday, 5 on Tuesday and 4 on Wednesday. Kim bikes 10 miles in all.",
+        "prompt": "How many more miles did Jules bike?",
+        "choices": [
+          "2 miles",
+          "12 miles",
+          "4 miles",
+          "5 miles"
+        ],
+        "answer": "2 miles",
+        "explanation": "Jules biked 12 miles; 12 − 10 = 2."
+      }
+    ]
+  }
 }
