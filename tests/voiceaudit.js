@@ -3,9 +3,9 @@ const { chromium } = require('playwright');
   const b = await chromium.launch({ executablePath: process.env.CHROME_BIN || '/usr/bin/google-chrome', args: ['--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist','--autoplay-policy=no-user-gesture-required'] });
   const p = await b.newPage({ viewport: { width: 390, height: 844 } });
   const errs = []; p.on('pageerror', e => errs.push(e.stack.split('\n').slice(0,3).join(' | ')));
-  await p.goto('http://localhost:8765/index.html');
+  await p.goto('http://localhost:8765/index.html'); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady);
   await p.evaluate(() => { localStorage.setItem('learnplay.v1', JSON.stringify({ optAnatomy: true, optClock: true, testMode: true, voice: true, name: 'Shivika' })); });
-  await p.reload();
+  await p.reload(); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady);
   await p.evaluate(() => document.getElementById('startBtn').click());
   await p.waitForTimeout(1500);
   const misses = await p.evaluate(async () => {

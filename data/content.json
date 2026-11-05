@@ -1,0 +1,5714 @@
+{
+  "schema": 1,
+  "namespace": "content",
+  "datasets": {
+    "W3": [
+      [
+        "cat",
+        "🐱"
+      ],
+      [
+        "dog",
+        "🐶"
+      ],
+      [
+        "pig",
+        "🐷"
+      ],
+      [
+        "hen",
+        "🐔"
+      ],
+      [
+        "bat",
+        "🦇"
+      ],
+      [
+        "bus",
+        "🚌"
+      ],
+      [
+        "sun",
+        "☀️"
+      ],
+      [
+        "cup",
+        "🥤"
+      ],
+      [
+        "bed",
+        "🛏️"
+      ],
+      [
+        "box",
+        "📦"
+      ],
+      [
+        "fox",
+        "🦊"
+      ],
+      [
+        "hat",
+        "🎩"
+      ],
+      [
+        "map",
+        "🗺️"
+      ],
+      [
+        "cub",
+        "🐻"
+      ],
+      [
+        "pen",
+        "🖊️"
+      ],
+      [
+        "pot",
+        "🍲"
+      ],
+      [
+        "rat",
+        "🐀"
+      ],
+      [
+        "web",
+        "🕸️"
+      ],
+      [
+        "bug",
+        "🐛"
+      ],
+      [
+        "net",
+        "🥅"
+      ],
+      [
+        "van",
+        "🚐"
+      ],
+      [
+        "log",
+        "🪵"
+      ],
+      [
+        "leg",
+        "🦵"
+      ],
+      [
+        "bag",
+        "👜"
+      ],
+      [
+        "cap",
+        "🧢"
+      ],
+      [
+        "can",
+        "🥫"
+      ],
+      [
+        "kid",
+        "🧒"
+      ],
+      [
+        "man",
+        "👨"
+      ],
+      [
+        "pan",
+        "🍳"
+      ],
+      [
+        "ram",
+        "🐏"
+      ],
+      [
+        "nut",
+        "🥜"
+      ],
+      [
+        "six",
+        "6️⃣"
+      ],
+      [
+        "ten",
+        "🔟"
+      ],
+      [
+        "jet",
+        "🛩️"
+      ],
+      [
+        "lip",
+        "👄"
+      ],
+      [
+        "pin",
+        "📌"
+      ],
+      [
+        "hut",
+        "🛖"
+      ],
+      [
+        "tub",
+        "🛁"
+      ],
+      [
+        "red",
+        "🔴"
+      ],
+      [
+        "sad",
+        "😢"
+      ],
+      [
+        "wet",
+        "💦"
+      ],
+      [
+        "hug",
+        "🤗"
+      ],
+      [
+        "mud",
+        "🟤"
+      ],
+      [
+        "ant",
+        "🐜"
+      ],
+      [
+        "pie",
+        "🥧"
+      ],
+      [
+        "key",
+        "🔑"
+      ],
+      [
+        "mug",
+        "☕"
+      ],
+      [
+        "fly",
+        "🪰"
+      ],
+      [
+        "bee",
+        "🐝"
+      ],
+      [
+        "boy",
+        "👦"
+      ],
+      [
+        "toy",
+        "🧸"
+      ],
+      [
+        "owl",
+        "🦉"
+      ],
+      [
+        "run",
+        "🏃"
+      ],
+      [
+        "hot",
+        "🥵"
+      ],
+      [
+        "see",
+        "👀"
+      ]
+    ],
+    "W4": [
+      [
+        "frog",
+        "🐸"
+      ],
+      [
+        "duck",
+        "🦆"
+      ],
+      [
+        "fish",
+        "🐟"
+      ],
+      [
+        "crab",
+        "🦀"
+      ],
+      [
+        "drum",
+        "🥁"
+      ],
+      [
+        "bell",
+        "🔔"
+      ],
+      [
+        "cake",
+        "🍰"
+      ],
+      [
+        "kite",
+        "🪁"
+      ],
+      [
+        "moon",
+        "🌙"
+      ],
+      [
+        "star",
+        "⭐"
+      ],
+      [
+        "ship",
+        "🚢"
+      ],
+      [
+        "milk",
+        "🥛"
+      ],
+      [
+        "sock",
+        "🧦"
+      ],
+      [
+        "tree",
+        "🌳"
+      ],
+      [
+        "bird",
+        "🐦"
+      ],
+      [
+        "lion",
+        "🦁"
+      ],
+      [
+        "bear",
+        "🐻"
+      ],
+      [
+        "ball",
+        "⚽"
+      ],
+      [
+        "book",
+        "📖"
+      ],
+      [
+        "boat",
+        "⛵"
+      ],
+      [
+        "corn",
+        "🌽"
+      ],
+      [
+        "door",
+        "🚪"
+      ],
+      [
+        "hand",
+        "✋"
+      ],
+      [
+        "lamp",
+        "💡"
+      ],
+      [
+        "rain",
+        "🌧️"
+      ],
+      [
+        "ring",
+        "💍"
+      ],
+      [
+        "rose",
+        "🌹"
+      ],
+      [
+        "shoe",
+        "👟"
+      ],
+      [
+        "snow",
+        "❄️"
+      ],
+      [
+        "worm",
+        "🪱"
+      ],
+      [
+        "gift",
+        "🎁"
+      ],
+      [
+        "lock",
+        "🔒"
+      ],
+      [
+        "nose",
+        "👃"
+      ],
+      [
+        "foot",
+        "🦶"
+      ],
+      [
+        "king",
+        "🤴"
+      ],
+      [
+        "goat",
+        "🐐"
+      ],
+      [
+        "deer",
+        "🦌"
+      ],
+      [
+        "swan",
+        "🦢"
+      ],
+      [
+        "seal",
+        "🦭"
+      ],
+      [
+        "sled",
+        "🛷"
+      ],
+      [
+        "pear",
+        "🍐"
+      ],
+      [
+        "bone",
+        "🦴"
+      ],
+      [
+        "tent",
+        "⛺"
+      ],
+      [
+        "bike",
+        "🚲"
+      ],
+      [
+        "home",
+        "🏠"
+      ],
+      [
+        "leaf",
+        "🍃"
+      ],
+      [
+        "nest",
+        "🪺"
+      ],
+      [
+        "soap",
+        "🧼"
+      ],
+      [
+        "mask",
+        "🎭"
+      ],
+      [
+        "coin",
+        "🪙"
+      ],
+      [
+        "vase",
+        "🏺"
+      ],
+      [
+        "girl",
+        "👧"
+      ],
+      [
+        "wolf",
+        "🐺"
+      ],
+      [
+        "wing",
+        "🪽"
+      ],
+      [
+        "food",
+        "🍱"
+      ],
+      [
+        "blue",
+        "🔵"
+      ],
+      [
+        "pink",
+        "🩷"
+      ],
+      [
+        "stop",
+        "🛑"
+      ],
+      [
+        "cold",
+        "🥶"
+      ],
+      [
+        "tube",
+        "🧪"
+      ]
+    ],
+    "W5": [
+      [
+        "truck",
+        "🚚"
+      ],
+      [
+        "tiger",
+        "🐯"
+      ],
+      [
+        "brick",
+        "🧱"
+      ],
+      [
+        "puppy",
+        "🐶"
+      ],
+      [
+        "nurse",
+        "🧑‍⚕️"
+      ],
+      [
+        "brush",
+        "🪥"
+      ],
+      [
+        "woman",
+        "👩"
+      ],
+      [
+        "green",
+        "🟢"
+      ],
+      [
+        "white",
+        "⚪"
+      ],
+      [
+        "black",
+        "⚫"
+      ],
+      [
+        "brown",
+        "🟤"
+      ],
+      [
+        "yo-yo",
+        "🪀"
+      ],
+      [
+        "apple",
+        "🍎"
+      ],
+      [
+        "bread",
+        "🍞"
+      ],
+      [
+        "clock",
+        "🕰️"
+      ],
+      [
+        "train",
+        "🚆"
+      ],
+      [
+        "sheep",
+        "🐑"
+      ],
+      [
+        "zebra",
+        "🦓"
+      ],
+      [
+        "robot",
+        "🤖"
+      ],
+      [
+        "pizza",
+        "🍕"
+      ],
+      [
+        "shirt",
+        "👕"
+      ],
+      [
+        "chair",
+        "🪑"
+      ],
+      [
+        "snake",
+        "🐍"
+      ],
+      [
+        "horse",
+        "🐴"
+      ]
+    ],
+    "WL": [
+      [
+        "orange",
+        "🍊"
+      ],
+      [
+        "anchor",
+        "⚓"
+      ],
+      [
+        "mother",
+        "👩‍👧"
+      ],
+      [
+        "father",
+        "👨‍👧"
+      ],
+      [
+        "sister",
+        "👭"
+      ],
+      [
+        "brother",
+        "👬"
+      ],
+      [
+        "alligator",
+        "🐊"
+      ],
+      [
+        "yellow",
+        "🟡"
+      ],
+      [
+        "purple",
+        "🟣"
+      ],
+      [
+        "rabbit",
+        "🐰"
+      ],
+      [
+        "monkey",
+        "🐵"
+      ],
+      [
+        "turtle",
+        "🐢"
+      ],
+      [
+        "rocket",
+        "🚀"
+      ],
+      [
+        "pencil",
+        "✏️"
+      ],
+      [
+        "spider",
+        "🕷️"
+      ],
+      [
+        "flower",
+        "🌸"
+      ],
+      [
+        "banana",
+        "🍌"
+      ],
+      [
+        "carrot",
+        "🥕"
+      ],
+      [
+        "castle",
+        "🏰"
+      ],
+      [
+        "penguin",
+        "🐧"
+      ],
+      [
+        "balloon",
+        "🎈"
+      ],
+      [
+        "dragon",
+        "🐉"
+      ]
+    ],
+    "SYL_FIX": {
+      "orange": "or-ange",
+      "away": "a-way",
+      "lion": "li-on",
+      "yo-yo": "yo-yo",
+      "every": "ev-er-y",
+      "animal": "an-i-mal",
+      "elephant": "el-e-phant",
+      "giraffe": "gi-raffe",
+      "alligator": "al-li-ga-tor",
+      "zebra": "ze-bra",
+      "hello": "hel-lo",
+      "video": "vid-e-o",
+      "idea": "i-de-a",
+      "ocean": "o-cean",
+      "people": "peo-ple",
+      "water": "wa-ter",
+      "over": "o-ver",
+      "under": "un-der",
+      "baby": "ba-by",
+      "lady": "la-dy",
+      "tiny": "ti-ny",
+      "pony": "po-ny",
+      "seven": "sev-en",
+      "river": "riv-er",
+      "woman": "wom-an",
+      "robot": "ro-bot",
+      "gentle": "gen-tle",
+      "tiger": "ti-ger",
+      "spider": "spi-der",
+      "even": "e-ven",
+      "open": "o-pen",
+      "cozy": "co-zy",
+      "many": "man-y",
+      "pizza": "piz-za",
+      "penguin": "pen-guin",
+      "dinosaur": "di-no-saur",
+      "umbrella": "um-brel-la",
+      "computer": "com-pu-ter",
+      "television": "tel-e-vi-sion",
+      "avocado": "av-o-ca-do",
+      "tomato": "to-ma-to",
+      "kangaroo": "kan-ga-roo",
+      "helicopter": "hel-i-cop-ter",
+      "watermelon": "wa-ter-mel-on",
+      "caterpillar": "cat-er-pil-lar",
+      "octopus": "oc-to-pus",
+      "ladybug": "la-dy-bug",
+      "strawberry": "straw-ber-ry",
+      "butterfly": "but-ter-fly",
+      "banana": "ba-na-na",
+      "cookie": "cook-ie",
+      "monkey": "mon-key",
+      "flower": "flow-er",
+      "birthday": "birth-day",
+      "rainbow": "rain-bow",
+      "frightened": "fright-ened",
+      "generous": "gen-er-ous",
+      "marvelous": "mar-vel-ous",
+      "predator": "pred-a-tor",
+      "because": "be-cause",
+      "grandma": "grand-ma",
+      "magician": "ma-gi-cian",
+      "library": "li-brar-y",
+      "delicious": "de-li-cious"
+    },
+    "SIGHT": [
+      [
+        "I",
+        "pron",
+        1
+      ],
+      [
+        "see",
+        "verb",
+        1
+      ],
+      [
+        "go",
+        "verb",
+        1
+      ],
+      [
+        "up",
+        "prep",
+        1
+      ],
+      [
+        "no",
+        "misc",
+        1
+      ],
+      [
+        "yes",
+        "misc",
+        1
+      ],
+      [
+        "he",
+        "pron",
+        1
+      ],
+      [
+        "she",
+        "pron",
+        1
+      ],
+      [
+        "like",
+        "verb",
+        1
+      ],
+      [
+        "big",
+        "adj",
+        1
+      ],
+      [
+        "run",
+        "verb",
+        1
+      ],
+      [
+        "fun",
+        "adj",
+        1
+      ],
+      [
+        "stop",
+        "verb",
+        1
+      ],
+      [
+        "the",
+        "misc",
+        1
+      ],
+      [
+        "down",
+        "prep",
+        2
+      ],
+      [
+        "here",
+        "prep",
+        2
+      ],
+      [
+        "all",
+        "misc",
+        2
+      ],
+      [
+        "some",
+        "misc",
+        2
+      ],
+      [
+        "went",
+        "verb",
+        2
+      ],
+      [
+        "away",
+        "prep",
+        2
+      ],
+      [
+        "make",
+        "verb",
+        2
+      ],
+      [
+        "take",
+        "verb",
+        2
+      ],
+      [
+        "good",
+        "adj",
+        2
+      ],
+      [
+        "bad",
+        "adj",
+        2
+      ],
+      [
+        "happy",
+        "adj",
+        2
+      ],
+      [
+        "sad",
+        "adj",
+        2
+      ],
+      [
+        "hot",
+        "adj",
+        2
+      ],
+      [
+        "cold",
+        "adj",
+        2
+      ],
+      [
+        "not",
+        "misc",
+        2
+      ],
+      [
+        "but",
+        "misc",
+        2
+      ],
+      [
+        "same",
+        "adj",
+        2
+      ],
+      [
+        "we",
+        "pron",
+        2
+      ],
+      [
+        "from",
+        "prep",
+        3
+      ],
+      [
+        "over",
+        "prep",
+        3
+      ],
+      [
+        "under",
+        "prep",
+        3
+      ],
+      [
+        "write",
+        "verb",
+        3
+      ],
+      [
+        "wrong",
+        "adj",
+        3
+      ],
+      [
+        "smell",
+        "verb",
+        3
+      ],
+      [
+        "touch",
+        "verb",
+        3
+      ],
+      [
+        "crawl",
+        "verb",
+        3
+      ],
+      [
+        "ride",
+        "verb",
+        3
+      ],
+      [
+        "chew",
+        "verb",
+        3
+      ],
+      [
+        "huge",
+        "adj",
+        3
+      ],
+      [
+        "rude",
+        "adj",
+        3
+      ],
+      [
+        "heat",
+        "noun",
+        3
+      ],
+      [
+        "hang",
+        "verb",
+        3
+      ],
+      [
+        "exit",
+        "noun",
+        3
+      ]
+    ],
+    "FILL": [
+      [
+        "I ___ my dog.",
+        "like",
+        1
+      ],
+      [
+        "I can ___ the moon.",
+        "see",
+        1
+      ],
+      [
+        "Look ___ at the sky!",
+        "up",
+        1
+      ],
+      [
+        "___ is my brother.",
+        "He",
+        1
+      ],
+      [
+        "___ is my sister.",
+        "She",
+        1
+      ],
+      [
+        "Red means ___.",
+        "stop",
+        1
+      ],
+      [
+        "Green means ___.",
+        "go",
+        1
+      ],
+      [
+        "An elephant is ___.",
+        "big",
+        1
+      ],
+      [
+        "I can ___ fast.",
+        "run",
+        1
+      ],
+      [
+        "The party was so much ___!",
+        "fun",
+        1
+      ],
+      [
+        "Is it a cat? ___, it is!",
+        "Yes",
+        1
+      ],
+      [
+        "___, it is not a dog.",
+        "No",
+        1
+      ],
+      [
+        "Mom and I ___ to the park.",
+        "went",
+        2
+      ],
+      [
+        "The cat ran ___.",
+        "away",
+        2
+      ],
+      [
+        "Come ___ and sit with me.",
+        "here",
+        2
+      ],
+      [
+        "Can you ___ a cake?",
+        "make",
+        2
+      ],
+      [
+        "Please ___ one cookie.",
+        "take",
+        2
+      ],
+      [
+        "You did a ___ job!",
+        "good",
+        2
+      ],
+      [
+        "I am ___ on my birthday.",
+        "happy",
+        2
+      ],
+      [
+        "He is ___ because he lost his toy.",
+        "sad",
+        2
+      ],
+      [
+        "The sun is ___.",
+        "hot",
+        2
+      ],
+      [
+        "Ice is very ___.",
+        "cold",
+        2
+      ],
+      [
+        "Can I have ___ juice?",
+        "some",
+        2
+      ],
+      [
+        "We have the ___ shoes!",
+        "same",
+        2
+      ],
+      [
+        "Sit ___ on the rug.",
+        "down",
+        2
+      ],
+      [
+        "Did you eat ___ your peas?",
+        "all",
+        2
+      ],
+      [
+        "A fish can ___ walk.",
+        "not",
+        2
+      ],
+      [
+        "I like milk, ___ I do not like tea.",
+        "but",
+        2
+      ],
+      [
+        "___ like to play together.",
+        "We",
+        2
+      ],
+      [
+        "I got a gift ___ Grandma.",
+        "from",
+        3
+      ],
+      [
+        "The bird flew ___ the tree.",
+        "over",
+        3
+      ],
+      [
+        "The cat hid ___ the bed.",
+        "under",
+        3
+      ],
+      [
+        "I like to ___ my bike.",
+        "ride",
+        3
+      ],
+      [
+        "A baby can ___ on the floor.",
+        "crawl",
+        3
+      ],
+      [
+        "I can ___ my name.",
+        "write",
+        3
+      ],
+      [
+        "I ___ the flowers with my nose.",
+        "smell",
+        3
+      ],
+      [
+        "Do not ___ the hot stove.",
+        "touch",
+        3
+      ],
+      [
+        "A whale is ___.",
+        "huge",
+        3
+      ],
+      [
+        "It is ___ to grab toys.",
+        "rude",
+        3
+      ],
+      [
+        "___ your food with your mouth closed.",
+        "Chew",
+        3
+      ],
+      [
+        "That answer is ___. Try again!",
+        "wrong",
+        3
+      ],
+      [
+        "Please ___ your coat on the hook.",
+        "hang",
+        3
+      ],
+      [
+        "The fire gives off ___.",
+        "heat",
+        3
+      ],
+      [
+        "Go out the ___ door.",
+        "exit",
+        3
+      ]
+    ],
+    "OPPOSITES": [
+      [
+        "up",
+        "down"
+      ],
+      [
+        "over",
+        "under"
+      ],
+      [
+        "yes",
+        "no"
+      ],
+      [
+        "hot",
+        "cold"
+      ],
+      [
+        "happy",
+        "sad"
+      ],
+      [
+        "good",
+        "bad"
+      ],
+      [
+        "go",
+        "stop"
+      ],
+      [
+        "big",
+        "small"
+      ],
+      [
+        "fast",
+        "slow"
+      ],
+      [
+        "in",
+        "out"
+      ],
+      [
+        "huge",
+        "tiny"
+      ],
+      [
+        "take",
+        "give"
+      ],
+      [
+        "right",
+        "wrong"
+      ]
+    ],
+    "SPELL3": [
+      "cat",
+      "dog",
+      "pig",
+      "hen",
+      "bat",
+      "bus",
+      "sun",
+      "cup",
+      "bed",
+      "box",
+      "fox",
+      "hat",
+      "map",
+      "pen",
+      "web",
+      "bug",
+      "van",
+      "leg",
+      "bag",
+      "cap",
+      "can",
+      "cub",
+      "pan",
+      "nut",
+      "jet",
+      "pin",
+      "tub",
+      "log",
+      "rat",
+      "net",
+      "ant",
+      "pie",
+      "key",
+      "mug",
+      "fly",
+      "bee",
+      "boy",
+      "toy",
+      "owl",
+      "red"
+    ],
+    "SPELL4": [
+      "frog",
+      "duck",
+      "fish",
+      "crab",
+      "drum",
+      "bell",
+      "cake",
+      "kite",
+      "moon",
+      "star",
+      "ship",
+      "milk",
+      "sock",
+      "tree",
+      "bird",
+      "lion",
+      "bear",
+      "ball",
+      "book",
+      "boat",
+      "corn",
+      "door",
+      "hand",
+      "lamp",
+      "ring",
+      "rose",
+      "shoe",
+      "snow",
+      "gift",
+      "lock",
+      "nose",
+      "foot",
+      "king",
+      "goat",
+      "deer",
+      "swan",
+      "seal",
+      "pear",
+      "bone",
+      "tent",
+      "bike",
+      "leaf",
+      "nest",
+      "soap",
+      "mask",
+      "coin",
+      "vase",
+      "girl",
+      "wolf",
+      "wing",
+      "food",
+      "blue",
+      "pink",
+      "stop"
+    ],
+    "SPELL5": [
+      "truck",
+      "tiger",
+      "brick",
+      "puppy",
+      "nurse",
+      "brush",
+      "woman",
+      "green",
+      "white",
+      "black",
+      "brown",
+      "apple",
+      "bread",
+      "clock",
+      "train",
+      "sheep",
+      "zebra",
+      "robot",
+      "pizza",
+      "shirt",
+      "chair",
+      "snake",
+      "horse"
+    ],
+    "SPELLL": [
+      "orange",
+      "anchor",
+      "mother",
+      "father",
+      "sister",
+      "brother",
+      "yellow",
+      "purple",
+      "rabbit",
+      "monkey",
+      "turtle",
+      "rocket",
+      "pencil",
+      "spider",
+      "flower",
+      "banana",
+      "carrot",
+      "castle",
+      "alligator"
+    ],
+    "SENTENCES": [
+      [
+        "The cat is on the mat.",
+        "Where is the cat?",
+        [
+          "on the mat",
+          "in the box",
+          "in the bed"
+        ]
+      ],
+      [
+        "The dog can run.",
+        "What can the dog do?",
+        [
+          "run 🏃",
+          "fly 🕊️",
+          "read 📖"
+        ]
+      ],
+      [
+        "I see a red hen.",
+        "What color is the hen?",
+        [
+          "red 🔴",
+          "blue 🔵",
+          "green 🟢"
+        ]
+      ],
+      [
+        "The sun is hot.",
+        "What is hot?",
+        [
+          "the sun ☀️",
+          "the snow ❄️",
+          "the ice 🧊"
+        ]
+      ],
+      [
+        "Sam has a big hat.",
+        "Who has a hat?",
+        [
+          "Sam",
+          "Pam",
+          "Tom"
+        ]
+      ],
+      [
+        "The pig is in the mud.",
+        "Where is the pig?",
+        [
+          "in the mud",
+          "on the bus",
+          "in the van"
+        ]
+      ],
+      [
+        "A fox sat on a log.",
+        "Who sat on a log?",
+        [
+          "a fox 🦊",
+          "a cat 🐱",
+          "a hen 🐔"
+        ]
+      ],
+      [
+        "I can see six ducks.",
+        "How many ducks?",
+        [
+          "6",
+          "3",
+          "10"
+        ]
+      ],
+      [
+        "The frog can jump.",
+        "What can the frog do?",
+        [
+          "jump",
+          "sing",
+          "cook"
+        ]
+      ],
+      [
+        "Mom has a blue cup.",
+        "What does Mom have?",
+        [
+          "a cup 🥤",
+          "a hat 🎩",
+          "a bag 👜"
+        ]
+      ],
+      [
+        "The bus is big and yellow.",
+        "What color is the bus?",
+        [
+          "yellow 🟡",
+          "pink 🩷",
+          "black ⚫"
+        ]
+      ],
+      [
+        "Ben fed the fish.",
+        "What did Ben feed?",
+        [
+          "the fish 🐟",
+          "the dog 🐶",
+          "the cat 🐱"
+        ]
+      ],
+      [
+        "The bug is on the rug.",
+        "Where is the bug?",
+        [
+          "on the rug",
+          "on the bed",
+          "in the cup"
+        ]
+      ],
+      [
+        "We go to the park.",
+        "Where do we go?",
+        [
+          "the park 🌳",
+          "the shop 🏪",
+          "the zoo 🦁"
+        ]
+      ],
+      [
+        "The moon is up at night.",
+        "When is the moon up?",
+        [
+          "at night 🌙",
+          "at lunch 🥪",
+          "in the bath 🛁"
+        ]
+      ],
+      [
+        "I like to eat cake.",
+        "What do I like to eat?",
+        [
+          "cake 🍰",
+          "soap 🧼",
+          "rocks 🪨"
+        ]
+      ],
+      [
+        "The bird is in the nest.",
+        "Where is the bird?",
+        [
+          "in the nest",
+          "in the pot",
+          "in the car"
+        ]
+      ],
+      [
+        "Dad can fix the car.",
+        "What can Dad fix?",
+        [
+          "the car 🚗",
+          "the cake 🍰",
+          "the moon 🌙"
+        ]
+      ],
+      [
+        "It is cold. I see snow.",
+        "What do I see?",
+        [
+          "snow ❄️",
+          "sand 🏖️",
+          "a sun ☀️"
+        ]
+      ],
+      [
+        "The kid has a red kite.",
+        "What does the kid have?",
+        [
+          "a kite 🪁",
+          "a ball ⚽",
+          "a book 📖"
+        ]
+      ],
+      [
+        "Ten hens sat in a pen.",
+        "How many hens?",
+        [
+          "10",
+          "2",
+          "5"
+        ]
+      ],
+      [
+        "The duck can swim in the pond.",
+        "Where does the duck swim?",
+        [
+          "in the pond",
+          "in the sky",
+          "in the bed"
+        ]
+      ],
+      [
+        "I have a pet cat. Her name is Dot.",
+        "What is the cat's name?",
+        [
+          "Dot",
+          "Max",
+          "Sam"
+        ]
+      ],
+      [
+        "The ball is under the bed.",
+        "Where is the ball?",
+        [
+          "under the bed",
+          "on the tree",
+          "in the sun"
+        ]
+      ],
+      [
+        "I brush my teeth at night.",
+        "What do I brush?",
+        [
+          "my teeth 🦷",
+          "the dog 🐶",
+          "my shoe 👟"
+        ]
+      ],
+      [
+        "The big bear ate a fish.",
+        "What did the bear eat?",
+        [
+          "a fish 🐟",
+          "a cake 🍰",
+          "a hat 🎩"
+        ]
+      ],
+      [
+        "The ant is on a leaf.",
+        "Where is the ant?",
+        [
+          "on a leaf 🍃",
+          "in a cup 🥤",
+          "on a bus 🚌"
+        ]
+      ],
+      [
+        "The owl can see at night.",
+        "When can the owl see?",
+        [
+          "at night 🌙",
+          "at lunch 🥪",
+          "in the bath 🛁"
+        ]
+      ],
+      [
+        "A bee is on the pink flower.",
+        "What color is the flower?",
+        [
+          "pink 🩷",
+          "blue 🔵",
+          "black ⚫"
+        ]
+      ],
+      [
+        "The boy and the girl ride a bike.",
+        "What do they ride?",
+        [
+          "a bike 🚲",
+          "a boat ⛵",
+          "a truck 🚚"
+        ]
+      ],
+      [
+        "My mother has a red mug.",
+        "What does Mother have?",
+        [
+          "a mug ☕",
+          "a key 🔑",
+          "a coin 🪙"
+        ]
+      ],
+      [
+        "The wolf ran up the hill.",
+        "Who ran up the hill?",
+        [
+          "the wolf 🐺",
+          "the fox 🦊",
+          "the crab 🦀"
+        ]
+      ],
+      [
+        "Dad put the key in the box.",
+        "Where is the key?",
+        [
+          "in the box 📦",
+          "under the bed 🛏️",
+          "on the boat ⛵"
+        ]
+      ],
+      [
+        "The puppy likes to chew a bone.",
+        "What does the puppy chew?",
+        [
+          "a bone 🦴",
+          "a coin 🪙",
+          "a vase 🏺"
+        ]
+      ],
+      [
+        "The tiger is huge and orange.",
+        "What color is the tiger?",
+        [
+          "orange 🟠",
+          "green 🟢",
+          "purple 🟣"
+        ]
+      ],
+      [
+        "A crab went under a rock.",
+        "Where did the crab go?",
+        [
+          "under a rock",
+          "over a tree",
+          "up a hill"
+        ]
+      ],
+      [
+        "My brother and sister went to the park.",
+        "Where did they go?",
+        [
+          "the park 🌳",
+          "the shop 🏪",
+          "the ship 🚢"
+        ]
+      ],
+      [
+        "The truck is big, but the bike is small.",
+        "What is small?",
+        [
+          "the bike 🚲",
+          "the truck 🚚",
+          "the ship 🚢"
+        ]
+      ],
+      [
+        "The nurse helps sick kids.",
+        "Who helps sick kids?",
+        [
+          "the nurse 🧑‍⚕️",
+          "the king 🤴",
+          "the wolf 🐺"
+        ]
+      ],
+      [
+        "The king has a gold coin.",
+        "What does the king have?",
+        [
+          "a coin 🪙",
+          "a mask 🎭",
+          "a pie 🥧"
+        ]
+      ],
+      [
+        "The fish swims by the ship.",
+        "What swims by the ship?",
+        [
+          "the fish 🐟",
+          "the fly 🪰",
+          "the owl 🦉"
+        ]
+      ],
+      [
+        "I smell a hot apple pie.",
+        "What do I smell?",
+        [
+          "a pie 🥧",
+          "a sock 🧦",
+          "a drum 🥁"
+        ]
+      ],
+      [
+        "Stop at the red light. Go at the green light.",
+        "When do we go?",
+        [
+          "at the green light 🟢",
+          "at the red light 🔴",
+          "at night 🌙"
+        ]
+      ],
+      [
+        "The alligator has a long tail and sharp teeth.",
+        "Who has sharp teeth?",
+        [
+          "the alligator 🐊",
+          "the bee 🐝",
+          "the yo-yo 🪀"
+        ]
+      ],
+      [
+        "Do not touch the stove. It is hot!",
+        "Why not touch the stove?",
+        [
+          "it is hot 🔥",
+          "it is cold 🧊",
+          "it is wet 💦"
+        ]
+      ],
+      [
+        "The baby can crawl, but she can not walk yet.",
+        "What can the baby do?",
+        [
+          "crawl 👶",
+          "run 🏃",
+          "ride a bike 🚲"
+        ]
+      ],
+      [
+        "It is rude to take a toy from a friend.",
+        "What is rude?",
+        [
+          "taking a toy from a friend",
+          "sharing a toy",
+          "saying thank you"
+        ]
+      ],
+      [
+        "I write my name with a blue pen.",
+        "What color is the pen?",
+        [
+          "blue 🔵",
+          "pink 🩷",
+          "brown 🟤"
+        ]
+      ],
+      [
+        "The boat has a big anchor.",
+        "What does the boat have?",
+        [
+          "an anchor ⚓",
+          "a wing 🪽",
+          "a vase 🏺"
+        ]
+      ],
+      [
+        "A bird can fly, but a fish can not.",
+        "Who can fly?",
+        [
+          "a bird 🐦",
+          "a fish 🐟",
+          "a crab 🦀"
+        ]
+      ],
+      [
+        "Hang your coat by the door.",
+        "Where do you hang your coat?",
+        [
+          "by the door 🚪",
+          "in the tub 🛁",
+          "on the truck 🚚"
+        ]
+      ],
+      [
+        "The orange is in the yellow bowl.",
+        "What is in the bowl?",
+        [
+          "an orange 🍊",
+          "a key 🔑",
+          "a brick 🧱"
+        ]
+      ],
+      [
+        "Father made a pie for all of us.",
+        "Who made the pie?",
+        [
+          "Father",
+          "the king",
+          "the nurse"
+        ]
+      ],
+      [
+        "The man and the woman like to read.",
+        "What do they like to do?",
+        [
+          "read 📖",
+          "swim 🏊",
+          "cook 🍳"
+        ]
+      ],
+      [
+        "The yo-yo goes up and down.",
+        "How does the yo-yo go?",
+        [
+          "up and down",
+          "over and under",
+          "in and out"
+        ]
+      ],
+      [
+        "The little brown mouse ran away from the cat.",
+        "Who ran away?",
+        [
+          "the mouse 🐭",
+          "the cat 🐱",
+          "the dog 🐶"
+        ]
+      ],
+      [
+        "We went to the farm and saw a goat, a pig and a hen.",
+        "Which animal did we NOT see?",
+        [
+          "a tiger 🐯",
+          "a goat 🐐",
+          "a pig 🐷"
+        ]
+      ],
+      [
+        "Tom was sad because it rained, but then he saw a rainbow.",
+        "What made Tom happy?",
+        [
+          "a rainbow 🌈",
+          "the rain 🌧️",
+          "his shoe 👟"
+        ]
+      ],
+      [
+        "Max has a red kite. He takes it to the park. The kite flies up high.",
+        "Where does Max take his kite?",
+        [
+          "to the park 🌳",
+          "to school 🏫",
+          "to the beach 🏖️"
+        ],
+        3
+      ],
+      [
+        "The cat sat by the door. She wanted to go out. Mom let her out to play.",
+        "What did the cat want?",
+        [
+          "to go out",
+          "to eat",
+          "to sleep"
+        ],
+        3
+      ],
+      [
+        "It was a hot day. Lily and Sam got ice cream. Lily got pink and Sam got brown.",
+        "What color was Sam's ice cream?",
+        [
+          "brown 🟤",
+          "pink 🩷",
+          "green 🟢"
+        ],
+        3
+      ],
+      [
+        "A little seed was in the dirt. The rain fell and the sun came out. Soon a flower grew.",
+        "What grew from the seed?",
+        [
+          "a flower 🌸",
+          "a tree 🌳",
+          "a carrot 🥕"
+        ],
+        3
+      ],
+      [
+        "Ben lost his hat. He looked under the bed. He found it in his bag!",
+        "Where was the hat?",
+        [
+          "in his bag 👜",
+          "under the bed 🛏️",
+          "on the dog 🐶"
+        ],
+        3
+      ],
+      [
+        "The duck swam in the pond. It saw a fish. The fish swam away fast.",
+        "What did the duck see?",
+        [
+          "a fish 🐟",
+          "a frog 🐸",
+          "a boat ⛵"
+        ],
+        3
+      ],
+      [
+        "Pete has a red bag. He put his book in the bag. Then he took it to school.",
+        "What did Pete put in his bag?",
+        [
+          "his book",
+          "his kite",
+          "his coat"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "A frog sat on a rock by the lake. The sun was hot. The frog jumped into the cool water.",
+        "Why did the frog jump into the lake?",
+        [
+          "to cool down",
+          "to eat cake",
+          "to find a hat"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "Mia planted a bean in a cup. She added water each day. Soon a small green plant began to grow.",
+        "What did Mia plant?",
+        [
+          "a bean",
+          "a flower",
+          "a plum"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "Ben saw a bird on the grass. The bird picked up a small string. It took the string to its nest.",
+        "Why did the bird take the string?",
+        [
+          "to build its nest",
+          "to ride a bike",
+          "to play in the lake"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "It was cold and windy. Sam put on his coat and hat. He walked to the park with Dad.",
+        "What did Sam put on?",
+        [
+          "a coat and hat",
+          "a shirt and shorts",
+          "a cape and boots"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "A fox ran past our tent. It stopped by a tree. Then it ran back into the woods.",
+        "Where did the fox stop?",
+        [
+          "by a tree",
+          "inside the tent",
+          "on the road"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "Dad made a blue kite. We went to a field when the wind blew. The kite rose high in the sky.",
+        "What helped the kite fly?",
+        [
+          "the wind",
+          "the rain",
+          "the snow"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "A red flag was by the road. The class stopped to look at it. The flag showed where to turn.",
+        "What showed the class where to turn?",
+        [
+          "the flag",
+          "the lake",
+          "the clock"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "Kay has a new bike. She rides it to the park with her brother. She wears a helmet to stay safe.",
+        "Why does Kay wear a helmet?",
+        [
+          "to stay safe",
+          "to keep warm",
+          "to go faster"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "A shark swims in the sea. A wolf runs on land. Both animals need food to live.",
+        "Which animal swims in the sea?",
+        [
+          "the shark",
+          "the wolf",
+          "the bird"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "The clock rang at six. Tom got up, ate his egg, and took the bus to school.",
+        "What did Tom eat?",
+        [
+          "an egg",
+          "a plum",
+          "a cake"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "The goat was near the barn. It saw fresh grass and began to eat. Then it went to rest.",
+        "What did the goat eat?",
+        [
+          "grass",
+          "a rock",
+          "a toy"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "“I don't see my hat,” said Ben. He looked under the bed. The hat was on a chair.",
+        "Where was Ben's hat?",
+        [
+          "on a chair",
+          "under the bed",
+          "in his bag"
+        ],
+        3,
+        "print-first"
+      ],
+      [
+        "Mia wanted to bake a cake for Dad. She mixed eggs, milk and flour. Then she put the cake in the oven. Dad smiled when he saw it.",
+        "Why did Mia bake a cake?",
+        [
+          "for Dad",
+          "for her teacher",
+          "for her dog"
+        ],
+        4
+      ],
+      [
+        "The class went on a trip to the zoo. They saw lions, monkeys and a tall giraffe. The monkeys were the funniest. Everyone laughed at them.",
+        "Which animals were the funniest?",
+        [
+          "the monkeys 🐒",
+          "the lions 🦁",
+          "the giraffe 🦒"
+        ],
+        4
+      ],
+      [
+        "Leo planted a bean in a cup. He gave it water every day. After one week, a green sprout came up. Leo was very proud.",
+        "What did Leo give the bean every day?",
+        [
+          "water 💧",
+          "milk 🥛",
+          "candy 🍬"
+        ],
+        4
+      ],
+      [
+        "It started to snow in the morning. Ava put on her coat, hat and mittens. She built a big snowman with a carrot nose. Then she went inside for hot cocoa.",
+        "What did Ava use for the snowman's nose?",
+        [
+          "a carrot 🥕",
+          "a button",
+          "a rock 🪨"
+        ],
+        4
+      ],
+      [
+        "Tom saw a little bird on the ground. Its wing was hurt. Tom and his mom took it to the vet. The vet helped the bird get better.",
+        "Who helped the bird get better?",
+        [
+          "the vet",
+          "the teacher",
+          "the bus driver"
+        ],
+        4
+      ],
+      [
+        "Zoe likes to read at night. She reads in bed with a lamp. Her favorite books are about space. One day she wants to be an astronaut.",
+        "What does Zoe want to be?",
+        [
+          "an astronaut 🧑‍🚀",
+          "a chef 🧑‍🍳",
+          "a farmer 🧑‍🌾"
+        ],
+        4
+      ],
+      [
+        "The wind was very strong. It blew the leaves off the trees. Sam's kite flew higher than ever. It was a great day for kites.",
+        "Why did the kite fly so high?",
+        [
+          "the wind was strong",
+          "it was raining",
+          "it was night"
+        ],
+        4
+      ],
+      [
+        "Grandpa has a garden. He grows tomatoes, beans and corn. In summer, we help him pick the vegetables. Then we eat them for dinner.",
+        "When do they help Grandpa pick vegetables?",
+        [
+          "in summer ☀️",
+          "in winter ❄️",
+          "at night 🌙"
+        ],
+        4
+      ],
+      [
+        "Bees are busy insects. They fly from flower to flower to collect nectar. Back at the hive, they turn the nectar into honey. Bees also help plants grow by carrying pollen. Without bees, many fruits would not grow.",
+        "Why are bees important for fruit?",
+        [
+          "they carry pollen",
+          "they eat the fruit",
+          "they make the rain"
+        ],
+        5
+      ],
+      [
+        "Emma practiced the piano every day after school. At first, the songs were hard and she made many mistakes. She did not give up. By the end of the year, she played a song at the school concert. Everyone clapped loudly.",
+        "What lesson does this story teach?",
+        [
+          "keep practicing and do not give up",
+          "piano is easy",
+          "concerts are boring"
+        ],
+        5
+      ],
+      [
+        "The moon does not make its own light. It reflects light from the sun. As the moon moves around Earth, we see different shapes. Sometimes it looks round and full. Other times it looks like a thin smile.",
+        "Where does the moon get its light?",
+        [
+          "from the sun ☀️",
+          "from stars ⭐",
+          "from lamps 💡"
+        ],
+        5
+      ],
+      [
+        "Jake forgot his lunch at home. At lunchtime, his tummy was rumbling. His friend Ali shared half of his sandwich. Jake said thank you and smiled. The next day, Jake brought cookies for Ali.",
+        "Why did Jake bring cookies for Ali?",
+        [
+          "to thank him for sharing",
+          "because he was hungry",
+          "because it was his birthday"
+        ],
+        5
+      ],
+      [
+        "Frogs start their lives as tiny eggs in the water. The eggs hatch into tadpoles that have tails and swim like fish. Slowly, the tadpoles grow legs and lose their tails. Then they hop onto land as frogs. This change is called a life cycle.",
+        "What does a tadpole grow into?",
+        [
+          "a frog 🐸",
+          "a fish 🐟",
+          "a turtle 🐢"
+        ],
+        5
+      ],
+      [
+        "Dark clouds filled the sky. The wind began to blow hard. Maya saw a flash of lightning far away. She quickly grabbed her toys from the yard. Then she ran inside and closed the door.",
+        "What do you think is about to happen?",
+        [
+          "a storm ⛈️",
+          "a sunny picnic ☀️",
+          "a snow day ❄️"
+        ],
+        5
+      ],
+      [
+        "Penguins are birds, but they cannot fly. Their wings work like flippers to help them swim. Some penguins can swim very fast to catch fish. They live mostly in cold places in the south. Their black and white feathers keep them warm.",
+        "How do penguins use their wings?",
+        [
+          "to swim",
+          "to fly",
+          "to dig"
+        ],
+        5
+      ],
+      [
+        "Noah wanted a new bike, so he saved his money. He did chores like feeding the dog and raking leaves. Every week he put coins in his piggy bank. After three months, he counted his money. He finally had enough for the bike!",
+        "How did Noah get enough money?",
+        [
+          "he saved money from chores",
+          "he found it",
+          "he won a prize"
+        ],
+        5
+      ],
+      [
+        "A volcano is a mountain with an opening at the top. Deep under the ground, rock is so hot that it melts. When a volcano erupts, the hot melted rock comes out. It is called lava. When lava cools, it turns into new rock.",
+        "What is lava?",
+        [
+          "hot melted rock 🌋",
+          "cold water 💧",
+          "soft sand"
+        ],
+        5
+      ]
+    ],
+    "SYL": [
+      [
+        "cat",
+        "cat",
+        "🐱"
+      ],
+      [
+        "sun",
+        "sun",
+        "☀️"
+      ],
+      [
+        "dog",
+        "dog",
+        "🐶"
+      ],
+      [
+        "fish",
+        "fish",
+        "🐟"
+      ],
+      [
+        "book",
+        "book",
+        "📖"
+      ],
+      [
+        "tree",
+        "tree",
+        "🌳"
+      ],
+      [
+        "apple",
+        "ap-ple",
+        "🍎"
+      ],
+      [
+        "tiger",
+        "ti-ger",
+        "🐯"
+      ],
+      [
+        "rabbit",
+        "rab-bit",
+        "🐰"
+      ],
+      [
+        "monkey",
+        "mon-key",
+        "🐵"
+      ],
+      [
+        "pizza",
+        "piz-za",
+        "🍕"
+      ],
+      [
+        "pencil",
+        "pen-cil",
+        "✏️"
+      ],
+      [
+        "rocket",
+        "rock-et",
+        "🚀"
+      ],
+      [
+        "cookie",
+        "cook-ie",
+        "🍪"
+      ],
+      [
+        "carrot",
+        "car-rot",
+        "🥕"
+      ],
+      [
+        "flower",
+        "flow-er",
+        "🌸"
+      ],
+      [
+        "turtle",
+        "tur-tle",
+        "🐢"
+      ],
+      [
+        "banana",
+        "ba-na-na",
+        "🍌"
+      ],
+      [
+        "butterfly",
+        "but-ter-fly",
+        "🦋"
+      ],
+      [
+        "elephant",
+        "el-e-phant",
+        "🐘"
+      ],
+      [
+        "dinosaur",
+        "di-no-saur",
+        "🦕"
+      ],
+      [
+        "umbrella",
+        "um-brel-la",
+        "☂️"
+      ],
+      [
+        "computer",
+        "com-pu-ter",
+        "💻"
+      ],
+      [
+        "tomato",
+        "to-ma-to",
+        "🍅"
+      ],
+      [
+        "ladybug",
+        "la-dy-bug",
+        "🐞"
+      ],
+      [
+        "kangaroo",
+        "kan-ga-roo",
+        "🦘"
+      ],
+      [
+        "octopus",
+        "oc-to-pus",
+        "🐙"
+      ],
+      [
+        "strawberry",
+        "straw-ber-ry",
+        "🍓"
+      ],
+      [
+        "watermelon",
+        "wa-ter-mel-on",
+        "🍉"
+      ],
+      [
+        "caterpillar",
+        "cat-er-pil-lar",
+        "🐛"
+      ],
+      [
+        "alligator",
+        "al-li-ga-tor",
+        "🐊"
+      ],
+      [
+        "helicopter",
+        "hel-i-cop-ter",
+        "🚁"
+      ],
+      [
+        "avocado",
+        "av-o-ca-do",
+        "🥑"
+      ],
+      [
+        "television",
+        "tel-e-vi-sion",
+        "📺"
+      ]
+    ],
+    "THINGS": [
+      [
+        "🍎",
+        "apples"
+      ],
+      [
+        "⭐",
+        "stars"
+      ],
+      [
+        "🐞",
+        "ladybugs"
+      ],
+      [
+        "🍓",
+        "strawberries"
+      ],
+      [
+        "🎈",
+        "balloons"
+      ],
+      [
+        "🐟",
+        "fish"
+      ],
+      [
+        "🧁",
+        "cupcakes"
+      ],
+      [
+        "🐥",
+        "chicks"
+      ]
+    ],
+    "NAMES": [
+      "Mia",
+      "Leo",
+      "Ava",
+      "Sam",
+      "Zoe",
+      "Ben"
+    ],
+    "WP_ITEMS": [
+      [
+        "🍎",
+        "apples",
+        "food"
+      ],
+      [
+        "🍪",
+        "cookies",
+        "food"
+      ],
+      [
+        "🍓",
+        "strawberries",
+        "food"
+      ],
+      [
+        "🧁",
+        "cupcakes",
+        "food"
+      ],
+      [
+        "🎈",
+        "balloons",
+        "fly"
+      ],
+      [
+        "🐦",
+        "birds",
+        "fly"
+      ],
+      [
+        "🦋",
+        "butterflies",
+        "fly"
+      ],
+      [
+        "🖍️",
+        "crayons",
+        "toy"
+      ],
+      [
+        "🚗",
+        "toy cars",
+        "toy"
+      ],
+      [
+        "🐚",
+        "shells",
+        "toy"
+      ],
+      [
+        "⭐",
+        "stickers",
+        "toy"
+      ]
+    ],
+    "WP": {
+      "add": [
+        [
+          "{name} has",
+          "{a}",
+          "{item}.",
+          "{name} gets",
+          "{b}",
+          "more.",
+          "How many now?"
+        ],
+        [
+          "There are",
+          "{a}",
+          "{item} in a box.",
+          "You put in",
+          "{b}",
+          "more.",
+          "How many are in the box?"
+        ],
+        [
+          "{name} found",
+          "{a}",
+          "{item}.",
+          "Then {name} found",
+          "{b}",
+          "more.",
+          "How many in all?"
+        ]
+      ],
+      "sub": {
+        "food": [
+          [
+            "{name} has",
+            "{a}",
+            "{item}.",
+            "{name} eats",
+            "{b}.",
+            "How many are left?"
+          ]
+        ],
+        "fly": [
+          [
+            "There are",
+            "{a}",
+            "{item}.",
+            "{b}",
+            "fly away.",
+            "How many are left?"
+          ]
+        ],
+        "toy": [
+          [
+            "{name} has",
+            "{a}",
+            "{item}.",
+            "{name} gives",
+            "{b}",
+            "to a friend.",
+            "How many are left?"
+          ]
+        ]
+      }
+    },
+    "BODY_PARTS": [
+      [
+        "hair",
+        1
+      ],
+      [
+        "eyes",
+        1,
+        "👀"
+      ],
+      [
+        "ears",
+        1,
+        "👂"
+      ],
+      [
+        "nose",
+        1,
+        "👃"
+      ],
+      [
+        "mouth",
+        1,
+        "👄"
+      ],
+      [
+        "hands",
+        1,
+        "✋"
+      ],
+      [
+        "feet",
+        1,
+        "🦶"
+      ],
+      [
+        "tummy",
+        1
+      ],
+      [
+        "arms",
+        1,
+        "💪"
+      ],
+      [
+        "legs",
+        1,
+        "🦵"
+      ],
+      [
+        "head",
+        1
+      ],
+      [
+        "neck",
+        2
+      ],
+      [
+        "shoulders",
+        2
+      ],
+      [
+        "elbows",
+        2
+      ],
+      [
+        "knees",
+        2
+      ],
+      [
+        "chin",
+        2
+      ],
+      [
+        "chest",
+        2
+      ],
+      [
+        "eyebrows",
+        3
+      ],
+      [
+        "cheeks",
+        3
+      ],
+      [
+        "wrists",
+        3
+      ],
+      [
+        "ankles",
+        3
+      ]
+    ],
+    "BODY_FN": [
+      [
+        1,
+        "What do you see with?",
+        "eyes 👀",
+        "ears 👂",
+        "feet 🦶",
+        "elbows"
+      ],
+      [
+        1,
+        "What do you hear with?",
+        "ears 👂",
+        "eyes 👀",
+        "nose 👃",
+        "knees"
+      ],
+      [
+        1,
+        "What do you smell with?",
+        "nose 👃",
+        "hands ✋",
+        "ears 👂",
+        "feet 🦶"
+      ],
+      [
+        1,
+        "What do you taste with?",
+        "tongue 👅",
+        "nose 👃",
+        "hair",
+        "elbows"
+      ],
+      [
+        1,
+        "What do you walk with?",
+        "feet 🦶",
+        "hands ✋",
+        "ears 👂",
+        "nose 👃"
+      ],
+      [
+        1,
+        "Where do you wear shoes?",
+        "on your feet 🦶",
+        "on your head",
+        "on your hands ✋"
+      ],
+      [
+        1,
+        "Where do you wear a hat?",
+        "on your head",
+        "on your feet 🦶",
+        "on your knees"
+      ],
+      [
+        2,
+        "Where do you wear mittens?",
+        "on your hands ✋",
+        "on your feet 🦶",
+        "on your nose 👃"
+      ],
+      [
+        2,
+        "How many fingers are on one hand?",
+        "5",
+        "4",
+        "10",
+        "2"
+      ],
+      [
+        2,
+        "How many eyes do you have?",
+        "2",
+        "1",
+        "3",
+        "4"
+      ],
+      [
+        2,
+        "What do you chew food with?",
+        "teeth 🦷",
+        "ears 👂",
+        "eyebrows",
+        "elbows"
+      ],
+      [
+        2,
+        "What bends in the middle of your arm?",
+        "elbow",
+        "knee",
+        "neck",
+        "chin"
+      ],
+      [
+        2,
+        "What bends in the middle of your leg?",
+        "knee",
+        "elbow",
+        "wrist",
+        "nose"
+      ],
+      [
+        2,
+        "What turns your head left and right?",
+        "neck",
+        "knee",
+        "ankle",
+        "cheek"
+      ],
+      [
+        3,
+        "How many toes are on two feet?",
+        "10",
+        "5",
+        "8",
+        "20"
+      ],
+      [
+        3,
+        "Where do you wear a watch?",
+        "on your wrist",
+        "on your ankle",
+        "on your knee",
+        "on your neck"
+      ],
+      [
+        3,
+        "What joins your foot to your leg?",
+        "ankle",
+        "wrist",
+        "elbow",
+        "shoulder"
+      ],
+      [
+        3,
+        "What covers your whole body?",
+        "skin",
+        "hair",
+        "shirt",
+        "nails"
+      ],
+      [
+        3,
+        "Which part grows above your eyes?",
+        "eyebrows",
+        "cheeks",
+        "chin",
+        "lips"
+      ],
+      [
+        3,
+        "What do you use to feel if something is soft?",
+        "fingers",
+        "ears 👂",
+        "eyebrows",
+        "teeth 🦷"
+      ]
+    ],
+    "INSIDE": {
+      "head": [
+        "bones",
+        "skull",
+        "Inside your head is your skull. It keeps your brain safe!"
+      ],
+      "hair": [
+        "bones",
+        "skull",
+        "Under your hair is your skull!"
+      ],
+      "chest": [
+        "bones",
+        "ribs",
+        "Inside your chest, your ribs protect your heart and lungs!"
+      ],
+      "tummy": [
+        "organs",
+        "stomach",
+        "Inside your tummy is your stomach!"
+      ],
+      "arms": [
+        "bones",
+        "arm bone",
+        "Inside your arm is your arm bone!"
+      ],
+      "legs": [
+        "bones",
+        "thigh bone",
+        "Inside your leg is your thigh bone, the longest bone!"
+      ],
+      "knees": [
+        "bones",
+        "kneecap",
+        "Inside your knee is your kneecap!"
+      ],
+      "hands": [
+        "bones",
+        "hand bones",
+        "Your hand has lots of little bones!"
+      ],
+      "fingers": [
+        "bones",
+        "hand bones",
+        "Each finger has tiny bones inside!"
+      ],
+      "feet": [
+        "bones",
+        "foot bones",
+        "Your foot has lots of little bones!"
+      ],
+      "neck": [
+        "bones",
+        "spine",
+        "Your backbone goes up through your neck!"
+      ],
+      "shoulders": [
+        "bones",
+        "collarbone",
+        "Your collarbone goes to your shoulder!"
+      ],
+      "chin": [
+        "bones",
+        "jaw",
+        "Inside your chin is your jaw bone!"
+      ],
+      "mouth": [
+        "bones",
+        "jaw",
+        "Your jaw helps your mouth open and close!"
+      ],
+      "elbows": [
+        "bones",
+        "forearm bones",
+        "Your elbow is where your arm bones meet!"
+      ],
+      "wrists": [
+        "bones",
+        "hand bones",
+        "Your wrist joins your arm to your hand bones!"
+      ],
+      "ankles": [
+        "bones",
+        "foot bones",
+        "Your ankle joins your leg to your foot bones!"
+      ]
+    },
+    "BODY3_PARTS": [
+      [
+        "hair",
+        1
+      ],
+      [
+        "head",
+        1
+      ],
+      [
+        "eyes",
+        1
+      ],
+      [
+        "ears",
+        1
+      ],
+      [
+        "nose",
+        1
+      ],
+      [
+        "mouth",
+        1
+      ],
+      [
+        "hands",
+        1
+      ],
+      [
+        "feet",
+        1
+      ],
+      [
+        "tummy",
+        1
+      ],
+      [
+        "arms",
+        1
+      ],
+      [
+        "legs",
+        1
+      ],
+      [
+        "neck",
+        2
+      ],
+      [
+        "shoulders",
+        2
+      ],
+      [
+        "elbows",
+        2
+      ],
+      [
+        "knees",
+        2
+      ],
+      [
+        "chin",
+        2
+      ],
+      [
+        "chest",
+        2
+      ],
+      [
+        "fingers",
+        2
+      ],
+      [
+        "eyebrows",
+        3
+      ],
+      [
+        "cheeks",
+        3
+      ],
+      [
+        "wrists",
+        3
+      ],
+      [
+        "ankles",
+        3
+      ]
+    ],
+    "INNER": [
+      [
+        "brain",
+        "organs",
+        1
+      ],
+      [
+        "heart",
+        "organs",
+        1
+      ],
+      [
+        "lungs",
+        "organs",
+        1
+      ],
+      [
+        "stomach",
+        "organs",
+        1
+      ],
+      [
+        "liver",
+        "organs",
+        2
+      ],
+      [
+        "intestines",
+        "organs",
+        2
+      ],
+      [
+        "skull",
+        "bones",
+        2
+      ],
+      [
+        "ribs",
+        "bones",
+        2
+      ],
+      [
+        "spine",
+        "bones",
+        2
+      ],
+      [
+        "kidneys",
+        "organs",
+        3
+      ],
+      [
+        "jaw",
+        "bones",
+        3
+      ],
+      [
+        "collarbone",
+        "bones",
+        3
+      ],
+      [
+        "hip bone",
+        "bones",
+        3
+      ],
+      [
+        "thigh bone",
+        "bones",
+        3
+      ],
+      [
+        "kneecap",
+        "bones",
+        3
+      ],
+      [
+        "shin bone",
+        "bones",
+        3
+      ],
+      [
+        "arteries",
+        "vessels",
+        3
+      ],
+      [
+        "veins",
+        "vessels",
+        3
+      ],
+      [
+        "arm bone",
+        "bones",
+        4
+      ],
+      [
+        "forearm bones",
+        "bones",
+        4
+      ],
+      [
+        "hand bones",
+        "bones",
+        4
+      ],
+      [
+        "foot bones",
+        "bones",
+        4
+      ],
+      [
+        "shoulder blade",
+        "bones",
+        4
+      ],
+      [
+        "bladder",
+        "organs",
+        4
+      ],
+      [
+        "pancreas",
+        "organs",
+        4
+      ]
+    ],
+    "INNER_LABEL": {
+      "spine": "backbone (spine)",
+      "thigh bone": "thigh bone (femur)",
+      "shin bone": "shin bone (tibia)",
+      "hip bone": "hip bone (pelvis)",
+      "arm bone": "arm bone (humerus)",
+      "shoulder blade": "shoulder blade (scapula)",
+      "skull": "skull",
+      "arteries": "arteries (red)",
+      "veins": "veins (blue)"
+    },
+    "ANATOMY_MORE": [
+      [
+        3,
+        "Which tubes carry blood away from the heart?",
+        "arteries",
+        "veins",
+        "nerves",
+        "bones"
+      ],
+      [
+        3,
+        "Which tubes bring blood back to the heart?",
+        "veins",
+        "arteries",
+        "muscles",
+        "ribs"
+      ],
+      [
+        3,
+        "What is another name for your backbone?",
+        "spine",
+        "skull",
+        "pelvis",
+        "kneecap"
+      ],
+      [
+        3,
+        "Which bone protects the front of your knee?",
+        "kneecap",
+        "skull",
+        "collarbone",
+        "jaw"
+      ],
+      [
+        4,
+        "What is the longest bone in your body?",
+        "thigh bone (femur)",
+        "kneecap",
+        "jaw",
+        "a rib"
+      ],
+      [
+        4,
+        "Which organs clean your blood?",
+        "kidneys",
+        "lungs",
+        "ears",
+        "teeth"
+      ],
+      [
+        4,
+        "Which organ helps clean your blood and stores energy?",
+        "liver",
+        "heart",
+        "brain",
+        "lungs"
+      ],
+      [
+        4,
+        "Which bone in your head can move?",
+        "your jaw",
+        "your skull top",
+        "your ear",
+        "your nose"
+      ],
+      [
+        4,
+        "Where does your body make new blood cells?",
+        "inside your bones",
+        "in your hair",
+        "in your nails",
+        "in your ears"
+      ],
+      [
+        4,
+        "Your heart is a strong…",
+        "muscle",
+        "bone",
+        "tooth",
+        "hair"
+      ]
+    ],
+    "GK": [
+      [
+        1,
+        "Which picture shows a rose?",
+        "🌹 rose",
+        "🌻 sunflower",
+        "🌷 tulip",
+        "🌼 daisy"
+      ],
+      [
+        1,
+        "Which picture shows a sunflower?",
+        "🌻 sunflower",
+        "🌹 rose",
+        "🌷 tulip",
+        "🌸 blossom"
+      ],
+      [
+        1,
+        "Which picture shows a tulip?",
+        "🌷 tulip",
+        "🌻 sunflower",
+        "🌹 rose",
+        "🌼 daisy"
+      ],
+      [
+        1,
+        "Which picture shows a flower?",
+        "🌼 flower",
+        "🐶 dog",
+        "🚗 car",
+        "✈️ airplane"
+      ],
+      [
+        1,
+        "Which picture shows an elephant?",
+        "🐘 elephant",
+        "🦒 giraffe",
+        "🐻 bear",
+        "🦁 lion"
+      ],
+      [
+        1,
+        "Which picture shows a horse?",
+        "🐴 horse",
+        "🐮 cow",
+        "🐑 sheep",
+        "🐷 pig"
+      ],
+      [
+        1,
+        "Which picture shows a tiger?",
+        "🐯 tiger",
+        "🦊 fox",
+        "🐱 cat",
+        "🐶 dog"
+      ],
+      [
+        1,
+        "Which picture shows a butterfly?",
+        "🦋 butterfly",
+        "🐝 bee",
+        "🐜 ant",
+        "🐞 ladybug"
+      ],
+      [
+        1,
+        "Which picture shows an airplane?",
+        "✈️ airplane",
+        "🚗 car",
+        "🚂 train",
+        "🚲 bicycle"
+      ],
+      [
+        1,
+        "Which picture shows a helicopter?",
+        "🚁 helicopter",
+        "🚀 rocket",
+        "⛵ sailboat",
+        "🚍 bus"
+      ],
+      [
+        1,
+        "Which picture shows a truck?",
+        "🚚 truck",
+        "🚗 car",
+        "🚂 train",
+        "🛵 scooter"
+      ],
+      [
+        1,
+        "Which picture shows a train?",
+        "🚂 train",
+        "✈️ airplane",
+        "🚌 bus",
+        "🚁 helicopter"
+      ],
+      [
+        1,
+        "Which picture shows a boat?",
+        "⛵ sailboat",
+        "🚁 helicopter",
+        "🚗 car",
+        "🚲 bicycle"
+      ],
+      [
+        1,
+        "Which picture shows a rabbit?",
+        "🐰 rabbit",
+        "🐻 bear",
+        "🐸 frog",
+        "🐱 cat"
+      ],
+      [
+        1,
+        "Which picture shows a duck?",
+        "🦆 duck",
+        "🐧 penguin",
+        "🦉 owl",
+        "🦜 parrot"
+      ],
+      [
+        1,
+        "Which animal says moo?",
+        "🐮 cow",
+        "🐶 dog",
+        "🐱 cat",
+        "🐷 pig"
+      ],
+      [
+        1,
+        "Which animal says woof?",
+        "🐶 dog",
+        "🐮 cow",
+        "🦆 duck",
+        "🐑 sheep"
+      ],
+      [
+        1,
+        "Which animal says quack?",
+        "🦆 duck",
+        "🐷 pig",
+        "🐱 cat",
+        "🐴 horse"
+      ],
+      [
+        1,
+        "Which animal says baa?",
+        "🐑 sheep",
+        "🐶 dog",
+        "🐮 cow",
+        "🐸 frog"
+      ],
+      [
+        1,
+        "Which animal says oink?",
+        "🐷 pig",
+        "🐑 sheep",
+        "🦁 lion",
+        "🐔 hen"
+      ],
+      [
+        1,
+        "Which animal says meow?",
+        "🐱 cat",
+        "🐮 cow",
+        "🐶 dog",
+        "🦆 duck"
+      ],
+      [
+        1,
+        "What do you use when it rains?",
+        "☂️ umbrella",
+        "🕶️ sunglasses",
+        "🩳 shorts",
+        "🪁 kite"
+      ],
+      [
+        1,
+        "What do you wear when it snows?",
+        "🧤 mittens",
+        "🩴 flip-flops",
+        "🕶️ sunglasses",
+        "🩳 shorts"
+      ],
+      [
+        1,
+        "What color is grass?",
+        "🟢 green",
+        "🔵 blue",
+        "🟣 purple",
+        "🔴 red"
+      ],
+      [
+        1,
+        "What color is a banana?",
+        "🟡 yellow",
+        "🔵 blue",
+        "🟢 green",
+        "⚫ black"
+      ],
+      [
+        1,
+        "Where does a fish live?",
+        "🌊 in water",
+        "🌳 in a tree",
+        "🏜️ in the desert",
+        "🪺 in a nest"
+      ],
+      [
+        1,
+        "Where do many birds keep their eggs?",
+        "🪺 in a nest",
+        "🌊 in water",
+        "🕳️ in a hole",
+        "🏠 in a car"
+      ],
+      [
+        1,
+        "What do bees make?",
+        "🍯 honey",
+        "🥛 milk",
+        "🧀 cheese",
+        "🍞 bread"
+      ],
+      [
+        1,
+        "What do we use to brush our teeth?",
+        "🪥 toothbrush",
+        "🧹 broom",
+        "🍴 fork",
+        "🖍️ crayon"
+      ],
+      [
+        1,
+        "Which one is hot?",
+        "🔥 fire",
+        "🧊 ice",
+        "❄️ snow",
+        "🍦 ice cream"
+      ],
+      [
+        1,
+        "Which one can fly?",
+        "✈️ airplane",
+        "🚗 car",
+        "🚂 train",
+        "🚲 bike"
+      ],
+      [
+        1,
+        "Which one is a fruit?",
+        "🍎 apple",
+        "🍞 bread",
+        "🧀 cheese",
+        "🥚 egg"
+      ],
+      [
+        1,
+        "When do we see the moon and stars?",
+        "🌙 at night",
+        "☀️ in the morning",
+        "🍽️ at lunch"
+      ],
+      [
+        1,
+        "What should you do at a red light?",
+        "🛑 stop",
+        "🏃 go fast",
+        "💃 dance"
+      ],
+      [
+        2,
+        "Which day comes after Sunday?",
+        "Monday",
+        "Friday",
+        "Thursday",
+        "Saturday"
+      ],
+      [
+        2,
+        "Which day comes before Friday?",
+        "Thursday",
+        "Monday",
+        "Sunday",
+        "Tuesday"
+      ],
+      [
+        2,
+        "Which one is a weekday?",
+        "Monday",
+        "Saturday",
+        "Sunday",
+        "Christmas"
+      ],
+      [
+        2,
+        "Which day comes after Wednesday?",
+        "Thursday",
+        "Monday",
+        "Tuesday",
+        "Sunday"
+      ],
+      [
+        2,
+        "Which day comes before Tuesday?",
+        "Monday",
+        "Wednesday",
+        "Friday",
+        "Saturday"
+      ],
+      [
+        2,
+        "Which day is between Friday and Sunday?",
+        "Saturday",
+        "Tuesday",
+        "Thursday",
+        "Monday"
+      ],
+      [
+        2,
+        "Which month comes after March?",
+        "April",
+        "May",
+        "January",
+        "December"
+      ],
+      [
+        2,
+        "Which month comes before December?",
+        "November",
+        "September",
+        "January",
+        "June"
+      ],
+      [
+        2,
+        "Which month comes after June?",
+        "July",
+        "March",
+        "October",
+        "January"
+      ],
+      [
+        2,
+        "How many days are in a week?",
+        "7",
+        "5",
+        "10",
+        "12"
+      ],
+      [
+        2,
+        "Which day comes after Monday?",
+        "Tuesday",
+        "Sunday",
+        "Friday",
+        "Saturday"
+      ],
+      [
+        2,
+        "Which season is the coldest?",
+        "❄️ winter",
+        "☀️ summer",
+        "🌸 spring",
+        "🍂 fall"
+      ],
+      [
+        2,
+        "In which season do leaves fall off trees?",
+        "🍂 fall",
+        "☀️ summer",
+        "🌸 spring",
+        "❄️ winter"
+      ],
+      [
+        2,
+        "Which season is the hottest?",
+        "☀️ summer",
+        "❄️ winter",
+        "🍂 fall",
+        "🌸 spring"
+      ],
+      [
+        2,
+        "A baby cat is called a…",
+        "kitten",
+        "puppy",
+        "calf",
+        "chick"
+      ],
+      [
+        2,
+        "A baby dog is called a…",
+        "puppy",
+        "kitten",
+        "lamb",
+        "cub"
+      ],
+      [
+        2,
+        "A baby cow is called a…",
+        "calf",
+        "foal",
+        "chick",
+        "kitten"
+      ],
+      [
+        2,
+        "A baby frog is called a…",
+        "tadpole",
+        "lamb",
+        "cub",
+        "puppy"
+      ],
+      [
+        2,
+        "Milk comes from a…",
+        "🐮 cow",
+        "🐔 chicken",
+        "🐟 fish",
+        "🐝 bee"
+      ],
+      [
+        2,
+        "Eggs come from a…",
+        "🐔 chicken",
+        "🐮 cow",
+        "🐷 pig",
+        "🐴 horse"
+      ],
+      [
+        2,
+        "Which one is a vegetable?",
+        "🥕 carrot",
+        "🍎 apple",
+        "🍌 banana",
+        "🍇 grapes"
+      ],
+      [
+        2,
+        "Which one is a living thing?",
+        "🌳 tree",
+        "🪨 rock",
+        "🧸 teddy bear",
+        "🚗 car"
+      ],
+      [
+        2,
+        "What do plants need to grow?",
+        "💧☀️ water and sun",
+        "🍬 candy",
+        "📺 TV",
+        "🧦 socks"
+      ],
+      [
+        2,
+        "What is frozen water called?",
+        "🧊 ice",
+        "💨 steam",
+        "🫧 bubbles",
+        "🌧️ rain"
+      ],
+      [
+        2,
+        "Which animal has a long trunk?",
+        "🐘 elephant",
+        "🦒 giraffe",
+        "🐻 bear",
+        "🐯 tiger"
+      ],
+      [
+        2,
+        "Which animal has black and white stripes?",
+        "🦓 zebra",
+        "🐘 elephant",
+        "🐻 bear",
+        "🐸 frog"
+      ],
+      [
+        2,
+        "How many legs does a spider have?",
+        "8",
+        "6",
+        "4",
+        "10"
+      ],
+      [
+        2,
+        "What number do you call in an emergency?",
+        "911",
+        "123",
+        "411",
+        "100"
+      ],
+      [
+        3,
+        "How many days are in February in most years?",
+        "28",
+        "30",
+        "31",
+        "27"
+      ],
+      [
+        3,
+        "Which month begins the year?",
+        "January",
+        "March",
+        "September",
+        "December"
+      ],
+      [
+        3,
+        "What month comes before September?",
+        "August",
+        "October",
+        "June",
+        "May"
+      ],
+      [
+        3,
+        "How many months are in one season?",
+        "3",
+        "5",
+        "7",
+        "12"
+      ],
+      [
+        3,
+        "What is the fourth day of the week if Monday is first?",
+        "Thursday",
+        "Wednesday",
+        "Friday",
+        "Tuesday"
+      ],
+      [
+        3,
+        "How many months are in a year?",
+        "12",
+        "7",
+        "10",
+        "24"
+      ],
+      [
+        3,
+        "Which month comes after January?",
+        "February",
+        "March",
+        "December",
+        "June"
+      ],
+      [
+        3,
+        "Which planet do we live on?",
+        "🌍 Earth",
+        "🔴 Mars",
+        "🪐 Saturn",
+        "🌙 the Moon"
+      ],
+      [
+        3,
+        "What is the closest star to Earth?",
+        "☀️ the Sun",
+        "🌙 the Moon",
+        "⭐ the North Star",
+        "🪐 Saturn"
+      ],
+      [
+        3,
+        "What does a caterpillar turn into?",
+        "🦋 a butterfly",
+        "🐝 a bee",
+        "🐦 a bird",
+        "🐞 a ladybug"
+      ],
+      [
+        3,
+        "Which part of a plant drinks water from the soil?",
+        "the roots",
+        "the flower",
+        "the leaves",
+        "the fruit"
+      ],
+      [
+        3,
+        "Water turns into steam when it gets…",
+        "🔥 very hot",
+        "🧊 very cold",
+        "💨 windy",
+        "🌙 dark"
+      ],
+      [
+        3,
+        "Which animal lays eggs?",
+        "🐢 turtle",
+        "🐮 cow",
+        "🐶 dog",
+        "🐴 horse"
+      ],
+      [
+        3,
+        "How many legs does an insect have?",
+        "6",
+        "8",
+        "4",
+        "10"
+      ],
+      [
+        3,
+        "Which sea animal has eight arms?",
+        "🐙 octopus",
+        "🦀 crab",
+        "🐟 fish",
+        "🐬 dolphin"
+      ],
+      [
+        3,
+        "Which tool tells us how hot or cold it is?",
+        "🌡️ thermometer",
+        "⏰ clock",
+        "📏 ruler",
+        "⚖️ scale"
+      ],
+      [
+        3,
+        "What is the biggest animal in the world?",
+        "🐋 blue whale",
+        "🐘 elephant",
+        "🦒 giraffe",
+        "🦈 shark"
+      ],
+      [
+        3,
+        "Which animal is the tallest?",
+        "🦒 giraffe",
+        "🐘 elephant",
+        "🐴 horse",
+        "🦁 lion"
+      ],
+      [
+        3,
+        "A baby kangaroo is called a…",
+        "joey",
+        "cub",
+        "chick",
+        "kitten"
+      ],
+      [
+        3,
+        "Which one is a solid?",
+        "🧊 ice",
+        "💧 water",
+        "💨 air",
+        "🧃 juice"
+      ],
+      [
+        3,
+        "Which one is a source of light?",
+        "💡 a lamp",
+        "🪨 a rock",
+        "📖 a book",
+        "🧦 a sock"
+      ],
+      [
+        4,
+        "How many continents are there?",
+        "7",
+        "5",
+        "10",
+        "3"
+      ],
+      [
+        4,
+        "What is the largest ocean?",
+        "the Pacific Ocean",
+        "the Atlantic Ocean",
+        "the Indian Ocean",
+        "the Arctic Ocean"
+      ],
+      [
+        4,
+        "Which planet is the biggest?",
+        "🪐 Jupiter",
+        "🌍 Earth",
+        "🔴 Mars",
+        "☿ Mercury"
+      ],
+      [
+        4,
+        "Which planet is called the Red Planet?",
+        "🔴 Mars",
+        "🌍 Earth",
+        "🪐 Saturn",
+        "🔵 Neptune"
+      ],
+      [
+        4,
+        "How many planets are in our solar system?",
+        "8",
+        "5",
+        "12",
+        "3"
+      ],
+      [
+        4,
+        "What pulls things down to the ground?",
+        "gravity",
+        "wind",
+        "magnets",
+        "light"
+      ],
+      [
+        4,
+        "What do magnets stick to?",
+        "🔩 iron and steel",
+        "🪵 wood",
+        "🧻 paper",
+        "🧱 brick"
+      ],
+      [
+        4,
+        "Which animal is a mammal?",
+        "🐬 dolphin",
+        "🦈 shark",
+        "🐊 alligator",
+        "🐍 snake"
+      ],
+      [
+        4,
+        "Animals that eat only plants are called…",
+        "herbivores",
+        "carnivores",
+        "omnivores",
+        "astronauts"
+      ],
+      [
+        4,
+        "The sun rises in the…",
+        "east",
+        "west",
+        "north",
+        "south"
+      ],
+      [
+        4,
+        "Which animal changes color to hide?",
+        "🦎 chameleon",
+        "🐻 bear",
+        "🐶 dog",
+        "🦒 giraffe"
+      ],
+      [
+        4,
+        "What are the three states of water?",
+        "solid, liquid, gas",
+        "hot, cold, warm",
+        "red, blue, green",
+        "big, small, tiny"
+      ],
+      [
+        4,
+        "Which bird cannot fly?",
+        "🐧 penguin",
+        "🦅 eagle",
+        "🦜 parrot",
+        "🦉 owl"
+      ],
+      [
+        4,
+        "A scientist who studies dinosaurs is called a…",
+        "paleontologist",
+        "astronaut",
+        "chef",
+        "pilot"
+      ],
+      [
+        4,
+        "What do bees carry from flower to flower?",
+        "pollen",
+        "water",
+        "rocks",
+        "sand"
+      ],
+      [
+        1,
+        "Which picture shows a cat?",
+        "🐱 cat",
+        "🐶 dog",
+        "🐰 rabbit",
+        "🐴 horse"
+      ],
+      [
+        1,
+        "Which picture shows a dog?",
+        "🐶 dog",
+        "🐱 cat",
+        "🐴 horse",
+        "🐮 cow"
+      ],
+      [
+        1,
+        "Which picture shows a car?",
+        "🚗 car",
+        "🚌 bus",
+        "🚚 truck",
+        "🚂 train"
+      ],
+      [
+        1,
+        "Which picture shows a daisy?",
+        "🌼 daisy",
+        "🌷 tulip",
+        "🌻 sunflower",
+        "🌹 rose"
+      ],
+      [
+        1,
+        "What should you do before crossing a street with a grown-up?",
+        "stop and look both ways",
+        "run without looking",
+        "close your eyes",
+        "play in the road"
+      ],
+      [
+        1,
+        "Where should you put a banana peel?",
+        "in a bin or compost",
+        "on the floor",
+        "in a shoe",
+        "on the road"
+      ],
+      [
+        2,
+        "Which day comes after Friday?",
+        "Saturday",
+        "Monday",
+        "Tuesday",
+        "Thursday"
+      ],
+      [
+        2,
+        "Which day comes before Monday?",
+        "Sunday",
+        "Wednesday",
+        "Tuesday",
+        "Friday"
+      ],
+      [
+        2,
+        "Which month comes after September?",
+        "October",
+        "November",
+        "July",
+        "April"
+      ],
+      [
+        2,
+        "Which month comes after December?",
+        "January",
+        "February",
+        "June",
+        "October"
+      ],
+      [
+        2,
+        "What does a librarian help you find?",
+        "books",
+        "airplane engines",
+        "traffic lights",
+        "fish in a pond"
+      ],
+      [
+        2,
+        "Which sign tells cars to stop?",
+        "a stop sign",
+        "a speed limit sign",
+        "a street name sign",
+        "a parking sign"
+      ],
+      [
+        2,
+        "Which tool helps us tell the time?",
+        "a clock",
+        "a ruler",
+        "a spoon",
+        "a magnet"
+      ],
+      [
+        2,
+        "What can you do when a friend feels sad?",
+        "ask how to help",
+        "laugh at them",
+        "take their things",
+        "walk away every time"
+      ],
+      [
+        3,
+        "Which month follows October?",
+        "November",
+        "September",
+        "December",
+        "August"
+      ],
+      [
+        3,
+        "Which month comes just before May?",
+        "April",
+        "June",
+        "July",
+        "March"
+      ],
+      [
+        3,
+        "How many hours are in one day?",
+        "24",
+        "12",
+        "7",
+        "60"
+      ],
+      [
+        3,
+        "How many minutes are in one hour?",
+        "60",
+        "24",
+        "12",
+        "100"
+      ],
+      [
+        3,
+        "Which direction is opposite north?",
+        "south",
+        "east",
+        "west",
+        "up"
+      ],
+      [
+        3,
+        "What do the symbols on a map help us understand?",
+        "places and features",
+        "how food tastes",
+        "how loud music is",
+        "what a cat says"
+      ],
+      [
+        3,
+        "What is one reason a community needs firefighters?",
+        "to respond to fires and emergencies",
+        "to sell ice cream",
+        "to steer airplanes",
+        "to build every school"
+      ],
+      [
+        3,
+        "Which action helps save water?",
+        "turn off the tap while brushing",
+        "leave the tap running all day",
+        "spill water on the floor",
+        "wash one sock all day"
+      ],
+      [
+        4,
+        "Which tool helps you find directions outside?",
+        "a compass",
+        "a thermometer",
+        "a stopwatch",
+        "a magnifying glass"
+      ],
+      [
+        4,
+        "What is the purpose of a map legend?",
+        "to explain map symbols",
+        "to measure air temperature",
+        "to count stars",
+        "to name all plants"
+      ],
+      [
+        4,
+        "Which is an example of renewable energy?",
+        "wind power",
+        "coal",
+        "gasoline",
+        "diesel"
+      ],
+      [
+        4,
+        "Why is it helpful to check more than one reliable source?",
+        "to compare and confirm facts",
+        "to make facts disappear",
+        "to avoid reading",
+        "to turn guesses into proof"
+      ],
+      [
+        4,
+        "What does it mean to recycle a material?",
+        "process it so it can be used again",
+        "throw it in a river",
+        "burn it anywhere",
+        "hide it in the garden"
+      ],
+      [
+        4,
+        "How many sides does a hexagon have?",
+        "6",
+        "5",
+        "7",
+        "8"
+      ],
+      [
+        4,
+        "Which ocean lies between Africa and Australia?",
+        "Indian Ocean",
+        "Arctic Ocean",
+        "Atlantic Ocean",
+        "Southern Ocean"
+      ]
+    ],
+    "ANATOMY": [
+      [
+        1,
+        "Which part helps you think?",
+        "🧠 brain",
+        "🫀 heart",
+        "stomach",
+        "🦴 bones"
+      ],
+      [
+        1,
+        "Which part pumps blood around your body?",
+        "🫀 heart",
+        "🧠 brain",
+        "🫁 lungs",
+        "stomach"
+      ],
+      [
+        1,
+        "Which part helps you breathe?",
+        "🫁 lungs",
+        "🫀 heart",
+        "stomach",
+        "🦴 bones"
+      ],
+      [
+        1,
+        "Where does food go after you swallow it?",
+        "stomach",
+        "🧠 brain",
+        "🫁 lungs",
+        "👂 ears"
+      ],
+      [
+        1,
+        "What holds your body up, like a frame?",
+        "🦴 bones",
+        "🫁 lungs",
+        "💇 hair",
+        "👅 tongue"
+      ],
+      [
+        1,
+        "What helps your body move?",
+        "💪 muscles",
+        "💇 hair",
+        "💅 nails",
+        "👂 ears"
+      ],
+      [
+        2,
+        "What protects your brain?",
+        "your skull",
+        "your ribs",
+        "your knees",
+        "your hair"
+      ],
+      [
+        2,
+        "What protects your heart and lungs?",
+        "your ribs",
+        "your skull",
+        "your elbows",
+        "your toes"
+      ],
+      [
+        2,
+        "When you run, your heart beats…",
+        "faster",
+        "slower",
+        "not at all",
+        "backwards"
+      ],
+      [
+        2,
+        "How many lungs do you have?",
+        "2",
+        "1",
+        "4",
+        "10"
+      ],
+      [
+        2,
+        "Which part tastes your food?",
+        "👅 tongue",
+        "👂 ears",
+        "👃 nose",
+        "🦶 feet"
+      ],
+      [
+        2,
+        "Teeth help us…",
+        "chew food",
+        "hear sounds",
+        "see colors",
+        "grow hair"
+      ],
+      [
+        2,
+        "What carries blood around your body?",
+        "blood vessels",
+        "bones",
+        "hair",
+        "nails"
+      ],
+      [
+        2,
+        "Food goes from your stomach into your…",
+        "intestines",
+        "lungs",
+        "brain",
+        "ears"
+      ],
+      [
+        3,
+        "What is the biggest organ of your body?",
+        "skin",
+        "heart",
+        "brain",
+        "stomach"
+      ],
+      [
+        3,
+        "About how many bones does a grown-up have?",
+        "206",
+        "26",
+        "1,000",
+        "6"
+      ],
+      [
+        3,
+        "Air goes in your nose and down into your…",
+        "🫁 lungs",
+        "stomach",
+        "🫀 heart",
+        "bones"
+      ],
+      [
+        3,
+        "Which food helps build strong bones?",
+        "🥛 milk",
+        "🍬 candy",
+        "🥤 soda",
+        "🍟 fries"
+      ],
+      [
+        3,
+        "Your brain sends messages to your body through…",
+        "nerves",
+        "hair",
+        "nails",
+        "teeth"
+      ],
+      [
+        3,
+        "What helps your muscles grow strong?",
+        "exercise and good food",
+        "watching TV",
+        "eating candy",
+        "staying up late"
+      ],
+      [
+        3,
+        "Why does your body need sleep?",
+        "to rest and grow",
+        "to get hungry",
+        "to grow hair longer",
+        "to make noise"
+      ],
+      [
+        3,
+        "What keeps germs away from your hands?",
+        "🧼 washing with soap",
+        "shaking them",
+        "clapping",
+        "hiding them"
+      ]
+    ],
+    "SHAPES2": {
+      "circle": {
+        "sides": 0,
+        "real": "🍪",
+        "level": 1,
+        "tip": "It is round like a cookie."
+      },
+      "square": {
+        "sides": 4,
+        "real": "🧇",
+        "level": 1,
+        "tip": "It has 4 sides that are all the same."
+      },
+      "triangle": {
+        "sides": 3,
+        "real": "🍕",
+        "level": 1,
+        "tip": "It has 3 sides, like a pizza slice."
+      },
+      "rectangle": {
+        "sides": 4,
+        "real": "🚪",
+        "level": 1,
+        "tip": "It has 4 sides, 2 long and 2 short, like a door."
+      },
+      "oval": {
+        "sides": 0,
+        "real": "🥚",
+        "level": 1,
+        "tip": "It is shaped like an egg."
+      },
+      "star": {
+        "sides": 10,
+        "real": "⭐",
+        "level": 1,
+        "tip": "It twinkles in the sky."
+      },
+      "heart": {
+        "sides": 0,
+        "real": "💖",
+        "level": 1,
+        "tip": "It means love."
+      },
+      "diamond": {
+        "sides": 4,
+        "real": "🪁",
+        "level": 2,
+        "tip": "It looks like a kite."
+      },
+      "pentagon": {
+        "sides": 5,
+        "real": "🏠",
+        "level": 2,
+        "tip": "It has 5 sides, like a house."
+      },
+      "hexagon": {
+        "sides": 6,
+        "real": "🐝",
+        "level": 2,
+        "tip": "It has 6 sides, like a beehive cell."
+      },
+      "octagon": {
+        "sides": 8,
+        "real": "🛑",
+        "level": 3,
+        "tip": "It has 8 sides, like a stop sign."
+      }
+    },
+    "SHAPES3": {
+      "cube": {
+        "real": [
+          "🎲",
+          "🧊"
+        ],
+        "level": 1,
+        "tip": "It is like a dice. All its faces are squares."
+      },
+      "sphere": {
+        "real": [
+          "⚽",
+          "🏀",
+          "🌍"
+        ],
+        "level": 1,
+        "tip": "It is round like a ball."
+      },
+      "cylinder": {
+        "real": [
+          "🥫",
+          "🔋"
+        ],
+        "level": 1,
+        "tip": "It is like a can of soup."
+      },
+      "cone": {
+        "real": [
+          "🍦"
+        ],
+        "level": 1,
+        "tip": "It is like an ice cream cone."
+      },
+      "pyramid": {
+        "real": [
+          "🔺"
+        ],
+        "level": 2,
+        "tip": "It has a pointy top and triangle sides."
+      },
+      "rectangular prism": {
+        "real": [
+          "📦",
+          "🧱"
+        ],
+        "level": 2,
+        "tip": "It is like a box or a brick."
+      }
+    },
+    "JOBS": [
+      [
+        "firefighter",
+        "🧑‍🚒",
+        "puts out fires",
+        "🔥🚒"
+      ],
+      [
+        "doctor",
+        "🧑‍⚕️",
+        "helps sick people get better",
+        "🩺💊"
+      ],
+      [
+        "teacher",
+        "🧑‍🏫",
+        "teaches children at school",
+        "📚✏️"
+      ],
+      [
+        "chef",
+        "🧑‍🍳",
+        "cooks yummy food",
+        "🍲🥘"
+      ],
+      [
+        "farmer",
+        "🧑‍🌾",
+        "grows food and feeds animals",
+        "🌽🐄"
+      ],
+      [
+        "police officer",
+        "👮",
+        "keeps people safe",
+        "🚓🚨"
+      ],
+      [
+        "pilot",
+        "🧑‍✈️",
+        "flies airplanes",
+        "✈️☁️"
+      ],
+      [
+        "astronaut",
+        "🧑‍🚀",
+        "goes into space",
+        "🚀🌙"
+      ],
+      [
+        "mechanic",
+        "🧑‍🔧",
+        "fixes cars",
+        "🚗🔧"
+      ],
+      [
+        "artist",
+        "🧑‍🎨",
+        "paints pictures",
+        "🎨🖌️"
+      ],
+      [
+        "scientist",
+        "🧑‍🔬",
+        "does experiments",
+        "🧪🔬"
+      ],
+      [
+        "builder",
+        "👷",
+        "builds houses",
+        "🏗️🧱"
+      ],
+      [
+        "singer",
+        "🧑‍🎤",
+        "sings songs",
+        "🎤🎵"
+      ],
+      [
+        "judge",
+        "🧑‍⚖️",
+        "decides what is fair in court",
+        "⚖️🏛️"
+      ],
+      [
+        "coder",
+        "🧑‍💻",
+        "writes programs for computers",
+        "💻⌨️"
+      ],
+      [
+        "dentist",
+        "🦷",
+        "takes care of our teeth",
+        "🪥😁"
+      ],
+      [
+        "mail carrier",
+        "📬",
+        "brings letters to our homes",
+        "✉️📦"
+      ],
+      [
+        "baker",
+        "🧁",
+        "bakes bread and cakes",
+        "🍞🎂"
+      ],
+      [
+        "vet",
+        "🐾",
+        "takes care of sick animals",
+        "🐶🐱"
+      ],
+      [
+        "bus driver",
+        "🚌",
+        "drives kids to school",
+        "🚏🧒"
+      ]
+    ],
+    "SHAPE_THINGS": {
+      "circle": [
+        "🍊",
+        "⚽",
+        "🕐",
+        "🍪",
+        "🌕",
+        "🪙",
+        "🏀",
+        "🍩"
+      ],
+      "square": [
+        "🧇",
+        "🎲",
+        "🧊",
+        "🔲",
+        "🟦"
+      ],
+      "triangle": [
+        "🍕",
+        "⚠️",
+        "🍙",
+        "📐",
+        "🔺"
+      ],
+      "rectangle": [
+        "🚪",
+        "📱",
+        "💵",
+        "🍫",
+        "📏"
+      ]
+    },
+    "FLAGS": [
+      [
+        "United States",
+        "🇺🇸",
+        "🗽",
+        "the Statue of Liberty",
+        1
+      ],
+      [
+        "India",
+        "🇮🇳",
+        "🐅",
+        "tigers and the Taj Mahal",
+        1
+      ],
+      [
+        "Canada",
+        "🇨🇦",
+        "🍁",
+        "maple leaves",
+        1
+      ],
+      [
+        "Mexico",
+        "🇲🇽",
+        "🌮",
+        "tacos",
+        1
+      ],
+      [
+        "Japan",
+        "🇯🇵",
+        "🗻",
+        "Mount Fuji",
+        1
+      ],
+      [
+        "United Kingdom",
+        "🇬🇧",
+        "💂",
+        "Big Ben and red buses",
+        1
+      ],
+      [
+        "China",
+        "🇨🇳",
+        "🐼",
+        "pandas and the Great Wall",
+        2
+      ],
+      [
+        "France",
+        "🇫🇷",
+        "🥐",
+        "the Eiffel Tower and croissants",
+        2
+      ],
+      [
+        "Brazil",
+        "🇧🇷",
+        "🦜",
+        "parrots and the Amazon",
+        2
+      ],
+      [
+        "Italy",
+        "🇮🇹",
+        "🍕",
+        "pizza",
+        2
+      ],
+      [
+        "Germany",
+        "🇩🇪",
+        "🥨",
+        "pretzels and castles",
+        2
+      ],
+      [
+        "Turkey",
+        "🇹🇷",
+        "🕌",
+        "Istanbul and big mosques",
+        2
+      ],
+      [
+        "Australia",
+        "🇦🇺",
+        "🦘",
+        "kangaroos",
+        2
+      ],
+      [
+        "Egypt",
+        "🇪🇬",
+        "🐫",
+        "pyramids and camels",
+        3
+      ],
+      [
+        "Kenya",
+        "🇰🇪",
+        "🦒",
+        "giraffes and safaris",
+        3
+      ],
+      [
+        "Spain",
+        "🇪🇸",
+        "💃",
+        "flamenco dancing",
+        3
+      ],
+      [
+        "Greece",
+        "🇬🇷",
+        "🏛️",
+        "old temples",
+        3
+      ],
+      [
+        "Nepal",
+        "🇳🇵",
+        "🏔️",
+        "Mount Everest",
+        3
+      ],
+      [
+        "Switzerland",
+        "🇨🇭",
+        "🧀",
+        "cheese and mountains",
+        3
+      ],
+      [
+        "Netherlands",
+        "🇳🇱",
+        "🌷",
+        "tulips and windmills",
+        3
+      ],
+      [
+        "Russia",
+        "🇷🇺",
+        "🪆",
+        "nesting dolls",
+        3
+      ],
+      [
+        "New Zealand",
+        "🇳🇿",
+        "🥝",
+        "kiwi birds",
+        3
+      ],
+      [
+        "Bangladesh",
+        "🇧🇩",
+        "🛶",
+        "lots of rivers and boats",
+        3
+      ],
+      [
+        "South Korea",
+        "🇰🇷",
+        "🥟",
+        "dumplings and K-pop",
+        3
+      ]
+    ],
+    "CONT": {
+      "North America": {
+        "e": "🦅🦬",
+        "clue": "bald eagles and bison live here. We live here too!",
+        "level": 1
+      },
+      "South America": {
+        "e": "🦜🦙",
+        "clue": "the Amazon rainforest, parrots and llamas are here.",
+        "level": 1
+      },
+      "Europe": {
+        "e": "🏰🥐",
+        "clue": "it has old castles and the Eiffel Tower.",
+        "level": 2
+      },
+      "Africa": {
+        "e": "🦁🦒",
+        "clue": "lions, giraffes and zebras live here.",
+        "level": 1
+      },
+      "Asia": {
+        "e": "🐼🐘",
+        "clue": "pandas and elephants live here. It is the biggest!",
+        "level": 1
+      },
+      "Australia": {
+        "e": "🦘🐨",
+        "clue": "kangaroos and koalas live here.",
+        "level": 1
+      },
+      "Antarctica": {
+        "e": "🐧❄️",
+        "clue": "it is covered in ice. Penguins live here. Brrr!",
+        "level": 1
+      }
+    },
+    "COUNTRY_FLAG": {
+      "United States": "🇺🇸",
+      "Canada": "🇨🇦",
+      "Brazil": "🇧🇷",
+      "Russia": "🇷🇺",
+      "China": "🇨🇳",
+      "Australia": "🇦🇺",
+      "India": "🇮🇳",
+      "United Kingdom": "🇬🇧",
+      "France": "🇫🇷",
+      "Germany": "🇩🇪",
+      "Italy": "🇮🇹",
+      "Japan": "🇯🇵",
+      "Mexico": "🇲🇽",
+      "Egypt": "🇪🇬",
+      "Spain": "🇪🇸",
+      "Argentina": "🇦🇷",
+      "South Africa": "🇿🇦",
+      "Peru": "🇵🇪",
+      "Kenya": "🇰🇪",
+      "New Zealand": "🇳🇿",
+      "Turkey": "🇹🇷",
+      "Greece": "🇬🇷",
+      "Indonesia": "🇮🇩"
+    },
+    "CAPITAL": {
+      "United States": "Washington, D.C.",
+      "Canada": "Ottawa",
+      "Brazil": "Brasília",
+      "Russia": "Moscow",
+      "China": "Beijing",
+      "Australia": "Canberra",
+      "India": "New Delhi",
+      "United Kingdom": "London",
+      "France": "Paris",
+      "Germany": "Berlin",
+      "Italy": "Rome",
+      "Japan": "Tokyo",
+      "Mexico": "Mexico City",
+      "Egypt": "Cairo",
+      "Spain": "Madrid",
+      "Argentina": "Buenos Aires",
+      "Peru": "Lima",
+      "Kenya": "Nairobi",
+      "New Zealand": "Wellington",
+      "Turkey": "Ankara",
+      "Greece": "Athens"
+    },
+    "SMALL_COUNTRIES": [
+      "United Kingdom",
+      "Japan",
+      "Italy",
+      "Greece",
+      "New Zealand",
+      "Germany",
+      "France",
+      "Spain",
+      "Kenya",
+      "Turkey",
+      "Peru"
+    ],
+    "ANIMAL_ALSO": {
+      "polar bear": [
+        "Russia",
+        "United States"
+      ],
+      "tiger": [
+        "China",
+        "Russia",
+        "Indonesia"
+      ],
+      "bald eagle": [
+        "Canada"
+      ],
+      "anaconda": [
+        "Peru"
+      ],
+      "camel": [
+        "India",
+        "Australia",
+        "China"
+      ],
+      "moose": [
+        "United States",
+        "Russia"
+      ],
+      "llama": [
+        "Argentina"
+      ],
+      "macaw parrot": [
+        "Peru",
+        "Mexico"
+      ],
+      "bison": [
+        "Canada"
+      ],
+      "beaver": [
+        "United States"
+      ],
+      "lion": [
+        "Asia"
+      ],
+      "penguin": [
+        "South America",
+        "Africa",
+        "Australia"
+      ],
+      "sloth": [
+        "North America"
+      ],
+      "panda": [],
+      "kangaroo": [],
+      "koala": [],
+      "peacock": [],
+      "alligator": [
+        "China"
+      ],
+      "cheetah": [
+        "Asia"
+      ],
+      "rhino": [
+        "Asia"
+      ],
+      "wild turkey": [
+        "Mexico",
+        "Canada"
+      ],
+      "monkey": [
+        "Africa",
+        "Asia",
+        "North America"
+      ],
+      "crocodile": [
+        "Asia",
+        "Australia",
+        "North America",
+        "South America"
+      ],
+      "jaguar": [
+        "Mexico",
+        "Peru",
+        "Argentina"
+      ],
+      "reindeer": [
+        "Canada",
+        "United States"
+      ],
+      "hedgehog": [
+        "Africa",
+        "Asia"
+      ],
+      "water buffalo": [
+        "Australia"
+      ],
+      "Asian elephant": [
+        "China",
+        "Indonesia"
+      ],
+      "red fox": [
+        "Asia",
+        "North America",
+        "Africa",
+        "Australia"
+      ],
+      "flamingo": [
+        "South America",
+        "North America",
+        "Asia",
+        "Europe"
+      ],
+      "snowy owl": [
+        "Russia",
+        "United States"
+      ],
+      "gorilla": [],
+      "hippo": [],
+      "zebra": [],
+      "giraffe": [],
+      "African elephant": []
+    },
+    "VOCAB": [
+      [
+        "enormous",
+        "🐘",
+        "very, very big",
+        "An elephant is enormous.",
+        "What else is enormous?",
+        "big"
+      ],
+      [
+        "tiny",
+        "🐜",
+        "very, very small",
+        "An ant is tiny.",
+        "Can you find something tiny?",
+        "small"
+      ],
+      [
+        "brave",
+        "🦸",
+        "not giving up, even when you feel scared",
+        "The firefighter was brave.",
+        "When were you brave?"
+      ],
+      [
+        "curious",
+        "🧐",
+        "wanting to know more",
+        "The curious cat peeked into the box.",
+        "What are you curious about?"
+      ],
+      [
+        "gentle",
+        "🐣",
+        "soft and careful",
+        "Be gentle with the baby chick.",
+        "How do you pet a puppy gently?"
+      ],
+      [
+        "delicious",
+        "😋",
+        "it tastes really yummy",
+        "This pizza is delicious!",
+        "What food is delicious to you?"
+      ],
+      [
+        "exhausted",
+        "😴",
+        "very, very tired",
+        "After the long walk, I was exhausted.",
+        "What makes you exhausted?",
+        "tired"
+      ],
+      [
+        "giggle",
+        "🤭",
+        "a small, silly laugh",
+        "The baby began to giggle.",
+        "What makes you giggle?"
+      ],
+      [
+        "whisper",
+        "🤫",
+        "talking very quietly",
+        "We whisper in the library.",
+        "Can you whisper your name?",
+        "quiet"
+      ],
+      [
+        "shiver",
+        "🥶",
+        "shaking because you are cold",
+        "I shiver in the snow.",
+        "When do you shiver?",
+        "cold"
+      ],
+      [
+        "sparkle",
+        "✨",
+        "to shine with tiny bits of light",
+        "The stars sparkle at night.",
+        "What things sparkle?"
+      ],
+      [
+        "fragile",
+        "🥚",
+        "easy to break",
+        "Eggs are fragile, so hold them carefully.",
+        "What else is fragile?"
+      ],
+      [
+        "cozy",
+        "🛌",
+        "warm, soft and comfy",
+        "My bed is so cozy.",
+        "What is cozy in our house?"
+      ],
+      [
+        "grumpy",
+        "😠",
+        "in a bad mood",
+        "The grumpy bear did not want to play.",
+        "What makes you grumpy?",
+        "mad"
+      ],
+      [
+        "nibble",
+        "🐰",
+        "to take tiny bites",
+        "The bunny likes to nibble carrots.",
+        "Can you nibble like a bunny?",
+        "eat"
+      ],
+      [
+        "cheerful",
+        "😊",
+        "happy and bright",
+        "Grandma is always cheerful.",
+        "What makes you cheerful?",
+        "happy"
+      ],
+      [
+        "swift",
+        "🐆",
+        "very fast",
+        "The cheetah is swift.",
+        "What other animal is swift?",
+        "fast"
+      ],
+      [
+        "sticky",
+        "🍯",
+        "things stay stuck to it",
+        "Honey is sticky.",
+        "What else is sticky?"
+      ],
+      [
+        "noisy",
+        "📢",
+        "very loud",
+        "The drums are noisy.",
+        "What is noisy?",
+        "loud"
+      ],
+      [
+        "tidy",
+        "🧹",
+        "neat and clean",
+        "Please keep your room tidy.",
+        "How can we make your room tidy?",
+        "neat"
+      ],
+      [
+        "timid",
+        "🐭",
+        "shy and a little scared",
+        "The timid mouse hid in its hole.",
+        "Do you ever feel timid?",
+        "scared"
+      ],
+      [
+        "furious",
+        "😡",
+        "very, very angry",
+        "The dragon was furious.",
+        "What can you do when you feel furious?",
+        "mad"
+      ],
+      [
+        "soar",
+        "🦅",
+        "to fly high in the sky",
+        "The eagle can soar over the mountains.",
+        "What else can soar?"
+      ],
+      [
+        "drowsy",
+        "🥱",
+        "sleepy",
+        "I feel drowsy at bedtime.",
+        "When do you feel drowsy?",
+        "tired"
+      ],
+      [
+        "gobble",
+        "🦃",
+        "to eat very fast",
+        "The hungry dog gobbled his food.",
+        "Should we gobble our food?",
+        "eat"
+      ],
+      [
+        "scurry",
+        "🐁",
+        "to run with quick, tiny steps",
+        "The mouse scurried under the bed.",
+        "Can you scurry across the room?",
+        "fast"
+      ],
+      [
+        "gloomy",
+        "🌧️",
+        "dark and sad looking",
+        "It is a gloomy, rainy day.",
+        "What do you like to do on a gloomy day?"
+      ],
+      [
+        "ancient",
+        "🏛️",
+        "very, very old",
+        "The dinosaurs lived in ancient times.",
+        "What is something ancient?"
+      ],
+      [
+        "fierce",
+        "🦁",
+        "strong and scary",
+        "The lion has a fierce roar.",
+        "What animal is fierce?"
+      ],
+      [
+        "hollow",
+        "🪵",
+        "empty inside",
+        "The owl lives in a hollow tree.",
+        "What else is hollow?"
+      ],
+      [
+        "delighted",
+        "🥰",
+        "very, very happy",
+        "I was delighted with my present.",
+        "When were you delighted?",
+        "happy"
+      ],
+      [
+        "pounce",
+        "🐈",
+        "to jump on something quickly",
+        "The cat will pounce on the toy.",
+        "Can you pounce like a cat?"
+      ],
+      [
+        "feast",
+        "🍽️",
+        "a big, special meal",
+        "We had a feast on my birthday.",
+        "What would you eat at a feast?",
+        "eat"
+      ],
+      [
+        "vanish",
+        "🪄",
+        "to disappear so you cannot see it",
+        "The magician made the coin vanish.",
+        "What would you make vanish?"
+      ],
+      [
+        "chilly",
+        "🌬️",
+        "a little bit cold",
+        "It is chilly outside, so wear a jacket.",
+        "What do we wear when it is chilly?",
+        "cold"
+      ],
+      [
+        "scorching",
+        "🔥",
+        "very, very hot",
+        "The sand is scorching in summer.",
+        "What is scorching?"
+      ],
+      [
+        "soggy",
+        "🥣",
+        "wet and mushy",
+        "My cereal got soggy.",
+        "What gets soggy?"
+      ],
+      [
+        "sturdy",
+        "🧱",
+        "strong and hard to break",
+        "The brick house is sturdy.",
+        "What is sturdy?"
+      ],
+      [
+        "explore",
+        "🧭",
+        "to look around a new place",
+        "Let us explore the forest!",
+        "Where would you like to explore?"
+      ],
+      [
+        "imagine",
+        "💭",
+        "to make a picture in your mind",
+        "Imagine that you can fly!",
+        "What do you like to imagine?"
+      ],
+      [
+        "silent",
+        "🤐",
+        "no sound at all",
+        "The room was silent.",
+        "Can you be silent for five seconds?",
+        "quiet"
+      ],
+      [
+        "generous",
+        "🎁",
+        "happy to share and give",
+        "Mia was generous and shared her snack.",
+        "How can you be generous?"
+      ],
+      [
+        "polite",
+        "🙏",
+        "using kind words like please and thank you",
+        "It is polite to say thank you.",
+        "What polite words do you know?"
+      ],
+      [
+        "patient",
+        "⏳",
+        "able to wait calmly",
+        "Be patient, the cookies are baking.",
+        "When do you need to be patient?"
+      ],
+      [
+        "marvelous",
+        "🌈",
+        "wonderful and amazing",
+        "What a marvelous rainbow!",
+        "What is marvelous to you?"
+      ],
+      [
+        "puzzled",
+        "🤔",
+        "not sure, a little mixed up",
+        "I was puzzled by the riddle.",
+        "What makes you puzzled?"
+      ],
+      [
+        "frightened",
+        "😱",
+        "very scared",
+        "The kitten was frightened of the thunder.",
+        "What helps when you feel frightened?",
+        "scared"
+      ],
+      [
+        "proud",
+        "🏅",
+        "happy about something you did well",
+        "I am proud of my drawing.",
+        "What are you proud of?",
+        "happy"
+      ],
+      [
+        "dangerous",
+        "⚠️",
+        "something that could hurt you",
+        "Fire is dangerous.",
+        "What is dangerous?"
+      ],
+      [
+        "blossom",
+        "🌸",
+        "a flower on a tree or plant",
+        "The tree is full of pink blossoms.",
+        "Where do you see blossoms?"
+      ],
+      [
+        "harvest",
+        "🌽",
+        "to pick food when it is ready",
+        "Farmers harvest corn in the fall.",
+        "What would you like to harvest?"
+      ],
+      [
+        "hibernate",
+        "🐻",
+        "to sleep all winter long",
+        "Bears hibernate in winter.",
+        "Would you like to hibernate?"
+      ],
+      [
+        "nocturnal",
+        "🦉",
+        "awake at night and asleep in the day",
+        "Owls are nocturnal.",
+        "What other animals are nocturnal?"
+      ],
+      [
+        "predator",
+        "🦈",
+        "an animal that hunts other animals",
+        "A shark is a predator.",
+        "What other predators do you know?"
+      ],
+      [
+        "migrate",
+        "🦆",
+        "to move far away when the seasons change",
+        "Some birds migrate south for the winter.",
+        "Where would you migrate?"
+      ]
+    ],
+    "GRADES": {
+      "prek": {
+        "label": "Pre-K",
+        "g": {
+          "trace": "1-1",
+          "phonics": "1-2",
+          "animals": "1-1",
+          "places": "1-1",
+          "body": "1-1",
+          "gk": "1-1",
+          "anatomy": "1-1",
+          "match": "1-1",
+          "cvc": "1-1",
+          "sight": "1-1",
+          "spell": "1-1",
+          "vocab": "1-1",
+          "syl": "1-1",
+          "add": "1-1",
+          "sub": "1-1",
+          "cmp": "1-1",
+          "shape2": "1-1",
+          "jobs": "1-1",
+          "flags": "1-1",
+          "maps": "1-1"
+        }
+      },
+      "k": {
+        "label": "Kindergarten",
+        "g": {
+          "trace": "1-1",
+          "phonics": "1-4",
+          "animals": "1-2",
+          "places": "1-1",
+          "body": "1-2",
+          "gk": "1-2",
+          "anatomy": "1-1",
+          "match": "1-2",
+          "cvc": "2-3",
+          "w4": "1-2",
+          "sight": "1-2",
+          "spell": "1-2",
+          "vocab": "1-2",
+          "sent": "1-2",
+          "syl": "1-2",
+          "add": "1-2",
+          "sub": "1-2",
+          "story": "1-1",
+          "cmp": "1-2",
+          "shape2": "1-2",
+          "jobs": "1-2",
+          "flags": "1-2",
+          "maps": "1-2",
+          "home": "1-2"
+        }
+      },
+      "g1": {
+        "label": "1st Grade",
+        "g": {
+          "trace": "1-1",
+          "phonics": "3-5",
+          "animals": "1-2",
+          "places": "1-2",
+          "gk": "2-3",
+          "anatomy": "1-2",
+          "match": "2-3",
+          "cvc": "3-3",
+          "w4": "2-4",
+          "sight": "2-3",
+          "spell": "3-4",
+          "vocab": "1-2",
+          "sent": "2-3",
+          "syl": "2-3",
+          "add": "3-4",
+          "sub": "3-4",
+          "story": "2-3",
+          "cmp": "2-4",
+          "clock": "1-2",
+          "shape2": "2-3",
+          "jobs": "2-3",
+          "flags": "2-3",
+          "maps": "2-3",
+          "words": "1-2",
+          "numsense": "1-2",
+          "sci": "1-2",
+          "home": "2-3"
+        }
+      },
+      "g2": {
+        "label": "2nd Grade",
+        "g": {
+          "phonics": "4-5",
+          "animals": "2-3",
+          "places": "2-3",
+          "gk": "3-4",
+          "anatomy": "2-3",
+          "match": "3-5",
+          "w4": "4-5",
+          "sight": "3-4",
+          "spell": "4-5",
+          "vocab": "2-4",
+          "sent": "3-4",
+          "add": "4-5",
+          "sub": "4-5",
+          "story": "3-5",
+          "cmp": "4-5",
+          "mul": "1-3",
+          "div": "1-2",
+          "clock": "2-4",
+          "shape2": "3-4",
+          "flags": "3-3",
+          "maps": "3-3",
+          "words": "2-4",
+          "numsense": "2-4",
+          "sci": "2-3",
+          "home": "2-4"
+        }
+      },
+      "g3": {
+        "label": "3rd Grade",
+        "g": {
+          "animals": "3-3",
+          "places": "3-3",
+          "gk": "4-4",
+          "anatomy": "3-4",
+          "match": "4-5",
+          "w4": "5-5",
+          "sight": "4-4",
+          "spell": "5-5",
+          "vocab": "3-4",
+          "sent": "4-6",
+          "add": "5-5",
+          "sub": "5-5",
+          "story": "4-5",
+          "cmp": "5-5",
+          "mul": "3-5",
+          "div": "2-5",
+          "clock": "3-4",
+          "shape2": "4-4",
+          "flags": "3-3",
+          "maps": "3-3",
+          "words": "3-5",
+          "numsense": "3-5",
+          "sci": "3-4",
+          "home": "3-4"
+        }
+      }
+    },
+    "STICKERS": [
+      "🦄",
+      "🐶",
+      "🐱",
+      "🐼",
+      "🦊",
+      "🐯",
+      "🐸",
+      "🐵",
+      "🦁",
+      "🐨",
+      "🐰",
+      "🐻",
+      "🐷",
+      "🐮",
+      "🐙",
+      "🦋",
+      "🐬",
+      "🦖",
+      "🐳",
+      "🦩",
+      "🦉",
+      "🐢",
+      "🐝",
+      "🐞",
+      "🌈",
+      "🚀",
+      "🍩",
+      "🍓",
+      "🍦",
+      "🎈",
+      "🌻",
+      "🌟",
+      "🏆",
+      "👑",
+      "🎠",
+      "🧸",
+      "🪅",
+      "🍉",
+      "🐧",
+      "🦕"
+    ]
+  }
+}

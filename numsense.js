@@ -29,21 +29,27 @@ function nsPie(parts, shaded, bar) {
 }
 const frac = (a, b) => `${a}/${b}`;
 const fracHTML = (a, b) => `<span class="ns-f"><b>${a}</b><i>${b}</i></span>`;
-// Original denomination artwork, kept as inline SVG so money questions work offline.
-// Coins are schematic teaching drawings, not photographic/legal reproductions.
-function nsCoinPicture(value, label, currencyCode) {
-  const tone = ({1:'#ca864b',2:'#d4a66c',5:'#aab7bf',10:'#b4c0cc',20:'#d8b568',25:'#b8c3ce',50:'#d0b779',100:'#dfb74d',200:'#c9d7d7'})[value] || '#d2b781';
-  const safe = String(label).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
-  const code = String(currencyCode || '').replace(/[^A-Za-z ]/g,'').slice(0,14);
-  return `<svg class="ns-currency-picture" viewBox="0 0 110 110" role="img" aria-label="${safe} coin">
-    <circle cx="55" cy="55" r="51" fill="#fff" opacity=".7"/>
-    <circle cx="55" cy="55" r="46" fill="${tone}" stroke="#6d635a" stroke-width="2.5"/>
-    <circle cx="55" cy="55" r="40" fill="none" stroke="#fff" stroke-opacity=".72" stroke-width="2" stroke-dasharray="2 4"/>
-    <path d="M32 38Q55 14 78 38" stroke="#fff" stroke-opacity=".5" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <text x="55" y="63" font-size="${safe.length>3?23:29}" text-anchor="middle" fill="#28394b" font-weight="900" font-family="system-ui,sans-serif">${safe}</text>
-    <text x="55" y="79" font-size="8" text-anchor="middle" fill="#374354" font-weight="700" font-family="system-ui,sans-serif">${code}</text>
-  </svg>`;
+// All currency artwork is a separate, bundled SVG asset (no inline SVG media).
+// These educational images show denomination clearly without imitating legal tender.
+function nsMoneyImage(kind, value, label, countryName) {
+  const country = Object.keys(COUNTRIES).find(code =>
+    COUNTRIES[code].label === countryName || COUNTRIES[code].name === countryName) ||
+    (typeof countryCode === 'function' && countryCode() !== 'other' ? countryCode() : 'us');
+  const safe = String(label).replace(/[&<>"']/g, ch =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const title = String(countryName || country).replace(/[&<>"']/g, ch =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const path = 'assets/currencies/' + country + '-' + (kind === 'note' ? 'note-' : '') + Number(value) + '.svg';
+  const cls = kind === 'note' ? 'ns-currency-picture ns-banknote-picture' : 'ns-currency-picture';
+  return `<img class="${cls}" src="${path}" alt="${title} ${safe} ${kind === 'note' ? 'banknote' : 'coin'} — illustrated" decoding="async">`;
 }
+function nsCoinPicture(value, label, countryName) {
+  return nsMoneyImage('coin', value, label, countryName);
+}
+function nsBanknotePicture(value, label, countryName) {
+  return nsMoneyImage('note', value, label, countryName);
+}
+
 function nsCoins(total, C) {
   const coins = C.coins.map((c) => c[0]).sort((a, b) => b - a);
   let out, left = 1;

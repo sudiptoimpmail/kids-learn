@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img"><title>Golden Gate Bridge</title><rect x="0" y="0" width="120" height="120" fill="#cfe9ff"/><rect x="0" y="86" width="120" height="34" fill="#4dabf7"/>
+    <path d="M0 74 H120" stroke="#e8590c" stroke-width="5"/>
+    <rect x="28" y="18" width="7" height="72" fill="#e8590c" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/><rect x="84" y="18" width="7" height="72" fill="#e8590c" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M28 26 h7 M28 44 h7 M84 26 h7 M84 44 h7" stroke="#2b2140" stroke-width="1.4"/>
+    <path d="M0 40 Q15 70 31 20 Q60 70 88 20 Q104 70 120 40" fill="none" stroke="#e8590c" stroke-width="2.2"/>
+    <path d="M8 74 V63.8" stroke="#e8590c" stroke-width=".8"/><path d="M16 74 V59" stroke="#e8590c" stroke-width=".8"/><path d="M40 74 V60" stroke="#e8590c" stroke-width=".8"/><path d="M48 74 V60" stroke="#e8590c" stroke-width=".8"/><path d="M56 74 V60" stroke="#e8590c" stroke-width=".8"/><path d="M64 74 V60" stroke="#e8590c" stroke-width=".8"/><path d="M72 74 V60" stroke="#e8590c" stroke-width=".8"/><path d="M80 74 V60" stroke="#e8590c" stroke-width=".8"/><path d="M96 74 V54.8" stroke="#e8590c" stroke-width=".8"/><path d="M104 74 V59.6" stroke="#e8590c" stroke-width=".8"/><path d="M112 74 V64.4" stroke="#e8590c" stroke-width=".8"/></svg>

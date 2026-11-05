@@ -5,7 +5,9 @@ const assert=require('node:assert/strict');
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const shuffle=a=>a.slice().sort(()=>Math.random()-.5);
 const sample=(a,n)=>shuffle(a).slice(0,n);
-const context=vm.createContext({Math,Set,Object,Error,pick,shuffle,sample});
+const ContentData = {get: (namespace,key) =>
+  JSON.parse(fs.readFileSync('data/'+namespace+'.json','utf8')).datasets[key]};
+const context=vm.createContext({Math,Set,Object,Error,pick,shuffle,sample,ContentData});
 const sources=['early-words.js','grade1words.js','grade1.js','workbook.js'];
 vm.runInContext(sources.map(x=>fs.readFileSync(x,'utf8')).join('\n')+
 '\nthis.curriculum={early:EARLY_WORD_INVENTORY,one:G1_WORDS,read:G1_READING_WORDS,extra:G1_WORKBOOK_WORDS,phrases:G1_PHRASES,passages:G1_PASSAGES,order:G1_ORDER,endings:G1_ENDINGS,vowels:G1_VOWELS,illustrations:IllustratedActivities};',context);
@@ -34,20 +36,21 @@ assert.equal(scene.squares.length,4);
 for(const obj of ['wind','leaf','jump','catch','climb','bird','water','wolf'])assert.ok(scene.forest.includes(obj),'forest object/action missing: '+obj);
 for(const name of ['garden','forest','room','square-room','savanna','sports','park','cafe']){
   const svg=d.illustrations.illustration(name);
-  assert.ok(svg.includes('<svg')&&svg.includes('</svg>')&&svg.length>1800,'missing illustrated scene: '+name);
+  assert.ok(svg.includes('<svg') && svg.includes('</svg>') &&
+    svg.includes('assets/workbook/'+name+'.svg'), 'missing external picture reference: '+name);
+  const external='assets/workbook/'+name+'.svg';
+  assert.ok(fs.existsSync(external), 'Missing standalone workbook picture '+external);
+  const drawing=fs.readFileSync(external,'utf8');
+  assert.ok(drawing.includes('viewBox') && drawing.length>1800, 'Invalid authored workbook picture '+external);
 }
-const trace=fs.readFileSync('trace.js','utf8');
-const from=trace.indexOf('const TRACE_WORDS = [');
-const to=trace.indexOf('\n];',from);
-assert.ok(from>0&&to>from);
-const traceWords=[...trace.slice(from,to).matchAll(/\['([a-z]+)',/g)].map(x=>x[1]);
+const traceWords=JSON.parse(fs.readFileSync('data/trace.json','utf8')).datasets.TRACE_WORDS.map(row => row[0]);
 const clips=JSON.parse(fs.readFileSync('audio/clips.json','utf8'));
 assert.ok(traceWords.length>=28,'too few Grade 1 handwriting words');
 for(const word of traceWords)assert.ok(clips[word],'tracing word has no natural audio: '+word);
 for(const word of 'fish wash bench lunch rock sand sick wind leaf jump catch bird climb water wolf'.split(' '))assert.ok(traceWords.includes(word),'tracing word missing: '+word);
-const content=fs.readFileSync('content.js','utf8');
-assert.ok(content.includes("['cub', '🐻']"),'audio-supported cub should be in phonics picture pool');
-assert.ok(!content.includes("['ham', '🍖']")&&!content.includes("['wig',"),'unrecorded words should remain print-only for now');
+const bundled=JSON.parse(fs.readFileSync('data/content.json','utf8')).datasets;
+assert.ok(bundled.W3.some(([w])=>w==='cub'),'audio-supported cub should be in phonics picture pool');
+assert.ok(!bundled.W3.some(([w])=>w==='ham'||w==='wig'),'unrecorded words should remain print-only for now');
 const html=fs.readFileSync('index.html','utf8');
 assert.ok(!html.includes('id="workbook"')&&!html.includes('workbookLaunch'),'must not add separate workbook section');
 assert.ok(html.includes('id="skipBtn"')&&html.includes('Next →'),'QA Next control missing');

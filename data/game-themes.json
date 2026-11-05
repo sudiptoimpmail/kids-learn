@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "namespace": "game-themes",
+  "datasets": {
+    "PATH_THEMES": [
+      [
+        "🐥",
+        "🦆",
+        "Take the duckling to mama duck!",
+        "assets/maze/duckling.svg",
+        "assets/photos/duck.jpg"
+      ],
+      [
+        "🧒",
+        "🏠",
+        "Help the kid get home!",
+        "assets/maze/child.svg",
+        "assets/illustrations/house.svg"
+      ],
+      [
+        "🐶",
+        "🦴",
+        "Take the puppy to its bone!",
+        "assets/photos/dog.jpg",
+        "assets/maze/bone.svg"
+      ],
+      [
+        "🐝",
+        "🌻",
+        "Help the bee find the flower!",
+        "assets/maze/bee.svg",
+        "assets/photos/sunflower.jpg"
+      ],
+      [
+        "🐰",
+        "🥕",
+        "Take the bunny to the carrot!",
+        "assets/photos/rabbit.jpg",
+        "assets/illustrations/carrot.svg"
+      ],
+      [
+        "🐭",
+        "🧀",
+        "Help the mouse find the cheese!",
+        "assets/games/mouse.svg",
+        "assets/maze/cheese.svg"
+      ],
+      [
+        "🚗",
+        "🅿️",
+        "Drive the car to the parking spot!",
+        "assets/photos/car.jpg",
+        "assets/maze/parking.svg"
+      ],
+      [
+        "🐵",
+        "🍌",
+        "Take the monkey to the banana!",
+        "assets/illustrations/monkey.svg",
+        "assets/illustrations/banana.svg"
+      ]
+    ],
+    "WHACK_CHARACTERS": [
+      "mole",
+      "mole",
+      "mole",
+      "hedgehog",
+      "mouse"
+    ]
+  }
+}

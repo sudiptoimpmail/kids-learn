@@ -25,7 +25,8 @@
     <div class="splash-in">
       <div class="splash-emoji" id="mascot">🦄</div>
       <h1>Learn &amp; Play</h1>
-      <button id="startBtn" class="big-btn ico start" aria-label="Let's play">▶︎ Play</button>
+      <button id="startBtn" class="big-btn ico start" disabled aria-label="Let's play">▶︎ Play</button>
+      <p id="loadStatus" role="status" aria-live="polite">Preparing learning activities…</p>
     </div>
   </div>
 
@@ -275,35 +276,6 @@
       <p class="note small">Everything is saved only on this phone. No accounts, no ads, no tracking.</p>
     </div>
   </section>
-
-  <script src="feature-flags.js"></script>
-  <script src="storage.js"></script>
-  <script src="geo.js"></script>
-  <script src="art.js"></script>
-  <script src="landmarks.js"></script>
-  <script src="stories.js"></script>
-  <script src="words.js"></script>
-  <script src="phonics.js"></script>
-  <script src="early-words.js"></script>
-  <script src="grade1words.js"></script>
-  <script src="photos.js"></script>
-  <script src="illustrations.js"></script>
-  <script src="content.js"></script>
-  <script src="content-packs.js"></script>
-  <script src="thinking.js"></script>
-  <script src="country.js"></script>
-  <script src="science.js"></script>
-  <script src="grammar.js"></script>
-  <script src="numsense.js"></script>
-  <script src="grade1.js"></script>
-  <script src="app.js"></script>
-  <script src="scenes.js"></script>
-  <script src="games.js"></script>
-  <script src="pathmaze.js"></script>
-  <script src="radialmaze.js"></script>
-  <script src="wordgames.js"></script>
-  <script src="trace.js"></script>
-  <script src="progress.js"></script>
-  <script src="workbook.js"></script>
+  <script type="module" src="content-loader.js"></script>
 </body>
 </html>

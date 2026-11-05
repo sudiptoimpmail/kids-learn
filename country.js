@@ -5,212 +5,16 @@
    Levels: 1 money, emergency number, symbols · 2 capital, flag, national day, coins
            3 states/provinces, leaders, neighbours, oceans · 4 mountains, rivers, state capitals
    ========================================================= */
-const COUNTRIES = {
-  us: {
-    name: 'the United States', label: 'United States', flag: '🇺🇸', region: 'state',
-    regions: [['Alabama', 'Montgomery'], ['Alaska', 'Juneau'], ['Arizona', 'Phoenix'], ['Arkansas', 'Little Rock'], ['California', 'Sacramento'], ['Colorado', 'Denver'],
-      ['Connecticut', 'Hartford'], ['Delaware', 'Dover'], ['Florida', 'Tallahassee'], ['Georgia', 'Atlanta'], ['Hawaii', 'Honolulu'], ['Idaho', 'Boise'],
-      ['Illinois', 'Springfield'], ['Indiana', 'Indianapolis'], ['Iowa', 'Des Moines'], ['Kansas', 'Topeka'], ['Kentucky', 'Frankfort'], ['Louisiana', 'Baton Rouge'],
-      ['Maine', 'Augusta'], ['Maryland', 'Annapolis'], ['Massachusetts', 'Boston'], ['Michigan', 'Lansing'], ['Minnesota', 'Saint Paul'], ['Mississippi', 'Jackson'],
-      ['Missouri', 'Jefferson City'], ['Montana', 'Helena'], ['Nebraska', 'Lincoln'], ['Nevada', 'Carson City'], ['New Hampshire', 'Concord'], ['New Jersey', 'Trenton'],
-      ['New Mexico', 'Santa Fe'], ['New York', 'Albany'], ['North Carolina', 'Raleigh'], ['North Dakota', 'Bismarck'], ['Ohio', 'Columbus'], ['Oklahoma', 'Oklahoma City'],
-      ['Oregon', 'Salem'], ['Pennsylvania', 'Harrisburg'], ['Rhode Island', 'Providence'], ['South Carolina', 'Columbia'], ['South Dakota', 'Pierre'], ['Tennessee', 'Nashville'],
-      ['Texas', 'Austin'], ['Utah', 'Salt Lake City'], ['Vermont', 'Montpelier'], ['Virginia', 'Richmond'], ['Washington', 'Olympia'], ['West Virginia', 'Charleston'],
-      ['Wisconsin', 'Madison'], ['Wyoming', 'Cheyenne']],
-    coins: [[1, '1¢'], [5, '5¢'], [10, '10¢'], [25, '25¢']], fmt: (n) => (n < 100 ? `${n}¢` : `$${(n / 100).toFixed(2)}`),
-    rows: [
-      [1, 'What is the money in the United States called?', 'the dollar', 'the pound', 'the rupee', 'the euro'],
-      [1, 'What number do you call in an emergency in the United States?', '911', '999', '000', '111'],
-      [1, 'Which bird is a symbol of the United States?', '🦅 the bald eagle', '🦚 the peacock', '🦜 the parrot', '🐧 the penguin'],
-      [2, 'What is the capital city of the United States?', 'Washington, D.C.', 'New York City', 'Los Angeles', 'Chicago'],
-      [2, 'Which day is Independence Day in the United States?', 'July 4', 'July 1', 'January 26', 'December 25'],
-      [2, 'What colors are on the flag of the United States?', 'red, white and blue', 'green, white and orange', 'red and white', 'blue and yellow'],
-      [2, 'Which coin is worth 10 cents?', 'a dime', 'a nickel', 'a penny', 'a quarter'],
-      [2, 'Which coin is worth 25 cents?', 'a quarter', 'a dime', 'a nickel', 'a penny'],
-      [2, 'Which coin is worth 5 cents?', 'a nickel', 'a dime', 'a penny', 'a quarter'],
-      [2, 'Where is the Statue of Liberty?', 'New York City', 'Chicago', 'Miami', 'Seattle'],
-      [3, 'How many states are in the United States?', '50', '13', '25', '100'],
-      [3, 'How many stars are on the flag of the United States?', '50', '13', '25', '10'],
-      [3, 'Where is the Golden Gate Bridge?', 'San Francisco', 'New York City', 'Boston', 'Houston'],
-      [3, 'In which state is the Grand Canyon?', 'Arizona', 'Florida', 'Alaska', 'Maine'],
-      [3, 'Which two countries are next to the United States?', 'Canada and Mexico', 'France and Spain', 'India and China', 'Brazil and Peru'],
-      [3, 'Which two oceans are on the sides of the United States?', 'the Atlantic and the Pacific', 'the Indian and the Arctic', 'the Arctic and the Southern', 'the Indian and the Southern'],
-      [3, 'What is the leader of the United States called?', 'the President', 'the Prime Minister', 'the King', 'the Mayor'],
-      [4, 'What is the highest mountain in the United States?', 'Denali', 'Mount Everest', 'Mount Fuji', 'Ben Nevis'],
-      [4, 'Which is the biggest state of the United States?', 'Alaska', 'Texas', 'California', 'Rhode Island'],
-      [4, 'Which state is made of islands in the Pacific Ocean?', 'Hawaii', 'Texas', 'Ohio', 'Nevada'],
-      [4, 'Which is a famous long river in the United States?', 'the Mississippi River', 'the Nile', 'the Ganges', 'the Thames'],
-      [4, 'Where is Mount Rushmore?', 'South Dakota', 'Texas', 'Florida', 'Oregon'],
-      [4, 'What is the national mammal of the United States?', '🦬 the bison', '🦘 the kangaroo', '🦫 the beaver', '🐯 the tiger'],
-    ],
-  },
-  uk: {
-    name: 'the United Kingdom', label: 'United Kingdom', flag: '🇬🇧', region: 'country', regionOf: 'Which one is a country of the United Kingdom?',
-    regions: [['England', 'London'], ['Scotland', 'Edinburgh'], ['Wales', 'Cardiff'], ['Northern Ireland', 'Belfast']],
-    coins: [[1, '1p'], [2, '2p'], [5, '5p'], [10, '10p'], [20, '20p'], [50, '50p'], [100, '£1'], [200, '£2']], fmt: (n) => (n < 100 ? `${n}p` : `£${(n / 100).toFixed(2)}`),
-    rows: [
-      [1, 'What is the money in the United Kingdom called?', 'the pound', 'the dollar', 'the rupee', 'the euro'],
-      [1, 'What number do you call in an emergency in the United Kingdom?', '999', '911', '000', '111'],
-      [1, 'Which animal is on the flag of Wales?', '🐉 a red dragon', '🦁 a lion', '🦄 a unicorn', '🦅 an eagle'],
-      [2, 'What is the capital city of the United Kingdom?', 'London', 'Manchester', 'Birmingham', 'Liverpool'],
-      [2, 'What colours are on the flag of the United Kingdom?', 'red, white and blue', 'green, white and orange', 'red and white', 'blue and yellow'],
-      [2, 'How many pence make one pound?', '100', '10', '50', '12'],
-      [2, 'Which coin is worth the most?', '£2', '£1', '50p', '20p'],
-      [2, 'Where is Big Ben?', 'London', 'Edinburgh', 'Cardiff', 'Belfast'],
-      [2, 'What is the national animal of Scotland?', '🦄 the unicorn', '🦁 the lion', '🐉 the dragon', '🐻 the bear'],
-      [3, 'How many countries make up the United Kingdom?', '4', '2', '7', '50'],
-      [3, 'Which river flows through London?', 'the River Thames', 'the Nile', 'the Mississippi River', 'the Ganges'],
-      [3, 'What is the leader of the UK government called?', 'the Prime Minister', 'the President', 'the Governor', 'the Mayor'],
-      [3, 'Which flower is a symbol of Scotland?', 'the thistle', 'the daffodil', 'the lotus', 'the maple leaf'],
-      [3, 'Which flower is a symbol of Wales?', 'the daffodil', 'the thistle', 'the lotus', 'the maple leaf'],
-      [3, 'Which country shares a land border with the United Kingdom?', 'Ireland', 'France', 'Spain', 'Norway'],
-      [3, 'Which sea is between England and France?', 'the English Channel', 'the Red Sea', 'the Black Sea', 'the Dead Sea'],
-      [4, 'What is the highest mountain in the United Kingdom?', 'Ben Nevis', 'Mount Everest', 'Denali', 'Mount Fuji'],
-      [4, 'What is the longest river in the United Kingdom?', 'the River Severn', 'the Nile', 'the Shannon', 'the Murray River'],
-      [4, 'In which country of the UK is Stonehenge?', 'England', 'Scotland', 'Wales', 'Northern Ireland'],
-      [4, "When is St Andrew's Day, for Scotland?", '30 November', '17 March', '1 March', '23 April'],
-      [4, "When is St David's Day, for Wales?", '1 March', '30 November', '17 March', '23 April'],
-      [4, "When is St George's Day, for England?", '23 April', '1 March', '30 November', '17 March'],
-    ],
-  },
-  ca: {
-    name: 'Canada', label: 'Canada', flag: '🇨🇦', region: 'province or territory',
-    regions: [['Ontario', 'Toronto'], ['Quebec', 'Quebec City'], ['British Columbia', 'Victoria'], ['Alberta', 'Edmonton'], ['Manitoba', 'Winnipeg'],
-      ['Saskatchewan', 'Regina'], ['Nova Scotia', 'Halifax'], ['New Brunswick', 'Fredericton'], ['Newfoundland and Labrador', "St. John's"],
-      ['Prince Edward Island', 'Charlottetown'], ['Yukon', 'Whitehorse'], ['Northwest Territories', 'Yellowknife'], ['Nunavut', 'Iqaluit']],
-    coins: [[5, '5¢'], [10, '10¢'], [25, '25¢'], [100, '$1'], [200, '$2']], fmt: (n) => (n < 100 ? `${n}¢` : `$${(n / 100).toFixed(2)}`),
-    rows: [
-      [1, 'What is the money in Canada called?', 'the dollar', 'the pound', 'the rupee', 'the euro'],
-      [1, 'What number do you call in an emergency in Canada?', '911', '999', '000', '111'],
-      [1, 'Which leaf is on the flag of Canada?', '🍁 a maple leaf', '🍀 a clover', '🌿 a fern', '🌴 a palm leaf'],
-      [2, 'What is the capital city of Canada?', 'Ottawa', 'Toronto', 'Vancouver', 'Montreal'],
-      [2, 'Which day is Canada Day?', 'July 1', 'July 4', 'January 26', 'December 25'],
-      [2, 'What colours are on the flag of Canada?', 'red and white', 'red, white and blue', 'green and white', 'blue and yellow'],
-      [2, 'Which animal is a national symbol of Canada?', '🦫 the beaver', '🦘 the kangaroo', '🐯 the tiger', '🦁 the lion'],
-      [2, 'What is the one-dollar coin called?', 'the loonie', 'the toonie', 'the dime', 'the quarter'],
-      [2, 'What is the two-dollar coin called?', 'the toonie', 'the loonie', 'the nickel', 'the dime'],
-      [2, 'Where is the CN Tower?', 'Toronto', 'Ottawa', 'Halifax', 'Calgary'],
-      [3, 'How many provinces does Canada have?', '10', '50', '6', '20'],
-      [3, 'Which country is next to Canada?', 'the United States', 'Mexico', 'Brazil', 'Australia'],
-      [3, 'What are the two official languages of Canada?', 'English and French', 'English and Spanish', 'French and German', 'English and Hindi'],
-      [3, 'Which oceans touch Canada?', 'the Atlantic, Pacific and Arctic', 'only the Indian Ocean', 'only the Pacific', 'the Southern and the Indian'],
-      [3, 'What is the leader of the government of Canada called?', 'the Prime Minister', 'the President', 'the Mayor', 'the Governor'],
-      [3, "What is Canada's national winter sport?", '🏒 ice hockey', '⚾ baseball', '🏏 cricket', '🏉 rugby'],
-      [4, 'What is the highest mountain in Canada?', 'Mount Logan', 'Mount Everest', 'Denali', 'Ben Nevis'],
-      [4, 'In which province is the Canadian side of Niagara Falls?', 'Ontario', 'British Columbia', 'Alberta', 'Nova Scotia'],
-      [4, 'How many territories does Canada have?', '3', '10', '5', '1'],
-      [4, 'What is the longest river in Canada?', 'the Mackenzie River', 'the Thames', 'the Murray River', 'the Ganges'],
-    ],
-  },
-  au: {
-    name: 'Australia', label: 'Australia', flag: '🇦🇺', region: 'state or territory',
-    regions: [['New South Wales', 'Sydney'], ['Victoria', 'Melbourne'], ['Queensland', 'Brisbane'], ['Western Australia', 'Perth'], ['South Australia', 'Adelaide'],
-      ['Tasmania', 'Hobart'], ['the Australian Capital Territory', 'Canberra'], ['the Northern Territory', 'Darwin']],
-    coins: [[5, '5c'], [10, '10c'], [20, '20c'], [50, '50c'], [100, '$1'], [200, '$2']], fmt: (n) => (n < 100 ? `${n}c` : `$${(n / 100).toFixed(2)}`),
-    rows: [
-      [1, 'What is the money in Australia called?', 'the dollar', 'the pound', 'the rupee', 'the euro'],
-      [1, 'What number do you call in an emergency in Australia?', '000', '911', '999', '111'],
-      [1, 'Which animal is a symbol of Australia?', '🦘 the kangaroo', '🦬 the bison', '🐯 the tiger', '🦫 the beaver'],
-      [2, 'What is the capital city of Australia?', 'Canberra', 'Sydney', 'Melbourne', 'Brisbane'],
-      [2, 'Which day is Australia Day?', '26 January', '1 July', '4 July', '6 February'],
-      [2, 'What colours are on the flag of Australia?', 'blue, red and white', 'green, white and orange', 'red and white', 'blue and yellow'],
-      [2, 'Where is the Sydney Opera House?', 'Sydney', 'Perth', 'Darwin', 'Hobart'],
-      [2, 'Which Australian animal lays eggs?', 'the platypus', 'the koala', 'the kangaroo', 'the wombat'],
-      [2, 'What do koalas eat?', '🌿 eucalyptus leaves', '🐟 fish', '🍕 pizza', '🥕 carrots'],
-      [3, 'How many states does Australia have?', '6', '50', '10', '2'],
-      [3, 'Which giant rock is in the middle of Australia?', 'Uluru', 'Ben Nevis', 'Big Ben', 'Mount Logan'],
-      [3, 'Where is the Great Barrier Reef?', 'Queensland', 'Tasmania', 'Victoria', 'South Australia'],
-      [3, 'Which group of stars is on the flag of Australia?', 'the Southern Cross', 'the Big Dipper', 'Orion', 'the Seven Sisters'],
-      [3, 'What is the leader of the government of Australia called?', 'the Prime Minister', 'the President', 'the Mayor', 'the Governor'],
-      [3, 'Which country is across the Tasman Sea from Australia?', 'New Zealand', 'Canada', 'Ireland', 'Mexico'],
-      [4, 'What is the longest river in Australia?', 'the Murray River', 'the Thames', 'the Mississippi River', 'the Shannon'],
-      [4, 'What is the highest mountain on mainland Australia?', 'Mount Kosciuszko', 'Uluru', 'Ben Nevis', 'Denali'],
-      [4, "What is Australia's floral emblem?", 'the golden wattle', 'the lotus', 'the thistle', 'the maple leaf'],
-      [4, 'Which island state is south of mainland Australia?', 'Tasmania', 'Queensland', 'Victoria', 'Western Australia'],
-    ],
-  },
-  nz: {
-    name: 'New Zealand', label: 'New Zealand', flag: '🇳🇿', region: 'region',
-    regions: [['Auckland', null], ['Wellington', null], ['Canterbury', null], ['Otago', null], ['Waikato', null], ['Northland', null], ['Southland', null], ['Bay of Plenty', null]],
-    coins: [[10, '10c'], [20, '20c'], [50, '50c'], [100, '$1'], [200, '$2']], fmt: (n) => (n < 100 ? `${n}c` : `$${(n / 100).toFixed(2)}`),
-    rows: [
-      [1, 'What is the money in New Zealand called?', 'the dollar', 'the pound', 'the rupee', 'the euro'],
-      [1, 'What number do you call in an emergency in New Zealand?', '111', '911', '999', '000'],
-      [1, 'Which bird is a symbol of New Zealand?', 'the kiwi', 'the bald eagle', 'the peacock', 'the emu'],
-      [2, 'What is the capital city of New Zealand?', 'Wellington', 'Auckland', 'Christchurch', 'Queenstown'],
-      [2, 'Which day is Waitangi Day?', '6 February', '26 January', '1 July', '4 July'],
-      [2, 'What colours are on the flag of New Zealand?', 'blue, red and white', 'green, white and orange', 'red and white', 'blue and yellow'],
-      [2, 'Which plant is a symbol of New Zealand?', 'the silver fern', 'the maple leaf', 'the lotus', 'the thistle'],
-      [2, 'Where is the Sky Tower?', 'Auckland', 'Wellington', 'Dunedin', 'Nelson'],
-      [3, 'What are the two main islands of New Zealand?', 'the North Island and the South Island', 'the East Island and the West Island', 'Tasmania and Fiji', 'Big Island and Small Island'],
-      [3, 'Which language is an official language of New Zealand?', 'te reo Māori', 'French', 'Hindi', 'Spanish'],
-      [3, "What is New Zealand's famous rugby team called?", 'the All Blacks', 'the Wallabies', 'the Springboks', 'the Lions'],
-      [3, 'What is the leader of the government of New Zealand called?', 'the Prime Minister', 'the President', 'the Mayor', 'the Governor'],
-      [3, 'Which sea is between New Zealand and Australia?', 'the Tasman Sea', 'the Red Sea', 'the North Sea', 'the Black Sea'],
-      [4, 'What is the highest mountain in New Zealand?', 'Aoraki / Mount Cook', 'Mount Everest', 'Ben Nevis', 'Denali'],
-      [4, 'What is the longest river in New Zealand?', 'the Waikato River', 'the Murray River', 'the Thames', 'the Nile'],
-      [4, 'Which is the biggest city in New Zealand?', 'Auckland', 'Wellington', 'Napier', 'Nelson'],
-      [4, 'Which island is Christchurch on?', 'the South Island', 'the North Island', 'Stewart Island', 'Tasmania'],
-    ],
-  },
-  in: {
-    name: 'India', label: 'India', flag: '🇮🇳', region: 'state',
-    regions: [['Maharashtra', 'Mumbai'], ['West Bengal', 'Kolkata'], ['Tamil Nadu', 'Chennai'], ['Karnataka', 'Bengaluru'], ['Telangana', 'Hyderabad'],
-      ['Gujarat', 'Gandhinagar'], ['Rajasthan', 'Jaipur'], ['Uttar Pradesh', 'Lucknow'], ['Bihar', 'Patna'], ['Kerala', 'Thiruvananthapuram'],
-      ['Punjab', 'Chandigarh'], ['Madhya Pradesh', 'Bhopal'], ['Odisha', 'Bhubaneswar'], ['Assam', 'Dispur'], ['Goa', 'Panaji'],
-      ['Himachal Pradesh', 'Shimla'], ['Jharkhand', 'Ranchi'], ['Chhattisgarh', 'Raipur'], ['Sikkim', 'Gangtok'], ['Meghalaya', 'Shillong'],
-      ['Manipur', 'Imphal'], ['Mizoram', 'Aizawl'], ['Nagaland', 'Kohima'], ['Tripura', 'Agartala'], ['Arunachal Pradesh', 'Itanagar']],
-    coins: [[100, '₹1'], [200, '₹2'], [500, '₹5'], [1000, '₹10'], [2000, '₹20']], fmt: (n) => `₹${n / 100}`,
-    rows: [
-      [1, 'What is the money in India called?', 'the rupee', 'the dollar', 'the pound', 'the euro'],
-      [1, 'What number do you call in an emergency in India?', '112', '911', '000', '111'],
-      [1, 'What is the national animal of India?', '🐯 the tiger', '🐘 the elephant', '🦘 the kangaroo', '🦬 the bison'],
-      [1, 'What is the national bird of India?', '🦚 the peacock', '🦅 the eagle', '🦜 the parrot', '🐧 the penguin'],
-      [2, 'What is the capital city of India?', 'New Delhi', 'Mumbai', 'Kolkata', 'Chennai'],
-      [2, 'Which day is Independence Day in India?', '15 August', '26 January', '2 October', '14 November'],
-      [2, 'Which day is Republic Day in India?', '26 January', '15 August', '2 October', '25 December'],
-      [2, 'What colours are on the flag of India?', 'saffron, white and green', 'red, white and blue', 'green and white', 'red and yellow'],
-      [2, 'What is in the middle of the flag of India?', 'a wheel (the Ashoka Chakra)', 'a star', 'a maple leaf', 'a moon'],
-      [2, 'Where is the Taj Mahal?', 'Agra', 'Mumbai', 'Chennai', 'Kolkata'],
-      [2, 'What is the national flower of India?', '🪷 the lotus', '🌹 the rose', '🌻 the sunflower', '🌷 the tulip'],
-      [2, 'What is the national fruit of India?', '🥭 the mango', '🍎 the apple', '🍌 the banana', '🍇 grapes'],
-      [3, 'Which is the longest river in India?', 'the Ganga (Ganges)', 'the Thames', 'the Murray River', 'the Mississippi River'],
-      [3, 'Which ocean is to the south of India?', 'the Indian Ocean', 'the Arctic Ocean', 'the Atlantic Ocean', 'the Pacific Ocean'],
-      [3, 'Which mountains are in the north of India?', 'the Himalayas', 'the Alps', 'the Rockies', 'the Andes'],
-      [3, 'What is the leader of the government of India called?', 'the Prime Minister', 'the King', 'the Mayor', 'the Governor'],
-      [3, 'Which country is a neighbour of India?', 'Nepal', 'Canada', 'Brazil', 'Australia'],
-      [3, 'Where is the Gateway of India?', 'Mumbai', 'Delhi', 'Jaipur', 'Goa'],
-      [4, 'Which sea is to the west of India?', 'the Arabian Sea', 'the Red Sea', 'the North Sea', 'the Black Sea'],
-      [4, 'Which bay is to the east of India?', 'the Bay of Bengal', 'the Bay of Biscay', 'Hudson Bay', 'Botany Bay'],
-      [4, 'Which city is called the Pink City?', 'Jaipur', 'Mumbai', 'Chennai', 'Pune'],
-      [4, 'How many spokes does the wheel on the flag of India have?', '24', '12', '10', '8'],
-      [4, 'Which day is Gandhi Jayanti?', '2 October', '15 August', '26 January', '25 December'],
-    ],
-  },
-  ie: {
-    name: 'Ireland', label: 'Ireland', flag: '🇮🇪', region: 'province',
-    regions: [['Leinster', null], ['Munster', null], ['Connacht', null], ['Ulster', null]],
-    coins: [[1, '1c'], [2, '2c'], [5, '5c'], [10, '10c'], [20, '20c'], [50, '50c'], [100, '€1'], [200, '€2']], fmt: (n) => (n < 100 ? `${n}c` : `€${(n / 100).toFixed(2)}`),
-    rows: [
-      [1, 'What is the money in Ireland called?', 'the euro', 'the dollar', 'the rupee', 'the pound'],
-      [1, 'What number do you call in an emergency in Ireland?', '112 or 999', '911', '000', '111'],
-      [1, 'Which plant is a symbol of Ireland?', '☘️ the shamrock', '🍁 the maple leaf', '🪷 the lotus', '🌵 the cactus'],
-      [2, 'What is the capital city of Ireland?', 'Dublin', 'Cork', 'Galway', 'Limerick'],
-      [2, "Which day is St Patrick's Day?", '17 March', '1 March', '4 July', '26 January'],
-      [2, 'What colours are on the flag of Ireland?', 'green, white and orange', 'red, white and blue', 'red and white', 'blue and yellow'],
-      [2, 'Which musical instrument is a symbol of Ireland?', 'the harp', 'the drum', 'the guitar', 'the trumpet'],
-      [2, 'In which county are the Cliffs of Moher?', 'County Clare', 'County Dublin', 'County Cork', 'County Kerry'],
-      [3, 'What are the two official languages of Ireland?', 'Irish and English', 'English and French', 'Irish and Spanish', 'English and German'],
-      [3, 'What is the leader of the Irish government called?', 'the Taoiseach', 'the King', 'the Mayor', 'the Governor'],
-      [3, 'How many provinces does Ireland have?', '4', '10', '26', '50'],
-      [3, 'Which sea is between Ireland and Great Britain?', 'the Irish Sea', 'the Red Sea', 'the Black Sea', 'the Tasman Sea'],
-      [3, 'Which ocean is to the west of Ireland?', 'the Atlantic Ocean', 'the Pacific Ocean', 'the Indian Ocean', 'the Arctic Ocean'],
-      [4, 'What is the longest river in Ireland?', 'the River Shannon', 'the River Thames', 'the Murray River', 'the Ganges'],
-      [4, 'What is the highest mountain in Ireland?', 'Carrauntoohil', 'Ben Nevis', 'Denali', 'Mount Logan'],
-      [4, 'Which sports are Gaelic games?', 'hurling and Gaelic football', 'baseball and ice hockey', 'cricket and tennis', 'golf and rugby'],
-    ],
-  },
+const formatLocalMoney = (id, n) => {
+  if (id === 'in') return '₹' + (n / 100);
+  const symbol = id === 'uk' ? '£' : id === 'ie' ? '€' : '$';
+  const small = id === 'uk' ? 'p' : ['au', 'nz', 'ie'].includes(id) ? 'c' : '¢';
+  return n < 100 ? String(n) + small : symbol + (n / 100).toFixed(2);
 };
+const COUNTRIES = Object.fromEntries(
+  Object.entries(ContentData.get('country', 'COUNTRIES')).map(([id, data]) =>
+    [id, {...data, fmt: n => formatLocalMoney(id, n)}])
+);
 const COUNTRY_ORDER = ['us', 'uk', 'ca', 'au', 'nz', 'in', 'ie'];
 // first guess from the device language (en-GB → uk …); a grown-up can change it in Settings
 function guessCountry() {
@@ -234,6 +38,21 @@ function countryRows(C) {
 }
 function genCountry(level) {
   const C = myCountry() || COUNTRIES.us;
+  // Learn to recognise locally relevant paper money as well as coins.
+  // Every banknote image is bundled separately and available without internet.
+  if (level >= 3 && C.notes?.length >= 4 && typeof nsBanknotePicture === 'function' && Math.random() < 0.26) {
+    const note = pick(C.notes);
+    const others = sample(C.notes.filter(c => c[0] !== note[0]), 3);
+    return {
+      key: 'home-note-picture-' + countryCode() + '-' + note[0],
+      text: 'How much is this banknote worth?', say: ['How much money?'],
+      main: nsBanknotePicture(note[0], note[1], C.label || C.name),
+      mainClass: 'ph-main',
+      options: shuffle([note, ...others]).map(c => ({v:c[1], html:c[1]})),
+      answer: note[1], optClass: 'opt-text',
+      hint: {html:'Look at the number on the banknote.', say:'Think about it!'}
+    };
+  }
   // Early country lessons now show real, locally rendered denomination
   // illustrations instead of relying on coin labels alone. No network needed.
   if (level <= 2 && typeof nsCoinPicture === 'function' && C.coins && C.coins.length >= 3 && Math.random() < 0.24) {

@@ -5,52 +5,29 @@
    "read", "lead", "bow", "wind" and "close" are pronunciation-sensitive;
    they are not used for phoneme-label questions without sentence context. */
 
-const G1_WORDS = Object.freeze([...new Set(`
-cat bat fan hat rat bag car ear can jar tap jam man mat van pen oar ram yuck nap fat yam hen bed jet key net ten den leg pet wet dew sea ill eel new red gel pin zip pie bib leap bean fig seat big six tie lead kid oil dip air dig rib win kit mix boy dog jog mop cow fox toy cot log top zoo dot rot bow cop hot box pot mob mo toe sun son run hut cup bug nut jug bus tub rug bud cub gum mud none tug mug hug fun bun cut buy ice egg ant cry owl emu sky ink spy arm two fly
-cat hat bat rat pen man can fan dad bag sat peg red jet sit hit pete bug wet gum nut cup block blast clap climb flag float plant plum clock flat block brick brag cry crab frog front grass grab sky small snow spot spin snake small skin spot cart keep spy snake skip smell star tree trip stop slow glad glass sleep sleep step glass tree ant jump bank best fast ink lamp tent fast tent bump best what sleep chin thin thick chop shark wheel thin ship shwip fish lunch hand rock sick sand bench wash class glass camp clock drink dig dog chop tree moth cake lake hay pay rain pail mail brain bay day play lane bee see tree feet shoot moot neat seat hit read bike five sky slide ride hide kite fly dry rose hose cone bone coat goat road close tune dune blue glue flute cute tube cube read sheet blue hike neat catch leaf wind water bird wolf string desk chair sing snake dog short fast slow big small hot cold new old
-`.trim().toLowerCase().split(/\s+/))].sort());
+const G1_WORDS = Object.freeze(ContentData.get('grade1words','G1_WORDS'));
 // Additional vocabulary visibly present in the user's illustrated Grade 1 references.
  // Kept separate from the original 243-token request, so historical audits stay stable.
  // Context-only words are tested for print recognition, not automatically labelled
  // with a vowel sound (e.g. watch, hair, arrow, and proper-name examples).
-const G1_WORKBOOK_WORDS = Object.freeze([...new Set(`
-grapes ran missed mad left hair watch black park mane sheep crib arrow ax axe acorn
-alligator apple airplane artist brush zebra square circle shape wig ham map cap
-nail gate paid page plate cave plane wave cane tail
-`.trim().split(/\s+/))].sort());
-const G1_EDITORIAL = Object.freeze(['mo', 'shwip']); // retained for editorial review, not presented as real vocabulary
+const G1_WORKBOOK_WORDS = Object.freeze(ContentData.get('grade1words','G1_WORKBOOK_WORDS'));
+const G1_EDITORIAL = Object.freeze(ContentData.get('grade1words','G1_EDITORIAL')); // retained for editorial review, not presented as real vocabulary
 const G1_ACTIVE_WORDS = Object.freeze(G1_WORDS.filter(w => !G1_EDITORIAL.includes(w)));
 const G1_READING_WORDS = Object.freeze([...new Set([...G1_ACTIVE_WORDS, ...G1_WORKBOOK_WORDS])].sort());
 
 // Only use these sound labels where the pronunciation is unambiguous in ordinary US English.
-const G1_SHORT_VOWELS = Object.freeze({
-  a: 'cat hat bat rat man can fan dad bag sat tap jam mat van nap fat yam ram ant hand sand lamp camp bank catch class glass'.split(' '),
-  e: 'pen peg red jet wet bed hen net ten den leg pet web gel best tent step bench desk'.split(' '),
-  i: 'sit hit pin zip bib fig big six kid dip dig rib win kit mix ill ink ship fish sick spin skip skin drink string crib'.split(' '),
-  o: 'dog jog mop fox cot log top dot rot cop hot box pot mob rock clock block spot stop chop frog moth'.split(' '),
-  u: 'bug gum nut cup sun son run hut jug bus tub rug bud cub mud tug mug hug fun bun cut jump bump plum lunch'.split(' '),
-});
-const G1_LONG_VOWELS = Object.freeze({
-  a: 'cake lake hay pay rain pail mail brain bay day play lane mane grapes'.split(' '),
-  e: 'bee see tree feet keep neat seat leap bean sea eel key leaf sheet sleep sheep'.split(' '),
-  i: 'bike five slide ride hide kite hike sky fly cry spy dry pie tie'.split(' '),
-  o: 'rose hose cone bone coat goat road toe float snow slow'.split(' '),
-  u: 'tune dune blue glue flute cute tube cube new dew shoot moot'.split(' '),
-});
+const G1_SHORT_VOWELS = Object.freeze(ContentData.get('grade1words','G1_SHORT_VOWELS'));
+const G1_LONG_VOWELS = Object.freeze(ContentData.get('grade1words','G1_LONG_VOWELS'));
 // Starts with real digraphs or consonant blends. No nonsense "shwip" in the picture pool.
-const G1_START_CLUSTERS = Object.freeze('bl br cl cr fl fr gl gr pl sk sl sm sn sp st tr sh ch th wh sw'.split(' '));
+const G1_START_CLUSTERS = Object.freeze(ContentData.get('grade1words','G1_START_CLUSTERS'));
 const G1_BLEND_WORDS = Object.freeze(G1_ACTIVE_WORDS.filter(w => G1_START_CLUSTERS.some(p => w.startsWith(p))));
 const G1_SHORT_WORDS = Object.freeze([...new Set(Object.values(G1_SHORT_VOWELS).flat())].filter(w => G1_READING_WORDS.includes(w)));
 const G1_LONG_WORDS = Object.freeze([...new Set(Object.values(G1_LONG_VOWELS).flat())].filter(w => G1_READING_WORDS.includes(w)));
 const G1_CORE_WORDS = Object.freeze([...new Set([...G1_SHORT_WORDS, ...G1_BLEND_WORDS, ...G1_LONG_WORDS])]);
-const G1_OPPOSITES = Object.freeze([['hot','cold'],['fast','slow'],['big','small'],['new','old'],['wet','dry']]);
+const G1_OPPOSITES = Object.freeze(ContentData.get('grade1words','G1_OPPOSITES'));
 
 // Unambiguous picture cues for optional grade-one spelling practice; not injected into Pre-K.
-const G1_SPELL_PICTURES = Object.freeze({
-  fan:'🪭', car:'🚗', jar:'🫙', cow:'🐄', egg:'🥚', ice:'🧊',
-  flag:'🚩', clap:'👏', plant:'🪴', rock:'🪨', shark:'🦈',
-  wheel:'🛞', lake:'🏞️', flute:'🪈', coat:'🧥', road:'🛣️', brain:'🧠'
-});
+const G1_SPELL_PICTURES = Object.freeze(ContentData.get('grade1words','G1_SPELL_PICTURES'));
 const G1_PICTURE_WORDS = Object.freeze(Object.keys(G1_SPELL_PICTURES));
 
 // Each prompt is scored from visible print. The shared audio prompts below are already

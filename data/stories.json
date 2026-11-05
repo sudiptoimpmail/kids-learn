@@ -1,0 +1,1782 @@
+{
+  "schema": 1,
+  "namespace": "stories",
+  "datasets": {
+    "STORIES": [
+      [
+        3,
+        "Pam has a pet fish. It is orange and small. Pam feeds it every morning.",
+        [
+          [
+            "What color is the fish?",
+            [
+              "orange 🟠",
+              "blue 🔵",
+              "green 🟢"
+            ]
+          ],
+          [
+            "When does Pam feed the fish?",
+            [
+              "every morning 🌅",
+              "at night 🌙",
+              "at lunch 🥪"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "Dad made pancakes. He put berries on top. We ate them all up!",
+        [
+          [
+            "What did Dad make?",
+            [
+              "pancakes 🥞",
+              "pizza 🍕",
+              "soup 🍲"
+            ]
+          ],
+          [
+            "What was on top?",
+            [
+              "berries 🫐",
+              "cheese 🧀",
+              "nuts 🥜"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "The bus was late. Kim waited at the stop. Then the bus came and she got on.",
+        [
+          [
+            "Who waited at the stop?",
+            [
+              "Kim",
+              "Dad",
+              "the driver"
+            ]
+          ],
+          [
+            "Why did Kim wait?",
+            [
+              "the bus was late",
+              "she was sick",
+              "it was snowing"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "A big dog ran in the park. It chased a red ball. The dog was very happy.",
+        [
+          [
+            "What did the dog chase?",
+            [
+              "a red ball 🔴",
+              "a cat 🐱",
+              "a bike 🚲"
+            ]
+          ],
+          [
+            "How did the dog feel?",
+            [
+              "happy 😀",
+              "sad 😢",
+              "mad 😠"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "It rained all day. Tim wore his yellow boots. He jumped in every puddle.",
+        [
+          [
+            "What did Tim wear?",
+            [
+              "yellow boots 🥾",
+              "a hat 🎩",
+              "flip-flops 🩴"
+            ]
+          ],
+          [
+            "What did Tim jump in?",
+            [
+              "puddles 💦",
+              "leaves 🍂",
+              "sand 🏖️"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "Rosa has a new bike. It is pink with a bell. She rides it to the park.",
+        [
+          [
+            "What does the bike have?",
+            [
+              "a bell 🔔",
+              "a horn 📯",
+              "a basket 🧺"
+            ]
+          ],
+          [
+            "Where does Rosa ride?",
+            [
+              "to the park 🌳",
+              "to the zoo 🦁",
+              "to the beach 🏖️"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "The cat climbed up a tree. It could not get down. Mom used a ladder to help.",
+        [
+          [
+            "Where did the cat go?",
+            [
+              "up a tree 🌳",
+              "under a car 🚗",
+              "into a box 📦"
+            ]
+          ],
+          [
+            "What did Mom use?",
+            [
+              "a ladder 🪜",
+              "a rope 🪢",
+              "a boat ⛵"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "We went to the beach. I made a sand castle. A wave came and washed it away.",
+        [
+          [
+            "What did I make?",
+            [
+              "a sand castle 🏰",
+              "a kite 🪁",
+              "a cake 🎂"
+            ]
+          ],
+          [
+            "What washed it away?",
+            [
+              "a wave 🌊",
+              "the wind 💨",
+              "a dog 🐶"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "Ana lost her tooth. She put it under her pillow. In the morning she found a coin.",
+        [
+          [
+            "What did Ana lose?",
+            [
+              "her tooth 🦷",
+              "her hat 🎩",
+              "her shoe 👟"
+            ]
+          ],
+          [
+            "What did she find?",
+            [
+              "a coin 🪙",
+              "a toy 🧸",
+              "a note 📝"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "The farmer has three cows. The cows eat green grass. They give us milk.",
+        [
+          [
+            "How many cows?",
+            [
+              "3",
+              "5",
+              "1"
+            ]
+          ],
+          [
+            "What do cows give us?",
+            [
+              "milk 🥛",
+              "eggs 🥚",
+              "wool 🧶"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "Leo likes to draw. He drew a big blue whale. He gave it to his grandma.",
+        [
+          [
+            "What did Leo draw?",
+            [
+              "a whale 🐋",
+              "a dog 🐶",
+              "a house 🏠"
+            ]
+          ],
+          [
+            "Who got the picture?",
+            [
+              "his grandma",
+              "his teacher",
+              "his friend"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "The snow fell all night. In the morning, the yard was white. Sam made a snow angel.",
+        [
+          [
+            "When did the snow fall?",
+            [
+              "all night 🌙",
+              "at lunch 🥪",
+              "after school 🏫"
+            ]
+          ],
+          [
+            "What did Sam make?",
+            [
+              "a snow angel 👼",
+              "a sand castle 🏰",
+              "a pie 🥧"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "Ella and Mia play tag at recess. Ella runs fast. Mia hides behind a tree.",
+        [
+          [
+            "What game do they play?",
+            [
+              "tag 🏃",
+              "chess ♟️",
+              "cards 🃏"
+            ]
+          ],
+          [
+            "Where does Mia hide?",
+            [
+              "behind a tree 🌳",
+              "under a desk",
+              "in a box 📦"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "A bee flew into the class. Some kids were scared. The teacher opened the window and the bee flew out.",
+        [
+          [
+            "What flew into the class?",
+            [
+              "a bee 🐝",
+              "a bird 🐦",
+              "a kite 🪁"
+            ]
+          ],
+          [
+            "How did the bee get out?",
+            [
+              "through the window 🪟",
+              "through the door 🚪",
+              "in a jar 🫙"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "Jack planted a seed in a pot. He put the pot by the window. The sun helped it grow.",
+        [
+          [
+            "Where did Jack put the pot?",
+            [
+              "by the window 🪟",
+              "in the closet",
+              "under the bed 🛏️"
+            ]
+          ],
+          [
+            "What helped the seed grow?",
+            [
+              "the sun ☀️",
+              "the TV 📺",
+              "the radio 📻"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "My baby brother is sleeping. I must be very quiet. I read a book in my room.",
+        [
+          [
+            "Who is sleeping?",
+            [
+              "my baby brother 👶",
+              "my dog 🐶",
+              "my mom"
+            ]
+          ],
+          [
+            "Why must I be quiet?",
+            [
+              "the baby is sleeping",
+              "it is raining",
+              "I am sick"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "The ice cream truck came down the street. We ran outside. I got a cone with two scoops.",
+        [
+          [
+            "What came down the street?",
+            [
+              "an ice cream truck 🍦",
+              "a fire truck 🚒",
+              "a school bus 🚌"
+            ]
+          ],
+          [
+            "How many scoops did I get?",
+            [
+              "2",
+              "1",
+              "4"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "Grandma knits a scarf. It is long and soft. She gives it to me for winter.",
+        [
+          [
+            "What does Grandma make?",
+            [
+              "a scarf 🧣",
+              "a hat 🎩",
+              "a cake 🎂"
+            ]
+          ],
+          [
+            "When will I wear it?",
+            [
+              "in winter ❄️",
+              "in summer ☀️",
+              "at the beach 🏖️"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "A frog sat on a lily pad. A fly buzzed by. The frog caught it with its long tongue.",
+        [
+          [
+            "Where did the frog sit?",
+            [
+              "on a lily pad",
+              "on a rock 🪨",
+              "in a tree 🌳"
+            ]
+          ],
+          [
+            "How did the frog catch the fly?",
+            [
+              "with its tongue 👅",
+              "with its feet",
+              "with a net"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "Ben has a red wagon. He puts his teddy bear in it. They go for a walk.",
+        [
+          [
+            "What color is the wagon?",
+            [
+              "red 🔴",
+              "blue 🔵",
+              "yellow 🟡"
+            ]
+          ],
+          [
+            "What is in the wagon?",
+            [
+              "a teddy bear 🧸",
+              "a cat 🐱",
+              "some rocks 🪨"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "The library is very quiet. We pick out two books. We take them home to read.",
+        [
+          [
+            "Where are we?",
+            [
+              "the library 📚",
+              "the park 🌳",
+              "the store 🏪"
+            ]
+          ],
+          [
+            "How many books do we pick?",
+            [
+              "2",
+              "5",
+              "10"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "The puppy chewed my sock. Now my sock has a hole. Silly puppy!",
+        [
+          [
+            "What did the puppy chew?",
+            [
+              "my sock 🧦",
+              "my book 📖",
+              "my hat 🎩"
+            ]
+          ],
+          [
+            "What is wrong with the sock now?",
+            [
+              "it has a hole",
+              "it is wet",
+              "it is blue"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "Today is Mom's birthday. We made her a card. She gave us a big hug.",
+        [
+          [
+            "Whose birthday is it?",
+            [
+              "Mom's",
+              "Dad's",
+              "Grandpa's"
+            ]
+          ],
+          [
+            "What did Mom give us?",
+            [
+              "a big hug 🤗",
+              "a cookie 🍪",
+              "a toy 🧸"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "The leaves turn red and orange in fall. They drop from the trees. We jump in the big pile.",
+        [
+          [
+            "When do leaves turn red?",
+            [
+              "in fall 🍂",
+              "in spring 🌷",
+              "in summer ☀️"
+            ]
+          ],
+          [
+            "What do we jump in?",
+            [
+              "a pile of leaves 🍂",
+              "a pool 🏊",
+              "the snow ❄️"
+            ]
+          ]
+        ]
+      ],
+      [
+        3,
+        "Owen hurt his knee. Dad cleaned it and put on a bandage. Owen felt better soon.",
+        [
+          [
+            "What did Owen hurt?",
+            [
+              "his knee 🦵",
+              "his hand ✋",
+              "his nose 👃"
+            ]
+          ],
+          [
+            "What did Dad put on?",
+            [
+              "a bandage 🩹",
+              "a hat 🎩",
+              "a sock 🧦"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Nina wanted to help at home. She set the table for dinner. She put out plates, forks and cups. Her dad said she did a great job.",
+        [
+          [
+            "What did Nina do?",
+            [
+              "set the table 🍽️",
+              "washed the car 🚗",
+              "walked the dog 🐶"
+            ]
+          ],
+          [
+            "What did Dad say?",
+            [
+              "she did a great job",
+              "she was late",
+              "she forgot the cups"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "The class had a pet hamster named Peanut. Every Friday, a different kid took him home. This week it was Raj's turn. Raj gave Peanut fresh water and carrots.",
+        [
+          [
+            "What was the hamster's name?",
+            [
+              "Peanut",
+              "Cookie",
+              "Buddy"
+            ]
+          ],
+          [
+            "What did Raj give Peanut?",
+            [
+              "water and carrots 🥕",
+              "milk and cake 🍰",
+              "candy 🍬"
+            ]
+          ],
+          [
+            "When did a kid take him home?",
+            [
+              "every Friday",
+              "every Monday",
+              "every night"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Maya and her dad went camping. They set up a tent near a lake. At night they saw many stars. They roasted marshmallows by the fire.",
+        [
+          [
+            "Where did they set up the tent?",
+            [
+              "near a lake 🏞️",
+              "in a city 🏙️",
+              "on a boat ⛵"
+            ]
+          ],
+          [
+            "What did they roast?",
+            [
+              "marshmallows",
+              "potatoes 🥔",
+              "apples 🍎"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Carlos could not find his library book. He looked in his backpack and under his bed. Then he remembered he left it in the car. He found it on the back seat.",
+        [
+          [
+            "What was Carlos looking for?",
+            [
+              "his library book 📕",
+              "his shoes 👟",
+              "his puppy 🐶"
+            ]
+          ],
+          [
+            "Where was it?",
+            [
+              "in the car 🚗",
+              "under the bed 🛏️",
+              "in his backpack 🎒"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "A storm knocked down a tree in our yard. Nobody was hurt. Our neighbors came to help cut it up. Dad said we would plant a new tree in spring.",
+        [
+          [
+            "What did the storm do?",
+            [
+              "knocked down a tree",
+              "broke a window",
+              "made snow"
+            ]
+          ],
+          [
+            "When will they plant a new tree?",
+            [
+              "in spring 🌷",
+              "in winter ❄️",
+              "tomorrow"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Lucy loves soccer. She practices kicking the ball every day. At her first game, she scored a goal. Her whole team cheered for her.",
+        [
+          [
+            "What sport does Lucy love?",
+            [
+              "soccer ⚽",
+              "tennis 🎾",
+              "swimming 🏊"
+            ]
+          ],
+          [
+            "What happened at her first game?",
+            [
+              "she scored a goal",
+              "she fell down",
+              "it rained"
+            ]
+          ],
+          [
+            "Who cheered?",
+            [
+              "her team",
+              "her dog",
+              "nobody"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "The museum had a giant dinosaur skeleton. It was taller than a house. Its teeth were as long as my hand. I want to find a fossil one day.",
+        [
+          [
+            "What was at the museum?",
+            [
+              "a dinosaur skeleton 🦖",
+              "a spaceship 🚀",
+              "a whale 🐋"
+            ]
+          ],
+          [
+            "What does the writer want to find?",
+            [
+              "a fossil",
+              "a treasure chest",
+              "a lost cat"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Grandpa taught me to fish. We sat on the dock and waited. After a long time, my line pulled hard. I caught a big silver fish!",
+        [
+          [
+            "Who taught me to fish?",
+            [
+              "Grandpa",
+              "my teacher",
+              "my sister"
+            ]
+          ],
+          [
+            "Where did we sit?",
+            [
+              "on the dock",
+              "in a tree 🌳",
+              "in the car 🚗"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Our school had a food drive. Each class brought cans of food. We filled ten big boxes. The food went to families who needed help.",
+        [
+          [
+            "What did each class bring?",
+            [
+              "cans of food 🥫",
+              "books 📚",
+              "toys 🧸"
+            ]
+          ],
+          [
+            "Who got the food?",
+            [
+              "families who needed help",
+              "the teachers",
+              "the zoo animals"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Sofia was nervous on her first day at a new school. She did not know anyone. At lunch, a girl named Hana sat with her. By the end of the day, they were friends.",
+        [
+          [
+            "How did Sofia feel at first?",
+            [
+              "nervous 😟",
+              "silly 🤪",
+              "angry 😠"
+            ]
+          ],
+          [
+            "Who sat with her at lunch?",
+            [
+              "Hana",
+              "her mom",
+              "the teacher"
+            ]
+          ],
+          [
+            "What happened at the end of the day?",
+            [
+              "they were friends",
+              "Sofia went home sick",
+              "it snowed"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "The caterpillar ate leaves for many days. Then it made a hard shell called a chrysalis. Inside, it changed. Two weeks later, a butterfly came out.",
+        [
+          [
+            "What did the caterpillar eat?",
+            [
+              "leaves 🍃",
+              "bugs 🐛",
+              "seeds 🌱"
+            ]
+          ],
+          [
+            "What came out of the chrysalis?",
+            [
+              "a butterfly 🦋",
+              "a bee 🐝",
+              "a bird 🐦"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Ethan wanted to make lemonade. He squeezed six lemons into a jug. He added water and sugar. It tasted sweet and sour at the same time.",
+        [
+          [
+            "How many lemons did Ethan use?",
+            [
+              "6",
+              "2",
+              "10"
+            ]
+          ],
+          [
+            "How did it taste?",
+            [
+              "sweet and sour",
+              "salty",
+              "spicy"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "The owl sleeps during the day. At night it wakes up to hunt. It can turn its head almost all the way around. Its big eyes help it see in the dark.",
+        [
+          [
+            "When does the owl sleep?",
+            [
+              "during the day ☀️",
+              "at night 🌙",
+              "never"
+            ]
+          ],
+          [
+            "What helps the owl see in the dark?",
+            [
+              "its big eyes 👀",
+              "its feathers",
+              "its feet"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Ava's family got a new puppy. They had to choose a name. Ava wanted Biscuit and her brother wanted Rocket. They picked Biscuit Rocket!",
+        [
+          [
+            "What did the family get?",
+            [
+              "a puppy 🐶",
+              "a kitten 🐱",
+              "a fish 🐟"
+            ]
+          ],
+          [
+            "What name did they pick?",
+            [
+              "Biscuit Rocket",
+              "Buddy",
+              "Max"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Mr. Lee is a mail carrier. He walks the same streets every day. He brings letters and boxes to each house. The dogs on his street all know him.",
+        [
+          [
+            "What is Mr. Lee's job?",
+            [
+              "mail carrier 📬",
+              "doctor 🩺",
+              "chef 🧑‍🍳"
+            ]
+          ],
+          [
+            "What does he bring?",
+            [
+              "letters and boxes 📦",
+              "pizza 🍕",
+              "flowers 💐"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "It was the hottest day of summer. The kids turned on the sprinkler. They ran through the cold water and laughed. Then they had frozen fruit bars.",
+        [
+          [
+            "What did the kids turn on?",
+            [
+              "the sprinkler 💦",
+              "the oven",
+              "the heater"
+            ]
+          ],
+          [
+            "What did they eat after?",
+            [
+              "frozen fruit bars",
+              "hot soup 🍲",
+              "pizza 🍕"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Jay built a tall tower with blocks. His little sister bumped it and it fell. Jay was upset at first. Then they built an even taller tower together.",
+        [
+          [
+            "What did Jay build?",
+            [
+              "a tower 🧱",
+              "a boat ⛵",
+              "a sand castle 🏰"
+            ]
+          ],
+          [
+            "What did they do at the end?",
+            [
+              "built a taller tower together",
+              "went to sleep",
+              "had a fight"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Our class planted a garden. We grew tomatoes, peppers and sunflowers. The sunflowers grew taller than our teacher. In the fall, we picked the vegetables.",
+        [
+          [
+            "What grew taller than the teacher?",
+            [
+              "the sunflowers 🌻",
+              "the tomatoes 🍅",
+              "the peppers 🫑"
+            ]
+          ],
+          [
+            "When did they pick the vegetables?",
+            [
+              "in the fall 🍂",
+              "in winter ❄️",
+              "on the first day"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Ms. Diaz brought a box to class. Inside were six tiny chicks. They were yellow and fluffy. The kids watched them peck at their food.",
+        [
+          [
+            "How many chicks were in the box?",
+            [
+              "6",
+              "2",
+              "12"
+            ]
+          ],
+          [
+            "What did the chicks look like?",
+            [
+              "yellow and fluffy 🐥",
+              "black and shiny",
+              "big and gray"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Noah dropped his ice cream on the ground. He started to cry. His friend Eli shared his cone with him. Noah felt much better.",
+        [
+          [
+            "What happened to Noah's ice cream?",
+            [
+              "he dropped it",
+              "it melted",
+              "a dog ate it"
+            ]
+          ],
+          [
+            "How did Eli help?",
+            [
+              "he shared his cone",
+              "he bought a new one",
+              "he cleaned it up"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Spiders are not insects. Insects have six legs, but spiders have eight. Most spiders spin webs made of silk. The sticky web catches flies and other bugs. Spiders help people by eating pests.",
+        [
+          [
+            "How many legs does a spider have?",
+            [
+              "8",
+              "6",
+              "10"
+            ]
+          ],
+          [
+            "What is a web made of?",
+            [
+              "silk",
+              "grass",
+              "hair"
+            ]
+          ],
+          [
+            "How do spiders help people?",
+            [
+              "they eat pests",
+              "they make honey",
+              "they plant seeds"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Lena wanted to win the spelling bee. Every night she practiced hard words with her mom. On the big day, she got the word \"giraffe.\" She spelled it slowly and carefully. The judges said she was right!",
+        [
+          [
+            "What did Lena want to win?",
+            [
+              "the spelling bee",
+              "a race",
+              "a coloring contest"
+            ]
+          ],
+          [
+            "Who helped her practice?",
+            [
+              "her mom",
+              "her coach",
+              "her cat"
+            ]
+          ],
+          [
+            "What word did she spell?",
+            [
+              "giraffe",
+              "elephant",
+              "turtle"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "The Sahara is the largest hot desert in the world. It gets very little rain. In the day, the sand can be hotter than a stove. At night, it can get cold. Camels can live there because they store fat in their humps.",
+        [
+          [
+            "What is the Sahara?",
+            [
+              "a hot desert 🏜️",
+              "an ocean 🌊",
+              "a forest 🌲"
+            ]
+          ],
+          [
+            "Why can camels live there?",
+            [
+              "they store fat in their humps",
+              "they can fly",
+              "they sleep all year"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Marcus found a wallet on the sidewalk. Inside was money and a card with a name. He could have kept it, but he knew that was wrong. He gave it to the police officer at the corner. Later, the owner came to thank him.",
+        [
+          [
+            "What did Marcus find?",
+            [
+              "a wallet 👛",
+              "a puppy 🐶",
+              "a phone 📱"
+            ]
+          ],
+          [
+            "What did Marcus do with it?",
+            [
+              "gave it to a police officer",
+              "kept it",
+              "threw it away"
+            ]
+          ],
+          [
+            "What kind of person is Marcus?",
+            [
+              "honest",
+              "lazy",
+              "mean"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Water can be a solid, a liquid or a gas. Ice is water that is frozen solid. When ice warms up, it melts into liquid water. When water gets very hot, it turns into steam. Steam is a gas you can see above a hot pot.",
+        [
+          [
+            "What is ice?",
+            [
+              "frozen water",
+              "hot steam",
+              "melted rock"
+            ]
+          ],
+          [
+            "What happens when water gets very hot?",
+            [
+              "it turns into steam",
+              "it turns into ice",
+              "it turns into sand"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Priya's town had a big hill with no trees. Her class decided to change that. They raised money with a bake sale. In spring, they planted fifty young trees. Now birds build nests there every year.",
+        [
+          [
+            "What did the hill not have?",
+            [
+              "trees 🌳",
+              "grass",
+              "rocks"
+            ]
+          ],
+          [
+            "How did they raise money?",
+            [
+              "a bake sale 🧁",
+              "a car wash 🚗",
+              "a talent show 🎤"
+            ]
+          ],
+          [
+            "How many trees did they plant?",
+            [
+              "50",
+              "5",
+              "500"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Octopuses are amazing ocean animals. They have eight arms covered in suckers. They can change color to hide from enemies. An octopus has no bones, so it can squeeze through tiny holes. Some even use shells as a hiding place.",
+        [
+          [
+            "How many arms does an octopus have?",
+            [
+              "8",
+              "6",
+              "10"
+            ]
+          ],
+          [
+            "Why does an octopus change color?",
+            [
+              "to hide from enemies",
+              "to stay warm",
+              "to find food"
+            ]
+          ],
+          [
+            "Why can it squeeze through tiny holes?",
+            [
+              "it has no bones",
+              "it is very small",
+              "it has a shell"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "The school play was on Friday night. Ruby played the queen and had many lines to learn. Before the show, her hands were shaking. When the lights came on, she took a deep breath and began. She did not forget a single line.",
+        [
+          [
+            "What part did Ruby play?",
+            [
+              "the queen 👑",
+              "a tree 🌳",
+              "a dragon 🐉"
+            ]
+          ],
+          [
+            "How did Ruby feel before the show?",
+            [
+              "nervous",
+              "sleepy",
+              "angry"
+            ]
+          ],
+          [
+            "What did she do to calm down?",
+            [
+              "took a deep breath",
+              "ate a snack",
+              "went home"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Long ago, people did not have refrigerators. To keep food cold, they cut big blocks of ice from frozen lakes in winter. They stored the ice in sawdust so it would not melt. A person called the iceman brought ice to homes. Families kept it in a wooden icebox.",
+        [
+          [
+            "Where did the ice come from?",
+            [
+              "frozen lakes",
+              "the store",
+              "the clouds"
+            ]
+          ],
+          [
+            "Why was the ice kept in sawdust?",
+            [
+              "so it would not melt",
+              "so it would be clean",
+              "so it would float"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Kai noticed that his plant was turning yellow. He was giving it water every single day. His aunt told him that plants can get too much water. Kai started watering it only once a week. Soon the leaves were green again.",
+        [
+          [
+            "What was wrong with the plant?",
+            [
+              "it was turning yellow",
+              "it was too tall",
+              "it had bugs"
+            ]
+          ],
+          [
+            "What was the problem?",
+            [
+              "too much water",
+              "too little sun",
+              "too much music"
+            ]
+          ],
+          [
+            "How did Kai fix it?",
+            [
+              "watered it once a week",
+              "moved it outside",
+              "gave it milk"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Hummingbirds are the smallest birds. Their wings beat so fast that they make a humming sound. They can fly forward, backward and even upside down. They drink nectar from flowers with their long beaks. Some hummingbirds fly thousands of miles each year.",
+        [
+          [
+            "Why are they called hummingbirds?",
+            [
+              "their wings make a humming sound",
+              "they sing songs",
+              "they hum when they sleep"
+            ]
+          ],
+          [
+            "What do they drink?",
+            [
+              "nectar from flowers",
+              "milk",
+              "rain water"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Zara and her brother wanted the same toy. They began to argue loudly. Their mom set a timer for ten minutes. Each of them got a turn when the timer rang. By the end, they were playing the game together.",
+        [
+          [
+            "Why did they argue?",
+            [
+              "they wanted the same toy",
+              "it was bedtime",
+              "they were hungry"
+            ]
+          ],
+          [
+            "How did Mom help?",
+            [
+              "she set a timer for turns",
+              "she took the toy away",
+              "she bought another toy"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "The Moon is about a quarter the size of Earth. It has no air and no water we can drink. Astronauts first walked on the Moon in 1969. Their footprints are still there because there is no wind. Someday people may visit again.",
+        [
+          [
+            "Why are the footprints still there?",
+            [
+              "there is no wind",
+              "they are made of rock",
+              "someone protects them"
+            ]
+          ],
+          [
+            "When did astronauts first walk on the Moon?",
+            [
+              "1969",
+              "1492",
+              "2020"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Tyler forgot to do his homework. He thought about making up an excuse. Instead, he told his teacher the truth. She thanked him for being honest. He did the homework at recess and turned it in.",
+        [
+          [
+            "What did Tyler forget?",
+            [
+              "his homework 📝",
+              "his lunch 🥪",
+              "his coat 🧥"
+            ]
+          ],
+          [
+            "What did Tyler tell the teacher?",
+            [
+              "the truth",
+              "a joke",
+              "an excuse"
+            ]
+          ],
+          [
+            "When did he do the homework?",
+            [
+              "at recess",
+              "at night",
+              "on the bus"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Beavers are nature's builders. They cut down trees with their strong front teeth. They use the logs and mud to build dams across streams. The dam makes a pond where the beaver builds its home, called a lodge. The door of the lodge is under the water.",
+        [
+          [
+            "What do beavers use to cut trees?",
+            [
+              "their teeth 🦷",
+              "their tails",
+              "their paws"
+            ]
+          ],
+          [
+            "What is a beaver home called?",
+            [
+              "a lodge",
+              "a nest",
+              "a den"
+            ]
+          ],
+          [
+            "Where is the door of the lodge?",
+            [
+              "under the water",
+              "on the roof",
+              "in a tree"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Isabel's grandmother came from Mexico. Every Sunday, they cook together. Grandma teaches Isabel to roll tortillas by hand. While they cook, Grandma tells stories about her village. Isabel writes the recipes in a special notebook.",
+        [
+          [
+            "Where did Grandma come from?",
+            [
+              "Mexico 🇲🇽",
+              "Japan 🇯🇵",
+              "Canada 🇨🇦"
+            ]
+          ],
+          [
+            "What do they make by hand?",
+            [
+              "tortillas",
+              "cookies 🍪",
+              "pizza 🍕"
+            ]
+          ],
+          [
+            "What does Isabel write down?",
+            [
+              "the recipes",
+              "her homework",
+              "a letter"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Mia's town was having a kite festival. She decided to make her own kite instead of buying one. She used sticks, paper, string and a long tail made of ribbons. On the first try, the kite spun around and crashed. Mia noticed the tail was too short, so she added more ribbon. On the second try, the kite climbed high into the sky. The judges gave her a prize for the most creative kite.",
+        [
+          [
+            "Why did the kite crash the first time?",
+            [
+              "the tail was too short",
+              "there was no wind",
+              "the string broke"
+            ]
+          ],
+          [
+            "What prize did Mia win?",
+            [
+              "most creative kite",
+              "highest kite",
+              "fastest kite"
+            ]
+          ],
+          [
+            "What does this story show?",
+            [
+              "fixing mistakes helps you succeed",
+              "kites are easy",
+              "buying is better than making"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Bats are the only mammals that can truly fly. Their wings are made of thin skin stretched over long finger bones. Most bats come out at night to eat insects. To find food in the dark, they make high sounds and listen for the echoes. This is called echolocation. One bat can eat hundreds of mosquitoes in a single hour.",
+        [
+          [
+            "What are bat wings made of?",
+            [
+              "skin over finger bones",
+              "feathers",
+              "paper-thin bones only"
+            ]
+          ],
+          [
+            "What is echolocation?",
+            [
+              "finding things by listening to echoes",
+              "seeing in color",
+              "smelling food"
+            ]
+          ],
+          [
+            "How do bats help people?",
+            [
+              "they eat mosquitoes",
+              "they make honey",
+              "they carry mail"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Oliver and his grandpa repaired an old bike they found in the garage. The chain was rusty, and both tires were flat. First, they cleaned the chain and added oil. Next, they patched the tires and pumped them up. Grandpa showed Oliver how to tighten the brakes. When they finished, the bike looked almost new. Oliver rode it around the block while Grandpa cheered.",
+        [
+          [
+            "What was wrong with the bike?",
+            [
+              "rusty chain and flat tires",
+              "no seat",
+              "a broken bell"
+            ]
+          ],
+          [
+            "What did they do first?",
+            [
+              "cleaned the chain",
+              "pumped the tires",
+              "painted the bike"
+            ]
+          ],
+          [
+            "What did Grandpa teach Oliver?",
+            [
+              "how to tighten the brakes",
+              "how to paint",
+              "how to ride fast"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Rainforests are warm, wet forests that get rain almost every day. They cover only a small part of Earth, but more than half of all animal and plant kinds live there. The tall trees make a roof of leaves called the canopy. Monkeys, birds and frogs live high up in the canopy. Many medicines come from rainforest plants. That is why people work hard to protect them.",
+        [
+          [
+            "What is the canopy?",
+            [
+              "a roof of leaves",
+              "the forest floor",
+              "a river"
+            ]
+          ],
+          [
+            "Why do people protect rainforests?",
+            [
+              "many plants, animals and medicines are there",
+              "they are cold",
+              "they have no trees"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Hana was saving her allowance for a new art set. She had nine dollars, and the set cost twelve. Her neighbor asked if she could help water his garden while he was away. Hana watered the flowers every evening for a week. When he came back, he paid her five dollars. Hana bought the art set and still had two dollars left.",
+        [
+          [
+            "How much did the art set cost?",
+            [
+              "12 dollars",
+              "9 dollars",
+              "5 dollars"
+            ]
+          ],
+          [
+            "How did Hana earn more money?",
+            [
+              "watering a garden",
+              "selling lemonade",
+              "walking dogs"
+            ]
+          ],
+          [
+            "How much money was left?",
+            [
+              "2 dollars",
+              "5 dollars",
+              "0 dollars"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Volcanoes form where hot melted rock pushes up from deep inside the Earth. When the pressure gets too strong, the volcano erupts. Lava, ash and gas burst out. Some volcanoes erupt often, while others sleep for hundreds of years. Scientists called volcanologists study volcanoes to warn people before an eruption. The islands of Hawaii were made by volcanoes.",
+        [
+          [
+            "What makes a volcano erupt?",
+            [
+              "too much pressure",
+              "heavy rain",
+              "strong wind"
+            ]
+          ],
+          [
+            "Who studies volcanoes?",
+            [
+              "volcanologists",
+              "astronauts",
+              "dentists"
+            ]
+          ],
+          [
+            "What were made by volcanoes?",
+            [
+              "the islands of Hawaii",
+              "the Moon",
+              "the clouds"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "The class wanted to choose a name for their new pet turtle. Everyone shouted ideas at the same time, and nobody could hear. The teacher suggested a vote. Each student wrote one name on a slip of paper. \"Shelly\" got the most votes, with eight. \"Speedy\" got six, and \"Rocky\" got four. The class agreed that the vote was fair.",
+        [
+          [
+            "Why did the teacher suggest a vote?",
+            [
+              "nobody could hear the ideas",
+              "the turtle was sick",
+              "it was time to go home"
+            ]
+          ],
+          [
+            "Which name won?",
+            [
+              "Shelly",
+              "Speedy",
+              "Rocky"
+            ]
+          ],
+          [
+            "How many votes did Speedy get?",
+            [
+              "6",
+              "8",
+              "4"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Honeybees live together in a hive that can hold thousands of bees. The queen bee lays all the eggs. Worker bees do many jobs, like cleaning, building wax combs and collecting nectar. When a worker finds good flowers, it does a special dance. The dance tells the other bees which way to fly and how far to go.",
+        [
+          [
+            "Who lays all the eggs?",
+            [
+              "the queen bee",
+              "the worker bees",
+              "the drones"
+            ]
+          ],
+          [
+            "Why does a bee dance?",
+            [
+              "to show where flowers are",
+              "to stay warm",
+              "to scare enemies"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "On Saturday, a big storm knocked out the power in Leo's neighborhood. The lights and the TV went dark. At first Leo was bored. Then his family lit candles and played board games at the kitchen table. Dad told funny stories about when he was a boy. When the power came back the next morning, Leo said it was one of the best nights ever.",
+        [
+          [
+            "What happened on Saturday?",
+            [
+              "the power went out",
+              "it snowed",
+              "they went camping"
+            ]
+          ],
+          [
+            "What did the family do?",
+            [
+              "played board games",
+              "watched TV",
+              "went to the movies"
+            ]
+          ],
+          [
+            "How did Leo feel at the end?",
+            [
+              "it was one of the best nights",
+              "scared",
+              "bored"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Sea turtles hatch from eggs buried in the sand. When the babies hatch, usually at night, they dig out of the nest together. They crawl toward the ocean, guided by the light of the moon on the water. Bright lights from buildings can confuse them. That is why some beach towns turn off lights during nesting season. Only a few hatchlings grow up, so every one counts.",
+        [
+          [
+            "What guides baby turtles to the ocean?",
+            [
+              "moonlight on the water",
+              "the smell of fish",
+              "the wind"
+            ]
+          ],
+          [
+            "Why do towns turn off lights?",
+            [
+              "bright lights confuse the turtles",
+              "to save money",
+              "so people can sleep"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Amir loved to build with cardboard. When his little sister broke her toy house, he had an idea. He collected empty boxes, tape and markers. He cut doors and windows and even made a tiny staircase. It took him three afternoons to finish. His sister smiled so big that Amir decided to make her a cardboard car next.",
+        [
+          [
+            "Why did Amir build the house?",
+            [
+              "his sister's toy house broke",
+              "for a school project",
+              "to sell it"
+            ]
+          ],
+          [
+            "How long did it take?",
+            [
+              "three afternoons",
+              "one hour",
+              "a whole month"
+            ]
+          ],
+          [
+            "What will Amir make next?",
+            [
+              "a cardboard car",
+              "a cardboard boat",
+              "a real house"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "The Great Wall of China is one of the longest structures ever built. People built it over many hundreds of years to protect China from attacks. It stretches across mountains, deserts and grasslands. Soldiers used towers along the wall to watch for enemies and send smoke signals. Today, millions of visitors walk on the wall every year.",
+        [
+          [
+            "Why was the Great Wall built?",
+            [
+              "to protect China from attacks",
+              "to keep animals in",
+              "for a race"
+            ]
+          ],
+          [
+            "What did soldiers use the towers for?",
+            [
+              "to watch for enemies",
+              "to grow food",
+              "to sleep"
+            ]
+          ]
+        ]
+      ]
+    ]
+  }
+}

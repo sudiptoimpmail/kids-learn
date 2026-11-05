@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img"><title>Taj Mahal</title><rect x="0" y="0" width="120" height="120" fill="#cfe9ff"/><rect x="0" y="92" width="120" height="28" fill="#74c0fc"/><rect x="50" y="94" width="20" height="26" fill="#a5d8ff"/>
+    <rect x="16" y="46" width="7" height="46" fill="#fff" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/><rect x="97" y="46" width="7" height="46" fill="#fff" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M14.5 46 q5 -10 10 0z M95.5 46 q5 -10 10 0z" fill="#fff" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <rect x="30" y="62" width="60" height="30" fill="#fff" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M38 62 q5 -10 10 0z M72 62 q5 -10 10 0z" fill="#fff" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M44 62 C40 44 52 32 60 26 C68 32 80 44 76 62 Z" fill="#fff" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/><path d="M60 26 V17" stroke="#2b2140" stroke-width="1.8"/>
+    <path d="M53 92 V76 q7 -10 14 0 V92" fill="#e9ecef" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M35 92 V80 q4 -6 8 0 V92 M77 92 V80 q4 -6 8 0 V92" fill="#e9ecef" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/></svg>

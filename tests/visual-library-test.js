@@ -52,13 +52,13 @@ const {chromium}=require('playwright');
      return errors.slice(0,40);
    });
    assert.deepEqual(result,[],result.join('\n'));
-   const files=fs.readFileSync('illustrations.js','utf8').match(/"[a-z_]+"/g);
-   assert.ok(files.length>=84,'Illustration manifest incomplete');
+   const visuals=JSON.parse(fs.readFileSync('data/visuals.json','utf8')).datasets;
+   assert.equal(Object.values(visuals.ILLUSTRATION_GROUPS).flat().length,84,'Illustration data manifest incomplete');
    const manifest=fs.readFileSync('sw.js','utf8');
-   const visuals=[...manifest.matchAll(/'assets\/illustrations\/([a-z_]+\.svg)'/g)].map(m=>m[1]);
-   assert.equal(visuals.length,84,'Offline service worker must precache exactly 84 illustrations');
-   assert.equal(new Set(visuals).size,84,'Duplicate service-worker art file');
-   for(const file of visuals){
+   const visualFiles=[...manifest.matchAll(/'assets\/illustrations\/([a-z_]+\.svg)'/g)].map(m=>m[1]);
+   assert.equal(visualFiles.length,84,'Offline service worker must precache exactly 84 illustrations');
+   assert.equal(new Set(visualFiles).size,84,'Duplicate service-worker art file');
+   for(const file of visualFiles){
      const path='assets/illustrations/'+file;
      assert.ok(fs.existsSync(path),'Missing committed art file: '+path);
      const svg=fs.readFileSync(path,'utf8');

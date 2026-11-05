@@ -1,14 +1,10 @@
 /* Original, locally bundled photo assets (AI-generated, no third-party image dependencies).
    Shared by reading, Pre-K recognition, and the short picture puzzles.
    A single stable path per picture lets the offline service worker precache every asset. */
-const PHOTO_GROUPS = Object.freeze({
-  animals: Object.freeze(['cat','dog','rabbit','duck','elephant','tiger','butterfly','horse']),
-  flowers: Object.freeze(['sunflower','rose','tulip','daisy']),
-  vehicles: Object.freeze(['car','airplane','helicopter','truck'])
-});
+const PHOTO_GROUPS = Object.freeze(ContentData.get('visuals', 'PHOTO_GROUPS'));
 const PHOTO_NAMES = Object.freeze(Object.values(PHOTO_GROUPS).flat());
 const PHOTO_SET = new Set(PHOTO_NAMES);
-const PHOTO_PUZZLE = Object.freeze(['cat','dog','rabbit','duck','butterfly','horse','sunflower','rose','tulip','car','airplane','helicopter'].map(name => ({
+const PHOTO_PUZZLE = Object.freeze(ContentData.get('visuals','PHOTO_PUZZLE_NAMES').map(name => ({
   id: 'photo-' + name,
   name: name[0].toUpperCase() + name.slice(1),
   photo: name,
