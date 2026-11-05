@@ -75,9 +75,24 @@ const G1_PASSAGES = [
   [['Leo has new boots.', 'His boots are green.', 'It rains all day.', 'Leo jumps in the puddles.'], [['Leo has new ___.', 'boots', 'socks', 'hats'], ['His boots are ___.', 'green', 'red', 'old'], ['Leo jumps in the ___.', 'puddles', 'bed', 'snow']], '🥾🌧️'],
   [['Nora has a dog named Pip.', 'Pip has one black spot.', 'They run together in the park.', 'Pip is a happy dog.'], [['Pip has one ___ spot.', 'black', 'brown', 'white'], ['Nora and Pip run in the ___.', 'park', 'house', 'sea'], ['Pip is a ___ dog.', 'happy', 'sad', 'big']], '🐕🌳'],
   [['A fox found grapes on a tall vine.', 'The fox jumped but did not reach them.', 'The grapes were too high.', 'The fox walked away.'], [['The fox found ___.', 'grapes', 'apples', 'pears'], ['The grapes were too ___.', 'high', 'low', 'soft'], ['The fox ___ away.', 'walked', 'swam', 'flew']], '🦊🍇'],
-];
-function genPassageFill() {
-  const [lines, qs, pic] = pick(G1_PASSAGES);
+
+  [['Maya borrowed a book about the ocean.', 'At the library she learned that whales breathe air.', 'She drew a whale and wrote three facts.', 'On Friday she showed her drawing to the class.'], [['Where did Maya find the book?', 'library', 'store', 'farm'], ['What do whales breathe?', 'air', 'sand', 'milk'], ['What did Maya show her class?', 'a drawing', 'a toy train', 'a kite']], '🐋📚', 3],
+  [['Luis noticed litter by the playground.', 'He and his friends put on gloves.', 'They picked up paper and bottles.', 'The teacher helped them sort the recycling.'], [['Where was the litter?', 'by the playground', 'in a river', 'at a zoo'], ['What did the children put on?', 'gloves', 'helmets', 'boots'], ['What did they sort?', 'recycling', 'sand', 'toys']], '♻️🧤', 3],
+  [['Asha planted two seeds in cups.', 'She gave both cups water.', 'One cup sat in the light and one sat in a dark box.', 'Asha watched the leaves grow.'], [['How many seeds did Asha plant?', 'two', 'one', 'five'], ['What did both cups get?', 'water', 'soda', 'paint'], ['Where was one cup kept?', 'in a dark box', 'in a pond', 'under a car']], '🌱☀️', 3],
+  [['On Monday, Noor built a paper airplane.', 'She folded the wings carefully.', 'Her first plane flew only a short way.', 'She changed one fold and tried again.'], [['What did Noor build?', 'a paper airplane', 'a boat', 'a tower'], ['What did she change?', 'one fold', 'the color of her shoes', 'the weather'], ['Why did Noor try again?', 'to improve her plane', 'to find her hat', 'to buy a book']], '✈️📄', 3],
+  [['Eli and Dad went to the market.', 'They bought apples, carrots and bread.', 'At home they washed the apples.', 'Then they made snacks for the family.'], [['Where did Eli go?', 'the market', 'the airport', 'the forest'], ['Which vegetable did they buy?', 'carrots', 'peas', 'potatoes'], ['What did they wash?', 'apples', 'shoes', 'books']], '🍎🥕', 3],
+  [['Rain fell on the school garden.', 'A small puddle formed by the path.', 'The next afternoon was sunny.', 'The puddle became smaller as water evaporated.'], [['Where was the puddle?', 'by the path', 'on the roof', 'in a cup'], ['What was the weather the next day?', 'sunny', 'snowy', 'windy'], ['Why did the puddle shrink?', 'water evaporated', 'rocks melted', 'grass grew']], '🌧️☀️', 4],
+  [['The class made a chart of favorite fruits.', 'Six children chose apples.', 'Four children chose bananas.', 'Two children chose grapes.', 'The class used the chart to plan a snack.'], [['Which fruit got the most votes?', 'apples', 'grapes', 'bananas'], ['How many chose grapes?', 'two', 'four', 'six'], ['How many children chose bananas?', 'four', 'six', 'two']], '📊🍇', 4],
+  [['Ravi saw a broken bird feeder in the yard.', 'He drew a plan for a new feeder.', 'With help, he used wood and string to build it.', 'Birds came back after he hung it in a tree.'], [['Why did Ravi draw a plan?', 'to build a feeder', 'to bake bread', 'to wash a car'], ['What materials did he use?', 'wood and string', 'glass and ice', 'sand and snow'], ['Where did he hang the feeder?', 'in a tree', 'under a desk', 'in a river']], '🐦🌳', 4],
+  [['Zara and Leo mapped the walk to school.', 'They marked a park, a crossing and the library.', 'At the crossing they stopped and looked both ways.', 'They reached school safely before the bell.'], [['What did they make?', 'a map', 'a cake', 'a kite'], ['Where did they stop and look?', 'at the crossing', 'at the library', 'at the park'], ['When did they reach school?', 'before the bell', 'after dark', 'at midnight']], '🗺️🏫', 4],
+  [['One morning, Sofia found frost on the grass.', 'The air had become very cold overnight.', 'As sunlight warmed the ground, the frost melted.', 'By lunchtime the grass was wet but no longer white.'], [['What covered the grass?', 'frost', 'sand', 'leaves'], ['What made the frost melt?', 'sunlight warming the ground', 'wind making snow', 'the moon'], ['How did the grass look at lunchtime?', 'wet', 'covered with frost', 'dry and dusty']], '❄️🌱', 4],
+  [['Owen put a bean on a damp paper towel.', 'He placed it inside a clear jar.', 'After several days, a root appeared first.', 'A little green shoot grew upward later.'], [['Where was the bean?', 'in a clear jar', 'inside a shoe', 'under a pillow'], ['What appeared first?', 'a root', 'a flower', 'a fruit'], ['Which way did the shoot grow?', 'upward', 'sideways only', 'down into a shoe']], '🫘🌱', 4],
+  [['Priya wanted to learn to ride a bicycle.', 'At first she needed someone to steady the bike.', 'She practiced starting, stopping and turning.', 'After many tries she rode a short distance by herself.'], [['What skill did Priya practice?', 'riding a bicycle', 'swimming', 'playing a drum'], ['What did she practice besides starting?', 'stopping and turning', 'singing and dancing', 'baking and mixing'], ['What helped Priya improve?', 'practice', 'giving up', 'hiding the bike']], '🚲⭐', 4],
+]; 
+function genPassageFill(level = 3) {
+  const candidates = G1_PASSAGES.filter(row => (row[3] || 3) <= level);
+  const exact = candidates.filter(row => (row[3] || 3) === level);
+  const [lines, qs, pic] = pick(exact.length && Math.random() < 0.75 ? exact : candidates);
   return {
     key: `sent-pass-${lines[0]}`, text: 'Read the story. Then finish each sentence!', say: ['Read the story.', 'Then finish each sentence.'],
     main: `<div class="g1-passage"><span class="g1-pic">${pic}</span>${lines.map((l) => `<p>${l}</p>`).join('')}</div>`, mainClass: 'g1-main',
@@ -97,9 +112,22 @@ const G1_ORDER = [
   [['We made a snowball.', 'We rolled it big.', 'We put on a hat.', 'Our snowman was done!'], ['❄️', '⚪', '🎩', '⛄']],
   [['Ava got her toothbrush.', 'She put on toothpaste.', 'She brushed her teeth.', 'She smiled big.'], ['🪥', '🧴', '🦷', '😁']],
   [['A fox saw grapes hanging on a vine.', 'The fox tried to reach them.', 'It could not reach the grapes.', 'The fox walked away.'], ['🦊🍇', '🦊⬆️', '🍇', '🦊🚶']],
-];
-function genStoryOrder() {
-  const [lines, pics] = pick(G1_ORDER);
+
+  [['Kai washed an apple.', 'He cut it into pieces with adult help.', 'He put the pieces in a bowl.', 'The family ate the apple snack.'], ['🍎', '🔪', '🥣', '😋'], 3],
+  [['Maya found an empty pot.', 'She filled it with soil.', 'She planted a seed.', 'She watered the pot.'], ['🪴', '🟫', '🌱', '💧'], 3],
+  [['Ava picked out a library book.', 'She read the story.', 'She told her dad about it.', 'She returned the book to the library.'], ['📚', '📖', '🗣️', '🏫'], 3],
+  [['The class mixed paint colors.', 'They dipped brushes in the paint.', 'They painted a mural.', 'They cleaned their brushes.'], ['🎨', '🖌️', '🖼️', '🧽'], 3],
+  [['A cloud grew dark.', 'Rain began to fall.', 'A puddle appeared.', 'The sun warmed the puddle and it dried.'], ['☁️', '🌧️', '💧', '☀️'], 4],
+  [['The team decided to build a bridge.', 'They drew a plan.', 'They joined blocks into a bridge.', 'They tested whether a toy car could cross.'], ['🧠', '✏️', '🧱', '🚗'], 4],
+  [['A seed was placed in moist soil.', 'A small root grew downward.', 'A shoot rose above the soil.', 'Leaves opened in the sunlight.'], ['🫘', '🌱', '🌿', '☀️'], 4],
+  [['The children collected clean bottles.', 'They counted the bottles.', 'They sorted them into recycling bins.', 'A truck came to collect them.'], ['🧴', '🔢', '♻️', '🚚'], 4],
+  [['The school bell rang.', 'The children lined up.', 'They walked into the classroom.', 'They sat down to read.'], ['🔔', '🚶', '🏫', '📖'], 3],
+  [['The clock showed eight.', 'Sam put on a helmet.', 'Sam rode a bicycle to the park.', 'Sam locked the bike at the rack.'], ['🕗', '⛑️', '🚲', '🔒'], 4],
+]; 
+function genStoryOrder(level = 3) {
+  const candidates = G1_ORDER.filter(row => (row[2] || 3) <= level);
+  const exact = candidates.filter(row => (row[2] || 3) === level);
+  const [lines, pics] = pick(exact.length && Math.random() < 0.75 ? exact : candidates);
   return {
     key: `sent-order-${lines[0]}`, text: 'Read the story. Tap the pictures in the same order!', say: ['Read the story.', 'Tap the pictures in the same order.'],
     main: `<div class="g1-passage">${lines.map((l) => `<p>${l}</p>`).join('')}</div>`, mainClass: 'g1-main',
@@ -109,5 +137,5 @@ function genStoryOrder() {
   };
 }
 // hooks used by the round generators
-function genGrade1Reading(level) { const r = Math.random(); return r < 0.4 ? genWordBox(level) : r < 0.75 ? genPassageFill() : genStoryOrder(); }
+function genGrade1Reading(level) { const r = Math.random(); return r < 0.4 ? genWordBox(level) : r < 0.75 ? genPassageFill(level) : genStoryOrder(level); }
 function genGrade1Phonics() { return Math.random() < 0.55 ? genEnding() : genVowelPath(); }
