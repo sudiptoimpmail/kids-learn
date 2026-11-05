@@ -944,7 +944,7 @@ function renderThemes() {
   let taps = 0, t = 0;
   $('#settingsTitle').addEventListener('click', () => {
     taps++; clearTimeout(t); t = setTimeout(() => (taps = 0), 1500);
-    if (taps >= 5) { taps = 0; if (testFeatureAvailable()) { $('#testSection').hidden = false; sfx.yes(); renderTestInfo(); } }
+    if (taps >= 5) { taps = 0; try { localStorage.setItem(QA_KEY, '1'); } catch {} $('#testSection').hidden = false; sfx.yes(); renderTestInfo(); }
   });
 })();
 function renderTestInfo() {
