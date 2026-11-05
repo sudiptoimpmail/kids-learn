@@ -2,16 +2,7 @@
    Trace a path with your finger: take the duckling to mama duck, the kid home …
    The maze is made fresh each time (a "perfect" maze: exactly one way through).
    Level 1 is a tiny 3×4 maze; each level adds rows and columns. */
-const PATH_THEMES = [
-  ['🐥', '🦆', 'Take the duckling to mama duck!'],
-  ['🧒', '🏠', 'Help the kid get home!'],
-  ['🐶', '🦴', 'Take the puppy to its bone!'],
-  ['🐝', '🌻', 'Help the bee find the flower!'],
-  ['🐰', '🥕', 'Take the bunny to the carrot!'],
-  ['🐭', '🧀', 'Help the mouse find the cheese!'],
-  ['🚗', '🅿️', 'Drive the car to the parking spot!'],
-  ['🐵', '🍌', 'Take the monkey to the banana!'],
-];
+const PATH_THEMES = ContentData.get('game-themes','PATH_THEMES');
 const PATH_SIZES = [[3, 4], [4, 5], [6, 7], [7, 9], [8, 10], [9, 12], [11, 13], [12, 15], [13, 17], [15, 19], [17, 23]];   // columns × rows per level
 function makeMaze(cols, rows) {
   // walls[r][c] = { n, e, s, w } — true means a wall
@@ -42,7 +33,7 @@ function startPathMaze() {
   const lv = GL('path');
   if (lv >= 9 && lv % 2 === 1) return startCircularMaze(lv);
   const [cols, rows] = PATH_SIZES[Math.min(lv, PATH_SIZES.length) - 1];
-  const [hero, goalE, line] = pick(PATH_THEMES);
+  const [hero, goalE, line, heroFile, goalFile] = pick(PATH_THEMES);
   const W = makeMaze(cols, rows), start = [0, 0], goal = [cols - 1, rows - 1];
   const area = $('#gameArea');
   area.innerHTML = `<div class="g-msg">${hero} → ${goalE} ${line}<small>Put your finger on ${hero} and draw the way.</small></div>
@@ -63,6 +54,13 @@ function startPathMaze() {
   area.querySelector('[data-a="zoom-out"]').onclick = () => zoom.by(1 / 1.4);
   const mid = ([x, y]) => [ox + (x + 0.5) * cell, oy + (y + 0.5) * cell];
   let path = [start], drawing = false, done = false, hint = null;
+  const loadIcon = file => {
+    const img = new Image();
+    img.onload = () => { if (gameSession === session) draw(); };
+    img.src = file;
+    return img;
+  };
+  const heroIcon = loadIcon(heroFile), goalIcon = loadIcon(goalFile);
   const gardenTexture = new Image();
   gardenTexture.onload = () => { if (gameSession === session) draw(); };
   gardenTexture.src = 'assets/games/meadow.svg';
@@ -99,8 +97,19 @@ function startPathMaze() {
     }
     c.stroke();
     c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = `${cell * 0.62}px system-ui, "Apple Color Emoji", "Noto Color Emoji"`;
-    const [gx, gy] = mid(goal); c.fillText(goalE, gx, gy + 2);
-    const [hx, hy] = mid(path[path.length - 1]); c.fillText(hero, hx, hy + 2);
+    const paintMarker = (img, emoji, [x, y]) => {
+      const size = cell * 0.76;
+      c.beginPath(); c.arc(x, y, size * 0.55, 0, 2 * Math.PI);
+      c.fillStyle = '#ffffffee'; c.fill();
+      c.strokeStyle = '#80b99a'; c.lineWidth = Math.max(1.5, cell * 0.03); c.stroke();
+      if (img.complete && img.naturalWidth) {
+        const factor = Math.min(size / img.naturalWidth, size / img.naturalHeight);
+        const iw = img.naturalWidth * factor, ih = img.naturalHeight * factor;
+        c.drawImage(img, x - iw / 2, y - ih / 2, iw, ih);
+      } else c.fillText(emoji, x, y + 2);
+    };
+    paintMarker(goalIcon, goalE, mid(goal));
+    paintMarker(heroIcon, hero, mid(path[path.length - 1]));
   }
   const cellAt = (e) => { const r = cv.getBoundingClientRect(); const x = Math.floor(((e.clientX - r.left) * w / r.width - ox) / cell), y = Math.floor(((e.clientY - r.top) * h / r.height - oy) / cell); return x >= 0 && y >= 0 && x < cols && y < rows ? [x, y] : null; };
   const open = ([c1, r1], [c2, r2]) => { const k = W[r1][c1]; return c2 === c1 + 1 && r2 === r1 ? !k.e : c2 === c1 - 1 && r2 === r1 ? !k.w : r2 === r1 + 1 && c2 === c1 ? !k.s : r2 === r1 - 1 && c2 === c1 ? !k.n : false; };
