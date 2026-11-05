@@ -30,7 +30,7 @@ for(const obj of ['apple','ant','acorn','airplane','arrow','axe','alligator','ar
 assert.equal(scene.circles.length,4);
 assert.equal(scene.squares.length,4);
 for(const obj of ['wind','leaf','jump','catch','climb','bird','water','wolf'])assert.ok(scene.forest.includes(obj),'forest object/action missing: '+obj);
-for(const name of ['garden','forest','room','square-room','savanna','sports','park']){
+for(const name of ['garden','forest','room','square-room','savanna','sports','park','cafe']){
   const svg=d.illustrations.illustration(name);
   assert.ok(svg.includes('<svg')&&svg.includes('</svg>')&&svg.length>1800,'missing illustrated scene: '+name);
 }
