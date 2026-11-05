@@ -15,7 +15,8 @@ cat hat bat rat pen man can fan dad bag sat peg red jet sit hit pete bug wet gum
  // with a vowel sound (e.g. watch, hair, arrow, and proper-name examples).
 const G1_WORKBOOK_WORDS = Object.freeze([...new Set(`
 grapes ran missed mad left hair watch black park mane sheep crib arrow ax axe acorn
-alligator apple airplane artist brush zebra square circle shape
+alligator apple airplane artist brush zebra square circle shape wig ham map cap
+nail gate paid page plate cave plane wave cane tail
 `.trim().split(/\s+/))].sort());
 const G1_EDITORIAL = Object.freeze(['mo', 'shwip']); // retained for editorial review, not presented as real vocabulary
 const G1_ACTIVE_WORDS = Object.freeze(G1_WORDS.filter(w => !G1_EDITORIAL.includes(w)));
