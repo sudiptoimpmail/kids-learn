@@ -1346,7 +1346,7 @@ const GK = [
   [4, 'What do bees carry from flower to flower?', 'pollen', 'water', 'rocks', 'sand'],
 ];
 // Photo-first, narrated picture recognition for early learners. Coordinates refer to
-// assets/prek-atlas.webp, a 4-column × 3-row atlas of generated real-world imagery.
+// assets/prek-atlas.svg, a 4-column × 3-row atlas of generated real-world imagery.
 const PREK_PHOTOS = [
   ['sunflower','🌻',0,0,['sun','flower']], ['rose','🌹',1,0,['rose']],
   ['tulip','🌷',2,0,[]], ['daisy','🌼',3,0,[]],
@@ -1356,6 +1356,10 @@ const PREK_PHOTOS = [
   ['car','🚗',2,2,['car']], ['helicopter','🚁',3,2,['helicopter']]
 ];
 const PREK_PHOTO_GROUPS = [PREK_PHOTOS.slice(0,4),PREK_PHOTOS.slice(4,8),PREK_PHOTOS.slice(8,12)];
+function learningPicture(word, fallback) {
+  const item = PREK_PHOTOS.find(p => p[0] === word);
+  return item ? `<span class="pk-photo read-photo" style="--pk-x:${item[2]*100/3}%;--pk-y:${item[3]*50}%"><span class="pk-emoji">${fallback}</span></span>` : fallback;
+}
 function genPrekPhoto() {
   const group = pick(PREK_PHOTO_GROUPS), targets = group.filter(p=>p[4].length);
   const correct = pick(targets), options = shuffle(group);
