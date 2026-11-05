@@ -77,7 +77,9 @@ const { chromium } = require('playwright');
       tiles[0].click();tiles[0].click();
       check(!!area.querySelector('.jigsaw-art'), 'Puzzle rotation artwork missing');
       startPuzzle(PHOTO_PUZZLE[0]);
-      check(area.querySelectorAll('.pz-photo-slice').length===9, 'Photo puzzle tiles are missing');
+      check(area.querySelectorAll('.jigsaw-svg image').length===9, 'Photographic jigsaw pieces missing image fragments');
+      check(area.querySelectorAll('.jigsaw-outline').length===9, 'Real puzzle silhouettes are missing');
+      check([...area.querySelectorAll('.jigsaw-outline')].some(el => /C/.test(el.getAttribute('d'))), 'Interlocking puzzle curves are missing');
       check(!!area.querySelector('.pz-photo-peek'), 'Photo preview is missing from puzzle');
 
       return failures.slice(0,20);
