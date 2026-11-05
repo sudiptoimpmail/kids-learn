@@ -298,7 +298,7 @@ const FILL = [
 ];
 const fillFull = (f) => f[0].replace('___', f[1]);
 const OPPOSITES = [['up', 'down'], ['over', 'under'], ['yes', 'no'], ['hot', 'cold'], ['happy', 'sad'], ['good', 'bad'],
-  ['go', 'stop'], ['he', 'she'], ['boy', 'girl'], ['man', 'woman'], ['mother', 'father'], ['sister', 'brother'],
+  ['go', 'stop'], ['big', 'small'], ['fast', 'slow'], ['in', 'out'],
   ['huge', 'tiny'], ['take', 'give'], ['right', 'wrong']];
 const cap = (w) => w[0].toUpperCase() + w.slice(1);
 const firstLetterHint = (w) => ({ html: `<div class="hint-letters">${w[0]}<span class="faint">${'_'.repeat(w.length - 1)}</span></div>`, say: 'It starts with this letter!' });
@@ -561,7 +561,7 @@ function sentenceHintMarks(s, q, answer) {
 }
 function genSentence(level) {
   // 1st-grade workbook-style screens now and then: word box, read & fill, story order
-  if (level >= 2 && level <= 4 && Math.random() < 0.35 && typeof genGrade1Reading === 'function') return genGrade1Reading(level);
+  if (level >= 3 && level <= 4 && Math.random() < 0.35 && typeof genGrade1Reading === 'function') return genGrade1Reading(level);
   const all = READING();
   // mostly this level, sometimes one level easier for a quick win
   const exact = all.filter((x) => x[2] === level), near = all.filter((x) => x[2] === level - 1);
