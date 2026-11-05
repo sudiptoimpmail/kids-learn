@@ -344,7 +344,7 @@ function startRound(catId, count, browse = false, atLevel = null) {
     // Never repeat an identical question in one round, even after exhausting
     // retries. Return a shorter round rather than teaching the same card twice.
     if (seen.has(q.key) || seenContent.has(contentId)) continue;
-    if (!browse && guard < 350 && (recent.has(q.key) || recentContent.has(contentId))) continue;
+    if (!browse && catId !== 'placement' && guard < 350 && (recent.has(q.key) || recentContent.has(contentId))) continue;
     // Every delivered question carries its permitted grade set. Explicit per-item
     // restrictions may narrow it further; never surface an older-grade card in Pre-K.
     const eligibleGrades = Object.keys(GRADES).filter(grade => {
@@ -355,7 +355,7 @@ function startRound(catId, count, browse = false, atLevel = null) {
     if (!browse && state.grade && !state.showAll && !q.grades.includes(state.grade)) continue;
     seen.add(q.key); seenContent.add(contentId); q.cat = c; q.level = lv; qs.push(q);
   }
-  if (!browse && !isTestMode()) {
+  if (!browse && !isTestMode() && catId !== 'placement') {
     state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60);
     state.recentContent[cat.id] = [...(state.recentContent[cat.id] || []), ...qs.map(fingerprint)].slice(-60);
     save();
