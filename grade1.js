@@ -4,11 +4,7 @@
    Read & Answer (levels 2–4): word box (several blanks on one screen), read & fill the passage, put the story in order
    Cards with several small questions count as that many answers for the daily numbers (q.parts).
    ========================================================= */
-const G1_ENDINGS = { sh: [['fish', '🐟'], ['dish', '🍽️'], ['brush', '🪥'], ['trash', '🗑️'], ['splash', '💦']],
-  ch: [['lunch', '🍱'], ['peach', '🍑'], ['watch', '⌚'], ['bench', '🪑'], ['couch', '🛋️']],
-  ck: [['duck', '🦆'], ['sock', '🧦'], ['clock', '🕰️'], ['truck', '🚚'], ['rock', '🪨'], ['lock', '🔒'], ['chick', '🐤']],
-  nd: [['hand', '✋'], ['wind', '🌬️'], ['pond', '🏞️'], ['band', '🎺']],
-  ng: [['ring', '💍'], ['king', '🤴'], ['wing', '🪽'], ['swing', '🛝']] };
+const G1_ENDINGS = ContentData.get('grade1','G1_ENDINGS');
 function genEnding() {
   const end = pick(Object.keys(G1_ENDINGS)), [w, e] = pick(G1_ENDINGS[end]);
   const stem = w.slice(0, -end.length);
@@ -20,13 +16,8 @@ function genEnding() {
   };
 }
 // words by vowel sound (long sounds are the path; the rest are dead ends)
-const G1_VOWELS = {
-  'long A': ['cake', 'rain', 'play', 'gate', 'snail', 'tape', 'mail', 'wave', 'plane', 'lake', 'game', 'rake', 'day', 'hay', 'train', 'skate'],
-  'long E': ['bee', 'tree', 'seed', 'leaf', 'sea', 'feet', 'team', 'green', 'sleep', 'beach', 'meat', 'queen', 'jeep', 'cheese'],
-  'long I': ['kite', 'bike', 'pie', 'five', 'ride', 'time', 'hide', 'nine', 'light', 'night', 'smile', 'line', 'fly', 'slide'],
-  'long O': ['rope', 'boat', 'nose', 'home', 'snow', 'road', 'goat', 'bone', 'coat', 'toe', 'rose', 'soap', 'note', 'globe'],
-};
-const G1_SHORT = ['cat', 'hat', 'man', 'jam', 'pan', 'bag', 'hot', 'pot', 'dog', 'net', 'bed', 'pet', 'sit', 'pig', 'fin', 'cup', 'bus', 'sun', 'mud', 'hen', 'rib', 'log'];
+const G1_VOWELS = ContentData.get('grade1','G1_VOWELS');
+const G1_SHORT = ContentData.get('grade1','G1_SHORT');
 function genVowelPath() {
   const sound = pick(Object.keys(G1_VOWELS)), cols = 4, rows = 5, route = [[0, 0]];
   while (route.length < cols + rows - 1) { const [x, y] = route[route.length - 1]; route.push(x === cols - 1 ? [x, y + 1] : y === rows - 1 ? [x + 1, y] : Math.random() < 0.5 ? [x + 1, y] : [x, y + 1]); }
@@ -44,16 +35,7 @@ function genVowelPath() {
 }
 
 // little phrases for the word box: [word, picture, phrase with ___]
-const G1_PHRASES = [
-  ['frog', '🐸', 'a green ___ on a log'], ['crab', '🦀', 'a red ___ on the sand'], ['drum', '🥁', 'bang on the ___'], ['bell', '🔔', 'ring the ___'],
-  ['ship', '🚢', 'a big ___ at sea'], ['cake', '🍰', 'a ___ with candles'], ['kite', '🪁', 'fly a ___ in the wind'], ['moon', '🌙', 'the ___ at night'],
-  ['sock', '🧦', 'a ___ on my foot'], ['duck', '🦆', 'the ___ can swim'], ['nest', '🪺', 'three eggs in a ___'], ['bus', '🚌', 'ride the ___ to school'],
-  ['hat', '🎩', 'a ___ on his head'], ['star', '⭐', 'a ___ in the sky'], ['lamp', '💡', 'turn on the ___'], ['bread', '🍞', 'jam on the ___'],
-  ['chair', '🪑', 'sit on a ___'], ['sheep', '🐑', 'a ___ on the farm'], ['wheel', '🛞', 'a ___ on the car'], ['shell', '🐚', 'a ___ by the sea'],
-  ['thin', '✏️', 'a ___ pencil'], ['brick', '🧱', 'one red ___'], ['crib', '🛏️', 'a baby in a ___'], ['grass', '🌱', 'green ___ in the yard'],
-  ['mane', '🐴', 'the horse has a ___'],
-  ['clock', '🕰️', 'the ___ says it is time'], ['brush', '🪥', 'a ___ for my teeth'], ['snail', '🐌', 'a slow ___ on a leaf'], ['train', '🚆', 'the ___ on the track'],
-];
+const G1_PHRASES = ContentData.get('grade1','G1_PHRASES');
 function genWordBox(level) {
   const n = level >= 3 ? 4 : 3, rows = sample(G1_PHRASES, n), extra = level >= 3 ? sample(G1_PHRASES.filter((r) => !rows.includes(r)), 1) : [];
   return {
@@ -64,31 +46,7 @@ function genWordBox(level) {
   };
 }
 // short passages and sentences to finish from them: [passage lines, [sentence with ___, right, wrong, wrong]…, picture]
-const G1_PASSAGES = [
-  [['I am Nia.', 'My bike is blue.', 'I have a cat.', 'The cat is small.', 'We play in the yard.'], [['Nia has a ___ bike.', 'blue', 'red', 'green'], ['The cat is ___.', 'small', 'big', 'sad'], ['Nia and the cat play in the ___.', 'yard', 'pond', 'bus']], '🚲🐱'],
-  [['This is Sam.', 'Sam has a red kite.', 'The wind is strong.', 'The kite goes up high.'], [['Sam has a ___ kite.', 'red', 'blue', 'big'], ['The wind is ___.', 'strong', 'cold', 'soft'], ['The kite goes up ___.', 'high', 'down', 'slow']], '🧒🪁'],
-  [['Ben has a pet fish.', 'The fish is gold.', 'It lives in a tank.', 'Ben feeds it every day.'], [['Ben has a pet ___.', 'fish', 'dog', 'bird'], ['The fish is ___.', 'gold', 'green', 'black'], ['Ben feeds it every ___.', 'day', 'week', 'hour']], '🐠'],
-  [['It is a hot day.', 'Lily goes to the beach.', 'She digs in the sand.', 'She eats a cold ice pop.'], [['It is a ___ day.', 'hot', 'cold', 'wet'], ['Lily digs in the ___.', 'sand', 'mud', 'snow'], ['She eats a cold ___.', 'ice pop', 'soup', 'cake']], '🏖️🍦'],
-  [['Max is a big brown dog.', 'He has a red ball.', 'He likes to run and jump.', 'At night he sleeps in his bed.'], [['Max is a ___ dog.', 'brown', 'white', 'little'], ['Max has a ___ ball.', 'red', 'blue', 'big'], ['At night Max ___ in his bed.', 'sleeps', 'eats', 'runs']], '🐕⚽'],
-  [['Mom and I bake a cake.', 'We add eggs and milk.', 'The cake is in the oven.', 'Now it smells good!'], [['Mom and I bake a ___.', 'cake', 'pie', 'pizza'], ['We add eggs and ___.', 'milk', 'jam', 'salt'], ['The cake is in the ___.', 'oven', 'box', 'sink']], '👩🍰'],
-  [['The farm has a red barn.', 'Six hens live in the barn.', 'The hens lay eggs.', 'Ana picks up the eggs.'], [['The barn is ___.', 'red', 'blue', 'small'], ['___ hens live in the barn.', 'Six', 'Two', 'Ten'], ['Ana picks up the ___.', 'eggs', 'hens', 'apples']], '🐔🥚'],
-  [['Leo has new boots.', 'His boots are green.', 'It rains all day.', 'Leo jumps in the puddles.'], [['Leo has new ___.', 'boots', 'socks', 'hats'], ['His boots are ___.', 'green', 'red', 'old'], ['Leo jumps in the ___.', 'puddles', 'bed', 'snow']], '🥾🌧️'],
-  [['Nora has a dog named Pip.', 'Pip has one black spot.', 'They run together in the park.', 'Pip is a happy dog.'], [['Pip has one ___ spot.', 'black', 'brown', 'white'], ['Nora and Pip run in the ___.', 'park', 'house', 'sea'], ['Pip is a ___ dog.', 'happy', 'sad', 'big']], '🐕🌳'],
-  [['A fox found grapes on a tall vine.', 'The fox jumped but did not reach them.', 'The grapes were too high.', 'The fox walked away.'], [['The fox found ___.', 'grapes', 'apples', 'pears'], ['The grapes were too ___.', 'high', 'low', 'soft'], ['The fox ___ away.', 'walked', 'swam', 'flew']], '🦊🍇'],
-
-  [['Maya borrowed a book about the ocean.', 'At the library she learned that whales breathe air.', 'She drew a whale and wrote three facts.', 'On Friday she showed her drawing to the class.'], [['Where did Maya find the book?', 'library', 'store', 'farm'], ['What do whales breathe?', 'air', 'sand', 'milk'], ['What did Maya show her class?', 'a drawing', 'a toy train', 'a kite']], '🐋📚', 3],
-  [['Luis noticed litter by the playground.', 'He and his friends put on gloves.', 'They picked up paper and bottles.', 'The teacher helped them sort the recycling.'], [['Where was the litter?', 'by the playground', 'in a river', 'at a zoo'], ['What did the children put on?', 'gloves', 'helmets', 'boots'], ['What did they sort?', 'recycling', 'sand', 'toys']], '♻️🧤', 3],
-  [['Asha planted two seeds in cups.', 'She gave both cups water.', 'One cup sat in the light and one sat in a dark box.', 'Asha watched the leaves grow.'], [['How many seeds did Asha plant?', 'two', 'one', 'five'], ['What did both cups get?', 'water', 'soda', 'paint'], ['Where was one cup kept?', 'in a dark box', 'in a pond', 'under a car']], '🌱☀️', 3],
-  [['On Monday, Noor built a paper airplane.', 'She folded the wings carefully.', 'Her first plane flew only a short way.', 'She changed one fold and tried again.'], [['What did Noor build?', 'a paper airplane', 'a boat', 'a tower'], ['What did she change?', 'one fold', 'the color of her shoes', 'the weather'], ['Why did Noor try again?', 'to improve her plane', 'to find her hat', 'to buy a book']], '✈️📄', 3],
-  [['Eli and Dad went to the market.', 'They bought apples, carrots and bread.', 'At home they washed the apples.', 'Then they made snacks for the family.'], [['Where did Eli go?', 'the market', 'the airport', 'the forest'], ['Which vegetable did they buy?', 'carrots', 'peas', 'potatoes'], ['What did they wash?', 'apples', 'shoes', 'books']], '🍎🥕', 3],
-  [['Rain fell on the school garden.', 'A small puddle formed by the path.', 'The next afternoon was sunny.', 'The puddle became smaller as water evaporated.'], [['Where was the puddle?', 'by the path', 'on the roof', 'in a cup'], ['What was the weather the next day?', 'sunny', 'snowy', 'windy'], ['Why did the puddle shrink?', 'water evaporated', 'rocks melted', 'grass grew']], '🌧️☀️', 4],
-  [['The class made a chart of favorite fruits.', 'Six children chose apples.', 'Four children chose bananas.', 'Two children chose grapes.', 'The class used the chart to plan a snack.'], [['Which fruit got the most votes?', 'apples', 'grapes', 'bananas'], ['How many chose grapes?', 'two', 'four', 'six'], ['How many children chose bananas?', 'four', 'six', 'two']], '📊🍇', 4],
-  [['Ravi saw a broken bird feeder in the yard.', 'He drew a plan for a new feeder.', 'With help, he used wood and string to build it.', 'Birds came back after he hung it in a tree.'], [['Why did Ravi draw a plan?', 'to build a feeder', 'to bake bread', 'to wash a car'], ['What materials did he use?', 'wood and string', 'glass and ice', 'sand and snow'], ['Where did he hang the feeder?', 'in a tree', 'under a desk', 'in a river']], '🐦🌳', 4],
-  [['Zara and Leo mapped the walk to school.', 'They marked a park, a crossing and the library.', 'At the crossing they stopped and looked both ways.', 'They reached school safely before the bell.'], [['What did they make?', 'a map', 'a cake', 'a kite'], ['Where did they stop and look?', 'at the crossing', 'at the library', 'at the park'], ['When did they reach school?', 'before the bell', 'after dark', 'at midnight']], '🗺️🏫', 4],
-  [['One morning, Sofia found frost on the grass.', 'The air had become very cold overnight.', 'As sunlight warmed the ground, the frost melted.', 'By lunchtime the grass was wet but no longer white.'], [['What covered the grass?', 'frost', 'sand', 'leaves'], ['What made the frost melt?', 'sunlight warming the ground', 'wind making snow', 'the moon'], ['How did the grass look at lunchtime?', 'wet', 'covered with frost', 'dry and dusty']], '❄️🌱', 4],
-  [['Owen put a bean on a damp paper towel.', 'He placed it inside a clear jar.', 'After several days, a root appeared first.', 'A little green shoot grew upward later.'], [['Where was the bean?', 'in a clear jar', 'inside a shoe', 'under a pillow'], ['What appeared first?', 'a root', 'a flower', 'a fruit'], ['Which way did the shoot grow?', 'upward', 'sideways only', 'down into a shoe']], '🫘🌱', 4],
-  [['Priya wanted to learn to ride a bicycle.', 'At first she needed someone to steady the bike.', 'She practiced starting, stopping and turning.', 'After many tries she rode a short distance by herself.'], [['What skill did Priya practice?', 'riding a bicycle', 'swimming', 'playing a drum'], ['What did she practice besides starting?', 'stopping and turning', 'singing and dancing', 'baking and mixing'], ['What helped Priya improve?', 'practice', 'giving up', 'hiding the bike']], '🚲⭐', 4],
-]; 
+const G1_PASSAGES = ContentData.get('grade1','G1_PASSAGES'); 
 function genPassageFill(level = 3) {
   const candidates = G1_PASSAGES.filter(row => (row[3] || 3) <= level);
   const exact = candidates.filter(row => (row[3] || 3) === level);
@@ -102,28 +60,7 @@ function genPassageFill(level = 3) {
   };
 }
 // put the story in order: [sentences in order, a picture for each]
-const G1_ORDER = [
-  [['The hen sat on her egg.', 'The egg cracked.', 'A chick came out.', 'The chick ate some seeds.'], ['🐔', '🥚', '🐣', '🌾']],
-  [['Kim planted a seed.', 'She watered it.', 'A little sprout came up.', 'Then a flower grew.'], ['🫘', '💧', '🌱', '🌻']],
-  [['Dad got the bread.', 'He put on cheese.', 'He cut the sandwich.', 'We ate lunch.'], ['🍞', '🧀', '🔪', '😋']],
-  [['The sky got dark.', 'Rain fell down.', 'The sun came back.', 'We saw a rainbow.'], ['☁️', '🌧️', '☀️', '🌈']],
-  [['Jay put on his socks.', 'He put on his shoes.', 'He tied the laces.', 'He ran outside.'], ['🧦', '👟', '🎀', '🏃']],
-  [['The caterpillar ate leaves.', 'It made a chrysalis.', 'It slept a long time.', 'A butterfly flew away.'], ['🐛', '🫛', '💤', '🦋']],
-  [['We made a snowball.', 'We rolled it big.', 'We put on a hat.', 'Our snowman was done!'], ['❄️', '⚪', '🎩', '⛄']],
-  [['Ava got her toothbrush.', 'She put on toothpaste.', 'She brushed her teeth.', 'She smiled big.'], ['🪥', '🧴', '🦷', '😁']],
-  [['A fox saw grapes hanging on a vine.', 'The fox tried to reach them.', 'It could not reach the grapes.', 'The fox walked away.'], ['🦊🍇', '🦊⬆️', '🍇', '🦊🚶']],
-
-  [['Kai washed an apple.', 'He cut it into pieces with adult help.', 'He put the pieces in a bowl.', 'The family ate the apple snack.'], ['🍎', '🔪', '🥣', '😋'], 3],
-  [['Maya found an empty pot.', 'She filled it with soil.', 'She planted a seed.', 'She watered the pot.'], ['🪴', '🟫', '🌱', '💧'], 3],
-  [['Ava picked out a library book.', 'She read the story.', 'She told her dad about it.', 'She returned the book to the library.'], ['📚', '📖', '🗣️', '🏫'], 3],
-  [['The class mixed paint colors.', 'They dipped brushes in the paint.', 'They painted a mural.', 'They cleaned their brushes.'], ['🎨', '🖌️', '🖼️', '🧽'], 3],
-  [['A cloud grew dark.', 'Rain began to fall.', 'A puddle appeared.', 'The sun warmed the puddle and it dried.'], ['☁️', '🌧️', '💧', '☀️'], 4],
-  [['The team decided to build a bridge.', 'They drew a plan.', 'They joined blocks into a bridge.', 'They tested whether a toy car could cross.'], ['🧠', '✏️', '🧱', '🚗'], 4],
-  [['A seed was placed in moist soil.', 'A small root grew downward.', 'A shoot rose above the soil.', 'Leaves opened in the sunlight.'], ['🫘', '🌱', '🌿', '☀️'], 4],
-  [['The children collected clean bottles.', 'They counted the bottles.', 'They sorted them into recycling bins.', 'A truck came to collect them.'], ['🧴', '🔢', '♻️', '🚚'], 4],
-  [['The school bell rang.', 'The children lined up.', 'They walked into the classroom.', 'They sat down to read.'], ['🔔', '🚶', '🏫', '📖'], 3],
-  [['The clock showed eight.', 'Sam put on a helmet.', 'Sam rode a bicycle to the park.', 'Sam locked the bike at the rack.'], ['🕗', '⛑️', '🚲', '🔒'], 4],
-]; 
+const G1_ORDER = ContentData.get('grade1','G1_ORDER'); 
 function genStoryOrder(level = 3) {
   const candidates = G1_ORDER.filter(row => (row[2] || 3) <= level);
   const exact = candidates.filter(row => (row[2] || 3) === level);
