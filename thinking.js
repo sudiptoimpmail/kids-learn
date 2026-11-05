@@ -41,7 +41,7 @@ function genAdvancedPattern(level) {
   } else if (kind === 2) {
     const base = 2 + rand(8), step = 2 + rand(4);
     nums = Array.from({ length: 5 }, (_, i) => base + (i % 2 === 0 ? i / 2 : -((i + 1) / 2) * step));
-    answer = base + 3;
+    answer = base - 3 * step;
     reason = 'Two number patterns take turns.';
   } else {
     const first = 2 + rand(3);
