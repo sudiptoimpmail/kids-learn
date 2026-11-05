@@ -1,0 +1,2687 @@
+{
+  "schema": 1,
+  "namespace": "curriculum-map",
+  "datasets": {
+    "GRADES": {
+      "prek": {
+        "label": "Pre-K",
+        "g": {
+          "trace": "1-1",
+          "phonics": "1-2",
+          "animals": "1-1",
+          "places": "1-1",
+          "body": "1-1",
+          "gk": "1-1",
+          "anatomy": "1-1",
+          "match": "1-1",
+          "cvc": "1-1",
+          "sight": "1-1",
+          "spell": "1-1",
+          "vocab": "1-1",
+          "syl": "1-1",
+          "add": "1-1",
+          "sub": "1-1",
+          "cmp": "1-1",
+          "shape2": "1-1",
+          "jobs": "1-1",
+          "flags": "1-1",
+          "maps": "1-1",
+          "pattern": "1-1",
+          "odd": "1-1",
+          "sequence": "1-1"
+        }
+      },
+      "k": {
+        "label": "Kindergarten",
+        "g": {
+          "trace": "1-1",
+          "phonics": "1-4",
+          "animals": "1-2",
+          "places": "1-1",
+          "body": "1-2",
+          "gk": "1-2",
+          "anatomy": "1-1",
+          "match": "1-2",
+          "cvc": "2-3",
+          "w4": "1-2",
+          "sight": "1-2",
+          "spell": "1-2",
+          "vocab": "1-2",
+          "sent": "1-2",
+          "syl": "1-2",
+          "add": "1-2",
+          "sub": "1-2",
+          "story": "1-1",
+          "cmp": "1-2",
+          "shape2": "1-2",
+          "jobs": "1-2",
+          "flags": "1-2",
+          "maps": "1-2",
+          "home": "1-2",
+          "pattern": "1-2",
+          "odd": "1-2",
+          "sequence": "1-2"
+        }
+      },
+      "g1": {
+        "label": "1st Grade",
+        "g": {
+          "trace": "1-1",
+          "phonics": "3-5",
+          "animals": "1-2",
+          "places": "1-2",
+          "gk": "2-3",
+          "anatomy": "1-2",
+          "match": "2-3",
+          "cvc": "3-3",
+          "w4": "2-4",
+          "sight": "2-3",
+          "spell": "3-4",
+          "vocab": "1-2",
+          "sent": "2-3",
+          "syl": "2-3",
+          "add": "3-4",
+          "sub": "3-4",
+          "story": "2-3",
+          "cmp": "2-4",
+          "clock": "1-2",
+          "shape2": "2-3",
+          "jobs": "2-3",
+          "flags": "2-3",
+          "maps": "2-3",
+          "words": "1-2",
+          "numsense": "1-2",
+          "sci": "1-2",
+          "home": "2-3",
+          "pattern": "2-3",
+          "odd": "2-3",
+          "sequence": "2-3"
+        }
+      },
+      "g2": {
+        "label": "2nd Grade",
+        "g": {
+          "phonics": "4-5",
+          "animals": "2-3",
+          "places": "2-3",
+          "gk": "3-3",
+          "anatomy": "2-3",
+          "match": "3-5",
+          "w4": "4-5",
+          "sight": "3-4",
+          "spell": "4-5",
+          "vocab": "2-4",
+          "sent": "3-4",
+          "add": "4-5",
+          "sub": "4-5",
+          "story": "3-5",
+          "cmp": "4-5",
+          "mul": "1-3",
+          "div": "1-2",
+          "clock": "2-4",
+          "shape2": "3-4",
+          "flags": "3-3",
+          "maps": "3-3",
+          "words": "2-4",
+          "numsense": "2-4",
+          "sci": "2-3",
+          "home": "2-4",
+          "pattern": "3-4",
+          "odd": "3-3",
+          "sequence": "3-3"
+        }
+      },
+      "g3": {
+        "label": "3rd Grade",
+        "g": {
+          "animals": "3-3",
+          "places": "3-3",
+          "gk": "4-4",
+          "anatomy": "3-4",
+          "match": "4-5",
+          "w4": "5-5",
+          "sight": "4-4",
+          "spell": "5-5",
+          "vocab": "3-4",
+          "sent": "5-6",
+          "add": "5-5",
+          "sub": "5-5",
+          "story": "4-5",
+          "cmp": "5-5",
+          "mul": "3-5",
+          "div": "2-5",
+          "clock": "3-4",
+          "shape2": "4-4",
+          "flags": "3-3",
+          "maps": "3-3",
+          "words": "3-5",
+          "numsense": "3-5",
+          "sci": "3-4",
+          "home": "3-4",
+          "pattern": "4-5",
+          "odd": "3-3",
+          "sequence": "3-3"
+        }
+      }
+    },
+    "PROFILES": {
+      "prek": {
+        "label": "Pre-K",
+        "sections": {
+          "trace": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "phonics": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "animals": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "places": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "body": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "gk": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "GK"
+          },
+          "anatomy": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "match": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "cvc": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "sight": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "spell": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "vocab": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "syl": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "add": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "sub": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "cmp": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "shape2": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "jobs": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "flags": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "maps": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "pattern": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "odd": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "THINKING_ODD"
+          },
+          "sequence": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "recognize-and-name"
+            ],
+            "approach": "play-and-practice",
+            "bank": "THINKING_SEQUENCES"
+          }
+        }
+      },
+      "k": {
+        "label": "Kindergarten",
+        "sections": {
+          "trace": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "phonics": {
+            "levels": [
+              1,
+              4
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "animals": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "places": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "body": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "gk": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "GK"
+          },
+          "anatomy": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "match": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "cvc": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "w4": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "sight": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "spell": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "vocab": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "sent": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "STORIES"
+          },
+          "syl": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "add": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "sub": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "story": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "cmp": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "shape2": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "jobs": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "flags": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "maps": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "home": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "pattern": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "odd": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "THINKING_ODD"
+          },
+          "sequence": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "identify-and-match"
+            ],
+            "approach": "play-and-practice",
+            "bank": "THINKING_SEQUENCES"
+          }
+        }
+      },
+      "g1": {
+        "label": "1st Grade",
+        "sections": {
+          "trace": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "phonics": {
+            "levels": [
+              3,
+              5
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "animals": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "places": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "gk": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "GK"
+          },
+          "anatomy": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "match": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "cvc": {
+            "levels": [
+              3,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "w4": {
+            "levels": [
+              2,
+              4
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "sight": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "spell": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "vocab": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "sent": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "STORIES"
+          },
+          "syl": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "add": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "sub": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "story": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "cmp": {
+            "levels": [
+              2,
+              4
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "clock": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "shape2": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "jobs": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "flags": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "maps": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "words": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "numsense": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "sci": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "SCIENCE"
+          },
+          "home": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "pattern": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
+          },
+          "odd": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "THINKING_ODD"
+          },
+          "sequence": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "read-and-apply"
+            ],
+            "approach": "play-and-practice",
+            "bank": "THINKING_SEQUENCES"
+          }
+        }
+      },
+      "g2": {
+        "label": "2nd Grade",
+        "sections": {
+          "phonics": {
+            "levels": [
+              4,
+              5
+            ],
+            "skills": [
+              "advanced-phonics",
+              "multisyllabic-decoding"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "animals": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "habitats",
+              "adaptations"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "places": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "map-reading",
+              "locate-landmarks"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "gk": {
+            "levels": [
+              3,
+              3
+            ],
+            "skills": [
+              "graphs",
+              "everyday-decisions",
+              "geography"
+            ],
+            "approach": "guided-investigation",
+            "bank": "GK"
+          },
+          "anatomy": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "human-systems-basics"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "match": {
+            "levels": [
+              3,
+              5
+            ],
+            "skills": [
+              "word-connections",
+              "number-relations"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "w4": {
+            "levels": [
+              4,
+              5
+            ],
+            "skills": [
+              "spelling-patterns"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "sight": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "automatic-word-recognition"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "spell": {
+            "levels": [
+              4,
+              5
+            ],
+            "skills": [
+              "common-spelling-rules"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "vocab": {
+            "levels": [
+              2,
+              4
+            ],
+            "skills": [
+              "context-clues",
+              "word-meaning"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "sent": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "main-idea",
+              "sequence",
+              "text-details"
+            ],
+            "approach": "guided-investigation",
+            "bank": "STORIES"
+          },
+          "add": {
+            "levels": [
+              4,
+              5
+            ],
+            "skills": [
+              "two-digit-addition",
+              "place-value-strategies"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "sub": {
+            "levels": [
+              4,
+              5
+            ],
+            "skills": [
+              "two-digit-subtraction",
+              "regrouping"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "story": {
+            "levels": [
+              3,
+              5
+            ],
+            "skills": [
+              "one-two-step-word-problems",
+              "units"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "cmp": {
+            "levels": [
+              4,
+              5
+            ],
+            "skills": [
+              "number-comparison"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "mul": {
+            "levels": [
+              1,
+              3
+            ],
+            "skills": [
+              "equal-groups",
+              "arrays",
+              "skip-counting"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "div": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "equal-sharing",
+              "repeated-subtraction"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "clock": {
+            "levels": [
+              2,
+              4
+            ],
+            "skills": [
+              "time-to-five-minutes"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "shape2": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "shapes",
+              "partitioning"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "flags": {
+            "levels": [
+              3,
+              3
+            ],
+            "skills": [
+              "map-context",
+              "country-symbols"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "maps": {
+            "levels": [
+              3,
+              3
+            ],
+            "skills": [
+              "map-key",
+              "continents",
+              "directions"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "words": {
+            "levels": [
+              2,
+              4
+            ],
+            "skills": [
+              "parts-of-speech",
+              "plurals",
+              "verb-tense"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "numsense": {
+            "levels": [
+              2,
+              4
+            ],
+            "skills": [
+              "three-digit-place-value",
+              "fractions",
+              "money",
+              "measurements"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "sci": {
+            "levels": [
+              2,
+              3
+            ],
+            "skills": [
+              "simple-investigations",
+              "matter",
+              "habitats",
+              "weather"
+            ],
+            "approach": "guided-investigation",
+            "bank": "SCIENCE"
+          },
+          "home": {
+            "levels": [
+              2,
+              4
+            ],
+            "skills": [
+              "local-geography",
+              "currency"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "pattern": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "number-sequences",
+              "rule-finding"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
+          },
+          "odd": {
+            "levels": [
+              3,
+              3
+            ],
+            "skills": [
+              "classify-by-properties",
+              "explain-reasons"
+            ],
+            "approach": "guided-investigation",
+            "bank": "THINKING_ODD"
+          },
+          "sequence": {
+            "levels": [
+              3,
+              3
+            ],
+            "skills": [
+              "four-step-cause-effect",
+              "daily-processes"
+            ],
+            "approach": "guided-investigation",
+            "bank": "THINKING_SEQUENCES"
+          }
+        }
+      },
+      "g3": {
+        "label": "3rd Grade",
+        "sections": {
+          "animals": {
+            "levels": [
+              3,
+              3
+            ],
+            "skills": [
+              "ecosystems",
+              "adaptations",
+              "evidence"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "places": {
+            "levels": [
+              3,
+              3
+            ],
+            "skills": [
+              "geographic-evidence",
+              "human-landmarks"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "gk": {
+            "levels": [
+              4,
+              4
+            ],
+            "skills": [
+              "data-interpretation",
+              "source-evaluation",
+              "geography"
+            ],
+            "approach": "reason-explain",
+            "bank": "GK"
+          },
+          "anatomy": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "organs",
+              "body-systems"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "match": {
+            "levels": [
+              4,
+              5
+            ],
+            "skills": [
+              "math-equivalence",
+              "word-relationships"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "w4": {
+            "levels": [
+              5,
+              5
+            ],
+            "skills": [
+              "multisyllabic-vocabulary"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "sight": {
+            "levels": [
+              4,
+              4
+            ],
+            "skills": [
+              "reading-fluency"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "spell": {
+            "levels": [
+              5,
+              5
+            ],
+            "skills": [
+              "prefixes",
+              "suffixes",
+              "spelling"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "vocab": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "context-clues",
+              "academic-language"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "sent": {
+            "levels": [
+              5,
+              6
+            ],
+            "skills": [
+              "inference",
+              "text-evidence",
+              "compare-ideas",
+              "cause-effect"
+            ],
+            "approach": "reason-explain",
+            "bank": "STORIES"
+          },
+          "add": {
+            "levels": [
+              5,
+              5
+            ],
+            "skills": [
+              "multi-digit-computation",
+              "reasonableness"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "sub": {
+            "levels": [
+              5,
+              5
+            ],
+            "skills": [
+              "multi-digit-computation",
+              "regrouping"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "story": {
+            "levels": [
+              4,
+              5
+            ],
+            "skills": [
+              "multi-step-reasoning",
+              "represent-and-solve"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "cmp": {
+            "levels": [
+              5,
+              5
+            ],
+            "skills": [
+              "estimating-and-comparing"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "mul": {
+            "levels": [
+              3,
+              5
+            ],
+            "skills": [
+              "multiplication-facts",
+              "arrays",
+              "properties"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "div": {
+            "levels": [
+              2,
+              5
+            ],
+            "skills": [
+              "division-facts",
+              "equal-groups",
+              "remainders"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "clock": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "elapsed-time",
+              "time-intervals"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "shape2": {
+            "levels": [
+              4,
+              4
+            ],
+            "skills": [
+              "quadrilaterals",
+              "perimeter"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "flags": {
+            "levels": [
+              3,
+              3
+            ],
+            "skills": [
+              "countries-and-regions",
+              "map-research"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "maps": {
+            "levels": [
+              3,
+              3
+            ],
+            "skills": [
+              "map-scale",
+              "regions",
+              "spatial-reasoning"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "words": {
+            "levels": [
+              3,
+              5
+            ],
+            "skills": [
+              "paragraph-grammar",
+              "conjunctions",
+              "word-structure"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "numsense": {
+            "levels": [
+              3,
+              5
+            ],
+            "skills": [
+              "unit-fractions",
+              "number-line",
+              "place-value",
+              "measurement"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "sci": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "fair-tests",
+              "forces-and-motion",
+              "energy",
+              "ecosystems"
+            ],
+            "approach": "reason-explain",
+            "bank": "SCIENCE"
+          },
+          "home": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "civic-geography",
+              "currency-and-commerce"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "pattern": {
+            "levels": [
+              4,
+              5
+            ],
+            "skills": [
+              "numeric-rules",
+              "multi-step-patterns"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
+          },
+          "odd": {
+            "levels": [
+              3,
+              3
+            ],
+            "skills": [
+              "functional-classification",
+              "justify-with-evidence"
+            ],
+            "approach": "reason-explain",
+            "bank": "THINKING_ODD"
+          },
+          "sequence": {
+            "levels": [
+              3,
+              3
+            ],
+            "skills": [
+              "scientific-method",
+              "process-reasoning"
+            ],
+            "approach": "reason-explain",
+            "bank": "THINKING_SEQUENCES"
+          }
+        }
+      }
+    },
+    "ROUTES": {
+      "SCIENCE": [
+        {
+          "id": "science-1",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-2",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-3",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-4",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-5",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-6",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-7",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-8",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-9",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-10",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-11",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-12",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-13",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-14",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-15",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-16",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-17",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-18",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-19",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-20",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sci",
+          "level": 3,
+          "skill": "observe-and-compare"
+        },
+        {
+          "id": "science-21",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-22",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-23",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-24",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-25",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-26",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-27",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-28",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-29",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-30",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-31",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-32",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-33",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-34",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-35",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-36",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-37",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-38",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-39",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        },
+        {
+          "id": "science-40",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sci",
+          "level": 4,
+          "skill": "investigate-and-explain"
+        }
+      ],
+      "GK": [
+        {
+          "id": "gk-1",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "gk",
+          "level": 3,
+          "skill": "everyday-evidence"
+        },
+        {
+          "id": "gk-2",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "gk",
+          "level": 3,
+          "skill": "everyday-evidence"
+        },
+        {
+          "id": "gk-3",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "gk",
+          "level": 3,
+          "skill": "everyday-evidence"
+        },
+        {
+          "id": "gk-4",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "gk",
+          "level": 3,
+          "skill": "everyday-evidence"
+        },
+        {
+          "id": "gk-5",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "gk",
+          "level": 3,
+          "skill": "everyday-evidence"
+        },
+        {
+          "id": "gk-6",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "gk",
+          "level": 3,
+          "skill": "everyday-evidence"
+        },
+        {
+          "id": "gk-7",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "gk",
+          "level": 3,
+          "skill": "everyday-evidence"
+        },
+        {
+          "id": "gk-8",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "gk",
+          "level": 3,
+          "skill": "everyday-evidence"
+        },
+        {
+          "id": "gk-9",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "gk",
+          "level": 3,
+          "skill": "everyday-evidence"
+        },
+        {
+          "id": "gk-10",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "gk",
+          "level": 3,
+          "skill": "everyday-evidence"
+        },
+        {
+          "id": "gk-11",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "gk",
+          "level": 4,
+          "skill": "data-and-sources"
+        },
+        {
+          "id": "gk-12",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "gk",
+          "level": 4,
+          "skill": "data-and-sources"
+        },
+        {
+          "id": "gk-13",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "gk",
+          "level": 4,
+          "skill": "data-and-sources"
+        },
+        {
+          "id": "gk-14",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "gk",
+          "level": 4,
+          "skill": "data-and-sources"
+        },
+        {
+          "id": "gk-15",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "gk",
+          "level": 4,
+          "skill": "data-and-sources"
+        },
+        {
+          "id": "gk-16",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "gk",
+          "level": 4,
+          "skill": "data-and-sources"
+        },
+        {
+          "id": "gk-17",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "gk",
+          "level": 4,
+          "skill": "data-and-sources"
+        },
+        {
+          "id": "gk-18",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "gk",
+          "level": 4,
+          "skill": "data-and-sources"
+        },
+        {
+          "id": "gk-19",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "gk",
+          "level": 4,
+          "skill": "data-and-sources"
+        },
+        {
+          "id": "gk-20",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "gk",
+          "level": 4,
+          "skill": "data-and-sources"
+        }
+      ],
+      "THINKING_ODD": [
+        {
+          "id": "thinking_odd-1",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "odd",
+          "level": 3,
+          "skill": "properties-and-categories"
+        },
+        {
+          "id": "thinking_odd-2",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "odd",
+          "level": 3,
+          "skill": "properties-and-categories"
+        },
+        {
+          "id": "thinking_odd-3",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "odd",
+          "level": 3,
+          "skill": "properties-and-categories"
+        },
+        {
+          "id": "thinking_odd-4",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "odd",
+          "level": 3,
+          "skill": "properties-and-categories"
+        },
+        {
+          "id": "thinking_odd-5",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "odd",
+          "level": 3,
+          "skill": "properties-and-categories"
+        },
+        {
+          "id": "thinking_odd-6",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "odd",
+          "level": 3,
+          "skill": "properties-and-categories"
+        },
+        {
+          "id": "thinking_odd-7",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "odd",
+          "level": 3,
+          "skill": "properties-and-categories"
+        },
+        {
+          "id": "thinking_odd-8",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "odd",
+          "level": 3,
+          "skill": "properties-and-categories"
+        },
+        {
+          "id": "thinking_odd-9",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "odd",
+          "level": 3,
+          "skill": "properties-and-categories"
+        },
+        {
+          "id": "thinking_odd-10",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "odd",
+          "level": 3,
+          "skill": "properties-and-categories"
+        },
+        {
+          "id": "thinking_odd-11",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "odd",
+          "level": 3,
+          "skill": "scientific-classification"
+        },
+        {
+          "id": "thinking_odd-12",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "odd",
+          "level": 3,
+          "skill": "scientific-classification"
+        },
+        {
+          "id": "thinking_odd-13",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "odd",
+          "level": 3,
+          "skill": "scientific-classification"
+        },
+        {
+          "id": "thinking_odd-14",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "odd",
+          "level": 3,
+          "skill": "scientific-classification"
+        },
+        {
+          "id": "thinking_odd-15",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "odd",
+          "level": 3,
+          "skill": "scientific-classification"
+        },
+        {
+          "id": "thinking_odd-16",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "odd",
+          "level": 3,
+          "skill": "scientific-classification"
+        },
+        {
+          "id": "thinking_odd-17",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "odd",
+          "level": 3,
+          "skill": "scientific-classification"
+        },
+        {
+          "id": "thinking_odd-18",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "odd",
+          "level": 3,
+          "skill": "scientific-classification"
+        },
+        {
+          "id": "thinking_odd-19",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "odd",
+          "level": 3,
+          "skill": "scientific-classification"
+        },
+        {
+          "id": "thinking_odd-20",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "odd",
+          "level": 3,
+          "skill": "scientific-classification"
+        }
+      ],
+      "THINKING_SEQUENCES": [
+        {
+          "id": "thinking_sequences-1",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-life-events"
+        },
+        {
+          "id": "thinking_sequences-2",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-life-events"
+        },
+        {
+          "id": "thinking_sequences-3",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-life-events"
+        },
+        {
+          "id": "thinking_sequences-4",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-life-events"
+        },
+        {
+          "id": "thinking_sequences-5",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-life-events"
+        },
+        {
+          "id": "thinking_sequences-6",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-life-events"
+        },
+        {
+          "id": "thinking_sequences-7",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-life-events"
+        },
+        {
+          "id": "thinking_sequences-8",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-life-events"
+        },
+        {
+          "id": "thinking_sequences-9",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-life-events"
+        },
+        {
+          "id": "thinking_sequences-10",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-life-events"
+        },
+        {
+          "id": "thinking_sequences-11",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-investigations"
+        },
+        {
+          "id": "thinking_sequences-12",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-investigations"
+        },
+        {
+          "id": "thinking_sequences-13",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-investigations"
+        },
+        {
+          "id": "thinking_sequences-14",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-investigations"
+        },
+        {
+          "id": "thinking_sequences-15",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-investigations"
+        },
+        {
+          "id": "thinking_sequences-16",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-investigations"
+        },
+        {
+          "id": "thinking_sequences-17",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-investigations"
+        },
+        {
+          "id": "thinking_sequences-18",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-investigations"
+        },
+        {
+          "id": "thinking_sequences-19",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-investigations"
+        },
+        {
+          "id": "thinking_sequences-20",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sequence",
+          "level": 3,
+          "skill": "sequencing-investigations"
+        }
+      ],
+      "STORIES": [
+        {
+          "id": "stories-1",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sent",
+          "level": 4,
+          "skill": "text-details-and-reasoning"
+        },
+        {
+          "id": "stories-2",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sent",
+          "level": 4,
+          "skill": "text-details-and-reasoning"
+        },
+        {
+          "id": "stories-3",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sent",
+          "level": 4,
+          "skill": "text-details-and-reasoning"
+        },
+        {
+          "id": "stories-4",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sent",
+          "level": 4,
+          "skill": "text-details-and-reasoning"
+        },
+        {
+          "id": "stories-5",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sent",
+          "level": 4,
+          "skill": "text-details-and-reasoning"
+        },
+        {
+          "id": "stories-6",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 5,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-7",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 5,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-8",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 5,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-9",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 5,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-10",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 5,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-11",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 6,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-12",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 6,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-13",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 6,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-14",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 6,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-15",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 6,
+          "skill": "inference-and-evidence"
+        }
+      ]
+    },
+    "policy": {
+      "gradeScopedExtension": true,
+      "progression": "grade-bounded",
+      "fallback": "bundled-core",
+      "offline": true
+    },
+    "version": 1
+  }
+}
