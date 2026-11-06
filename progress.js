@@ -342,13 +342,15 @@ function renderDashboard() {
   $('#dashNext').innerHTML = candidates.map((id,i)=>{
     const cat=CATEGORIES.find(x=>x.id===id);
     if(!cat)return '';
-    const level=gradeRange(state.grade,id)[0];
     const tip=practiceTips[id]||'Ask your child to explain how they decided.';
-    return `<div class="dash-recommend"><div class="dash-recommend-head"><span class="dash-recommend-no">${i+1}</span><b>${cat.icon} ${cat.title}</b><small>5-minute practice</small></div><p>${tip}</p><button class="big-btn small" data-practice="${id}" aria-label="Practice ${cat.title}">Start practice</button></div>`;
+    const objective = [...objectiveWeak,...objectiveDeveloping].find(row=>row.cat===id);
+    const focus = objective?.objective || '';
+    const purpose = focus ? `<p class="note">Focus: ${esc(objectiveLabel(focus))}</p>` : '';
+    return `<div class="dash-recommend"><div class="dash-recommend-head"><span class="dash-recommend-no">${i+1}</span><b>${cat.icon} ${cat.title}</b><small>5-minute practice</small></div><p>${tip}</p>${purpose}<button class="big-btn small" data-practice="${id}" data-focus="${esc(focus)}" aria-label="Practice ${esc(cat.title)}">Start practice</button></div>`;
   }).join('') + '<p class="note small">Practice is based on recent answers and the selected grade, not a standardized assessment. Talk, read, draw and explore together too.</p>';
   $$('#dashNext [data-practice]').forEach(button=>button.onclick=()=>{
     sfx.tap();
-    startRound(button.dataset.practice,5);
+    startRound(button.dataset.practice,5,false,null,button.dataset.focus || null);
   });
   // subjects: level now and this week's accuracy
   const catWeek = {};
@@ -411,9 +413,20 @@ function questFor() {
   const strong = skills.filter((s) => s.s === 'mastered' && ok(s.cat)).sort((a, b) => b.acc - a.acc)[0];
   addStep(strong ? strong.cat : freshest(QUEST_READING[grade] || QUEST_READING.k), 'warm-up');
   // 2. the skill that needs practice most, or core math
-  const weak = skills.filter((s) => (s.s === 'learning' || s.s === 'practicing') && ok(s.cat) && !used.has(s.cat)).sort((a, b) => a.acc - b.acc)[0];
+  const objectiveWeak = Object.values(state.stats?.objectives || {})
+    .filter(row => row && row.grade === grade && ok(row.cat) && !used.has(row.cat))
+    .map(row => ({ ...row, ...objectiveState(row), lv: levelOf(row.cat) }))
+    .filter(row => (row.s === 'learning' || row.s === 'practicing') &&
+      dueObjectiveReviews(row.cat,today).some(item => item.objective === row.objective))
+    .sort((a,b) => a.acc-b.acc);
+  const weak = objectiveWeak[0] || skills.filter((s) =>
+    (s.s === 'learning' || s.s === 'practicing') && ok(s.cat) && !used.has(s.cat))
+    .sort((a, b) => a.acc - b.acc)[0];
   addStep(weak ? weak.cat : freshest((QUEST_MATH[grade] || QUEST_MATH.k).filter((c) => !used.has(c))), weak ? 'practice' : 'math');
-  if (weak && steps.length && steps[steps.length - 1].cat === weak.cat) steps[steps.length - 1].level = weak.lv;   // practice at the level that was hard
+  if (weak && steps.length && steps[steps.length - 1].cat === weak.cat) {
+    steps[steps.length - 1].level = weak.lv;
+    if (weak.objective) steps[steps.length - 1].objective = weak.objective;
+  }
   // 3. reading (if not already in), 4. math (if not already in)
   addStep(freshest((QUEST_READING[grade] || QUEST_READING.k).filter((c) => !used.has(c))), 'reading');
   if (!steps.some((s) => (QUEST_MATH[grade] || []).includes(s.cat))) addStep(freshest((QUEST_MATH[grade] || QUEST_MATH.k).filter((c) => !used.has(c))), 'math');
@@ -453,7 +466,7 @@ function renderQuest() {
 function startQuestStep(i) {
   const q = questFor(), s = q.steps[i]; if (!s) return;
   if (s.cat === 'trace') { TR.quest = { i, left: 3, date: q.date }; openTrace(); return; }
-  startRound(s.cat, QUEST_LEN, false, s.level || null);
+  startRound(s.cat, QUEST_LEN, false, s.level || null, s.objective || null);
   R.questStep = i;
 }
 function questStepDone(i) {
