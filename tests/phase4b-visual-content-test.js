@@ -20,7 +20,7 @@ const {chromium} = require('playwright');
       const math=ContentData.get('explorer-math','questions');
       const visuals=math.filter(x=>x.representation);
       const kinds=[...new Set(visuals.map(x=>x.representation.kind))].sort();
-      require(visuals.length===12,'Expected 12 illustrated math missions');
+      require(visuals.length===24,'Expected 24 illustrated math missions');
       require(kinds.join(',')==='array,bar-chart,fraction-strip,number-line',
         'Not all representation types delivered: '+kinds.join(','));
       const originalGrade=state.grade;
