@@ -306,13 +306,28 @@ function renderHome() {
 /* ---------- a round ---------- */
 let R = null; // current round
 
-function startRound(catId, count, browse = false, atLevel = null) {
+function startRound(catId, count, browse = false, atLevel = null, focusObjective = null) {
   sayToken++; stopClip(); $('#pop').classList.remove('show'); $('#pop').replaceChildren();
   const cat = CATEGORIES.find((c) => c.id === catId);
   const real = visibleGames().filter((c) => c.gen);
   const qs = [], seen = new Set(), seenContent = new Set();
   let guard = 0;
   const N = count || cat.roundLen || ROUND;
+  // Schedule a small number of explicit authored-objective review cards without
+  // displacing the full grade-level mix. The grade's JSON policy owns the cap.
+  const reviewPolicy = state.grade && GRADES[state.grade]?.reviewSchedule;
+  const focusEnabled = !browse && !isTestMode() && !!cat.gen && !!reviewPolicy &&
+    typeof authoredReviewQuestions === 'function';
+  const requestedFocusLevel = atLevel || levelOf(cat.id);
+  const focusRange = focusEnabled ? openRange(cat.id) : null;
+  const focusLevel = focusRange
+    ? Math.min(focusRange[1], Math.max(focusRange[0], requestedFocusLevel))
+    : requestedFocusLevel;
+  const focusedPool = focusEnabled
+    ? authoredReviewQuestions(cat.id, focusLevel, focusObjective) : [];
+  const reviewCap = focusEnabled ? Math.min(N, reviewPolicy.maxReviewCards) : 0;
+  const reviewSpacing = reviewCap ? Math.max(1, Math.floor(N / reviewCap)) : 1;
+  let reviewed = 0;
   // questions seen in the last few rounds are skipped while there are fresh ones to ask
   state.recent = state.recent || {};
   const recent = new Set(state.recent[cat.id] || []);
@@ -332,19 +347,26 @@ function startRound(catId, count, browse = false, atLevel = null) {
     const range = !browse ? openRange(c.id) : null;   // the test browser previews any level
     const requestedLevel = atLevel || levelOf(c.id);
     const lv = range ? Math.min(range[1], Math.max(range[0], requestedLevel)) : requestedLevel;
+    const chooseReview = focusedPool.length && reviewed < reviewCap &&
+      qs.length % reviewSpacing === 0;
+    const reviewedQuestion = chooseReview ? focusedPool.shift() : null;
     // Illustrated activities appear as variations in existing question rounds.
-    const illustrated = typeof IllustratedActivities !== 'undefined' &&
+    const illustrated = !reviewedQuestion && typeof IllustratedActivities !== 'undefined' &&
       IllustratedActivities.available(state.grade, c.id, lv) && (qs.length % 4 === 1 || (qs.length === 0 && Math.random() < 0.45));
-    const added = !illustrated && Math.random() < 0.35 &&
+    const added = !reviewedQuestion && !illustrated && Math.random() < 0.35 &&
       ContentPacks.choose(state.grade, c.id, lv, [...seen, ...(!browse && guard < 350 ? recent : [])]);
-    let q = (illustrated && IllustratedActivities.make(state.grade, c.id, lv)) || added || c.gen(lv);
+    let q = reviewedQuestion || (illustrated && IllustratedActivities.make(state.grade, c.id, lv)) || added || c.gen(lv);
     // Keep a single occurrence of each illustrated exercise per round.
     if (q.illustrated && seen.has(q.key)) q = c.gen(lv);
     const contentId = fingerprint(q);
     // Never repeat an identical question in one round, even after exhausting
     // retries. Return a shorter round rather than teaching the same card twice.
     if (seen.has(q.key) || seenContent.has(contentId)) continue;
-    if (!browse && catId !== 'placement' && guard < 350 && (recent.has(q.key) || recentContent.has(contentId))) continue;
+    // A scheduled review never overrides recent-question protection, even when
+    // the ordinary random generator has exhausted its retry budget.
+    if (!browse && catId !== 'placement' &&
+        (reviewedQuestion || guard < 350) &&
+        (recent.has(q.key) || recentContent.has(contentId))) continue;
     // Every delivered question carries its permitted grade set. Explicit per-item
     // restrictions may narrow it further; never surface an older-grade card in Pre-K.
     const eligibleGrades = Object.keys(GRADES).filter(grade => {
@@ -354,6 +376,7 @@ function startRound(catId, count, browse = false, atLevel = null) {
     q.grades = Array.isArray(q.grades) ? q.grades.filter(g => eligibleGrades.includes(g)) : eligibleGrades;
     if (!browse && state.grade && !state.showAll && !q.grades.includes(state.grade)) continue;
     seen.add(q.key); seenContent.add(contentId); q.cat = c; q.level = lv; qs.push(q);
+    if (reviewedQuestion === q) { reviewed++; q.reviewScheduled = true; }
   }
   if (!browse && !isTestMode() && catId !== 'placement') {
     state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60);

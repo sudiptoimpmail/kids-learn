@@ -107,6 +107,104 @@ function logObjectiveAttempt(q, cat, first, alone) {
   row.days = [...new Set([...(row.days || []), row.last])].slice(-rule.window);
 }
 
+/* ---------- grade-configured spaced review for authored objectives ----------
+   Only metadata-backed content can be targeted. Do not infer skill tags from
+   generated questions, and never bypass the main round's duplicate/grade guards. */
+const reviewRule = grade => GRADES[grade]?.reviewSchedule ||
+  ContentData.get('curriculum-map', 'policy').reviewSchedule;
+function reviewAgeDays(last, today = dayKey()) {
+  const parse = value => {
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+    const [year, month, date] = value.split('-').map(Number);
+    const t = Date.UTC(year, month - 1, date);
+    return new Date(t).toISOString().slice(0,10) === value ? t : null;
+  };
+  const a = parse(last), b = parse(today);
+  return a === null || b === null ? -1 : Math.floor((b - a) / 86400000);
+}
+function dueObjectiveReviews(cat, today = dayKey(), forcedObjective = null) {
+  const grade = state.grade;
+  if (!GRADES[grade] || !gradeRange(grade, cat)) return [];
+  const rule = reviewRule(grade);
+  const rank = { learning: 0, practicing: 1, new: 2, mastered: 3 };
+  const rows = Object.values(state.stats?.objectives || {}).filter(row =>
+    row && row.grade === grade && row.cat === cat &&
+    typeof row.objective === 'string' && row.objective.trim() &&
+    typeof row.recent === 'string');
+  return rows.map(row => {
+    const status = objectiveState(row).s;
+    const age = reviewAgeDays(row.last, today);
+    const due = age >= rule.intervalDays[status];
+    const manual = forcedObjective !== null && row.objective === forcedObjective;
+    return { objective: row.objective, status, age, due: due || manual,
+      priority: rank[status], manual };
+  }).filter(item => item.due && item.age >= 0 &&
+    (forcedObjective === null || item.manual))
+    .sort((a, b) => a.priority-b.priority || b.age-a.age);
+}
+function authoredReviewQuestions(cat, level, forcedObjective = null, today = dayKey()) {
+  const grade = state.grade;
+  if (!GRADES[grade] || !gradeRange(grade, cat)) return [];
+  const targets = dueObjectiveReviews(cat, today, forcedObjective);
+  if (!targets.length) return [];
+  const shuffled = [], seen = new Set();
+  const add = q => {
+    if (!q || !q.key || !q.curriculumSkill || seen.has(q.key+'|'+(q.qkey||''))) return;
+    seen.add(q.key+'|'+(q.qkey||'')); shuffled.push(q);
+  };
+  // Every eligibility condition is read from the authored route metadata.
+  const routes = ContentData.get('curriculum-map', 'ROUTES');
+  for (const target of targets) {
+    const choices = [];
+    for (const [bank, rows] of Object.entries(routes)) {
+      if (!Array.isArray(rows)) continue;
+      const original = ContentData.get('grade23-extension', bank);
+      for (let i = 0; i < rows.length; i++) {
+        const route = rows[i];
+        if (route.grade !== grade || route.section !== cat ||
+            route.skill !== target.objective || route.level > level) continue;
+        const row = Object.assign([route.level, ...original[i].slice(1)],
+          { curriculumSkill: route.skill });
+        let q;
+        if (bank === 'SCIENCE' || bank === 'GK') {
+          q = mcQuestion(cat, row, level);
+          if (!CLIPS[clipKey(q.say)]) q.say = 'Find the answer!';
+          choices.push(q);
+        } else if (bank === 'STORIES') {
+          for (const pair of row[2]) {
+            const passage = [row[1], [pair], row[0], true, row.curriculumSkill];
+            q = genSentence(level, passage);
+            choices.push(q);
+          }
+        } else if (bank === 'THINKING_ODD') {
+          choices.push(genOdd(level, row));
+        } else if (bank === 'THINKING_SEQUENCES') {
+          choices.push(genSequence(level, row));
+        }
+      }
+    }
+    // Explorer domains are authored objective labels too; grade eligibility is
+    // explicit in the lesson JSON, and the renderer already validates answers.
+    const explorer = cat === 'story' ? 'math' : cat === 'sci' ? 'science' : null;
+    if (explorer && window.ExplorerCurriculum) {
+      const rows = ContentData.get('explorer-'+explorer,'questions');
+      for (const q of rows) {
+        if (!q.grades.includes(grade) || q.level > level ||
+            q.domain !== target.objective) continue;
+        choices.push(window.ExplorerCurriculum.getQuestion(explorer,q.id));
+      }
+    }
+    for (const q of shuffle(choices)) {
+      if (!q?.curriculumSkill) continue;
+      // A grade-routed question belongs to the grade that authored it;
+      // Explorer questions retain their own explicitly declared eligible grades.
+      if (!q.grades) q.grades = [grade];
+      add(q);
+    }
+  }
+  return shuffled;
+}
+
 // answers are saved a moment later (and right away if the app goes to the background)
 function saveSoon() { clearTimeout(saveSoon.t); saveSoon.t = setTimeout(save, 800); }
 addEventListener('visibilitychange', () => { if (document.hidden) { clearTimeout(saveSoon.t); save(); } });
@@ -244,13 +342,15 @@ function renderDashboard() {
   $('#dashNext').innerHTML = candidates.map((id,i)=>{
     const cat=CATEGORIES.find(x=>x.id===id);
     if(!cat)return '';
-    const level=gradeRange(state.grade,id)[0];
     const tip=practiceTips[id]||'Ask your child to explain how they decided.';
-    return `<div class="dash-recommend"><div class="dash-recommend-head"><span class="dash-recommend-no">${i+1}</span><b>${cat.icon} ${cat.title}</b><small>5-minute practice</small></div><p>${tip}</p><button class="big-btn small" data-practice="${id}" aria-label="Practice ${cat.title}">Start practice</button></div>`;
+    const objective = [...objectiveWeak,...objectiveDeveloping].find(row=>row.cat===id);
+    const focus = objective?.objective || '';
+    const purpose = focus ? `<p class="note">Focus: ${esc(objectiveLabel(focus))}</p>` : '';
+    return `<div class="dash-recommend"><div class="dash-recommend-head"><span class="dash-recommend-no">${i+1}</span><b>${cat.icon} ${cat.title}</b><small>5-minute practice</small></div><p>${tip}</p>${purpose}<button class="big-btn small" data-practice="${id}" data-focus="${esc(focus)}" aria-label="Practice ${esc(cat.title)}">Start practice</button></div>`;
   }).join('') + '<p class="note small">Practice is based on recent answers and the selected grade, not a standardized assessment. Talk, read, draw and explore together too.</p>';
   $$('#dashNext [data-practice]').forEach(button=>button.onclick=()=>{
     sfx.tap();
-    startRound(button.dataset.practice,5);
+    startRound(button.dataset.practice,5,false,null,button.dataset.focus || null);
   });
   // subjects: level now and this week's accuracy
   const catWeek = {};
@@ -313,9 +413,20 @@ function questFor() {
   const strong = skills.filter((s) => s.s === 'mastered' && ok(s.cat)).sort((a, b) => b.acc - a.acc)[0];
   addStep(strong ? strong.cat : freshest(QUEST_READING[grade] || QUEST_READING.k), 'warm-up');
   // 2. the skill that needs practice most, or core math
-  const weak = skills.filter((s) => (s.s === 'learning' || s.s === 'practicing') && ok(s.cat) && !used.has(s.cat)).sort((a, b) => a.acc - b.acc)[0];
+  const objectiveWeak = Object.values(state.stats?.objectives || {})
+    .filter(row => row && row.grade === grade && ok(row.cat) && !used.has(row.cat))
+    .map(row => ({ ...row, ...objectiveState(row), lv: levelOf(row.cat) }))
+    .filter(row => (row.s === 'learning' || row.s === 'practicing') &&
+      dueObjectiveReviews(row.cat,today).some(item => item.objective === row.objective))
+    .sort((a,b) => a.acc-b.acc);
+  const weak = objectiveWeak[0] || skills.filter((s) =>
+    (s.s === 'learning' || s.s === 'practicing') && ok(s.cat) && !used.has(s.cat))
+    .sort((a, b) => a.acc - b.acc)[0];
   addStep(weak ? weak.cat : freshest((QUEST_MATH[grade] || QUEST_MATH.k).filter((c) => !used.has(c))), weak ? 'practice' : 'math');
-  if (weak && steps.length && steps[steps.length - 1].cat === weak.cat) steps[steps.length - 1].level = weak.lv;   // practice at the level that was hard
+  if (weak && steps.length && steps[steps.length - 1].cat === weak.cat) {
+    steps[steps.length - 1].level = weak.lv;
+    if (weak.objective) steps[steps.length - 1].objective = weak.objective;
+  }
   // 3. reading (if not already in), 4. math (if not already in)
   addStep(freshest((QUEST_READING[grade] || QUEST_READING.k).filter((c) => !used.has(c))), 'reading');
   if (!steps.some((s) => (QUEST_MATH[grade] || []).includes(s.cat))) addStep(freshest((QUEST_MATH[grade] || QUEST_MATH.k).filter((c) => !used.has(c))), 'math');
@@ -355,7 +466,7 @@ function renderQuest() {
 function startQuestStep(i) {
   const q = questFor(), s = q.steps[i]; if (!s) return;
   if (s.cat === 'trace') { TR.quest = { i, left: 3, date: q.date }; openTrace(); return; }
-  startRound(s.cat, QUEST_LEN, false, s.level || null);
+  startRound(s.cat, QUEST_LEN, false, s.level || null, s.objective || null);
   R.questStep = i;
 }
 function questStepDone(i) {

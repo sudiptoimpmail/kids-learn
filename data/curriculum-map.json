@@ -9,6 +9,7 @@
         "progression": {"minQuestions":5,"promote":{"minFirstTryRate":0.8,"maxMistakeRate":0.2,"rounds":2},"support":{"maxFirstTryRate":0.3,"minMistakeRate":0.6,"rounds":3}},
         "objectiveEvidence": {"window":8,"minCards":5,"minDays":2,"masteryRate":0.8,"practiceRate":0.6},
         "practiceFocus": ["gk","phonics","shape2"],
+        "reviewSchedule": {"maxReviewCards":1,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":6}},
         "g": {
           "trace": "1-1",
           "phonics": "1-2",
@@ -42,6 +43,7 @@
         "progression": {"minQuestions":5,"promote":{"minFirstTryRate":0.8,"maxMistakeRate":0.2,"rounds":2},"support":{"maxFirstTryRate":0.4,"minMistakeRate":0.5,"rounds":3}},
         "objectiveEvidence": {"window":10,"minCards":6,"minDays":2,"masteryRate":0.8,"practiceRate":0.6},
         "practiceFocus": ["phonics","add","sent"],
+        "reviewSchedule": {"maxReviewCards":1,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":7}},
         "g": {
           "trace": "1-1",
           "phonics": "1-3",
@@ -80,6 +82,7 @@
         "progression": {"minQuestions":6,"promote":{"minFirstTryRate":0.8,"maxMistakeRate":0.2,"rounds":2},"support":{"maxFirstTryRate":0.4,"minMistakeRate":0.5,"rounds":2}},
         "objectiveEvidence": {"window":10,"minCards":6,"minDays":2,"masteryRate":0.8,"practiceRate":0.65},
         "practiceFocus": ["sent","add","numsense"],
+        "reviewSchedule": {"maxReviewCards":2,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":8}},
         "g": {
           "trace": "1-1",
           "phonics": "3-5",
@@ -122,6 +125,7 @@
         "progression": {"minQuestions":6,"promote":{"minFirstTryRate":0.85,"maxMistakeRate":0.2,"rounds":2},"support":{"maxFirstTryRate":0.4,"minMistakeRate":0.5,"rounds":2}},
         "objectiveEvidence": {"window":12,"minCards":8,"minDays":2,"masteryRate":0.85,"practiceRate":0.65},
         "practiceFocus": ["sent","numsense","sci"],
+        "reviewSchedule": {"maxReviewCards":2,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":10}},
         "g": {
           "phonics": "4-5",
           "animals": "2-3",
@@ -166,6 +170,7 @@
         "progression": {"minQuestions":7,"promote":{"minFirstTryRate":0.9,"maxMistakeRate":0.1,"rounds":2},"support":{"maxFirstTryRate":0.4,"minMistakeRate":0.5,"rounds":2}},
         "objectiveEvidence": {"window":12,"minCards":8,"minDays":2,"masteryRate":0.85,"practiceRate":0.65},
         "practiceFocus": ["sent","mul","sci"],
+        "reviewSchedule": {"maxReviewCards":2,"intervalDays":{"new":1,"learning":1,"practicing":3,"mastered":12}},
         "g": {
           "animals": "3-3",
           "places": "3-3",
@@ -3035,7 +3040,8 @@
       "offline": true,
       "presentation": {"readingScale": 1.24, "readingLineHeight": 1.52},
       "adaptive": {"minQuestions":6,"promote":{"minFirstTryRate":0.85,"maxMistakeRate":0.2,"rounds":2},"support":{"maxFirstTryRate":0.4,"minMistakeRate":0.5,"rounds":2}},
-      "objectiveEvidence": {"window":12,"minCards":8,"minDays":2,"masteryRate":0.85,"practiceRate":0.65}
+      "objectiveEvidence": {"window":12,"minCards":8,"minDays":2,"masteryRate":0.85,"practiceRate":0.65},
+      "reviewSchedule": {"maxReviewCards":2,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":10}}
     },
     "version": 1
   }

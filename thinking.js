@@ -86,9 +86,9 @@ function genPattern(level) {
 // Each row describes three items with the same property and one outlier.
 // Levels: obvious categories -> habitats/objects -> properties & functions.
 const THINKING_ODD = ContentData.get('thinking','THINKING_ODD');
-function genOdd(level) {
+function genOdd(level, authoredRow = null) {
   const pool = THINKING_ODD.concat(curriculumRows('THINKING_ODD',level)).filter(x=>x[0] <= level);
-  const selected = pick(pool);
+  const selected = authoredRow || pick(pool);
   const [difficulty, similar, different, reason] = selected;
   const chosen = level === 1 ? sample(similar, 2) : similar;
   const choices = [...chosen, different];
@@ -101,11 +101,11 @@ function genOdd(level) {
   return q;
 }
 const THINKING_SEQUENCES = ContentData.get('thinking','THINKING_SEQUENCES');
-function genSequence(level) {
+function genSequence(level, authoredRow = null) {
   const pool = THINKING_SEQUENCES.concat(curriculumRows('THINKING_SEQUENCES',level)).filter(x=>x[0] <= level);
   const exact = pool.filter(row => row[0] === level);
   const review = pool.filter(row => row[0] === level-1);
-  const selected = pick(exact.length && (Math.random() < 0.82 || !review.length) ? exact :
+  const selected = authoredRow || pick(exact.length && (Math.random() < 0.82 || !review.length) ? exact :
     review.length ? review : pool);
   const [difficulty, steps, reason] = selected;
   // Show either the missing middle event or the final event; older children can also

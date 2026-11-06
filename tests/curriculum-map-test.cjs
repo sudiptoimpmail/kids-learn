@@ -49,6 +49,20 @@ const verifyObjectiveEvidence = (rule,label) => {
     rule.practiceRate < rule.masteryRate,label+': invalid practice threshold');
 };
 verifyObjectiveEvidence(map.policy.objectiveEvidence,'fallback');
+// Spaced review is grade-configured, bounded and slower after mastery.
+const verifyReviewSchedule = (rule,label) => {
+  assert.ok(rule && Number.isInteger(rule.maxReviewCards) &&
+    rule.maxReviewCards >= 1 && rule.maxReviewCards <= 4,
+    label+': invalid review-card cap');
+  const intervals=rule.intervalDays;
+  assert.ok(intervals && ['new','learning','practicing','mastered']
+    .every(k => Number.isInteger(intervals[k]) && intervals[k] >= 1 &&
+      intervals[k] <= 90),label+': review intervals must be whole calendar days');
+  assert.ok(intervals.mastered > intervals.practicing &&
+    intervals.practicing >= intervals.learning,
+    label+': mastered objectives should recur less often');
+};
+verifyReviewSchedule(map.policy.reviewSchedule,'fallback');
 const fallbackPresentation = map.policy.presentation;
 assert.ok(fallbackPresentation && fallbackPresentation.readingScale > 1, 'Missing default reading presentation');
 let previousScale = Infinity;
@@ -56,6 +70,7 @@ for(const name of names){
   assert.ok(map.GRADES[name]&&map.PROFILES[name],name+' must have a profile');
   validateProgression(map.GRADES[name].progression,name);
   verifyObjectiveEvidence(map.GRADES[name].objectiveEvidence,name);
+  verifyReviewSchedule(map.GRADES[name].reviewSchedule,name);
   const recommended = map.GRADES[name].practiceFocus;
   assert.ok(Array.isArray(recommended) && recommended.length >= 1 &&
     recommended.length <= 5 && new Set(recommended).size === recommended.length,
