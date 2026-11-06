@@ -8,7 +8,7 @@
     'story-engine.js','words.js','phonics.js','early-words.js','grade1words.js',
     'photos.js','illustrations.js','content.js','content-packs.js',
     'thinking.js','country.js','levels.js','gradefit.js','science.js','grammar.js','numsense.js','math23.js',
-    'grade1.js','language23.js','world23.js','editions.js','explorer-engine.js','app.js','scene-engine.js','games.js','pathmaze.js',
+    'grade1.js','language23.js','world23.js','editions.js','variants.js','explorer-engine.js','app.js','scene-engine.js','games.js','pathmaze.js',
     'radialmaze.js','wordgames.js','trace.js','progress.js','workbook.js','fluent.js'
   ];
   const status = document.getElementById('loadStatus');

@@ -1,6 +1,204 @@
 {
   "schema": 1,
-  "note": "Filled in by a person after doing the check. The release gate stays closed until both entries have verified=true, a name and a date.",
-  "manualMediaReview": { "verified": false, "by": "", "on": "", "scope": "Every enabled landmark photo and anatomy image checked for identity, source, license, attribution and alt text" },
-  "manualDeviceAcceptance": { "verified": false, "by": "", "on": "", "devices": [], "scope": "Physical iPad and iPhone: portrait/landscape, VoiceOver, audio, airplane-mode restart, profile persistence" }
+  "note": "Filled in by a person after doing the check. The release gate stays closed until every entry has verified=true, a name and a date. The two automated gates per grade are proven by the test suite (CI must be green).",
+  "manualMediaReview": {
+    "verified": false,
+    "by": "",
+    "on": "",
+    "scope": "Every enabled landmark photo and anatomy image checked for identity, source, license, attribution and alt text"
+  },
+  "manualDeviceAcceptance": {
+    "verified": false,
+    "by": "",
+    "on": "",
+    "devices": [],
+    "scope": "Physical iPad and iPhone: portrait/landscape, VoiceOver, audio, airplane-mode restart, profile persistence"
+  },
+  "grades": {
+    "prek": {
+      "label": "Pre-K",
+      "automated": {
+        "everySectionAndLevelTested": "tests/coverage-audit.js --check",
+        "answersAndGradeFitVerified": "tests/coverage-audit.js --check + tests/grade-fit-test.js"
+      },
+      "teachingMaterialSufficient": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "ageAppropriateUsability": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "imagesAndAudioReviewed": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "offlineAndAccessibilityOnDevice": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "childOrEducatorAcceptance": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      }
+    },
+    "k": {
+      "label": "Kindergarten",
+      "automated": {
+        "everySectionAndLevelTested": "tests/coverage-audit.js --check",
+        "answersAndGradeFitVerified": "tests/coverage-audit.js --check + tests/grade-fit-test.js"
+      },
+      "teachingMaterialSufficient": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "ageAppropriateUsability": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "imagesAndAudioReviewed": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "offlineAndAccessibilityOnDevice": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "childOrEducatorAcceptance": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      }
+    },
+    "g1": {
+      "label": "1st Grade",
+      "automated": {
+        "everySectionAndLevelTested": "tests/coverage-audit.js --check",
+        "answersAndGradeFitVerified": "tests/coverage-audit.js --check + tests/grade-fit-test.js"
+      },
+      "teachingMaterialSufficient": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "ageAppropriateUsability": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "imagesAndAudioReviewed": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "offlineAndAccessibilityOnDevice": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "childOrEducatorAcceptance": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      }
+    },
+    "g2": {
+      "label": "2nd Grade",
+      "automated": {
+        "everySectionAndLevelTested": "tests/coverage-audit.js --check",
+        "answersAndGradeFitVerified": "tests/coverage-audit.js --check + tests/grade-fit-test.js"
+      },
+      "teachingMaterialSufficient": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "ageAppropriateUsability": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "imagesAndAudioReviewed": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "offlineAndAccessibilityOnDevice": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "childOrEducatorAcceptance": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      }
+    },
+    "g3": {
+      "label": "3rd Grade",
+      "automated": {
+        "everySectionAndLevelTested": "tests/coverage-audit.js --check",
+        "answersAndGradeFitVerified": "tests/coverage-audit.js --check + tests/grade-fit-test.js"
+      },
+      "teachingMaterialSufficient": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "ageAppropriateUsability": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "imagesAndAudioReviewed": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "offlineAndAccessibilityOnDevice": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      },
+      "childOrEducatorAcceptance": {
+        "verified": false,
+        "by": "",
+        "on": "",
+        "notes": ""
+      }
+    }
+  }
 }

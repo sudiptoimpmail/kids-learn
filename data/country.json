@@ -254,6 +254,38 @@
             "🐧 the penguin"
           ],
           [
+            1,
+            "Which big statue is in New York City?",
+            "🗽 the Statue of Liberty",
+            "🗼 a tall tower",
+            "🌉 a long bridge",
+            "🎡 a big wheel"
+          ],
+          [
+            1,
+            "Where does the President of the United States live?",
+            "🏛️ the White House",
+            "🏰 a castle",
+            "⛺ a tent",
+            "🛖 a hut"
+          ],
+          [
+            1,
+            "What is on the flag of the United States?",
+            "⭐ stars and stripes",
+            "🍁 a maple leaf",
+            "☀️ a sun",
+            "🐉 a dragon"
+          ],
+          [
+            1,
+            "Which bird is a symbol of Thanksgiving?",
+            "🦃 the turkey",
+            "🦩 the flamingo",
+            "🦉 the owl",
+            "🐧 the penguin"
+          ],
+          [
             2,
             "What is the capital city of the United States?",
             "Washington, D.C.",

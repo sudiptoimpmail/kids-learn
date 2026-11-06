@@ -28,5 +28,11 @@ assert.equal(evaluate({...all,signoff:{manualMediaReview:done}}).readyForFinalSi
 assert.equal(evaluate({...all,signoff:{manualMediaReview:done,manualDeviceAcceptance:{verified:true,by:'',on:'2026-11-20'}}}).readyForFinalSignoff,false,'a sign-off needs a name');
 assert.equal(evaluate({...all,signoff:{manualMediaReview:done,manualDeviceAcceptance:{verified:true,by:'QA',on:'soon'}}}).readyForFinalSignoff,false,'a sign-off needs a date');
 assert.equal(evaluate({...all,signoff:{manualMediaReview:done,manualDeviceAcceptance:done}}).readyForFinalSignoff,true);
+// a grade with one unsigned human gate keeps the release closed
+const gradeRow=(ok)=>({label:'Pre-K',automated:{a:'x',b:'y'},teachingMaterialSufficient:ok?done:{verified:false},ageAppropriateUsability:done});
+let res=evaluate({...all,signoff:{manualMediaReview:done,manualDeviceAcceptance:done,grades:{prek:gradeRow(false)}}});
+assert.equal(res.readyForFinalSignoff,false); assert.equal(res.grades.prek.gates,'3/4'); assert.deepEqual(res.grades.prek.pending,['teachingMaterialSufficient']);
+res=evaluate({...all,signoff:{manualMediaReview:done,manualDeviceAcceptance:done,grades:{prek:gradeRow(true)}}});
+assert.equal(res.readyForFinalSignoff,true); assert.equal(res.grades.prek.gates,'4/4');
 assert.equal(evaluate({missing:['fuji'],bodyModel:true,signoff:{manualMediaReview:done,manualDeviceAcceptance:done}}).readyForFinalSignoff,false);
 console.log('PASS remaining landmark discovery remains review-only; release gaps accurately reported');
