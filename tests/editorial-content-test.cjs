@@ -20,7 +20,7 @@ const fixture=JSON.parse(fs.readFileSync('tests/editorial-reviewed.json','utf8')
 assert.equal(fixture.schema,1);
 assert.ok(Array.isArray(fixture.reviews)&&fixture.reviews.length>=10);
 
-const normalize=x=>String(x).normalize('NFKC').trim().toLowerCase().replace(/\\s+/g,' ');
+const normalize=x=>String(x).normalize('NFKC').trim().toLowerCase().replace(/\s+/g,' ');
 const banks={
   science:science.SCIENCE.map(row=>({question:row[1],choices:row.slice(2),passage:''})),
   'world23-science':world.SCIENCE23.map(row=>({question:row[1],choices:row.slice(2),passage:''})),
