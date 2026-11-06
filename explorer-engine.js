@@ -9,12 +9,17 @@
     c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const validAsset = path => typeof path === 'string' &&
     /^assets\/(?:illustrations\/[a-z0-9_-]+\.svg|photos\/[a-z0-9_-]+\.jpg)$/.test(path);
-  const check = (rows, name, allowed) => {
+  const check = (rows, name, section) => {
     const ids = new Set();
     if (!Array.isArray(rows) || rows.length < 20) throw Error('Explorer bank is too small: ' + name);
     for (const q of rows) {
       if (!q || !/^[a-z0-9-]{6,80}$/.test(q.id) || ids.has(q.id) ||
-          !allowed.includes(q.level) || !q.domain || !q.context || !q.prompt ||
+          !Array.isArray(q.grades) || !q.grades.length ||
+          new Set(q.grades).size !== q.grades.length ||
+          !q.grades.every(grade => {
+            const range = gradeRange(grade, section);
+            return range && q.level >= range[0] && q.level <= range[1];
+          }) || !q.domain || !q.context || !q.prompt ||
           !q.explanation || !Array.isArray(q.choices) || q.choices.length < 3 ||
           q.choices.length > 5 || !q.choices.includes(q.answer) ||
           new Set(q.choices.map(x => String(x).trim().toLowerCase())).size !== q.choices.length ||
@@ -25,8 +30,8 @@
     }
     return rows;
   };
-  check(math, 'math', [4,5]);
-  check(science, 'science', [3,4]);
+  check(math, 'math', 'story');
+  check(science, 'science', 'sci');
   const draw = (bank, row) => {
     const image = row.asset
       ? `<img class="explorer-asset" src="${esc(row.asset)}" alt="" loading="lazy" decoding="async">`
@@ -48,9 +53,14 @@
       explanation:row.explanation, explorer:true
     };
   };
-  const choose = (bank, level) => {
-    const exact = bank.filter(q => q.level === level);
-    const previous = bank.filter(q => q.level === level - 1);
+  // Eligibility belongs to each authored question's curriculum metadata,
+  // not a level-to-grade assumption in the JavaScript generator.
+  const choose = (bank, level, section) => {
+    const grade = state.grade;
+    if (!grade || !gradeRange(grade, section)) return null;
+    const eligible = bank.filter(q => q.grades.includes(grade));
+    const exact = eligible.filter(q => q.level === level);
+    const previous = eligible.filter(q => q.level === level - 1);
     const pool = exact.length && (Math.random() < .88 || !previous.length)
       ? exact : previous.length ? previous : exact;
     return pool.length ? pick(pool) : null;
@@ -60,12 +70,12 @@
   if (!wordProblems || !scienceGames) throw Error('Explorer integration categories are missing');
   const originalMath = wordProblems.gen;
   const originalScience = scienceGames.gen;
-  wordProblems.gen = level => level >= 4 && Math.random() < .46
-    ? draw('math', choose(math, level) || pick(math.filter(q=>q.level===5)))
-    : originalMath(level);
-  scienceGames.gen = level => level >= 3 && Math.random() < .38
-    ? draw('science', choose(science, level) || pick(science.filter(q=>q.level===4)))
-    : originalScience(level);
+  const withExplorer = (original, bank, kind, section, level, frequency) => {
+    const candidate = choose(bank, level, section);
+    return candidate && Math.random() < frequency ? draw(kind, candidate) : original(level);
+  };
+  wordProblems.gen = level => withExplorer(originalMath, math, 'math', 'story', level, .46);
+  scienceGames.gen = level => withExplorer(originalScience, science, 'science', 'sci', level, .38);
   window.ExplorerCurriculum = Object.freeze({
     summary:()=>({
       math:math.length, science:science.length,
