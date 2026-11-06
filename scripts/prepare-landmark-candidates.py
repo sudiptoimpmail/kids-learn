@@ -29,7 +29,8 @@ def main():
         if len(data) > 12_000_000:
             raise ValueError(f'{landmark_id}: source file exceeds safety limit')
         with Image.open(io.BytesIO(data)) as source:
-            if source.format not in ('JPEG', 'PNG'):
+            if source.format not in ('JPEG', 'PNG', 'WEBP'):
+                # Wikimedia may negotiate a WebP thumbnail for a JPEG URL.
                 raise ValueError(f'{landmark_id}: unexpected image format')
             image = ImageOps.exif_transpose(source).convert('RGB')
             image.thumbnail((1200, 1200), Image.Resampling.LANCZOS)
