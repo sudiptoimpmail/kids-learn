@@ -68,11 +68,45 @@ function logAttempt(q, cat, level) {
   // mastery uses only answers done alone; hinted answers count as "with help"
   sk.n++; if (alone) sk.ok++; sk.recent = (sk.recent + (alone ? '1' : first ? 'h' : '0')).slice(-12); sk.last = dayKey();
   sk.days = [...new Set([...(sk.days || []), dayKey()])].slice(-5);   // on which days it was practiced
+  logObjectiveAttempt(q, cat, first, alone);
   // keep 120 days of daily numbers
   const days = Object.keys(state.stats.days).sort(); while (days.length > 120) delete state.stats.days[days.shift()];
   if (d.q >= DAILY_GOAL() && d.q - n < DAILY_GOAL()) dailyGoalReached();
   saveSoon();
 }
+/* ---------- authored learning objectives (per child, grade and section) ----------
+   Only questions with explicit metadata contribute to objective mastery.
+   The ordinary per-game/level stats above remain available for all generators. */
+const OBJECTIVE_EVIDENCE_FALLBACK = ContentData.get('curriculum-map', 'policy').objectiveEvidence;
+const objectiveRule = grade => (GRADES[grade]?.objectiveEvidence || OBJECTIVE_EVIDENCE_FALLBACK);
+const objectiveKey = (grade, category, objective) => JSON.stringify([grade, category, objective]);
+function objectiveState(record, rule = objectiveRule(record.grade)) {
+  const recent = typeof record.recent === 'string' ? record.recent.slice(-rule.window) : '';
+  const n = recent.length;
+  const acc = n ? [...recent].filter(x => x === '1').length / n : 0;
+  if (n < rule.minCards) return { s: 'new', acc, n };
+  if (acc >= rule.masteryRate && (record.days || []).length >= rule.minDays)
+    return { s: 'mastered', acc, n };
+  return { s: acc < rule.practiceRate ? 'learning' : 'practicing', acc, n };
+}
+function logObjectiveAttempt(q, cat, first, alone) {
+  const grade = state.grade, objective = q.curriculumSkill;
+  if (!GRADES[grade] || !gradeRange(grade, cat) ||
+      typeof objective !== 'string' || !objective.trim() || objective.length > 100 ||
+      (Array.isArray(q.grades) && !q.grades.includes(grade))) return;
+  state.stats.objectives = state.stats.objectives || {};
+  const label = objective.trim();
+  const key = objectiveKey(grade, cat, label);
+  const row = state.stats.objectives[key] || (state.stats.objectives[key] = {
+    grade, cat, objective: label, n: 0, ok: 0, recent: '', last: '', days: []
+  });
+  row.n++; if (alone) row.ok++;
+  const rule = objectiveRule(grade);
+  row.recent = (row.recent + (alone ? '1' : first ? 'h' : '0')).slice(-rule.window);
+  row.last = dayKey();
+  row.days = [...new Set([...(row.days || []), row.last])].slice(-rule.window);
+}
+
 // answers are saved a moment later (and right away if the app goes to the background)
 function saveSoon() { clearTimeout(saveSoon.t); saveSoon.t = setTimeout(save, 800); }
 addEventListener('visibilitychange', () => { if (document.hidden) { clearTimeout(saveSoon.t); save(); } });
