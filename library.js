@@ -115,8 +115,9 @@ async function readPage() {
     const file = CLIPS[clipKey(sents[si])];
     const spans = $$(`#libBody .w[data-s="${si}"]`);
     if (!file || !state.voice) { spans.forEach((w) => w.classList.add('read')); continue; }
+    const rate = typeof familyStoryRate === 'function' ? familyStoryRate() : 1;
     let dur = 2;
-    try { dur = (await getBuf(file)).duration; } catch {}
+    try { dur = (await getBuf(file)).duration / rate; } catch {}
     if (my !== sayToken) return;
     // time for each word ~ its letters (+ a beat for punctuation), spread over the recording
     const weight = spans.map((w) => w.textContent.replace(/[^A-Za-z]/g, '').length + 1.5 + (/[,.!?]$/.test(w.textContent) ? 2 : 0));
@@ -130,7 +131,7 @@ async function readPage() {
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    await playClip(file, my);
+    await playClip(file, my, rate);
     cancelAnimationFrame(raf);
     spans.forEach((w) => { w.classList.remove('on'); w.classList.add('read'); });
     // Let children absorb each line; suspense and a change of speaker get a longer beat.

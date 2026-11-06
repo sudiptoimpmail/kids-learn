@@ -69,6 +69,7 @@ function logAttempt(q, cat, level) {
   sk.n++; if (alone) sk.ok++; sk.recent = (sk.recent + (alone ? '1' : first ? 'h' : '0')).slice(-12); sk.last = dayKey();
   sk.days = [...new Set([...(sk.days || []), dayKey()])].slice(-5);   // on which days it was practiced
   logObjectiveAttempt(q, cat, first, alone);
+  if(typeof logPortfolioWord === 'function') logPortfolioWord(q,alone);
   if(typeof logGradeEvidence === 'function') logGradeEvidence(q,cat,level,alone);
   // keep 120 days of daily numbers
   const days = Object.keys(state.stats.days).sort(); while (days.length > 120) delete state.stats.days[days.shift()];

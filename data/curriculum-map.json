@@ -4658,7 +4658,100 @@
           "category": "gk",
           "level": 4
         }
-      }
+      },
+      "family": {
+        "storyRates": [
+          {
+            "value": 1,
+            "label": "Gentle"
+          },
+          {
+            "value": 0.9,
+            "label": "Slower"
+          },
+          {
+            "value": 0.8,
+            "label": "Extra slow"
+          }
+        ],
+        "sessionMinutes": [
+          0,
+          10,
+          15,
+          20,
+          30
+        ],
+        "breakMinutes": 10,
+        "limitedScreens": [
+          "play",
+          "game",
+          "playzone",
+          "trace",
+          "library",
+          "learn"
+        ],
+        "portfolioLimit": 100
+      },
+      "collections": [
+        {
+          "id": "animals",
+          "title": "Animal friends",
+          "items": [
+            "🦄",
+            "🐶",
+            "🐱",
+            "🐼",
+            "🦊",
+            "🐯",
+            "🐸",
+            "🐵",
+            "🦁",
+            "🐨",
+            "🐰",
+            "🐻",
+            "🐷",
+            "🐮"
+          ]
+        },
+        {
+          "id": "nature",
+          "title": "Nature explorers",
+          "items": [
+            "🐙",
+            "🦋",
+            "🐬",
+            "🦖",
+            "🐳",
+            "🦩",
+            "🦉",
+            "🐢",
+            "🐝",
+            "🐞",
+            "🐧",
+            "🦕"
+          ]
+        },
+        {
+          "id": "treasures",
+          "title": "Happy treasures",
+          "items": [
+            "🌈",
+            "🚀",
+            "🍩",
+            "🍓",
+            "🍦",
+            "🎈",
+            "🌻",
+            "🌟",
+            "🏆",
+            "👑",
+            "🎠",
+            "🧸",
+            "🪅",
+            "🍉"
+          ]
+        }
+      ]
     }
   }
 }
