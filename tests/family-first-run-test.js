@@ -60,8 +60,19 @@ const { chromium } = require('playwright');
       throw new Error("Add sibling button remained hidden: " + JSON.stringify(whoDebug) + " " + err.message);
     });
     await page.locator('#whoGrid [data-id="p1"]').click();
+    await page.locator('#pinSheet').waitFor({state:'visible'});
+    const enterPin = async () => {
+      for (const k of '1234') await page.locator(`#pinPad [data-k="${k}"]`).click();
+      await page.waitForTimeout(220);
+    };
+    await enterPin(); await enterPin();
     assert.deepEqual(await page.evaluate(() => ({name:state.name,grade:state.grade,stars:state.stars})),
       {name:'Ava',grade:'k',stars:0});
+    await page.evaluate(() => { openWho(); });
+    await page.locator('#whoGrid [data-id="p2"]').click();
+    await page.locator('#pinSheet').waitFor({state:'visible'});
+    assert.equal(await page.evaluate(() => state.name), 'Ava', 'previous unlock must not authorize another switch');
+    await page.locator('#pinBack').click();
     await page.waitForTimeout(900);
     assert.equal(navigations.length, initialNavigations, 'Play triggered an unexpected navigation or reload');
     await page.reload(); await page.waitForFunction(() => !!window.KidsLearnReady);
@@ -69,6 +80,10 @@ const { chromium } = require('playwright');
     assert.equal(await page.locator('#welcomeSheet').count(), 0, 'valid saved child must not be onboarded again');
     assert.deepEqual(await page.evaluate(() => Store.kids().map(k => ({name:k.name,grade:k.grade}))),
       [{name:'Ava',grade:'k'}, {name:'Leo',grade:'prek'}]);
+    await page.evaluate(() => openWho());
+    await page.locator('#whoGrid [data-id="p2"]').click();
+    await page.locator('#pinSheet').waitFor({state:'visible'});
+    assert.equal(await page.evaluate(() => state.name), 'Ava', 'reload must not authorize a switch');
     assert.deepEqual(errors, []);
     // Service-worker updates are chosen by a parent; never auto-skipWaiting or auto-reload on entry.
     const src = fs.readFileSync('app.js','utf8');

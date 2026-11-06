@@ -829,7 +829,7 @@ body.test-mode .prog-row { flex-wrap: wrap; }
 .tr-tabs { display: flex; gap: 6px; background: #fff; padding: 4px; border-radius: 99px; box-shadow: 0 3px 0 #0001; }
 .tr-tab { border-radius: 99px; padding: 6px 14px; font-weight: 900; font-size: 18px; color: var(--soft); background: transparent; }
 .tr-tab.on { background: #f76707; color: #fff; }
-.tr-strip { display: flex; gap: 6px; overflow-x: auto; padding: 8px 4px; scrollbar-width: none; }
+.tr-strip { min-width: 0; max-width: 100%; touch-action: pan-x; -webkit-overflow-scrolling: touch; display: flex; gap: 6px; overflow-x: auto; padding: 8px 4px; scrollbar-width: none; }
 .tr-strip::-webkit-scrollbar { display: none; }
 .tr-chip { flex: 0 0 auto; width: 40px; height: 40px; border-radius: 12px; background: #fff; font-weight: 900; font-size: 18px; box-shadow: 0 3px 0 #0001; }
 .tr-chip.done { background: #d3f9d8; } .tr-chip.done::after { content: '⭐'; font-size: 10px; position: relative; top: -14px; }
@@ -1591,3 +1591,9 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .bld-fr-choice { min-width: 46px; min-height: 46px; padding: 7px 12px; border-radius: 12px; border: 2px solid #4b2fc2; background: #fff; color: #302157; font: inherit; font-weight: 800; cursor: pointer; }
 .bld-fr-choice.on { background: #ffa94d; color: #241b11; }
 .bld-fr-choice:focus-visible { outline: 3px solid #fc9f31; outline-offset: 3px; }
+/* Keep tracing tabs inside a phone header; the alphabet strip scrolls independently. */
+#trace .play-top { flex-wrap: wrap; }
+#trace .tr-tabs { min-width: 0; max-width: 100%; flex-wrap: wrap; justify-content: center; }
+@media (max-width: 549px) {
+  #trace .tr-tabs { order: 3; flex-basis: 100%; border-radius: 18px; }
+}

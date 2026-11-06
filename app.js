@@ -277,6 +277,7 @@ function renderHome() {
   $('#hello').textContent = state.name ? `Hi, ${state.name}!` : 'Hi there!' + ' ' + ((THEMES[state.theme] || THEMES.rainbow).mascot);
   $('#starCount').textContent = state.stars;
   $('#stickerCount').textContent = state.stickers.length;
+  $('#stickerLabel').textContent = state.stickers.length === 1 ? 'sticker' : 'stickers';
   $('#gradeLabel').textContent = state.grade ? gradeName(state.grade) : 'Pick grade';
   $('#gradeChip').classList.toggle('pulse', !state.grade);
   if (typeof renderPlayBanner === 'function') renderPlayBanner();
@@ -1226,8 +1227,8 @@ function openSettings() {
   $('#countrySel').value = countryCode();
   fillRegions();
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !state.hideClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
-  $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen && c.id !== 'placement').map((c) =>
-    `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
+  $('#levels').innerHTML = visibleGames().filter((c) => c.gen && c.id !== 'placement').map((c) =>
+    `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option value="${l}" ${levelOf(c.id) === l ? 'selected' : ''}>${((r) => r && l >= r[0] && l <= r[1] ? `Step ${l - r[0] + 1} of ${r[1] - r[0] + 1}` : `Library level ${l}`)(state.grade && gradeRange(state.grade, c.id))}</option>`).join('')}</select></label>`).join('');
   renderTestBrowser();
   // This section is accessible only after the parent PIN. No child-facing paywall.
   ContentPacks.load().then(() => {
@@ -1389,7 +1390,8 @@ function openWho() {
       askPin(() => { openSettings(); $('#kidChips [data-add]')?.click(); });
       return;
     }
-    switchKid(b.dataset.id); $('#whoSheet').hidden = true; say("Let's play!");
+    $('#whoSheet').hidden = true;
+    if (b.dataset.id !== Store.activeId()) askPin(() => { switchKid(b.dataset.id); say("Let's play!"); });
   }));
   $('#whoSheet').hidden = false;
 }
@@ -1439,8 +1441,11 @@ if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('mess
 });
 $('#testVoiceBtn').onclick = async () => {
   const out = $('#voiceStatus');
+  if (!state.voice) { out.textContent = 'Turn on voice first, then test again.'; return; }
   out.textContent = 'Playing…';
-  await say('Excellent! Awesome job!');
+  lastAudio.path = ''; lastAudio.err = '';
+  unlockAudio();
+  await Promise.race([say('Excellent!'), sleep(8000)]);
   out.textContent = `Recorded clips: ${Object.keys(CLIPS).length} · audio: ${actx ? actx.state : 'off'} · played via: ${lastAudio.path || '—'}${lastAudio.err ? ' · ' + lastAudio.err : ''}`;
 };
 $('#resetBtn').onclick = () => {
