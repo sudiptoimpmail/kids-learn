@@ -14,7 +14,8 @@ const {chromium}=require('playwright');
     const failures=[];
     for(const id of ['liberty','eiffel']){
       const main=document.createElement('div');main.innerHTML=landmarkArt(id);
-      if(main.querySelectorAll('.lm-online-preview').length!==1)failures.push('Missing main preview '+id);
+      if(main.querySelectorAll('.lm-online-preview').length!==0)failures.push('Offline photo must not show online preview '+id);
+      if(!main.querySelector('img.lm-art[src="assets/landmark-photos/'+id+'.webp"]'))failures.push('Missing bundled photo '+id);
       const option=document.createElement('button');option.innerHTML=landmarkArt(id,'small');
       if(option.querySelector('.lm-online-preview'))failures.push('Nested preview button in answer '+id);
       if(option.querySelectorAll('button').length)failures.push('Nested interactive button '+id);
