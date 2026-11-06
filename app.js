@@ -1300,7 +1300,7 @@ function collectSettings() {
   state.showAll = $('#showAll').checked;
   state.hideClock = !$('#optClock').checked;
   state.roundsPerPlay = +$('#roundsPerPlay').value; state.playMinutes = +$('#playMinutes').value; state.playAlways = $('#playAlways').checked; state.optAnatomy = $('#optAnatomy').checked; state.playMode = $('#playMode').value; state.playPerHour = +$('#playPerHour').value;
-  $('#levels select').forEach((s) => {
+  $$('#levels select').forEach((s) => {
     const level = +s.value, id = s.dataset.id;
     if (state.levels[id] !== level && state.progressionStreaks)
       delete state.progressionStreaks[id];
