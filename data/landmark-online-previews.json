@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "namespace": "landmark-online-previews",
+  "datasets": {
+    "records": {
+      "liberty": {
+        "file": "Statue of Liberty front shot.JPG",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Statue_of_Liberty_front_shot.JPG",
+        "creator": "L E X commons",
+        "license": "CC0",
+        "mode": "online-only"
+      },
+      "eiffel": {
+        "file": "Eiffel tower in the morning.jpg",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Eiffel_tower_in_the_morning.jpg",
+        "creator": "Phivospharconides",
+        "license": "CC0",
+        "mode": "online-only"
+      }
+    }
+  }
+}
