@@ -1,0 +1,163 @@
+{
+  "id": "three-little-pigs",
+  "title": "The Three Little Pigs",
+  "retold": "An original gentle retelling of the traditional public-domain tale for ages 4 to 6. All three pigs stay safe; the wolf gives up and runs away.",
+  "grades": [
+    "prek",
+    "k"
+  ],
+  "cover": "cover.webp",
+  "pages": [
+    {
+      "art": "p01.webp",
+      "text": [
+        "Once upon a time, three little pigs set off to build their own homes.",
+        "\"Let us build strong houses!\" said the third little pig."
+      ],
+      "scene": "sunny"
+    },
+    {
+      "art": "p02.webp",
+      "text": [
+        "The first little pig built a house of straw.",
+        "\"All done! Now I can play!\" he cheered."
+      ],
+      "scene": "sunny"
+    },
+    {
+      "art": "p03.webp",
+      "text": [
+        "The second little pig built a house of sticks.",
+        "Tap, tap, tap! Soon his house was ready."
+      ],
+      "scene": "sunny"
+    },
+    {
+      "art": "p04.webp",
+      "text": [
+        "The third little pig worked hard with bricks.",
+        "He built strong walls and a sturdy door."
+      ],
+      "scene": "sunny"
+    },
+    {
+      "art": "p05.webp",
+      "text": [
+        "Then a hungry wolf came to the straw house.",
+        "\"Little pig, little pig, let me come in!\" he called.",
+        "\"Not by the hair on my chinny chin chin!\" cried the pig."
+      ],
+      "scene": "suspense"
+    },
+    {
+      "art": "p06.webp",
+      "text": [
+        "\"Then I will huff, and I will puff, and I will blow your house down!\" growled the wolf.",
+        "Whoosh! The straw flew everywhere!",
+        "The first pig ran to the house of sticks."
+      ],
+      "scene": "suspense"
+    },
+    {
+      "art": "p07.webp",
+      "text": [
+        "The wolf followed them to the stick house.",
+        "He huffed and puffed. Crack! Down fell the sticks!",
+        "\"Run!\" cried the pigs. They raced to the brick house."
+      ],
+      "scene": "suspense"
+    },
+    {
+      "art": "p08.webp",
+      "text": [
+        "The third pig opened the door.",
+        "\"Quick! Come inside!\" he cried.",
+        "All three pigs shut the sturdy door together."
+      ],
+      "scene": "suspense"
+    },
+    {
+      "art": "p09.webp",
+      "text": [
+        "The wolf huffed. He puffed. He puffed again!",
+        "But the brick house did not move.",
+        "\"Our strong house will keep us safe!\" said the third pig."
+      ],
+      "scene": "suspense"
+    },
+    {
+      "art": "p10.webp",
+      "text": [
+        "The tired wolf gave up and ran away.",
+        "The three little pigs cheered and hugged.",
+        "\"Next time, we will build carefully and help each other!\" they said."
+      ],
+      "scene": "safe"
+    },
+    {
+      "art": "p11.webp",
+      "text": [
+        "The pigs shared a warm supper in their strong brick house.",
+        "They were safe, happy, and together.",
+        "The End."
+      ],
+      "scene": "safe"
+    }
+  ],
+  "questions": [
+    {
+      "ask": "Which house stayed standing?",
+      "options": [
+        [
+          "bricks",
+          "q-bricks.webp"
+        ],
+        [
+          "straw",
+          "q-straw.webp"
+        ],
+        [
+          "sticks",
+          "q-sticks.webp"
+        ]
+      ],
+      "answer": "bricks"
+    },
+    {
+      "ask": "Who huffed and puffed?",
+      "options": [
+        [
+          "wolf",
+          "q-wolf.webp"
+        ],
+        [
+          "pig",
+          "q-pig.webp"
+        ],
+        [
+          "bird",
+          "q-bird.webp"
+        ]
+      ],
+      "answer": "wolf"
+    },
+    {
+      "ask": "How many little pigs were there?",
+      "options": [
+        [
+          "3",
+          "q-three.webp"
+        ],
+        [
+          "2",
+          "q-two.webp"
+        ],
+        [
+          "1",
+          "q-one.webp"
+        ]
+      ],
+      "answer": "3"
+    }
+  ]
+}

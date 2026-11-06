@@ -6,7 +6,7 @@
    - At the end, three picture questions (no reading needed), then "Read it again?".
    Books live in library/<id>/book.json with their pictures beside them.
    ========================================================= */
-const LIBRARY = ['red-riding-hood'];
+const LIBRARY = ['red-riding-hood', 'three-little-pigs'];
 const LB = { book: null, page: -1, reading: false, auto: true, t0: 0, q: 0, readTimer: 0 };
 // Gentle non-musical sounds add suspense without replacing the recorded story.
 const LIB_SCENE_SYMBOLS = { wolf: '🌲', hurry: '🐾', knock: '🚪', disguise: '🌙', suspense: '👀', brave: '❤️', rescue: '☀️', safe: '🏡' };
