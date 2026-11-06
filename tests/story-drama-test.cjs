@@ -9,7 +9,8 @@ assert.ok(book.pages.filter(p=>p.sound).length>=7,'suspense beats missing');
 assert.ok(book.pages.every(p=>p.scene),'page moods not authored');
 assert.ok(book.pages.some(p=>p.scene==='suspense'));
 assert.ok(book.pages.some(p=>p.scene==='safe'));
-assert.match(book.pages[8].text.join(' '),/NOT Grandma|HELP!/);
+assert.ok(book.pages[8].text.includes('"You are not my Grandma!" cried a scared Little Red.'));
+assert.ok(book.pages[8].text.includes('"Help!" she screamed.'));
 assert.match(book.pages[10].text.join(' '),/shared bread and apples/);
 assert.ok(!/was eaten|ate Grandma|eaten by/i.test(book.pages.map(p=>p.text.join(' ')).join(' ')),'ending must stay gentle');
 for (const [page,p] of book.pages.entries())

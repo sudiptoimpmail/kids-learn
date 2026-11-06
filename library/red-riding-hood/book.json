@@ -1,7 +1,7 @@
 {
   "id": "red-riding-hood",
   "title": "Little Red Riding Hood",
-  "retold": "A gentle retelling of the traditional tale (Perrault, 1697; Brothers Grimm, 1812) for children aged 4 to 6. Nobody is eaten: Grandma hides, and the woodcutter chases the wolf away. This edition uses gentle suspense, expressive page pacing and quiet scene effects without changing the recorded words.",
+  "retold": "A gentle retelling of the traditional tale (Perrault, 1697; Brothers Grimm, 1812) for children aged 4 to 6. Nobody is eaten: Grandma hides, and the woodcutter chases the wolf away. This edition uses gentle suspense, expressive page pacing and quiet scene effects with matching recorded narration.",
   "grades": [
     "prek",
     "k"
@@ -82,8 +82,8 @@
       "art": "p09.webp",
       "text": [
         "\"Grandma, what big teeth you have!\"",
-        "\"That is NOT Grandma!\" said Little Red.",
-        "\"HELP!\""
+        "\"You are not my Grandma!\" cried a scared Little Red.",
+        "\"Help!\" she screamed."
       ],
       "scene": "brave",
       "sound": "heartbeat"
