@@ -1628,3 +1628,9 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
   .dash-subjects th { font-size: 11px; }
   .dash-subjects td { padding: 8px 3px; }
 }
+
+/* Large accessible targets supplement narrow SVG pie wedges in fraction-building practice. */
+.bld-fr-choices { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 8px 0 12px; }
+.bld-fr-choice { min-width: 46px; min-height: 46px; padding: 7px 12px; border-radius: 12px; border: 2px solid #4b2fc2; background: #fff; color: #302157; font: inherit; font-weight: 800; cursor: pointer; }
+.bld-fr-choice.on { background: #ffa94d; color: #241b11; }
+.bld-fr-choice:focus-visible { outline: 3px solid #fc9f31; outline-offset: 3px; }
