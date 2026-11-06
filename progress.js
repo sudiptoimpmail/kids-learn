@@ -122,6 +122,35 @@ function reviewAgeDays(last, today = dayKey()) {
   const a = parse(last), b = parse(today);
   return a === null || b === null ? -1 : Math.floor((b - a) / 86400000);
 }
+// Authored coverage is the set of grade-eligible objectives actually present
+// in offline question banks, not an invented checklist of generic games.
+function authoredObjectiveCatalog(grade) {
+  if (!GRADES[grade]) return [];
+  const found = new Map();
+  const add = (cat, objective, level) => {
+    if (!gradeRange(grade,cat) || typeof objective !== 'string' ||
+        !objective.trim() || !Number.isInteger(level)) return;
+    const key = objectiveKey(grade,cat,objective);
+    const prior = found.get(key);
+    if (prior) prior.level = Math.min(prior.level,level);
+    else found.set(key,{key,grade,cat,objective,level});
+  };
+  for (const routes of Object.values(ContentData.get('curriculum-map','ROUTES'))) {
+    if (!Array.isArray(routes)) continue;
+    for (const route of routes) {
+      if (route.grade===grade) add(route.section,route.skill,route.level);
+    }
+  }
+  for (const [book,cat] of [['explorer-math','story'],['explorer-science','sci']]) {
+    const rows=ContentData.get(book,'questions');
+    for (const item of rows) {
+      if (Array.isArray(item.grades) && item.grades.includes(grade))
+        add(cat,item.domain,item.level);
+    }
+  }
+  return [...found.values()];
+}
+
 function dueObjectiveReviews(cat, today = dayKey(), forcedObjective = null) {
   const grade = state.grade;
   if (!GRADES[grade] || !gradeRange(grade, cat)) return [];
@@ -131,16 +160,24 @@ function dueObjectiveReviews(cat, today = dayKey(), forcedObjective = null) {
     row && row.grade === grade && row.cat === cat &&
     typeof row.objective === 'string' && row.objective.trim() &&
     typeof row.recent === 'string');
-  return rows.map(row => {
+  const due = rows.map(row => {
     const status = objectiveState(row).s;
     const age = reviewAgeDays(row.last, today);
-    const due = age >= rule.intervalDays[status];
+    const scheduled = age >= rule.intervalDays[status];
     const manual = forcedObjective !== null && row.objective === forcedObjective;
-    return { objective: row.objective, status, age, due: due || manual,
+    return { objective: row.objective, status, age, due: scheduled || manual,
       priority: rank[status], manual };
   }).filter(item => item.due && item.age >= 0 &&
-    (forcedObjective === null || item.manual))
-    .sort((a, b) => a.priority-b.priority || b.age-a.age);
+    (forcedObjective === null || item.manual));
+  // A parent's explicit request may also introduce a previously unseen,
+  // *authored* objective. Never create a synthetic performance record.
+  if (forcedObjective !== null && !rows.some(row=>row.objective===forcedObjective) &&
+      authoredObjectiveCatalog(grade).some(row=>row.cat===cat &&
+        row.objective===forcedObjective)) {
+    due.push({ objective:forcedObjective,status:'new',age:0,due:true,
+      priority:rank.new,manual:true });
+  }
+  return due.sort((a,b)=>a.priority-b.priority || b.age-a.age);
 }
 function authoredReviewQuestions(cat, level, forcedObjective = null, today = dayKey()) {
   const grade = state.grade;
