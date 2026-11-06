@@ -6,6 +6,8 @@ import json
 import os
 from pathlib import Path
 from urllib.parse import quote
+from urllib.error import HTTPError
+import time
 from urllib.request import Request, urlopen
 from PIL import Image, ImageOps
 
@@ -20,19 +22,25 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     entries = []
     for landmark_id, (filename, page, creator) in SOURCES.items():
-        url = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + quote(filename.replace(' ', '_'))
+        url = ('https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Statue_of_Liberty_front_shot.JPG/960px-Statue_of_Liberty_front_shot.JPG' if landmark_id == 'liberty' else
+               'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Eiffel_tower_in_the_morning.jpg/960px-Eiffel_tower_in_the_morning.jpg')
         request = Request(url, headers={'User-Agent': 'KidsLearnEducationalMedia/1.0 (GitHub Actions review preparation)', 'Accept': 'image/jpeg,image/png,image/webp'})
-        with urlopen(request, timeout=45) as response:
-            if response.status != 200 or not response.headers.get('Content-Type', '').lower().startswith('image/'):
-                raise ValueError(f'{landmark_id}: unexpected image response')
-            data = response.read(12_000_001)
+        for attempt in range(3):
+            try:
+                with urlopen(request, timeout=45) as response:
+                    if response.status != 200 or not response.headers.get('Content-Type', '').lower().startswith('image/'):
+                        raise ValueError(f'{landmark_id}: unexpected image response')
+                    data = response.read(12_000_001)
+                break
+            except HTTPError as exc:
+                if exc.code not in (429, 503) or attempt == 2:
+                    raise
+                time.sleep((attempt + 1) * 20)
         if len(data) > 12_000_000:
             raise ValueError(f'{landmark_id}: source file exceeds safety limit')
         with Image.open(io.BytesIO(data)) as source:
-            if source.format not in ('JPEG', 'PNG', 'WEBP', 'AVIF'):
-                print(f'{landmark_id}: received format {source.format!r}, {len(data)} bytes, URL {response.url}', flush=True)
-                # Wikimedia may negotiate a WebP thumbnail for a JPEG URL.
-                raise ValueError(f'{landmark_id}: unexpected image format')
+            if source.width < 480 or source.height < 320:
+                raise ValueError(f'{landmark_id}: source image too small')
             image = ImageOps.exif_transpose(source).convert('RGB')
             image.thumbnail((1200, 1200), Image.Resampling.LANCZOS)
             if image.width < 480 or image.height < 320:
