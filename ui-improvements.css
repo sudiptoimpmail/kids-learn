@@ -246,3 +246,6 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .organ-explorer-fact{display:block;min-height:3em;margin:.8rem 0;font-weight:700;line-height:1.45}
 .organ-fig .org.explore-hl ellipse{fill:#ffe66a;fill-opacity:.6;stroke:#c65b12;stroke-width:3}
 @media(min-width:550px){.organ-explorer-choices{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+.lm-photo-credit{display:block;max-width:100%;font-size:.78rem;line-height:1.35;text-align:center;overflow-wrap:anywhere}
+.lm-photo-credit a{color:#174d7b;text-decoration:underline}
