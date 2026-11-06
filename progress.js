@@ -201,7 +201,8 @@ function renderDashboard() {
   const objectiveLabel = value => String(value).replaceAll('-', ' ').replace(/^./, x => x.toUpperCase());
   const objectiveItem = row => {
     const category = CATEGORIES.find(c => c.id === row.cat);
-    return `<li><span>${esc(objectiveLabel(row.objective))}<small>${esc(category?.title || row.cat)}</small></span><small>${Math.round(row.acc*100)}% · ${row.n} cards</small></li>`;
+    const cards = Number.isInteger(row.n) && row.n >= 0 ? row.n : row.recentCards;
+    return `<li><span>${esc(objectiveLabel(row.objective))}<small>${esc(category?.title || row.cat)}</small></span><small>${Math.round(row.acc*100)}% · ${cards} cards</small></li>`;
   };
   const objectivesHTML = objectiveRows.length
     ? `<div class="ds"><h3>Learning objectives · ${esc(gradeName(state.grade))}</h3>
