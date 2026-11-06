@@ -19,7 +19,8 @@ const levelOf = (id) => {
   const saved = state.levels[id] || (r ? r[0] : 1);
   // The badge, generator and mastery feedback must agree even after a child
   // changes grade or an older saved profile contains a higher/lower step.
-  return r && !state.showAll ? Math.max(r[0], Math.min(r[1], saved)) : saved;
+  const o = r && openRange(id);
+  return o ? Math.max(o[0], Math.min(o[1], saved)) : saved;
 };
 const maxLevelOf = (id) => (CATEGORIES.find((c) => c.id === id) || {}).maxLevel || 3;
 const gameMax = maxLevelOf;
@@ -37,17 +38,20 @@ const belowGrade = (id) => {
   const gi = GRADE_ORDER.indexOf(state.grade);
   return GRADE_ORDER.some((g, i) => i < gi && gradeRange(g, id)) && !GRADE_ORDER.some((g, i) => i > gi && gradeRange(g, id));
 };
-// with Show all games, levels keep the grade's start but may go above the grade
-const openRange = (id) => { const r = state.grade && gradeRange(state.grade, id); return r ? (state.showAll ? [r[0], gameMax(id)] : r) : null; };
+// with Show all games, levels keep the grade's start and may go ONE step above the grade's top;
+// Pre-K (pre-readers) always stays inside its own band
+const liftTop = (id) => { const r = gradeRange(state.grade, id); return state.grade === 'prek' ? r[1] : Math.min(gameMax(id), r[1] + 1); };
+const openRange = (id) => { const r = state.grade && gradeRange(state.grade, id); return r ? (state.showAll ? [r[0], Math.max(r[1], liftTop(id))] : r) : null; };
 const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CATEGORIES.filter((c) => c.id !== 'placement' && !belowGrade(c.id)) : CATEGORIES.filter((c) => c.id !== 'cmp' && c.id !== 'placement' && !belowGrade(c.id) // comparisons are mixed into math, not shown as a separate game
   && !sectionOff(c.id)
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'region' && typeof myRegion === 'function' && !myRegion())
   && !(c.id === 'check' && !(typeof checkFor === 'function' && checkFor()))
   && !(c.id === 'syl' && !state.showAll && strongReader())
-  && (!state.grade || state.showAll || c.id === 'mix' || gradeRange(state.grade, c.id)));
+  // the grade decides the sections; Show harder levels only lifts the level cap inside them
+  && (!state.grade || c.id === 'mix' || gradeRange(state.grade, c.id)));
 // auto level-up stops at the top of the child's grade (unless all games are shown)
-const levelCap = (id) => { const r = state.grade && !state.showAll && gradeRange(state.grade, id); return r ? r[1] : gameMax(id); };
+const levelCap = (id) => { const r = state.grade && openRange(id); return r ? r[1] : gameMax(id); };
 
 /* ---------- voice ---------- */
 // 1) Pre-recorded natural voice clips (audio/*.mp3, listed in audio/clips.json), sentence by sentence.
@@ -291,7 +295,7 @@ function renderHome() {
     const lv = c.id === 'mix' || c.trace ? '' : stepDots(c.id);
     const icon = c.id === 'home' && typeof myCountry === 'function' && myCountry() ? myCountry().flag : c.icon;
     return `<button class="tile" data-cat="${c.id}" style="--c:${c.color}">
-      ${lv}<span class="ti">${icon}</span><span class="tt">${typeof editionTitle === 'function' ? editionTitle(c.id, localTileTitle(c.id, c.title)) : c.title}</span><span class="ts">${typeof editionSub === 'function' ? editionSub(c.id, c.sub) : c.sub}</span>
+      ${lv}<span class="ti">${icon}</span><span class="tt">${typeof editionTitle === 'function' ? editionTitle(c.id, localTileTitle(c.id, c.title)) : c.title}</span><span class="ts">${typeof editionSub === 'function' ? editionSub(c.id, gradeSub(c.id, c.sub)) : gradeSub(c.id, c.sub)}</span>
       <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
   };
   // brain games (memory, puzzles, mazes …) sit right inside Brain Teasers: a tap opens the game
@@ -311,7 +315,7 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
   const cat = CATEGORIES.find((c) => c.id === catId);
   const real = visibleGames().filter((c) => c.gen);
   const qs = [], seen = new Set(), seenContent = new Set();
-  let guard = 0;
+  let guard = 0, drop = 0, misses = 0;
   const N = count || cat.roundLen || ROUND;
   // Schedule a small number of explicit authored-objective review cards without
   // displacing the full grade-level mix. The grade's JSON policy owns the cap.
@@ -346,7 +350,9 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
     // ordinary child rounds, but preserve unrestricted explicit QA previews.
     const range = !browse ? openRange(c.id) : null;   // the test browser previews any level
     const requestedLevel = atLevel || levelOf(c.id);
-    const lv = range ? Math.min(range[1], Math.max(range[0], requestedLevel)) : requestedLevel;
+    const lvTop = range ? Math.min(range[1], Math.max(range[0], requestedLevel)) : requestedLevel;
+    // if this level keeps producing cards the child can't do, step down instead of ending with an empty round
+    const lv = Math.max(1, lvTop - drop);
     const chooseReview = focusedPool.length && reviewed < reviewCap &&
       qs.length % reviewSpacing === 0;
     const reviewedQuestion = chooseReview ? focusedPool.shift() : null;
@@ -374,10 +380,10 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
       return allowed && lv >= allowed[0] && lv <= allowed[1];
     });
     q.grades = Array.isArray(q.grades) ? q.grades.filter(g => eligibleGrades.includes(g)) : eligibleGrades;
-    if (!browse && state.grade && !state.showAll && !q.grades.includes(state.grade)) continue;
-    // safety net: skip any card a child this age cannot do (Pre-K can't read words, K reads short ones)
-    if (!browse && state.grade && c.id !== 'placement' && typeof gradeFits === 'function' && !gradeFits(q, state.grade, c.id)) continue;
-    seen.add(q.key); seenContent.add(contentId); q.cat = c; q.level = lv; qs.push(q);
+    const tooHard = (!browse && state.grade && !state.showAll && !q.grades.includes(state.grade)) ||
+      (!browse && state.grade && c.id !== 'placement' && typeof gradeFits === 'function' && !gradeFits(q, state.grade, c.id));
+    if (tooHard) { if (++misses >= 40 && lv > 1) { drop++; misses = 0; } continue; }
+    misses = 0; seen.add(q.key); seenContent.add(contentId); q.cat = c; q.level = lv; qs.push(q);
     if (reviewedQuestion === q) { reviewed++; q.reviewScheduled = true; }
   }
   if (!browse && !isTestMode() && catId !== 'placement') {

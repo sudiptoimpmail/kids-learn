@@ -71,7 +71,7 @@ function thin(src, M) {
 }
 const TRACE_FONT = '"Chalkboard SE", "Comic Sans MS", "Arial Rounded MT Bold", "Nunito", system-ui, sans-serif';
 function openTrace() {
-  if (TR.set === 'words' && state.grade !== 'g1' && !state.showAll) TR.set = 'big';
+  if (TR.set === 'words' && state.grade !== 'g1') TR.set = 'big';
   stopClip && stopClip();
   show('trace');
   renderTrace(true);
@@ -81,7 +81,7 @@ function renderTrace(speak) {
   const items = traceItems(TR.set), it = items[TR.i];
   const [ch, shown, spoken, pic, n] = it;
   $$('#trace .tr-tab').forEach((b) => {
-    if (b.dataset.set === 'words') b.hidden = state.grade !== 'g1' && !state.showAll;
+    if (b.dataset.set === 'words') b.hidden = state.grade !== 'g1';
     b.classList.toggle('on', b.dataset.set === TR.set);
   });
   $('#trWrite').classList.toggle('on', TR.write);
