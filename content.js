@@ -1150,18 +1150,22 @@ const genGK = (level) => {
 
 /* ---------------- INSIDE MY BODY (optional) ---------------- */
 function organSVG(highlight) {
-  // External offline art. JavaScript owns only tappable educational regions.
+  // The offline anatomical diagram is an educational illustration, not a scan
+  // or a photograph. Hotspots align with its drawn organ locations.
   const zones = [
     ['brain',100,48,33,28],['lungs',76,158,19,39],['lungs',124,158,19,39],
     ['heart',110,173,18,22],['liver',81,206,30,19],['stomach',127,219,20,23],
     ['kidneys',78,228,13,18],['kidneys',125,240,13,18],
     ['spine',100,125,8,22],['intestines',101,262,28,22]
   ];
-  return `<svg viewBox="0 0 200 300" class="organ-fig" role="group"
-     aria-label="Choose the organ in the illustration">
+  const label = highlight ? `<text x="100" y="295" text-anchor="middle" font-size="13"
+    font-weight="700" fill="#123c60">${highlight.replace(/[^a-z]/g,'')}</text>` : '';
+  return `<svg viewBox="0 0 200 310" class="organ-fig" role="group"
+     aria-label="Illustrated human body showing internal organs. Select an organ.">
     <image href="assets/body/organ-diagram.svg" x="0" y="0" width="200" height="300" aria-hidden="true"/>
     ${zones.map(([name,x,y,rx,ry])=>`<g data-val="${name}" role="button" tabindex="0" aria-label="${name}"
       class="org${highlight===name?' hl':''}"><ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}"/></g>`).join('')}
+    ${label}
   </svg>`;
 }
 

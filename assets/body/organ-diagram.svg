@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 300" role="img" aria-labelledby="title" data-origin="kids-learn-original-anatomy">
-<title id="title">Friendly simplified diagram of the brain, lungs, heart, liver, stomach, kidneys, spine, and intestines</title>
+<title id="title">Educational cross-section illustration of internal organs: brain, lungs, heart, liver, stomach, kidneys, spine, and intestines</title>
 <defs><linearGradient id="skin" x2="1" y2="1"><stop stop-color="#fff4dd"/><stop offset="1" stop-color="#f7cda5"/></linearGradient><linearGradient id="shirt" x2="1" y2="1"><stop stop-color="#aee5eb"/><stop offset="1" stop-color="#b1c7f9"/></linearGradient></defs>
 <path d="M100 9Q57 8 54 51Q51 87 82 97V108Q45 118 37 150L28 278H172L163 150Q156 118 118 108V97Q149 87 146 51Q143 8 100 9Z" fill="url(#skin)" stroke="#bfa28f" stroke-width="3" stroke-linejoin="round"/>
 <path d="M44 151Q100 129 156 151V272H44Z" fill="url(#shirt)" stroke="#849fb1" stroke-width="2" opacity=".48"/>
@@ -17,4 +17,17 @@
 <rect x="76" y="244" width="50" height="37" rx="15" fill="#f5cc9a" stroke="#ca925c" stroke-width="2"/>
 <path d="M86 253H116Q123 257 116 261H86Q78 265 86 269H114" stroke="#d88e74" stroke-width="4" fill="none" stroke-linecap="round"/>
 <path d="M100 120V272" stroke="#fff5e7" stroke-width="3" stroke-dasharray="8 8" fill="none" opacity=".65"/>
+<!-- Visible anatomical details make organ silhouettes easier to recognize. -->
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+<!-- Brain folds -->
+<path d="M77 40Q85 35 91 43T104 40Q113 33 119 41M78 56Q88 51 95 58T111 55Q122 50 132 56M100 28Q97 43 101 68" stroke="#b34d7d" stroke-width="1.8"/>
+<!-- Bronchial branches inside both lungs -->
+<path d="M100 110V139L82 152M100 139L120 152M82 152L72 166M82 152L85 174M120 152L128 165M120 152L115 177" stroke="#b16d7b" stroke-width="3"/>
+<!-- Heart blood vessels -->
+<path d="M109 160Q102 145 105 137M115 160Q126 145 121 137" stroke="#b5425e" stroke-width="3"/>
+<!-- Spine vertebrae -->
+<path d="M96 106H104M96 116H104M96 126H104M96 136H104M96 146H104" stroke="#b7a38a" stroke-width="2.5"/>
+<!-- Intestinal coils -->
+<path d="M83 254Q96 246 111 252T115 262Q100 268 86 261T88 273Q103 278 116 271" stroke="#c67b58" stroke-width="2.5"/>
+</g>
 </svg>
