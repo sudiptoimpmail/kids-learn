@@ -338,7 +338,9 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
   state.recentContent = state.recentContent || {};
   const recentContent = new Set(state.recentContent[cat.id] || []);
   const fingerprint = (q) => {
-    const raw = String(q.text || '') + '|' + String(q.answer) + '|' + String(q.main || '');
+    // cards that keep their content outside main (Match It pairs, spelling, ordering, paths) are told apart by it
+    const body = q.match || q.order || q.fillIn || q.passageFill || q.letterPath || q.spell || '';
+    const raw = String(q.text || '') + '|' + String(q.answer) + '|' + String(q.main || '') + '|' + (body ? JSON.stringify(body).slice(0, 600) : '');
     let hash = 2166136261;
     for (let i = 0; i < raw.length; i++) hash = Math.imul(hash ^ raw.charCodeAt(i), 16777619);
     return String(hash >>> 0);
