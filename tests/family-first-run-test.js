@@ -55,8 +55,10 @@ const { chromium } = require('playwright');
       welcome: !!document.getElementById('welcomeSheet'),
       homeInert: document.getElementById('home').inert
     }));
-    assert.ok(await page.locator('#whoGrid [data-add="1"]').isVisible(),
-      'Add sibling button hidden: '+JSON.stringify(whoDebug));
+    // The opening modal animates from scale(0); wait for nonzero visible layout.
+    await page.locator('#whoGrid [data-add="1"]').waitFor({state:'visible',timeout:3000}).catch(err=>{
+      throw new Error('Sibling picker remained hidden: '+JSON.stringify(whoDebug)+' '+err.message);
+    });
     await page.locator('#whoGrid [data-id="p1"]').click();
     assert.deepEqual(await page.evaluate(() => ({name:state.name,grade:state.grade,stars:state.stars})),
       {name:'Ava',grade:'k',stars:0});
