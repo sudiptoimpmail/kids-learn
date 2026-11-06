@@ -48,9 +48,22 @@ def api(params):
 def plain(s):
     return re.sub(r'<[^>]+>', '', s or '').strip()
 
-SEARCH_ALIASES = {\n    'tajmahal':['Taj Mahal Agra photograph'], 'niagara':['Niagara Falls waterfall photograph'],\n    'bigben':['Elizabeth Tower London photo'], 'opera':['Sydney Opera House Sydney photograph'],\n    'goldengate':['Golden Gate Bridge San Francisco photograph'], 'pisa':['Leaning Tower Pisa photograph'],\n    'brandenburg':['Brandenburg Gate Berlin photograph'], 'tokyo':['Tokyo Tower Tokyo photograph'],\n    'uluru':['Uluru Ayers Rock Australia photograph'], 'stonehenge':['Stonehenge England photograph'],\n    'safari':['Maasai Mara Kenya wildlife photograph'], 'tablemtn':['Table Mountain Cape Town photograph'],\n    'milford':['Milford Sound New Zealand photograph'], 'fuji':['Mount Fuji Japan photograph']\n}\n\ndef candidate(name, landmark_id):
+SEARCH_ALIASES = {
+    'tajmahal':['Taj Mahal Agra photograph'], 'niagara':['Niagara Falls waterfall photograph'],
+    'bigben':['Elizabeth Tower London photo'], 'opera':['Sydney Opera House Sydney photograph'],
+    'goldengate':['Golden Gate Bridge San Francisco photograph'], 'pisa':['Leaning Tower Pisa photograph'],
+    'brandenburg':['Brandenburg Gate Berlin photograph'], 'tokyo':['Tokyo Tower Tokyo photograph'],
+    'uluru':['Uluru Ayers Rock Australia photograph'], 'stonehenge':['Stonehenge England photograph'],
+    'safari':['Maasai Mara Kenya wildlife photograph'], 'tablemtn':['Table Mountain Cape Town photograph'],
+    'milford':['Milford Sound New Zealand photograph'], 'fuji':['Mount Fuji Japan photograph']
+}
+
+def candidate(name, landmark_id):
     # Search is only discovery. It does NOT verify the pictured place.
-    queries = [name] + SEARCH_ALIASES.get(landmark_id, [])\n    results = []\n    for query in queries:\n        results.extend(api({'generator':'search','gsrsearch':'filetype:bitmap ' + query,
+    queries = [name] + SEARCH_ALIASES.get(landmark_id, [])
+    results = []
+    for query in queries:
+        results.extend(api({'generator':'search','gsrsearch':'filetype:bitmap ' + query,
                    'gsrnamespace':6,'gsrlimit':12,'prop':'imageinfo',
                    'iiprop':'url|extmetadata|size','iiurlwidth':1000}).get('query',{}).get('pages',[]))
     for page in results:
@@ -61,7 +74,10 @@ SEARCH_ALIASES = {\n    'tajmahal':['Taj Mahal Agra photograph'], 'niagara':['Ni
         # Restrict to simple license classes; no attribution claims are auto-approved.
         if license_short not in ('CC0', 'Public domain', 'Public Domain', 'PD', 'CC BY 4.0', 'CC BY-SA 4.0'):
             continue
-        if restrictions or info.get('width',0)<480 or info.get('height',0)<320:\n            continue\n        # Recognition questions need real photographs, not paintings, maps, logos or renders.\n        if any(word in page['title'].lower() for word in ('painting','watercolor','watercolour','drawing','illustration','engraving','woodblock','postcard','map of','logo','render','artwork','hokusai')):
+        if restrictions or info.get('width',0)<480 or info.get('height',0)<320:
+            continue
+        # Recognition questions need real photographs, not paintings, maps, logos or renders.
+        if any(word in page['title'].lower() for word in ('painting','watercolor','watercolour','drawing','illustration','engraving','woodblock','postcard','map of','logo','render','artwork','hokusai')):
             continue
         url = info.get('thumburl') or info.get('url')
         if not url or not url.startswith('https://'):
@@ -114,7 +130,8 @@ def main():
         time.sleep(DELAY)
     (OUT/'REVIEW.json').write_text(json.dumps({'schema':1,'notPublished':True,
       'candidateCount':len(review),'remainingLandmarks':len(landmarks)-len(enabled),
-      'candidates':review,'instructions':'Do not publish before source/subject/license/alt review'},indent=2)+'\n')
+      'candidates':review,'instructions':'Do not publish before source/subject/license/alt review'},indent=2)+'
+')
     print(f'Prepared {len(review)} review-only candidates; zero photos published.')
 
 if __name__=='__main__':
