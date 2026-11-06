@@ -1597,3 +1597,6 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 @media (max-width: 549px) {
   #trace .tr-tabs { order: 3; flex-basis: 100%; border-radius: 18px; }
 }
+
+.grade-goals{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px;margin:16px 0}.grade-goal{display:flex;flex-direction:column;gap:8px;background:#fff;padding:16px;border:2px solid #d5e6d7;border-radius:18px}.grade-goal span{font-weight:700;color:#356042}.grade-goal small{line-height:1.5}#dash summary{cursor:pointer;padding:16px;font-weight:800}#dash details{margin:12px 0;border:1px solid #d8d8e8;border-radius:12px}#journeyBtn{margin:12px 0}
+#lessonSheet{position:fixed;inset:0;z-index:500;display:grid;place-items:center;background:#18203dcc;padding:16px}.lesson-panel{width:min(560px,100%);max-height:90dvh;overflow:auto;text-align:center}.lesson-visual{font-size:clamp(25px,6vw,42px);padding:24px 4px;letter-spacing:3px;color:#237a56}

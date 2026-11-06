@@ -5,11 +5,44 @@
     "GRADES": {
       "prek": {
         "label": "Pre-K",
-        "presentation": {"readingScale":1.42,"readingLineHeight":1.62},
-        "progression": {"minQuestions":5,"promote":{"minFirstTryRate":0.8,"maxMistakeRate":0.2,"rounds":2},"support":{"maxFirstTryRate":0.3,"minMistakeRate":0.6,"rounds":3}},
-        "objectiveEvidence": {"window":8,"minCards":5,"minDays":2,"masteryRate":0.8,"practiceRate":0.6},
-        "practiceFocus": ["gk","phonics","shape2"],
-        "reviewSchedule": {"maxReviewCards":1,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":6}},
+        "presentation": {
+          "readingScale": 1.42,
+          "readingLineHeight": 1.62
+        },
+        "progression": {
+          "minQuestions": 5,
+          "promote": {
+            "minFirstTryRate": 0.8,
+            "maxMistakeRate": 0.2,
+            "rounds": 2
+          },
+          "support": {
+            "maxFirstTryRate": 0.3,
+            "minMistakeRate": 0.6,
+            "rounds": 3
+          }
+        },
+        "objectiveEvidence": {
+          "window": 8,
+          "minCards": 5,
+          "minDays": 2,
+          "masteryRate": 0.8,
+          "practiceRate": 0.6
+        },
+        "practiceFocus": [
+          "gk",
+          "phonics",
+          "shape2"
+        ],
+        "reviewSchedule": {
+          "maxReviewCards": 1,
+          "intervalDays": {
+            "new": 1,
+            "learning": 1,
+            "practicing": 2,
+            "mastered": 6
+          }
+        },
         "g": {
           "library": "1-1",
           "trace": "1-1",
@@ -33,11 +66,44 @@
       },
       "k": {
         "label": "Kindergarten",
-        "presentation": {"readingScale":1.38,"readingLineHeight":1.58},
-        "progression": {"minQuestions":5,"promote":{"minFirstTryRate":0.8,"maxMistakeRate":0.2,"rounds":2},"support":{"maxFirstTryRate":0.4,"minMistakeRate":0.5,"rounds":3}},
-        "objectiveEvidence": {"window":10,"minCards":6,"minDays":2,"masteryRate":0.8,"practiceRate":0.6},
-        "practiceFocus": ["phonics","add","sent"],
-        "reviewSchedule": {"maxReviewCards":1,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":7}},
+        "presentation": {
+          "readingScale": 1.38,
+          "readingLineHeight": 1.58
+        },
+        "progression": {
+          "minQuestions": 5,
+          "promote": {
+            "minFirstTryRate": 0.8,
+            "maxMistakeRate": 0.2,
+            "rounds": 2
+          },
+          "support": {
+            "maxFirstTryRate": 0.4,
+            "minMistakeRate": 0.5,
+            "rounds": 3
+          }
+        },
+        "objectiveEvidence": {
+          "window": 10,
+          "minCards": 6,
+          "minDays": 2,
+          "masteryRate": 0.8,
+          "practiceRate": 0.6
+        },
+        "practiceFocus": [
+          "phonics",
+          "add",
+          "sent"
+        ],
+        "reviewSchedule": {
+          "maxReviewCards": 1,
+          "intervalDays": {
+            "new": 1,
+            "learning": 1,
+            "practicing": 2,
+            "mastered": 7
+          }
+        },
         "g": {
           "library": "1-1",
           "trace": "1-1",
@@ -71,11 +137,44 @@
       },
       "g1": {
         "label": "1st Grade",
-        "presentation": {"readingScale":1.32,"readingLineHeight":1.55},
-        "progression": {"minQuestions":6,"promote":{"minFirstTryRate":0.8,"maxMistakeRate":0.2,"rounds":2},"support":{"maxFirstTryRate":0.4,"minMistakeRate":0.5,"rounds":2}},
-        "objectiveEvidence": {"window":10,"minCards":6,"minDays":2,"masteryRate":0.8,"practiceRate":0.65},
-        "practiceFocus": ["sent","add","numsense"],
-        "reviewSchedule": {"maxReviewCards":2,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":8}},
+        "presentation": {
+          "readingScale": 1.32,
+          "readingLineHeight": 1.55
+        },
+        "progression": {
+          "minQuestions": 6,
+          "promote": {
+            "minFirstTryRate": 0.8,
+            "maxMistakeRate": 0.2,
+            "rounds": 2
+          },
+          "support": {
+            "maxFirstTryRate": 0.4,
+            "minMistakeRate": 0.5,
+            "rounds": 2
+          }
+        },
+        "objectiveEvidence": {
+          "window": 10,
+          "minCards": 6,
+          "minDays": 2,
+          "masteryRate": 0.8,
+          "practiceRate": 0.65
+        },
+        "practiceFocus": [
+          "sent",
+          "add",
+          "numsense"
+        ],
+        "reviewSchedule": {
+          "maxReviewCards": 2,
+          "intervalDays": {
+            "new": 1,
+            "learning": 1,
+            "practicing": 2,
+            "mastered": 8
+          }
+        },
         "g": {
           "trace": "1-1",
           "phonics": "3-5",
@@ -114,11 +213,44 @@
       },
       "g2": {
         "label": "2nd Grade",
-        "presentation": {"readingScale":1.24,"readingLineHeight":1.52},
-        "progression": {"minQuestions":6,"promote":{"minFirstTryRate":0.85,"maxMistakeRate":0.2,"rounds":2},"support":{"maxFirstTryRate":0.4,"minMistakeRate":0.5,"rounds":2}},
-        "objectiveEvidence": {"window":12,"minCards":8,"minDays":2,"masteryRate":0.85,"practiceRate":0.65},
-        "practiceFocus": ["sent","numsense","sci"],
-        "reviewSchedule": {"maxReviewCards":2,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":10}},
+        "presentation": {
+          "readingScale": 1.24,
+          "readingLineHeight": 1.52
+        },
+        "progression": {
+          "minQuestions": 6,
+          "promote": {
+            "minFirstTryRate": 0.85,
+            "maxMistakeRate": 0.2,
+            "rounds": 2
+          },
+          "support": {
+            "maxFirstTryRate": 0.4,
+            "minMistakeRate": 0.5,
+            "rounds": 2
+          }
+        },
+        "objectiveEvidence": {
+          "window": 12,
+          "minCards": 8,
+          "minDays": 2,
+          "masteryRate": 0.85,
+          "practiceRate": 0.65
+        },
+        "practiceFocus": [
+          "sent",
+          "numsense",
+          "sci"
+        ],
+        "reviewSchedule": {
+          "maxReviewCards": 2,
+          "intervalDays": {
+            "new": 1,
+            "learning": 1,
+            "practicing": 2,
+            "mastered": 10
+          }
+        },
         "g": {
           "phonics": "4-5",
           "animals": "2-3",
@@ -159,11 +291,44 @@
       },
       "g3": {
         "label": "3rd Grade",
-        "presentation": {"readingScale":1.16,"readingLineHeight":1.48},
-        "progression": {"minQuestions":7,"promote":{"minFirstTryRate":0.9,"maxMistakeRate":0.1,"rounds":2},"support":{"maxFirstTryRate":0.4,"minMistakeRate":0.5,"rounds":2}},
-        "objectiveEvidence": {"window":12,"minCards":8,"minDays":2,"masteryRate":0.85,"practiceRate":0.65},
-        "practiceFocus": ["sent","mul","sci"],
-        "reviewSchedule": {"maxReviewCards":2,"intervalDays":{"new":1,"learning":1,"practicing":3,"mastered":12}},
+        "presentation": {
+          "readingScale": 1.16,
+          "readingLineHeight": 1.48
+        },
+        "progression": {
+          "minQuestions": 7,
+          "promote": {
+            "minFirstTryRate": 0.9,
+            "maxMistakeRate": 0.1,
+            "rounds": 2
+          },
+          "support": {
+            "maxFirstTryRate": 0.4,
+            "minMistakeRate": 0.5,
+            "rounds": 2
+          }
+        },
+        "objectiveEvidence": {
+          "window": 12,
+          "minCards": 8,
+          "minDays": 2,
+          "masteryRate": 0.85,
+          "practiceRate": 0.65
+        },
+        "practiceFocus": [
+          "sent",
+          "mul",
+          "sci"
+        ],
+        "reviewSchedule": {
+          "maxReviewCards": 2,
+          "intervalDays": {
+            "new": 1,
+            "learning": 1,
+            "practicing": 3,
+            "mastered": 12
+          }
+        },
         "g": {
           "animals": "3-3",
           "places": "3-3",
@@ -3114,11 +3279,1386 @@
       "progression": "grade-bounded",
       "fallback": "bundled-core",
       "offline": true,
-      "presentation": {"readingScale": 1.24, "readingLineHeight": 1.52},
-      "adaptive": {"minQuestions":6,"promote":{"minFirstTryRate":0.85,"maxMistakeRate":0.2,"rounds":2},"support":{"maxFirstTryRate":0.4,"minMistakeRate":0.5,"rounds":2}},
-      "objectiveEvidence": {"window":12,"minCards":8,"minDays":2,"masteryRate":0.85,"practiceRate":0.65},
-      "reviewSchedule": {"maxReviewCards":2,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":10}}
+      "presentation": {
+        "readingScale": 1.24,
+        "readingLineHeight": 1.52
+      },
+      "adaptive": {
+        "minQuestions": 6,
+        "promote": {
+          "minFirstTryRate": 0.85,
+          "maxMistakeRate": 0.2,
+          "rounds": 2
+        },
+        "support": {
+          "maxFirstTryRate": 0.4,
+          "minMistakeRate": 0.5,
+          "rounds": 2
+        }
+      },
+      "objectiveEvidence": {
+        "window": 12,
+        "minCards": 8,
+        "minDays": 2,
+        "masteryRate": 0.85,
+        "practiceRate": 0.65
+      },
+      "reviewSchedule": {
+        "maxReviewCards": 2,
+        "intervalDays": {
+          "new": 1,
+          "learning": 1,
+          "practicing": 2,
+          "mastered": 10
+        }
+      }
     },
-    "version": 1
+    "version": 1,
+    "learningFramework": {
+      "schema": 1,
+      "evidence": {
+        "window": 12,
+        "minCards": 8,
+        "minDays": 2,
+        "masteryRate": 0.85,
+        "practiceRate": 0.6
+      },
+      "grades": {
+        "prek": [
+          {
+            "id": "1",
+            "label": "Recognise sounds and rhyme",
+            "categories": [
+              "phonics"
+            ],
+            "requirements": [
+              "phonics:1",
+              "phonics:2"
+            ]
+          },
+          {
+            "id": "2",
+            "label": "Understand everyday words",
+            "categories": [
+              "vocab"
+            ],
+            "requirements": [
+              "vocab:1"
+            ]
+          },
+          {
+            "id": "3",
+            "label": "Count and compare small groups",
+            "categories": [
+              "cmp"
+            ],
+            "requirements": [
+              "cmp:1"
+            ]
+          },
+          {
+            "id": "4",
+            "label": "Combine and take away small groups",
+            "categories": [
+              "add",
+              "sub"
+            ],
+            "requirements": [
+              "add:1",
+              "sub:1"
+            ]
+          },
+          {
+            "id": "5",
+            "label": "Recognise shapes and patterns",
+            "categories": [
+              "shape2",
+              "pattern"
+            ],
+            "requirements": [
+              "shape2:1",
+              "pattern:1"
+            ]
+          },
+          {
+            "id": "6",
+            "label": "Explore living things and everyday life",
+            "categories": [
+              "gk",
+              "sequence",
+              "odd"
+            ],
+            "requirements": [
+              "gk:1",
+              "sequence:1",
+              "odd:1"
+            ]
+          },
+          {
+            "id": "expression",
+            "label": "Create and explain ideas through drawing or writing",
+            "categories": [],
+            "requirements": []
+          }
+        ],
+        "k": [
+          {
+            "id": "1",
+            "label": "Blend sounds and read short words",
+            "categories": [
+              "phonics",
+              "cvc",
+              "spell"
+            ],
+            "requirements": [
+              "phonics:1",
+              "phonics:2",
+              "phonics:3",
+              "cvc:2",
+              "cvc:3",
+              "spell:1",
+              "spell:2"
+            ]
+          },
+          {
+            "id": "2",
+            "label": "Understand short sentences",
+            "categories": [
+              "vocab",
+              "sent"
+            ],
+            "requirements": [
+              "vocab:1",
+              "vocab:2",
+              "sent:1",
+              "sent:2"
+            ]
+          },
+          {
+            "id": "3",
+            "label": "Count and compare numbers to 20",
+            "categories": [
+              "cmp"
+            ],
+            "requirements": [
+              "cmp:1",
+              "cmp:2"
+            ]
+          },
+          {
+            "id": "4",
+            "label": "Add and subtract with objects",
+            "categories": [
+              "add",
+              "sub",
+              "story"
+            ],
+            "requirements": [
+              "add:1",
+              "add:2",
+              "sub:1",
+              "sub:2",
+              "story:1"
+            ]
+          },
+          {
+            "id": "5",
+            "label": "Describe shapes and patterns",
+            "categories": [
+              "shape2",
+              "pattern"
+            ],
+            "requirements": [
+              "shape2:1",
+              "shape2:2",
+              "pattern:1",
+              "pattern:2"
+            ]
+          },
+          {
+            "id": "6",
+            "label": "Observe and describe the world",
+            "categories": [
+              "gk",
+              "sequence",
+              "odd"
+            ],
+            "requirements": [
+              "gk:1",
+              "gk:2",
+              "sequence:1",
+              "sequence:2",
+              "odd:1",
+              "odd:2"
+            ]
+          },
+          {
+            "id": "expression",
+            "label": "Create and explain ideas through drawing or writing",
+            "categories": [],
+            "requirements": []
+          }
+        ],
+        "g1": [
+          {
+            "id": "1",
+            "label": "Read and spell common words",
+            "categories": [
+              "phonics",
+              "cvc",
+              "spell",
+              "words"
+            ],
+            "requirements": [
+              "phonics:3",
+              "phonics:4",
+              "phonics:5",
+              "cvc:3",
+              "spell:3",
+              "spell:4",
+              "words:1",
+              "words:2"
+            ]
+          },
+          {
+            "id": "2",
+            "label": "Understand a short story",
+            "categories": [
+              "vocab",
+              "sent"
+            ],
+            "requirements": [
+              "vocab:2",
+              "sent:2",
+              "sent:3"
+            ]
+          },
+          {
+            "id": "3",
+            "label": "Understand tens and ones",
+            "categories": [
+              "cmp",
+              "numsense"
+            ],
+            "requirements": [
+              "cmp:2",
+              "cmp:3",
+              "cmp:4",
+              "numsense:1",
+              "numsense:2"
+            ]
+          },
+          {
+            "id": "4",
+            "label": "Solve addition and subtraction stories",
+            "categories": [
+              "add",
+              "sub",
+              "story"
+            ],
+            "requirements": [
+              "add:3",
+              "add:4",
+              "sub:3",
+              "sub:4",
+              "story:2",
+              "story:3"
+            ]
+          },
+          {
+            "id": "5",
+            "label": "Measure and tell time",
+            "categories": [
+              "shape2",
+              "pattern",
+              "clock"
+            ],
+            "requirements": [
+              "shape2:2",
+              "shape2:3",
+              "pattern:2",
+              "pattern:3",
+              "clock:1",
+              "clock:2"
+            ]
+          },
+          {
+            "id": "6",
+            "label": "Explain observations and sequences",
+            "categories": [
+              "sci",
+              "gk",
+              "sequence",
+              "odd"
+            ],
+            "requirements": [
+              "sci:1",
+              "sci:2",
+              "gk:2",
+              "gk:3",
+              "sequence:2",
+              "odd:2"
+            ]
+          },
+          {
+            "id": "expression",
+            "label": "Create and explain ideas through drawing or writing",
+            "categories": [],
+            "requirements": []
+          }
+        ],
+        "g2": [
+          {
+            "id": "1",
+            "label": "Use spelling patterns and vocabulary",
+            "categories": [
+              "phonics",
+              "spell",
+              "words"
+            ],
+            "requirements": [
+              "phonics:4",
+              "phonics:5",
+              "spell:4",
+              "spell:5",
+              "words:2",
+              "words:3",
+              "words:4"
+            ]
+          },
+          {
+            "id": "2",
+            "label": "Find meaning and evidence in stories",
+            "categories": [
+              "vocab",
+              "sent"
+            ],
+            "requirements": [
+              "vocab:2",
+              "vocab:3",
+              "sent:3",
+              "sent:4"
+            ]
+          },
+          {
+            "id": "3",
+            "label": "Understand place value and fractions",
+            "categories": [
+              "cmp",
+              "numsense"
+            ],
+            "requirements": [
+              "cmp:4",
+              "cmp:5",
+              "numsense:2",
+              "numsense:3",
+              "numsense:4"
+            ]
+          },
+          {
+            "id": "4",
+            "label": "Solve arithmetic and word problems",
+            "categories": [
+              "add",
+              "sub",
+              "story",
+              "mul",
+              "div"
+            ],
+            "requirements": [
+              "add:4",
+              "add:5",
+              "add:6",
+              "add:7",
+              "sub:4",
+              "sub:5",
+              "sub:6",
+              "sub:7",
+              "story:3",
+              "story:4",
+              "story:5",
+              "mul:1",
+              "mul:2",
+              "mul:3",
+              "div:1",
+              "div:2"
+            ]
+          },
+          {
+            "id": "5",
+            "label": "Measure, tell time and read shapes",
+            "categories": [
+              "shape2",
+              "pattern",
+              "clock"
+            ],
+            "requirements": [
+              "shape2:3",
+              "shape2:4",
+              "pattern:3",
+              "pattern:4",
+              "clock:2",
+              "clock:3",
+              "clock:4"
+            ]
+          },
+          {
+            "id": "6",
+            "label": "Reason about science and the world",
+            "categories": [
+              "sci",
+              "gk",
+              "sequence",
+              "odd"
+            ],
+            "requirements": [
+              "sci:2",
+              "sci:3",
+              "gk:3",
+              "sequence:2",
+              "sequence:3",
+              "odd:2",
+              "odd:3"
+            ]
+          },
+          {
+            "id": "expression",
+            "label": "Create and explain ideas through drawing or writing",
+            "categories": [],
+            "requirements": []
+          }
+        ],
+        "g3": [
+          {
+            "id": "1",
+            "label": "Use word parts and vocabulary",
+            "categories": [
+              "spell",
+              "words"
+            ],
+            "requirements": [
+              "spell:5",
+              "words:4",
+              "words:5"
+            ]
+          },
+          {
+            "id": "2",
+            "label": "Understand and explain longer passages",
+            "categories": [
+              "vocab",
+              "sent"
+            ],
+            "requirements": [
+              "vocab:3",
+              "vocab:4",
+              "sent:5",
+              "sent:6"
+            ]
+          },
+          {
+            "id": "3",
+            "label": "Reason with place value and fractions",
+            "categories": [
+              "cmp",
+              "numsense"
+            ],
+            "requirements": [
+              "cmp:5",
+              "numsense:3",
+              "numsense:4",
+              "numsense:5"
+            ]
+          },
+          {
+            "id": "4",
+            "label": "Multiply, divide and solve problems",
+            "categories": [
+              "add",
+              "sub",
+              "story",
+              "mul",
+              "div"
+            ],
+            "requirements": [
+              "add:6",
+              "add:7",
+              "add:8",
+              "sub:6",
+              "sub:7",
+              "sub:8",
+              "story:4",
+              "story:5",
+              "mul:3",
+              "mul:4",
+              "mul:5",
+              "mul:6",
+              "div:3",
+              "div:4",
+              "div:5"
+            ]
+          },
+          {
+            "id": "5",
+            "label": "Use measurement, time and geometry",
+            "categories": [
+              "shape2",
+              "pattern",
+              "clock"
+            ],
+            "requirements": [
+              "shape2:4",
+              "pattern:4",
+              "pattern:5",
+              "clock:4",
+              "clock:5",
+              "clock:6"
+            ]
+          },
+          {
+            "id": "6",
+            "label": "Explain patterns, causes and observations",
+            "categories": [
+              "sci",
+              "gk",
+              "sequence",
+              "odd"
+            ],
+            "requirements": [
+              "sci:3",
+              "sci:4",
+              "gk:4",
+              "sequence:3",
+              "odd:3"
+            ]
+          },
+          {
+            "id": "expression",
+            "label": "Create and explain ideas through drawing or writing",
+            "categories": [],
+            "requirements": []
+          }
+        ]
+      },
+      "banks": {
+        "built-in": {
+          "mapping": {
+            "phonics:1": [
+              "phonics:1"
+            ],
+            "phonics:2": [
+              "phonics:2"
+            ],
+            "vocab:1": [
+              "vocab:1"
+            ],
+            "cmp:1": [
+              "cmp:1"
+            ],
+            "add:1": [
+              "add:1"
+            ],
+            "sub:1": [
+              "sub:1"
+            ],
+            "shape2:1": [
+              "shape2:1"
+            ],
+            "pattern:1": [
+              "pattern:1"
+            ],
+            "gk:1": [
+              "gk:1"
+            ],
+            "sequence:1": [
+              "sequence:1"
+            ],
+            "odd:1": [
+              "odd:1"
+            ],
+            "phonics:3": [
+              "phonics:3"
+            ],
+            "cvc:2": [
+              "cvc:2"
+            ],
+            "cvc:3": [
+              "cvc:3"
+            ],
+            "spell:1": [
+              "spell:1"
+            ],
+            "spell:2": [
+              "spell:2"
+            ],
+            "vocab:2": [
+              "vocab:2"
+            ],
+            "sent:1": [
+              "sent:1"
+            ],
+            "sent:2": [
+              "sent:2"
+            ],
+            "cmp:2": [
+              "cmp:2"
+            ],
+            "add:2": [
+              "add:2"
+            ],
+            "sub:2": [
+              "sub:2"
+            ],
+            "story:1": [
+              "story:1"
+            ],
+            "shape2:2": [
+              "shape2:2"
+            ],
+            "pattern:2": [
+              "pattern:2"
+            ],
+            "gk:2": [
+              "gk:2"
+            ],
+            "sequence:2": [
+              "sequence:2"
+            ],
+            "odd:2": [
+              "odd:2"
+            ],
+            "phonics:4": [
+              "phonics:4"
+            ],
+            "phonics:5": [
+              "phonics:5"
+            ],
+            "spell:3": [
+              "spell:3"
+            ],
+            "spell:4": [
+              "spell:4"
+            ],
+            "words:1": [
+              "words:1"
+            ],
+            "words:2": [
+              "words:2"
+            ],
+            "sent:3": [
+              "sent:3"
+            ],
+            "cmp:3": [
+              "cmp:3"
+            ],
+            "cmp:4": [
+              "cmp:4"
+            ],
+            "numsense:1": [
+              "numsense:1"
+            ],
+            "numsense:2": [
+              "numsense:2"
+            ],
+            "add:3": [
+              "add:3"
+            ],
+            "add:4": [
+              "add:4"
+            ],
+            "sub:3": [
+              "sub:3"
+            ],
+            "sub:4": [
+              "sub:4"
+            ],
+            "story:2": [
+              "story:2"
+            ],
+            "story:3": [
+              "story:3"
+            ],
+            "shape2:3": [
+              "shape2:3"
+            ],
+            "pattern:3": [
+              "pattern:3"
+            ],
+            "clock:1": [
+              "clock:1"
+            ],
+            "clock:2": [
+              "clock:2"
+            ],
+            "sci:1": [
+              "sci:1"
+            ],
+            "sci:2": [
+              "sci:2"
+            ],
+            "gk:3": [
+              "gk:3"
+            ],
+            "spell:5": [
+              "spell:5"
+            ],
+            "words:3": [
+              "words:3"
+            ],
+            "words:4": [
+              "words:4"
+            ],
+            "vocab:3": [
+              "vocab:3"
+            ],
+            "sent:4": [
+              "sent:4"
+            ],
+            "cmp:5": [
+              "cmp:5"
+            ],
+            "numsense:3": [
+              "numsense:3"
+            ],
+            "numsense:4": [
+              "numsense:4"
+            ],
+            "add:5": [
+              "add:5"
+            ],
+            "add:6": [
+              "add:6"
+            ],
+            "add:7": [
+              "add:7"
+            ],
+            "sub:5": [
+              "sub:5"
+            ],
+            "sub:6": [
+              "sub:6"
+            ],
+            "sub:7": [
+              "sub:7"
+            ],
+            "story:4": [
+              "story:4"
+            ],
+            "story:5": [
+              "story:5"
+            ],
+            "mul:1": [
+              "mul:1"
+            ],
+            "mul:2": [
+              "mul:2"
+            ],
+            "mul:3": [
+              "mul:3"
+            ],
+            "div:1": [
+              "div:1"
+            ],
+            "div:2": [
+              "div:2"
+            ],
+            "shape2:4": [
+              "shape2:4"
+            ],
+            "pattern:4": [
+              "pattern:4"
+            ],
+            "clock:3": [
+              "clock:3"
+            ],
+            "clock:4": [
+              "clock:4"
+            ],
+            "sci:3": [
+              "sci:3"
+            ],
+            "sequence:3": [
+              "sequence:3"
+            ],
+            "odd:3": [
+              "odd:3"
+            ],
+            "words:5": [
+              "words:5"
+            ],
+            "vocab:4": [
+              "vocab:4"
+            ],
+            "sent:5": [
+              "sent:5"
+            ],
+            "sent:6": [
+              "sent:6"
+            ],
+            "numsense:5": [
+              "numsense:5"
+            ],
+            "add:8": [
+              "add:8"
+            ],
+            "sub:8": [
+              "sub:8"
+            ],
+            "mul:4": [
+              "mul:4"
+            ],
+            "mul:5": [
+              "mul:5"
+            ],
+            "mul:6": [
+              "mul:6"
+            ],
+            "div:3": [
+              "div:3"
+            ],
+            "div:4": [
+              "div:4"
+            ],
+            "div:5": [
+              "div:5"
+            ],
+            "pattern:5": [
+              "pattern:5"
+            ],
+            "clock:5": [
+              "clock:5"
+            ],
+            "clock:6": [
+              "clock:6"
+            ],
+            "sci:4": [
+              "sci:4"
+            ],
+            "gk:4": [
+              "gk:4"
+            ]
+          }
+        }
+      },
+      "demonstrations": {
+        "add:1": {
+          "id": "combine-small-groups",
+          "title": "Put two groups together",
+          "steps": [
+            {
+              "text": "Start with two counters.",
+              "visual": "● ●",
+              "audio": [
+                "2"
+              ]
+            },
+            {
+              "text": "Add three more counters.",
+              "visual": "● ● + ● ● ●",
+              "audio": [
+                "3"
+              ]
+            },
+            {
+              "text": "Count them all: five.",
+              "visual": "● ● ● ● ●",
+              "audio": [
+                "5"
+              ]
+            }
+          ],
+          "try": {
+            "question": "Two counters and three counters make how many?",
+            "options": [
+              "4",
+              "5",
+              "6"
+            ],
+            "answer": "5",
+            "explanation": "Count both groups together: one, two, three, four, five."
+          }
+        },
+        "sub:1": {
+          "id": "take-away-small-groups",
+          "title": "Take some away",
+          "steps": [
+            {
+              "text": "Start with three counters.",
+              "visual": "● ● ●",
+              "audio": [
+                "3"
+              ]
+            },
+            {
+              "text": "Take one away.",
+              "visual": "● ●  ×",
+              "audio": [
+                "1"
+              ]
+            },
+            {
+              "text": "Two counters remain.",
+              "visual": "● ●",
+              "audio": [
+                "2"
+              ]
+            }
+          ],
+          "try": {
+            "question": "Three counters, take one away. How many remain?",
+            "options": [
+              "1",
+              "2",
+              "3"
+            ],
+            "answer": "2",
+            "explanation": "One counter was removed. Count the two that are left."
+          }
+        },
+        "cmp:1": {
+          "id": "compare-small-groups",
+          "title": "Compare two groups",
+          "steps": [
+            {
+              "text": "This group has two counters.",
+              "visual": "● ●",
+              "audio": [
+                "2"
+              ]
+            },
+            {
+              "text": "This group has four counters.",
+              "visual": "● ● ● ●",
+              "audio": [
+                "4"
+              ]
+            },
+            {
+              "text": "Four is more than two.",
+              "visual": "● ●   <   ● ● ● ●",
+              "audio": [
+                "4",
+                "2"
+              ]
+            }
+          ],
+          "try": {
+            "question": "Which group has more counters?",
+            "options": [
+              "2",
+              "4"
+            ],
+            "answer": "4",
+            "explanation": "Match two counters from each group. The group of four still has two extra."
+          }
+        }
+      },
+      "milestones": [
+        {
+          "id": "first-secure",
+          "title": "My first secure skill",
+          "minSecure": 1
+        },
+        {
+          "id": "three-secure",
+          "title": "Three skills growing strong",
+          "minSecure": 3
+        }
+      ],
+      "activities": {
+        "phonics:1": {
+          "category": "phonics",
+          "level": 1
+        },
+        "phonics:2": {
+          "category": "phonics",
+          "level": 2
+        },
+        "vocab:1": {
+          "category": "vocab",
+          "level": 1
+        },
+        "cmp:1": {
+          "category": "cmp",
+          "level": 1
+        },
+        "add:1": {
+          "category": "add",
+          "level": 1
+        },
+        "sub:1": {
+          "category": "sub",
+          "level": 1
+        },
+        "shape2:1": {
+          "category": "shape2",
+          "level": 1
+        },
+        "pattern:1": {
+          "category": "pattern",
+          "level": 1
+        },
+        "gk:1": {
+          "category": "gk",
+          "level": 1
+        },
+        "sequence:1": {
+          "category": "sequence",
+          "level": 1
+        },
+        "odd:1": {
+          "category": "odd",
+          "level": 1
+        },
+        "phonics:3": {
+          "category": "phonics",
+          "level": 3
+        },
+        "cvc:2": {
+          "category": "cvc",
+          "level": 2
+        },
+        "cvc:3": {
+          "category": "cvc",
+          "level": 3
+        },
+        "spell:1": {
+          "category": "spell",
+          "level": 1
+        },
+        "spell:2": {
+          "category": "spell",
+          "level": 2
+        },
+        "vocab:2": {
+          "category": "vocab",
+          "level": 2
+        },
+        "sent:1": {
+          "category": "sent",
+          "level": 1
+        },
+        "sent:2": {
+          "category": "sent",
+          "level": 2
+        },
+        "cmp:2": {
+          "category": "cmp",
+          "level": 2
+        },
+        "add:2": {
+          "category": "add",
+          "level": 2
+        },
+        "sub:2": {
+          "category": "sub",
+          "level": 2
+        },
+        "story:1": {
+          "category": "story",
+          "level": 1
+        },
+        "shape2:2": {
+          "category": "shape2",
+          "level": 2
+        },
+        "pattern:2": {
+          "category": "pattern",
+          "level": 2
+        },
+        "gk:2": {
+          "category": "gk",
+          "level": 2
+        },
+        "sequence:2": {
+          "category": "sequence",
+          "level": 2
+        },
+        "odd:2": {
+          "category": "odd",
+          "level": 2
+        },
+        "phonics:4": {
+          "category": "phonics",
+          "level": 4
+        },
+        "phonics:5": {
+          "category": "phonics",
+          "level": 5
+        },
+        "spell:3": {
+          "category": "spell",
+          "level": 3
+        },
+        "spell:4": {
+          "category": "spell",
+          "level": 4
+        },
+        "words:1": {
+          "category": "words",
+          "level": 1
+        },
+        "words:2": {
+          "category": "words",
+          "level": 2
+        },
+        "sent:3": {
+          "category": "sent",
+          "level": 3
+        },
+        "cmp:3": {
+          "category": "cmp",
+          "level": 3
+        },
+        "cmp:4": {
+          "category": "cmp",
+          "level": 4
+        },
+        "numsense:1": {
+          "category": "numsense",
+          "level": 1
+        },
+        "numsense:2": {
+          "category": "numsense",
+          "level": 2
+        },
+        "add:3": {
+          "category": "add",
+          "level": 3
+        },
+        "add:4": {
+          "category": "add",
+          "level": 4
+        },
+        "sub:3": {
+          "category": "sub",
+          "level": 3
+        },
+        "sub:4": {
+          "category": "sub",
+          "level": 4
+        },
+        "story:2": {
+          "category": "story",
+          "level": 2
+        },
+        "story:3": {
+          "category": "story",
+          "level": 3
+        },
+        "shape2:3": {
+          "category": "shape2",
+          "level": 3
+        },
+        "pattern:3": {
+          "category": "pattern",
+          "level": 3
+        },
+        "clock:1": {
+          "category": "clock",
+          "level": 1
+        },
+        "clock:2": {
+          "category": "clock",
+          "level": 2
+        },
+        "sci:1": {
+          "category": "sci",
+          "level": 1
+        },
+        "sci:2": {
+          "category": "sci",
+          "level": 2
+        },
+        "gk:3": {
+          "category": "gk",
+          "level": 3
+        },
+        "spell:5": {
+          "category": "spell",
+          "level": 5
+        },
+        "words:3": {
+          "category": "words",
+          "level": 3
+        },
+        "words:4": {
+          "category": "words",
+          "level": 4
+        },
+        "vocab:3": {
+          "category": "vocab",
+          "level": 3
+        },
+        "sent:4": {
+          "category": "sent",
+          "level": 4
+        },
+        "cmp:5": {
+          "category": "cmp",
+          "level": 5
+        },
+        "numsense:3": {
+          "category": "numsense",
+          "level": 3
+        },
+        "numsense:4": {
+          "category": "numsense",
+          "level": 4
+        },
+        "add:5": {
+          "category": "add",
+          "level": 5
+        },
+        "add:6": {
+          "category": "add",
+          "level": 6
+        },
+        "add:7": {
+          "category": "add",
+          "level": 7
+        },
+        "sub:5": {
+          "category": "sub",
+          "level": 5
+        },
+        "sub:6": {
+          "category": "sub",
+          "level": 6
+        },
+        "sub:7": {
+          "category": "sub",
+          "level": 7
+        },
+        "story:4": {
+          "category": "story",
+          "level": 4
+        },
+        "story:5": {
+          "category": "story",
+          "level": 5
+        },
+        "mul:1": {
+          "category": "mul",
+          "level": 1
+        },
+        "mul:2": {
+          "category": "mul",
+          "level": 2
+        },
+        "mul:3": {
+          "category": "mul",
+          "level": 3
+        },
+        "div:1": {
+          "category": "div",
+          "level": 1
+        },
+        "div:2": {
+          "category": "div",
+          "level": 2
+        },
+        "shape2:4": {
+          "category": "shape2",
+          "level": 4
+        },
+        "pattern:4": {
+          "category": "pattern",
+          "level": 4
+        },
+        "clock:3": {
+          "category": "clock",
+          "level": 3
+        },
+        "clock:4": {
+          "category": "clock",
+          "level": 4
+        },
+        "sci:3": {
+          "category": "sci",
+          "level": 3
+        },
+        "sequence:3": {
+          "category": "sequence",
+          "level": 3
+        },
+        "odd:3": {
+          "category": "odd",
+          "level": 3
+        },
+        "words:5": {
+          "category": "words",
+          "level": 5
+        },
+        "vocab:4": {
+          "category": "vocab",
+          "level": 4
+        },
+        "sent:5": {
+          "category": "sent",
+          "level": 5
+        },
+        "sent:6": {
+          "category": "sent",
+          "level": 6
+        },
+        "numsense:5": {
+          "category": "numsense",
+          "level": 5
+        },
+        "add:8": {
+          "category": "add",
+          "level": 8
+        },
+        "sub:8": {
+          "category": "sub",
+          "level": 8
+        },
+        "mul:4": {
+          "category": "mul",
+          "level": 4
+        },
+        "mul:5": {
+          "category": "mul",
+          "level": 5
+        },
+        "mul:6": {
+          "category": "mul",
+          "level": 6
+        },
+        "div:3": {
+          "category": "div",
+          "level": 3
+        },
+        "div:4": {
+          "category": "div",
+          "level": 4
+        },
+        "div:5": {
+          "category": "div",
+          "level": 5
+        },
+        "pattern:5": {
+          "category": "pattern",
+          "level": 5
+        },
+        "clock:5": {
+          "category": "clock",
+          "level": 5
+        },
+        "clock:6": {
+          "category": "clock",
+          "level": 6
+        },
+        "sci:4": {
+          "category": "sci",
+          "level": 4
+        },
+        "gk:4": {
+          "category": "gk",
+          "level": 4
+        }
+      }
+    }
   }
 }
