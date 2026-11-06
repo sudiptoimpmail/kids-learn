@@ -19,7 +19,9 @@ function curriculumRows(bank, level) {
   return rows.flatMap((row,i) => {
     const route=routes[i];
     return route.grade === grade && route.level <= level
-      ? [[route.level,...row.slice(1)]] : [];
+      ? [Object.assign([route.level,...row.slice(1)], {
+          curriculumSkill: route.skill, curriculumRouteId: route.id
+        })] : [];
   });
 }
 
@@ -395,7 +397,7 @@ const READING = () => {
     SENTENCES.map(x => [x[0],[[x[1],x[2]]],sentLevel(x),x[4]==='print-first'])
       .concat(PATTERN_SENTENCES.map(x => [x[0],[[x[1],x[2]]],x[3]]),
         STORIES.map(x => [x[1],x[2],x[0],x[3]===true]),
-        curriculumRows('STORIES',6).map(x => [x[1],x[2],x[0],true]))
+        curriculumRows('STORIES',6).map(x => [x[1],x[2],x[0],true,x.curriculumSkill]))
   );
   return READING.cache.get(grade);
 };
@@ -418,7 +420,7 @@ function genSentence(level) {
   const all = READING();
   // mostly this level, sometimes one level easier for a quick win
   const exact = all.filter((x) => x[2] === level), near = all.filter((x) => x[2] === level - 1);
-  const [s, qs, , printFirst] = pick(exact.length && (Math.random() < 0.8 || !near.length) ? exact : near.length ? near : all.filter((x) => x[2] <= level));
+  const [s, qs, , printFirst, curriculumSkill] = pick(exact.length && (Math.random() < 0.8 || !near.length) ? exact : near.length ? near : all.filter((x) => x[2] <= level));
   const [q, opts] = pick(qs);
   const words = s.split(' ').map((w, i) => `<span class="sw" data-i="${i}">${w}</span>`).join(' ');
   const long = s.length > 120 ? ' passage' : s.length > 60 ? ' long' : '';
@@ -429,6 +431,7 @@ function genSentence(level) {
   const photo = subject ? '<div class="reading-photo-wrap">' + visualImage(subject, 'reading-photo') + '</div>' : '';
   return {
     key: `sent-${s}`, qkey: q,
+    ...(curriculumSkill ? { curriculumSkill } : {}),
     text: '📖 Read, then answer',     // the question is shown once, under the sentence
     // New print-first passages deliberately use only a known natural recording;
     // do not synthesize question text whose audio has not been recorded.
@@ -950,6 +953,7 @@ function mcQuestion(prefix, row, level) {
   const opts = shuffle([ans, ...sample(wrong, n)]);
   return {
     key: `${prefix}-${q}`, text: q, say: q, main: '', mainClass: 'empty',
+    ...(row.curriculumSkill ? { curriculumSkill: row.curriculumSkill } : {}),
     options: opts.map((o) => ({ v: o, html: o })), answer: ans,
     optClass: opts.some((o) => o.length > 14) ? 'opt-text' : 'opt-text four-ok',
     hint: { html: '', say: 'Think about it!', remove: true },
