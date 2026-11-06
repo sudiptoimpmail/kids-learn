@@ -102,7 +102,7 @@ function goPage(n) {
   // A short suspense beat before the recorded voice, cancelled on every page turn.
   if (LB.auto) LB.readTimer = setTimeout(() => {
     if (LB.book === b && LB.page === n && document.querySelector('#library.active')) readPage();
-  }, p.sound ? 850 : 350);
+  }, p.sound ? 1050 : 500);
 }
 
 // read the page aloud: one recording per sentence, words lit in time with it
@@ -133,7 +133,11 @@ async function readPage() {
     await playClip(file, my);
     cancelAnimationFrame(raf);
     spans.forEach((w) => { w.classList.remove('on'); w.classList.add('read'); });
-    await sleep(250);
+    // Let children absorb each line; suspense and a change of speaker get a longer beat.
+    const next = sents[si + 1] || '';
+    const dramatic = ['wolf', 'suspense', 'brave', 'knock', 'disguise'].includes(LB.book.pages[page].scene);
+    const speakerChange = /^["“]/.test(next);
+    if (si < sents.length - 1) await sleep(dramatic || speakerChange ? 850 : 550);
   }
   if (my === sayToken) { LB.reading = false; $('#libBody .lib-next')?.classList.add('pulse'); }
 }
