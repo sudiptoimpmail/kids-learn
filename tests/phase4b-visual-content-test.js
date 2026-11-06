@@ -74,6 +74,29 @@ const {chromium} = require('playwright');
           require(svg.getBoundingClientRect().width<=article.clientWidth+2,
             'SVG bigger than card in '+q.id+' at '+viewport.width+'px');
           require(!article.querySelector('script,iframe'),'Unsafe visual content: '+q.id);
+          if(q.representation.kind==='fraction-strip'){
+            const lab=article.querySelector('.explorer-fraction-lab');
+            require(!!lab,'Missing fraction lab '+q.id);
+            require(lab?.querySelectorAll('.explorer-fraction-cell').length===q.representation.parts,
+              'Wrong number of fraction parts '+q.id);
+            if(lab){
+              const cells=[...lab.querySelectorAll('.explorer-fraction-cell')];
+              cells[0].click();
+              require(cells[0].getAttribute('aria-pressed')==='true',
+                'Fraction tap did not shade '+q.id);
+              require(lab.querySelector('output')?.textContent.includes('1/'+cells.length),
+                'Fraction count not updated '+q.id);
+              cells[0].click();
+              require(cells[0].getAttribute('aria-pressed')==='false',
+                'Fraction tap did not unshade '+q.id);
+              cells[0].click();
+              lab.querySelector('.explorer-fraction-reset').click();
+              require(cells.every(c=>c.getAttribute('aria-pressed')==='false') &&
+                lab.querySelector('output')?.textContent.includes('0/'+cells.length),
+                'Fraction reset did not clear '+q.id);
+            }
+          } else require(!article.querySelector('.explorer-fraction-lab'),
+            'Fraction lab leaked into another model '+q.id);
           const details=article.querySelector('details.explorer-reasoning');
           if(q.reasoningSteps){
             require(!!details && details.querySelectorAll('li').length===3,
