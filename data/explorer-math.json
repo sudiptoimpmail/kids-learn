@@ -17,7 +17,8 @@
           "9 books"
         ],
         "answer": "6 books",
-        "explanation": "Subtract 18 from 24 to compare the days."
+        "explanation": "Subtract 18 from 24 to compare the days.",
+        "verification": {"kind":"arithmetic","expression":"24-18"}
       },
       {
         "id": "g2-seed-packets",
@@ -33,7 +34,8 @@
           "25 seeds"
         ],
         "answer": "20 seeds",
-        "explanation": "Four groups of five make 20."
+        "explanation": "Four groups of five make 20.",
+        "verification": {"kind":"arithmetic","expression":"5*4"}
       },
       {
         "id": "g2-paint-length",
@@ -49,7 +51,8 @@
           "93 centimeters"
         ],
         "answer": "37 centimeters",
-        "explanation": "65 minus 28 equals 37 centimeters."
+        "explanation": "65 minus 28 equals 37 centimeters.",
+        "verification": {"kind":"arithmetic","expression":"65-28"}
       },
       {
         "id": "g2-muffin-trays",
@@ -65,7 +68,8 @@
           "9"
         ],
         "answer": "12",
-        "explanation": "Three equal rows of four contain 12 muffins."
+        "explanation": "Three equal rows of four contain 12 muffins.",
+        "verification": {"kind":"arithmetic","expression":"3*4"}
       },
       {
         "id": "g2-playground-time",
@@ -81,7 +85,8 @@
           "11:15 AM"
         ],
         "answer": "10:35 AM",
-        "explanation": "Add 20 minutes to 10:15 AM."
+        "explanation": "Add 20 minutes to 10:15 AM.",
+        "verification": {"kind":"time-add","start":"10:15 AM","minutes":20}
       },
       {
         "id": "g2-bus-seats",
@@ -97,7 +102,8 @@
           "49"
         ],
         "answer": "33",
-        "explanation": "35 − 8 + 6 = 33."
+        "explanation": "35 − 8 + 6 = 33.",
+        "verification": {"kind":"arithmetic","expression":"35-8+6"}
       },
       {
         "id": "g2-plant-growth",
@@ -113,7 +119,8 @@
           "11 centimeters"
         ],
         "answer": "9 centimeters",
-        "explanation": "Subtract the old height from the new height."
+        "explanation": "Subtract the old height from the new height.",
+        "verification": {"kind":"arithmetic","expression":"23-14"}
       },
       {
         "id": "g2-sticker-equals",
@@ -129,7 +136,8 @@
           "24 stickers"
         ],
         "answer": "7 stickers",
-        "explanation": "28 divided into four equal groups gives 7 per group."
+        "explanation": "28 divided into four equal groups gives 7 per group.",
+        "verification": {"kind":"arithmetic","expression":"28/4"}
       },
       {
         "id": "g2-population-chart",
@@ -145,7 +153,8 @@
           "all were equal"
         ],
         "answer": "blue",
-        "explanation": "16 is greater than 12 and 9."
+        "explanation": "16 is greater than 12 and 9.",
+        "verification": {"kind":"largest","values":{"red":12,"blue":16,"green":9}}
       },
       {
         "id": "g2-pizza-quarters",
@@ -161,7 +170,8 @@
           "3/4"
         ],
         "answer": "1/4",
-        "explanation": "One of four equal parts is one quarter."
+        "explanation": "One of four equal parts is one quarter.",
+        "verification": {"kind":"arithmetic","expression":"1/4"}
       },
       {
         "id": "g2-meter-centimeter",
@@ -177,7 +187,8 @@
           "170 centimeters"
         ],
         "answer": "30 centimeters",
-        "explanation": "100 − 70 = 30."
+        "explanation": "100 − 70 = 30.",
+        "verification": {"kind":"arithmetic","expression":"100-70"}
       },
       {
         "id": "g2-farm-eggs",
@@ -193,7 +204,8 @@
           "21"
         ],
         "answer": "24",
-        "explanation": "16 + 13 = 29, then 29 − 5 = 24."
+        "explanation": "16 + 13 = 29, then 29 − 5 = 24.",
+        "verification": {"kind":"arithmetic","expression":"16+13-5"}
       },
       {
         "id": "g2-ten-more",
@@ -209,7 +221,8 @@
           "158"
         ],
         "answer": "68",
-        "explanation": "58 plus one more ten equals 68."
+        "explanation": "58 plus one more ten equals 68.",
+        "verification": {"kind":"arithmetic","expression":"5*10+8+10"}
       },
       {
         "id": "g2-leaf-collection",
@@ -225,7 +238,8 @@
           "7"
         ],
         "answer": "5",
-        "explanation": "42 − 37 = 5."
+        "explanation": "42 − 37 = 5.",
+        "verification": {"kind":"arithmetic","expression":"42-37"}
       },
       {
         "id": "g2-time-elapsed",
@@ -241,7 +255,8 @@
           "65 minutes"
         ],
         "answer": "25 minutes",
-        "explanation": "20 minutes reach 3:00, then 5 more minutes."
+        "explanation": "20 minutes reach 3:00, then 5 more minutes.",
+        "verification": {"kind":"time-elapsed","start":"2:40 PM","end":"3:05 PM"}
       },
       {
         "id": "g2-garden-area",
@@ -257,7 +272,8 @@
           "28"
         ],
         "answer": "24",
-        "explanation": "4 groups of 6 make 24."
+        "explanation": "4 groups of 6 make 24.",
+        "verification": {"kind":"arithmetic","expression":"4*6"}
       },
       {
         "id": "g2-marble-count",
@@ -273,7 +289,8 @@
           "51"
         ],
         "answer": "33",
-        "explanation": "30 + 12 − 9 = 33."
+        "explanation": "30 + 12 − 9 = 33.",
+        "verification": {"kind":"arithmetic","expression":"30+12-9"}
       },
       {
         "id": "g2-coin-sums",
@@ -289,7 +306,8 @@
           "90¢"
         ],
         "answer": "85¢",
-        "explanation": "Three quarters are 75 cents; add a dime."
+        "explanation": "Three quarters are 75 cents; add a dime.",
+        "verification": {"kind":"arithmetic","expression":"3*25+10"}
       },
       {
         "id": "g2-parade-blocks",
@@ -305,7 +323,8 @@
           "1,000 meters"
         ],
         "answer": "600 meters",
-        "explanation": "Six groups of 100 meters are 600 meters."
+        "explanation": "Six groups of 100 meters are 600 meters.",
+        "verification": {"kind":"arithmetic","expression":"6*100"}
       },
       {
         "id": "g2-coin-change",
@@ -321,7 +340,8 @@
           "65¢"
         ],
         "answer": "35¢",
-        "explanation": "100 cents − 65 cents = 35 cents."
+        "explanation": "100 cents − 65 cents = 35 cents.",
+        "verification": {"kind":"arithmetic","expression":"100-65"}
       },
       {
         "id": "g2-half-and-quarter",
@@ -337,7 +357,8 @@
           "2/3"
         ],
         "answer": "1/2",
-        "explanation": "Two fourths equal one half."
+        "explanation": "Two fourths equal one half.",
+        "verification": {"kind":"arithmetic","expression":"2/4"}
       },
       {
         "id": "g2-juice-amounts",
@@ -353,7 +374,8 @@
           "150 mL"
         ],
         "answer": "100 mL",
-        "explanation": "250 − 150 = 100 milliliters."
+        "explanation": "250 − 150 = 100 milliliters.",
+        "verification": {"kind":"arithmetic","expression":"250-150"}
       },
       {
         "id": "g2-morning-steps",
@@ -369,7 +391,8 @@
           "10"
         ],
         "answer": "16",
-        "explanation": "Start at 13, add 7, then subtract 4."
+        "explanation": "Start at 13, add 7, then subtract 4.",
+        "verification": {"kind":"arithmetic","expression":"13+7-4"}
       },
       {
         "id": "g2-shop-pattern",
@@ -385,7 +408,8 @@
           "no, they cost $21"
         ],
         "answer": "yes, $7 left",
-        "explanation": "$8 + $5 is $13; $20 − $13 is $7."
+        "explanation": "$8 + $5 is $13; $20 − $13 is $7.",
+        "verification": {"kind":"budget","budget":20,"costs":[8,5],"minimumRemaining":5}
       },
       {
         "id": "g2-crayon-box",
@@ -401,7 +425,8 @@
           "35"
         ],
         "answer": "30",
-        "explanation": "Six groups of five make 30 crayons."
+        "explanation": "Six groups of five make 30 crayons.",
+        "verification": {"kind":"arithmetic","expression":"5*6"}
       },
       {
         "id": "g2-shape-sides",
@@ -417,7 +442,8 @@
           "3"
         ],
         "answer": "9",
-        "explanation": "Three sets of three sides total nine."
+        "explanation": "Three sets of three sides total nine.",
+        "verification": {"kind":"arithmetic","expression":"3*3"}
       },
       {
         "id": "g2-weather-days",
@@ -433,7 +459,8 @@
           "7"
         ],
         "answer": "4",
-        "explanation": "Add cloudy and rainy days: 2 + 2 = 4."
+        "explanation": "Add cloudy and rainy days: 2 + 2 = 4.",
+        "verification": {"kind":"arithmetic","expression":"2+2"}
       },
       {
         "id": "g2-lunch-schedule",
@@ -449,7 +476,8 @@
           "50 minutes"
         ],
         "answer": "30 minutes",
-        "explanation": "Count from 12:10 to 12:40."
+        "explanation": "Count from 12:10 to 12:40.",
+        "verification": {"kind":"time-elapsed","start":"12:10 PM","end":"12:40 PM"}
       },
       {
         "id": "g2-scale-clues",
@@ -465,7 +493,8 @@
           "all are equal"
         ],
         "answer": "melon",
-        "explanation": "The melon is heavier than the apple, which is heavier than the grape."
+        "explanation": "The melon is heavier than the apple, which is heavier than the grape.",
+        "verification": {"kind":"largest","values":{"apple":2,"grape":1,"melon":3}}
       },
       {
         "id": "g2-photo-albums",
@@ -481,7 +510,8 @@
           "18"
         ],
         "answer": "22",
-        "explanation": "Four pages hold 24; remove two to get 22."
+        "explanation": "Four pages hold 24; remove two to get 22.",
+        "verification": {"kind":"arithmetic","expression":"4*6-2"}
       },
       {
         "id": "g3-field-perimeter",
@@ -497,7 +527,8 @@
           "24 meters"
         ],
         "answer": "38 meters",
-        "explanation": "Add all four sides: 12 + 7 + 12 + 7 = 38 meters."
+        "explanation": "Add all four sides: 12 + 7 + 12 + 7 = 38 meters.",
+        "verification": {"kind":"arithmetic","expression":"2*(12+7)"}
       },
       {
         "id": "g3-tile-area",
@@ -513,7 +544,8 @@
           "60 square tiles"
         ],
         "answer": "54 square tiles",
-        "explanation": "Area is length multiplied by width, 9 × 6."
+        "explanation": "Area is length multiplied by width, 9 × 6.",
+        "verification": {"kind":"arithmetic","expression":"9*6"}
       },
       {
         "id": "g3-equivalent-fraction",
@@ -529,7 +561,8 @@
           "8 eighths"
         ],
         "answer": "4 eighths",
-        "explanation": "Two fourths equal one half, which is four eighths."
+        "explanation": "Two fourths equal one half, which is four eighths.",
+        "verification": {"kind":"arithmetic","expression":"2/4*8"}
       },
       {
         "id": "g3-bus-groups",
@@ -545,7 +578,8 @@
           "64 tables"
         ],
         "answer": "9 tables",
-        "explanation": "72 ÷ 8 = 9."
+        "explanation": "72 ÷ 8 = 9.",
+        "verification": {"kind":"arithmetic","expression":"72/8"}
       },
       {
         "id": "g3-planting-rows",
@@ -561,7 +595,8 @@
           "64"
         ],
         "answer": "56",
-        "explanation": "7 × 8 = 56."
+        "explanation": "7 × 8 = 56.",
+        "verification": {"kind":"arithmetic","expression":"7*8"}
       },
       {
         "id": "g3-water-bottles",
@@ -577,7 +612,8 @@
           "39"
         ],
         "answer": "33",
-        "explanation": "6 × 8 = 48. Then 48 − 15 = 33."
+        "explanation": "6 × 8 = 48. Then 48 − 15 = 33.",
+        "verification": {"kind":"arithmetic","expression":"6*8-15"}
       },
       {
         "id": "g3-supply-division",
@@ -593,7 +629,8 @@
           "6 full boxes"
         ],
         "answer": "8 full boxes",
-        "explanation": "Eight groups of six use 48 markers; two remain."
+        "explanation": "Eight groups of six use 48 markers; two remain.",
+        "verification": {"kind":"arithmetic","expression":"floor(50/6)"}
       },
       {
         "id": "g3-fraction-share",
@@ -609,7 +646,8 @@
           "12 inches"
         ],
         "answer": "6 inches",
-        "explanation": "One third of 18 is 18 ÷ 3 = 6."
+        "explanation": "One third of 18 is 18 ÷ 3 = 6.",
+        "verification": {"kind":"arithmetic","expression":"18/3"}
       },
       {
         "id": "g3-graph-difference",
@@ -625,7 +663,8 @@
           "12"
         ],
         "answer": "5",
-        "explanation": "Subtract 7 bicycles from 12 scooters."
+        "explanation": "Subtract 7 bicycles from 12 scooters.",
+        "verification": {"kind":"arithmetic","expression":"12-7"}
       },
       {
         "id": "g3-liquid-volume",
@@ -641,7 +680,8 @@
           "5 cups"
         ],
         "answer": "3 cups",
-        "explanation": "750 ÷ 250 = 3."
+        "explanation": "750 ÷ 250 = 3.",
+        "verification": {"kind":"arithmetic","expression":"750/250"}
       },
       {
         "id": "g3-distance-trip",
@@ -657,7 +697,8 @@
           "108 miles"
         ],
         "answer": "102 miles",
-        "explanation": "48 + 48 + 6 = 102 miles."
+        "explanation": "48 + 48 + 6 = 102 miles.",
+        "verification": {"kind":"arithmetic","expression":"48+48+6"}
       },
       {
         "id": "g3-price-comparison",
@@ -673,7 +714,8 @@
           "$21"
         ],
         "answer": "$18",
-        "explanation": "2 × $7 = $14; add $4."
+        "explanation": "2 × $7 = $14; add $4.",
+        "verification": {"kind":"arithmetic","expression":"2*7+4"}
       },
       {
         "id": "g3-quarter-pizza",
@@ -689,7 +731,8 @@
           "3/5"
         ],
         "answer": "5/8",
-        "explanation": "Eight minus three leaves five eighths."
+        "explanation": "Eight minus three leaves five eighths.",
+        "verification": {"kind":"arithmetic","expression":"(8-3)/8"}
       },
       {
         "id": "g3-rectangle-compare",
@@ -705,7 +748,8 @@
           "both have an area of 24 square units"
         ],
         "answer": "both have an area of 36 square units",
-        "explanation": "4 × 9 and 6 × 6 are both 36."
+        "explanation": "4 × 9 and 6 × 6 are both 36.",
+        "verification": {"kind":"equal-areas","rectangles":[[4,9],[6,6]]}
       },
       {
         "id": "g3-estimation",
@@ -721,7 +765,8 @@
           "about 900"
         ],
         "answer": "about 300",
-        "explanation": "Round 29 to 30 and 11 to 10, then multiply."
+        "explanation": "Round 29 to 30 and 11 to 10, then multiply.",
+        "verification": {"kind":"rounded-product","values":[29,11],"nearest":10}
       },
       {
         "id": "g3-clock-arrival",
@@ -737,7 +782,8 @@
           "5:45 PM"
         ],
         "answer": "5:55 PM",
-        "explanation": "4:35 plus 1 hour is 5:35, plus 20 minutes is 5:55."
+        "explanation": "4:35 plus 1 hour is 5:35, plus 20 minutes is 5:55.",
+        "verification": {"kind":"time-add","start":"4:35 PM","minutes":80}
       },
       {
         "id": "g3-budget",
@@ -753,7 +799,8 @@
           "$11"
         ],
         "answer": "$9",
-        "explanation": "12 + 9 = 21; 30 − 21 = 9."
+        "explanation": "12 + 9 = 21; 30 − 21 = 9.",
+        "verification": {"kind":"arithmetic","expression":"30-12-9"}
       },
       {
         "id": "g3-fraction-length",
@@ -769,7 +816,8 @@
           "20 inches"
         ],
         "answer": "6 inches",
-        "explanation": "24 ÷ 4 = 6."
+        "explanation": "24 ÷ 4 = 6.",
+        "verification": {"kind":"arithmetic","expression":"24/4"}
       },
       {
         "id": "g3-number-pattern",
@@ -785,7 +833,8 @@
           "36"
         ],
         "answer": "30",
-        "explanation": "Each step adds six."
+        "explanation": "Each step adds six.",
+        "verification": {"kind":"arithmetic","expression":"24+6"}
       },
       {
         "id": "g3-table-missing",
@@ -801,7 +850,8 @@
           "55 points"
         ],
         "answer": "45 points",
-        "explanation": "Add 14 + 12 + 19 = 45."
+        "explanation": "Add 14 + 12 + 19 = 45.",
+        "verification": {"kind":"arithmetic","expression":"14+12+19"}
       },
       {
         "id": "g3-bird-groups",
@@ -817,7 +867,8 @@
           "40"
         ],
         "answer": "36",
-        "explanation": "9 × 4 = 36."
+        "explanation": "9 × 4 = 36.",
+        "verification": {"kind":"arithmetic","expression":"9*4"}
       },
       {
         "id": "g3-division-check",
@@ -833,7 +884,8 @@
           "9 − 7 = 2"
         ],
         "answer": "7 × 9 = 63",
-        "explanation": "Multiplication reverses the division."
+        "explanation": "Multiplication reverses the division.",
+        "verification": {"kind":"multiplication-check","dividend":63,"divisor":7,"quotient":9}
       },
       {
         "id": "g3-lesson-share",
@@ -849,7 +901,8 @@
           "6 cards"
         ],
         "answer": "10 cards",
-        "explanation": "32 ÷ 4 = 8, then add 2."
+        "explanation": "32 ÷ 4 = 8, then add 2.",
+        "verification": {"kind":"arithmetic","expression":"32/4+2"}
       },
       {
         "id": "g3-bicycle-route",
@@ -865,7 +918,8 @@
           "Route B by 3 miles"
         ],
         "answer": "Route B by 1 mile",
-        "explanation": "Route A is 7 miles, Route B is 6 miles."
+        "explanation": "Route A is 7 miles, Route B is 6 miles.",
+        "verification": {"kind":"shorter-route","routes":{"Route A":[4,3],"Route B":[5,1]}}
       },
       {
         "id": "g3-map-grid",
@@ -881,7 +935,8 @@
           "(5,6)"
         ],
         "answer": "(5,3)",
-        "explanation": "Moving right increases the first coordinate."
+        "explanation": "Moving right increases the first coordinate.",
+        "verification": {"kind":"coordinate","start":[2,3],"delta":[3,0]}
       },
       {
         "id": "g3-fraction-compare",
@@ -897,7 +952,8 @@
           "not enough information"
         ],
         "answer": "Cake A",
-        "explanation": "Three fourths is greater than two fourths."
+        "explanation": "Three fourths is greater than two fourths.",
+        "verification": {"kind":"largest","values":{"Cake A":"3/4","Cake B":"2/4"}}
       },
       {
         "id": "g3-rectangle-side",
@@ -913,7 +969,8 @@
           "3 cm"
         ],
         "answer": "6 cm",
-        "explanation": "The two lengths total 18, leaving 12 for two equal widths."
+        "explanation": "The two lengths total 18, leaving 12 for two equal widths.",
+        "verification": {"kind":"arithmetic","expression":"(30-2*9)/2"}
       },
       {
         "id": "g3-weekly-reading",
@@ -929,7 +986,8 @@
           "54 pages"
         ],
         "answer": "63 pages",
-        "explanation": "9 × 7 = 63."
+        "explanation": "9 × 7 = 63.",
+        "verification": {"kind":"arithmetic","expression":"9*7"}
       },
       {
         "id": "g3-temperature-chart",
@@ -945,7 +1003,8 @@
           "4°C"
         ],
         "answer": "7°C",
-        "explanation": "19 − 12 = 7 degrees."
+        "explanation": "19 − 12 = 7 degrees.",
+        "verification": {"kind":"arithmetic","expression":"19-12"}
       },
       {
         "id": "g3-bookshelves",
@@ -961,7 +1020,8 @@
           "36 books"
         ],
         "answer": "32 books",
-        "explanation": "5 × 9 = 45; 45 − 13 = 32."
+        "explanation": "5 × 9 = 45; 45 − 13 = 32.",
+        "verification": {"kind":"arithmetic","expression":"5*9-13"}
       },
       {
         "id": "g3-mass-apples",
@@ -977,7 +1037,8 @@
           "1,500 grams"
         ],
         "answer": "600 grams",
-        "explanation": "4 × 150 = 600 grams."
+        "explanation": "4 × 150 = 600 grams.",
+        "verification": {"kind":"arithmetic","expression":"4*150"}
       },
       {
         "id": "g3-miles-compare",
@@ -993,7 +1054,8 @@
           "5 miles"
         ],
         "answer": "2 miles",
-        "explanation": "Jules biked 12 miles; 12 − 10 = 2."
+        "explanation": "Jules biked 12 miles; 12 − 10 = 2.",
+        "verification": {"kind":"arithmetic","expression":"3+5+4-10"}
       }
     ]
   }
