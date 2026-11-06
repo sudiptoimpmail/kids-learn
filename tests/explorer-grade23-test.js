@@ -41,6 +41,12 @@ const {chromium}=require('playwright');
       }
       for(const [category,level] of [['story',4],['story',5],['sci',3],['sci',4]]){
         const cat=CATEGORIES.find(c=>c.id===category);
+        const kind=category==='story'?'math':'science';
+        const row=ContentData.get('explorer-'+kind,'questions').find(q=>q.level===level);
+        if(!row || !row.grades.length){errors.push('No grade route for '+category+'/'+level);continue}
+        // Test within a grade explicitly allowed by the authored curriculum.
+        // A missing grade is no longer permission to show any Explorer content.
+        state.grade=row.grades[0];state.showAll=false;
         let variants=0;
         for(let n=0;n<160;n++){const q=cat.gen(level);if(q?.explorer)variants++}
         if(!variants)errors.push('No Explorer questions appear in '+category+'/'+level);

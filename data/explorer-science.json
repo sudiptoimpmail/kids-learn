@@ -6,6 +6,7 @@
       {
         "id": "g2-seed-shade",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Plant Lab",
         "context": "Two seedlings have the same soil and water. One grows in bright light; the other stays in shade.",
         "prompt": "What should the class measure to compare their growth?",
@@ -21,6 +22,7 @@
       {
         "id": "g2-magnet-test",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Materials Lab",
         "context": "A magnet picks up a steel paper clip but not a wooden pencil.",
         "prompt": "Which claim is best supported by the observation?",
@@ -36,6 +38,7 @@
       {
         "id": "g2-puddle-sun",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Water Watch",
         "context": "A small puddle is marked with chalk. It becomes smaller during a warm sunny afternoon without anyone wiping it.",
         "prompt": "What most likely happened to some of the water?",
@@ -51,6 +54,7 @@
       {
         "id": "g2-shadow-direction",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Light Lab",
         "context": "A flashlight points at a toy dinosaur. Its shadow falls on the wall behind the toy.",
         "prompt": "What caused the shadow?",
@@ -66,6 +70,7 @@
       {
         "id": "g2-grow-prediction",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Investigation",
         "context": "Students predict which surface a toy car will roll farthest on: carpet, tile or grass.",
         "prompt": "What should they do after making a prediction?",
@@ -81,6 +86,7 @@
       {
         "id": "g2-pond-food",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Food Web",
         "context": "Small fish eat water insects, and a heron eats the fish.",
         "prompt": "Which animal could be affected if there were fewer water insects?",
@@ -96,6 +102,7 @@
       {
         "id": "g2-animal-habitat",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Habitats",
         "context": "A beaver builds its home beside a freshwater stream.",
         "prompt": "Which feature of the habitat helps the beaver most?",
@@ -111,6 +118,7 @@
       {
         "id": "g2-wind-sock",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Weather Watch",
         "context": "A windsock points toward the east because the wind blows it in that direction.",
         "prompt": "What is a windsock useful for observing?",
@@ -126,6 +134,7 @@
       {
         "id": "g2-fossil-layer",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Earth Detective",
         "context": "Students find a shell-shaped fossil in a rock that formed long ago.",
         "prompt": "What does the fossil provide?",
@@ -141,6 +150,7 @@
       {
         "id": "g2-gravity-ball",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Motion Lab",
         "context": "Maya drops two similar balls from the same height.",
         "prompt": "What pulls the balls toward the ground?",
@@ -156,6 +166,7 @@
       {
         "id": "g2-materials-umbrella",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Design Lab",
         "context": "A student tests cloth, paper and plastic to build a rain cover.",
         "prompt": "Which material property matters most?",
@@ -171,6 +182,7 @@
       {
         "id": "g2-moon-light",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Space Watch",
         "context": "The moon looks bright in the night sky.",
         "prompt": "Where does most of the light we see from the moon come from?",
@@ -186,6 +198,7 @@
       {
         "id": "g2-living-classification",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Classify",
         "context": "A seedling uses water, grows and makes new leaves.",
         "prompt": "Which observation shows it is a living thing?",
@@ -201,6 +214,7 @@
       {
         "id": "g2-melting-choc",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "States of Matter",
         "context": "A piece of chocolate softens and melts in a warm room.",
         "prompt": "What changed?",
@@ -216,6 +230,7 @@
       {
         "id": "g2-plant-cycle",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Life Cycle",
         "context": "A sunflower makes seeds after it grows and flowers.",
         "prompt": "What can happen to a seed when conditions are suitable?",
@@ -231,6 +246,7 @@
       {
         "id": "g2-sound-vibration",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Sound Lab",
         "context": "A stretched rubber band makes a sound when plucked.",
         "prompt": "What is the band doing while it makes the sound?",
@@ -246,6 +262,7 @@
       {
         "id": "g2-fair-plant-test",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Fair Test",
         "context": "One bean plant gets lots of water and another gets much less. They are different varieties and grow in different soil.",
         "prompt": "Why is it hard to tell whether water caused any difference?",
@@ -261,6 +278,7 @@
       {
         "id": "g2-weather-record",
         "level": 3,
+        "grades": ["g2","g3"],
         "domain": "Data & Evidence",
         "context": "A class records outdoor temperature at the same time each day for 10 days.",
         "prompt": "What can the records help show?",
@@ -276,6 +294,7 @@
       {
         "id": "g3-erosion",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Earth Science",
         "context": "After heavy rain, a hillside has new grooves where soil washed downhill.",
         "prompt": "Which process is shown?",
@@ -291,6 +310,7 @@
       {
         "id": "g3-insulation",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Design Challenge",
         "context": "Two identical cups hold warm water. One has a thick sleeve and stays warmer longer.",
         "prompt": "Which conclusion fits the observation?",
@@ -306,6 +326,7 @@
       {
         "id": "g3-ramp-friction",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Motion Lab",
         "context": "A toy car travels farther on a smooth ramp than on the same ramp covered with rough felt.",
         "prompt": "What is a likely reason?",
@@ -321,6 +342,7 @@
       {
         "id": "g3-magnet-distance",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Force Lab",
         "context": "A paper clip moves toward a magnet even before the magnet touches it.",
         "prompt": "What does this show?",
@@ -336,6 +358,7 @@
       {
         "id": "g3-light-reflect",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Light Lab",
         "context": "A student shines a flashlight onto a mirror, and the light changes direction.",
         "prompt": "Which process explains the change?",
@@ -351,6 +374,7 @@
       {
         "id": "g3-pollinators",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Ecosystems",
         "context": "Bees visit flowering plants. Fewer bees visit the garden this season.",
         "prompt": "What effect might occur?",
@@ -366,6 +390,7 @@
       {
         "id": "g3-soil-growth",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Fair Test",
         "context": "Two groups grow radishes under equal light and water. One uses sandy soil, the other uses clay-rich soil.",
         "prompt": "Which factor are they testing?",
@@ -381,6 +406,7 @@
       {
         "id": "g3-circuit-open",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Circuit Lab",
         "context": "A lamp connected to a battery turns off when a switch opens.",
         "prompt": "Why does the lamp go out?",
@@ -396,6 +422,7 @@
       {
         "id": "g3-water-cycle",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Water Cycle",
         "context": "Moist air cools, and tiny droplets form on the outside of a cold glass.",
         "prompt": "Which process made the droplets?",
@@ -411,6 +438,7 @@
       {
         "id": "g3-shadow-length",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Sky Observation",
         "context": "A student measures a flagpole's shadow at noon and again late in the afternoon.",
         "prompt": "What can cause the shadow to change length?",
@@ -426,6 +454,7 @@
       {
         "id": "g3-fossil-evidence",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Fossil Detective",
         "context": "Two kinds of fossil footprints appear in an ancient rock layer.",
         "prompt": "What can scientists most reasonably learn?",
@@ -441,6 +470,7 @@
       {
         "id": "g3-food-chain-change",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Ecosystems",
         "context": "Grass is eaten by rabbits, and foxes eat rabbits. The rabbit population becomes much smaller.",
         "prompt": "Which change could follow?",
@@ -456,6 +486,7 @@
       {
         "id": "g3-controlled-experiment",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Scientific Method",
         "context": "A student compares how quickly sugar dissolves in cold and warm water. She uses equal sugar amounts and equal water volumes.",
         "prompt": "What is the changed variable?",
@@ -471,6 +502,7 @@
       {
         "id": "g3-data-repeat",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Evidence",
         "context": "A class launches paper planes. A new design goes farther once, but not in later trials.",
         "prompt": "What should the class do before claiming it is better?",
@@ -486,6 +518,7 @@
       {
         "id": "g3-renewable-energy",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Energy Lab",
         "context": "Solar panels generate electricity on a bright day but less on a cloudy one.",
         "prompt": "Which factor affects their output?",
@@ -501,6 +534,7 @@
       {
         "id": "g3-flood-map",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Earth Systems",
         "context": "A river rises after a storm. A map shows lower land near the banks.",
         "prompt": "Which area is more likely to flood first?",
@@ -516,6 +550,7 @@
       {
         "id": "g3-ecosystem-balance",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Habitats",
         "context": "A new road divides a forest into two smaller habitats.",
         "prompt": "Why might this be a problem for some animals?",
@@ -531,6 +566,7 @@
       {
         "id": "g3-engineering-cycle",
         "level": 4,
+        "grades": ["g3"],
         "domain": "Engineering",
         "context": "A bridge model fails under a load. The team studies where it bent and changes the supports.",
         "prompt": "What should the team do next?",
