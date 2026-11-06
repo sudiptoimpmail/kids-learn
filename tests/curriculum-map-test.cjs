@@ -13,11 +13,34 @@ const map=read('curriculum-map');
 const core=read('content'), ext=read('grade23-extension');
 const names=['prek','k','g1','g2','g3'], sections=new Set(), ids=new Set();
 assert.equal(core.GRADES,undefined,'No second source of truth for grade ranges');
+// Progression thresholds are authored per grade, not embedded in app.js.
+const validateProgression = (rule, label) => {
+  assert.ok(rule && Number.isInteger(rule.minQuestions) &&
+    rule.minQuestions >= 5 && rule.minQuestions <= 10,
+    label+': minimum full-round evidence must be 5–10 questions');
+  assert.ok(rule.promote && rule.support, label+': missing promotion/support rules');
+  for (const [name, low, high] of [
+    ['promote.minFirstTryRate',0.5,1], ['promote.maxMistakeRate',0,0.5],
+    ['support.maxFirstTryRate',0,0.5], ['support.minMistakeRate',0.4,1]
+  ]) {
+    const [group,key]=name.split('.');
+    const v=rule[group][key];
+    assert.ok(Number.isFinite(v)&&v>=low&&v<=high,label+': invalid '+name);
+  }
+  assert.ok(Number.isInteger(rule.promote.rounds) && rule.promote.rounds >= 2 &&
+    rule.promote.rounds <= 5,label+': must verify mastery over multiple rounds');
+  assert.ok(Number.isInteger(rule.support.rounds) && rule.support.rounds >= 2 &&
+    rule.support.rounds <= 5,label+': must verify difficulty over multiple rounds');
+  assert.ok(rule.promote.minFirstTryRate > rule.support.maxFirstTryRate,
+    label+': success and struggle conditions overlap');
+};
+validateProgression(map.policy.adaptive,'fallback');
 const fallbackPresentation = map.policy.presentation;
 assert.ok(fallbackPresentation && fallbackPresentation.readingScale > 1, 'Missing default reading presentation');
 let previousScale = Infinity;
 for(const name of names){
   assert.ok(map.GRADES[name]&&map.PROFILES[name],name+' must have a profile');
+  validateProgression(map.GRADES[name].progression,name);
   const presentation = map.GRADES[name].presentation;
   assert.ok(presentation && Number.isFinite(presentation.readingScale) && presentation.readingScale > 1 && presentation.readingScale <= 1.6,
     name+' must define a child-readable scale');

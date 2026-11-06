@@ -96,6 +96,9 @@ function applyPlacement(qs) {
   for (const [id, [n, ok]] of Object.entries(by)) {
     const r = gradeRange(state.grade, id); if (!r) continue;
     state.levels[id] = ok >= n ? r[1] : ok > 0 ? gradeStart(r.join('-')) : r[0];
+    // Placement reassigns the section's level; previous round evidence belongs
+    // to the old placement and must never trigger an immediate auto-level.
+    if (state.progressionStreaks) delete state.progressionStreaks[id];
   }
   return Object.keys(by).length;
 }
