@@ -68,11 +68,45 @@ function logAttempt(q, cat, level) {
   // mastery uses only answers done alone; hinted answers count as "with help"
   sk.n++; if (alone) sk.ok++; sk.recent = (sk.recent + (alone ? '1' : first ? 'h' : '0')).slice(-12); sk.last = dayKey();
   sk.days = [...new Set([...(sk.days || []), dayKey()])].slice(-5);   // on which days it was practiced
+  logObjectiveAttempt(q, cat, first, alone);
   // keep 120 days of daily numbers
   const days = Object.keys(state.stats.days).sort(); while (days.length > 120) delete state.stats.days[days.shift()];
   if (d.q >= DAILY_GOAL() && d.q - n < DAILY_GOAL()) dailyGoalReached();
   saveSoon();
 }
+/* ---------- authored learning objectives (per child, grade and section) ----------
+   Only questions with explicit metadata contribute to objective mastery.
+   The ordinary per-game/level stats above remain available for all generators. */
+const OBJECTIVE_EVIDENCE_FALLBACK = ContentData.get('curriculum-map', 'policy').objectiveEvidence;
+const objectiveRule = grade => (GRADES[grade]?.objectiveEvidence || OBJECTIVE_EVIDENCE_FALLBACK);
+const objectiveKey = (grade, category, objective) => JSON.stringify([grade, category, objective]);
+function objectiveState(record, rule = objectiveRule(record.grade)) {
+  const recent = typeof record.recent === 'string' ? record.recent.slice(-rule.window) : '';
+  const n = recent.length;
+  const acc = n ? [...recent].filter(x => x === '1').length / n : 0;
+  if (n < rule.minCards) return { s: 'new', acc, recentCards: n };
+  if (acc >= rule.masteryRate && (record.days || []).length >= rule.minDays)
+    return { s: 'mastered', acc, recentCards: n };
+  return { s: acc < rule.practiceRate ? 'learning' : 'practicing', acc, recentCards: n };
+}
+function logObjectiveAttempt(q, cat, first, alone) {
+  const grade = state.grade, objective = q.curriculumSkill;
+  if (!GRADES[grade] || !gradeRange(grade, cat) ||
+      typeof objective !== 'string' || !objective.trim() || objective.length > 100 ||
+      (Array.isArray(q.grades) && !q.grades.includes(grade))) return;
+  state.stats.objectives = state.stats.objectives || {};
+  const label = objective.trim();
+  const key = objectiveKey(grade, cat, label);
+  const row = state.stats.objectives[key] || (state.stats.objectives[key] = {
+    grade, cat, objective: label, n: 0, ok: 0, recent: '', last: '', days: []
+  });
+  row.n++; if (alone) row.ok++;
+  const rule = objectiveRule(grade);
+  row.recent = (row.recent + (alone ? '1' : first ? 'h' : '0')).slice(-rule.window);
+  row.last = dayKey();
+  row.days = [...new Set([...(row.days || []), row.last])].slice(-rule.window);
+}
+
 // answers are saved a moment later (and right away if the app goes to the background)
 function saveSoon() { clearTimeout(saveSoon.t); saveSoon.t = setTimeout(save, 800); }
 addEventListener('visibilitychange', () => { if (document.hidden) { clearTimeout(saveSoon.t); save(); } });
@@ -149,25 +183,53 @@ function renderDashboard() {
     <div class="dash-week">${week.map(([d, x]) => `<div class="bar-col"><div class="bar" style="height:${Math.round(x.q / maxQ * 100)}%"><span class="bar-ok" style="height:${x.q ? Math.round((x.alone != null ? x.alone : x.first) / x.q * 100) : 0}%"></span></div>
       ${x.q >= goal ? '<i class="goal">✅</i>' : ''}<small>${x.q || ''}</small><em>${d.toLocaleDateString(undefined, { weekday: 'short' }).slice(0, 2)}</em></div>`).join('')}</div>
     <div class="dash-legend"><span class="lg ok"></span> right on their own <span class="lg all"></span> all cards · ✅ daily goal (${goal}) reached · 🔥 streak: ${dayStreak()} day${dayStreak() === 1 ? '' : 's'}</div>`;
-  // skills
+  // Display verified learning objectives separately from generic game levels.
+  // Old profiles need no migration: they simply have no objective records yet.
+  const objectiveRows = Object.values(st.objectives || {})
+    .filter(row => row && row.grade === state.grade &&
+      row.cat && gradeRange(state.grade, row.cat) &&
+      typeof row.objective === 'string' && row.objective.trim())
+    .map(row => ({ ...row, ...objectiveState(row) }));
+  const objectiveGood = objectiveRows.filter(row => row.s === 'mastered')
+    .sort((a,b) => b.acc-a.acc);
+  const objectiveWeak = objectiveRows.filter(row => row.s === 'learning')
+    .sort((a,b) => a.acc-b.acc);
+  const objectiveDeveloping = objectiveRows.filter(row => row.s === 'practicing')
+    .sort((a,b) => a.acc-b.acc);
+  const objectiveNew = objectiveRows.filter(row => row.s === 'new')
+    .sort((a,b) => b.n-a.n);
+  const objectiveLabel = value => String(value).replaceAll('-', ' ').replace(/^./, x => x.toUpperCase());
+  const objectiveItem = row => {
+    const category = CATEGORIES.find(c => c.id === row.cat);
+    const cards = Number.isInteger(row.n) && row.n >= 0 ? row.n : row.recentCards;
+    return `<li><span>${esc(objectiveLabel(row.objective))}<small>${esc(category?.title || row.cat)}</small></span><small>${Math.round(row.acc*100)}% · ${cards} cards</small></li>`;
+  };
+  const objectivesHTML = objectiveRows.length
+    ? `<div class="ds"><h3>Learning objectives · ${esc(gradeName(state.grade))}</h3>
+       <p class="note">Based on authored questions tagged with a specific learning objective. Untagged questions still count toward game progress.</p>
+       ${objectiveGood.length ? `<h4>Mastered</h4><ul>${objectiveGood.slice(0,6).map(objectiveItem).join('')}</ul>` : ''}
+       ${objectiveWeak.length ? `<h4>Needs practice</h4><ul>${objectiveWeak.slice(0,6).map(objectiveItem).join('')}</ul>` : ''}
+       ${objectiveDeveloping.length ? `<h4>Developing</h4><ul>${objectiveDeveloping.slice(0,6).map(objectiveItem).join('')}</ul>` : ''}
+       ${objectiveNew.length ? `<h4>Just starting</h4><ul>${objectiveNew.slice(0,6).map(objectiveItem).join('')}</ul>
+         <p class="note">More practice over multiple days is needed before these objectives can be assessed.</p>` : ''}
+       </div>`
+    : '';
+  // Existing game-level summaries are kept for the large untagged question banks.
   const skills = Object.entries(st.skills).map(([k, sk]) => { const [cat, lv] = k.split(':'); return { cat, lv: +lv, name: skillName(cat, +lv), ...skillState(sk), n: sk.n, last: sk.last }; });
   const good = skills.filter((s) => s.s === 'mastered').sort((a, b) => b.acc - a.acc);
   const weak = skills.filter((s) => s.s === 'learning').sort((a, b) => a.acc - b.acc);
   const going = skills.filter((s) => s.s === 'practicing');
   const row = (s) => `<li><span>${s.name}</span><small>${(CATEGORIES.find((c) => c.id === s.cat) || {}).icon || ''} ${Math.round(s.acc * 100)}%</small></li>`;
-  $('#dashSkills').innerHTML = `
+  $('#dashSkills').innerHTML = objectivesHTML + `
     <div class="ds good"><h3>🌟 Doing well</h3>${good.length ? `<ul>${good.slice(0, 8).map(row).join('')}</ul>` : '<p class="note">Skills show here after 8 or more cards with mostly right answers.</p>'}</div>
     <div class="ds weak"><h3>🧩 Needs practice</h3>${weak.length ? `<ul>${weak.slice(0, 8).map(row).join('')}</ul>` : '<p class="note">Nothing stuck right now. 👍</p>'}</div>
     ${going.length ? `<div class="ds"><h3>📈 Getting there</h3><ul>${going.slice(0, 8).map(row).join('')}</ul></div>` : ''}`;
   // Give parents a small, practical next step rather than only performance charts.
   // Recommendations are derived locally from the child's saved skill results.
-  const defaults = {
-    prek: ['gk','phonics','shape2'], k: ['phonics','add','sent'],
-    g1: ['sent','add','numsense'], g2: ['sent','numsense','sci'],
-    g3: ['sent','mul','sci']
-  };
-  const priority = [...weak,...going].filter(x=>gradeRange(state.grade,x.cat)).map(x=>x.cat);
-  const candidates = [...new Set([...priority,...(defaults[state.grade]||defaults.k)])]
+  const priority = [...objectiveWeak,...objectiveDeveloping,...weak,...going]
+    .filter(x=>gradeRange(state.grade,x.cat)).map(x=>x.cat);
+  const gradeFocus = GRADES[state.grade]?.practiceFocus || [];
+  const candidates = [...new Set([...priority,...gradeFocus])]
     .filter(id=>gradeRange(state.grade,id)).slice(0,3);
   const practiceTips = {
     gk:'Name the pictures together. Ask what makes the answer special.',

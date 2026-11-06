@@ -39,6 +39,9 @@
     const choices = shuffle(row.choices).map(answer => ({v:answer,html:esc(answer)}));
     return {
       key: `explorer-${bank}-${row.id}`,
+      // Domain is an explicit authored learning objective, not guessed
+      // from the grade or the question's difficulty number.
+      curriculumSkill: row.domain, grades: row.grades.slice(),
       text: bank === 'math' ? 'Read the problem. Then solve it!' : 'Read the evidence. What do you think?',
       say: 'Find the answer!',
       main: `<article class="explorer-card">
