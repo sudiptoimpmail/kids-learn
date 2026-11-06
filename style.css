@@ -1537,3 +1537,50 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .bld-pie .fr-part.on { fill: #ffa94d; }
 .bld-clock { width: min(240px, 56vw); height: auto; }
 .bld-check { min-width: 180px; }
+
+
+/* First-run setup: a child's name and grade are required before Home. */
+.welcome { z-index: 1001; }
+.welcome-box { max-height: min(92dvh, 900px); overflow-y: auto; }
+.wel-kicker { color: #6b3eb5; text-transform: uppercase; letter-spacing: .075em; font-size: 12px; font-weight: 900; }
+.wel-lead { margin: 0; font-size: 17px; line-height: 1.4; }
+.wel-name { display: grid; gap: 7px; justify-items: stretch; text-align: left; }
+.wel-name input { width: 100%; max-width: 100%; box-sizing: border-box; font-size: 19px; }
+.wel-error { min-height: 1.2em; margin: 0; color: #a62734; font-weight: 700; font-size: 14px; }
+.wel-siblings { display: grid; gap: 4px; text-align: left; background: #f1ebff; border-radius: 16px; padding: 12px 14px; font-size: 14px; line-height: 1.45; color: #3d285e; }
+.wel-siblings b { font-size: 15px; }
+.wel-siblings small { color: #695983; }
+.wel-actions { display: grid; gap: 12px; width: 100%; }
+.wel-actions .big-btn { width: 100%; min-height: 54px; }
+.wel-add { border: 2px dashed #6e4db0; }
+.wel-cancel { border: 0; background: transparent; font: inherit; text-decoration: underline; color: #583ca0; cursor: pointer; }
+.wel-sibling-note { font-size: 14px; line-height: 1.45; color: #5a4d76; }
+.who-add { border: 2px dashed #8f6bff; background: #f3edff; }
+.update-available { display: block; width: calc(100% - 32px); margin: 16px auto 20px; padding: 12px; border: 2px solid #5d4097; border-radius: 14px; background: #f2edff; color: #382266; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
+.update-available:focus-visible { outline: 3px solid #4b2fc2; outline-offset: 3px; }
+/* Story suspense is expressive but never blocks text or traps a child on the page. */
+.lib-page[data-scene] .lib-art { position: relative; }
+.lib-page[data-scene="wolf"] .lib-art,
+.lib-page[data-scene="knock"] .lib-art,
+.lib-page[data-scene="disguise"] .lib-art,
+.lib-page[data-scene="suspense"] .lib-art,
+.lib-page[data-scene="brave"] .lib-art { box-shadow: 0 10px 26px rgba(56, 33, 52, .30); }
+.lib-page[data-scene="suspense"] .lib-text,
+.lib-page[data-scene="brave"] .lib-text { background: #fff3df; border: 2px solid #a96955; }
+.lib-page[data-scene="safe"] .lib-text { border: 2px solid #79aa77; }
+.lib-scene-symbol { position: absolute; top: 12px; right: 12px; padding: 6px 10px; border-radius: 999px; background: rgba(26, 30, 42, .77); color: #fff; font-size: 24px; box-shadow: 0 2px 8px #0003; }
+.lib-dialogue { font-weight: 700; padding-left: 12px; border-left: 4px solid #c06f3e; }
+.lib-page[data-scene="brave"] .lib-dialogue { border-color: #a32f37; }
+.lib-the-end { text-align: center; font-style: italic; font-weight: 700; color: #45743c; }
+@media (prefers-reduced-motion: no-preference) {
+  .lib-page[data-scene="wolf"] .lib-art img,
+  .lib-page[data-scene="suspense"] .lib-art img,
+  .lib-page[data-scene="brave"] .lib-art img { animation: libDramaticReveal 2.2s ease-out both; }
+  @keyframes libDramaticReveal { from { opacity: .55; transform: scale(1.035); } to { opacity: 1; transform: scale(1); } }
+}
+@media (max-width: 480px) {
+  .welcome-box { padding: 16px; gap: 10px; }
+  .wel-grades { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .wel-grade { min-height: 64px; padding: 10px 6px; }
+  .wel-grade b { font-size: 16px; }
+}
