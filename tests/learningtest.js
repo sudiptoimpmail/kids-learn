@@ -28,7 +28,7 @@ const { chromium } = require('playwright');
           for (let level = minLevel; level <= maxLevel; level++) {
             const keys = new Set();
             for (let n = 0; n < 160; n++) {
-              const q = cat.gen(level);
+              const q = (cat.baseGen || cat.gen)(level);
               if (typeof q.key !== 'string' || !q.text || !q.main || !q.hint)
                 throw new Error(`Malformed question ${id} level ${level}`);
               if (!Array.isArray(q.options) || q.options.length < 3)

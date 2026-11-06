@@ -1430,3 +1430,13 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .eq-pics b { margin:0 8px; color:#495057; }
 .eq-pics .gone { position:relative; opacity:.35; }
 .eq-pics .gone::after { content:'✕'; position:absolute; inset:0; display:grid; place-items:center; color:#e03131; font-weight:900; opacity:1; }
+
+/* format variants: picture sums for pre-readers, compact clocks in Match It, a pre-placed first picture */
+.m-sum { display: inline-flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: nowrap; font-size: 22px; }
+.m-sum > span { display: inline-flex; flex-wrap: wrap; gap: 1px; max-width: 90px; justify-content: center; }
+.m-sum b { font-size: 26px; color: var(--ink, #2b2140); }
+.m-sum .gone { opacity: .35; position: relative; }
+.m-sum .gone::after { content: '✕'; position: absolute; inset: 0; color: #e03131; font-size: .9em; display: grid; place-items: center; }
+.match-area .m-pic svg.clock { width: 84px; height: 84px; }
+.g1-pic-btn.given { pointer-events: none; }
+@media (min-width: 700px) { .m-sum { font-size: 30px; } .m-sum > span { max-width: 140px; } .match-area .m-pic svg.clock { width: 104px; height: 104px; } }

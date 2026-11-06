@@ -20,7 +20,7 @@ const { chromium } = require('playwright');
           state.levels[id] = lv;
           for (let k = 0; k < 3; k++) {
             startRound(id, 10);
-            for (const q of R.qs) res.cards[g].push({ id, key: String(q.key || ''), spell: !!q.spell, fill: !!(q.fillIn || q.passageFill), order: !!q.order,
+            for (const q of R.qs) res.cards[g].push({ id, key: String(q.key || ''), spell: !!q.spell, fill: !!(q.fillIn || q.passageFill), order: !!(q.order && (q.order.pics || []).some((x) => fitWords(x).length)),
               words: (q.options || []).filter((o) => readOnlyChoice(o, 1)).map((o) => fitText(o.html != null ? o.html : o.v).trim()) });
             try { document.querySelector('#quitBtn').click(); } catch {}
           }

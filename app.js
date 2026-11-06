@@ -807,10 +807,12 @@ function renderPassageFill(q) {
 }
 // tap the pictures in the order of the story
 function renderOrder(q) {
-  const { pics, shown } = q.order, wrap = document.createElement('div'); wrap.className = 'g1-order';
-  wrap.innerHTML = shown.map((k) => `<button class="g1-pic-btn" data-k="${k}">${pics[k]}<i></i></button>`).join('');
+  const { pics, given = 0 } = q.order, wrap = document.createElement('div'); wrap.className = 'g1-order';
+  // the first `given` pictures are already in place (a cycle like the seasons needs a starting point)
+  const shown = [...Array(given).keys(), ...q.order.shown.filter((k) => k >= given)];
+  wrap.innerHTML = shown.map((k) => `<button class="g1-pic-btn${k < given ? ' ok given' : ''}" data-k="${k}">${pics[k]}<i>${k < given ? k + 1 : ''}</i></button>`).join('');
   $('#qMain').appendChild(wrap); $('#options').innerHTML = '';
-  let next = 0;
+  let next = given;
   $$('.g1-pic-btn', wrap).forEach((b) => (b.onclick = () => {
     if (!live(q) || b.classList.contains('ok')) return;
     if (+b.dataset.k === next) { b.classList.add('ok'); $('i', b).textContent = ++next; sfx.yes(); if (next === pics.length) matchDone(q); }

@@ -41,8 +41,10 @@ const { chromium } = require('playwright');
       if (!document.querySelector('#dashTop').textContent.includes('1'))
         fails.push('Dashboard did not show a learning day');
 
+      // rounds now mix in other formats (match, order): test on the first pick-one card
+      const firstChoice = () => { const k = R.qs.findIndex(x => x.options && x.options.length && !x.match && !x.order); if (k > 0) { R.i = k; renderQ(); } return R.qs[R.i]; };
       startRound('add', 4);
-      let q = R.qs[R.i];
+      let q = firstChoice();
       const answerIndex = q.options.findIndex(o => String(o.v) === String(q.answer));
       R.locked = false;
       choose(q,q.answer, document.querySelectorAll('#options .opt')[answerIndex]);
@@ -52,7 +54,7 @@ const { chromium } = require('playwright');
       startRound('sub', 4);
       if (document.querySelector('#pop').classList.contains('show') || document.querySelector('#pop').textContent.trim())
         fails.push('Stale Brilliant popup appeared on unanswered question');
-      q = R.qs[R.i]; const wrongIndex = q.options.findIndex(o => String(o.v) !== String(q.answer));
+      q = firstChoice(); const wrongIndex = q.options.findIndex(o => String(o.v) !== String(q.answer));
       let pending, oldSay = say, oldHint = speakHint, hinted = 0;
       try {
         say = () => new Promise(res => { pending = res; });

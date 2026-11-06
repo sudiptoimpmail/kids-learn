@@ -9,6 +9,15 @@ const TARGET = 12;  // distinct cards a child should meet at one level before re
 const pct = (a, b) => (b ? Math.round((100 * a) / b) : 0);
 const status = (l) => (!l.cards || l.badCount || l.unfitCount ? 'bad' : l.distinct >= TARGET ? 'ok' : l.distinct >= 6 ? 'thin' : 'bad');
 const ORDER = ['prek', 'k', 'g1', 'g2', 'g3'];
+// release gates per grade (2 automated, 5 signed by a person) from docs/release-signoff.json
+let GATES = {};
+try { const sign = JSON.parse(fs.readFileSync('docs/release-signoff.json', 'utf8'));
+  const { signed } = require('./release-readiness.cjs');
+  for (const [g, row] of Object.entries(sign.grades || {})) {
+    const human = Object.values(row).filter((v) => v && typeof v === 'object' && 'verified' in v);
+    const auto = Object.keys(row.automated || {}).length;
+    GATES[g] = [auto + human.filter(signed).length, auto + human.length];
+  } } catch { GATES = {}; }
 
 const summary = ORDER.map((g) => {
   const G = d.grades[g]; let cells = 0, ok = 0, multi = 0, pics = 0, cards = 0, issues = 0;
@@ -107,7 +116,7 @@ table.grid { border-collapse: collapse; width: 100%; font-size: .9rem; }
 <nav class="cards" aria-label="Grade scorecards">
 ${summary.map((s) => `<a class="card" href="#${s.g}"><span class="name">${esc(s.label)}</span>
 <span class="big">${s.ok}<small>/${s.cells}</small></span><span class="sub">levels with ${TARGET}+ distinct cards</span>
-<dl><dt>Sections</dt><dd>${s.sections}</dd><dt>More than one format</dt><dd>${s.multi}/${s.cells}</dd><dt>Cards with pictures</dt><dd>${s.picPct}%</dd></dl>
+<dl>${GATES[s.g] ? `<dt>Release gates</dt><dd>${GATES[s.g][0]}/${GATES[s.g][1]}</dd>` : ''}<dt>Sections</dt><dd>${s.sections}</dd><dt>More than one format</dt><dd>${s.multi}/${s.cells}</dd><dt>Cards with pictures</dt><dd>${s.picPct}%</dd></dl>
 <span class="pill${s.issues ? ' warn' : ''}">${s.issues ? s.issues + ' correctness issues' : 'No broken answers or grade misfits'}</span></a>`).join('\n')}
 </nav>
 <div class="legend"><span><i class="ok"></i>${TARGET}+ distinct cards</span><span><i class="thin"></i>6–${TARGET - 1}</span><span><i class="bad"></i>under 6, a broken answer, or a grade misfit</span><span><i class="na"></i>not in this grade</span><span>Small number: question formats at that level. Hover a cell for details.</span></div>

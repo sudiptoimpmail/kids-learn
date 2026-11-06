@@ -31,7 +31,16 @@ function evaluate({missing,bodyModel,signoff}){
   if(!bodyModel)blockers.push('accurate 3D anatomy model not bundled');
   if(!media)blockers.push('manual media review not recorded');
   if(!device)blockers.push('physical-device acceptance not recorded');
-  return {manualDeviceAcceptanceVerified:device,manualMediaReviewVerified:media,readyForFinalSignoff:blockers.length===0,blockers};
+  // per grade: 2 automated gates (green CI) + 5 human gates, each signed with a name and a date
+  const grades={};
+  for(const [g,row] of Object.entries(signoff.grades||{})){
+    const human=Object.entries(row).filter(([k,v])=>v&&typeof v==='object'&&'verified' in v);
+    const done=human.filter(([,v])=>signed(v)).length;
+    grades[g]={label:row.label,gates:(Object.keys(row.automated||{}).length)+done+'/'+(Object.keys(row.automated||{}).length+human.length),
+      pending:human.filter(([,v])=>!signed(v)).map(([k])=>k)};
+    if(done<human.length)blockers.push((row.label||g)+': '+(human.length-done)+' human gate(s) not signed');
+  }
+  return {manualDeviceAcceptanceVerified:device,manualMediaReviewVerified:media,grades,readyForFinalSignoff:blockers.length===0,blockers};
 }
 const signoff=fs.existsSync('docs/release-signoff.json')?JSON.parse(fs.readFileSync('docs/release-signoff.json','utf8')):{};
 const result={

@@ -15,7 +15,7 @@ const { chromium } = require('playwright');
       for (const [id, [lo, hi]] of Object.entries(cats)) {
         const c = CATEGORIES.find((x) => x.id === id);
         for (let lv = lo; lv <= hi; lv++) for (let i = 0; i < 150; i++) {
-          let q; try { q = c.gen(lv); } catch (e) { bad.push(`${cc} ${id} ${lv} ERR ${e.message}`); continue; }
+          let q; try { q = (c.baseGen || c.gen)(lv); } catch (e) { bad.push(`${cc} ${id} ${lv} ERR ${e.message}`); continue; }
           kinds.add(q.key.replace(/-[^-]*$/, '').split('-').slice(0, 2).join('-'));
           const vals = q.options.map((o) => String(o.v));
           if (!vals.includes(String(q.answer))) bad.push(`${cc} ${id} ${lv} no answer ${q.key}`);

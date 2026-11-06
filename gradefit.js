@@ -52,7 +52,8 @@ function gradeFits(q, grade, catId) {
   // × and ÷ are 2nd–3rd grade ideas: never on a Pre-K or K card, not even inside Match It
   if ((grade === 'prek' || grade === 'k') && /[×÷]/.test(fitText(q.main) + fitText(q.text) + JSON.stringify(q.match || '') + (q.options || []).map((o) => fitText(o.html != null ? o.html : o.v)).join(' '))) return false;
   if (grade === 'prek') {
-    if (q.spell || q.fillIn || q.passageFill || q.order || q.puzzle) return false;
+    if (q.spell || q.fillIn || q.passageFill || q.puzzle) return false;
+    if (q.order && (q.order.pics || []).some((x) => fitWords(x).length)) return false;   // picture order is fine, word order is not
     if (q.letterPath && q.letterPath.words) return false;
     if (q.match && JSON.stringify(q.match).includes('m-word')) return false;
     if ((q.options || []).some((o) => readOnlyChoice(o, 1))) return false;
@@ -62,7 +63,9 @@ function gradeFits(q, grade, catId) {
     return true;
   }
   if (grade === 'k') {
-    if (q.passageFill || q.order) return false;
+    if (q.passageFill) return false;
+    if (q.order && (q.order.pics || []).some((x) => fitWords(x).length > 0 && !K_READING.has(catId))) return false;
+    if (q.match && !K_READING.has(catId) && JSON.stringify(q.match).includes('m-word')) return false;
     // Kindergarten math works within 20 (phone numbers like 911 in other sections are fine)
     if (K_MATH.has(catId)) {
       const ns = fitNums(q.main).concat(fitNums(q.text), ...(q.options || []).map((o) => fitNums(o.html != null ? o.html : o.v)));
