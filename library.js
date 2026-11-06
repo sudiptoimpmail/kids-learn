@@ -7,7 +7,17 @@
    Books live in library/<id>/book.json with their pictures beside them.
    ========================================================= */
 const LIBRARY = ['red-riding-hood'];
-const LB = { book: null, page: -1, reading: false, auto: true, t0: 0, q: 0 };
+const LB = { book: null, page: -1, reading: false, auto: true, t0: 0, q: 0, readTimer: 0 };
+// Gentle non-musical sounds add suspense without replacing the recorded story.
+const LIB_SCENE_SYMBOLS = { wolf: '🌲', hurry: '🐾', knock: '🚪', disguise: '🌙', suspense: '👀', brave: '❤️', rescue: '☀️', safe: '🏡' };
+const LIB_SCENE_SOUNDS = {
+  rustle: [310, 245], footsteps: [195, 165], knock: [180, 180, 160],
+  sneak: [190, 155], heartbeat: [150, 130], rescue: [330, 465], celebrate: [470, 630]
+};
+function storySceneSound(kind) {
+  if (!state.voice || !LIB_SCENE_SOUNDS[kind]) return;
+  tone(LIB_SCENE_SOUNDS[kind], { type: 'sine', dur: 0.08, gap: 0.18, vol: 0.045 });
+}
 const libPath = (id, f) => `library/${id}/${f}`;
 const libBooks = new Map();
 async function loadBook(id) {
@@ -29,7 +39,7 @@ async function loadBook(id) {
   document.body.insertBefore(s, document.getElementById('play'));
 })();
 
-function stopReading() { LB.reading = false; sayToken++; stopClip(); $$('#libBody .w.on').forEach((w) => w.classList.remove('on')); }
+function stopReading() { clearTimeout(LB.readTimer); LB.readTimer = 0; LB.reading = false; sayToken++; stopClip(); $$('#libBody .w.on').forEach((w) => w.classList.remove('on')); }
 
 async function openLibrary() {
   stopReading(); LB.book = null;
@@ -74,9 +84,9 @@ function goPage(n) {
   if (n >= b.pages.length) return startQuestions();
   stopReading(); LB.page = n;
   const p = b.pages[n];
-  $('#libBody').innerHTML = `<div class="lib-page">
-      <div class="lib-art"><img src="${libPath(b.id, p.art)}" alt="" draggable="false"></div>
-      <div class="lib-text">${p.text.map((t, si) => `<p>${wordsHTML(t, si)}</p>`).join('')}</div>
+  $('#libBody').innerHTML = `<div class="lib-page" data-scene="${esc(p.scene || '')}">
+      <div class="lib-art"><img src="${libPath(b.id, p.art)}" alt="" draggable="false">${LIB_SCENE_SYMBOLS[p.scene] ? `<span class="lib-scene-symbol" aria-hidden="true">${LIB_SCENE_SYMBOLS[p.scene]}</span>` : ''}</div>
+      <div class="lib-text">${p.text.map((t, si) => `<p class="${/^["“]/.test(t) ? 'lib-dialogue' : /^The End/.test(t) ? 'lib-the-end' : ''}">${wordsHTML(t, si)}</p>`).join('')}</div>
       <div class="lib-nav">
         <button class="nav-btn" data-a="prev" aria-label="Previous page">◀</button>
         <span class="lib-count">${n + 1} / ${b.pages.length}</span>
@@ -88,7 +98,11 @@ function goPage(n) {
   $('[data-a="again"]').onclick = () => { sfx.tap(); readPage(); };
   $$('#libBody .w').forEach((w) => (w.onclick = (e) => { e.stopPropagation(); stopReading(); w.classList.add('on'); say(w.textContent.replace(/[^A-Za-z']/g, '')); setTimeout(() => w.classList.remove('on'), 900); }));
   swipe($('#libBody .lib-page'), () => goPage(n + 1), () => goPage(n - 1));
-  if (LB.auto) setTimeout(readPage, 350);
+  storySceneSound(p.sound);
+  // A short suspense beat before the recorded voice, cancelled on every page turn.
+  if (LB.auto) LB.readTimer = setTimeout(() => {
+    if (LB.book === b && LB.page === n && document.querySelector('#library.active')) readPage();
+  }, p.sound ? 850 : 350);
 }
 
 // read the page aloud: one recording per sentence, words lit in time with it

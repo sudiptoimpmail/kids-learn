@@ -1206,14 +1206,33 @@ function syncPlayMode() {
   $$('.rounds-only').forEach((x) => (x.hidden = hourly));
 }
 $('#playMode').onchange = syncPlayMode;
+/* Grown-up difficulty controls: hide individual levels until requested.
+   Learning activity settings and Brain Games are separate; arcade is excluded. */
+function renderLevelSettings() {
+  const learning = visibleGames().filter(c=>c.gen&&c.id!=='mix'&&c.id!=='check'&&!!gradeRange(state.grade,c.id));
+  $('#levels').innerHTML = learning.map(c=>{
+    const range = openRange(c.id) || [1,maxLevelOf(c.id)], current=levelOf(c.id);
+    return `<label class="lvrow">${c.icon} ${esc(c.title)}<select data-id="${c.id}" aria-label="${esc(c.title)} learning level">${Array.from({length:range[1]-range[0]+1},(_,i)=>range[0]+i).map(l=>`<option value="${l}" ${current===l?'selected':''}>Level ${l}</option>`).join('')}</select></label>`;
+  }).join('');
+  const brain = typeof GAMES === 'undefined' ? [] :
+    GAMES.filter(g=>BRAIN_GAME_IDS.has(g.id)&&!!gameRange(g.id));
+  $('#brainLevels').innerHTML = brain.map(g=>{
+    const range=gameRange(g.id),current=GL(g.id);
+    return `<label class="lvrow">${typeof g.icon==='string'&&g.icon.length<=3?g.icon:'🧩'} ${esc(g.title)}<select data-brain-id="${g.id}" aria-label="${esc(g.title)} brain game level">${Array.from({length:range[1]-range[0]+1},(_,i)=>range[0]+i).map(l=>`<option value="${l}" ${current===l?'selected':''}>Level ${l}</option>`).join('')}</select></label>`;
+  }).join('');
+  const gradeDifficulty = typeof gradeRelativeDifficulty === 'function' ? gradeRelativeDifficulty : ()=> '—';
+  $('#settingsLearningSummary').textContent =
+    'Overall challenge '+gradeDifficulty(learning.map(c=>({level:levelOf(c.id),range:openRange(c.id)})))+' · '+learning.length+' activities';
+  $('#settingsBrainSummary').textContent =
+    'Overall challenge '+gradeDifficulty(brain.map(g=>({level:GL(g.id),range:gameRange(g.id)})))+' · '+brain.length+' games';
+}
 function renderGrades() {
   $('#gradeBtns').innerHTML = Object.entries(GRADES).map(([k, g]) =>
     `<button class="grade-btn ${state.grade === k ? 'on' : ''}" data-g="${k}">${gradeName(k)}</button>`).join('');
   $$('#gradeBtns .grade-btn').forEach((b) => (b.onclick = () => {
     sfx.tap(); state.grade = b.dataset.g; state.levels = {}; state.progressionStreaks = {};
     Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = gradeStart(r))); save();
-    renderGrades();
-    $$('#levels select').forEach((sel) => (sel.value = levelOf(sel.dataset.id)));
+    renderGrades(); renderLevelSettings();
   }));
   $('#placeBtn').hidden = !state.grade;
 }
@@ -1226,8 +1245,7 @@ function openSettings() {
   $('#countrySel').value = countryCode();
   fillRegions();
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !state.hideClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
-  $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen && c.id !== 'placement').map((c) =>
-    `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
+  renderLevelSettings();
   renderTestBrowser();
   // This section is accessible only after the parent PIN. No child-facing paywall.
   ContentPacks.load().then(() => {
@@ -1359,6 +1377,19 @@ function collectSettings() {
       delete state.progressionStreaks[id];
     state.levels[id] = level;
   });
+  // Game challenge levels are NOT academic mastery and are only adjustable for Brain Games.
+  $$('#brainLevels select').forEach(sel => {
+    const id = sel.dataset.brainId, level = Number(sel.value);
+    const range = gameRange(id);
+    if (!range || !Number.isInteger(level) || level < range[0] || level > range[1]) return;
+    const current=GL(id);
+    if (level===current) return;
+    if (id==='sudoku') { state.sdkLevel=level; state.sdkWins=0; }
+    else {
+      state.gameLv=state.gameLv||{};state.gameWins=state.gameWins||{};
+      state.gameLv[id]=level;state.gameWins[id]=0;
+    }
+  });
   save();
 }
 // every change saves right away (no Save button); typing the name saves a moment after the last key
@@ -1380,8 +1411,17 @@ function switchKid(id) {
 function openWho() {
   const kids = Store.kids();
   $('#whoGrid').innerHTML = kids.map((k) => `<button class="who-kid ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}">
-    <span class="who-av">${esc(k.avatar || '🦄')}</span><b>${esc(k.name || 'Player')}</b><small>${k.grade ? gradeName(k.grade) : ''}</small></button>`).join('');
-  $$('#whoGrid .who-kid').forEach((b) => (b.onclick = () => { sfx.tap(); switchKid(b.dataset.id); $('#whoSheet').hidden = true; say("Let's play!"); }));
+    <span class="who-av">${esc(k.avatar || '🦄')}</span><b>${esc(k.name || 'Player')}</b><small>${k.grade ? gradeName(k.grade) : ''}</small></button>`).join('')
+    + (kids.length < MAX_KIDS ? '<button class="who-kid who-add" data-add="1" type="button"><span class="who-av">＋</span><b>Add another child</b><small>Grown-up PIN required</small></button>' : '');
+  $$('#whoGrid .who-kid').forEach((b) => (b.onclick = () => {
+    sfx.tap();
+    if (b.dataset.add) {
+      $('#whoSheet').hidden = true;
+      askPin(() => { openSettings(); $('#kidChips [data-add]')?.click(); });
+      return;
+    }
+    switchKid(b.dataset.id); $('#whoSheet').hidden = true; say("Let's play!");
+  }));
   $('#whoSheet').hidden = false;
 }
 $('#kidBtn').onclick = () => { sfx.tap(); if (Store.kids().length > 1) openWho(); else askPin(() => { openSettings(); setTimeout(() => $('.kids-field').scrollIntoView({ block: 'center' }), 50); }); };
@@ -1448,6 +1488,8 @@ $('#startBtn').onclick = () => {
   tone([1, 1], { vol: 0.001 });
   try { sessionStorage.setItem('learnplay.started', '1'); } catch {}
   $('#splash').classList.add('gone');
+  // First run must be parent-led. Never expose the ungraded catalog behind a delayed sheet.
+  if (typeof window.welcomeIfNeeded === 'function' && window.welcomeIfNeeded()) return;
   if (Store.kids().length > 1) openWho(); else say('Hi! Pick a game!');
 };
 
@@ -1456,16 +1498,30 @@ renderHome();
 // A service-worker upgrade can reload this tab; never ask the child to press Let's Play twice.
 try { if (sessionStorage.getItem('learnplay.started') === '1') $('#splash').classList.add('gone'); } catch {}
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  let restartApproved = false;
   navigator.serviceWorker.register('sw.js').then((reg) => {
-    // a new version waits until she is on the home screen (never mid-game), then the app reloads into it
-    const tryUpdate = () => { if (reg.waiting && $('#splash').classList.contains('gone') && $('#home').classList.contains('active') && !document.querySelector('.time-up:not([hidden])')) reg.waiting.postMessage({ type: 'update-now' }); };
-    reg.addEventListener('updatefound', () => { const w = reg.installing; if (w) w.addEventListener('statechange', () => w.state === 'installed' && tryUpdate()); });
-    setInterval(tryUpdate, 4000); tryUpdate();
+    // Do not change the page underneath a child who just tapped Play or began onboarding.
+    // The parent explicitly chooses when to activate an installed update.
+    const offerUpdate = () => {
+      if (!reg.waiting || document.getElementById('updateAvailable')) return;
+      const btn = document.createElement('button');
+      btn.id = 'updateAvailable'; btn.type = 'button'; btn.className = 'update-available';
+      btn.textContent = 'A new version is ready. Tap to restart when you are finished.';
+      btn.onclick = () => { restartApproved = true; btn.disabled = true; btn.textContent = 'Updating…'; reg.waiting.postMessage({ type: 'update-now' }); };
+      document.getElementById('home').appendChild(btn);
+    };
+    reg.addEventListener('updatefound', () => {
+      const worker = reg.installing;
+      if (worker) worker.addEventListener('statechange', () => { if (worker.state === 'installed') offerUpdate(); });
+    });
+    offerUpdate();
     // fetch any voice clips this phone doesn't have yet (after start-up, so the app opens fast)
     setTimeout(() => reg.active && reg.active.postMessage({ type: state.offlineAudio === 'full' ? 'fill-audio-all' : 'fill-audio' }), 8000);
   }).catch(() => {});
-  let hadController = !!navigator.serviceWorker.controller;
-  navigator.serviceWorker.addEventListener('controllerchange', () => { if (!hadController) { hadController = true; return; } location.reload(); });
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    // A newly claimed first controller must not reload Home; only an approved update may.
+    if (restartApproved) location.reload();
+  });
 }
 
 // quick placement check, started by a grown-up from Settings

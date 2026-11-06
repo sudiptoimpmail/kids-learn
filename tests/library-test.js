@@ -17,7 +17,20 @@ const SHOTS = (() => { const i = process.argv.indexOf('--shots'); return i > 0 ?
   assert.deepEqual(tiles, { prek: true, k: true, g1: false, g3: false }, 'Story Time should be for Pre-K and K');
   await p.evaluate(() => { state.grade = 'prek'; state.voice = true; state.stats = { days: {}, skills: {} }; renderHome(); });
   // 2. shelf → cover
-  await p.locator('#grid .tile[data-cat="library"]').click(); await p.waitForSelector('.lib-book');
+  await p.locator('#grid .tile[data-cat="library"]').click();
+  try { await p.waitForSelector('.lib-book', { timeout: 8000 }); }
+  catch (error) {
+    const diag = await p.evaluate(async () => {
+      let fetchResult;
+      try { const response = await fetch('library/red-riding-hood/book.json'); const data = response.ok ? await response.json() : null;
+        fetchResult = { status: response.status, pages: data?.pages?.length };
+      } catch (e) { fetchResult = String(e); }
+      return { grade: state.grade, activeScreens: [...document.querySelectorAll('.screen.active')].map(el=>el.id),
+        welcome: !!document.querySelector('#welcomeSheet'), libraryHTML: document.querySelector('#libBody')?.innerHTML.slice(0,800),
+        loading: document.querySelector('#loadStatus')?.textContent, fetchResult };
+    });
+    throw new Error('Story Time bookshelf did not become visible: '+JSON.stringify({diag,errors:errs,error:String(error)}));
+  }
   if (SHOTS) await p.screenshot({ path: SHOTS + '/0-shelf.png' });
   await p.locator('.lib-book').first().click(); await p.waitForSelector('.lib-cover');
   if (SHOTS) await p.screenshot({ path: SHOTS + '/1-cover.png' });
