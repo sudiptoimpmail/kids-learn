@@ -46,6 +46,9 @@ function genCountry(level) {
   }
   const q = mcQuestion('home', pickLevelled(countryRows(C), level), level);
   q.key += '-' + q.answer;     // one question text ("Which one is a state…?") has many answers
+  // Country content is editable JSON, but speech remains prerecorded.
+  // New/reviewed questions must not request an unavailable voice clip.
+  if (!CLIPS[clipKey(q.say)]) q.say = 'Find the answer!';
   return q;
 }
 
