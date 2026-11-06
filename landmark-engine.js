@@ -63,6 +63,17 @@ document.addEventListener('click', event => {
     box.classList.remove('lm-illustration');box.classList.add('lm-real-photo');
     box.querySelector('.lm-art-note')?.remove();
     button.textContent='Photo loaded (online)';button.disabled=true;
+    // Display attribution and a verifiable source link alongside the image.
+    if (!box.querySelector('.lm-photo-credit')) {
+      const credit=document.createElement('small');
+      credit.className='lm-photo-credit';
+      const link=document.createElement('a');
+      link.href=preview.sourceUrl;
+      link.target='_blank';link.rel='noopener noreferrer';
+      link.textContent='Photo source and license';
+      credit.append(document.createTextNode('Photo: '+preview.creator+' · '+preview.license+' · '),link);
+      box.append(credit);
+    }
   };
   image.src=remote;
   button.textContent='Loading photograph…';
