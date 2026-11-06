@@ -414,13 +414,13 @@ function sentenceHintMarks(s, q, answer) {
   const a = find(answer);
   return a.length ? a : find(q);
 }
-function genSentence(level) {
+function genSentence(level, authoredRow = null) {
   // 1st-grade workbook-style screens now and then: word box, read & fill, story order
-  if (level >= 3 && level <= 4 && Math.random() < 0.35 && typeof genGrade1Reading === 'function') return genGrade1Reading(level);
+  if (!authoredRow && level >= 3 && level <= 4 && Math.random() < 0.35 && typeof genGrade1Reading === 'function') return genGrade1Reading(level);
   const all = READING();
   // mostly this level, sometimes one level easier for a quick win
   const exact = all.filter((x) => x[2] === level), near = all.filter((x) => x[2] === level - 1);
-  const [s, qs, , printFirst, curriculumSkill] = pick(exact.length && (Math.random() < 0.8 || !near.length) ? exact : near.length ? near : all.filter((x) => x[2] <= level));
+  const [s, qs, , printFirst, curriculumSkill] = authoredRow || pick(exact.length && (Math.random() < 0.8 || !near.length) ? exact : near.length ? near : all.filter((x) => x[2] <= level));
   const [q, opts] = pick(qs);
   const words = s.split(' ').map((w, i) => `<span class="sw" data-i="${i}">${w}</span>`).join(' ');
   const long = s.length > 120 ? ' passage' : s.length > 60 ? ' long' : '';
