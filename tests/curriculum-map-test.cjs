@@ -115,7 +115,7 @@ for(const [bank,rows] of Object.entries(ext)){
     if(bank==='THINKING_SEQUENCES')assert.equal(route.section,'sequence');
   }
 }
-assert.equal(ids.size,115);
+assert.equal(ids.size,127);
 for(const grade of ['g2','g3']){
   assert.ok(map.PROFILES[grade].sections.sent.skills.length>=3,'Thin reading skills '+grade);
   assert.ok(map.PROFILES[grade].sections.sci.skills.length>=3,'Thin science skills '+grade);
