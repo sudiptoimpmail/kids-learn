@@ -287,6 +287,95 @@ function dailyGoalReached() {
   setTimeout(() => { confetti(200, 0.3); say("You finished today's goal! Super star!"); renderToday(); }, 2200);
 }
 
+/* Parent-readable grade expectations. These are broadly expected learning outcomes,
+   not a list of our app's section titles and not a certified curriculum assessment.
+   Internal categories are used ONLY to locate authentic practice evidence. */
+const GRADE_EXPECTATIONS = {
+  prek: [
+    { title:'Communication and listening', goal:'Listen to a short story, identify everyday words and hear rhymes.', cats:['phonics','syl','vocab','sent'], tip:'Tell a short story together and ask what happened first.' },
+    { title:'Letters and early writing', goal:'Notice letter shapes and sounds; begin tracing lines and letters.', cats:['trace','phonics'], tip:'Point to a letter, say its sound, then trace it together.' },
+    { title:'Counting and shapes', goal:'Count small groups, compare amounts and recognize common shapes.', cats:['add','sub','shape2','cmp','match'], tip:'Count five toys and find circles or squares around the room.' },
+    { title:'Patterns and reasoning', goal:'Sort objects, recognize repeating patterns and put events in order.', cats:['pattern','odd','sequence'], tip:'Make a red-blue pattern with household objects.' },
+    { title:'Body, nature and community', goal:'Name body parts, familiar animals and people who help us.', cats:['body','gk','jobs'], tip:'Name three body parts and discuss what each one does.' }
+  ],
+  k: [
+    { title:'Sounds and beginning reading', goal:'Connect letters and sounds; blend simple words and recognize common words.', cats:['phonics','cvc','sight'], tip:'Say c–a–t slowly, blend the sounds, then find a picture of a cat.' },
+    { title:'Stories and listening', goal:'Follow a short story and describe its characters and main events.', cats:['sent','vocab','sequence'], tip:'Read a short story and ask who, where and what happened.' },
+    { title:'Early writing and spelling', goal:'Form letters and begin writing or building short words.', cats:['trace','spell','cvc'], tip:'Build and write two simple words using letter tiles.' },
+    { title:'Numbers and geometry', goal:'Count and compare to 20, model simple addition or subtraction and identify shapes.', cats:['add','sub','shape2','cmp','match'], tip:'Use ten counters to show a small addition problem.' },
+    { title:'Patterns and exploration', goal:'Continue patterns, sort by properties and describe the surrounding world.', cats:['pattern','odd','gk','animals','maps'], tip:'Sort toys by one attribute, then try a different rule.' }
+  ],
+  g1: [
+    { title:'Reading and understanding', goal:'Decode age-appropriate words and understand short stories and sentences.', cats:['phonics','cvc','sight','w4','sent'], tip:'Read a short passage together and retell it in order.' },
+    { title:'Writing and language', goal:'Spell familiar words, build complete sentences and use new vocabulary.', cats:['spell','words','vocab'], tip:'Write a sentence about today and read it aloud.' },
+    { title:'Addition and place value', goal:'Add and subtract with models, solve simple word problems and explain tens and ones.', cats:['add','sub','numsense','story'], tip:'Show 24 with two groups of ten and four loose objects.' },
+    { title:'Shapes and time', goal:'Describe shapes, use measurements and begin telling time.', cats:['clock','shape2','match'], tip:'Find an analog clock and describe where its hands point.' },
+    { title:'Science and society', goal:'Observe living things, ask questions and understand basic community roles.', cats:['sci','home','gk','jobs'], tip:'Look at a plant and describe two changes you notice.' }
+  ],
+  g2: [
+    { title:'Reading comprehension', goal:'Identify the main idea, retell details and support answers with the text.', cats:['sent','words','vocab'], tip:'Ask your child to point to the sentence that supports an answer.' },
+    { title:'Writing and language', goal:'Write clearer sentences, spell patterns and use punctuation appropriately.', cats:['spell','gp','words'], tip:'Write three sentences, then find a place to improve one.' },
+    { title:'Numbers and problem solving', goal:'Use place value and addition/subtraction strategies to solve word problems.', cats:['add','sub','numsense','story'], tip:'Solve a two-digit problem using drawings or tens and ones.' },
+    { title:'Fractions, groups and measurement', goal:'Represent equal groups, simple fractions, lengths, clocks and data.', cats:['mul','div','frac','measure','clock'], tip:'Divide paper into equal parts and explain the fraction.' },
+    { title:'Science and communities', goal:'Make observations, describe cause and effect, use maps and understand community choices.', cats:['sci','community','region','maps'], tip:'Make a prediction, observe the result and discuss the evidence.' }
+  ],
+  g3: [
+    { title:'Reading and evidence', goal:'Compare texts, find key ideas and explain answers using evidence.', cats:['sent','words','vocab'], tip:'Compare two short texts and explain one important difference.' },
+    { title:'Written expression', goal:'Build connected paragraphs and edit spelling, grammar and punctuation.', cats:['spell','gp','words'], tip:'Write a short paragraph and revise one sentence for clarity.' },
+    { title:'Multiplication and division', goal:'Use multiplication/division relationships and solve multistep problems.', cats:['mul','div','story','numsense'], tip:'Draw an array and write a multiplication and division fact.' },
+    { title:'Fractions and measurement', goal:'Compare fractions and solve time, area, perimeter and measurement problems.', cats:['frac','measure','clock','shape2'], tip:'Measure a rectangle and explain its perimeter and area.' },
+    { title:'Inquiry and understanding society', goal:'Explain scientific observations, maps and community decisions using evidence.', cats:['sci','community','region','maps'], tip:'Ask a question, gather two observations and explain your conclusion.' }
+  ]
+};
+function gradeExpectationEvidence(grade, expectation, stats) {
+  const records = Object.entries(stats.skills || {}).flatMap(([key, record]) => {
+    const [cat, raw] = key.split(':'), lv = Number(raw), range = gradeRange(grade, cat);
+    if (!expectation.cats.includes(cat) || !range || !Number.isInteger(lv) || lv < range[0] || lv > range[1] || !record) return [];
+    const recent = String(record.recent || '').slice(-12);
+    return [{ count:recent.length, independent:[...recent].filter(x=>x==='1').length, days:record.days||[] }];
+  });
+  const count = records.reduce((n, r) => n + r.count, 0);
+  const independent = records.reduce((n, r) => n + r.independent, 0);
+  const days = new Set(records.flatMap(r=>r.days)).size;
+  // No recorded response is NOT evidence that a child lacks the skill.
+  let label = 'Not observed yet', kind = 'unseen';
+  if (count > 0) { label='Getting started'; kind='starting'; }
+  if (count >= 8 && days >= 2) {
+    if (independent/count >= .85) { label='Doing well in practice'; kind='strong'; }
+    else if (independent/count < .7) { label='Needs more practice'; kind='support'; }
+    else { label='Making progress'; kind='progress'; }
+  }
+  return { ...expectation, label, kind, count, independent, days };
+}
+function renderGradeExpectations(stats, childName) {
+  const grade = state.grade;
+  const expectations = (GRADE_EXPECTATIONS[grade] || []).map(e=>gradeExpectationEvidence(grade,e,stats));
+  const practiced = expectations.filter(e=>e.count>0), strong = expectations.filter(e=>e.kind==='strong');
+  const next = expectations.find(e=>e.kind==='support') ||
+    expectations.find(e=>e.kind==='starting') || expectations.find(e=>e.kind==='unseen') ||
+    expectations.find(e=>e.kind==='progress') || expectations[0];
+  const panel = $('#dashGrade');
+  if (!expectations.length) { panel.innerHTML='<p>Choose a grade to see expected learning skills.</p>'; return; }
+  const firstName = childName || 'Your child';
+  panel.innerHTML = `<header class="dash-grade-header"><div>
+    <h2>Expected skills for ${esc(gradeName(grade))}</h2>
+    <p>What children generally work toward at this grade — not a list of app games.</p></div>
+    <div class="dash-grade-count"><b>${practiced.length} of ${expectations.length}</b><small>skill areas practiced in the app</small></div></header>
+    <p class="dash-evidence-note">These labels describe <b>activity in this app only</b>. A child's grade-level ability also needs reading, writing, discussion and real-world observation. “Not observed” does not mean “cannot do.”</p>
+    <div class="dash-grade-list">${expectations.map((row,i)=>`<article class="dash-grade-item" data-grade-skill="${i}">
+      <div class="dash-grade-row"><h3>${esc(row.title)}</h3><span class="dash-grade-status ${row.kind}">${row.label}</span></div>
+      <p>${esc(row.goal)}</p>${row.count ? `<small>${row.count} recent app answers · ${row.independent} independently correct</small>` : '<small>Not enough recorded practice to assess this area.</small>'}
+    </article>`).join('')}</div>
+    <div class="dash-next-habit"><b>Try together next</b><p>${esc(next ? next.tip : 'Read, count or explore something together each day.')}</p></div>`;
+  $('#dashWeekSummary').textContent = `${practiced.length} skill area${practiced.length===1?'':'s'} practiced · ${strong.length} showing strong app practice`;
+}
+function gradeRelativeDifficulty(entries) {
+  const values=entries.filter(x=>x.range&&x.range[1]>=x.range[0]).map(x=>
+    x.range[1]===x.range[0] ? 0 : (x.level-x.range[0])/(x.range[1]-x.range[0]));
+  if (!values.length) return 'Not set';
+  return Math.min(5,Math.max(1,1+Math.round(4*values.reduce((a,b)=>a+b,0)/values.length)))+'/5';
+}
+
 /* ---------- grown-ups: progress dashboard ---------- */
 let dashFrom = 'settings';   // where ‹ goes back to
 function openDashboard(from = 'settings') {
