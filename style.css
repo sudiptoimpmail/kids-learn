@@ -1440,3 +1440,22 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .match-area .m-pic svg.clock { width: 84px; height: 84px; }
 .g1-pic-btn.given { pointer-events: none; }
 @media (min-width: 700px) { .m-sum { font-size: 30px; } .m-sum > span { max-width: 140px; } .match-area .m-pic svg.clock { width: 104px; height: 104px; } }
+
+/* first run: who's playing */
+.welcome-box { width: min(560px, 92vw); max-width: 560px; display: grid; gap: 14px; text-align: center; }
+.wel-name { display: flex; gap: 10px; align-items: center; justify-content: center; font-weight: 700; }
+.wel-name input { font: inherit; font-size: 20px; padding: 10px 14px; border-radius: 14px; border: 2px solid #d9d2f2; width: 12em; max-width: 60vw; }
+.wel-ask { margin: 4px 0 0; font-weight: 700; color: #6b5f8f; }
+.wel-grades { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.wel-grade { display: grid; gap: 2px; padding: 16px 10px; border-radius: 18px; border: 0; background: #f1ecff; color: #2b2140; font: inherit; cursor: pointer; min-height: 72px; }
+.wel-grade b { font-size: 18px; white-space: nowrap; } .wel-grade small { color: #6b5f8f; }
+.wel-grade:focus-visible, .wel-grade:hover { outline: 3px solid #8f6bff; }
+.wel-btns { flex-wrap: wrap; justify-content: center; }
+/* quest: one obvious next step */
+.quest-go { display: block; width: 100%; margin: 8px 0 10px; padding: 16px; border: 0; border-radius: 18px; background: #fff; color: #4b2fc2; font-family: inherit; font-weight: 800; font-size: 22px; line-height: 1.2; box-shadow: 0 4px 0 rgba(0,0,0,.15); cursor: pointer; }
+.quest-go:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,.15); }
+.quest-done { margin: 8px 0 10px; padding: 12px 14px; border-radius: 16px; background: rgba(255,255,255,.18); color: #fff; font-size: 17px; }
+.quest-done span { display: block; font-size: 14px; opacity: .9; margin-top: 2px; }
+.gift-learned { font-weight: 700; }
+/* zero: an empty dashed circle, not a math symbol */
+.none-pic { display: inline-block; width: 1.1em; height: 1.1em; border: 3px dashed #b9a9e6; border-radius: 50%; vertical-align: middle; }

@@ -63,9 +63,10 @@ const {chromium}=require('playwright');
    check(document.querySelector('#dashSkills').textContent.includes('0 of '+g3.length),
      'Grade 2 attempts counted toward Grade 3 coverage');
    state.grade='prek';state.levels={};renderDashboard();
+   // Pre-K has no tagged practice goals: the panel is simply not shown (no developer wording for parents)
    check(!document.querySelector('#dashExploreObjective') &&
-     document.querySelector('#dashSkills').textContent.includes('game-level progress'),
-     'Untitled Pre-K questions were presented as authored objectives');
+     !document.querySelector('#dashSkills').textContent.includes('Practice goals tried'),
+     'Untitled Pre-K questions were presented as practice goals');
    return {failures,grade2Catalog:g2.length,grade3Catalog:g3.length,focus,cat};
   });
   assert.deepEqual(report.failures,[],JSON.stringify(report.failures,null,2));
