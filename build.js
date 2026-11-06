@@ -65,7 +65,7 @@ function renderBuild(q) {
       <div class="bld-ctrls"><span class="bld-pair">${btn('r-', '−')}<b>rows ${st.r}</b>${btn('r+', '+')}</span><span class="bld-pair">${btn('c-', '−')}<b>in each row ${st.c}</b>${btn('c+', '+')}</span></div>`;
     if (B.kind === 'fraction') wrap.innerHTML = B.shape === 'bar'
       ? `<div class="bld-bar">${Array.from({ length: B.b }, (_, i) => `<button class="fr-part${st.parts.has(i) ? ' on' : ''}" data-i="${i}" aria-label="part ${i + 1}"></button>`).join('')}</div>`
-      : `<svg class="bld-pie" viewBox="-110 -110 220 220">${Array.from({ length: B.b }, (_, i) => { const a0 = (i / B.b) * 2 * Math.PI - Math.PI / 2, a1 = ((i + 1) / B.b) * 2 * Math.PI - Math.PI / 2;
+      : `<div class="bld-fr-choices" aria-label="Choose which fraction parts to color">${Array.from({ length: B.b }, (_, i) => `<button type="button" class="fr-part bld-fr-choice${st.parts.has(i) ? ' on' : ''}" data-i="${i}" aria-label="Color part ${i+1}" aria-pressed="${st.parts.has(i)}">${i+1}</button>`).join('')}</div><svg class="bld-pie" viewBox="-110 -110 220 220">${Array.from({ length: B.b }, (_, i) => { const a0 = (i / B.b) * 2 * Math.PI - Math.PI / 2, a1 = ((i + 1) / B.b) * 2 * Math.PI - Math.PI / 2;
           return `<path class="fr-part${st.parts.has(i) ? ' on' : ''}" data-i="${i}" d="M0 0L${100 * Math.cos(a0)} ${100 * Math.sin(a0)}A100 100 0 ${B.b === 1 ? 1 : 0} 1 ${100 * Math.cos(a1)} ${100 * Math.sin(a1)}Z"/>`; }).join('')}</svg>`;
     if (B.kind === 'clock') wrap.innerHTML = `${clockSVG(st.ch, st.cm, 'clock bld-clock')}
       <div class="bld-ctrls"><span class="bld-pair">${btn('ch-', '−')}<b>hour hand</b>${btn('ch+', '+')}</span>${B.step < 60 ? `<span class="bld-pair">${btn('cm-', '−')}<b>minute hand</b>${btn('cm+', '+')}</span>` : ''}</div>`;
