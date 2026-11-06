@@ -362,7 +362,11 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
     // Never repeat an identical question in one round, even after exhausting
     // retries. Return a shorter round rather than teaching the same card twice.
     if (seen.has(q.key) || seenContent.has(contentId)) continue;
-    if (!browse && catId !== 'placement' && guard < 350 && (recent.has(q.key) || recentContent.has(contentId))) continue;
+    // A scheduled review never overrides recent-question protection, even when
+    // the ordinary random generator has exhausted its retry budget.
+    if (!browse && catId !== 'placement' &&
+        (reviewedQuestion || guard < 350) &&
+        (recent.has(q.key) || recentContent.has(contentId))) continue;
     // Every delivered question carries its permitted grade set. Explicit per-item
     // restrictions may narrow it further; never surface an older-grade card in Pre-K.
     const eligibleGrades = Object.keys(GRADES).filter(grade => {
@@ -372,7 +376,7 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
     q.grades = Array.isArray(q.grades) ? q.grades.filter(g => eligibleGrades.includes(g)) : eligibleGrades;
     if (!browse && state.grade && !state.showAll && !q.grades.includes(state.grade)) continue;
     seen.add(q.key); seenContent.add(contentId); q.cat = c; q.level = lv; qs.push(q);
-    if (reviewedQuestion === q) reviewed++;
+    if (reviewedQuestion === q) { reviewed++; q.reviewScheduled = true; }
   }
   if (!browse && !isTestMode() && catId !== 'placement') {
     state.recent[cat.id] = [...(state.recent[cat.id] || []), ...qs.map((q) => q.key)].slice(-60);
