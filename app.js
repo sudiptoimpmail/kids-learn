@@ -446,6 +446,8 @@ function renderQ() {
   if (isTestMode()) $('#qText').insertAdjacentHTML('beforeend', `<div class="test-ans">🧪 ${String(q.answer)}</div>`);
   if (q.spell) renderSpell(q);
   if (q.body3d) mountBody3D(q);
+  if (q.key?.startsWith('ana-') && $('#qMain .organ-fig') && typeof organExplorer === 'function')
+    $('#qMain').insertAdjacentHTML('beforeend',organExplorer());
   if (q.illustrated && typeof IllustratedActivities !== 'undefined') {
     IllustratedActivities.mount(q, $('#qMain'), {
       choose: (value, element) => choose(q, value, element),
