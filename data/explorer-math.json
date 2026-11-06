@@ -1056,6 +1056,490 @@
         "answer": "2 miles",
         "explanation": "Jules biked 12 miles; 12 − 10 = 2.",
         "verification": {"kind":"arithmetic","expression":"3+5+4-10"}
+      },
+      {
+        "id": "g2-array-garden",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Arrays",
+        "context": "A garden club places seedlings in rows. Every dot represents one seedling.",
+        "prompt": "How many seedlings are shown altogether?",
+        "choices": [
+          "18 seedlings",
+          "9 seedlings",
+          "12 seedlings",
+          "24 seedlings"
+        ],
+        "answer": "18 seedlings",
+        "explanation": "Three rows of six make 3 × 6 = 18 seedlings.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "3*6"
+        },
+        "visual": {
+          "kind": "array",
+          "rows": 3,
+          "columns": 6
+        }
+      },
+      {
+        "id": "g2-array-art",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Equal groups",
+        "context": "Markers are arranged in equal rows for an art lesson. Each dot is one marker.",
+        "prompt": "How many markers are on the table?",
+        "choices": [
+          "20 markers",
+          "9 markers",
+          "16 markers",
+          "25 markers"
+        ],
+        "answer": "20 markers",
+        "explanation": "Four groups of five make 4 × 5 = 20 markers.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "4*5"
+        },
+        "visual": {
+          "kind": "array",
+          "rows": 4,
+          "columns": 5
+        }
+      },
+      {
+        "id": "g2-array-cookies",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Arrays",
+        "context": "A baker arranges cookies in two equal rows. Each dot is a cookie.",
+        "prompt": "How many cookies are shown?",
+        "choices": [
+          "16 cookies",
+          "10 cookies",
+          "12 cookies",
+          "18 cookies"
+        ],
+        "answer": "16 cookies",
+        "explanation": "There are two rows of eight: 2 × 8 = 16.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "2*8"
+        },
+        "visual": {
+          "kind": "array",
+          "rows": 2,
+          "columns": 8
+        }
+      },
+      {
+        "id": "g2-strip-pizza",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Fractions",
+        "context": "The strip is divided into equal parts. The blue parts show the portion of a pizza eaten.",
+        "prompt": "What fraction of the whole strip is blue?",
+        "choices": [
+          "3/4",
+          "1/4",
+          "2/4",
+          "4/4"
+        ],
+        "answer": "3/4",
+        "explanation": "Three of four equal parts are blue, giving 3/4.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "3/4"
+        },
+        "visual": {
+          "kind": "fraction-strip",
+          "parts": 4,
+          "shaded": 3
+        }
+      },
+      {
+        "id": "g2-strip-ribbon",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Fractions",
+        "context": "A ribbon is divided into three equal lengths. The blue pieces were used for a project.",
+        "prompt": "What fraction of the ribbon is blue?",
+        "choices": [
+          "2/3",
+          "1/3",
+          "3/3",
+          "1/2"
+        ],
+        "answer": "2/3",
+        "explanation": "Two of three equal pieces are blue: 2/3.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "2/3"
+        },
+        "visual": {
+          "kind": "fraction-strip",
+          "parts": 3,
+          "shaded": 2
+        }
+      },
+      {
+        "id": "g2-line-skip-count",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Number line",
+        "context": "Each small step on the number line counts forward by two.",
+        "prompt": "Which number is marked by the blue point?",
+        "choices": [
+          "14",
+          "12",
+          "16",
+          "18"
+        ],
+        "answer": "14",
+        "explanation": "Starting at zero, seven steps of two reach 14.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "14"
+        },
+        "visual": {
+          "kind": "number-line",
+          "start": 0,
+          "end": 20,
+          "step": 2,
+          "mark": 14
+        }
+      },
+      {
+        "id": "g2-line-measure",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Measurement",
+        "context": "The number line marks equal jumps of five.",
+        "prompt": "What number is at the blue point?",
+        "choices": [
+          "25",
+          "20",
+          "15",
+          "30"
+        ],
+        "answer": "25",
+        "explanation": "Five jumps of five from zero reach 25.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "25"
+        },
+        "visual": {
+          "kind": "number-line",
+          "start": 0,
+          "end": 30,
+          "step": 5,
+          "mark": 25
+        }
+      },
+      {
+        "id": "g2-graph-reading",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Graphs",
+        "context": "The bar graph records pages read by three students on Monday, Tuesday, and Wednesday. Each bar shows that day's total.",
+        "prompt": "How many more pages were read Tuesday than Monday?",
+        "choices": [
+          "5 pages",
+          "3 pages",
+          "8 pages",
+          "21 pages"
+        ],
+        "answer": "5 pages",
+        "explanation": "Tuesday is 13 and Monday is 8; 13 − 8 = 5.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "13-8"
+        },
+        "visual": {
+          "kind": "bar-graph",
+          "labels": [
+            "Mon",
+            "Tue",
+            "Wed"
+          ],
+          "values": [
+            8,
+            13,
+            10
+          ],
+          "compare": [
+            1,
+            0
+          ]
+        }
+      },
+      {
+        "id": "g3-array-tiles",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Multiplication",
+        "context": "A school covers a rectangular display with square tiles. Each dot represents one tile.",
+        "prompt": "How many tiles cover the display?",
+        "choices": [
+          "56 tiles",
+          "15 tiles",
+          "48 tiles",
+          "64 tiles"
+        ],
+        "answer": "56 tiles",
+        "explanation": "Seven rows of eight tiles make 7 × 8 = 56.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "7*8"
+        },
+        "visual": {
+          "kind": "array",
+          "rows": 7,
+          "columns": 8
+        }
+      },
+      {
+        "id": "g3-array-display",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Arrays",
+        "context": "An art exhibit displays photos in an array, with one photo at each dot.",
+        "prompt": "How many photos are displayed?",
+        "choices": [
+          "54 photos",
+          "15 photos",
+          "48 photos",
+          "63 photos"
+        ],
+        "answer": "54 photos",
+        "explanation": "Six rows of nine make 6 × 9 = 54 photos.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "6*9"
+        },
+        "visual": {
+          "kind": "array",
+          "rows": 6,
+          "columns": 9
+        }
+      },
+      {
+        "id": "g3-strip-quilt",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Fractions",
+        "context": "A quilt border is shown as eight equal sections. Blue means already sewn.",
+        "prompt": "Which fraction of the border is blue?",
+        "choices": [
+          "6/8",
+          "2/8",
+          "3/8",
+          "7/8"
+        ],
+        "answer": "6/8",
+        "explanation": "Six out of eight equal sections are blue: 6/8.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "6/8"
+        },
+        "visual": {
+          "kind": "fraction-strip",
+          "parts": 8,
+          "shaded": 6
+        }
+      },
+      {
+        "id": "g3-strip-plants",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Fractions",
+        "context": "A planter is divided into six equal sections. Each blue section contains flowers.",
+        "prompt": "Which fraction of the sections contains flowers?",
+        "choices": [
+          "5/6",
+          "1/6",
+          "4/6",
+          "6/6"
+        ],
+        "answer": "5/6",
+        "explanation": "Five of six equal sections are blue: 5/6.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "5/6"
+        },
+        "visual": {
+          "kind": "fraction-strip",
+          "parts": 6,
+          "shaded": 5
+        }
+      },
+      {
+        "id": "g3-line-tenfold",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Place value",
+        "context": "A number line counts by tens from zero to one hundred.",
+        "prompt": "Which number does the blue dot represent?",
+        "choices": [
+          "70",
+          "60",
+          "80",
+          "90"
+        ],
+        "answer": "70",
+        "explanation": "Seven jumps of ten make 70.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "70"
+        },
+        "visual": {
+          "kind": "number-line",
+          "start": 0,
+          "end": 100,
+          "step": 10,
+          "mark": 70
+        }
+      },
+      {
+        "id": "g3-line-fivefold",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Number line",
+        "context": "The number line uses equal steps of five.",
+        "prompt": "Which number is marked by the blue dot?",
+        "choices": [
+          "45",
+          "40",
+          "50",
+          "55"
+        ],
+        "answer": "45",
+        "explanation": "Nine steps of five give 45.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "45"
+        },
+        "visual": {
+          "kind": "number-line",
+          "start": 0,
+          "end": 60,
+          "step": 5,
+          "mark": 45
+        }
+      },
+      {
+        "id": "g3-graph-bicycle",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Data",
+        "context": "A chart shows the miles a group cycled on three days.",
+        "prompt": "How many more miles did the group ride Tuesday than Monday?",
+        "choices": [
+          "6 miles",
+          "3 miles",
+          "12 miles",
+          "30 miles"
+        ],
+        "answer": "6 miles",
+        "explanation": "Tuesday is 18 and Monday is 12, so 18 − 12 = 6.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "18-12"
+        },
+        "visual": {
+          "kind": "bar-graph",
+          "labels": [
+            "Mon",
+            "Tue",
+            "Wed"
+          ],
+          "values": [
+            12,
+            18,
+            15
+          ],
+          "compare": [
+            1,
+            0
+          ]
+        }
+      },
+      {
+        "id": "g3-graph-library",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Data",
+        "context": "A library chart shows books collected by three classes.",
+        "prompt": "How many more books did class A collect than class B?",
+        "choices": [
+          "8 books",
+          "4 books",
+          "12 books",
+          "40 books"
+        ],
+        "answer": "8 books",
+        "explanation": "Class A is 24 and B is 16; 24 − 16 = 8.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "24-16"
+        },
+        "visual": {
+          "kind": "bar-graph",
+          "labels": [
+            "A",
+            "B",
+            "C"
+          ],
+          "values": [
+            24,
+            16,
+            20
+          ],
+          "compare": [
+            0,
+            1
+          ]
+        }
       }
     ]
   }
