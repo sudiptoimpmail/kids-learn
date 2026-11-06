@@ -4,7 +4,7 @@ const get = name => JSON.parse(fs.readFileSync('data/'+name+'.json','utf8')).dat
 const ext=get('grade23-extension'),science=get('science'),core=get('content'),
   stories=get('stories'),upper=get('upper-grade-stories'),thinking=get('thinking');
 assert.equal(Object.keys(ext).sort().join(','),'GK,SCIENCE,STORIES,THINKING_ODD,THINKING_SEQUENCES');
-const sizes={SCIENCE:40,GK:20,THINKING_ODD:20,THINKING_SEQUENCES:20,STORIES:15};
+const sizes={SCIENCE:40,GK:20,THINKING_ODD:20,THINKING_SEQUENCES:20,STORIES:27};
 for(const [kind,count] of Object.entries(sizes))assert.equal(ext[kind].length,count,kind+' row count');
 for(const kind of ['GK','SCIENCE']){
  const prior = new Set((kind==='GK'?core.GK:science.SCIENCE).map(r=>r[1].trim().toLowerCase()));
@@ -41,5 +41,5 @@ for(const [kind,existing] of [['THINKING_ODD',thinking.THINKING_ODD],['THINKING_
  }
 }
 const total=Object.values(ext).reduce((sum,rows)=>sum+rows.length,0);
-assert.equal(total,115);
-console.log('PASS 115 new Grade 2–3 learning items, 45 comprehension questions, no duplicate choices or existing scenario IDs');
+assert.equal(total,127);
+console.log('PASS 127 Grade 2–3 learning items, 81 comprehension questions, no duplicate choices or existing scenario IDs');
