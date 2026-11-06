@@ -5,6 +5,7 @@ const fs=require('node:fs');
 const {chromium}=require('playwright');
 const landmarks=JSON.parse(fs.readFileSync('data/landmarks.json','utf8')).datasets;
 const catalog=landmarks.LANDMARKS,descriptions=landmarks.MEDIA_DESCRIPTIONS;
+const shippedPhotos=new Set(JSON.parse(fs.readFileSync('data/landmark-photos.json','utf8')).datasets.ids);
 assert.equal(catalog.length,39);
 assert.deepEqual(Object.keys(descriptions).sort(),catalog.map(x=>x[0]).sort(),
  'Every landmark needs one authored descriptive alt');
@@ -28,7 +29,7 @@ for(const [id,name,country,city] of catalog){
   await page.goto('http://localhost:8765/index.html');
   await page.waitForFunction(()=>!!window.KidsLearnReady);
   await page.evaluate(()=>window.KidsLearnReady);
-  const report=await page.evaluate(()=>{
+  const report=await page.evaluate((shipped)=>{
    const errs=[],check=(p,m)=>{if(!p)errs.push(m)};
    for(const [id,name] of LANDMARKS){
      const html=landmarkArt(id,'small');
@@ -38,11 +39,11 @@ for(const [id,name,country,city] of catalog){
      check(!!image,'Missing landmark image '+id);
      if(!image)continue;
      const alt=image.alt;
-     check(alt.toLowerCase().startsWith('illustration showing '),
+     check(alt.toLowerCase().startsWith(shipped.includes(id)?'photograph showing ':'illustration showing '),
        'Wrong illustration media status '+id);
      check(alt.length>=35 && !alt.toLowerCase().includes(name.toLowerCase()),
        'Alt is blank or reveals landmark name '+id);
-     check(image.getAttribute('src')==='assets/landmarks/'+id+'.svg',
+     check(image.getAttribute('src')===(shipped.includes(id)?'assets/landmark-photos/'+id+'.webp':'assets/landmarks/'+id+'.svg'),
        'Wrong bundled schematic path '+id);
    }
    const photoId='liberty';
@@ -56,19 +57,20 @@ for(const [id,name,country,city] of catalog){
      'Answer leaked via photograph alt');
    check(photo?.getAttribute('src')==='assets/landmark-photos/liberty.webp',
      'Photo allowlist path not used');
-   LANDMARK_PHOTO_IDS.delete(photoId);
-   check(landmarkHasPhoto(photoId)===false,
-     'Test left modified photo allowlist');
+   check(landmarkHasPhoto(photoId)===true,
+     'Shipped photo must remain enabled');
    // Until curated real photos are shipped, a schematic must never trigger a
    // photo-recognition card, even when a child visits Famous Places repeatedly.
    state.grade='g2';
    for(let i=0;i<120;i++){
      const q=genPlaces(3);
-     check(!q.key.startsWith('lm-which-')&&!q.key.startsWith('lm-name-'),
-       'Schematic shown as a photographic recognition challenge: '+q.key);
+     if(q.key.startsWith('lm-which-')||q.key.startsWith('lm-name-')){
+       check(shipped.some(id=>q.key.includes(id)),
+         'Non-photographed landmark used in photo recognition: '+q.key);
+     }
    }
    return errs;
-  });
+  },[...shippedPhotos]);
   assert.deepEqual(report,[],JSON.stringify(report));
   assert.deepEqual(errors,[]);
   console.log('PASS 39 descriptive landmark alternatives, no revealed answers or schematic photo-recognition');
