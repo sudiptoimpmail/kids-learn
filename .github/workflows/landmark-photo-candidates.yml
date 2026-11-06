@@ -1,0 +1,25 @@
+name: Prepare landmark photo candidates
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image conversion dependency
+        run: python -m pip install 'Pillow==11.3.0'
+      - name: Download and optimize source-identified photo candidates
+        run: python scripts/prepare-landmark-candidates.py
+      - name: Upload candidate WebPs and review metadata (not published)
+        uses: actions/upload-artifact@v4
+        with:
+          name: landmark-photo-candidates-review-required
+          path: tests/out/landmark-candidates/
+          retention-days: 14
+          if-no-files-found: error
