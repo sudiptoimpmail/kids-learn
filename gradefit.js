@@ -41,6 +41,7 @@ const sharedDecoration = (opts) => {
 };
 // Kindergarten reads short words only in its reading sections; elsewhere answers need pictures
 const K_READING = new Set(['cvc', 'sight', 'spell', 'sent', 'phonics', 'match', 'syl']);
+const K_MATH = new Set(['add', 'sub', 'story', 'match', 'cmp', 'numsense']);
 function gradeFits(q, grade, catId) {
   if (!q || !grade) return true;
   const key = String(q.key || '').replace(/^chk-/, '');
@@ -48,6 +49,8 @@ function gradeFits(q, grade, catId) {
   if (grade === 'g3' && trivialFact(key)) return false;                     // no × 1 or ÷ 1 drills in 3rd grade
   if ((grade === 'prek' || grade === 'k') && q.options && sharedDecoration(q.options)
       && q.options.some((o) => fitWords(o.html != null ? o.html : o.v).length)) return false;
+  // × and ÷ are 2nd–3rd grade ideas: never on a Pre-K or K card, not even inside Match It
+  if ((grade === 'prek' || grade === 'k') && /[×÷]/.test(fitText(q.main) + fitText(q.text) + JSON.stringify(q.match || '') + (q.options || []).map((o) => fitText(o.html != null ? o.html : o.v)).join(' '))) return false;
   if (grade === 'prek') {
     if (q.spell || q.fillIn || q.passageFill || q.order || q.puzzle) return false;
     if (q.letterPath && q.letterPath.words) return false;
@@ -60,9 +63,31 @@ function gradeFits(q, grade, catId) {
   }
   if (grade === 'k') {
     if (q.passageFill || q.order) return false;
+    // Kindergarten math works within 20 (phone numbers like 911 in other sections are fine)
+    if (K_MATH.has(catId)) {
+      const ns = fitNums(q.main).concat(fitNums(q.text), ...(q.options || []).map((o) => fitNums(o.html != null ? o.html : o.v)));
+      if (ns.length && Math.max(...ns) > 20) return false;
+    }
     if (q.spell && String(q.spell.word || q.answer || '').replace(/[^a-z]/gi, '').length > 4) return false;
     if ((q.options || []).some((o) => readOnlyChoice(o, K_READING.has(catId) ? 4 : 1))) return false;
     return true;
   }
   return true;
 }
+
+// The small line under a tile says what THIS child will do there, not the section's whole range.
+const GRADE_SUBS = {
+  trace: { prek: 'trace A–Z · 1–10', k: 'trace A–Z · a–z · 1–20' },
+  phonics: { prek: 'first sounds · rhymes', k: 'first sounds · rhymes · blends' },
+  match: { prek: 'number ↔ picture', k: 'word ↔ picture · 3 ↔ 🍎🍎🍎' },
+  add: { prek: 'count and add · 🍎 + 🍎🍎', k: 'add within 10 · 4 + 3', g1: 'add within 100 · 23 + 5', g2: 'add within 1000 · 347 + 286', g3: 'add within 1000 · 347 + 286' },
+  sub: { prek: 'take away · 🍎🍎🍎 − 🍎', k: 'take away within 10 · 7 − 2', g1: 'subtract within 100 · 45 − 3', g2: 'subtract within 1000 · 642 − 358', g3: 'subtract within 1000 · 642 − 358' },
+  shape2: { prek: 'circle · square · triangle', k: 'flat & solid shapes' },
+  vocab: { prek: 'look and listen' },
+  gk: { prek: 'picture quiz' },
+  jobs: { prek: 'who helps us? (pictures)' },
+  syl: { prek: 'clap the beats' },
+  sent: { k: 'read a short sentence' },
+  spell: { k: 'drag the letters · cat · sun' },
+};
+const gradeSub = (id, sub) => ((typeof state !== 'undefined' && state.grade && GRADE_SUBS[id] && GRADE_SUBS[id][state.grade]) || sub);

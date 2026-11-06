@@ -27,6 +27,20 @@ const { chromium } = require('playwright');
         }
       }
     }
+    // an older profile: harder levels switched on and every section saved at its top level
+    res.older = {};
+    for (const g of ['prek', 'k']) {
+      Object.assign(state, { grade: g, showAll: true, levels: {}, recent: {}, recentContent: {} });
+      for (const c of CATEGORIES) state.levels[c.id] = maxLevelOf(c.id);
+      res.older[g] = visibleGames().filter((c) => c.gen && c.id !== 'mix').map((c) => {
+        R = null; startRound(c.id, 10);
+        const out = { id: c.id, n: R ? R.qs.length : 0, top: gradeRange(g, c.id)[1], max: R ? Math.max(...R.qs.map((q) => q.level)) : 0,
+          bad: R ? R.qs.filter((q) => !gradeFits(q, g, c.id)).length : 0, subs: [...document.querySelectorAll('#grid .tile[data-cat="add"] .ts')].map((e) => e.textContent).join('') };
+        try { document.querySelector('#quitBtn').click(); } catch {}
+        return out;
+      });
+    }
+    state.showAll = false;
     return res;
   });
   assert.deepEqual(errs, []);
@@ -45,6 +59,12 @@ const { chromium } = require('playwright');
   assert.deepEqual(g3.filter((c) => /^(cmpp-|ns-(blocks|measure|data|eo|skip|ba|val2)-|gr-(noun|verb|pl|opp)-|visual-|s2-find-(circle|square|triangle|star|heart|oval|rectangle|diamond))/.test(c.key)).map((c) => c.key).slice(0, 5), [], '3rd grade gets younger card types');
   assert.deepEqual(g3.filter((c) => /^(mul|div)-(1-\d+|\d+-1)$/.test(c.key)).map((c) => c.key), [], '3rd grade × 1 / ÷ 1 drills');
   assert.ok(!r.cards.g1.some((c) => /^ns-r(10|100)-/.test(c.key)), '1st grade gets rounding');
+  // older profiles: a tile never opens an empty round, Pre-K never leaves its band, K goes at most one step up
+  for (const [g, rows] of Object.entries(r.older)) for (const x of rows) {
+    assert.ok(x.n > 0, `${g} ${x.id}: empty round with harder levels on`);
+    assert.equal(x.bad, 0, `${g} ${x.id}: card the child can't do`);
+    assert.ok(x.max <= x.top + (g === 'prek' ? 0 : 1), `${g} ${x.id}: level ${x.max} above ${x.top}`);
+  }
   const counts = Object.fromEntries(Object.entries(r.cards).map(([g, v]) => [g, v.length]));
   console.log('PASS grade fit', JSON.stringify(counts), 'sections', JSON.stringify(Object.fromEntries(Object.entries(r.sections).map(([g, v]) => [g, v.length]))));
   await b.close();

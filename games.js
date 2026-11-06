@@ -145,7 +145,7 @@ const BRAIN_MIN_GRADE = { path: 'prek', memory: 'prek', puzzle: 'prek', sudoku: 
 const BRAIN_GRADE_ORDER = ['prek', 'k', 'g1', 'g2', 'g3'];
 let brainMode = false;
 function brainVisible(g) {
-  return BRAIN_GAME_IDS.has(g.id) && (!!state.showAll || !!state.testMode || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') >= BRAIN_GRADE_ORDER.indexOf(BRAIN_MIN_GRADE[g.id]));
+  return BRAIN_GAME_IDS.has(g.id) && (!!state.testMode || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') >= BRAIN_GRADE_ORDER.indexOf(BRAIN_MIN_GRADE[g.id]));
 }
 const brainGames = () => GAMES.filter(brainVisible);
 // open a brain game straight from its tile on the home screen (no play clock, back goes home)
