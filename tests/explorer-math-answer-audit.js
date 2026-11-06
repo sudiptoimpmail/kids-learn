@@ -140,5 +140,5 @@ for (const q of questionBank) {
   }
   counts[result.kind]=(counts[result.kind]||0)+1;
 }
-assert.equal(questionBank.length,62,'Every authored math mission must have a solution');
+assert.equal(questionBank.length,78,'Every authored math mission must have a solution');
 console.log('PASS '+questionBank.length+' Explorer math missions independently evaluated; '+JSON.stringify(counts));
