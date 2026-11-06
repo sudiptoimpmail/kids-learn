@@ -82,6 +82,38 @@
       `<rect x="${x0+i*each}" y="18" width="${each}" height="65" fill="${i<m.shaded?'#1971c2':'#fff'}" stroke="#343a40" stroke-width="2"/>`).join('');
     return svg(cells,`Fraction strip: ${m.shaded} of ${m.parts} equal parts shaded`,440,104);
   };
+  // Interactive fraction lab. Native buttons are touch and keyboard operable;
+  // local card state is independent of answer submission and child progress.
+  const fractionLab = m => {
+    if (!m || m.kind !== 'fraction-strip') return '';
+    const buttons=Array.from({length:m.parts},(_,i)=>
+      `<button type="button" class="explorer-fraction-cell" aria-pressed="false"
+        aria-label="Part ${i+1} of ${m.parts}, not shaded" data-fraction-part="${i+1}"></button>`).join('');
+    return `<section class="explorer-fraction-lab" aria-label="Try a fraction model">
+      <p class="explorer-lab-heading">Try it: tap parts to shade your own fraction.</p>
+      <div class="explorer-fraction-parts" role="group" aria-label="${m.parts} equal parts"
+        style="--fraction-parts:${m.parts}">${buttons}</div>
+      <output class="explorer-fraction-result" aria-live="polite">0 of ${m.parts} shaded (0/${m.parts})</output>
+      <button type="button" class="explorer-fraction-reset">Clear model</button>
+    </section>`;
+  };
+  // Event delegation survives each new question render without per-card listeners.
+  document.addEventListener('click', event => {
+    const button=event.target.closest?.('.explorer-fraction-cell, .explorer-fraction-reset');
+    if (!button) return;
+    const lab=button.closest('.explorer-fraction-lab');
+    if (!lab) return;
+    const cells=[...lab.querySelectorAll('.explorer-fraction-cell')];
+    if (button.classList.contains('explorer-fraction-reset')) {
+      for (const cell of cells) cell.setAttribute('aria-pressed','false');
+    } else button.setAttribute('aria-pressed',
+      String(button.getAttribute('aria-pressed')!=='true'));
+    const shaded=cells.filter(cell=>cell.getAttribute('aria-pressed')==='true').length;
+    for (const [index,cell] of cells.entries())
+      cell.setAttribute('aria-label',`Part ${index+1} of ${cells.length}, ${cell.getAttribute('aria-pressed')==='true'?'shaded':'not shaded'}`);
+    lab.querySelector('.explorer-fraction-result').textContent=
+      `${shaded} of ${cells.length} shaded (${shaded}/${cells.length})`;
+  });
   const check = (rows, name, section) => {
     const ids = new Set();
     if (!Array.isArray(rows) || rows.length < 20) throw Error('Explorer bank is too small: ' + name);
@@ -114,6 +146,7 @@
       ? `<img class="explorer-asset" src="${esc(row.asset)}" alt="" loading="lazy" decoding="async">`
       : '';
     const diagram = row.representation ? renderDiagram(row.representation) : '';
+    const lab = row.representation ? fractionLab(row.representation) : '';
     const reasoning = Array.isArray(row.reasoningSteps) && row.reasoningSteps.length === 3
       ? `<details class="explorer-reasoning"><summary>Show solving steps</summary><ol>${row.reasoningSteps.map(step=>`<li>${esc(step)}</li>`).join('')}</ol></details>` : '';
     const choices = shuffle(row.choices).map(answer => ({v:answer,html:esc(answer)}));
@@ -126,7 +159,7 @@
       say: 'Find the answer!',
       main: `<article class="explorer-card">
         <div class="explorer-overline"><span aria-hidden="true">${bank === 'math' ? '🧮' : '🔬'}</span> ${esc(row.domain)}</div>
-        <div class="explorer-body">${image}<p>${esc(row.context)}</p>${diagram}${reasoning}</div>
+        <div class="explorer-body">${image}<p>${esc(row.context)}</p>${diagram}${lab}${reasoning}</div>
         <div class="explorer-question">${esc(row.prompt)}</div>
       </article>`,
       mainClass:'explorer-main',
