@@ -1,0 +1,33 @@
+name: Prepare remaining landmark photo review batch
+on:
+  workflow_dispatch:
+    inputs:
+      max_candidates:
+        description: Maximum new landmark photo candidates to stage
+        type: choice
+        required: true
+        default: '37'
+        options: ['5', '15', '37']
+permissions:
+  contents: read
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'Pillow==11.3.0'
+      - name: Discover public-domain photo candidates for unphotographed landmarks
+        env:
+          MAX_LANDMARK_CANDIDATES: ${{ inputs.max_candidates }}
+        run: python scripts/prepare-landmark-batch.py
+      - name: Publish review-only images and source metadata as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: remaining-landmark-photos-human-review-required
+          path: tests/out/landmark-batch/
+          retention-days: 14
+          if-no-files-found: error
