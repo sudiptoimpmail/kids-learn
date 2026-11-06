@@ -222,14 +222,10 @@ function renderDashboard() {
     ${going.length ? `<div class="ds"><h3>📈 Getting there</h3><ul>${going.slice(0, 8).map(row).join('')}</ul></div>` : ''}`;
   // Give parents a small, practical next step rather than only performance charts.
   // Recommendations are derived locally from the child's saved skill results.
-  const defaults = {
-    prek: ['gk','phonics','shape2'], k: ['phonics','add','sent'],
-    g1: ['sent','add','numsense'], g2: ['sent','numsense','sci'],
-    g3: ['sent','mul','sci']
-  };
   const priority = [...objectiveWeak,...objectiveDeveloping,...weak,...going]
     .filter(x=>gradeRange(state.grade,x.cat)).map(x=>x.cat);
-  const candidates = [...new Set([...priority,...(defaults[state.grade]||defaults.k)])]
+  const gradeFocus = GRADES[state.grade]?.practiceFocus || [];
+  const candidates = [...new Set([...priority,...gradeFocus])]
     .filter(id=>gradeRange(state.grade,id)).slice(0,3);
   const practiceTips = {
     gk:'Name the pictures together. Ask what makes the answer special.',
