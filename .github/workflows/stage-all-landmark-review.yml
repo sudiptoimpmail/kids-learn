@@ -41,4 +41,6 @@ jobs:
           git add assets/landmark-candidates/ docs/landmark-candidate-review.json
           git diff --cached --quiet && exit 0
           git commit -m 'media: stage real landmark candidates for individual visual and license review'
+          git fetch origin feat/phase16-full-media-release-batch-20261106
+          git rebase origin/feat/phase16-full-media-release-batch-20261106
           git push origin HEAD:feat/phase16-full-media-release-batch-20261106
