@@ -1,22 +1,118 @@
 {
   "schema": 1,
   "notPublished": true,
-  "candidateCount": 24,
+  "candidateCount": 37,
   "remainingLandmarks": 37,
   "candidates": [
     {
-      "id": "pyramid",
-      "landmark": "Great Pyramid of Giza",
-      "file": "pyramid.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Spelterini_Pyramids.jpg",
-      "sourceFileTitle": "File:Spelterini Pyramids.jpg",
-      "creatorClaim": "Eduard Spelterini",
+      "id": "amazon",
+      "landmark": "Amazon Rainforest",
+      "file": "amazon.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Amazon_MODIS.jpg",
+      "sourceFileTitle": "File:Amazon MODIS.jpg",
+      "creatorClaim": "NASA",
       "licenseClaim": "Public domain",
-      "sourceSha256": "ae5e73dc111fc567689fd4776310169689192ea1fd56b9f70cdb9d851bc46e04",
-      "webpSha256": "997e8679ca5ecf1685a74f1c5ad03435ccd854dc3a8a7d3b76993ab97bfe1f7a",
+      "sourceSha256": "61049da9feefae8ce603b0a1a597f77472e20068a64db88683619598d67e3a51",
+      "webpSha256": "40e405033fe0443162124e18bcef2e391defb4850104afb8d612fc82d3649286",
+      "dimensions": [
+        1002,
+        960
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "bigben",
+      "landmark": "Big Ben",
+      "file": "bigben.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:London_(UK),_Elizabeth_Tower,_-Big_Ben-_--_2010_--_1979.jpg",
+      "sourceFileTitle": "File:London (UK), Elizabeth Tower, -Big Ben- -- 2010 -- 1979.jpg",
+      "creatorClaim": "Dietmar Rabich",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "7db789375e0b95eba7cdc68cc94be9d880efaffffb490a80acb5fe69e5f22173",
+      "webpSha256": "a90572a42d0dc81fca5e5db481bad0db2846c5fb978431eb0faacffb8fa536cf",
+      "dimensions": [
+        830,
+        1200
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "borobudur",
+      "landmark": "Borobudur Temple",
+      "file": "borobudur.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Borobudur-Nothwest-view.jpg",
+      "sourceFileTitle": "File:Borobudur-Nothwest-view.jpg",
+      "creatorClaim": "Gunawan Kartapranata",
+      "licenseClaim": "Public domain",
+      "sourceSha256": "c915174a3251de2f8cf5c27e7ff0f142dc05e6715f1aa9cd4a2810b8d733d11d",
+      "webpSha256": "ac26434223c516540abf75394c861653196431a6a18cbbb55642329707bca186",
       "dimensions": [
         1200,
-        880
+        473
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "brandenburg",
+      "landmark": "Brandenburg Gate",
+      "file": "brandenburg.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Berlin,_Brandenburger_Tor_--_2008_--_0153.jpg",
+      "sourceFileTitle": "File:Berlin, Brandenburger Tor -- 2008 -- 0153.jpg",
+      "creatorClaim": "Dietmar Rabich",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "ec4155766ae0f8a2dc8ab77d9da640f28f2a7a392fb9e3197310a89592e58445",
+      "webpSha256": "19049259bfa821bd2acf6023a0b74f4d49b94a140ab7172dd01bdd6fa1eb54f5",
+      "dimensions": [
+        1200,
+        918
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "cappadocia",
+      "landmark": "Balloons of Cappadocia",
+      "file": "cappadocia.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_Cappadocia_from_hot_air_balloon_01.jpg",
+      "sourceFileTitle": "File:Aerial view of Cappadocia from hot air balloon 01.jpg",
+      "creatorClaim": "Netha Hussain",
+      "licenseClaim": "CC0",
+      "sourceSha256": "ea946e5255aaca6365f40b4138016ac002ed0e3a723666ceffbc0885c88fe279",
+      "webpSha256": "bfb00fa57d13968b6dc9506be0d6d5ae1cac2dc04f0a3e698cd3a045bc2754d1",
+      "dimensions": [
+        1200,
+        900
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "chichen",
+      "landmark": "Chichen Itza",
+      "file": "chichen.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Atlante,_Chichen_Itza,_Mexique.jpg",
+      "sourceFileTitle": "File:Atlante, Chichen Itza, Mexique.jpg",
+      "creatorClaim": "Jebulon",
+      "licenseClaim": "CC0",
+      "sourceSha256": "50faa5d7a74a55bdded59251606ae921008865c13036666187f7407f427014ad",
+      "webpSha256": "8a5beb6d834441c7717731a13d3cbe1186982ae381f29a10501c9506497bdc71",
+      "dimensions": [
+        986,
+        1200
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "christ",
+      "landmark": "Christ the Redeemer",
+      "file": "christ.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mantegna,_redentore_a_correggio.jpg",
+      "sourceFileTitle": "File:Mantegna, redentore a correggio.jpg",
+      "creatorClaim": "Andrea Mantegna",
+      "licenseClaim": "Public domain",
+      "sourceSha256": "a9614b531649490b5a82d1652c6268b4fec9883e26b79445b1706fd55b1c1d94",
+      "webpSha256": "66b39d8f2d0e26685b5c387da8f434a6a6e40d229d02a0933f358e44246d79f5",
+      "dimensions": [
+        912,
+        1200
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
@@ -37,18 +133,34 @@
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "greatwall",
-      "landmark": "Great Wall of China",
-      "file": "greatwall.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Great_Wall_of_China_July_2006.JPG",
-      "sourceFileTitle": "File:Great Wall of China July 2006.JPG",
-      "creatorClaim": "Velatrix",
-      "licenseClaim": "CC0",
-      "sourceSha256": "c16d15b78685ab3dd1d4dc8de2ab5153502b6b34a332f805af27372acf0ed0f8",
-      "webpSha256": "d2363d70d9d1f10b40a990728205506ae64fc1a254d7a6bcb04e9b11534cf3fc",
+      "id": "colosseum",
+      "landmark": "Colosseum",
+      "file": "colosseum.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giovanni_Battista_Piranesi,_The_Colosseum.png",
+      "sourceFileTitle": "File:Giovanni Battista Piranesi, The Colosseum.png",
+      "creatorClaim": "Giovanni Battista Piranesi",
+      "licenseClaim": "Public domain",
+      "sourceSha256": "2b17bfbd0fd7f2f2333615238fe7ab26ba61c03038925bb5f5d46b16d34208ba",
+      "webpSha256": "34e28686a70551526dc9f86a5b37ae292d74774aaef7997c52fa4a88438f17ac",
       "dimensions": [
         1200,
-        898
+        767
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "forbidden",
+      "landmark": "Forbidden City",
+      "file": "forbidden.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Forbidden_City_1918.jpg",
+      "sourceFileTitle": "File:The Forbidden City 1918.jpg",
+      "creatorClaim": "Selznick Pictures Corporation / Select Pictures Corporation",
+      "licenseClaim": "Public domain",
+      "sourceSha256": "bc4486260c71c1e56f643f3749d48b8f022821a391d3b03a361810c29a876020",
+      "webpSha256": "18896b0eb69a92f836154804cc88a7096736d495483140c7121140fb45066b0e",
+      "dimensions": [
+        1200,
+        820
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
@@ -69,33 +181,97 @@
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "colosseum",
-      "landmark": "Colosseum",
-      "file": "colosseum.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giovanni_Battista_Piranesi,_The_Colosseum.png",
-      "sourceFileTitle": "File:Giovanni Battista Piranesi, The Colosseum.png",
-      "creatorClaim": "Giovanni Battista Piranesi",
-      "licenseClaim": "Public domain",
-      "sourceSha256": "2b17bfbd0fd7f2f2333615238fe7ab26ba61c03038925bb5f5d46b16d34208ba",
-      "webpSha256": "34e28686a70551526dc9f86a5b37ae292d74774aaef7997c52fa4a88438f17ac",
+      "id": "goldengate",
+      "landmark": "Golden Gate Bridge",
+      "file": "goldengate.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Golden_Gate_Bridge_as_seen_from_Battery_East.jpg",
+      "sourceFileTitle": "File:Golden Gate Bridge as seen from Battery East.jpg",
+      "creatorClaim": "Frank Schulenburg",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "2dcc6669742e7d097872f8da85e10cc447ac33999f40f0dc9127b3abcec32589",
+      "webpSha256": "b277bbde1811ff8143f237685903bc81770e6e57e40ea6f105b6e9de13251c10",
       "dimensions": [
         1200,
-        767
+        750
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "christ",
-      "landmark": "Christ the Redeemer",
-      "file": "christ.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mantegna,_redentore_a_correggio.jpg",
-      "sourceFileTitle": "File:Mantegna, redentore a correggio.jpg",
-      "creatorClaim": "Andrea Mantegna",
+      "id": "grandcanyon",
+      "landmark": "Grand Canyon",
+      "file": "grandcanyon.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arizona._Grand_Canyon,_photographer_suspended_on_climber%27s_rope_LCCN2012648368.jpg",
+      "sourceFileTitle": "File:Arizona. Grand Canyon, photographer suspended on climber's rope LCCN2012648368.jpg",
+      "creatorClaim": "Kolb Bros., copyright claimant",
       "licenseClaim": "Public domain",
-      "sourceSha256": "a9614b531649490b5a82d1652c6268b4fec9883e26b79445b1706fd55b1c1d94",
-      "webpSha256": "66b39d8f2d0e26685b5c387da8f434a6a6e40d229d02a0933f358e44246d79f5",
+      "sourceSha256": "0763e2ab6ee1c63bb6d44b16419255320366abfba169b228cdea181555ad5244",
+      "webpSha256": "3a10a10e9b271e35048f1d7b49e3fac98e57a15a69c6c33f18cd59ed7f69517f",
       "dimensions": [
-        912,
+        702,
+        1200
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "greatwall",
+      "landmark": "Great Wall of China",
+      "file": "greatwall.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Great_Wall_of_China_July_2006.JPG",
+      "sourceFileTitle": "File:Great Wall of China July 2006.JPG",
+      "creatorClaim": "Velatrix",
+      "licenseClaim": "CC0",
+      "sourceSha256": "c16d15b78685ab3dd1d4dc8de2ab5153502b6b34a332f805af27372acf0ed0f8",
+      "webpSha256": "d2363d70d9d1f10b40a990728205506ae64fc1a254d7a6bcb04e9b11534cf3fc",
+      "dimensions": [
+        1200,
+        898
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "hagia",
+      "landmark": "Hagia Sophia",
+      "file": "hagia.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hagia-Sophia-Laengsschnitt.jpg",
+      "sourceFileTitle": "File:Hagia-Sophia-Laengsschnitt.jpg",
+      "creatorClaim": "",
+      "licenseClaim": "Public domain",
+      "sourceSha256": "878075bc141c081bf20d3543c907e200ea6c7e932efbaf6dd7b4afb2677da9bb",
+      "webpSha256": "68d4187ac9f4985131732ba949a3de0714b6fc651867c6809142789bda036a3a",
+      "dimensions": [
+        1200,
+        574
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "himeji",
+      "landmark": "Himeji Castle",
+      "file": "himeji.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Himeji_Castle_0804_1.jpg",
+      "sourceFileTitle": "File:Himeji Castle 0804 1.jpg",
+      "creatorClaim": "Gorgo",
+      "licenseClaim": "Public domain",
+      "sourceSha256": "99ba880ca8bfbe03f8c52aace410c030fb6ba7ff348a23b2f7e9e46e18b2705e",
+      "webpSha256": "5732ae449edf08765a518c59bbfea0fb481df78e1f21218b1e9791175ec882eb",
+      "dimensions": [
+        1200,
+        895
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "iguazu",
+      "landmark": "Iguazu Falls",
+      "file": "iguazu.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:09.07a_Iguazu_falls.png",
+      "sourceFileTitle": "File:09.07a Iguazu falls.png",
+      "creatorClaim": "Kharmacher",
+      "licenseClaim": "CC0",
+      "sourceSha256": "baadc76180a459f8bb4501daa75a19ee32f9063cac43e35cb635f5207a905377",
+      "webpSha256": "fc3d4cdcc149dd22f1c9a1a153d9b0bd2d6a75a05b2a471a77e91156f114ceef",
+      "dimensions": [
+        523,
         1200
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
@@ -117,82 +293,18 @@
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "stbasil",
-      "landmark": "Saint Basil's Cathedral",
-      "file": "stbasil.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Catedral_de_San_Basilio,_Mosc%C3%BA,_Rusia,_2016-10-03,_DD_05-06_HDR.jpg",
-      "sourceFileTitle": "File:Catedral de San Basilio, Mosc\u00fa, Rusia, 2016-10-03, DD 05-06 HDR.jpg",
-      "creatorClaim": "Diego Delso",
-      "licenseClaim": "Public domain",
-      "sourceSha256": "5e1e4f7f4accdc807627f2324f2c7719a6ad2c298f2ead642f4017816dcd5c23",
-      "webpSha256": "86b43a1087a9b11332ca1c5edb9348ab24e20286a61306645e99d9b1948f705e",
+      "id": "milford",
+      "landmark": "Milford Sound",
+      "file": "milford.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Milford_Sound_in_Fiordland_National_Park_01.jpg",
+      "sourceFileTitle": "File:Milford Sound in Fiordland National Park 01.jpg",
+      "creatorClaim": "Krzysztof Golik",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "3c7285aa2bf65d0718a73c6e68754b8c5c25cb38557b2d8b811e5353da5dacb1",
+      "webpSha256": "142eba4d8902d71d0ac2339ddae371141385fced5f34bb0917d587e943c169db",
       "dimensions": [
         1200,
-        1035
-      ],
-      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
-    },
-    {
-      "id": "amazon",
-      "landmark": "Amazon Rainforest",
-      "file": "amazon.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Amazon_MODIS.jpg",
-      "sourceFileTitle": "File:Amazon MODIS.jpg",
-      "creatorClaim": "NASA",
-      "licenseClaim": "Public domain",
-      "sourceSha256": "61049da9feefae8ce603b0a1a597f77472e20068a64db88683619598d67e3a51",
-      "webpSha256": "40e405033fe0443162124e18bcef2e391defb4850104afb8d612fc82d3649286",
-      "dimensions": [
-        1002,
-        960
-      ],
-      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
-    },
-    {
-      "id": "grandcanyon",
-      "landmark": "Grand Canyon",
-      "file": "grandcanyon.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arizona._Grand_Canyon,_photographer_suspended_on_climber%27s_rope_LCCN2012648368.jpg",
-      "sourceFileTitle": "File:Arizona. Grand Canyon, photographer suspended on climber's rope LCCN2012648368.jpg",
-      "creatorClaim": "Kolb Bros., copyright claimant",
-      "licenseClaim": "Public domain",
-      "sourceSha256": "0763e2ab6ee1c63bb6d44b16419255320366abfba169b228cdea181555ad5244",
-      "webpSha256": "3a10a10e9b271e35048f1d7b49e3fac98e57a15a69c6c33f18cd59ed7f69517f",
-      "dimensions": [
-        702,
-        1200
-      ],
-      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
-    },
-    {
-      "id": "reef",
-      "landmark": "Great Barrier Reef",
-      "file": "reef.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:GreatBarrierReef-EO.JPG",
-      "sourceFileTitle": "File:GreatBarrierReef-EO.JPG",
-      "creatorClaim": "NASA, by MISR",
-      "licenseClaim": "Public domain",
-      "sourceSha256": "1e9d97dac7c1677480f25e11e26646c1f6c65fbd39b7c408f8bac71b5f903352",
-      "webpSha256": "eaf94da13cfdbedaa83c6b3ea65d4077ef101966810c6ebcbf61cad39afe9cb0",
-      "dimensions": [
-        540,
-        540
-      ],
-      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
-    },
-    {
-      "id": "parthenon",
-      "landmark": "Parthenon",
-      "file": "parthenon.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Parthenon_from_west.jpg",
-      "sourceFileTitle": "File:Parthenon from west.jpg",
-      "creatorClaim": "User:Mountain",
-      "licenseClaim": "Public domain",
-      "sourceSha256": "8a6079ea0d895acf69c71b18de338b72d6ed58a0abf3aabaa3f63e3c9b0e4792",
-      "webpSha256": "8a2e1051ab5a9a18cbb412b83dcbf7a44b70db99f684895bff81ebdc82ec38eb",
-      "dimensions": [
-        1200,
-        900
+        800
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
@@ -213,34 +325,130 @@
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "venice",
-      "landmark": "Canals of Venice",
-      "file": "venice.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Piazzetta_San_Marco_Venice_BLS.jpg",
-      "sourceFileTitle": "File:Piazzetta San Marco Venice BLS.jpg",
-      "creatorClaim": "Benh LIEU SONG",
-      "licenseClaim": "Public domain",
-      "sourceSha256": "cf34e701a11b676818cf30932b64a14b09bf3903997d2bd0bf4828c0767f3edc",
-      "webpSha256": "d9a88e1d8d0c8e12a3f82d2c71de7eb06356cff06005c8539a1d3fe0a297607d",
+      "id": "niagara",
+      "landmark": "Niagara Falls",
+      "file": "niagara.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Benches_at_Oakes_Garden_Theatre,_Niagara_Falls,_Canada.jpg",
+      "sourceFileTitle": "File:Benches at Oakes Garden Theatre, Niagara Falls, Canada.jpg",
+      "creatorClaim": "Maksim Sokolov (maxergon.com)",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "61f26ea73eeed6264bb5c7139ffa4327418c5ff2947b6eba4feb53f539c323f4",
+      "webpSha256": "61f456c4293bad0dcd975f13a042295c0c6d6daa99c3ac6b19e0468d11cfdd6e",
       "dimensions": [
         1200,
-        518
+        827
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "chichen",
-      "landmark": "Chichen Itza",
-      "file": "chichen.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Atlante,_Chichen_Itza,_Mexique.jpg",
-      "sourceFileTitle": "File:Atlante, Chichen Itza, Mexique.jpg",
-      "creatorClaim": "Jebulon",
-      "licenseClaim": "CC0",
-      "sourceSha256": "50faa5d7a74a55bdded59251606ae921008865c13036666187f7407f427014ad",
-      "webpSha256": "8a5beb6d834441c7717731a13d3cbe1186982ae381f29a10501c9506497bdc71",
+      "id": "opera",
+      "landmark": "Sydney Opera House",
+      "file": "opera.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sydneyoperahouse_at_night.jpg",
+      "sourceFileTitle": "File:Sydneyoperahouse at night.jpg",
+      "creatorClaim": "Thomas Adams",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "a2e942fa5cb11e532a7f69661edfd5aee3c8f57fd5e3051aa7c26343fb66e6d0",
+      "webpSha256": "4f6c520a801d057ef1656c68ac4d6ddbdfb51ca50293e4674b1c2bf12bead07f",
       "dimensions": [
-        986,
-        1200
+        1200,
+        759
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "parthenon",
+      "landmark": "Parthenon",
+      "file": "parthenon.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Parthenon_from_west.jpg",
+      "sourceFileTitle": "File:Parthenon from west.jpg",
+      "creatorClaim": "User:Mountain",
+      "licenseClaim": "Public domain",
+      "sourceSha256": "8a6079ea0d895acf69c71b18de338b72d6ed58a0abf3aabaa3f63e3c9b0e4792",
+      "webpSha256": "8a2e1051ab5a9a18cbb412b83dcbf7a44b70db99f684895bff81ebdc82ec38eb",
+      "dimensions": [
+        1200,
+        900
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "pisa",
+      "landmark": "Leaning Tower of Pisa",
+      "file": "pisa.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Duomo_and_Tower_of_Pisa_at_sunrise.jpg",
+      "sourceFileTitle": "File:The Duomo and Tower of Pisa at sunrise.jpg",
+      "creatorClaim": "MHoser",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "af28f2c793bbce778c6b85477017395cf3be695ef2da6e249bcd0092a3b00724",
+      "webpSha256": "90c0e4a6c681bcda26613b25f93bf52248f0c4748130c35f12845d89fd949e1a",
+      "dimensions": [
+        1200,
+        751
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "pyramid",
+      "landmark": "Great Pyramid of Giza",
+      "file": "pyramid.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Spelterini_Pyramids.jpg",
+      "sourceFileTitle": "File:Spelterini Pyramids.jpg",
+      "creatorClaim": "Eduard Spelterini",
+      "licenseClaim": "Public domain",
+      "sourceSha256": "ae5e73dc111fc567689fd4776310169689192ea1fd56b9f70cdb9d851bc46e04",
+      "webpSha256": "997e8679ca5ecf1685a74f1c5ad03435ccd854dc3a8a7d3b76993ab97bfe1f7a",
+      "dimensions": [
+        1200,
+        880
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "reef",
+      "landmark": "Great Barrier Reef",
+      "file": "reef.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:GreatBarrierReef-EO.JPG",
+      "sourceFileTitle": "File:GreatBarrierReef-EO.JPG",
+      "creatorClaim": "NASA, by MISR",
+      "licenseClaim": "Public domain",
+      "sourceSha256": "1e9d97dac7c1677480f25e11e26646c1f6c65fbd39b7c408f8bac71b5f903352",
+      "webpSha256": "eaf94da13cfdbedaa83c6b3ea65d4077ef101966810c6ebcbf61cad39afe9cb0",
+      "dimensions": [
+        540,
+        540
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "safari",
+      "landmark": "Maasai Mara",
+      "file": "safari.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Three_giraffes_01.jpg",
+      "sourceFileTitle": "File:Three giraffes 01.jpg",
+      "creatorClaim": "Byrdyak",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "d800a3639dbd4cc20381adae68d93ee949ec73f8e31e160e1f7edeb411f1e3d5",
+      "webpSha256": "31191fa84e1c557778ebecf149d85b68707ee34fb1d266c9892f55f7fa96ab42",
+      "dimensions": [
+        1200,
+        799
+      ],
+      "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
+    },
+    {
+      "id": "sagrada",
+      "landmark": "Sagrada Familia",
+      "file": "sagrada.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sagrada_Familia_del_pajarito_(Murillo).jpg",
+      "sourceFileTitle": "File:Sagrada Familia del pajarito (Murillo).jpg",
+      "creatorClaim": "Bartolom\u00e9 Esteban Murillo",
+      "licenseClaim": "Public domain",
+      "sourceSha256": "789f8f2a4532bb36022deef59aba8ff153de24da5a4b36dbca7b7cd681452afa",
+      "webpSha256": "12cf596445362d7536e6ba31a80ea76a179176011076aa546e5d265c8fbab5ca",
+      "dimensions": [
+        1200,
+        900
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
@@ -261,79 +469,79 @@
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "himeji",
-      "landmark": "Himeji Castle",
-      "file": "himeji.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Himeji_Castle_0804_1.jpg",
-      "sourceFileTitle": "File:Himeji Castle 0804 1.jpg",
-      "creatorClaim": "Gorgo",
+      "id": "stbasil",
+      "landmark": "Saint Basil's Cathedral",
+      "file": "stbasil.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Catedral_de_San_Basilio,_Mosc%C3%BA,_Rusia,_2016-10-03,_DD_05-06_HDR.jpg",
+      "sourceFileTitle": "File:Catedral de San Basilio, Mosc\u00fa, Rusia, 2016-10-03, DD 05-06 HDR.jpg",
+      "creatorClaim": "Diego Delso",
       "licenseClaim": "Public domain",
-      "sourceSha256": "99ba880ca8bfbe03f8c52aace410c030fb6ba7ff348a23b2f7e9e46e18b2705e",
-      "webpSha256": "5732ae449edf08765a518c59bbfea0fb481df78e1f21218b1e9791175ec882eb",
+      "sourceSha256": "5e1e4f7f4accdc807627f2324f2c7719a6ad2c298f2ead642f4017816dcd5c23",
+      "webpSha256": "86b43a1087a9b11332ca1c5edb9348ab24e20286a61306645e99d9b1948f705e",
       "dimensions": [
         1200,
-        895
+        1035
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "forbidden",
-      "landmark": "Forbidden City",
-      "file": "forbidden.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Forbidden_City_1918.jpg",
-      "sourceFileTitle": "File:The Forbidden City 1918.jpg",
-      "creatorClaim": "Selznick Pictures Corporation / Select Pictures Corporation",
-      "licenseClaim": "Public domain",
-      "sourceSha256": "bc4486260c71c1e56f643f3749d48b8f022821a391d3b03a361810c29a876020",
-      "webpSha256": "18896b0eb69a92f836154804cc88a7096736d495483140c7121140fb45066b0e",
+      "id": "stonehenge",
+      "landmark": "Stonehenge",
+      "file": "stonehenge.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Stonehenge,_Condado_de_Wiltshire,_Inglaterra,_2014-08-12,_DD_09.JPG",
+      "sourceFileTitle": "File:Stonehenge, Condado de Wiltshire, Inglaterra, 2014-08-12, DD 09.JPG",
+      "creatorClaim": "Diego Delso",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "d2c6f7394b6cc04109e8a8eaa0ad1e0061c239f3897b25da545d11f93386375f",
+      "webpSha256": "9596c72c6bee4c3b4a36a4d880636ec82b0842c1925a2155ee325c6d80ee8836",
       "dimensions": [
         1200,
-        820
+        528
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "hagia",
-      "landmark": "Hagia Sophia",
-      "file": "hagia.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hagia-Sophia-Laengsschnitt.jpg",
-      "sourceFileTitle": "File:Hagia-Sophia-Laengsschnitt.jpg",
-      "creatorClaim": "",
-      "licenseClaim": "Public domain",
-      "sourceSha256": "878075bc141c081bf20d3543c907e200ea6c7e932efbaf6dd7b4afb2677da9bb",
-      "webpSha256": "68d4187ac9f4985131732ba949a3de0714b6fc651867c6809142789bda036a3a",
+      "id": "tablemtn",
+      "landmark": "Table Mountain",
+      "file": "tablemtn.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cape_Town_(ZA),_Table_Mountain,_Blick_auf_Lion%27s_Head_--_2024_--_2761.jpg",
+      "sourceFileTitle": "File:Cape Town (ZA), Table Mountain, Blick auf Lion's Head -- 2024 -- 2761.jpg",
+      "creatorClaim": "Dietmar Rabich",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "5f157fc08d6bdbf734ec039369438e613c29db532dedf16d2071de38af7c5743",
+      "webpSha256": "d94323d768f9ac2089d03018d3b6bce0844181ebafc8d552a42f0d4a1d8b7cc1",
       "dimensions": [
         1200,
-        574
+        750
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "cappadocia",
-      "landmark": "Balloons of Cappadocia",
-      "file": "cappadocia.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_Cappadocia_from_hot_air_balloon_01.jpg",
-      "sourceFileTitle": "File:Aerial view of Cappadocia from hot air balloon 01.jpg",
-      "creatorClaim": "Netha Hussain",
-      "licenseClaim": "CC0",
-      "sourceSha256": "ea946e5255aaca6365f40b4138016ac002ed0e3a723666ceffbc0885c88fe279",
-      "webpSha256": "bfb00fa57d13968b6dc9506be0d6d5ae1cac2dc04f0a3e698cd3a045bc2754d1",
+      "id": "tajmahal",
+      "landmark": "Taj Mahal",
+      "file": "tajmahal.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:El_Taj_Mahal-Agra_India0023.JPG",
+      "sourceFileTitle": "File:El Taj Mahal-Agra India0023.JPG",
+      "creatorClaim": "Diego Delso",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "a56f6660704e191333dc580bf409804fd549bef1e977c00b94bdb0505b90e308",
+      "webpSha256": "636b1982f383df999a62429cc06242cafb1be6bf4dd1fb5985fdbc9036e6f3c1",
       "dimensions": [
         1200,
-        900
+        1113
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "sagrada",
-      "landmark": "Sagrada Familia",
-      "file": "sagrada.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sagrada_Familia_del_pajarito_(Murillo).jpg",
-      "sourceFileTitle": "File:Sagrada Familia del pajarito (Murillo).jpg",
-      "creatorClaim": "Bartolom\u00e9 Esteban Murillo",
-      "licenseClaim": "Public domain",
-      "sourceSha256": "789f8f2a4532bb36022deef59aba8ff153de24da5a4b36dbca7b7cd681452afa",
-      "webpSha256": "12cf596445362d7536e6ba31a80ea76a179176011076aa546e5d265c8fbab5ca",
+      "id": "tokyo",
+      "landmark": "Tokyo Tower",
+      "file": "tokyo.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Japan-Tokyo-tower-1024.jpg",
+      "sourceFileTitle": "File:Japan-Tokyo-tower-1024.jpg",
+      "creatorClaim": "Ermell",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "30cfca43cd39e9bce393d5d6ddebba688ccae3d638712c0f9d8412d1349d2893",
+      "webpSha256": "7f13dbc5f52dd80279d77bf51de4fe8dabda30ac77cdd44eca5137e5ac14d51f",
       "dimensions": [
         1200,
         900
@@ -357,34 +565,34 @@
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "borobudur",
-      "landmark": "Borobudur Temple",
-      "file": "borobudur.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Borobudur-Nothwest-view.jpg",
-      "sourceFileTitle": "File:Borobudur-Nothwest-view.jpg",
-      "creatorClaim": "Gunawan Kartapranata",
-      "licenseClaim": "Public domain",
-      "sourceSha256": "c915174a3251de2f8cf5c27e7ff0f142dc05e6715f1aa9cd4a2810b8d733d11d",
-      "webpSha256": "ac26434223c516540abf75394c861653196431a6a18cbbb55642329707bca186",
+      "id": "uluru",
+      "landmark": "Uluru",
+      "file": "uluru.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Petermann_Ranges_(AU),_Uluru-Kata_Tjuta_National_Park,_Uluru,_Kuniya_Walk_--_2019_--_3615.jpg",
+      "sourceFileTitle": "File:Petermann Ranges (AU), Uluru-Kata Tjuta National Park, Uluru, Kuniya Walk -- 2019 -- 3615.jpg",
+      "creatorClaim": "Dietmar Rabich",
+      "licenseClaim": "CC BY-SA 4.0",
+      "sourceSha256": "bc46242c64037ff0e556e8a427c1204dde52a2b278f484baeff9f530af853254",
+      "webpSha256": "8ee5c11f59f234ef711946a8e0f6fd1e8f3b94396a7c799b1c1d267d4806a499",
       "dimensions": [
         1200,
-        473
+        800
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     },
     {
-      "id": "iguazu",
-      "landmark": "Iguazu Falls",
-      "file": "iguazu.webp",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:09.07a_Iguazu_falls.png",
-      "sourceFileTitle": "File:09.07a Iguazu falls.png",
-      "creatorClaim": "Kharmacher",
-      "licenseClaim": "CC0",
-      "sourceSha256": "baadc76180a459f8bb4501daa75a19ee32f9063cac43e35cb635f5207a905377",
-      "webpSha256": "fc3d4cdcc149dd22f1c9a1a153d9b0bd2d6a75a05b2a471a77e91156f114ceef",
+      "id": "venice",
+      "landmark": "Canals of Venice",
+      "file": "venice.webp",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Piazzetta_San_Marco_Venice_BLS.jpg",
+      "sourceFileTitle": "File:Piazzetta San Marco Venice BLS.jpg",
+      "creatorClaim": "Benh LIEU SONG",
+      "licenseClaim": "Public domain",
+      "sourceSha256": "cf34e701a11b676818cf30932b64a14b09bf3903997d2bd0bf4828c0767f3edc",
+      "webpSha256": "d9a88e1d8d0c8e12a3f82d2c71de7eb06356cff06005c8539a1d3fe0a297607d",
       "dimensions": [
-        523,
-        1200
+        1200,
+        518
       ],
       "reviewStatus": "PENDING HUMAN REVIEW: verify landmark identity, creator, license, alt text and source"
     }
