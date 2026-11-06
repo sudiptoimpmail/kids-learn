@@ -16,8 +16,20 @@ Live scorecard: `docs/coverage/index.html` (rebuild with `node tests/coverage-au
 | G — games | `tests/games-audit.js`: all 14 games open, draw, start inside the grade's level band and exit cleanly for every grade (67 grade × game runs); in the suite. | Physical-iPad playtest (touch, frame rate, 3D games) |
 | H — release | Per-grade scorecard: 2 automated gates (CI) + 5 signed gates per grade; release stays closed until all are signed. | All human gates |
 
+## After the parent review (Nov 6)
+
+| Change | Status |
+| --- | --- |
+| First run asks who's learning and their grade, offers the placement check; Start today's 10 minutes; All done for today; zero as a picture; parent-ready progress page | Shipped (PR #80) |
+| Story Time library for Pre-K and K, first book *Little Red Riding Hood* (painted pages, read-aloud with lit words, tap a word, picture questions) | Shipped |
+| Release gates per grade: landmark photos block 1st–3rd only; the 3D anatomy model is optional | Shipped |
+| Connect Four playable by keyboard and screen reader; README game lists match the app | Shipped |
+| 1st–3rd grade home: recommended row first, the full catalog behind Explore | Shipped |
+| Build-it cards: ten frame (Pre-K/K), place-value blocks, arrays, fraction shading, set the clock; multi-format levels 111 → 120 of 240 | Shipped |
+| More books; grade map; show-me demos before a new skill; read-along stories for 1st grade | Next |
+
 ## Known content limits (not bugs)
 
 - Inside My Body has 8 organs, so its level 1 shows 10 distinct cards across five rounds.
 - My Country for K (US) now has 7 picture-answer cards; other countries' editions still lean on word answers and need picture questions written and recorded.
-- 129 of 240 levels still use a single question format. The next variants worth writing need new content (category sorting for Odd One Out, syllable sorting with unambiguous pictures), not reuse.
+- 120 of 240 levels still use a single question format. The next variants worth writing need new content (category sorting for Odd One Out, syllable sorting with unambiguous pictures), not reuse.

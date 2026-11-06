@@ -47,14 +47,17 @@ The first thing on the home screen: a short guided mix for today (about 10–12 
 
 **Reading hints** break words into syllables (al · li · ga · tor, in colors, read aloud slowly); one-syllable words split into sound chunks (c · at, fr · og). Sentence hints show every long word broken into syllables while the voice reads along.
 
+## 📚 Story Time (Pre-K and K)
+A library of picture books read aloud. Each page has a hand-painted picture and a few large lines; **Read to me** plays the recorded narration and lights up each word as it is read, and a child can tap any word to hear it. Three picture questions follow each book (no reading needed), and finished books count as a learning day on the progress page. The first book is a gentle *Little Red Riding Hood* (nobody is eaten: Grandma hides and the woodcutter chases the wolf away). Pictures are painted from code in `scripts/library/` and rendered once to images with `node scripts/library/render-book.cjs red-riding-hood`; any page can be replaced by a real painting with the same file name.
+
 ## 🧠 Brain Games (always available)
 
-Open **Brain Games** on Home for Memory Match, Tic-Tac-Toe, Picture Puzzle, Sudoku, Connect Four, and Ball Maze. These problem-solving challenges are **not locked behind earned play breaks**. The available games depend on age/grade (Pre-K: Memory, Tic-Tac-Toe, Picture Puzzle; Kindergarten also Sudoku and Ball Maze; Grade 1 adds Connect Four). In Settings, **Show all games** overrides grade visibility. A completed brain puzzle is counted separately in the parent Progress dashboard.
+Open **Brain Games** on Home for Finger Maze, Memory Match, Picture Puzzle, Sudoku and Connect Four (each from the grade where it fits). These problem-solving challenges are **not locked behind earned play breaks**. The available games depend on age/grade (Pre-K: Memory, Tic-Tac-Toe, Picture Puzzle; Kindergarten also Sudoku and Ball Maze; Grade 1 adds Connect Four). In Settings, **Show all games** overrides grade visibility. A completed brain puzzle is counted separately in the parent Progress dashboard.
 
 Pattern recognition, Odd One Out and What Comes Next? are **education lessons**, found under **Thinking Skills** in the learning catalog, and included in alternating daily quests.
 
 ## 🎮 Play Zone (reward games)
-The Play Zone contains arcade and creativity activities (Balloons, Coloring, Rolling Ball 3D, Pinball, Whack-a-Mole, Draw & Copy, Silly Moves). Brain Games listed below are available separately on Home. Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (default: every 2 finished learning rounds earn a 3-minute break) or **Minutes every hour** (free play for up to 15 minutes in each clock hour — only time actually spent playing counts). Or set "Always open". Every game shows its **level** (badge on the tile) and winning moves her up. A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
+The Play Zone contains arcade and creativity activities (Tic-Tac-Toe, Balloons, Coloring, Rolling Ball 3D, Pinball, Ball Maze, Whack-a-Mole, Draw & Copy, Silly Moves). Brain Games listed below are available separately on Home. Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (default: every 2 finished learning rounds earn a 3-minute break) or **Minutes every hour** (free play for up to 15 minutes in each clock hour — only time actually spent playing counts). Or set "Always open". Every game shows its **level** (badge on the tile) and winning moves her up. A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
 
 | Game | Notes |
 |---|---|

@@ -1753,6 +1753,7 @@ function genVocab(level) {
 
 /* ---------------- CATEGORIES ---------------- */
 const CATEGORIES = [
+  { id: 'library', title: 'Story Time', sub: 'picture books read aloud', icon: '📚', color: '#c2410c', library: true },
   { id: 'trace', title: 'Letters & Numbers', sub: 'trace A–Z · a–z · 1–20', icon: '✍️', color: '#f76707', trace: true },
   { id: 'phonics', title: 'Letter Sounds', sub: 'starts with · rhymes · blends', icon: '🔠', color: '#7950f2', gen: (l) => genPhonicsPlus(l), maxLevel: 5 },
   { id: 'cvc', title: 'Little Words', sub: 'cat · ant · bee', icon: '🐱', color: '#ff8787', gen: (l) => genWords(W3, l, 'cvc') },

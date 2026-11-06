@@ -23,7 +23,7 @@ const { chromium } = require('playwright');
         for (let lv = 1; lv <= 3; lv++) for (let i = 0; i < 25; i++) check(genRegion(lv), cc + ' region ' + reg); }
       for (let lv = 1; lv <= 3; lv++) for (let i = 0; i < 120; i++) check(genCommunity(lv), cc + ' community');
       state.grade = 'g3'; state.testMode = false; state.showAll = false; renderHome();
-      titles[cc] = [...document.querySelectorAll('#grid .tile[data-cat]')].filter((t) => ['region', 'community', 'sci'].includes(t.dataset.cat)).map((t) => t.querySelector('.tt').textContent);
+      titles[cc] = [...document.querySelectorAll('#grid .catalog-section:not(.rec-section) .tile[data-cat]')].filter((t) => ['region', 'community', 'sci'].includes(t.dataset.cat)).map((t) => t.querySelector('.tt').textContent);
     }
     for (let lv = 2; lv <= 4; lv++) for (let i = 0; i < 150; i++) check(genSciencePlus(lv), 'sci');
     state.country = 'us'; state.region = 'Michigan';

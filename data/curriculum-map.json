@@ -11,6 +11,7 @@
         "practiceFocus": ["gk","phonics","shape2"],
         "reviewSchedule": {"maxReviewCards":1,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":6}},
         "g": {
+          "library": "1-1",
           "trace": "1-1",
           "phonics": "1-2",
           "body": "1-1",
@@ -38,6 +39,7 @@
         "practiceFocus": ["phonics","add","sent"],
         "reviewSchedule": {"maxReviewCards":1,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":7}},
         "g": {
+          "library": "1-1",
           "trace": "1-1",
           "phonics": "1-3",
           "animals": "1-2",
@@ -223,6 +225,17 @@
             ],
             "approach": "play-and-practice",
             "bank": "generated"
+          },
+          "library": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "listen-to-stories"
+            ],
+            "approach": "read-aloud",
+            "bank": "authored"
           },
           "body": {
             "levels": [
@@ -426,6 +439,17 @@
             ],
             "approach": "play-and-practice",
             "bank": "generated"
+          },
+          "library": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "listen-to-stories"
+            ],
+            "approach": "read-aloud",
+            "bank": "authored"
           },
           "body": {
             "levels": [

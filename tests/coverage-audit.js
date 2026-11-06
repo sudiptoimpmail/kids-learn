@@ -21,7 +21,7 @@ const OUT = arg('--out', 'tests/out/coverage.json');   // docs/coverage/coverage
   await p.locator('#startBtn').click(); await p.waitForTimeout(400);
   const data = await p.evaluate((ROUNDS) => {
     const PIC = /<img|<svg|class="m-pic"|class="m-objs"|\p{Extended_Pictographic}/u;
-    const kind = (q) => q.spell ? 'spell' : q.passageFill ? 'passage' : q.fillIn ? 'fill-in' : q.puzzle ? 'puzzle' : q.match ? 'match' : q.multi ? 'pick-all'
+    const kind = (q) => q.build ? 'build' : q.spell ? 'spell' : q.passageFill ? 'passage' : q.fillIn ? 'fill-in' : q.puzzle ? 'puzzle' : q.match ? 'match' : q.multi ? 'pick-all'
       : q.letterPath ? 'letter-path' : q.order ? 'order' : q.illustrated ? 'scene' : q.tap ? 'tap' : q.trace ? 'trace' : q.body3d ? 'body' : q.options ? 'choice' : 'other';
     const family = (k) => String(k || '').replace(/^(chk|place-[\d-]+)-/, '').split('-').slice(0, 2).join('-').replace(/\d+/g, '#');
     const fp = (q) => { const body = q.match || q.order || q.fillIn || q.passageFill || q.letterPath || q.spell || ''; return String(q.text || '') + '|' + String(q.answer) + '|' + String(q.main || '') + '|' + (body ? JSON.stringify(body).slice(0, 600) : ''); };

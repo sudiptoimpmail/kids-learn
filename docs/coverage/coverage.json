@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-06T07:54:18.897Z",
+ "generated": "2026-11-06T15:03:28.967Z",
  "rounds": 5,
  "grades": {
   "prek": {
@@ -173,9 +173,10 @@
        "repeats": 0,
        "kinds": {
         "choice": 24,
-        "match": 26
+        "build": 4,
+        "match": 22
        },
-       "families": 28,
+       "families": 25,
        "hints": 50,
        "spoken": 50,
        "pics": 24,
@@ -186,10 +187,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "add-0-1",
-        "vadd-1ao7ky",
-        "add-0-5",
-        "add-4-1"
+        "cmp1-8-6-true",
+        "add-2-3",
+        "cmp1-6-8-false",
+        "add-3-2"
        ]
       }
      }
@@ -219,10 +220,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sub-3-2",
-        "sub-1-0",
-        "sub-4-0",
-        "sub-3-0"
+        "sub-2-2",
+        "vsub-1syg7gj",
+        "sub-3-0",
+        "sub-5-0"
        ]
       }
      }
@@ -252,10 +253,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "shape-all-rectangle-🍫📏",
-        "shape-all-square-🎲🧊",
-        "shape-all-rectangle-🚪📱",
-        "shape-all-circle-🪙🍩"
+        "shape-all-triangle-⚠️📐",
+        "s2-find-rectangle",
+        "s2-find-star",
+        "s2-find-square"
        ]
       }
      }
@@ -271,8 +272,8 @@
        "distinct": 19,
        "repeats": 31,
        "kinds": {
-        "tap": 31,
-        "choice": 19
+        "choice": 16,
+        "tap": 34
        },
        "families": 2,
        "hints": 50,
@@ -285,10 +286,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "body-tap-legs",
+        "body-pic-mouth",
         "body-pic-legs",
         "body-tap-hair",
-        "body-tap-head"
+        "body-tap-arms"
        ]
       }
      }
@@ -317,10 +318,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "visual-animals-lion",
+        "visual-objects-toothbrush",
+        "visual-objects-backpack",
         "gk-Which picture shows a truck?",
-        "gk-Where does a fish live?",
-        "visual-food-grapes"
+        "gk-Which picture shows a helicopter?"
        ]
       }
      }
@@ -336,8 +337,8 @@
        "distinct": 10,
        "repeats": 40,
        "kinds": {
-        "tap": 25,
-        "choice": 25
+        "choice": 25,
+        "tap": 25
        },
        "families": 6,
        "hints": 50,
@@ -350,10 +351,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ana-tap-lungs",
-        "ana-What holds your body up, like a frame?",
-        "ana-Which part pumps blood around your body?",
-        "ana-tap-brain"
+        "ana-What helps your body move?",
+        "ana-Which part helps you breathe?",
+        "ana-Which part helps you think?",
+        "ana-tap-heart"
        ]
       }
      }
@@ -987,13 +988,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 24,
-        "match": 26
+        "match": 23,
+        "choice": 22,
+        "build": 5
        },
-       "families": 28,
+       "families": 26,
        "hints": 50,
        "spoken": 50,
-       "pics": 24,
+       "pics": 22,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -1001,10 +1003,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "add-0-4",
-        "add-1-4",
-        "vadd-484k7q",
-        "add-2-1"
+        "vadd-27e8u5",
+        "add-3-2",
+        "bld-tf-5",
+        "add-0-2"
        ]
       },
       "2": {
@@ -1012,13 +1014,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 35,
-        "match": 15
+        "match": 11,
+        "choice": 33,
+        "build": 6
        },
-       "families": 16,
+       "families": 13,
        "hints": 50,
        "spoken": 50,
-       "pics": 13,
+       "pics": 11,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -1026,10 +1029,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "add-2-7",
-        "vadd-1aejard",
-        "add-2-3",
-        "vadd-ywthwo"
+        "vadd-1h9uokz",
+        "add-4-4",
+        "add-7-1",
+        "add-4-1"
        ]
       }
      }
@@ -1059,10 +1062,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sub-3-2",
-        "sub-2-1",
-        "vsub-1duptqg",
-        "vsub-5yu10g"
+        "sub-3-0",
+        "vsub-10pgyzr",
+        "sub-4-4",
+        "sub-1-0"
        ]
       },
       "2": {
@@ -1070,13 +1073,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 38,
-        "match": 12
+        "choice": 40,
+        "match": 10
        },
-       "families": 13,
+       "families": 11,
        "hints": 50,
        "spoken": 50,
-       "pics": 11,
+       "pics": 15,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -1084,10 +1087,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sub-5-3",
-        "sub-9-3",
-        "sub-4-2",
-        "sub-5-1"
+        "sub-8-5",
+        "sub-5-5",
+        "sub-2-2",
+        "sub-7-1"
        ]
       }
      }
@@ -1116,10 +1119,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "wp-−-3-1",
-        "wp-−-7-4",
-        "wp-−-2-2",
-        "wp-+-1-1"
+        "wp-+-6-4",
+        "wp-−-9-7",
+        "wp-+-5-1",
+        "wp-+-5-5"
        ]
       }
      }
@@ -1135,37 +1138,11 @@
        "distinct": 31,
        "repeats": 19,
        "kinds": {
-        "pick-all": 22,
-        "scene": 10,
-        "choice": 18
+        "scene": 9,
+        "choice": 19,
+        "pick-all": 22
        },
        "families": 4,
-       "hints": 50,
-       "spoken": 50,
-       "pics": 40,
-       "below": 0,
-       "emptyRounds": 0,
-       "badAnswers": [],
-       "badCount": 0,
-       "unfit": [],
-       "unfitCount": 0,
-       "sample": [
-        "shape-all-square-🧇🟦🧊",
-        "ill-shapes",
-        "s2-find-square",
-        "s2-find-oval"
-       ]
-      },
-      "2": {
-       "cards": 50,
-       "distinct": 40,
-       "repeats": 10,
-       "kinds": {
-        "choice": 24,
-        "scene": 9,
-        "pick-all": 17
-       },
-       "families": 6,
        "hints": 50,
        "spoken": 50,
        "pics": 41,
@@ -1176,10 +1153,36 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "s2-sides-hexagon",
+        "ill-shapes",
+        "s2-find-triangle",
+        "s2-find-circle",
+        "s2-find-square"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 42,
+       "repeats": 8,
+       "kinds": {
+        "scene": 10,
+        "choice": 22,
+        "pick-all": 18
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 40,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ill-shapes",
         "ill-squares",
-        "s2-find-diamond",
-        "shape-all-triangle-🔺📐"
+        "s2-sides-triangle",
+        "s2-find-hexagon"
        ]
       }
      }
@@ -1208,10 +1211,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "home-Where does the President of the United States live?-🏛️ the White House",
-        "home-Which bird is a symbol of Thanksgiving?-🦃 the turkey",
-        "home-Which bird is a symbol of the United States?-🦅 the bald eagle",
-        "home-What number do you call in an emergency in the United States?-911"
+        "home-flag-the United States",
+        "home-What is on the flag of the United States?-⭐ stars and stripes",
+        "home-What number do you call in an emergency in the United States?-911",
+        "home-Which bird is a symbol of the United States?-🦅 the bald eagle"
        ]
       }
      }
@@ -1227,8 +1230,8 @@
        "distinct": 19,
        "repeats": 31,
        "kinds": {
-        "choice": 18,
-        "tap": 32
+        "choice": 21,
+        "tap": 29
        },
        "families": 2,
        "hints": 50,
@@ -1241,10 +1244,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "body-pic-nose",
-        "body-tap-hands",
+        "body-pic-arms",
         "body-tap-feet",
-        "body-tap-hair"
+        "body-tap-nose",
+        "body-tap-ears"
        ]
       },
       "2": {
@@ -1252,8 +1255,8 @@
        "distinct": 30,
        "repeats": 20,
        "kinds": {
-        "tap": 32,
-        "choice": 18
+        "choice": 20,
+        "tap": 30
        },
        "families": 3,
        "hints": 50,
@@ -1266,9 +1269,9 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "body-tap-ears",
-        "body-tap-hair",
+        "body-fn-Where do you wear mittens?",
         "body-fn-How many fingers are on one hand?",
+        "body-tap-chest",
         "body-tap-knees"
        ]
       }
@@ -1287,7 +1290,7 @@
        "kinds": {
         "choice": 50
        },
-       "families": 20,
+       "families": 25,
        "hints": 50,
        "spoken": 50,
        "pics": 50,
@@ -1298,10 +1301,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "visual-transport-sailboat",
-        "visual-objects-gift",
-        "visual-nature-ocean",
-        "gk-Which picture shows a truck?"
+        "gk-Which animal says quack?",
+        "visual-nature-rainbow",
+        "visual-transport-bus",
+        "gk-Which picture shows a flower?"
        ]
       },
       "2": {
@@ -1311,10 +1314,10 @@
        "kinds": {
         "choice": 50
        },
-       "families": 25,
+       "families": 27,
        "hints": 50,
        "spoken": 50,
-       "pics": 49,
+       "pics": 48,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -1322,10 +1325,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gk-Which picture shows a sunflower?",
-        "gk-Which animal has a long trunk?",
-        "visual-objects-toothbrush",
-        "visual-food-orange"
+        "gk-Which picture shows a tulip?",
+        "visual-nature-cactus",
+        "gk-How many days are in a week?",
+        "visual-transport-ambulance"
        ]
       }
      }
@@ -1357,7 +1360,7 @@
        "sample": [
         "ana-What holds your body up, like a frame?",
         "ana-What helps your body move?",
-        "ana-tap-heart",
+        "ana-tap-lungs",
         "ana-tap-brain"
        ]
       },
@@ -1366,8 +1369,8 @@
        "distinct": 15,
        "repeats": 35,
        "kinds": {
-        "choice": 23,
-        "tap": 27
+        "tap": 27,
+        "choice": 23
        },
        "families": 8,
        "hints": 50,
@@ -1380,10 +1383,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ana-What holds your body up, like a frame?",
-        "ana-tap-liver",
-        "ana-How many lungs do you have?",
-        "ana-Which part tastes your food?"
+        "ana-tap-spine",
+        "ana-tap-intestines",
+        "ana-What helps your body move?",
+        "ana-tap-kidneys"
        ]
       }
      }
@@ -1413,10 +1416,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "vjob-dkmqb2",
-        "vjob-8p089",
-        "job-who-chef",
-        "job-who-builder"
+        "vjob-jtuc4g",
+        "job-who-mechanic",
+        "job-who-farmer",
+        "job-who-chef"
        ]
       },
       "2": {
@@ -1424,13 +1427,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "match": 31,
-        "choice": 19
+        "match": 33,
+        "choice": 17
        },
-       "families": 32,
+       "families": 34,
        "hints": 50,
        "spoken": 50,
-       "pics": 19,
+       "pics": 17,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -1438,10 +1441,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "vjob-g6gp7c",
-        "job-who-vet",
-        "vjob-r608v3",
-        "job-who-coder"
+        "vjob-1i6n1mq",
+        "vjob-1ygx8rf",
+        "vjob-1qnab8s",
+        "job-who-mail carrier"
        ]
       }
      }
@@ -1470,10 +1473,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "flag-f-Japan",
         "flag-f-Brazil",
-        "flag-f-Mexico",
-        "flag-f-Australia"
+        "flag-f-United States",
+        "flag-f-India",
+        "flag-f-Canada"
        ]
       },
       "2": {
@@ -1494,9 +1497,9 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "flag-f-Brazil",
-        "flag-f-Germany",
-        "flag-f-China",
+        "flag-f-Canada",
+        "flag-f-United Kingdom",
+        "flag-f-Australia",
         "flag-f-Italy"
        ]
       }
@@ -1527,8 +1530,8 @@
        "unfitCount": 0,
        "sample": [
         "ani-which-hippo",
-        "ani-which-monkey",
-        "ani-which-gorilla",
+        "ani-which-peacock",
+        "ani-which-penguin",
         "ani-which-camel"
        ]
       },
@@ -1543,17 +1546,17 @@
        "hints": 50,
        "spoken": 50,
        "pics": 50,
-       "below": 29,
+       "below": 31,
        "emptyRounds": 0,
        "badAnswers": [],
        "badCount": 0,
        "unfit": [],
        "unfitCount": 0,
        "sample": [
+        "ani-which-anaconda",
+        "ani-which-polar bear",
         "ani-which-cheetah",
-        "ani-which-moose",
-        "ani-which-koala",
-        "ani-which-peacock"
+        "ani-which-rhino"
        ]
       }
      }
@@ -1569,8 +1572,8 @@
        "distinct": 12,
        "repeats": 38,
        "kinds": {
-        "choice": 23,
-        "tap": 27
+        "choice": 26,
+        "tap": 24
        },
        "families": 2,
        "hints": 50,
@@ -1583,10 +1586,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "map-kcont-India",
-        "map-kcont-Canada",
+        "map-kcont-United States",
         "map-ctap-Africa",
-        "map-ctap-South America"
+        "map-ctap-Antarctica",
+        "map-ctap-Australia"
        ]
       }
      }
@@ -1615,10 +1618,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "pattern-0-🔵🟨🔺💜",
-        "pattern-0-🦉🦋🐳🐢",
-        "pattern-0-🍕🍩🥕🍋",
-        "pattern-0-🏈🎾⚽🏀"
+        "pattern-0-🍀🌷🌳🌵",
+        "pattern-0-🍇🍎🍌🍊",
+        "pattern-0-🦉🐢🦋🐳",
+        "pattern-0-🐱🐻🐸🐶"
        ]
       },
       "2": {
@@ -1639,10 +1642,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "pattern-2-🟥🟩🟨🟦",
-        "pattern-0-🥕🍩🍕🍋",
-        "pattern-0-🟨🟩🟥🟦",
-        "pattern-1-☀️🌈⭐🌙"
+        "pattern-0-🏆🎲🎁🎈",
+        "pattern-0-🐸🐻🐱🐶",
+        "pattern-1-🔵🟨💜🔺",
+        "pattern-0-💜🔵🔺🟨"
        ]
       }
      }
@@ -1671,10 +1674,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "odd-1-🐟🦈-🐻",
-        "odd-1-🍪🍰-🧦",
-        "odd-1-🖍️✏️-🍉",
-        "odd-1-🧣🧤-🍕"
+        "odd-1-🪀🎲-🥔",
+        "odd-1-🐥🐔-🚲",
+        "odd-1-✏️🖍️-🍉",
+        "odd-1-🥁🎹-🧤"
        ]
       },
       "2": {
@@ -1695,10 +1698,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "odd-2-🐶🐱🐰-🌳",
-        "odd-1-👟👢🩴-🍎",
-        "odd-2-🧥🧤🧣-🩴",
-        "odd-2-🦋🐝🐞-🐘"
+        "odd-1-🎸🥁🎹-🧤",
+        "odd-2-⛵🚤🚢-🚲",
+        "odd-2-🛁🪥🧼-🪁",
+        "odd-1-🐟🐬🦈-🐻"
        ]
       }
      }
@@ -1714,13 +1717,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "order": 17,
-        "choice": 33
+        "choice": 37,
+        "order": 13
        },
-       "families": 18,
+       "families": 14,
        "hints": 50,
        "spoken": 50,
-       "pics": 33,
+       "pics": 37,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -1728,10 +1731,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "vseq-👋🚌🏫",
-        "sequence-1-✏️🖍️🖼️-1",
-        "vseq-🌱🌿🌳",
-        "sequence-1-🌱💧🌻-2"
+        "sequence-1-📦🚚🏠-1",
+        "sequence-1-🧑‍🌾🌱🥕-2",
+        "vseq-🌧️💧🌈",
+        "sequence-1-🚦🚗🏠-2"
        ]
       },
       "2": {
@@ -1739,13 +1742,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 44,
-        "order": 6
+        "choice": 37,
+        "order": 13
        },
-       "families": 7,
+       "families": 14,
        "hints": 50,
        "spoken": 50,
-       "pics": 44,
+       "pics": 37,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -1753,10 +1756,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sequence-2-🪴💧🌱🌻-0",
-        "sequence-2-🧱📏🏗️🏠-1",
-        "vseq-☁️🌧️💧☀️",
-        "sequence-2-🐛🍃🟫🦋-1"
+        "sequence-2-🍎🚿🔪🥗-0",
+        "vseq-🧺🫧👕",
+        "sequence-2-☁️🌧️💧☀️-2",
+        "sequence-2-🧱📏🏗️🏠-3"
        ]
       }
      }
@@ -1774,8 +1777,8 @@
      "levels": {
       "3": {
        "cards": 50,
-       "distinct": 41,
-       "repeats": 9,
+       "distinct": 43,
+       "repeats": 7,
        "kinds": {
         "scene": 5,
         "choice": 45
@@ -1793,23 +1796,23 @@
        "sample": [
         "ill-longa",
         "g1-start-pl-play",
-        "ph-blendw-cat",
-        "ph-first-c-cub"
+        "ph-blendw-pen",
+        "ph-end-d-bed"
        ]
       },
       "4": {
        "cards": 50,
-       "distinct": 40,
-       "repeats": 10,
+       "distinct": 46,
+       "repeats": 4,
        "kinds": {
-        "choice": 37,
         "scene": 5,
-        "letter-path": 8
+        "choice": 36,
+        "letter-path": 9
        },
        "families": 10,
        "hints": 50,
        "spoken": 50,
-       "pics": 35,
+       "pics": 36,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -1817,25 +1820,25 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ph-end2-wind",
         "ill-longa",
-        "ph-end2-swing",
-        "ph-mid-log-dog"
+        "g1-start-fl-flag",
+        "ph-mid-cap-pan",
+        "ph-mid-nut-cup"
        ]
       },
       "5": {
        "cards": 50,
-       "distinct": 43,
-       "repeats": 7,
+       "distinct": 40,
+       "repeats": 10,
        "kinds": {
-        "choice": 35,
         "scene": 5,
-        "letter-path": 10
+        "choice": 40,
+        "letter-path": 5
        },
-       "families": 12,
+       "families": 10,
        "hints": 50,
        "spoken": 50,
-       "pics": 34,
+       "pics": 37,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -1843,10 +1846,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ph-mid-rat-yam",
         "ill-longa",
-        "ph-first-c-cow",
-        "ph-vpath-long O-70203"
+        "ph-end2-lock",
+        "ph-blend-br-brick",
+        "ph-blend-cr-crayon"
        ]
       }
      }
@@ -1859,13 +1862,13 @@
      "levels": {
       "3": {
        "cards": 50,
-       "distinct": 41,
-       "repeats": 9,
+       "distinct": 42,
+       "repeats": 8,
        "kinds": {
-        "choice": 35,
+        "choice": 37,
         "scene": 5,
         "puzzle": 5,
-        "spell": 5
+        "spell": 3
        },
        "families": 8,
        "hints": 45,
@@ -1878,10 +1881,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "cvc-find-ear",
+        "cvc-read-bus",
         "ill-wordhunt",
-        "cvc-find-run",
-        "cvc-read-hut"
+        "cvc-xw-202743",
+        "cvc-find-sky"
        ]
       }
      }
@@ -1897,13 +1900,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "spell": 9,
-        "choice": 41
+        "spell": 6,
+        "choice": 44
        },
        "families": 5,
        "hints": 50,
        "spoken": 50,
-       "pics": 44,
+       "pics": 45,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -1911,10 +1914,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "w4-scr-deer",
-        "w4-read-bear",
-        "w4-find-cake",
-        "w4-miss-nest"
+        "w4-scr-corn",
+        "w4-read-boat",
+        "w4-pic-wolf",
+        "w4-read-gift"
        ]
       },
       "3": {
@@ -1936,10 +1939,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "w4-find-snow",
-        "w4-miss-door",
-        "w4-miss-coin",
-        "w4-pic-book"
+        "w4-read-door",
+        "w4-miss-star",
+        "w4-pic-moon",
+        "w4-pic-ship"
        ]
       },
       "4": {
@@ -1947,13 +1950,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 41,
-        "spell": 9
+        "choice": 45,
+        "spell": 5
        },
        "families": 5,
        "hints": 50,
        "spoken": 50,
-       "pics": 48,
+       "pics": 45,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -1961,10 +1964,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
+        "w4-find-green",
         "w4-pic-snake",
-        "w4-scr-chair",
-        "w4-read-woman",
-        "w4-find-clock"
+        "w4-miss-bread",
+        "w4-miss-tiger"
        ]
       }
      }
@@ -1985,7 +1988,7 @@
        "families": 2,
        "hints": 50,
        "spoken": 50,
-       "pics": 26,
+       "pics": 27,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -1993,10 +1996,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sight-tap-some",
-        "sight-tap-make",
-        "sight-tap-all",
-        "sight-fill-The sun is ___."
+        "sight-fill-Come ___ and sit with me.",
+        "sight-fill-We have the ___ shoes!",
+        "sight-fill-I can ___ fast.",
+        "sight-tap-he"
        ]
       },
       "3": {
@@ -2009,7 +2012,7 @@
        "families": 3,
        "hints": 50,
        "spoken": 50,
-       "pics": 15,
+       "pics": 13,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2017,10 +2020,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sight-tap-go",
-        "sight-tap-smell",
-        "sight-tap-good",
-        "sight-opp-cold"
+        "sight-fill-I like to ___ my bike.",
+        "sight-opp-no",
+        "sight-opp-small",
+        "sight-fill-You did a ___ job!"
        ]
       }
      }
@@ -2038,7 +2041,7 @@
        "kinds": {
         "spell": 50
        },
-       "families": 40,
+       "families": 39,
        "hints": 50,
        "spoken": 50,
        "pics": 50,
@@ -2049,10 +2052,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "spell-frog-0123",
-        "spell-bell-0123",
-        "spell-seal-013",
-        "spell-ship-0123"
+        "spell-rose-0123",
+        "spell-lion-012",
+        "spell-pear-0123",
+        "spell-goat-0123"
        ]
       },
       "4": {
@@ -2062,7 +2065,7 @@
        "kinds": {
         "spell": 50
        },
-       "families": 43,
+       "families": 45,
        "hints": 50,
        "spoken": 50,
        "pics": 50,
@@ -2073,10 +2076,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "spell-wheel-23",
-        "spell-clap-12",
-        "spell-shirt-02",
-        "spell-huge-0123"
+        "spell-zebra-134",
+        "spell-like-0123",
+        "spell-shark-134",
+        "spell-she-012"
        ]
       }
      }
@@ -2105,10 +2108,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "voc-word-stroll",
-        "voc-word-lonely",
-        "voc-pic-wonder",
-        "voc-pic-loud"
+        "voc-pic-repair",
+        "voc-pic-gloomy",
+        "voc-pic-pounce",
+        "voc-pic-dash"
        ]
       }
      }
@@ -2121,16 +2124,16 @@
      "levels": {
       "2": {
        "cards": 50,
-       "distinct": 35,
-       "repeats": 15,
+       "distinct": 40,
+       "repeats": 10,
        "kinds": {
         "choice": 46,
         "scene": 4
        },
-       "families": 32,
+       "families": 37,
        "hints": 50,
-       "spoken": 14,
-       "pics": 35,
+       "spoken": 13,
+       "pics": 37,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2138,27 +2141,27 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sent-Rosa ate a banana before bed.",
+        "sent-A crab went under a rock.",
         "ill-sequence",
-        "sent-The boat has a big anchor.",
-        "sent-I write my name with a blue pen."
+        "sent-The bus is big and yellow.",
+        "sent-The fat pink pig sat in the garden."
        ]
       },
       "3": {
        "cards": 50,
-       "distinct": 38,
-       "repeats": 12,
+       "distinct": 41,
+       "repeats": 9,
        "kinds": {
-        "choice": 36,
-        "fill-in": 4,
-        "passage": 4,
+        "scene": 2,
+        "choice": 40,
         "order": 3,
-        "scene": 3
+        "fill-in": 3,
+        "passage": 2
        },
-       "families": 27,
+       "families": 31,
        "hints": 50,
-       "spoken": 31,
-       "pics": 33,
+       "spoken": 25,
+       "pics": 39,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2166,10 +2169,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sent-Dad made a blue kite. We went to a field when the wind blew. The kite rose high in the sky.",
-        "ill-sentence-The fox is by the ____.",
-        "sent-box-thin-sock-ship-lamp",
-        "sent-The baby can crawl, but she can not walk yet."
+        "ill-sequence",
+        "sent-Pete has a red bag. He put his book in the bag. Then he took it to school.",
+        "sent-Stop at the red light. Go at the green light.",
+        "sent-Tom was sad because it rained, but then he saw a rainbow."
        ]
       }
      }
@@ -2198,10 +2201,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gr-verb-kitten-sleep-sleepy",
-        "gr-verb-teacher-write-happy",
+        "gr-noun-kitten-sleep-tiny",
+        "gr-verb-farmer-cook-happy",
         "gr-noun-teacher-laugh-funny",
-        "gr-verb-dog-run-happy"
+        "gr-noun-dog-jump-funny"
        ]
       },
       "2": {
@@ -2222,10 +2225,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gr-pl-tooth",
-        "gr-pl-foot",
-        "gr-opp-up",
-        "gr-opp-good"
+        "gr-pl-goose",
+        "gr-pl-child",
+        "gr-opp-yes",
+        "gr-pl-lunch"
        ]
       }
      }
@@ -2238,11 +2241,11 @@
      "levels": {
       "2": {
        "cards": 50,
-       "distinct": 45,
-       "repeats": 5,
+       "distinct": 47,
+       "repeats": 3,
        "kinds": {
-        "match": 37,
-        "scene": 13
+        "scene": 11,
+        "match": 39
        },
        "families": 3,
        "hints": 50,
@@ -2255,19 +2258,19 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "match-math-<span class=\"m-num\">6</span><span class=\"m-num\">4</span><span class=\"m-num\">3</span><span class=\"m-num\">5</span>",
-        "ill-forest-wolf",
-        "match-read-<span class=\"m-word\">gift</span><span class=\"m-word\">corn</span><span class=\"m-word\">coin</span><span class=\"m-word\">hand</span>",
-        "match-math-<span class=\"m-num\">3</span><span class=\"m-num\">8</span><span class=\"m-num\">2</span><span class=\"m-num\">1</span>"
+        "ill-forest-leaf",
+        "ill-forest-jump",
+        "match-math-<span class=\"m-eq\">2 + 1</span><span class=\"m-eq\">7 + 1</span><span class=\"m-eq\">2 + 4</span><span class=\"m-eq\">4 + 5</span>",
+        "match-math-<span class=\"m-eq\">5 + 4</span><span class=\"m-eq\">1 + 1</span><span class=\"m-eq\">3 + 4</span><span class=\"m-eq\">6 + 2</span>"
        ]
       },
       "3": {
        "cards": 50,
-       "distinct": 48,
-       "repeats": 2,
+       "distinct": 47,
+       "repeats": 3,
        "kinds": {
-        "scene": 10,
-        "match": 40
+        "match": 39,
+        "scene": 11
        },
        "families": 3,
        "hints": 50,
@@ -2280,10 +2283,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ill-forest-wolf",
-        "match-read-<span class=\"m-word\">sheep</span><span class=\"m-word\">white</span><span class=\"m-word\">black</span><span class=\"m-word\">clock</span>",
-        "match-math-<span class=\"m-eq\">13 − 7</span><span class=\"m-eq\">4 − 3</span><span class=\"m-eq\">7 + 4</span><span class=\"m-eq\">12 − 5</span>",
-        "match-read-<span class=\"m-word\">zebra</span><span class=\"m-word\">truck</span><span class=\"m-word\">chair</span><span class=\"m-word\">bread</span>"
+        "match-read-<span class=\"m-word\">black</span><span class=\"m-word\">train</span><span class=\"m-word\">nurse</span><span class=\"m-word\">truck</span>",
+        "ill-forest-leaf",
+        "match-math-<span class=\"m-eq\">1 − 1</span><span class=\"m-eq\">10 − 8</span><span class=\"m-eq\">2 + 6</span><span class=\"m-eq\">1 + 2</span>",
+        "match-read-<span class=\"m-word\">clock</span><span class=\"m-word\">train</span><span class=\"m-word\">green</span><span class=\"m-word\">horse</span>"
        ]
       }
      }
@@ -2312,10 +2315,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "syl-dinosaur",
-        "syl-alligator",
-        "syl-helicopter",
-        "syl-book"
+        "syl-banana",
+        "syl-cookie",
+        "syl-television",
+        "syl-apple"
        ]
       },
       "3": {
@@ -2336,9 +2339,9 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "syl-monkey",
-        "syl-strawberry",
-        "syl-fish",
+        "syl-watermelon",
+        "syl-apple",
+        "syl-rabbit",
         "syl-butterfly"
        ]
       }
@@ -2355,13 +2358,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 39,
-        "match": 11
+        "match": 10,
+        "choice": 40
        },
-       "families": 13,
+       "families": 12,
        "hints": 50,
        "spoken": 50,
-       "pics": 8,
+       "pics": 5,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2369,10 +2372,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "add-8-5",
-        "vadd-1dgcn8s",
-        "add-5-6",
-        "vadd-1tqq7mn"
+        "vadd-1qbanyd",
+        "vadd-1jk5p3w",
+        "add-7-9",
+        "add-2-10"
        ]
       },
       "4": {
@@ -2380,13 +2383,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 37,
-        "match": 13
+        "choice": 39,
+        "match": 11
        },
-       "families": 15,
+       "families": 14,
        "hints": 50,
        "spoken": 50,
-       "pics": 0,
+       "pics": 1,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2394,10 +2397,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "add-55-2",
-        "cmp-31-51",
-        "add-50-4",
-        "vadd-1pcuqd2"
+        "add-24-3",
+        "add-57-2",
+        "add-94-1",
+        "vadd-10p1spu"
        ]
       }
      }
@@ -2419,7 +2422,7 @@
        "families": 8,
        "hints": 50,
        "spoken": 50,
-       "pics": 18,
+       "pics": 13,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2427,10 +2430,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sub-14-7",
-        "sub-14-13",
-        "sub-1-1",
-        "sub-5-1"
+        "sub-5-4",
+        "sub-13-7",
+        "sub-10-4",
+        "sub-15-12"
        ]
       },
       "4": {
@@ -2438,10 +2441,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 41,
-        "match": 9
+        "choice": 42,
+        "match": 8
        },
-       "families": 10,
+       "families": 9,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -2452,10 +2455,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sub-23-3",
-        "sub-49-6",
-        "sub-57-7",
-        "sub-85-5"
+        "sub-15-1",
+        "vsub-1x1prsk",
+        "sub-26-6",
+        "sub-36-3"
        ]
       }
      }
@@ -2484,10 +2487,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "wp-+-8-2",
-        "wp-+-3-1",
-        "wp-+-8-10",
-        "wp-+-2-5"
+        "wp-−-15-5",
+        "wp-−-16-1",
+        "wp-+-1-1",
+        "wp-−-20-2"
        ]
       },
       "3": {
@@ -2508,10 +2511,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "wp-+-26-4",
-        "wp-−-83-1",
-        "wp-+-93-2",
-        "wp-+-75-2"
+        "wp-−-50-3",
+        "wp-+-26-5",
+        "wp-+-78-7",
+        "wp-+-10-9"
        ]
       }
      }
@@ -2524,16 +2527,17 @@
      "levels": {
       "1": {
        "cards": 50,
-       "distinct": 15,
-       "repeats": 35,
+       "distinct": 27,
+       "repeats": 23,
        "kinds": {
-        "match": 12,
-        "choice": 38
+        "choice": 24,
+        "match": 6,
+        "build": 20
        },
-       "families": 13,
+       "families": 8,
        "hints": 50,
        "spoken": 50,
-       "pics": 38,
+       "pics": 24,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2541,10 +2545,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "vclock-1fiwedu",
-        "clock-read-11:00",
-        "clock-read-4:00",
-        "clock-read-7:00"
+        "clock-read-1:00",
+        "vclock-1rfr4vd",
+        "vclock-144htw4",
+        "clock-read-2:00"
        ]
       },
       "2": {
@@ -2552,13 +2556,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 47,
+        "build": 13,
+        "choice": 34,
         "match": 3
        },
-       "families": 5,
+       "families": 6,
        "hints": 50,
        "spoken": 50,
-       "pics": 47,
+       "pics": 34,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2566,10 +2571,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "clock-read-7:00",
-        "vclock-1cn3jl9",
-        "vclock-1lmz9ap",
-        "clock-read-6:30"
+        "bld-ck-2-0",
+        "clock-pick-9:30",
+        "bld-ck-5-30",
+        "clock-read-10:30"
        ]
       }
      }
@@ -2581,6 +2586,31 @@
      ],
      "levels": {
       "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 29,
+        "pick-all": 21
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "s3-name-cube",
+        "shape-all-square-🧇🎲",
+        "shape-all-triangle-🔺🍙📐",
+        "shape-all-square-🔲🧇"
+       ]
+      },
+      "3": {
        "cards": 50,
        "distinct": 50,
        "repeats": 0,
@@ -2599,35 +2629,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "s2-name-circle",
-        "s2-name-diamond",
-        "shape-all-square-🧊🎲🟦",
-        "s3-real-sphere"
-       ]
-      },
-      "3": {
-       "cards": 50,
-       "distinct": 50,
-       "repeats": 0,
-       "kinds": {
-        "choice": 34,
-        "pick-all": 16
-       },
-       "families": 6,
-       "hints": 50,
-       "spoken": 50,
-       "pics": 50,
-       "below": 0,
-       "emptyRounds": 0,
-       "badAnswers": [],
-       "badCount": 0,
-       "unfit": [],
-       "unfitCount": 0,
-       "sample": [
-        "s3-dim-0.6508487190585583",
-        "shape-all-square-🔲🟦🎲",
-        "s2-find-circle",
-        "s3-name-pyramid"
+        "s3-name-cylinder",
+        "shape-all-circle-🌕🍊",
+        "s2-sides-pentagon",
+        "shape-all-circle-🌕🍩"
        ]
       }
      }
@@ -2643,7 +2648,33 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 50
+        "choice": 41,
+        "build": 9
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ns-skip-2-8-1",
+        "ns-eo-29",
+        "ns-eo-7",
+        "ns-measure-longer-7-3"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 39,
+        "build": 11
        },
        "families": 5,
        "hints": 50,
@@ -2656,34 +2687,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ns-measure-longer-4-7",
-        "ns-data-most-3-2-5",
-        "ns-eo-27",
-        "ns-measure-units-6"
-       ]
-      },
-      "2": {
-       "cards": 50,
-       "distinct": 50,
-       "repeats": 0,
-       "kinds": {
-        "choice": 50
-       },
-       "families": 4,
-       "hints": 50,
-       "spoken": 50,
-       "pics": 0,
-       "below": 0,
-       "emptyRounds": 0,
-       "badAnswers": [],
-       "badCount": 0,
-       "unfit": [],
-       "unfitCount": 0,
-       "sample": [
-        "ns-ba-1-56",
-        "ns-val2-90-0",
-        "ns-measure-units-13",
-        "ns-val2-46-0"
+        "ns-val2-42-1",
+        "ns-ba-1-26",
+        "bld-pv-17",
+        "ns-val2-90-0"
        ]
       }
      }
@@ -2712,10 +2719,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sci-Which animal lays eggs?",
-        "sci-Which product is made to protect skin from the sun's UV rays?",
-        "sci-Is it living or non-living?-grass",
-        "sci-Is it living or non-living?-horse"
+        "sci-Which part of a plant holds it upright?",
+        "sci-Is it living or non-living?-shoe",
+        "sci-In places with four seasons, which season is usually coldest?",
+        "sci-Which part of a plant makes seeds?"
        ]
       },
       "2": {
@@ -2725,10 +2732,10 @@
        "kinds": {
         "choice": 50
        },
-       "families": 31,
+       "families": 32,
        "hints": 50,
        "spoken": 50,
-       "pics": 31,
+       "pics": 29,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2736,10 +2743,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sci-A magnet can pull things made of…",
-        "sci-What colorful arc can sunlight and raindrops sometimes make?",
-        "sci-Which animal has six legs when fully grown?",
-        "sci-Which animal group is it in?-ostrich"
+        "sci-Why do many birds build nests?",
+        "sci-Will a magnet pick it up?-feather",
+        "sci-Which animal group is it in?-cow",
+        "sci-Which material is best for a raincoat?"
        ]
       }
      }
@@ -2760,7 +2767,7 @@
        "families": 11,
        "hints": 50,
        "spoken": 50,
-       "pics": 35,
+       "pics": 30,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2768,10 +2775,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
+        "com-What should you do with litter in the park?",
+        "com-dir-park-library-north",
         "com-Which is a good, not a service?",
-        "com-time-I learned to walk.-I started school.",
-        "com-key-〰️",
-        "com-dir-shop-house-east"
+        "com-dir-shop-fountain-north"
        ]
       }
      }
@@ -2800,10 +2807,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "home-What is the money in the United States called?-the dollar",
+        "home-Which bird is a symbol of Thanksgiving?-🦃 the turkey",
         "home-What is on the flag of the United States?-⭐ stars and stripes",
         "home-Which bird is a symbol of the United States?-🦅 the bald eagle",
-        "home-Where does the President of the United States live?-🏛️ the White House"
+        "home-What number do you call in an emergency in the United States?-911"
        ]
       },
       "2": {
@@ -2816,7 +2823,7 @@
        "families": 12,
        "hints": 50,
        "spoken": 50,
-       "pics": 18,
+       "pics": 20,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2824,10 +2831,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "home-What is the capital city of the United States?-Washington, D.C.",
-        "home-Which day is Independence Day in the United States?-July 4",
         "home-Where is the Statue of Liberty?-New York City",
-        "home-What colors are on the flag of the United States?-red, white and blue"
+        "home-What colors are on the flag of the United States?-red, white and blue",
+        "home-flag-the United States",
+        "home-Where does the President of the United States live?-🏛️ the White House"
        ]
       }
      }
@@ -2848,7 +2855,7 @@
        "families": 50,
        "hints": 50,
        "spoken": 50,
-       "pics": 27,
+       "pics": 25,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2856,9 +2863,9 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gk-Which month comes after December?",
-        "gk-A baby dog is called a…",
-        "gk-Which sign tells cars to stop?",
+        "gk-What can you do when a friend feels sad?",
+        "gk-Which picture shows a cat?",
+        "gk-Which animal has a long trunk?",
         "gk-Which day comes after Wednesday?"
        ]
       },
@@ -2872,7 +2879,7 @@
        "families": 50,
        "hints": 50,
        "spoken": 50,
-       "pics": 16,
+       "pics": 18,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2880,10 +2887,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gk-Which month comes after January?",
+        "gk-Water turns into steam when it gets…",
+        "gk-What does a caterpillar turn into?",
         "gk-Which action helps save water?",
-        "gk-Which month follows October?",
-        "gk-What do the symbols on a map help us understand?"
+        "gk-What is one reason a community needs firefighters?"
        ]
       }
      }
@@ -2899,13 +2906,13 @@
        "distinct": 30,
        "repeats": 20,
        "kinds": {
-        "choice": 36,
-        "tap": 14
+        "tap": 14,
+        "choice": 36
        },
        "families": 16,
        "hints": 50,
        "spoken": 50,
-       "pics": 37,
+       "pics": 36,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2913,10 +2920,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ana-name-spine",
-        "ana-tap-spine",
-        "ana-What protects your brain?",
-        "ana-Which part tastes your food?"
+        "ana-tap-lungs",
+        "ana-name-stomach",
+        "ana-Teeth help us…",
+        "ana-tap-brain"
        ]
       }
      }
@@ -2932,13 +2939,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 40,
-        "match": 10
+        "match": 15,
+        "choice": 35
        },
-       "families": 13,
+       "families": 18,
        "hints": 50,
        "spoken": 50,
-       "pics": 40,
+       "pics": 35,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2946,9 +2953,9 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "job-does-artist",
-        "job-name-scientist",
-        "job-name-bus driver",
+        "vjob-pygc8n",
+        "job-name-mechanic",
+        "job-who-singer",
         "job-name-builder"
        ]
       },
@@ -2957,13 +2964,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 31,
-        "match": 19
+        "match": 15,
+        "choice": 35
        },
-       "families": 22,
+       "families": 18,
        "hints": 50,
        "spoken": 50,
-       "pics": 31,
+       "pics": 35,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -2971,10 +2978,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "job-does-dentist",
-        "job-does-artist",
-        "job-who-dentist",
-        "job-name-mechanic"
+        "vjob-1en5bgq",
+        "job-who-scientist",
+        "job-who-astronaut",
+        "job-who-artist"
        ]
       }
      }
@@ -3004,10 +3011,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "flag-c-Germany",
-        "flag-f-United States",
-        "flag-f-Australia",
-        "flag-f-Brazil"
+        "flag-c-Canada",
+        "flag-f-Turkey",
+        "vflag-jofx3e",
+        "flag-c-United States"
        ]
       }
      }
@@ -3020,8 +3027,8 @@
      "levels": {
       "2": {
        "cards": 50,
-       "distinct": 46,
-       "repeats": 4,
+       "distinct": 45,
+       "repeats": 5,
        "kinds": {
         "choice": 50
        },
@@ -3036,10 +3043,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ani-hippo",
-        "ani-which-sloth",
-        "ani-sloth",
-        "ani-anaconda"
+        "ani-anaconda",
+        "ani-which-panda",
+        "ani-rhino",
+        "ani-which-moose"
        ]
       }
      }
@@ -3060,7 +3067,7 @@
        "families": 3,
        "hints": 50,
        "spoken": 50,
-       "pics": 35,
+       "pics": 34,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -3068,10 +3075,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "lm-where-colosseum",
-        "lm-city-tajmahal",
-        "lm-nametext-grandcanyon",
-        "lm-where-goldengate"
+        "lm-city-venice",
+        "lm-where-neuschwanstein",
+        "lm-where-chichen",
+        "lm-where-parthenon"
        ]
       }
      }
@@ -3101,10 +3108,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "map-kname-Germany",
-        "map-ctap-Australia",
-        "map-ktap-France",
-        "map-kcont-Brazil"
+        "map-kcont-China",
+        "map-kcont-Italy",
+        "map-kname-Australia",
+        "map-ctap-Africa"
        ]
       }
      }
@@ -3133,10 +3140,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "pattern-2-🍀🌳🌵🌷",
-        "pattern-2-🔵💜🔺🟨",
-        "pattern-1-🐱🐻🐸🐶",
-        "pattern-2-🎁🏆🎲🎈"
+        "pattern-0-🐸🐻🐱🐶",
+        "pattern-0-🎈🎁🏆🎲",
+        "pattern-0-🎁🎈🎲🏆",
+        "pattern-2-🔺🔵💜🟨"
        ]
       },
       "3": {
@@ -3149,7 +3156,7 @@
        "families": 2,
        "hints": 50,
        "spoken": 50,
-       "pics": 44,
+       "pics": 43,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -3157,10 +3164,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "pattern-2-🌈🌙⭐☀️",
-        "pattern-0-🐶🐸🐱🐻",
-        "pattern-skip-5-4",
-        "pattern-3-💜🟨🔺🔵"
+        "pattern-skip-5-2",
+        "pattern-3-🍊🍎🍇🍌",
+        "pattern-skip-5-5",
+        "pattern-4-🔵🔴🟢🟡"
        ]
       }
      }
@@ -3189,10 +3196,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
+        "odd-1-🐟🐬🦈-🐻",
+        "odd-1-🐱🐶🐰-🚗",
         "odd-2-🧥🧤🧣-🩴",
-        "odd-2-🥄🍴🥢-👟",
-        "odd-1-🚗🚂🚲-🐼",
-        "odd-1-🧤🧣🧥-🍕"
+        "odd-2-⛵🚤🚢-🚲"
        ]
       }
      }
@@ -3222,10 +3229,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "vseq-📚📖🧠🏫",
-        "sequence-2-📖🧠✅-2",
-        "sequence-2-📖🧠✅-0",
-        "vseq-🍎🚿🔪🥗"
+        "vseq-🧺🫧👕",
+        "sequence-2-🖍️✂️🧴🖼️-3",
+        "sequence-2-🐛🍃🟫🦋-2",
+        "sequence-1-🪵🪚🪑-0"
        ]
       }
      }
@@ -3246,13 +3253,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 44,
-        "letter-path": 6
+        "choice": 42,
+        "letter-path": 8
        },
        "families": 10,
        "hints": 50,
        "spoken": 50,
-       "pics": 44,
+       "pics": 42,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -3260,10 +3267,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "g1-start-tr-tree",
-        "ph-mid-bug-sun",
-        "ph-mid-bag-cap",
-        "ph-end2-ring"
+        "ph-mid-jet-bed",
+        "ph-mid-bag-jar",
+        "ph-mid-cap-car",
+        "ph-vpath-long O-49627"
        ]
       },
       "5": {
@@ -3271,8 +3278,8 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 46,
-        "letter-path": 4
+        "choice": 44,
+        "letter-path": 6
        },
        "families": 12,
        "hints": 50,
@@ -3285,10 +3292,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ph-mid-pan-bat",
-        "ph-end2-band",
-        "ph-blend-fr-frog",
-        "ph-end2-watch"
+        "ph-end2-watch",
+        "ph-end2-trash",
+        "ph-vpath-long E-98824",
+        "ph-vpath-long I-10305"
        ]
       }
      }
@@ -3304,13 +3311,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 45,
-        "spell": 5
+        "choice": 44,
+        "spell": 6
        },
        "families": 5,
        "hints": 50,
        "spoken": 50,
-       "pics": 45,
+       "pics": 46,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -3318,10 +3325,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "w4-pic-robot",
-        "w4-pic-brick",
-        "w4-read-yo-yo",
-        "w4-miss-train"
+        "w4-read-clock",
+        "w4-miss-shirt",
+        "w4-miss-brown",
+        "w4-miss-horse"
        ]
       },
       "5": {
@@ -3329,13 +3336,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 43,
-        "spell": 7
+        "choice": 46,
+        "spell": 4
        },
        "families": 5,
        "hints": 50,
        "spoken": 50,
-       "pics": 48,
+       "pics": 46,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -3343,10 +3350,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "w4-pic-monkey",
-        "w4-read-pencil",
-        "w4-miss-tiger",
-        "w4-pic-flower"
+        "w4-read-puppy",
+        "w4-read-woman",
+        "w4-scr-pencil",
+        "w4-read-purple"
        ]
       }
      }
@@ -3367,7 +3374,7 @@
        "families": 3,
        "hints": 50,
        "spoken": 50,
-       "pics": 18,
+       "pics": 14,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -3375,10 +3382,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sight-opp-good",
-        "sight-fill-I like to ___ my bike.",
-        "sight-tap-huge",
-        "sight-opp-tiny"
+        "sight-tap-away",
+        "sight-opp-take",
+        "sight-opp-bad",
+        "sight-fill-The bird flew ___ the tree."
        ]
       },
       "4": {
@@ -3391,7 +3398,7 @@
        "families": 3,
        "hints": 50,
        "spoken": 50,
-       "pics": 20,
+       "pics": 16,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -3399,10 +3406,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sight-fill-The fire gives off ___.",
-        "sight-fill-The cat hid ___ the bed.",
-        "sight-fill-Can I have ___ juice?",
-        "sight-tap-huge"
+        "sight-tap-yes",
+        "sight-opp-happy",
+        "sight-fill-I like milk, ___ I do not like tea.",
+        "sight-tap-under"
        ]
       }
      }
@@ -3420,7 +3427,7 @@
        "kinds": {
         "spell": 50
        },
-       "families": 43,
+       "families": 47,
        "hints": 50,
        "spoken": 50,
        "pics": 50,
@@ -3431,10 +3438,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "spell-she-012",
-        "spell-huge-0123",
-        "spell-rock-012",
-        "spell-woman-13"
+        "spell-big-012",
+        "spell-train-23",
+        "spell-green-04",
+        "spell-snake-234"
        ]
       },
       "5": {
@@ -3444,7 +3451,7 @@
        "kinds": {
         "spell": 50
        },
-       "families": 43,
+       "families": 41,
        "hints": 50,
        "spoken": 50,
        "pics": 50,
@@ -3455,9 +3462,9 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "spell-black-01234",
-        "spell-all-012",
-        "spell-brown-01234",
+        "spell-tiger-01234",
+        "spell-bread-01234",
+        "spell-rocket-124",
         "spell-brick-01234"
        ]
       }
@@ -3487,10 +3494,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "voc-word-scorching",
-        "voc-pic-wobble",
-        "voc-word-repair",
-        "voc-word-gobble"
+        "voc-word-explore",
+        "voc-pic-pounce",
+        "voc-pic-munch",
+        "voc-pic-tiny"
        ]
       },
       "3": {
@@ -3511,10 +3518,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "voc-pic-gigantic",
-        "voc-pic-treasure",
-        "voc-word-marvelous",
-        "voc-word-scorching"
+        "voc-word-miniature",
+        "voc-word-clever",
+        "voc-pic-camouflage",
+        "voc-word-adventure"
        ]
       }
      }
@@ -3530,15 +3537,15 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 34,
-        "order": 3,
+        "choice": 33,
         "fill-in": 8,
-        "passage": 5
+        "order": 2,
+        "passage": 7
        },
-       "families": 37,
+       "families": 36,
        "hints": 50,
-       "spoken": 21,
-       "pics": 32,
+       "spoken": 22,
+       "pics": 36,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -3546,10 +3553,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sent-Grandma knits a scarf. It is long and soft. She gives it to me for winter.",
-        "sent-order-The caterpillar ate leaves.",
-        "sent-The moon is up at night.",
-        "sent-The happy green frog sat next to the barn."
+        "sent-A frog sat on a lily pad. A fly buzzed by. The frog caught it with its long tongue.",
+        "sent-box-moon-bus-crab-drum",
+        "sent-Dad made a blue kite. We went to a field when the wind blew. The kite rose high in the sky.",
+        "sent-A red flag was by the road. The class stopped to look at it. The flag showed where to turn."
        ]
       },
       "4": {
@@ -3557,15 +3564,15 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "fill-in": 9,
-        "choice": 29,
-        "order": 5,
-        "passage": 7
+        "choice": 28,
+        "passage": 11,
+        "fill-in": 8,
+        "order": 3
        },
-       "families": 33,
+       "families": 32,
        "hints": 50,
-       "spoken": 26,
-       "pics": 22,
+       "spoken": 31,
+       "pics": 18,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -3573,10 +3580,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sent-box-hat-brick-moon-star",
-        "sent-Ben lost his hat. He looked under the bed. He found it in his bag!",
         "sent-Ethan wanted to make lemonade. He squeezed six lemons into a jug. He added water and sugar. It tasted sweet and sour at the same time.",
-        "sent-The school cafeteria offered two lunches. One meal came with a reusable cup, and the other with a disposable bottle. Students counted the containers thrown away during a week. They presented the results to the principal and suggested using more reusable cups to reduce waste."
+        "sent-pass-Priya wanted to learn to ride a bicycle.",
+        "sent-p23-Arun's family moved to a new town.",
+        "sent-Tom saw a little bird on the ground. Its wing was hurt. Tom and his mom took it to the vet. The vet helped the bird get better."
        ]
       }
      }
@@ -3605,10 +3612,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gr-pl-mouse",
-        "gr-opp-in",
         "gr-pl-puppy",
-        "gr-pl-wolf"
+        "gr-pl-woman",
+        "gr-verb-girl-throw-tall",
+        "gr-opp-in"
        ]
       },
       "3": {
@@ -3629,10 +3636,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gr-past-swim",
-        "ws-abc-rainricerope",
-        "ws-pre-un",
-        "ws-root-unlocked"
+        "gr-past-drink",
+        "ws-abc-plusplayplum",
+        "gr-noun-girl-climb-brave",
+        "gr-comp-football"
        ]
       },
       "4": {
@@ -3642,7 +3649,7 @@
        "kinds": {
         "choice": 50
        },
-       "families": 12,
+       "families": 11,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -3653,10 +3660,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ws-abc-campcakecave",
-        "gr-con-does not",
-        "gr-con-is not",
-        "ws-suf-er"
+        "gr-same-hard",
+        "gr-con-will not",
+        "ws-sim-as cold as ___",
+        "gr-same-tired"
        ]
       }
      }
@@ -3685,9 +3692,9 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gp-cap-Our class went to the museum in May.",
         "gp-end-Watch out for the ball",
-        "gp-end-We ate soup for lunch",
+        "gp-cap-Zara saw a rainbow over the lake.",
+        "gp-end-Can you help me",
         "gp-pos-Leo's book"
        ]
       },
@@ -3709,10 +3716,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gp-coll-a ___ of puppies",
-        "gp-refl-He tied his shoes by ___.",
-        "gp-irr-Last night I ___ a dream.",
-        "gp-irr-She ___ a picture of a horse."
+        "gp-list-She packed a hat, a coat and gloves.",
+        "gp-list-I saw a cow, a pig and a goat.",
+        "gp-irr-Yesterday we ___ to the zoo.",
+        "gp-coll-a ___ of wolves"
        ]
       }
      }
@@ -3741,10 +3748,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "match-math-<span class=\"m-eq\">8 + 1</span><span class=\"m-eq\">12 − 2</span><span class=\"m-eq\">4 + 8</span><span class=\"m-eq\">11 − 9</span>",
-        "match-math-<span class=\"m-eq\">15 − 1</span><span class=\"m-eq\">5 − 1</span><span class=\"m-eq\">7 − 2</span><span class=\"m-eq\">5 + 10</span>",
-        "match-math-<span class=\"m-eq\">9 + 6</span><span class=\"m-eq\">6 − 4</span><span class=\"m-eq\">6 − 6</span><span class=\"m-eq\">2 + 4</span>",
-        "match-math-<span class=\"m-eq\">6 + 9</span><span class=\"m-eq\">10 + 2</span><span class=\"m-eq\">2 − 2</span><span class=\"m-eq\">6 − 2</span>"
+        "match-math-<span class=\"m-eq\">10 − 2</span><span class=\"m-eq\">15 − 6</span><span class=\"m-eq\">3 + 7</span><span class=\"m-eq\">9 − 9</span>",
+        "match-math-<span class=\"m-eq\">9 − 9</span><span class=\"m-eq\">10 + 4</span><span class=\"m-eq\">4 + 2</span><span class=\"m-eq\">9 + 9</span>",
+        "match-read-<span class=\"m-word\">clock</span><span class=\"m-word\">puppy</span><span class=\"m-word\">shirt</span><span class=\"m-word\">apple</span>",
+        "match-read-<span class=\"m-word\">zebra</span><span class=\"m-word\">nurse</span><span class=\"m-word\">apple</span><span class=\"m-word\">woman</span>"
        ]
       },
       "4": {
@@ -3765,10 +3772,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "match-read-<span class=\"m-word\">truck</span><span class=\"m-word\">train</span><span class=\"m-word\">balloon</span><span class=\"m-word\">robot</span><span class=\"m-word\">orange</span>",
-        "match-read-<span class=\"m-word\">monkey</span><span class=\"m-word\">balloon</span><span class=\"m-word\">bread</span><span class=\"m-word\">robot</span><span class=\"m-word\">green</span>",
-        "match-read-<span class=\"m-word\">carrot</span><span class=\"m-word\">tiger</span><span class=\"m-word\">snake</span><span class=\"m-word\">train</span><span class=\"m-word\">shirt</span>",
-        "match-math-<span class=\"m-eq\">10 × 4</span><span class=\"m-eq\">5 × 10</span><span class=\"m-eq\">39 + 5</span><span class=\"m-eq\">2 × 3</span><span class=\"m-eq\">5 × 4</span>"
+        "match-read-<span class=\"m-word\">sheep</span><span class=\"m-word\">banana</span><span class=\"m-word\">nurse</span><span class=\"m-word\">woman</span><span class=\"m-word\">truck</span>",
+        "match-read-<span class=\"m-word\">monkey</span><span class=\"m-word\">banana</span><span class=\"m-word\">robot</span><span class=\"m-word\">brush</span><span class=\"m-word\">train</span>",
+        "match-math-<span class=\"m-eq\">41 + 1</span><span class=\"m-eq\">2 × 4</span><span class=\"m-eq\">85 + 4</span><span class=\"m-eq\">10 × 1</span><span class=\"m-eq\">5 × 1</span>",
+        "match-math-<span class=\"m-eq\">10 × 5</span><span class=\"m-eq\">5 × 7</span><span class=\"m-eq\">5 × 1</span><span class=\"m-eq\">20 + 4</span><span class=\"m-eq\">2 × 4</span>"
        ]
       }
      }
@@ -3784,10 +3791,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 44,
-        "match": 6
+        "match": 15,
+        "choice": 35
        },
-       "families": 8,
+       "families": 17,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -3798,10 +3805,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "cmp-81-47",
-        "add-11-8",
-        "add-75-3",
-        "add-81-3"
+        "vadd-uhfxik",
+        "add-71-3",
+        "cmp-69-61",
+        "add-32-2"
        ]
       },
       "5": {
@@ -3823,10 +3830,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "add-68-9",
-        "add-28-9",
-        "add-88-2",
-        "add-17-5"
+        "add-33-7",
+        "add-68-4",
+        "cmp-7 − 6-0",
+        "add-37-3"
        ]
       },
       "6": {
@@ -3834,91 +3841,8 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 47,
-        "match": 3
-       },
-       "families": 6,
-       "hints": 50,
-       "spoken": 50,
-       "pics": 0,
-       "below": 0,
-       "emptyRounds": 0,
-       "badAnswers": [],
-       "badCount": 0,
-       "unfit": [],
-       "unfitCount": 0,
-       "sample": [
-        "add-36-36",
-        "add-74-22",
-        "vadd-cig6mi",
-        "add-15-19"
-       ]
-      },
-      "7": {
-       "cards": 50,
-       "distinct": 50,
-       "repeats": 0,
-       "kinds": {
-        "choice": 43,
-        "match": 7
-       },
-       "families": 10,
-       "hints": 50,
-       "spoken": 50,
-       "pics": 0,
-       "below": 0,
-       "emptyRounds": 0,
-       "badAnswers": [],
-       "badCount": 0,
-       "unfit": [],
-       "unfitCount": 0,
-       "sample": [
-        "add-715-181",
-        "add-705-22",
-        "cmp-8 − 5-4",
-        "cmp-6 + 1-2 + 5"
-       ]
-      }
-     }
-    },
-    "sub": {
-     "range": [
-      4,
-      7
-     ],
-     "levels": {
-      "4": {
-       "cards": 50,
-       "distinct": 50,
-       "repeats": 0,
-       "kinds": {
-        "choice": 45,
-        "match": 5
-       },
-       "families": 6,
-       "hints": 50,
-       "spoken": 50,
-       "pics": 0,
-       "below": 0,
-       "emptyRounds": 0,
-       "badAnswers": [],
-       "badCount": 0,
-       "unfit": [],
-       "unfitCount": 0,
-       "sample": [
-        "sub-57-5",
-        "sub-55-5",
-        "sub-86-5",
-        "vsub-18si310"
-       ]
-      },
-      "5": {
-       "cards": 50,
-       "distinct": 50,
-       "repeats": 0,
-       "kinds": {
-        "choice": 42,
-        "match": 8
+        "choice": 44,
+        "match": 6
        },
        "families": 9,
        "hints": 50,
@@ -3931,21 +3855,21 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sub-41-2",
-        "sub-64-7",
-        "sub-78-9",
-        "sub-53-5"
+        "add-41-39",
+        "add-12-42",
+        "add-29-36",
+        "add-69-23"
        ]
       },
-      "6": {
+      "7": {
        "cards": 50,
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 40,
-        "match": 10
+        "choice": 39,
+        "match": 11
        },
-       "families": 11,
+       "families": 14,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -3956,13 +3880,21 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sub-37-27",
-        "sub-84-42",
-        "sub-96-49",
-        "sub-72-36"
+        "add-366-33",
+        "add-626-32",
+        "add-133-666",
+        "add-112-142"
        ]
-      },
-      "7": {
+      }
+     }
+    },
+    "sub": {
+     "range": [
+      4,
+      7
+     ],
+     "levels": {
+      "4": {
        "cards": 50,
        "distinct": 50,
        "repeats": 0,
@@ -3981,10 +3913,85 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sub-635-100",
-        "sub-597-25",
-        "sub-478-274",
-        "sub-894-463"
+        "sub-99-8",
+        "sub-12-1",
+        "sub-84-1",
+        "sub-39-6"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 38,
+        "match": 12
+       },
+       "families": 13,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-63-6",
+        "vsub-1lk0oqm",
+        "vsub-kpw7bq",
+        "vsub-88aae"
+       ]
+      },
+      "6": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 41,
+        "match": 9
+       },
+       "families": 10,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-64-48",
+        "sub-36-12",
+        "vsub-nccjfc",
+        "sub-82-30"
+       ]
+      },
+      "7": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 45,
+        "match": 5
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-693-91",
+        "sub-482-40",
+        "sub-360-10",
+        "sub-753-331"
        ]
       }
      }
@@ -4013,10 +4020,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "wp-−-40-4",
-        "wp-−-43-9",
-        "wp-+-50-1",
-        "wp-−-52-6"
+        "wp-+-83-5",
+        "wp-+-12-9",
+        "wp-−-75-5",
+        "wp-−-96-7"
        ]
       },
       "4": {
@@ -4037,10 +4044,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "wp-−-63-9",
-        "explorer-math-g2-line-35",
-        "explorer-math-g2-shop-pattern",
-        "explorer-math-g2-parade-blocks"
+        "wp-cmp-17-13",
+        "explorer-math-g2-garden-rows",
+        "wp-+-46-3",
+        "wp-cmp-11-9"
        ]
       },
       "5": {
@@ -4061,10 +4068,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "explorer-math-g2-parade-blocks",
-        "explorer-math-g2-shop-pattern",
-        "explorer-math-g2-library-books",
-        "wp-+-81-3"
+        "wp-two-5-7-2",
+        "wp-two-4-1-1",
+        "wp-two-3-8-8",
+        "wp-−-20-9"
        ]
       }
      }
@@ -4080,10 +4087,11 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
+        "build": 10,
         "choice": 12,
-        "match": 38
+        "match": 28
        },
-       "families": 39,
+       "families": 30,
        "hints": 50,
        "spoken": 50,
        "pics": 12,
@@ -4094,10 +4102,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "mul1-3-4",
-        "mul1-2-5",
-        "mul1-4-3",
-        "vmul-16o97oh"
+        "bld-ar-4x3",
+        "mul1-3-2",
+        "mul1-4-2",
+        "mul1-2-3"
        ]
       },
       "2": {
@@ -4105,10 +4113,11 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "match": 15,
-        "choice": 35
+        "choice": 31,
+        "build": 10,
+        "match": 9
        },
-       "families": 16,
+       "families": 11,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -4119,10 +4128,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "vmul-1n7g5zw",
-        "mul-5-3",
-        "mul-10-3",
-        "mul-9-10"
+        "mul-2-5",
+        "mul-10-1",
+        "bld-ar-4x2",
+        "mul-5-5"
        ]
       },
       "3": {
@@ -4130,10 +4139,11 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 23,
-        "match": 27
+        "match": 15,
+        "choice": 22,
+        "build": 13
        },
-       "families": 28,
+       "families": 17,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -4144,10 +4154,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "mul-4-3",
-        "mul-1-2",
-        "mul-1-5",
-        "mul-5-5"
+        "vmul-sjnxg4",
+        "mul-4-1",
+        "vmul-v07vln",
+        "mul-1-3"
        ]
       }
      }
@@ -4177,10 +4187,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
+        "div1-4-2",
+        "div1-2-2",
         "div1-6-3",
-        "vdiv-1f8i008",
-        "div1-8-2",
-        "div1-6-2"
+        "div1-12-3"
        ]
       },
       "2": {
@@ -4188,10 +4198,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "match": 22,
-        "choice": 28
+        "choice": 30,
+        "match": 20
        },
-       "families": 23,
+       "families": 21,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -4202,10 +4212,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "vdiv-18fxrrh",
-        "div-15-5",
-        "div-6-2",
-        "div-20-2"
+        "div-90-10",
+        "div-30-10",
+        "div-70-10",
+        "div-2-2"
        ]
       }
      }
@@ -4221,13 +4231,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 47,
-        "match": 3
+        "choice": 33,
+        "match": 3,
+        "build": 14
        },
-       "families": 5,
+       "families": 6,
        "hints": 50,
        "spoken": 50,
-       "pics": 47,
+       "pics": 33,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4235,10 +4246,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "clock-read-7:30",
-        "clock-pick-2:30",
-        "clock-pick-7:00",
-        "clock-read-8:00"
+        "clock-read-11:00",
+        "clock-read-4:00",
+        "clock-pick-5:30",
+        "clock-read-1:00"
        ]
       },
       "3": {
@@ -4246,13 +4257,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 47,
+        "build": 7,
+        "choice": 40,
         "match": 3
        },
-       "families": 5,
+       "families": 6,
        "hints": 50,
        "spoken": 50,
-       "pics": 47,
+       "pics": 40,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4260,10 +4272,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "clock-read-2:45",
-        "vclock-xk88j5",
-        "clock-read-7:45",
-        "clock-read-6:00"
+        "bld-ck-12-15",
+        "clock-read-9:15",
+        "bld-ck-1-0",
+        "clock-pick-11:15"
        ]
       },
       "4": {
@@ -4271,13 +4283,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 47,
-        "match": 3
+        "choice": 39,
+        "build": 9,
+        "match": 2
        },
        "families": 5,
        "hints": 50,
        "spoken": 50,
-       "pics": 47,
+       "pics": 39,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4285,10 +4298,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "clock-read-1:25",
-        "clock-pick-11:00",
-        "vclock-cq817g",
-        "clock-read-3:45"
+        "clock-read-2:25",
+        "clock-pick-2:05",
+        "bld-ck-3-35",
+        "clock-pick-10:55"
        ]
       }
      }
@@ -4301,15 +4314,16 @@
      "levels": {
       "1": {
        "cards": 50,
-       "distinct": 26,
-       "repeats": 24,
+       "distinct": 31,
+       "repeats": 19,
        "kinds": {
-        "choice": 50
+        "build": 10,
+        "choice": 40
        },
-       "families": 2,
+       "families": 3,
        "hints": 50,
        "spoken": 50,
-       "pics": 50,
+       "pics": 40,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4317,10 +4331,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "frac-word-1-2-false",
-        "frac-equal-3-true",
-        "frac-word-1-2-true",
-        "frac-equal-2-true"
+        "bld-fr-3-4",
+        "bld-fr-1-3",
+        "frac-word-2-4-true",
+        "frac-word-3-4-false"
        ]
       },
       "2": {
@@ -4328,13 +4342,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 30,
-        "match": 20
+        "choice": 29,
+        "build": 3,
+        "match": 18
        },
-       "families": 22,
+       "families": 21,
        "hints": 50,
        "spoken": 50,
-       "pics": 30,
+       "pics": 29,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4342,10 +4357,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "frac-pick-3-6",
-        "vfrac-119iag",
-        "frac-pick-4-8",
-        "frac-name-2-3"
+        "frac-pick-2-4",
+        "bld-fr-1-3",
+        "frac-pick-2-3",
+        "frac-name-1-2"
        ]
       }
      }
@@ -4358,8 +4373,8 @@
      "levels": {
       "1": {
        "cards": 50,
-       "distinct": 42,
-       "repeats": 8,
+       "distinct": 41,
+       "repeats": 9,
        "kinds": {
         "choice": 50
        },
@@ -4374,10 +4389,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ms-ruler-0-9-cm",
-        "ms-ruler-0-4-in",
-        "ms-ruler-0-8-in",
-        "ms-ruler-0-2-cm"
+        "ms-ruler-0-3-in",
+        "ms-ruler-0-9-in",
+        "ms-ruler-0-2-in",
+        "ms-ruler-0-8-in"
        ]
       },
       "2": {
@@ -4398,10 +4413,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ms-pict-523-0",
-        "ms-ruler-1-6-in",
+        "ms-longer-5-1-cm",
+        "ms-ruler-3-6-cm",
         "ms-ruler-3-5-in",
-        "ms-pict-425-2"
+        "ms-longer-10-7-in"
        ]
       },
       "3": {
@@ -4414,7 +4429,7 @@
        "families": 4,
        "hints": 50,
        "spoken": 50,
-       "pics": 27,
+       "pics": 31,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4422,10 +4437,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ms-bar-12-8-10-14-01",
-        "ms-per-10-7-cm",
-        "ms-bar-6-12-2-4-20",
-        "ms-per-3-6-in"
+        "ms-bar-16-4-6-8-03",
+        "ms-area-14-5-4",
+        "ms-area-11-5-3",
+        "ms-bar-12-6-8-4-31"
        ]
       }
      }
@@ -4441,8 +4456,8 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "pick-all": 24,
-        "choice": 26
+        "choice": 27,
+        "pick-all": 23
        },
        "families": 6,
        "hints": 50,
@@ -4455,10 +4470,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "shape-all-triangle-🍙🍕🔺",
-        "s3-name-pyramid",
-        "s3-name-sphere",
-        "s2-name-star"
+        "s3-dim-0.9816122695337981",
+        "s2-name-circle",
+        "s2-name-pentagon",
+        "s2-name-rectangle"
        ]
       },
       "4": {
@@ -4479,10 +4494,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "s3-name-cube",
-        "s3-dim-0.5307430140674114",
-        "s3-find-rectangular prism",
-        "s3-dim-0.9114677447360009"
+        "s2-sides-rectangle",
+        "s3-dim-0.9194771125912666",
+        "s3-real-cube",
+        "s3-name-cone"
        ]
       }
      }
@@ -4498,9 +4513,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 50
+        "build": 14,
+        "choice": 36
        },
-       "families": 3,
+       "families": 4,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -4511,10 +4527,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ns-data-most-5-3-6",
-        "ns-ba-2-81",
-        "ns-data-most-3-7-6",
-        "ns-ba-2-10"
+        "bld-pv-110",
+        "ns-data-most-3-6-7",
+        "ns-data-most-5-6-4",
+        "ns-ba-1-83"
        ]
       },
       "3": {
@@ -4522,12 +4538,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 50
+        "choice": 34,
+        "build": 16
        },
-       "families": 4,
+       "families": 5,
        "hints": 50,
        "spoken": 50,
-       "pics": 13,
+       "pics": 10,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4535,10 +4552,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ns-money-63",
-        "ns-data-difference-6-4-7",
-        "ns-data-difference-7-3-2",
-        "ns-money-4"
+        "ns-blocks3-218",
+        "ns-money-61",
+        "ns-data-difference-3-5-4",
+        "ns-blocks3-255"
        ]
       },
       "4": {
@@ -4546,12 +4563,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 50
+        "choice": 38,
+        "build": 12
        },
        "families": 6,
        "hints": 50,
        "spoken": 50,
-       "pics": 16,
+       "pics": 9,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4559,10 +4577,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ns-blocks3-120",
-        "ns-blocks3-168",
-        "ns-blocks3-264",
-        "ns-pie-3-2"
+        "ns-data-difference-2-4-7",
+        "ns-cmp-1-1-5",
+        "ns-pie-4-3",
+        "ns-data-most-5-7-3"
        ]
       }
      }
@@ -4580,10 +4598,10 @@
        "kinds": {
         "choice": 50
        },
-       "families": 34,
+       "families": 32,
        "hints": 50,
        "spoken": 50,
-       "pics": 25,
+       "pics": 23,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4591,10 +4609,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sci-Opening a drawer toward you is a…",
-        "sci23-Which material is best for a raincoat?",
-        "sci23-What slowly makes a canyon over a very long time?",
-        "sci-Which animal has six legs when fully grown?"
+        "sci23-Which change can be undone?",
+        "sci23-Which animal is best suited to a desert?",
+        "sci-Which animal group is it in?-butterfly",
+        "sci-Which animal group is it in?-goldfish"
        ]
       },
       "3": {
@@ -4604,10 +4622,10 @@
        "kinds": {
         "choice": 50
        },
-       "families": 33,
+       "families": 32,
        "hints": 50,
        "spoken": 50,
-       "pics": 24,
+       "pics": 26,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4615,10 +4633,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sci23-Which place is usually home to the greatest variety of plants and animals?",
-        "explorer-science-g2-melting-choc",
-        "sci-Why does a sponge help clean up spilled water?",
-        "sci23-Which tool measures rainfall?"
+        "explorer-science-g2-weather-record",
+        "sci-Which animal becomes much less active and stays in a den for much of winter?",
+        "explorer-science-g2-sound-vibration",
+        "sci23-What happens when you push a swing harder?"
        ]
       }
      }
@@ -4647,10 +4665,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "com-Which is a need, not a want?",
-        "com-What should you do with litter in the park?",
-        "com-Which is a service, not a good?",
-        "com-Which is a good citizen?"
+        "com-Which person helps put out fires?",
+        "com-Which is a want, not a need?",
+        "com-dir-shop-house-east",
+        "com-dir-library-school-north"
        ]
       },
       "2": {
@@ -4660,10 +4678,10 @@
        "kinds": {
         "choice": 50
        },
-       "families": 20,
+       "families": 18,
        "hints": 50,
        "spoken": 50,
-       "pics": 20,
+       "pics": 21,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4671,9 +4689,9 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "com-Which helps the community?",
-        "com-A farmer grows carrots and sells them. The farmer is a…",
-        "com-Which is a natural resource?",
+        "com-time-Grandma had children.-Grandma has grandchildren.",
+        "com-key-●",
+        "com-time-I learned to walk.-I am in grade 3.",
         "com-gov-us-Where does the President live and work?"
        ]
       }
@@ -4692,7 +4710,7 @@
        "kinds": {
         "choice": 50
        },
-       "families": 2,
+       "families": 3,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -4703,10 +4721,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "reg-is-West Virginia-Which one is a state of the United States?",
-        "reg-Michigan-What is the state bird of Michigan?",
-        "reg-Michigan-What is the capital of Michigan?",
-        "reg-Michigan-Which part of Michigan looks like a mitten?"
+        "reg-Michigan-Which big bridge joins Michigan's two peninsulas?",
+        "reg-is-Minnesota-Which one is a state of the United States?",
+        "reg-is-Alaska-Which one is a state of the United States?",
+        "reg-Michigan-What is the state bird of Michigan?"
        ]
       },
       "2": {
@@ -4727,10 +4745,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "reg-Michigan-Which big bridge joins Michigan's two peninsulas?",
-        "reg-ocap-Alabama-What is the capital of Alabama?",
-        "reg-Michigan-Which is the largest city in Michigan?",
-        "reg-cap-Michigan-What is the capital of Michigan?"
+        "reg-ocap-New Mexico-What is the capital of New Mexico?",
+        "reg-cap-Michigan-What is the capital of Michigan?",
+        "reg-ocap-Iowa-What is the capital of Iowa?",
+        "reg-Michigan-What is Michigan's state stone?"
        ]
       }
      }
@@ -4759,10 +4777,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "home-Where is the Statue of Liberty?-New York City",
         "home-What colors are on the flag of the United States?-red, white and blue",
-        "home-Which bird is a symbol of the United States?-🦅 the bald eagle",
-        "home-flag-the United States"
+        "home-Where is the Statue of Liberty?-New York City",
+        "home-flag-the United States",
+        "home-Which day is Independence Day in the United States?-July 4"
        ]
       },
       "3": {
@@ -4772,7 +4790,7 @@
        "kinds": {
         "choice": 50
        },
-       "families": 9,
+       "families": 10,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -4783,9 +4801,9 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "home-Which one is a state of the United States?-Virginia",
-        "home-What is the capital city of the United States?-Washington, D.C.",
-        "home-Which one is a state of the United States?-New York",
+        "home-Where is the Statue of Liberty?-New York City",
+        "home-What colors are on the flag of the United States?-red, white and blue",
+        "home-Where is the Golden Gate Bridge?-San Francisco",
         "home-Which one is a state of the United States?-Mississippi"
        ]
       }
@@ -4807,7 +4825,7 @@
        "families": 50,
        "hints": 50,
        "spoken": 50,
-       "pics": 17,
+       "pics": 13,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4815,10 +4833,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gk-Which animal lays eggs?",
-        "gk-Which tool tells us how hot or cold it is?",
-        "gk-Which one is a solid?",
-        "gk-Which month follows October?"
+        "gk-Why should you read the title and labels on a graph?",
+        "gk-Which direction is opposite east?",
+        "gk-Which month comes after December?",
+        "gk-How many months are in one season?"
        ]
       }
      }
@@ -4834,13 +4852,13 @@
        "distinct": 30,
        "repeats": 20,
        "kinds": {
-        "choice": 37,
-        "tap": 13
+        "tap": 15,
+        "choice": 35
        },
        "families": 16,
        "hints": 50,
        "spoken": 50,
-       "pics": 34,
+       "pics": 36,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -4848,10 +4866,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ana-What carries blood around your body?",
-        "ana-What protects your heart and lungs?",
-        "ana-Teeth help us…",
-        "ana-How many lungs do you have?"
+        "ana-tap-lungs",
+        "ana-tap-liver",
+        "ana-name-lungs",
+        "ana-name-heart"
        ]
       },
       "3": {
@@ -4859,8 +4877,8 @@
        "distinct": 32,
        "repeats": 18,
        "kinds": {
-        "tap": 12,
-        "choice": 38
+        "choice": 37,
+        "tap": 13
        },
        "families": 18,
        "hints": 50,
@@ -4873,10 +4891,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ana-tap-heart",
-        "ana-tap-kidneys",
+        "ana-About how many bones does a grown-up have?",
         "ana-Your brain sends messages to your body through…",
-        "ana-What is the biggest organ of your body?"
+        "ana-What protects your brain?",
+        "ana-Which food helps build strong bones?"
        ]
       }
      }
@@ -4892,10 +4910,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "match": 25,
-        "choice": 25
+        "match": 24,
+        "choice": 26
        },
-       "families": 27,
+       "families": 26,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -4906,10 +4924,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "vflag-gk4fb4",
-        "flag-f-Turkey",
-        "vflag-8njp3p",
-        "flag-c-Turkey"
+        "vflag-10c1qpf",
+        "flag-f-India",
+        "flag-c-Italy",
+        "flag-c-China"
        ]
       },
       "3": {
@@ -4917,10 +4935,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 33,
-        "match": 17
+        "match": 20,
+        "choice": 30
        },
-       "families": 19,
+       "families": 22,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -4931,10 +4949,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "flag-c-Japan",
-        "vflag-kz5ok5",
-        "vflag-1vk3544",
-        "flag-f-Italy"
+        "vflag-pyzkei",
+        "flag-f-Switzerland",
+        "flag-c-Russia",
+        "flag-f-Germany"
        ]
       }
      }
@@ -4947,8 +4965,8 @@
      "levels": {
       "2": {
        "cards": 50,
-       "distinct": 43,
-       "repeats": 7,
+       "distinct": 45,
+       "repeats": 5,
        "kinds": {
         "choice": 50
        },
@@ -4963,10 +4981,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ani-moose",
-        "ani-which-rhino",
-        "ani-which-cheetah",
-        "ani-sloth"
+        "ani-rhino",
+        "ani-sloth",
+        "ani-which-anaconda",
+        "ani-wild turkey"
        ]
       },
       "3": {
@@ -4987,10 +5005,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ani-anaconda",
-        "ani-Komodo dragon",
-        "ani-red fox",
-        "ani-reindeer"
+        "ani-gorilla",
+        "ani-orangutan",
+        "ani-which-Komodo dragon",
+        "ani-which-African elephant"
        ]
       }
      }
@@ -5011,7 +5029,7 @@
        "families": 3,
        "hints": 50,
        "spoken": 50,
-       "pics": 35,
+       "pics": 34,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -5019,10 +5037,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "lm-where-colosseum",
-        "lm-city-parthenon",
-        "lm-where-goldengate",
-        "lm-city-venice"
+        "lm-city-sphinx",
+        "lm-nametext-sphinx",
+        "lm-where-parthenon",
+        "lm-city-chichen"
        ]
       },
       "3": {
@@ -5035,7 +5053,7 @@
        "families": 3,
        "hints": 50,
        "spoken": 50,
-       "pics": 34,
+       "pics": 37,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -5043,10 +5061,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "lm-where-safari",
-        "lm-where-brandenburg",
-        "lm-where-borobudur",
-        "lm-where-milford"
+        "lm-nametext-niagara",
+        "lm-nametext-grandcanyon",
+        "lm-where-neuschwanstein",
+        "lm-nametext-borobudur"
        ]
       }
      }
@@ -5076,10 +5094,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "map-kname-France",
-        "map-ctap-Australia",
-        "map-ktap-Egypt",
-        "map-kname-United Kingdom"
+        "map-cname-Australia",
+        "map-kcont-India",
+        "map-ctap-Antarctica",
+        "map-kcont-France"
        ]
       },
       "3": {
@@ -5087,8 +5105,8 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 38,
-        "tap": 12
+        "tap": 12,
+        "choice": 38
        },
        "families": 5,
        "hints": 50,
@@ -5101,10 +5119,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "map-kname-Argentina",
-        "map-cap-New Zealand",
-        "map-kname-Brazil",
-        "map-kname-Peru"
+        "map-ktap-Argentina",
+        "map-kname-Canada",
+        "map-cap-Spain",
+        "map-kname-Kenya"
        ]
       }
      }
@@ -5125,7 +5143,7 @@
        "families": 2,
        "hints": 50,
        "spoken": 50,
-       "pics": 43,
+       "pics": 44,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -5133,10 +5151,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "pattern-1-🍌🍊🍎🍇",
-        "pattern-skip-2-2",
-        "pattern-3-⚽🎾🏈🏀",
-        "pattern-skip-5-4"
+        "pattern-0-🏆🎈🎲🎁",
+        "pattern-1-🐢🦉🦋🐳",
+        "pattern-1-🟨💜🔺🔵",
+        "pattern-4-🍌🍊🍎🍇"
        ]
       },
       "4": {
@@ -5149,7 +5167,7 @@
        "families": 3,
        "hints": 50,
        "spoken": 50,
-       "pics": 19,
+       "pics": 17,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -5157,10 +5175,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "advanced-pattern-0-1-3-6-10-15",
-        "advanced-pattern-0-3-4-6-9-13",
-        "advanced-pattern-0-1-4-8-13-19",
-        "advanced-pattern-0-5-8-12-17-23"
+        "pattern-number-2-2",
+        "advanced-pattern-1-3-6-12-24-48",
+        "advanced-pattern-0-5-8-12-17-23",
+        "advanced-pattern-0-1-2-4-7-11"
        ]
       }
      }
@@ -5189,10 +5207,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "odd-2-🐶🐱🐰-🌳",
-        "odd-1-🦁🐘🦒-🍓",
-        "odd-2-🚒🚑🚓-🚜",
-        "odd-1-🥕🥦🌽-🚗"
+        "odd-1-🎸🥁🎹-🧤",
+        "odd-1-🚀✈️🚁-🌼",
+        "odd-2-📖✏️📏-🍪",
+        "odd-1-🐥🐔🦆-🚲"
        ]
       },
       "3": {
@@ -5213,10 +5231,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "odd-3-💧🧊❄️-🔥",
-        "odd-2-🚒🚑🚓-🚜",
+        "odd-2-👟🧦🥾-🧤",
         "odd-3-🖊️✏️🖍️-🪥",
-        "odd-3-🦉🦅🐧-🦇"
+        "odd-3-🦁🐯🐻-🐊",
+        "odd-3-🌋🏔️⛰️-🎒"
        ]
       }
      }
@@ -5228,6 +5246,31 @@
      ],
      "levels": {
       "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "order": 16,
+        "choice": 34
+       },
+       "families": 17,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 34,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "vseq-🛏️⏰🪥🥣",
+        "sequence-2-🫘💧🌱🌻-0",
+        "vseq-🪴💧🌱🌻",
+        "sequence-2-🛏️⏰🪥🥣-3"
+       ]
+      },
+      "3": {
        "cards": 50,
        "distinct": 50,
        "repeats": 0,
@@ -5246,35 +5289,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sequence-2-👕🧺🫧☀️-1",
-        "sequence-2-📚📖🧠🏫-1",
-        "vseq-🧺🫧👕",
-        "sequence-2-🫘💧🌱🌻-3"
-       ]
-      },
-      "3": {
-       "cards": 50,
-       "distinct": 50,
-       "repeats": 0,
-       "kinds": {
-        "choice": 35,
-        "order": 15
-       },
-       "families": 16,
-       "hints": 50,
-       "spoken": 50,
-       "pics": 35,
-       "below": 0,
-       "emptyRounds": 0,
-       "badAnswers": [],
-       "badCount": 0,
-       "unfit": [],
-       "unfitCount": 0,
-       "sample": [
-        "sequence-3-🔭🌙📝📊-2",
-        "vseq-🔭🌙📝📊",
-        "vseq-☁️🌧️🌱",
-        "sequence-3-📏🔢📊💡-2"
+        "sequence-2-🌧️🌂🚶🏠-2",
+        "sequence-3-💡📋🧪✅-0",
+        "sequence-3-🌱🌻🐝🍯-1",
+        "sequence-3-🌾🚜🥕🍲-3"
        ]
       }
      }
@@ -5308,10 +5326,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "spell-pizza-01234",
-        "spell-chair-01234",
-        "spell-here-0123",
-        "spell-nurse-01234"
+        "spell-tiger-01234",
+        "spell-rude-0123",
+        "spell-down-0123",
+        "spell-hang-0123"
        ]
       }
      }
@@ -5340,10 +5358,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "voc-pic-generous",
+        "voc-word-community",
+        "voc-pic-community",
         "voc-pic-delighted",
-        "voc-pic-dirty",
-        "voc-word-juicy"
+        "voc-word-rude"
        ]
       },
       "4": {
@@ -5364,10 +5382,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "voc-word-orbit",
-        "voc-pic-abundant",
-        "voc-pic-orbit",
-        "voc-pic-scared"
+        "voc-word-cooperate",
+        "voc-word-soar",
+        "voc-pic-recommend",
+        "voc-pic-adapt"
        ]
       }
      }
@@ -5383,13 +5401,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 44,
-        "passage": 6
+        "choice": 43,
+        "passage": 7
        },
-       "families": 45,
+       "families": 44,
        "hints": 50,
-       "spoken": 12,
-       "pics": 16,
+       "spoken": 13,
+       "pics": 18,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -5397,10 +5415,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sent-Emma practiced the piano every day after school. At first, the songs were hard and she made many mistakes. She did not give up. By the end of the year, she played a song at the school concert. Everyone clapped loudly.",
-        "sent-The school play was on Friday night. Ruby played the queen and had many lines to learn. Before the show, her hands were shaking. When the lights came on, she took a deep breath and began. She did not forget a single line.",
-        "sent-p23-Leo's class wanted a cleaner playground.",
-        "sent-Zara and her brother wanted the same toy. They began to argue loudly. Their mom set a timer for ten minutes. Each of them got a turn when the timer rang. By the end, they were playing the game together."
+        "sent-Maya and her dad went camping. They set up a tent near a lake. At night they saw many stars. They roasted marshmallows by the fire.",
+        "sent-p23-Monarch butterflies travel a very long way each autumn.",
+        "sent-p23-Priya wanted to win the art contest.",
+        "sent-Octopuses are amazing ocean animals. They have eight arms covered in suckers. They can change color to hide from enemies. An octopus has no bones, so it can squeeze through tiny holes. Some even use shells as a hiding place."
        ]
       },
       "6": {
@@ -5408,12 +5426,12 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "passage": 8,
-        "choice": 42
+        "choice": 41,
+        "passage": 9
        },
-       "families": 43,
+       "families": 42,
        "hints": 50,
-       "spoken": 19,
+       "spoken": 20,
        "pics": 12,
        "below": 0,
        "emptyRounds": 0,
@@ -5422,10 +5440,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sent-p23-Text A: Cats are good pets because they are quiet and clean.",
+        "sent-The Great Wall of China is one of the longest structures ever built. People built it over many hundreds of years to protect China from attacks. It stretches across mountains, deserts and grasslands. Soldiers used towers along the wall to watch for enemies and send smoke signals. Today, millions of visitors walk on the wall every year.",
         "sent-p23-Text A: Long ago, people wrote letters with ink and paper.",
-        "sent-Sea turtles hatch from eggs buried in beach sand. The babies often come out of their nests at night. On a naturally dark beach, they crawl toward the brighter, open horizon over the ocean and away from darker dunes. Bright lights from buildings can lead them in the wrong direction. Some beach towns turn off or shield lights during nesting season. Only a few hatchlings survive to adulthood, so protecting their route to the sea matters.",
-        "sent-Frogs start their lives as tiny eggs in the water. The eggs hatch into tadpoles that have tails and swim like fish. Slowly, the tadpoles grow legs and lose their tails. Then they hop onto land as frogs. This change is called a life cycle."
+        "sent-A science club tested the temperature of a sunny paved courtyard and a shaded grassy corner. At noon, the pavement read 34°C and the shaded grass read 27°C. The club wanted to know whether shade or surface material explained the difference. Their first test changed both factors at once. They designed another test using two similar paved areas, one shaded and one sunny, so only the amount of shade would differ.",
+        "sent-At dusk, bats flew above an orchard searching for insects. The farmer had once believed that bats were pests, but learned that many bats eat large numbers of insects. After talking with a wildlife specialist, the farmer installed a small bat house away from busy paths. The orchard team then observed how many bats visited over the following weeks."
        ]
       }
      }
@@ -5443,7 +5461,7 @@
        "kinds": {
         "choice": 50
        },
-       "families": 10,
+       "families": 8,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -5454,10 +5472,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ws-suf-less",
-        "gr-same-hard",
-        "ws-mean-park-to stop a car in a space",
-        "ws-abc-trucktreetrip"
+        "ws-mean-wave-moving water in the sea",
+        "ws-sim-as tall as a ___",
+        "ws-sim-as quiet as a ___",
+        "ws-mean-bark-the outside of a tree"
        ]
       },
       "5": {
@@ -5467,7 +5485,7 @@
        "kinds": {
         "choice": 50
        },
-       "families": 11,
+       "families": 12,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -5478,10 +5496,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ws-suf-able",
-        "ws-idiom-Break a leg in the show!",
-        "ws-pre-mis",
-        "ws-root-helpful"
+        "gr-homo-They lost ___ hats.",
+        "gr-adj-sweet",
+        "gr-homo-The wind ___ hard.",
+        "ws-root-preheat"
        ]
       }
      }
@@ -5510,10 +5528,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gp-list-I saw a cow, a pig and a goat.",
-        "gp-coll-a ___ of wolves",
-        "gp-refl-You can do it ___!",
-        "gp-refl-He tied his shoes by ___."
+        "gp-refl-The cat licked ___ clean.",
+        "gp-coll-a ___ of puppies",
+        "gp-irr-They ___ a song in class.",
+        "gp-refl-She hurt ___ on the slide."
        ]
       },
       "3": {
@@ -5534,10 +5552,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gp-conj-I wanted to play outside, ___ it was raining.",
-        "gp-adv-She sang ___.",
-        "gp-adv-Please talk ___ in the library.",
-        "gp-conj-Do you want milk ___ juice?"
+        "gp-agr-He ___ to school.",
+        "gp-cmp-My kite flew ___ than yours.",
+        "gp-q-Dad said, \"Time for bed.\"",
+        "gp-cmp-Today is ___ than yesterday."
        ]
       }
      }
@@ -5566,10 +5584,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "match-math-<span class=\"m-eq\">45 + 5</span><span class=\"m-eq\">64 + 7</span><span class=\"m-eq\">2 × 4</span><span class=\"m-eq\">34 + 1</span><span class=\"m-eq\">5 × 9</span>",
-        "match-read-<span class=\"m-word\">sheep</span><span class=\"m-word\">nurse</span><span class=\"m-word\">apple</span><span class=\"m-word\">sister</span><span class=\"m-word\">castle</span>",
-        "match-read-<span class=\"m-word\">carrot</span><span class=\"m-word\">black</span><span class=\"m-word\">turtle</span><span class=\"m-word\">pizza</span><span class=\"m-word\">robot</span>",
-        "match-math-<span class=\"m-eq\">44 + 1</span><span class=\"m-eq\">10 × 10</span><span class=\"m-eq\">78 + 2</span><span class=\"m-eq\">5 × 8</span><span class=\"m-eq\">10 × 6</span>"
+        "match-math-<span class=\"m-eq\">10 × 9</span><span class=\"m-eq\">10 × 8</span><span class=\"m-eq\">10 × 6</span><span class=\"m-eq\">5 × 6</span><span class=\"m-eq\">72 + 1</span>",
+        "match-math-<span class=\"m-eq\">90 + 3</span><span class=\"m-eq\">68 + 4</span><span class=\"m-eq\">10 × 7</span><span class=\"m-eq\">2 × 10</span><span class=\"m-eq\">5 × 10</span>",
+        "match-read-<span class=\"m-word\">robot</span><span class=\"m-word\">black</span><span class=\"m-word\">tiger</span><span class=\"m-word\">brown</span><span class=\"m-word\">bread</span>",
+        "match-math-<span class=\"m-eq\">51 + 2</span><span class=\"m-eq\">10 × 5</span><span class=\"m-eq\">2 × 2</span><span class=\"m-eq\">38 + 1</span><span class=\"m-eq\">10 × 3</span>"
        ]
       },
       "5": {
@@ -5590,10 +5608,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "match-read-<span class=\"m-word\">yellow</span><span class=\"m-word\">carrot</span><span class=\"m-word\">spider</span><span class=\"m-word\">orange</span><span class=\"m-word\">banana</span>",
-        "match-read-<span class=\"m-word\">castle</span><span class=\"m-word\">brother</span><span class=\"m-word\">spider</span><span class=\"m-word\">alligator</span><span class=\"m-word\">turtle</span>",
-        "match-read-<span class=\"m-word\">brother</span><span class=\"m-word\">flower</span><span class=\"m-word\">alligator</span><span class=\"m-word\">anchor</span><span class=\"m-word\">pencil</span>",
-        "match-math-<span class=\"m-eq\">15 ÷ 3</span><span class=\"m-eq\">3 ÷ 3</span><span class=\"m-eq\">6 ÷ 2</span><span class=\"m-eq\">4 × 7</span><span class=\"m-eq\">12 ÷ 3</span>"
+        "match-math-<span class=\"m-eq\">2 × 7</span><span class=\"m-eq\">6 ÷ 3</span><span class=\"m-eq\">1 × 10</span><span class=\"m-eq\">25 ÷ 5</span><span class=\"m-eq\">2 ÷ 2</span>",
+        "match-math-<span class=\"m-eq\">4 × 3</span><span class=\"m-eq\">1 × 9</span><span class=\"m-eq\">9 ÷ 3</span><span class=\"m-eq\">3 × 9</span><span class=\"m-eq\">8 ÷ 2</span>",
+        "match-math-<span class=\"m-eq\">8 ÷ 4</span><span class=\"m-eq\">4 × 10</span><span class=\"m-eq\">2 × 3</span><span class=\"m-eq\">1 × 5</span><span class=\"m-eq\">12 ÷ 4</span>",
+        "match-math-<span class=\"m-eq\">2 × 9</span><span class=\"m-eq\">3 × 3</span><span class=\"m-eq\">3 × 5</span><span class=\"m-eq\">2 × 4</span><span class=\"m-eq\">3 × 7</span>"
        ]
       }
      }
@@ -5609,10 +5627,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 39,
-        "match": 11
+        "choice": 42,
+        "match": 8
        },
-       "families": 14,
+       "families": 10,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -5623,10 +5641,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "add-68-13",
-        "add-16-45",
-        "add-50-34",
-        "add-37-14"
+        "add-48-14",
+        "vadd-fvqent",
+        "vadd-1ucepvs",
+        "add-36-34"
        ]
       },
       "7": {
@@ -5634,10 +5652,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 42,
-        "match": 8
+        "match": 10,
+        "choice": 40
        },
-       "families": 11,
+       "families": 13,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -5648,10 +5666,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "cmp-7 − 3-6",
-        "add-801-151",
-        "vadd-3zlreo",
-        "add-303-655"
+        "vadd-3rj5ra",
+        "add-431-437",
+        "add-504-82",
+        "add-210-625"
        ]
       },
       "8": {
@@ -5659,10 +5677,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 41,
-        "match": 9
+        "match": 12,
+        "choice": 38
        },
-       "families": 12,
+       "families": 15,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -5673,10 +5691,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "add-326-127",
-        "add-199-288",
-        "vadd-k0u04g",
-        "vadd-1k30vrg"
+        "vadd-1tpl6fv",
+        "cmp-6 + 6-14",
+        "add-150-274",
+        "cmp-2 + 10-10"
        ]
       }
      }
@@ -5692,10 +5710,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 36,
-        "match": 14
+        "choice": 38,
+        "match": 12
        },
-       "families": 15,
+       "families": 13,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -5706,10 +5724,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sub-88-16",
-        "vsub-1qrg9o6",
-        "sub-51-27",
-        "sub-41-29"
+        "sub-67-19",
+        "sub-50-11",
+        "sub-40-14",
+        "sub-87-15"
        ]
       },
       "7": {
@@ -5717,10 +5735,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 44,
-        "match": 6
+        "choice": 39,
+        "match": 11
        },
-       "families": 7,
+       "families": 12,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -5731,10 +5749,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sub-743-41",
-        "sub-488-110",
-        "sub-383-150",
-        "sub-498-440"
+        "sub-373-41",
+        "sub-388-177",
+        "sub-536-422",
+        "sub-544-123"
        ]
       },
       "8": {
@@ -5742,10 +5760,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 41,
-        "match": 9
+        "match": 13,
+        "choice": 37
        },
-       "families": 10,
+       "families": 14,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -5756,10 +5774,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sub-817-268",
-        "sub-415-256",
-        "sub-823-637",
-        "sub-462-248"
+        "vsub-kpb2ie",
+        "sub-667-577",
+        "sub-795-559",
+        "vsub-1w2z0pe"
        ]
       }
      }
@@ -5788,10 +5806,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
+        "wp-−-83-7",
+        "explorer-math-g2-seed-packets",
         "explorer-math-g2-visual-number-line",
-        "explorer-math-g2-library-books",
-        "wp-−-21-3",
-        "wp-+-82-3"
+        "explorer-math-g2-shape-sides"
        ]
       },
       "5": {
@@ -5812,10 +5830,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "explorer-math-g3-visual-number-line-fraction",
-        "wp-two-6-7-1",
-        "wp-two-8-8-3",
-        "wp-two-9-3-3"
+        "wp-two-6-5-9",
+        "wp-+-30-9",
+        "wp-two-8-3-7",
+        "wp-+-64-5"
        ]
       }
      }
@@ -5831,10 +5849,11 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 16,
-        "match": 34
+        "choice": 14,
+        "match": 23,
+        "build": 13
        },
-       "families": 35,
+       "families": 25,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -5845,10 +5864,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "mul-3-5",
-        "mul-2-5",
-        "mul-2-3",
-        "vmul-arz8om"
+        "mul-5-5",
+        "vmul-1n25x0o",
+        "vmul-6tdw7l",
+        "mul-3-4"
        ]
       },
       "4": {
@@ -5856,10 +5875,11 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 37,
-        "match": 13
+        "choice": 33,
+        "match": 9,
+        "build": 8
        },
-       "families": 14,
+       "families": 11,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -5870,10 +5890,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "mul-3-2",
-        "mul-9-4",
-        "mul-7-9",
-        "mul-5-5"
+        "mul-2-4",
+        "vmul-rmtlma",
+        "mul-2-8",
+        "mul-6-9"
        ]
       },
       "5": {
@@ -5881,10 +5901,11 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 35,
-        "match": 15
+        "build": 10,
+        "choice": 32,
+        "match": 8
        },
-       "families": 18,
+       "families": 12,
        "hints": 50,
        "spoken": 50,
        "pics": 11,
@@ -5895,10 +5916,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "mul5m-2-6",
-        "mul5s-6-6-baskets",
-        "vmul-1qc5ust",
-        "vmul-1rd1mas"
+        "bld-ar-4x5",
+        "bld-ar-5x3",
+        "mul-3-3",
+        "vmul-9austm"
        ]
       },
       "6": {
@@ -5906,13 +5927,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "match": 10,
-        "choice": 40
+        "choice": 35,
+        "match": 11,
+        "build": 4
        },
-       "families": 12,
+       "families": 14,
        "hints": 50,
        "spoken": 50,
-       "pics": 30,
+       "pics": 22,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -5920,10 +5942,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "vmul-1k4nci7",
-        "vmul-1atwj7h",
-        "mul6s-4-5-4",
-        "vmul-6ege6g"
+        "mul6t-3-20",
+        "mul6t-5-60",
+        "mul6s-8-9-3",
+        "vmul-opznbd"
        ]
       }
      }
@@ -5953,10 +5975,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "div-20-4",
-        "div-16-4",
-        "vdiv-1cf4u59",
-        "div-15-3"
+        "div-8-2",
+        "vdiv-be8e9r",
+        "div-10-2",
+        "div-12-4"
        ]
       },
       "4": {
@@ -5964,10 +5986,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "match": 14,
-        "choice": 36
+        "choice": 32,
+        "match": 18
        },
-       "families": 15,
+       "families": 19,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -5978,10 +6000,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "vdiv-3f4086",
         "div-48-8",
-        "vdiv-ek70nj",
-        "div-54-9"
+        "vdiv-szeij",
+        "vdiv-tbv0go",
+        "div-72-8"
        ]
       },
       "5": {
@@ -5989,13 +6011,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 40,
-        "match": 10
+        "choice": 39,
+        "match": 11
        },
-       "families": 12,
+       "families": 13,
        "hints": 50,
        "spoken": 50,
-       "pics": 21,
+       "pics": 19,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6003,10 +6025,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "div5s-20-4-boxes",
-        "div5s-18-9-baskets",
+        "div5s-70-10-bags",
         "div5s-24-6-plates",
-        "div-30-6"
+        "div-8-4",
+        "vdiv-pdeey7"
        ]
       }
      }
@@ -6022,13 +6044,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 47,
-        "match": 3
+        "choice": 37,
+        "match": 3,
+        "build": 10
        },
-       "families": 5,
+       "families": 6,
        "hints": 50,
        "spoken": 50,
-       "pics": 47,
+       "pics": 37,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6036,10 +6059,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "clock-read-10:00",
-        "clock-pick-8:05",
-        "clock-pick-9:40",
-        "clock-pick-9:00"
+        "clock-read-3:50",
+        "clock-pick-7:20",
+        "vclock-xxaxvn",
+        "clock-read-6:25"
        ]
       },
       "5": {
@@ -6047,13 +6070,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 47,
-        "match": 3
+        "build": 10,
+        "match": 3,
+        "choice": 37
        },
-       "families": 5,
+       "families": 6,
        "hints": 50,
        "spoken": 50,
-       "pics": 47,
+       "pics": 37,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6061,10 +6085,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "clock-pick-4:37",
-        "clock-pick-6:00",
-        "clock-read-3:27",
-        "clock-read-6:28"
+        "bld-ck-12-10",
+        "bld-ck-11-20",
+        "vclock-dl035p",
+        "clock-read-4:27"
        ]
       },
       "6": {
@@ -6085,10 +6109,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "clk-el-1-35-25",
-        "clk-el-5-10-30",
-        "clk-el-7-45-25",
-        "clk-el-8-40-15"
+        "clk-el-10-30-40",
+        "clk-el-4-55-50",
+        "clk-el-3-50-30",
+        "clk-el-4-50-50"
        ]
       }
      }
@@ -6104,13 +6128,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 29,
-        "match": 21
+        "match": 16,
+        "choice": 28,
+        "build": 6
        },
-       "families": 23,
+       "families": 19,
        "hints": 50,
        "spoken": 50,
-       "pics": 29,
+       "pics": 28,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6118,10 +6143,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "frac-pick-1-2",
-        "vfrac-urkth0",
-        "frac-name-2-3",
-        "frac-name-1-2"
+        "vfrac-znkgl",
+        "frac-pick-1-4",
+        "bld-fr-1-3",
+        "bld-fr-1-2"
        ]
       },
       "3": {
@@ -6129,13 +6154,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 36,
-        "match": 14
+        "choice": 27,
+        "match": 9,
+        "build": 14
        },
-       "families": 16,
+       "families": 12,
        "hints": 50,
        "spoken": 50,
-       "pics": 36,
+       "pics": 27,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6143,10 +6169,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "frac-line-1-3-1",
-        "frac-line-5-8-1",
-        "frac-cmp-4-8",
-        "frac-line-1-8-1"
+        "frac-line-2-8-2",
+        "vfrac-iml57z",
+        "frac-line-9-8-2",
+        "bld-fr-5-6"
        ]
       },
       "4": {
@@ -6154,13 +6180,14 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 32,
-        "match": 18
+        "choice": 30,
+        "match": 9,
+        "build": 11
        },
-       "families": 21,
+       "families": 13,
        "hints": 50,
        "spoken": 50,
-       "pics": 19,
+       "pics": 20,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6168,10 +6195,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "frac-set-2-10",
-        "vfrac-wzn1nw",
-        "frac-set-2-8",
-        "frac-eq-1-2-2"
+        "frac-whole-3-6",
+        "vfrac-1vfg8dw",
+        "frac-set-3-12",
+        "frac-whole-3-8"
        ]
       }
      }
@@ -6200,10 +6227,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ms-longer-3-1-cm",
-        "ms-ruler-4-5-in",
-        "ms-pict-345-2",
-        "ms-ruler-2-4-in"
+        "ms-pict-314-2",
+        "ms-longer-6-1-in",
+        "ms-longer-5-1-cm",
+        "ms-ruler-4-6-in"
        ]
       },
       "3": {
@@ -6224,10 +6251,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ms-bar-16-4-8-2-13",
-        "ms-change-us-40",
-        "ms-change-us-5",
-        "ms-area-7-5-3"
+        "ms-area-9-5-2",
+        "ms-bar-10-4-12-6-02",
+        "ms-area-8-4-2",
+        "ms-area-5-4-2"
        ]
       },
       "4": {
@@ -6240,7 +6267,7 @@
        "families": 3,
        "hints": 50,
        "spoken": 50,
-       "pics": 26,
+       "pics": 32,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6248,10 +6275,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ms-units-a pencil",
-        "ms-arear-9-5-m",
-        "ms-units-a dog",
-        "ms-arear-5-4-cm"
+        "ms-units-a drop of rain",
+        "ms-sbar-tot-25-20-35",
+        "ms-arear-6-6-in",
+        "ms-arear-8-3-m"
        ]
       }
      }
@@ -6280,10 +6307,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "s2-name-pentagon",
-        "s2-name-hexagon",
-        "s3-dim-0.47469943203032017",
-        "s2-name-heart"
+        "s3-dim-0.9499182170256972",
+        "s2-name-rectangle",
+        "s3-dim-0.2689403844997287",
+        "s3-name-cylinder"
        ]
       }
      }
@@ -6299,12 +6326,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 50
+        "choice": 34,
+        "build": 16
        },
-       "families": 4,
+       "families": 5,
        "hints": 50,
        "spoken": 50,
-       "pics": 5,
+       "pics": 4,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6312,10 +6340,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ns-blocks3-325",
-        "ns-blocks3-105",
-        "ns-val3-700-0",
-        "ns-money-62"
+        "ns-blocks3-245",
+        "ns-blocks3-145",
+        "ns-blocks3-251",
+        "bld-pv-429"
        ]
       },
       "4": {
@@ -6323,7 +6351,8 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 50
+        "choice": 35,
+        "build": 15
        },
        "families": 6,
        "hints": 50,
@@ -6336,10 +6365,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ns-pie-2-1",
-        "ns-pie-4-2",
-        "ns-pie-4-3",
-        "ns-pie-3-1"
+        "ns-blocks3-334",
+        "ns-pie-8-2",
+        "ns-pie-3-2",
+        "ns-money-87"
        ]
       },
       "5": {
@@ -6347,12 +6376,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 50
+        "choice": 37,
+        "build": 13
        },
        "families": 8,
        "hints": 50,
        "spoken": 50,
-       "pics": 16,
+       "pics": 9,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6360,10 +6390,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ns-money-41",
-        "ns-eq-132",
-        "ns-pie-8-7",
-        "ns-cmp-4-1-5"
+        "ns-of-4-12",
+        "ns-eq-133",
+        "ns-blocks3-253",
+        "ns-of-3-15"
        ]
       }
      }
@@ -6381,7 +6411,7 @@
        "kinds": {
         "choice": 50
        },
-       "families": 34,
+       "families": 31,
        "hints": 50,
        "spoken": 50,
        "pics": 28,
@@ -6392,10 +6422,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "explorer-science-g2-sound-vibration",
-        "sci23-What can fossils tell us?",
-        "sci23-A fossil of a fish is found on a mountain. What does that tell us?",
-        "sci23-What happens when you push a swing harder?"
+        "sci-In the water cycle, what is happening?-wet clothes dry in the breeze",
+        "explorer-science-g2-weather-record",
+        "sci23-Which tool measures rainfall?",
+        "sci-How many legs does a spider have?"
        ]
       },
       "4": {
@@ -6405,10 +6435,10 @@
        "kinds": {
         "choice": 50
        },
-       "families": 28,
+       "families": 30,
        "hints": 50,
        "spoken": 50,
-       "pics": 31,
+       "pics": 27,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6416,10 +6446,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sci23-Why do many trees lose their leaves in autumn?",
-        "sci23-Which is a renewable energy source?",
-        "explorer-science-g3-pollinators",
-        "sci-Which Earth process is described?-waves move sand away from a beach"
+        "explorer-science-g3-fossil-evidence",
+        "sci23-Which body part helps a duck swim?",
+        "sci23-A ball rolls and stops on grass. What slowed it down?",
+        "sci-Water vapor in the air turns into tiny drops in clouds. This is called…"
        ]
       }
      }
@@ -6437,10 +6467,10 @@
        "kinds": {
         "choice": 50
        },
-       "families": 17,
+       "families": 16,
        "hints": 50,
        "spoken": 50,
-       "pics": 23,
+       "pics": 24,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6448,10 +6478,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "com-dir-hospital-park-east",
-        "com-dir-hospital-fountain-east",
-        "com-dir-house-library-north",
-        "com-Mia wants a $20 game but has $12. What can she do?"
+        "com-gov-us-Where does the President live and work?",
+        "com-Why do people vote?",
+        "com-gov-us-Which group makes the country's laws?",
+        "com-key-🌲"
        ]
       },
       "3": {
@@ -6461,10 +6491,10 @@
        "kinds": {
         "choice": 50
        },
-       "families": 14,
+       "families": 16,
        "hints": 50,
        "spoken": 50,
-       "pics": 26,
+       "pics": 24,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6472,10 +6502,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "com-dir-hospital-library-west",
-        "com-dir-school-fountain-north",
-        "com-gov-us-Which group makes the country's laws?",
-        "com-dir-shop-hospital-east"
+        "com-Which is an example of an opportunity cost?",
+        "com-gov-us-Who leads a city or town?",
+        "com-How did people travel long ago, before cars?",
+        "com-Which is a human-made feature?"
        ]
       }
      }
@@ -6504,10 +6534,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "reg-Michigan-On which Michigan island are most cars not allowed?",
-        "reg-cap-Michigan-What is the capital of Michigan?",
-        "reg-Michigan-How many peninsulas does Michigan have?",
-        "reg-Michigan-Which is the largest city in Michigan?"
+        "reg-Michigan-Which Great Lake does NOT touch Michigan?",
+        "reg-Michigan-What is a nickname for Michigan?",
+        "reg-is-Connecticut-Which one is a state of the United States?",
+        "reg-cap-Michigan-What is the capital of Michigan?"
        ]
       },
       "3": {
@@ -6528,10 +6558,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "reg-cap-Michigan-What is the capital of Michigan?",
+        "reg-Michigan-Which country is Michigan's neighbor across the Detroit River?",
         "reg-Michigan-What is the longest river in Michigan?",
-        "reg-ocap-Washington-What is the capital of Washington?",
-        "reg-Michigan-Which Native peoples, the Three Fires, have lived in Michigan for a very long time?"
+        "reg-ocap-Minnesota-What is the capital of Minnesota?",
+        "reg-Michigan-What is Michigan's state tree?"
        ]
       }
      }
@@ -6549,7 +6579,7 @@
        "kinds": {
         "choice": 50
        },
-       "families": 11,
+       "families": 12,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -6560,10 +6590,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "home-What is the capital city of the United States?-Washington, D.C.",
-        "home-Which day is Independence Day in the United States?-July 4",
-        "home-Which one is a state of the United States?-South Carolina",
-        "home-Where is the Golden Gate Bridge?-San Francisco"
+        "home-In which state is the Grand Canyon?-Arizona",
+        "home-Which one is a state of the United States?-Michigan",
+        "home-Which one is a state of the United States?-Florida",
+        "home-What colors are on the flag of the United States?-red, white and blue"
        ]
       },
       "4": {
@@ -6573,10 +6603,10 @@
        "kinds": {
         "choice": 50
        },
-       "families": 41,
+       "families": 40,
        "hints": 50,
        "spoken": 50,
-       "pics": 0,
+       "pics": 1,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6584,10 +6614,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "home-Which one is a state of the United States?-Alaska",
-        "home-Which one is a state of the United States?-Washington",
-        "home-What is the capital of Arkansas?-Little Rock",
-        "home-What is the capital of Kansas?-Topeka"
+        "home-Which is a famous long river in the United States?-the Mississippi River",
+        "home-What is the capital of Illinois?-Springfield",
+        "home-What is the capital of Utah?-Salt Lake City",
+        "home-What is the capital of New York?-Albany"
        ]
       }
      }
@@ -6608,7 +6638,7 @@
        "families": 50,
        "hints": 50,
        "spoken": 50,
-       "pics": 14,
+       "pics": 11,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6616,10 +6646,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "gk-Which planet is the biggest?",
-        "gk-What is the purpose of a map legend?",
-        "gk-What is an estimate?",
-        "gk-How many planets are in our solar system?"
+        "gk-Which is strongest evidence that a town's buildings changed over time?",
+        "gk-Why is it important to check when a news article was published?",
+        "gk-What do bees carry from flower to flower?",
+        "gk-In a survey, 12 students choose swimming and 8 choose biking. How many were surveyed?"
        ]
       }
      }
@@ -6635,13 +6665,13 @@
        "distinct": 32,
        "repeats": 18,
        "kinds": {
-        "tap": 10,
-        "choice": 40
+        "choice": 37,
+        "tap": 13
        },
        "families": 18,
        "hints": 50,
        "spoken": 50,
-       "pics": 28,
+       "pics": 33,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6649,10 +6679,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ana-tap-lungs",
-        "ana-Air goes in your nose and down into your…",
-        "ana-name-liver",
-        "ana-What protects your heart and lungs?"
+        "ana-About how many bones does a grown-up have?",
+        "ana-tap-brain",
+        "ana-name-kidneys",
+        "ana-What keeps germs away from your hands?"
        ]
       },
       "4": {
@@ -6660,13 +6690,13 @@
        "distinct": 24,
        "repeats": 26,
        "kinds": {
-        "choice": 33,
-        "tap": 17
+        "choice": 34,
+        "tap": 16
        },
        "families": 10,
        "hints": 50,
        "spoken": 50,
-       "pics": 37,
+       "pics": 38,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6674,10 +6704,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ana-What is the biggest organ of your body?",
-        "ana-name-lungs",
+        "ana-What keeps germs away from your hands?",
         "ana-What helps your muscles grow strong?",
-        "ana-tap-stomach"
+        "ana-name-stomach",
+        "ana-Your brain sends messages to your body through…"
        ]
       }
      }
@@ -6693,10 +6723,10 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 33,
-        "match": 17
+        "choice": 35,
+        "match": 15
        },
-       "families": 19,
+       "families": 17,
        "hints": 50,
        "spoken": 50,
        "pics": 0,
@@ -6707,10 +6737,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "flag-c-Brazil",
-        "flag-c-Canada",
-        "flag-c-Nepal",
-        "flag-f-Bangladesh"
+        "flag-c-Russia",
+        "flag-f-Nepal",
+        "flag-c-Netherlands",
+        "vflag-1v7146s"
        ]
       }
      }
@@ -6739,10 +6769,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "ani-sloth",
-        "ani-tiger",
-        "ani-jaguar",
-        "ani-flamingo"
+        "ani-bison",
+        "ani-which-red fox",
+        "ani-hedgehog",
+        "ani-llama"
        ]
       }
      }
@@ -6763,7 +6793,7 @@
        "families": 3,
        "hints": 50,
        "spoken": 50,
-       "pics": 37,
+       "pics": 32,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6771,10 +6801,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "lm-nametext-sagrada",
-        "lm-nametext-safari",
-        "lm-where-stbasil",
-        "lm-where-himeji"
+        "lm-where-stonehenge",
+        "lm-nametext-towerbridge",
+        "lm-where-tajmahal",
+        "lm-where-brandenburg"
        ]
       }
      }
@@ -6790,8 +6820,8 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 37,
-        "tap": 13
+        "choice": 39,
+        "tap": 11
        },
        "families": 5,
        "hints": 50,
@@ -6804,10 +6834,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "map-kname-Mexico",
-        "map-cname-Antarctica",
-        "map-ktap-Spain",
-        "map-ktap-South Africa"
+        "map-kname-Indonesia",
+        "map-cap-Russia",
+        "map-cap-China",
+        "map-cap-Germany"
        ]
       }
      }
@@ -6828,7 +6858,7 @@
        "families": 3,
        "hints": 50,
        "spoken": 50,
-       "pics": 20,
+       "pics": 17,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6836,10 +6866,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
+        "advanced-pattern-0-2-5-9-14-20",
         "advanced-pattern-1-2-4-8-16-32",
-        "advanced-pattern-0-3-6-10-15-21",
-        "advanced-pattern-1-3-6-12-24-48",
-        "pattern-number-1-5"
+        "advanced-pattern-0-5-7-10-14-19",
+        "pattern-3-🍇🍌🍎🍊"
        ]
       },
       "5": {
@@ -6852,7 +6882,7 @@
        "families": 3,
        "hints": 50,
        "spoken": 50,
-       "pics": 13,
+       "pics": 4,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6860,10 +6890,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "advanced-pattern-3-4-5-8-13-20",
-        "pattern-3-🌵🍀🌷🌳",
-        "advanced-pattern-0-1-2-5-10-17",
-        "pattern-0-🥕🍩🍕🍋"
+        "advanced-pattern-3-3-4-7-12-19",
+        "pattern-number-2-4",
+        "pattern-number-6-10",
+        "advanced-pattern-0-1-2-5-10-17"
        ]
       }
      }
@@ -6892,10 +6922,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "odd-1-🍰🍩🍪-🧦",
-        "odd-3-🏝️🏞️🏜️-🏢",
-        "odd-1-🦁🐘🦒-🍓",
-        "odd-3-♻️🗑️🧹-🎾"
+        "odd-2-🥄🍴🥢-👟",
+        "odd-3-🌡️🧪🔬-🎮",
+        "odd-2-🌂☂️🧥-🏀",
+        "odd-3-🏝️🏞️🏜️-🏢"
        ]
       }
      }
@@ -6911,13 +6941,13 @@
        "distinct": 50,
        "repeats": 0,
        "kinds": {
-        "choice": 37,
-        "order": 13
+        "choice": 39,
+        "order": 11
        },
-       "families": 14,
+       "families": 12,
        "hints": 50,
        "spoken": 50,
-       "pics": 37,
+       "pics": 39,
        "below": 0,
        "emptyRounds": 0,
        "badAnswers": [],
@@ -6925,10 +6955,10 @@
        "unfit": [],
        "unfitCount": 0,
        "sample": [
-        "sequence-3-☀️💨☁️🌧️-0",
-        "sequence-2-👕🫧☀️🧺-0",
-        "sequence-3-📝✉️📮-2",
-        "vseq-❓🧪📝✅"
+        "sequence-3-🌞💧☁️🌧️-3",
+        "sequence-2-🎒👟🚶🏫-0",
+        "sequence-3-🔍💭🧪📊-3",
+        "sequence-3-🌞🧊💧💨-2"
        ]
       }
      }
@@ -7613,6 +7643,7 @@
   ]
  },
  "sectionTitles": {
+  "library": "Story Time",
   "trace": "Letters & Numbers",
   "phonics": "Letter Sounds",
   "cvc": "Little Words",

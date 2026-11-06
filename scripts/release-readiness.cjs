@@ -24,23 +24,29 @@ for(const [id] of landmarks)if(!seen.has(id))missing.push(id);
 const bodyModel=fs.existsSync('vendor/body.glb');
 // A manual check counts only when a person recorded it: verified=true, a name and an ISO date.
 const signed=e=>!!(e&&e.verified===true&&typeof e.by==='string'&&e.by.trim()&&/^\d{4}-\d{2}-\d{2}$/.test(e.on||''));
+// Each grade releases on its own. A grade is blocked only by what that grade uses:
+//  - landmark photos block 1st–3rd grade (Famous Places), not Pre-K or K
+//  - the 3D anatomy model is optional everywhere (Inside My Body has a full 2D version), so it is reported, not required
+//  - media review and device acceptance apply to every grade
+const PHOTO_GRADES=new Set(['g1','g2','g3']);
 function evaluate({missing,bodyModel,signoff}){
   const media=signed(signoff.manualMediaReview), device=signed(signoff.manualDeviceAcceptance);
-  const blockers=[];
-  if(missing.length)blockers.push(missing.length+' landmark photo(s) not enabled');
-  if(!bodyModel)blockers.push('accurate 3D anatomy model not bundled');
-  if(!media)blockers.push('manual media review not recorded');
-  if(!device)blockers.push('physical-device acceptance not recorded');
-  // per grade: 2 automated gates (green CI) + 5 human gates, each signed with a name and a date
-  const grades={};
+  const shared=[];
+  if(!media)shared.push('manual media review not recorded');
+  if(!device)shared.push('physical-device acceptance not recorded');
+  const grades={}, blockers=[...shared];
   for(const [g,row] of Object.entries(signoff.grades||{})){
     const human=Object.entries(row).filter(([k,v])=>v&&typeof v==='object'&&'verified' in v);
     const done=human.filter(([,v])=>signed(v)).length;
+    const own=[...shared];
+    if(PHOTO_GRADES.has(g)&&missing.length)own.push(missing.length+' landmark photo(s) not enabled');
+    if(done<human.length)own.push((human.length-done)+' human gate(s) not signed');
     grades[g]={label:row.label,gates:(Object.keys(row.automated||{}).length)+done+'/'+(Object.keys(row.automated||{}).length+human.length),
-      pending:human.filter(([,v])=>!signed(v)).map(([k])=>k)};
-    if(done<human.length)blockers.push((row.label||g)+': '+(human.length-done)+' human gate(s) not signed');
+      pending:human.filter(([,v])=>!signed(v)).map(([k])=>k),ready:own.length===0,blockers:own};
+    for(const x of own.slice(shared.length))blockers.push((row.label||g)+': '+x);
   }
-  return {manualDeviceAcceptanceVerified:device,manualMediaReviewVerified:media,grades,readyForFinalSignoff:blockers.length===0,blockers};
+  if(!Object.keys(grades).length&&missing.length)blockers.push(missing.length+' landmark photo(s) not enabled');
+  return {manualDeviceAcceptanceVerified:device,manualMediaReviewVerified:media,optional:{accurate3DAnatomyModel:bodyModel},grades,readyForFinalSignoff:blockers.length===0,blockers};
 }
 const signoff=fs.existsSync('docs/release-signoff.json')?JSON.parse(fs.readFileSync('docs/release-signoff.json','utf8')):{};
 const result={

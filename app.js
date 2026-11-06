@@ -284,7 +284,7 @@ function renderHome() {
   if (typeof renderQuest === 'function') renderQuest();
   const groups = [
     ['📝 Practice', ['check']],
-    ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'gp', 'match', 'syl']],
+    ['📖 Reading & Words', ['library', 'trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'gp', 'match', 'syl']],
     ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'frac', 'measure', 'mul', 'div', 'clock', 'shape2']],
     ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], 'brain'],
     ['🌍 Science & World', ['sci', 'home', 'region', 'community', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
@@ -300,11 +300,25 @@ function renderHome() {
   };
   // brain games (memory, puzzles, mazes …) sit right inside Brain Teasers: a tap opens the game
   const gameTile = (g) => `<button class="tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span><span class="ts">puzzle game</span></button>`;
-  $('#grid').innerHTML = locHTML(groups.map(([title, ids, brain]) => {
+  const catalog = groups.map(([title, ids, brain]) => {
     const cats = visible.filter((c) => ids.includes(c.id));
     const games = brain === 'brain' && typeof brainGames === 'function' ? brainGames() : [];
     return cats.length || games.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${cats.map(makeTile).join('')}${games.map(gameTile).join('')}</div></section>` : '';
-  }).join(''));
+  }).join('');
+  // 1st–3rd grade see 28–35 activities: show a short recommended row first and fold the rest behind "Explore"
+  const fold = ['g1', 'g2', 'g3'].includes(state.grade) && !isTestMode();
+  if (!fold) { $('#grid').innerHTML = locHTML(catalog); return; }
+  const ok = new Set(visible.map((c) => c.id));
+  const quest = typeof questFor === 'function' ? questFor().steps.filter((x) => !x.done).map((x) => x.cat) : [];
+  const recIds = [...new Set([...quest, ...(GRADES[state.grade].practiceFocus || [])])].filter((id) => ok.has(id) && id !== 'mix').slice(0, 6);
+  const rec = recIds.map((id) => visible.find((c) => c.id === id)).filter(Boolean);
+  const total = visible.filter((c) => c.id !== 'mix').length;
+  // automated test browsers keep the catalog open unless they ask for the folded view (?explore=closed)
+  const open = state.exploreOpen != null ? state.exploreOpen : (navigator.webdriver && !/[?&]explore=closed\b/.test(location.search));
+  $('#grid').innerHTML = locHTML(`${rec.length ? `<section class="catalog-section rec-section"><h2>⭐ Recommended for you</h2><div class="grid">${rec.map(makeTile).join('')}</div></section>` : ''}
+    <details class="explore"${open ? ' open' : ''}><summary>🧭 Explore all ${total} activities</summary>${catalog}</details>`);
+  const d = $('#grid .explore');
+  d.addEventListener('toggle', () => { state.exploreOpen = d.open; save(); });
 }
 
 /* ---------- a round ---------- */
@@ -476,6 +490,7 @@ function renderQ() {
   if (q.fillIn) renderFillIn(q);
   if (q.passageFill) renderPassageFill(q);
   if (q.order) renderOrder(q);
+  if (q.build && typeof renderBuild === 'function') renderBuild(q);
   if (q.blend && typeof wireBlend === 'function') wireBlend(q);
   if (q.letterSound && typeof wireLetter === 'function') wireLetter(q);
   if (q.tap) $$('#qMain [data-val]').forEach((g) => {
@@ -1174,6 +1189,7 @@ $('#grid').addEventListener('click', (e) => {
   if (!t.dataset.cat) return;
   if (t.dataset.cat === 'vocab') return openLearn();
   if (t.dataset.cat === 'trace') { TR.quest = null; return openTrace(); }
+  if (t.dataset.cat === 'library') return openLibrary();
   startRound(t.dataset.cat);
 });
 $('#hintBtn').onclick = () => { sfx.tap(); showHint(R.qs[R.i]); };

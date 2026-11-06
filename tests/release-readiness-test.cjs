@@ -35,4 +35,12 @@ assert.equal(res.readyForFinalSignoff,false); assert.equal(res.grades.prek.gates
 res=evaluate({...all,signoff:{manualMediaReview:done,manualDeviceAcceptance:done,grades:{prek:gradeRow(true)}}});
 assert.equal(res.readyForFinalSignoff,true); assert.equal(res.grades.prek.gates,'4/4');
 assert.equal(evaluate({missing:['fuji'],bodyModel:true,signoff:{manualMediaReview:done,manualDeviceAcceptance:done}}).readyForFinalSignoff,false);
+// grades release on their own: a missing landmark photo blocks 1st grade, not Pre-K; the 3D model is optional
+const allSigned=(label)=>({label,automated:{a:'x',b:'y'},teachingMaterialSufficient:done,ageAppropriateUsability:done});
+let per=evaluate({missing:['fuji'],bodyModel:false,signoff:{manualMediaReview:done,manualDeviceAcceptance:done,grades:{prek:allSigned('Pre-K'),g1:allSigned('1st Grade')}}});
+assert.equal(per.grades.prek.ready,true,'Pre-K blocked by a landmark photo or the 3D model');
+assert.equal(per.grades.g1.ready,false,'1st grade ready without its landmark photos');
+assert.equal(per.readyForFinalSignoff,false);
+per=evaluate({missing:[],bodyModel:false,signoff:{manualMediaReview:done,manualDeviceAcceptance:done,grades:{prek:allSigned('Pre-K')}}});
+assert.equal(per.readyForFinalSignoff,true,'the optional 3D model blocked the release');
 console.log('PASS remaining landmark discovery remains review-only; release gaps accurately reported');
