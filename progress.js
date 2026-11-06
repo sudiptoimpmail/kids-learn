@@ -196,6 +196,8 @@ function renderDashboard() {
     .sort((a,b) => a.acc-b.acc);
   const objectiveDeveloping = objectiveRows.filter(row => row.s === 'practicing')
     .sort((a,b) => a.acc-b.acc);
+  const objectiveNew = objectiveRows.filter(row => row.s === 'new')
+    .sort((a,b) => b.n-a.n);
   const objectiveLabel = value => String(value).replaceAll('-', ' ').replace(/^./, x => x.toUpperCase());
   const objectiveItem = row => {
     const category = CATEGORIES.find(c => c.id === row.cat);
@@ -207,7 +209,8 @@ function renderDashboard() {
        ${objectiveGood.length ? `<h4>Mastered</h4><ul>${objectiveGood.slice(0,6).map(objectiveItem).join('')}</ul>` : ''}
        ${objectiveWeak.length ? `<h4>Needs practice</h4><ul>${objectiveWeak.slice(0,6).map(objectiveItem).join('')}</ul>` : ''}
        ${objectiveDeveloping.length ? `<h4>Developing</h4><ul>${objectiveDeveloping.slice(0,6).map(objectiveItem).join('')}</ul>` : ''}
-       ${objectiveRows.some(row => row.s === 'new') ? '<p class="note">More practice is needed before some objectives can be assessed.</p>' : ''}
+       ${objectiveNew.length ? `<h4>Just starting</h4><ul>${objectiveNew.slice(0,6).map(objectiveItem).join('')}</ul>
+         <p class="note">More practice over multiple days is needed before these objectives can be assessed.</p>` : ''}
        </div>`
     : '';
   // Existing game-level summaries are kept for the large untagged question banks.
