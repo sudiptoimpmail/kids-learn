@@ -367,7 +367,7 @@ function renderGradeExpectations(stats, childName) {
       <p>${esc(row.goal)}</p>${row.count ? `<small>${row.count} recent app answers · ${row.independent} independently correct</small>` : '<small>Not enough recorded practice to assess this area.</small>'}
     </article>`).join('')}</div>
     <div class="dash-next-habit"><b>Try together next</b><p>${esc(next ? next.tip : 'Read, count or explore something together each day.')}</p></div>`;
-  $('#dashWeekSummary').textContent = `${practiced.length} skill area${practiced.length===1?'':'s'} practiced · ${strong.length} showing strong app practice`;
+  // The seven-day activity summary is populated by renderDashboard().
 }
 function gradeRelativeDifficulty(entries) {
   const values=entries.filter(x=>x.range&&x.range[1]>=x.range[0]).map(x=>
@@ -388,6 +388,7 @@ function renderDashboard() {
   $('#dashKids').innerHTML = kids.length > 1 ? kids.map((k) => `<button class="kid-chip ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}"><span>${esc(k.avatar || '🦄')}</span>${esc(k.name || 'Player')}</button>`).join('') : '';
   $$('#dashKids .kid-chip').forEach((b) => (b.onclick = () => { sfx.tap(); switchKid(b.dataset.id); renderDashboard(); }));
   const st = state.stats || { days: {}, skills: {} };
+  renderGradeExpectations(st, state.name);
   const name = esc(state.name || 'Your child');
   // last 7 days
   const week = [];
@@ -508,29 +509,40 @@ function renderDashboard() {
   // subjects: level now and this week's accuracy
   const catWeek = {};
   for (const [, x] of week) for (const [c, v] of Object.entries(x.cats)) { const a = catWeek[c] || (catWeek[c] = [0, 0]); a[0] += v[0]; a[1] += v[2] != null ? v[2] : v[1]; }
-  const shown = CATEGORIES.filter((c) => c.gen && c.id !== 'mix' && (catWeek[c.id] || state.levels[c.id]));
-  $('#dashSubjects').innerHTML = `${typeof CURRICULUM_AREAS !== 'undefined' ? `<p class="curr-name">Matched to: <b>${(CURRICULUM_AREAS[levelsCC()] || CURRICULUM_AREAS.us).name}</b></p>` : ''}<table><tr><th>Game</th><th>Level</th><th>This week</th></tr>${shown.map((c) => {
-    const w = catWeek[c.id];
-    const area = typeof curriculumArea === 'function' ? curriculumArea(c.id) : '';
-    return `<tr><td>${c.icon} ${typeof localTileTitle === 'function' ? localTileTitle(c.id, c.title) : c.title}<small>${skillName(c.id, levelOf(c.id))}</small>${area ? `<small class="curr-area">📘 ${area}</small>` : ''}</td><td>${levelOf(c.id)}<small>/${maxLevelOf(c.id)}</small></td><td>${w ? `${w[0]} cards · ${Math.round(w[1] / w[0] * 100)}%` : '—'}</td></tr>`;
-  }).join('')}</table>`;
-  // summary in plain words
-  const bySubject = {};
-  for (const [c, [n, ok]] of Object.entries(catWeek)) { const s = SUBJECT(c); const a = bySubject[s] || (bySubject[s] = [0, 0]); a[0] += n; a[1] += ok; }
-  const topSub = Object.entries(bySubject).sort((a, b) => b[1][0] - a[1][0])[0];
-  const lines = [];
-  if (!q7 && !brain7 && !traced7) lines.push(`${name} hasn't practiced in the last 7 days. A few minutes a day helps a lot!`);
-  else if (!q7) lines.push(`${name} practiced on ${days7} day${days7 === 1 ? '' : 's'} with ${brain7} brain puzzle${brain7 === 1 ? '' : 's'} and ${traced7} traced character${traced7 === 1 ? '' : 's'}.`);
-  else {
-    lines.push(`This week ${name} learned on ${days7} day${days7 === 1 ? '' : 's'} and answered ${q7} cards (${Math.round(f7 / q7 * 100)}% right on their own, without a hint).`);
-    if (topSub) lines.push(`Most practice: ${topSub[0].toLowerCase()} (${topSub[1][0]} cards).`);
-    if (brain7) lines.push(`Solved ${brain7} brain puzzle${brain7 === 1 ? '' : 's'} this week.`);
-    if (good[0]) lines.push(`Doing well: ${good.slice(0, 2).map((s) => s.name.toLowerCase()).join(' and ')}.`);
-    if (weak[0]) lines.push(`Needs more practice: ${weak.slice(0, 2).map((s) => s.name.toLowerCase()).join(' and ')}. Try a round of ${(CATEGORIES.find((c) => c.id === weak[0].cat) || {}).title} together.`);
-    if (hints7 > q7 * 0.4) lines.push('Hints were used a lot — that\'s fine while learning; the levels will adjust.');
-    if (playMin > learnMin * 1.5 && playMin > 10) lines.push('Play time was higher than learning time this week. You can change the Play Zone rule in ⚙️.');
-  }
-  $('#dashSummary').innerHTML = lines.map((l) => `<p>${l}</p>`).join('');
+  const shown = visibleGames().filter(c=>c.gen && c.id!=='mix' && c.id!=='check' && !!gradeRange(state.grade,c.id));
+  const learningRows=shown.map(c=>{
+    const range=openRange(c.id)||[1,maxLevelOf(c.id)], level=levelOf(c.id);
+    return {id:c.id,title:typeof localTileTitle==='function'?localTileTitle(c.id,c.title):c.title,
+      icon:c.icon,level,max:maxLevelOf(c.id),range,week:catWeek[c.id]||null};
+  });
+  const brainRows=(typeof GAMES==='undefined' ? [] : GAMES.filter(g=>BRAIN_GAME_IDS.has(g.id)&&!!gameRange(g.id))).map(g=>({
+    id:g.id,title:g.title,icon:typeof g.icon==='string'&&g.icon.length<=3?g.icon:'🧩',
+    level:GL(g.id),max:gameCap(g.id),range:gameRange(g.id)
+  }));
+  const levelTable=(rows,brain=false)=>rows.length ? '<table><thead><tr><th>Activity</th><th>Current challenge</th>'+ (brain?'':'<th>This week</th>')+'</tr></thead><tbody>'+
+    rows.map(r=>'<tr><td>'+esc(r.icon)+' '+esc(r.title)+'</td><td>Level '+r.level+' of '+r.max+'</td>'+
+      (brain?'':'<td>'+(r.week?r.week[0]+' cards · '+Math.round(r.week[1]/Math.max(1,r.week[0])*100)+'% independent':'Not yet practiced')+'</td>')+'</tr>').join('')+
+    '</tbody></table>' : '<p class="note">No challenges available for this grade yet.</p>';
+  $('#dashSubjects').innerHTML =
+    '<details class="dash-level-group"><summary><b>Learning activities</b><span>Overall difficulty '+gradeRelativeDifficulty(learningRows)+' · '+learningRows.length+' activities</span></summary>'+
+    '<p class="note small">Average position within this grade’s available challenge range, not school achievement.</p>'+
+    levelTable(learningRows)+'</details>'+
+    '<details class="dash-level-group"><summary><b>Brain Games</b><span>Overall difficulty '+gradeRelativeDifficulty(brainRows)+' · '+brainRows.length+' games</span></summary>'+
+    '<p class="note small">Puzzles and reasoning games only. Arcade games are excluded.</p>'+
+    levelTable(brainRows,true)+'</details>';
+  // The main summary reports broad practice only; it is not based on app section titles.
+  const expected=(GRADE_EXPECTATIONS[state.grade]||[]).map(e=>gradeExpectationEvidence(state.grade,e,st));
+  const tried=expected.filter(x=>x.count>0), struggling=expected.find(x=>x.kind==='support');
+  const nextArea=struggling||expected.find(x=>x.kind==='starting')||expected.find(x=>x.kind==='unseen');
+  const progressSentence=q7
+    ? 'In the past 7 days: '+days7+' learning day'+(days7===1?'':'s')+', '+q7+
+      ' responses and '+Math.round(f7/q7*100)+'% answered independently.'
+    : 'No answered learning cards recorded in the past 7 days. Earlier practice is kept below.';
+  $('#dashSummary').innerHTML='<h2>'+esc(name)+' · '+esc(state.grade?gradeName(state.grade):'Choose a grade')+'</h2>'+
+    '<p>'+esc(progressSentence)+'</p>'+
+    '<p>'+tried.length+' of '+expected.length+' broad expected-skill areas have evidence of practice in this app.'+
+    (nextArea?' Start with '+esc(nextArea.title.toLowerCase())+' next.':'')+'</p>';
+  $('#dashWeekSummary').textContent=days7+' active day'+(days7===1?'':'s')+' · '+q7+' cards';
   $('#dashGoal').value = String(goal);
 }
 $('#dashBack').onclick = () => { sfx.tap(); if (dashFrom === 'home') { renderHome(); show('home'); } else openSettings(); };
