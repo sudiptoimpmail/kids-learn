@@ -114,7 +114,7 @@ const reviewRule = grade => GRADES[grade]?.reviewSchedule ||
   ContentData.get('curriculum-map', 'policy').reviewSchedule;
 function reviewAgeDays(last, today = dayKey()) {
   const parse = value => {
-    if (typeof value !== 'string' || !/^\\d{4}-\\d{2}-\\d{2}$/.test(value)) return null;
+    if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
     const [year, month, date] = value.split('-').map(Number);
     const t = Date.UTC(year, month - 1, date);
     return new Date(t).toISOString().slice(0,10) === value ? t : null;
@@ -154,7 +154,6 @@ function authoredReviewQuestions(cat, level, forcedObjective = null, today = day
   };
   // Every eligibility condition is read from the authored route metadata.
   const routes = ContentData.get('curriculum-map', 'ROUTES');
-  const authored = ContentData.get('grade23-extension', 'STORIES');
   for (const target of targets) {
     const choices = [];
     for (const [bank, rows] of Object.entries(routes)) {
