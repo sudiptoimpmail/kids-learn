@@ -47,7 +47,16 @@ const { chromium } = require('playwright');
     assert.equal(await page.evaluate(() => state.name), 'Leo');
     await page.evaluate(() => { state.stars = 17; save(); });
     await page.locator('#kidBtn').click();
-    assert.ok(await page.locator('#whoGrid [data-add="1"]').isVisible());
+    const whoDebug = await page.evaluate(() => ({
+      active: Store.activeId(), kids: Store.kids().map(k => k.name),
+      sheetHidden: document.getElementById('whoSheet').hidden,
+      sheetDisplay: getComputedStyle(document.getElementById('whoSheet')).display,
+      grid: document.getElementById('whoGrid').innerHTML.slice(0,900),
+      welcome: !!document.getElementById('welcomeSheet'),
+      homeInert: document.getElementById('home').inert
+    }));
+    assert.ok(await page.locator('#whoGrid [data-add="1"]').isVisible(),
+      'Add sibling button hidden: '+JSON.stringify(whoDebug));
     await page.locator('#whoGrid [data-id="p1"]').click();
     assert.deepEqual(await page.evaluate(() => ({name:state.name,grade:state.grade,stars:state.stars})),
       {name:'Ava',grade:'k',stars:0});
