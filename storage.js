@@ -79,7 +79,7 @@ const Store = {
       for (const k of ['levels', 'best', 'recent', 'traced', 'stats']) if (p[k] != null && (typeof p[k] !== 'object' || Array.isArray(p[k]))) delete p[k];
       if (!Array.isArray(p.stickers)) p.stickers = [];
       const obj = (v) => v && typeof v === 'object' && !Array.isArray(v);
-      if (p.stats != null) { if (!obj(p.stats)) delete p.stats; else { if (!obj(p.stats.days)) p.stats.days = {}; if (!obj(p.stats.skills)) p.stats.skills = {}; } }
+      if (p.stats != null) { if (!obj(p.stats)) delete p.stats; else { if (!obj(p.stats.days)) p.stats.days = {}; if (!obj(p.stats.skills)) p.stats.skills = {}; if (!obj(p.stats.objectives)) p.stats.objectives = {}; } }
       if (p.quest != null && !(obj(p.quest) && Array.isArray(p.quest.steps) && p.quest.steps.every((x) => obj(x) && typeof x.cat === 'string'))) delete p.quest;
       if (p.levels) for (const [k, v] of Object.entries(p.levels)) if (!(Number.isInteger(v) && v >= 1 && v <= 9)) delete p.levels[k];
       if (typeof p.stars !== 'number' || !(p.stars >= 0)) p.stars = 0;
