@@ -1404,6 +1404,366 @@
             ]
           ]
         ]
+      ],
+      [
+        4,
+        "Mira's class weighed the paper they recycled each Friday. In the first week they collected 6 kilograms, in the second week 9 kilograms, and in the third week 7 kilograms. They made a bar chart and noticed the second week had the tallest bar. Their teacher reminded them that the chart described what they collected, not why the amount changed.",
+        [
+          [
+            "Which week had the most recycled paper?",
+            [
+              "the second week",
+              "the first week",
+              "the third week"
+            ]
+          ],
+          [
+            "How many kilograms were collected in the third week?",
+            [
+              "7 kilograms",
+              "9 kilograms",
+              "6 kilograms"
+            ]
+          ],
+          [
+            "Why did the teacher warn them about the chart?",
+            [
+              "it showed amounts but not the cause of changes",
+              "it proved the students stopped recycling",
+              "it could not show amounts at all"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "Elena planted two identical beans in separate pots. Both had the same soil, water, and sunny window. She added a small layer of mulch to one pot but not the other. Each morning she measured soil moisture at the same time. After five days, the mulched pot usually had moister soil. Elena wrote down the readings and planned to repeat the test.",
+        [
+          [
+            "What was different between the two pots?",
+            [
+              "one had a layer of mulch",
+              "one used a different bean",
+              "only one received water"
+            ]
+          ],
+          [
+            "Why did Elena measure at the same time?",
+            [
+              "to make the observations more comparable",
+              "to make the plant grow overnight",
+              "to keep the pots from moving"
+            ]
+          ],
+          [
+            "What can Elena reasonably report?",
+            [
+              "the mulched pot usually stayed moister in this test",
+              "mulch makes every plant grow twice as fast",
+              "water is unnecessary for bean plants"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "At the community garden, a path was too narrow for the wheelbarrow. Priya and Sam measured the wheelbarrow and the path with the same tape. The wheelbarrow was 58 centimeters wide, and the path was 54 centimeters wide. They suggested widening the path to 70 centimeters and drew a plan before asking a grown-up to help.",
+        [
+          [
+            "What made the path difficult to use?",
+            [
+              "it was narrower than the wheelbarrow",
+              "it was too long to measure",
+              "it had too many flowers"
+            ]
+          ],
+          [
+            "How much wider was the wheelbarrow than the path?",
+            [
+              "4 centimeters",
+              "12 centimeters",
+              "16 centimeters"
+            ]
+          ],
+          [
+            "Why did they draw a plan first?",
+            [
+              "to explain the proposed change before building",
+              "to make the wheelbarrow heavier",
+              "to avoid measuring the path"
+            ]
+          ]
+        ]
+      ],
+      [
+        4,
+        "On a windy day, Noor tested a kite in the school field. Her first flight lasted eight seconds before the kite dipped. She shortened the tail but kept the same kite and string. Her next flight lasted twelve seconds. Noor knew that a change in wind could also affect a flight, so she planned several more trials before making a conclusion.",
+        [
+          [
+            "What did Noor change for the second flight?",
+            [
+              "the length of the kite's tail",
+              "the size of the school field",
+              "the type of kite"
+            ]
+          ],
+          [
+            "How long did the second flight last?",
+            [
+              "twelve seconds",
+              "eight seconds",
+              "twenty seconds"
+            ]
+          ],
+          [
+            "Why did Noor want more trials?",
+            [
+              "wind changes could also affect flight time",
+              "one test can never be recorded",
+              "every kite must fly the same way"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Students measured how much water three garden beds needed during one warm week. The raised bed used 12 liters, the shaded bed used 8 liters, and the bed near the wall used 10 liters. But the raised bed also had more plants than the others. Their teacher asked them to calculate water use per plant before deciding which location was most efficient. The class agreed that an amount alone does not always make a fair comparison.",
+        [
+          [
+            "Which bed used the least total water?",
+            [
+              "the shaded bed",
+              "the raised bed",
+              "the bed near the wall"
+            ]
+          ],
+          [
+            "Why might total water use be a misleading comparison?",
+            [
+              "the beds did not contain the same number of plants",
+              "the water was measured in liters",
+              "all the beds were in the same garden"
+            ]
+          ],
+          [
+            "What would make the comparison fairer?",
+            [
+              "calculate water used per plant",
+              "ignore how many plants grew there",
+              "assume the raised bed wasted water"
+            ]
+          ]
+        ]
+      ],
+      [
+        5,
+        "Two routes connect the school and the pool. Route A is 1.8 kilometers long and crosses one busy intersection. Route B is 2.1 kilometers long but has a protected crossing. The class compared distance and safety rather than choosing by distance alone. They invited a crossing guard to explain how traffic changes during the afternoon. The students recommended the protected route for their walking group, even though it was longer.",
+        [
+          [
+            "Which route was shorter?",
+            [
+              "Route A",
+              "Route B",
+              "both routes were equal"
+            ]
+          ],
+          [
+            "Why did the students consider the crossing guard's advice?",
+            [
+              "the shortest route was not necessarily the safest",
+              "the guard could shorten the road",
+              "traffic never changes during the day"
+            ]
+          ],
+          [
+            "What tradeoff did they choose?",
+            [
+              "a longer route with a protected crossing",
+              "the least walking with no crossings",
+              "a faster route regardless of traffic"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "A science club tested the temperature of a sunny paved courtyard and a shaded grassy corner. At noon, the pavement read 34°C and the shaded grass read 27°C. The club wanted to know whether shade or surface material explained the difference. Their first test changed both factors at once. They designed another test using two similar paved areas, one shaded and one sunny, so only the amount of shade would differ.",
+        [
+          [
+            "How much warmer was the sunny pavement than the shaded grass?",
+            [
+              "7°C",
+              "11°C",
+              "61°C"
+            ]
+          ],
+          [
+            "Why could the first comparison not isolate the effect of shade?",
+            [
+              "both shade and surface material were different",
+              "the thermometers displayed Celsius",
+              "the readings were taken at noon"
+            ]
+          ],
+          [
+            "What improvement did the club make?",
+            [
+              "compare similar paved surfaces with different shade",
+              "measure only the sunny spot again",
+              "replace the thermometer with a ruler"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "After heavy rain, a stream near the school looked muddy. Students wondered if soil was washing from a nearby bare slope. They collected water samples upstream and downstream of the slope on the same afternoon, using identical clear containers. Downstream water contained more visible sediment. The students recorded that the samples supported their idea, but they avoided claiming the slope was the only possible cause.",
+        [
+          [
+            "Where did students find more visible sediment?",
+            [
+              "downstream of the bare slope",
+              "in every sample equally",
+              "only in the empty containers"
+            ]
+          ],
+          [
+            "Why did they use identical containers?",
+            [
+              "to make the water samples easier to compare",
+              "to change the direction of the stream",
+              "to remove the soil from the slope"
+            ]
+          ],
+          [
+            "What was a reasonable conclusion?",
+            [
+              "the evidence supported a possible source, not the only cause",
+              "the bare slope was proved to be the only cause",
+              "rain cannot change water clarity"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "The town museum planned a new exhibit about local transportation. One visitor asked for larger print labels, while another wanted a model that could be touched. The team interviewed visitors and tested prototypes with several groups. A large-print label helped many readers, but the raised model also needed clear spoken guidance. The final exhibit included multiple ways to explore the same information, because no single format worked for everyone.",
+        [
+          [
+            "What did visitors ask the museum to improve?",
+            [
+              "how people could access exhibit information",
+              "the museum's opening year",
+              "the color of the parking lot"
+            ]
+          ],
+          [
+            "Why did the team test more than one prototype?",
+            [
+              "different visitors needed different ways to learn",
+              "every visitor gave exactly the same feedback",
+              "one format always suits everyone"
+            ]
+          ],
+          [
+            "What can be inferred about the team's goal?",
+            [
+              "make the exhibit usable by more visitors",
+              "replace every object with a sign",
+              "remove visitor feedback from decisions"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "To learn how children travelled to school, a class surveyed only the students who arrived on the first bus. Of the twenty students surveyed, sixteen said they used a bus. Maya noted that the sample excluded children who walked or cycled in later. The class changed its plan and asked students from several arrival groups. Their new survey gave a more balanced picture of the ways classmates reached school.",
+        [
+          [
+            "Why was the first survey biased?",
+            [
+              "it mostly sampled children from one bus",
+              "it asked students how they travelled",
+              "it counted exactly twenty answers"
+            ]
+          ],
+          [
+            "What did the class change?",
+            [
+              "they surveyed several different arrival groups",
+              "they removed walking from the choices",
+              "they asked only the bus driver"
+            ]
+          ],
+          [
+            "What is the main lesson?",
+            [
+              "who you survey can affect the result",
+              "a larger number always proves a claim",
+              "all students travel the same way"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "A class built paper seed models to explore how wind might carry real seeds. They made four copies of each design and dropped them from the same height in the gym. A fan blew at one speed for every trial. One design travelled farther on average, but its results varied. The class compared all trials rather than picking the longest flight and suggested testing outdoors next, where wind changes more often.",
+        [
+          [
+            "Which condition did the class keep the same?",
+            [
+              "the fan speed during each trial",
+              "the shape of every seed model",
+              "the distance travelled by every model"
+            ]
+          ],
+          [
+            "Why did they compare all trials?",
+            [
+              "a single longest flight may not be typical",
+              "the longest flight always proves a design is best",
+              "only failed flights are useful"
+            ]
+          ],
+          [
+            "What limitation did the class recognize?",
+            [
+              "real outdoor wind can vary more than their gym test",
+              "paper models are living seeds",
+              "the fan made measurement impossible"
+            ]
+          ]
+        ]
+      ],
+      [
+        6,
+        "Leo studied weather records from his town. A diary from a hundred years ago described one unusually snowy winter. Recent records covered thirty complete winters, including several mild ones and several snowy ones. Leo's friend wanted to compare that single old winter with the thirty-year average. Leo explained that an unusual year can happen even when long-term patterns differ, and suggested finding more historical years before drawing a conclusion.",
+        [
+          [
+            "What made the older diary less useful for comparing long-term patterns?",
+            [
+              "it described only one winter",
+              "it was written by hand",
+              "it mentioned snow"
+            ]
+          ],
+          [
+            "What did Leo suggest collecting?",
+            [
+              "records from more historical winters",
+              "only the coldest day last year",
+              "photographs of summer flowers"
+            ]
+          ],
+          [
+            "Which conclusion fits the evidence best?",
+            [
+              "one unusual winter does not establish a long-term pattern",
+              "all winters used to be snowier",
+              "weather never varies between years"
+            ]
+          ]
+        ]
       ]
     ]
   }
