@@ -5,6 +5,7 @@ cd "$(dirname "$0")/.." && mkdir -p tests/out
 python3 -m http.server 8765 >/dev/null 2>&1 & SERVER=$!; sleep 1
 FAILED=0
 node tests/original-media-test.cjs || FAILED=1
+node tests/landmark-photo-provenance-test.cjs || FAILED=1
 node tests/curriculum-map-test.cjs || FAILED=1
 node scripts/audit-content.cjs || FAILED=1
 node tests/editorial-content-test.cjs || FAILED=1
