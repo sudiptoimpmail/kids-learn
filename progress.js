@@ -84,10 +84,10 @@ function objectiveState(record, rule = objectiveRule(record.grade)) {
   const recent = typeof record.recent === 'string' ? record.recent.slice(-rule.window) : '';
   const n = recent.length;
   const acc = n ? [...recent].filter(x => x === '1').length / n : 0;
-  if (n < rule.minCards) return { s: 'new', acc, n };
+  if (n < rule.minCards) return { s: 'new', acc, recentCards: n };
   if (acc >= rule.masteryRate && (record.days || []).length >= rule.minDays)
-    return { s: 'mastered', acc, n };
-  return { s: acc < rule.practiceRate ? 'learning' : 'practicing', acc, n };
+    return { s: 'mastered', acc, recentCards: n };
+  return { s: acc < rule.practiceRate ? 'learning' : 'practicing', acc, recentCards: n };
 }
 function logObjectiveAttempt(q, cat, first, alone) {
   const grade = state.grade, objective = q.curriculumSkill;
