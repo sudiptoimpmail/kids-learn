@@ -1,0 +1,7597 @@
+{
+ "generated": "2026-11-06T07:28:39.407Z",
+ "rounds": 5,
+ "grades": {
+  "prek": {
+   "label": "Pre-K",
+   "sections": {
+    "phonics": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 34,
+        "pick-all": 9,
+        "letter-path": 7
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ph-first-l-leg",
+        "ph-all-b-beebrickbus",
+        "ph-first-b-brick",
+        "ph-first-e-egg"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 33,
+        "letter-path": 8,
+        "pick-all": 9
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ph-rhyme-van-pan",
+        "ph-rhyme-hen-pen",
+        "ph-rhyme-jar-car",
+        "ph-rhyme-van-fan"
+       ]
+      }
+     }
+    },
+    "vocab": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "voc-pic-gentle",
+        "voc-pic-splash",
+        "voc-pic-giggle",
+        "voc-pic-kind"
+       ]
+      }
+     }
+    },
+    "match": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "match": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "match-math-<span class=\"m-num\">1</span><span class=\"m-num\">4</span><span class=\"m-num\">3</span>",
+        "match-math-<span class=\"m-num\">2</span><span class=\"m-num\">5</span><span class=\"m-num\">3</span>",
+        "match-math-<span class=\"m-num\">5</span><span class=\"m-num\">3</span><span class=\"m-num\">2</span>",
+        "match-math-<span class=\"m-num\">1</span><span class=\"m-num\">4</span><span class=\"m-num\">5</span>"
+       ]
+      }
+     }
+    },
+    "syl": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 28,
+       "repeats": 22,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 28,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "syl-cookie",
+        "syl-apple",
+        "syl-sun",
+        "syl-pizza"
+       ]
+      }
+     }
+    },
+    "add": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 43,
+       "repeats": 7,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "add-1-0",
+        "add-0-4",
+        "add-1-2",
+        "add-4-0"
+       ]
+      }
+     }
+    },
+    "sub": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 46,
+       "repeats": 4,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-3-0",
+        "sub-5-0",
+        "sub-5-4",
+        "sub-1-1"
+       ]
+      }
+     }
+    },
+    "shape2": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "pick-all": 43,
+        "choice": 7
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "shape-all-square-🎲🟦",
+        "s2-find-circle",
+        "s2-find-star",
+        "s2-find-oval"
+       ]
+      }
+     }
+    },
+    "body": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 19,
+       "repeats": 31,
+       "kinds": {
+        "tap": 33,
+        "choice": 17
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "body-tap-feet",
+        "body-pic-arms",
+        "body-tap-head",
+        "body-tap-ears"
+       ]
+      }
+     }
+    },
+    "gk": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 22,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "visual-food-carrot",
+        "gk-Which picture shows a rabbit?",
+        "visual-animals-panda",
+        "gk-Where do many birds keep their eggs?"
+       ]
+      }
+     }
+    },
+    "anatomy": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 10,
+       "repeats": 40,
+       "kinds": {
+        "choice": 25,
+        "tap": 25
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ana-What helps your body move?",
+        "ana-What holds your body up, like a frame?",
+        "ana-Which part helps you breathe?",
+        "ana-Which part pumps blood around your body?"
+       ]
+      }
+     }
+    },
+    "jobs": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 12,
+       "repeats": 38,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "job-who-chef",
+        "job-who-police officer",
+        "job-who-astronaut",
+        "job-who-firefighter"
+       ]
+      }
+     }
+    },
+    "pattern": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "pattern-0-🔴🔵🟡🟢",
+        "pattern-0-🔴🟡🟢🔵",
+        "pattern-0-🌈☀️🌙⭐",
+        "pattern-0-🍋🍩🍕🥕"
+       ]
+      }
+     }
+    },
+    "odd": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 14,
+       "repeats": 36,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "odd-1-🚁🚀-🌼",
+        "odd-1-🌻🌸-⚽",
+        "odd-1-🥕🥦-🚗",
+        "odd-1-🐬🐟-🐻"
+       ]
+      }
+     }
+    },
+    "sequence": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sequence-1-🪵🪚🪑-2",
+        "sequence-1-📚📖🧠-1",
+        "sequence-1-🐑🧶🧣-1",
+        "sequence-1-🥚🐣🐥-2"
+       ]
+      }
+     }
+    }
+   }
+  },
+  "k": {
+   "label": "Kindergarten",
+   "sections": {
+    "phonics": {
+     "range": [
+      1,
+      3
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 44,
+       "repeats": 6,
+       "kinds": {
+        "choice": 29,
+        "scene": 7,
+        "letter-path": 5,
+        "pick-all": 9
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 43,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ph-first-s-sled",
+        "ill-sounds",
+        "ph-path-c-8-68188",
+        "ph-first-b-bear"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 33,
+       "repeats": 17,
+       "kinds": {
+        "scene": 9,
+        "pick-all": 7,
+        "choice": 27,
+        "letter-path": 7
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 41,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ill-sounds",
+        "ill-letters",
+        "ph-all-b-ballbearbell",
+        "ph-rhyme-map-cap"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 38,
+       "repeats": 12,
+       "kinds": {
+        "scene": 10,
+        "choice": 40
+       },
+       "families": 8,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 40,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ill-letters",
+        "ill-sounds",
+        "g1-start-cl-clap",
+        "ph-blendw-tub"
+       ]
+      }
+     }
+    },
+    "cvc": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 41,
+        "spell": 7,
+        "puzzle": 2
+       },
+       "families": 7,
+       "hints": 48,
+       "spoken": 50,
+       "pics": 47,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "cvc-miss-leg",
+        "cvc-pic-leg",
+        "cvc-read-bug",
+        "cvc-read-ram"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 41,
+        "puzzle": 2,
+        "spell": 7
+       },
+       "families": 7,
+       "hints": 48,
+       "spoken": 50,
+       "pics": 42,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "cvc-miss-can",
+        "cvc-ws-824870",
+        "cvc-scr-bed",
+        "cvc-miss-sun"
+       ]
+      }
+     }
+    },
+    "sight": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 26,
+       "repeats": 24,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 29,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sight-tap-see",
+        "sight-tap-I",
+        "sight-fill-The party was so much ___!",
+        "sight-tap-fun"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 27,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sight-fill-Did you eat ___ your peas?",
+        "sight-fill-___ is my sister.",
+        "sight-fill-The sun is ___.",
+        "sight-fill-He is ___ because he lost his toy."
+       ]
+      }
+     }
+    },
+    "spell": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "spell": 50
+       },
+       "families": 29,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "spell-hen-01",
+        "spell-dog-1",
+        "spell-pen-12",
+        "spell-mug-1"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "spell": 50
+       },
+       "families": 46,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "spell-tie-012",
+        "spell-pie-012",
+        "spell-tent-13",
+        "spell-cat-012"
+       ]
+      }
+     }
+    },
+    "vocab": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "voc-pic-whisper",
+        "voc-pic-little",
+        "voc-pic-hungry",
+        "voc-pic-clean"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "voc-pic-invent",
+        "voc-pic-stare",
+        "voc-pic-hollow",
+        "voc-pic-delighted"
+       ]
+      }
+     }
+    },
+    "sent": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 50,
+       "hints": 50,
+       "spoken": 0,
+       "pics": 36,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sent-The cup is pink.",
+        "sent-The frog can swim.",
+        "sent-I see six fish.",
+        "sent-I see nine pigs."
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 50,
+       "hints": 50,
+       "spoken": 0,
+       "pics": 44,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sent-I see five dogs.",
+        "sent-The bag is pink.",
+        "sent-The boy and the girl ride a bike.",
+        "sent-I see seven bugs."
+       ]
+      }
+     }
+    },
+    "match": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "match": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "match-read-<span class=\"m-word\">see</span><span class=\"m-word\">sea</span><span class=\"m-word\">egg</span>",
+        "match-math-<span class=\"m-num\">5</span><span class=\"m-num\">2</span><span class=\"m-num\">3</span>",
+        "match-read-<span class=\"m-word\">tub</span><span class=\"m-word\">cap</span><span class=\"m-word\">nut</span>",
+        "match-read-<span class=\"m-word\">pie</span><span class=\"m-word\">six</span><span class=\"m-word\">dog</span>"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "match": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "match-read-<span class=\"m-word\">girl</span><span class=\"m-word\">star</span><span class=\"m-word\">goat</span><span class=\"m-word\">bell</span>",
+        "match-math-<span class=\"m-eq\">3 + 5</span><span class=\"m-eq\">9 + 1</span><span class=\"m-eq\">1 + 8</span><span class=\"m-eq\">2 + 5</span>",
+        "match-math-<span class=\"m-eq\">4 + 4</span><span class=\"m-eq\">4 + 2</span><span class=\"m-eq\">4 + 6</span><span class=\"m-eq\">2 + 3</span>",
+        "match-math-<span class=\"m-num\">1</span><span class=\"m-num\">10</span><span class=\"m-num\">3</span><span class=\"m-num\">6</span>"
+       ]
+      }
+     }
+    },
+    "syl": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 28,
+       "repeats": 22,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 28,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "syl-strawberry",
+        "syl-apple",
+        "syl-kangaroo",
+        "syl-umbrella"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 34,
+       "repeats": 16,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 34,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "syl-turtle",
+        "syl-avocado",
+        "syl-television",
+        "syl-apple"
+       ]
+      }
+     }
+    },
+    "add": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 46,
+       "repeats": 4,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "add-0-5",
+        "add-0-4",
+        "add-1-4",
+        "add-3-1"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 49,
+       "repeats": 1,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 12,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "add-1-3",
+        "add-1-7",
+        "add-2-6",
+        "add-1-1"
+       ]
+      }
+     }
+    },
+    "sub": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 42,
+       "repeats": 8,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-5-0",
+        "sub-3-0",
+        "sub-2-2",
+        "sub-2-1"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 19,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-2-1",
+        "sub-10-10",
+        "sub-9-2",
+        "sub-6-2"
+       ]
+      }
+     }
+    },
+    "story": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "wp-−-7-4",
+        "wp-−-6-3",
+        "wp-+-4-6",
+        "wp-−-4-2"
+       ]
+      }
+     }
+    },
+    "shape2": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 36,
+       "repeats": 14,
+       "kinds": {
+        "scene": 9,
+        "pick-all": 27,
+        "choice": 14
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 41,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ill-shapes",
+        "ill-squares",
+        "shape-all-rectangle-📏📱",
+        "shape-all-rectangle-📱📏💵"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 38,
+       "repeats": 12,
+       "kinds": {
+        "scene": 10,
+        "choice": 25,
+        "pick-all": 15
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 40,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ill-squares",
+        "ill-shapes",
+        "s2-find-heart",
+        "s3-find-cone"
+       ]
+      }
+     }
+    },
+    "home": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 15,
+       "distinct": 3,
+       "repeats": 12,
+       "kinds": {
+        "choice": 15
+       },
+       "families": 3,
+       "hints": 15,
+       "spoken": 15,
+       "pics": 5,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "home-What number do you call in an emergency in the United States?-911",
+        "home-flag-the United States",
+        "home-Which bird is a symbol of the United States?-🦅 the bald eagle",
+        "home-flag-the United States"
+       ]
+      }
+     }
+    },
+    "body": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 19,
+       "repeats": 31,
+       "kinds": {
+        "tap": 31,
+        "choice": 19
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "body-tap-legs",
+        "body-tap-feet",
+        "body-tap-hands",
+        "body-tap-hair"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 30,
+       "repeats": 20,
+       "kinds": {
+        "tap": 29,
+        "choice": 21
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 48,
+       "below": 28,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "body-tap-elbows",
+        "body-tap-chin",
+        "body-tap-hands",
+        "body-tap-arms"
+       ]
+      }
+     }
+    },
+    "gk": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 23,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "visual-nature-mushroom",
+        "visual-nature-cactus",
+        "visual-objects-kite",
+        "gk-Which picture shows a dog?"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 27,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 48,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "visual-transport-taxi",
+        "visual-nature-cloud",
+        "gk-Which picture shows a truck?",
+        "gk-Which animal has black and white stripes?"
+       ]
+      }
+     }
+    },
+    "anatomy": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 10,
+       "repeats": 40,
+       "kinds": {
+        "choice": 25,
+        "tap": 25
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ana-Which part pumps blood around your body?",
+        "ana-What holds your body up, like a frame?",
+        "ana-What helps your body move?",
+        "ana-tap-brain"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 15,
+       "repeats": 35,
+       "kinds": {
+        "choice": 23,
+        "tap": 27
+       },
+       "families": 8,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 49,
+       "below": 38,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ana-Which part tastes your food?",
+        "ana-tap-lungs",
+        "ana-How many lungs do you have?",
+        "ana-tap-brain"
+       ]
+      }
+     }
+    },
+    "jobs": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 12,
+       "repeats": 38,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "job-who-pilot",
+        "job-who-chef",
+        "job-who-firefighter",
+        "job-who-mechanic"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 20,
+       "repeats": 30,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 30,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "job-who-pilot",
+        "job-who-astronaut",
+        "job-who-firefighter",
+        "job-who-baker"
+       ]
+      }
+     }
+    },
+    "flags": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 30,
+       "distinct": 6,
+       "repeats": 24,
+       "kinds": {
+        "choice": 30
+       },
+       "families": 1,
+       "hints": 30,
+       "spoken": 30,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "flag-f-Japan",
+        "flag-f-Mexico",
+        "flag-f-India",
+        "flag-f-United Kingdom"
+       ]
+      },
+      "2": {
+       "cards": 35,
+       "distinct": 13,
+       "repeats": 22,
+       "kinds": {
+        "choice": 35
+       },
+       "families": 1,
+       "hints": 35,
+       "spoken": 35,
+       "pics": 0,
+       "below": 22,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "flag-f-Canada",
+        "flag-f-China",
+        "flag-f-Turkey",
+        "flag-f-Australia"
+       ]
+      }
+     }
+    },
+    "animals": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 17,
+       "repeats": 33,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ani-which-lion",
+        "ani-which-tiger",
+        "ani-which-giraffe",
+        "ani-which-alligator"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 23,
+       "repeats": 27,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 28,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ani-which-alligator",
+        "ani-which-sloth",
+        "ani-which-African elephant",
+        "ani-which-anaconda"
+       ]
+      }
+     }
+    },
+    "maps": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 12,
+       "repeats": 38,
+       "kinds": {
+        "choice": 25,
+        "tap": 25
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "map-kcont-United States",
+        "map-ctap-Asia",
+        "map-kcont-China",
+        "map-ctap-Australia"
+       ]
+      }
+     }
+    },
+    "pattern": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "pattern-0-🍋🥕🍕🍩",
+        "pattern-0-🍀🌷🌵🌳",
+        "pattern-0-🔺🔵🟨💜",
+        "pattern-0-🌈☀️🌙⭐"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "pattern-0-🦋🐢🦉🐳",
+        "pattern-0-🔵🟨🔺💜",
+        "pattern-2-🥕🍩🍕🍋",
+        "pattern-2-🌈🌙⭐☀️"
+       ]
+      }
+     }
+    },
+    "odd": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 14,
+       "repeats": 36,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "odd-1-🐔🦆-🚲",
+        "odd-1-🌻🌸-⚽",
+        "odd-1-🦈🐟-🐻",
+        "odd-1-🍪🍰-🧦"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 28,
+       "repeats": 22,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "odd-1-🐟🐬🦈-🐻",
+        "odd-1-🍞🧀🥚-👒",
+        "odd-2-🚕🚌🚙-🚢",
+        "odd-2-🌂☂️🧥-🏀"
+       ]
+      }
+     }
+    },
+    "sequence": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sequence-1-🧦👟🚶-1",
+        "sequence-1-🌧️💧🌈-2",
+        "sequence-1-🍞🍯🥪-1",
+        "sequence-1-🌳🍂🌱-1"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sequence-2-🥕🚿🔪🍲-1",
+        "sequence-2-🖍️✂️🧴🖼️-3",
+        "sequence-1-👋🚌🏫-1",
+        "sequence-1-🪵🪚🪑-2"
+       ]
+      }
+     }
+    }
+   }
+  },
+  "g1": {
+   "label": "1st Grade",
+   "sections": {
+    "phonics": {
+     "range": [
+      3,
+      5
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 41,
+       "repeats": 9,
+       "kinds": {
+        "scene": 5,
+        "choice": 45
+       },
+       "families": 7,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 45,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ill-longa",
+        "ph-blendw-bag",
+        "g1-start-cl-close",
+        "ph-blendw-log"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 45,
+       "repeats": 5,
+       "kinds": {
+        "choice": 37,
+        "scene": 5,
+        "letter-path": 8
+       },
+       "families": 11,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 37,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ph-mid-hen-web",
+        "ill-longa",
+        "ph-first-p-pizza",
+        "ph-vpath-long A-23752"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 44,
+       "repeats": 6,
+       "kinds": {
+        "choice": 39,
+        "scene": 5,
+        "letter-path": 6
+       },
+       "families": 13,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 38,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ph-blend-br-brush",
+        "ill-longa",
+        "ph-end2-duck",
+        "ph-rhyme-fan-van"
+       ]
+      }
+     }
+    },
+    "cvc": {
+     "range": [
+      3,
+      3
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 38,
+       "repeats": 12,
+       "kinds": {
+        "spell": 1,
+        "scene": 5,
+        "choice": 38,
+        "puzzle": 6
+       },
+       "families": 8,
+       "hints": 44,
+       "spoken": 50,
+       "pics": 33,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "cvc-scr-arm",
+        "ill-wordhunt",
+        "cvc-pic-ant",
+        "cvc-read-bus"
+       ]
+      }
+     }
+    },
+    "w4": {
+     "range": [
+      2,
+      4
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "spell": 5,
+        "choice": 45
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 45,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "w4-scr-shoe",
+        "w4-pic-goat",
+        "w4-miss-worm",
+        "w4-pic-bear"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 44,
+        "spell": 6
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 43,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "w4-read-gift",
+        "w4-find-soap",
+        "w4-scr-milk",
+        "w4-find-stop"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 43,
+        "spell": 7
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 43,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "w4-read-green",
+        "w4-scr-brick",
+        "w4-read-train",
+        "w4-find-sheep"
+       ]
+      }
+     }
+    },
+    "sight": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 27,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sight-tap-I",
+        "sight-fill-I am ___ on my birthday.",
+        "sight-fill-The cat ran ___.",
+        "sight-fill-Please ___ one cookie."
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 16,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sight-fill-___ your food with your mouth closed.",
+        "sight-fill-___, it is not a dog.",
+        "sight-tap-all",
+        "sight-tap-from"
+       ]
+      }
+     }
+    },
+    "spell": {
+     "range": [
+      3,
+      4
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "spell": 50
+       },
+       "families": 44,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "spell-sock-0123",
+        "spell-crab-0123",
+        "spell-girl-0123",
+        "spell-swan-0123"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "spell": 50
+       },
+       "families": 46,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "spell-big-012",
+        "spell-woman-02",
+        "spell-flute-14",
+        "spell-robot-13"
+       ]
+      }
+     }
+    },
+    "vocab": {
+     "range": [
+      2,
+      2
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "voc-word-dry",
+        "voc-pic-explore",
+        "voc-word-imagine",
+        "voc-pic-wander"
+       ]
+      }
+     }
+    },
+    "sent": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 38,
+       "repeats": 12,
+       "kinds": {
+        "choice": 49,
+        "scene": 1
+       },
+       "families": 35,
+       "hints": 50,
+       "spoken": 14,
+       "pics": 39,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sent-The sleepy black cat sat by the pond.",
+        "ill-sequence",
+        "sent-My mother has a red mug.",
+        "sent-The little red hen sat on top of the hill."
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 39,
+       "repeats": 11,
+       "kinds": {
+        "choice": 29,
+        "scene": 5,
+        "passage": 6,
+        "fill-in": 8,
+        "order": 2
+       },
+       "families": 23,
+       "hints": 50,
+       "spoken": 34,
+       "pics": 33,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sent-The bus was late. Kim waited at the stop. Then the bus came and she got on.",
+        "ill-sequence",
+        "sent-pass-A fox found grapes on a tall vine.",
+        "sent-I have a pet cat. Her name is Dot."
+       ]
+      }
+     }
+    },
+    "words": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 40,
+       "repeats": 10,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "gr-noun-girl-climb-brave",
+        "gr-noun-girl-sing-happy",
+        "gr-noun-teacher-write-happy",
+        "gr-noun-dog-jump-funny"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "gr-pl-fish",
+        "gr-pl-goose",
+        "gr-noun-girl-climb-brave",
+        "gr-pl-dog"
+       ]
+      }
+     }
+    },
+    "match": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 47,
+       "repeats": 3,
+       "kinds": {
+        "match": 39,
+        "scene": 11
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "match-math-<span class=\"m-eq\">5 + 5</span><span class=\"m-eq\">1 + 7</span><span class=\"m-eq\">3 + 4</span><span class=\"m-eq\">2 + 2</span>",
+        "ill-forest-water",
+        "match-math-<span class=\"m-num\">10</span><span class=\"m-num\">9</span><span class=\"m-num\">2</span><span class=\"m-num\">8</span>",
+        "match-math-<span class=\"m-num\">4</span><span class=\"m-num\">9</span><span class=\"m-num\">8</span><span class=\"m-num\">7</span>"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 47,
+       "repeats": 3,
+       "kinds": {
+        "match": 39,
+        "scene": 11
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "match-read-<span class=\"m-word\">woman</span><span class=\"m-word\">white</span><span class=\"m-word\">brush</span><span class=\"m-word\">puppy</span>",
+        "ill-forest-climb",
+        "match-read-<span class=\"m-word\">nurse</span><span class=\"m-word\">puppy</span><span class=\"m-word\">snake</span><span class=\"m-word\">shirt</span>",
+        "match-math-<span class=\"m-eq\">4 − 2</span><span class=\"m-eq\">1 − 1</span><span class=\"m-eq\">11 − 1</span><span class=\"m-eq\">1 + 10</span>"
+       ]
+      }
+     }
+    },
+    "syl": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 34,
+       "repeats": 16,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 34,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "syl-tomato",
+        "syl-rocket",
+        "syl-sun",
+        "syl-cat"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 34,
+       "repeats": 16,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 34,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "syl-tomato",
+        "syl-fish",
+        "syl-turtle",
+        "syl-cookie"
+       ]
+      }
+     }
+    },
+    "add": {
+     "range": [
+      3,
+      4
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 15,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "add-2-6",
+        "cmp-14-13",
+        "cmp-14-8",
+        "add-6-1"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 2,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "add-22-4",
+        "cmp-60-65",
+        "add-57-2",
+        "add-46-3"
+       ]
+      }
+     }
+    },
+    "sub": {
+     "range": [
+      3,
+      4
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 17,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-2-1",
+        "sub-2-2",
+        "sub-14-3",
+        "sub-7-6"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-99-8",
+        "sub-78-4",
+        "sub-13-3",
+        "sub-66-4"
+       ]
+      }
+     }
+    },
+    "story": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "wp-+-2-1",
+        "wp-−-12-4",
+        "wp-+-5-3",
+        "wp-+-4-8"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "wp-−-78-6",
+        "wp-−-76-3",
+        "wp-+-74-4",
+        "wp-−-47-4"
+       ]
+      }
+     }
+    },
+    "clock": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 12,
+       "repeats": 38,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "clock-read-8:00",
+        "clock-read-1:00",
+        "clock-read-2:00",
+        "clock-read-10:00"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 48,
+       "repeats": 2,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "clock-read-2:30",
+        "clock-read-5:30",
+        "clock-pick-9:00",
+        "clock-pick-3:30"
+       ]
+      }
+     }
+    },
+    "shape2": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 29,
+        "pick-all": 21
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "s2-name-circle",
+        "s2-name-square",
+        "s3-find-cylinder",
+        "s2-sides-square"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "pick-all": 19,
+        "choice": 31
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "shape-all-triangle-⚠️🔺🍙",
+        "s3-dim-0.3082831655628979",
+        "s2-sides-hexagon",
+        "shape-all-rectangle-📱📏🍫"
+       ]
+      }
+     }
+    },
+    "numsense": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ns-skip-2-6-1",
+        "ns-measure-units-7",
+        "ns-measure-longer-7-3",
+        "ns-skip-2-0-3"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ns-val2-66-1",
+        "ns-ba-2-52",
+        "ns-val2-29-1",
+        "ns-measure-longer-5-3"
+       ]
+      }
+     }
+    },
+    "sci": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 49,
+       "repeats": 1,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 26,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 39,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sci-What can you use to observe a tiny ant closely?",
+        "sci-Is it living or non-living?-horse",
+        "sci-Is it living or non-living?-kite",
+        "sci-Which product is made to protect skin from the sun's UV rays?"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 32,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 28,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sci-Which animal group is it in?-shark",
+        "sci-Which animal lays eggs?",
+        "sci-Which tool tells us the temperature outside?",
+        "sci-Will a magnet pick it up?-wooden block"
+       ]
+      }
+     }
+    },
+    "community": {
+     "range": [
+      1,
+      1
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 11,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 29,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "com-Which is a want, not a need?",
+        "com-Why do we have rules at school?",
+        "com-Which person helps put out fires?",
+        "com-dir-shop-house-north"
+       ]
+      }
+     }
+    },
+    "home": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 20,
+       "distinct": 4,
+       "repeats": 16,
+       "kinds": {
+        "choice": 20
+       },
+       "families": 4,
+       "hints": 20,
+       "spoken": 20,
+       "pics": 5,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "home-flag-the United States",
+        "home-Which bird is a symbol of the United States?-🦅 the bald eagle",
+        "home-What is the money in the United States called?-the dollar",
+        "home-What number do you call in an emergency in the United States?-911"
+       ]
+      },
+      "2": {
+       "cards": 40,
+       "distinct": 8,
+       "repeats": 32,
+       "kinds": {
+        "choice": 40
+       },
+       "families": 8,
+       "hints": 40,
+       "spoken": 40,
+       "pics": 5,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "home-Which day is Independence Day in the United States?-July 4",
+        "home-What is the money in the United States called?-the dollar",
+        "home-What is the capital city of the United States?-Washington, D.C.",
+        "home-Where is the Statue of Liberty?-New York City"
+       ]
+      }
+     }
+    },
+    "gk": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 50,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 25,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "gk-Where should you put a banana peel?",
+        "gk-Which animal says quack?",
+        "gk-Milk comes from a…",
+        "gk-Which one is a weekday?"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 50,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 18,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "gk-Which month follows October?",
+        "gk-Which sea animal has eight arms?",
+        "gk-How many legs does an insect have?",
+        "gk-What do plants need to grow?"
+       ]
+      }
+     }
+    },
+    "anatomy": {
+     "range": [
+      2,
+      2
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 30,
+       "repeats": 20,
+       "kinds": {
+        "choice": 36,
+        "tap": 14
+       },
+       "families": 16,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 35,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ana-name-kidneys",
+        "ana-What carries blood around your body?",
+        "ana-tap-intestines",
+        "ana-tap-brain"
+       ]
+      }
+     }
+    },
+    "jobs": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "job-name-bus driver",
+        "job-who-builder",
+        "job-does-mechanic",
+        "job-who-judge"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "job-who-scientist",
+        "job-name-firefighter",
+        "job-who-bus driver",
+        "job-does-bus driver"
+       ]
+      }
+     }
+    },
+    "flags": {
+     "range": [
+      2,
+      2
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 26,
+       "repeats": 24,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "flag-c-Japan",
+        "flag-f-India",
+        "flag-c-Canada",
+        "flag-c-France"
+       ]
+      }
+     }
+    },
+    "animals": {
+     "range": [
+      2,
+      2
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 44,
+       "repeats": 6,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 24,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ani-which-rhino",
+        "ani-tiger",
+        "ani-alligator",
+        "ani-hippo"
+       ]
+      }
+     }
+    },
+    "places": {
+     "range": [
+      2,
+      2
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 33,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "lm-where-chichen",
+        "lm-where-parthenon",
+        "lm-nametext-grandcanyon",
+        "lm-nametext-eiffel"
+       ]
+      }
+     }
+    },
+    "maps": {
+     "range": [
+      2,
+      2
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "tap": 21,
+        "choice": 29
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "map-ctap-Africa",
+        "map-ktap-India",
+        "map-kcont-Mexico",
+        "map-kname-Germany"
+       ]
+      }
+     }
+    },
+    "pattern": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "pattern-0-🏀⚽🎾🏈",
+        "pattern-2-🦋🐢🦉🐳",
+        "pattern-1-🌳🌷🍀🌵",
+        "pattern-1-🥕🍋🍩🍕"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 43,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "pattern-skip-5-5",
+        "pattern-0-🍊🍎🍌🍇",
+        "pattern-3-🐳🐢🦋🦉",
+        "pattern-skip-5-4"
+       ]
+      }
+     }
+    },
+    "odd": {
+     "range": [
+      2,
+      2
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 28,
+       "repeats": 22,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "odd-2-👟🧦🥾-🧤",
+        "odd-1-🐥🐔🦆-🚲",
+        "odd-2-🧴🧽🧹-🍌",
+        "odd-1-👟👢🩴-🍎"
+       ]
+      }
+     }
+    },
+    "sequence": {
+     "range": [
+      2,
+      2
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sequence-2-🍎🚿🔪🥗-1",
+        "sequence-2-☁️🌧️💧☀️-0",
+        "sequence-2-🥖🧀🥪🍽️-1",
+        "sequence-2-📖🧠✅-2"
+       ]
+      }
+     }
+    }
+   }
+  },
+  "g2": {
+   "label": "2nd Grade",
+   "sections": {
+    "phonics": {
+     "range": [
+      4,
+      5
+     ],
+     "levels": {
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 45,
+        "letter-path": 5
+       },
+       "families": 10,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 45,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ph-first-p-penguin",
+        "g1-start-sn-snake",
+        "ph-blendw-cub",
+        "ph-vpath-long O-26659"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 42,
+        "letter-path": 8
+       },
+       "families": 10,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 39,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ph-end-t-rat",
+        "ph-vpath-long O-34441",
+        "ph-blend-pl-plant",
+        "ph-blend-sh-shell"
+       ]
+      }
+     }
+    },
+    "w4": {
+     "range": [
+      4,
+      5
+     ],
+     "levels": {
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 44,
+        "spell": 6
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 44,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "w4-miss-black",
+        "w4-read-yo-yo",
+        "w4-scr-snake",
+        "w4-read-tiger"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 37,
+        "spell": 13
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 49,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "w4-miss-carrot",
+        "w4-miss-woman",
+        "w4-miss-pizza",
+        "w4-scr-brush"
+       ]
+      }
+     }
+    },
+    "sight": {
+     "range": [
+      3,
+      4
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 20,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sight-tap-like",
+        "sight-fill-An elephant is ___.",
+        "sight-opp-yes",
+        "sight-fill-___ is my sister."
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 16,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sight-tap-sad",
+        "sight-tap-hot",
+        "sight-fill-The bird flew ___ the tree.",
+        "sight-opp-right"
+       ]
+      }
+     }
+    },
+    "spell": {
+     "range": [
+      4,
+      5
+     ],
+     "levels": {
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "spell": 50
+       },
+       "families": 43,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "spell-green-023",
+        "spell-same-0123",
+        "spell-brain-23",
+        "spell-crawl-01234"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "spell": 50
+       },
+       "families": 43,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "spell-brick-01234",
+        "spell-monkey-025",
+        "spell-write-01234",
+        "spell-some-0123"
+       ]
+      }
+     }
+    },
+    "vocab": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "voc-word-crunchy",
+        "voc-pic-delighted",
+        "voc-word-scurry",
+        "voc-pic-hollow"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "voc-word-hatch",
+        "voc-pic-observe",
+        "voc-word-breeze",
+        "voc-pic-nervous"
+       ]
+      }
+     }
+    },
+    "sent": {
+     "range": [
+      3,
+      4
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 31,
+        "fill-in": 7,
+        "passage": 7,
+        "order": 5
+       },
+       "families": 34,
+       "hints": 50,
+       "spoken": 23,
+       "pics": 35,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sent-A shark swims in the sea. A wolf runs on land. Both animals need food to live.",
+        "sent-box-lamp-drum-sock-wheel",
+        "sent-pass-Leo has new boots.",
+        "sent-pass-On Monday, Noor built a paper airplane."
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "passage": 7,
+        "choice": 30,
+        "fill-in": 10,
+        "order": 3
+       },
+       "families": 34,
+       "hints": 50,
+       "spoken": 26,
+       "pics": 18,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sent-pass-One morning, Sofia found frost on the grass.",
+        "sent-Grandpa has a garden. He grows tomatoes, beans and corn. In summer, we help him pick the vegetables. Then we eat them for dinner.",
+        "sent-box-kite-clock-duck-sheep",
+        "sent-p23-Every spring, the Ruiz family plants a garden."
+       ]
+      }
+     }
+    },
+    "words": {
+     "range": [
+      2,
+      4
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "gr-opp-good",
+        "gr-opp-go",
+        "gr-pl-pony",
+        "gr-pl-brush"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 10,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ws-root-helpful",
+        "gr-comp-raincoat",
+        "ws-sim-as light as a ___",
+        "gr-noun-kitten-play-tiny"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 12,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ws-root-teacher",
+        "ws-pre-dis",
+        "ws-abc-ricerainrope",
+        "gr-con-they are"
+       ]
+      }
+     }
+    },
+    "gp": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 32,
+       "repeats": 18,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "gp-cap-Last week, Omar lost a tooth.",
+        "gp-cap-We visited Grandma in July.",
+        "gp-cap-On Friday, Sam read a book about sharks.",
+        "gp-end-I like green apples"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 32,
+       "repeats": 18,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "gp-coll-a ___ of birds",
+        "gp-coll-a ___ of cows",
+        "gp-refl-The cat licked ___ clean.",
+        "gp-refl-They built the fort by ___."
+       ]
+      }
+     }
+    },
+    "match": {
+     "range": [
+      3,
+      4
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "match": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "match-math-<span class=\"m-eq\">3 + 7</span><span class=\"m-eq\">8 − 3</span><span class=\"m-eq\">1 + 5</span><span class=\"m-eq\">5 + 10</span>",
+        "match-read-<span class=\"m-word\">truck</span><span class=\"m-word\">tiger</span><span class=\"m-word\">bread</span><span class=\"m-word\">puppy</span>",
+        "match-math-<span class=\"m-eq\">15 − 4</span><span class=\"m-eq\">1 − 1</span><span class=\"m-eq\">6 − 4</span><span class=\"m-eq\">9 − 4</span>",
+        "match-math-<span class=\"m-eq\">6 − 1</span><span class=\"m-eq\">3 − 2</span><span class=\"m-eq\">10 + 1</span><span class=\"m-eq\">5 + 7</span>"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "match": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "match-read-<span class=\"m-word\">penguin</span><span class=\"m-word\">yo-yo</span><span class=\"m-word\">father</span><span class=\"m-word\">tiger</span><span class=\"m-word\">monkey</span>",
+        "match-math-<span class=\"m-eq\">74 + 9</span><span class=\"m-eq\">70 + 7</span><span class=\"m-eq\">43 + 2</span><span class=\"m-eq\">2 × 6</span><span class=\"m-eq\">20 + 8</span>",
+        "match-math-<span class=\"m-eq\">10 × 8</span><span class=\"m-eq\">2 × 7</span><span class=\"m-eq\">10 × 9</span><span class=\"m-eq\">56 + 8</span><span class=\"m-eq\">36 + 8</span>",
+        "match-math-<span class=\"m-eq\">5 × 8</span><span class=\"m-eq\">73 + 3</span><span class=\"m-eq\">51 + 6</span><span class=\"m-eq\">5 × 10</span><span class=\"m-eq\">2 × 7</span>"
+       ]
+      }
+     }
+    },
+    "add": {
+     "range": [
+      4,
+      7
+     ],
+     "levels": {
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "add-53-5",
+        "add-93-3",
+        "add-12-3",
+        "add-30-5"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "add-57-3",
+        "add-77-7",
+        "add-76-4",
+        "add-38-3"
+       ]
+      },
+      "6": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "add-38-33",
+        "add-43-48",
+        "add-11-88",
+        "cmp-1 + 4-7"
+       ]
+      },
+      "7": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "cmp-7 − 7-2",
+        "add-211-274",
+        "add-412-241",
+        "add-605-71"
+       ]
+      }
+     }
+    },
+    "sub": {
+     "range": [
+      4,
+      7
+     ],
+     "levels": {
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-88-6",
+        "sub-18-6",
+        "sub-36-3",
+        "sub-98-3"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-62-5",
+        "sub-87-8",
+        "sub-23-8",
+        "sub-81-9"
+       ]
+      },
+      "6": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-62-52",
+        "sub-55-18",
+        "sub-67-36",
+        "sub-85-47"
+       ]
+      },
+      "7": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-788-736",
+        "sub-463-31",
+        "sub-289-63",
+        "sub-581-431"
+       ]
+      }
+     }
+    },
+    "story": {
+     "range": [
+      3,
+      5
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "wp-−-18-6",
+        "wp-+-80-6",
+        "wp-+-25-6",
+        "wp-+-76-9"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "wp-−-67-8",
+        "explorer-math-g2-line-72",
+        "explorer-math-g2-visual-chart-seeds",
+        "wp-−-48-4"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "wp-two-10-3-2",
+        "wp-two-9-4-5",
+        "explorer-math-g2-garden-rows",
+        "explorer-math-g2-marble-count"
+       ]
+      }
+     }
+    },
+    "mul": {
+     "range": [
+      1,
+      3
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 40,
+       "repeats": 10,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "mul1-2-5",
+        "mul1-2-3",
+        "mul1-4-3",
+        "mul1-3-2"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "mul-5-4",
+        "mul-9-10",
+        "mul-4-2",
+        "mul-2-6"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 25,
+       "repeats": 25,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "mul-4-1",
+        "mul-5-4",
+        "mul-3-3",
+        "mul-5-3"
+       ]
+      }
+     }
+    },
+    "div": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 40,
+       "distinct": 31,
+       "repeats": 9,
+       "kinds": {
+        "choice": 40
+       },
+       "families": 1,
+       "hints": 40,
+       "spoken": 40,
+       "pics": 40,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "div1-3-3",
+        "div1-6-3",
+        "div1-4-2",
+        "div1-6-2"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 30,
+       "repeats": 20,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "div-50-5",
+        "div-2-2",
+        "div-45-5",
+        "div-20-2"
+       ]
+      }
+     }
+    },
+    "clock": {
+     "range": [
+      2,
+      4
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 48,
+       "repeats": 2,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "clock-read-9:00",
+        "clock-pick-12:00",
+        "clock-pick-1:30",
+        "clock-read-11:00"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "clock-pick-4:15",
+        "clock-read-4:45",
+        "clock-read-8:15",
+        "clock-pick-8:30"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "clock-pick-2:35",
+        "clock-pick-1:20",
+        "clock-pick-7:40",
+        "clock-read-9:35"
+       ]
+      }
+     }
+    },
+    "frac": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 23,
+       "repeats": 27,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "frac-word-2-3-true",
+        "frac-equal-3-true",
+        "frac-equal-4-true",
+        "frac-equal-2-true"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 40,
+       "repeats": 10,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "frac-name-1-3",
+        "frac-name-2-3",
+        "frac-name-1-2",
+        "frac-name-1-4"
+       ]
+      }
+     }
+    },
+    "measure": {
+     "range": [
+      1,
+      3
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 43,
+       "repeats": 7,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ms-ruler-0-5-cm",
+        "ms-ruler-0-9-cm",
+        "ms-ruler-0-6-in",
+        "ms-ruler-0-2-in"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ms-pict-345-1",
+        "ms-pict-451-2",
+        "ms-ruler-1-5-in",
+        "ms-pict-532-2"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 26,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ms-bar-10-14-6-16-23",
+        "ms-bar-10-12-4-8-30",
+        "ms-change-us-80",
+        "ms-per-4-8-cm"
+       ]
+      }
+     }
+    },
+    "shape2": {
+     "range": [
+      3,
+      4
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 34,
+        "pick-all": 16
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "s3-name-cube",
+        "s3-name-cylinder",
+        "shape-all-circle-🍊⚽",
+        "s3-dim-0.686647210502997"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "s3-name-rectangular prism",
+        "s2-name-heart",
+        "s3-name-sphere",
+        "s3-dim-0.8972635460086167"
+       ]
+      }
+     }
+    },
+    "numsense": {
+     "range": [
+      2,
+      4
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ns-data-most-5-4-7",
+        "ns-data-most-4-7-6",
+        "ns-val2-95-0",
+        "ns-ba-2-94"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 9,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ns-blocks3-122",
+        "ns-data-difference-4-2-6",
+        "ns-blocks3-356",
+        "ns-blocks3-370"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 14,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ns-pie-8-4",
+        "ns-cmp-2-1-3",
+        "ns-blocks3-305",
+        "ns-data-difference-6-3-2"
+       ]
+      }
+     }
+    },
+    "sci": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 33,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 27,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sci23-What happens to chocolate on a hot day?",
+        "sci-Will a magnet pick it up?-sock",
+        "sci-Will a magnet pick it up?-paper clip",
+        "sci23-What do bees carry from flower to flower?"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 31,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 28,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "explorer-science-g2-materials-umbrella",
+        "sci-What happens when light passes through clear glass?",
+        "explorer-science-g2-gravity-ball",
+        "sci-Students observe fewer birds at a feeder on rainy mornings. What is a careful next step?"
+       ]
+      }
+     }
+    },
+    "community": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 11,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 29,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "com-Which is a want, not a need?",
+        "com-dir-fountain-shop-west",
+        "com-What should you do with litter in the park?",
+        "com-Which is a good citizen?"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 18,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 25,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "com-gov-us-Where does the President live and work?",
+        "com-time-Letters were written by hand.-People send video calls.",
+        "com-Which is a natural resource?",
+        "com-What does 'scarce' mean?"
+       ]
+      }
+     }
+    },
+    "region": {
+     "range": [
+      1,
+      2
+     ],
+     "levels": {
+      "1": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "reg-Michigan-What is the state bird of Michigan?",
+        "reg-Michigan-Which big bridge joins Michigan's two peninsulas?",
+        "reg-Michigan-Which part of Michigan looks like a mitten?",
+        "reg-Michigan-How many peninsulas does Michigan have?"
+       ]
+      },
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "reg-cap-Michigan-What is the capital of Michigan?",
+        "reg-is-Virginia-Which one is a state of the United States?",
+        "reg-ocap-Utah-What is the capital of Utah?",
+        "reg-is-Idaho-Which one is a state of the United States?"
+       ]
+      }
+     }
+    },
+    "home": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 40,
+       "distinct": 8,
+       "repeats": 32,
+       "kinds": {
+        "choice": 40
+       },
+       "families": 8,
+       "hints": 40,
+       "spoken": 40,
+       "pics": 5,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "home-What is the capital city of the United States?-Washington, D.C.",
+        "home-flag-the United States",
+        "home-Which day is Independence Day in the United States?-July 4",
+        "home-What colors are on the flag of the United States?-red, white and blue"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 10,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "home-Which one is a state of the United States?-Texas",
+        "home-Which one is a state of the United States?-South Dakota",
+        "home-Which one is a state of the United States?-Georgia",
+        "home-Which one is a state of the United States?-South Carolina"
+       ]
+      }
+     }
+    },
+    "gk": {
+     "range": [
+      3,
+      3
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 50,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 12,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "gk-Which direction is opposite east?",
+        "gk-Which month follows October?",
+        "gk-Which part of a plant drinks water from the soil?",
+        "gk-A baby kangaroo is called a…"
+       ]
+      }
+     }
+    },
+    "anatomy": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 30,
+       "repeats": 20,
+       "kinds": {
+        "choice": 38,
+        "tap": 12
+       },
+       "families": 16,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 39,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ana-When you run, your heart beats…",
+        "ana-What protects your brain?",
+        "ana-What carries blood around your body?",
+        "ana-name-lungs"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 32,
+       "repeats": 18,
+       "kinds": {
+        "choice": 38,
+        "tap": 12
+       },
+       "families": 18,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 33,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ana-name-spine",
+        "ana-Which food helps build strong bones?",
+        "ana-name-kidneys",
+        "ana-Your brain sends messages to your body through…"
+       ]
+      }
+     }
+    },
+    "flags": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 26,
+       "repeats": 24,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "flag-f-Mexico",
+        "flag-f-India",
+        "flag-c-Australia",
+        "flag-c-Italy"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 48,
+       "repeats": 2,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "flag-c-Turkey",
+        "flag-c-United Kingdom",
+        "flag-f-Canada",
+        "flag-c-India"
+       ]
+      }
+     }
+    },
+    "animals": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 45,
+       "repeats": 5,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 24,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ani-giraffe",
+        "ani-moose",
+        "ani-which-wild turkey",
+        "ani-penguin"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 30,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ani-moose",
+        "ani-which-monkey",
+        "ani-which-flamingo",
+        "ani-tiger"
+       ]
+      }
+     }
+    },
+    "places": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 34,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "lm-where-bigben",
+        "lm-city-venice",
+        "lm-where-parthenon",
+        "lm-where-tajmahal"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 38,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "lm-where-cappadocia",
+        "lm-city-eiffel",
+        "lm-city-brandenburg",
+        "lm-nametext-brandenburg"
+       ]
+      }
+     }
+    },
+    "maps": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 30,
+        "tap": 20
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "map-kname-Germany",
+        "map-ktap-United States",
+        "map-kcont-Japan",
+        "map-kname-Italy"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 40,
+        "tap": 10
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "map-cap-Germany",
+        "map-kname-Turkey",
+        "map-kcont-France",
+        "map-ktap-Argentina"
+       ]
+      }
+     }
+    },
+    "pattern": {
+     "range": [
+      3,
+      4
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 43,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "pattern-0-🏀🎾🏈⚽",
+        "pattern-4-🏀🏈🎾⚽",
+        "pattern-2-🦉🦋🐢🐳",
+        "pattern-0-🍩🥕🍕🍋"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 19,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "advanced-pattern-0-2-3-5-8-12",
+        "pattern-number-3-5",
+        "advanced-pattern-0-2-5-9-14-20",
+        "pattern-number-5-2"
+       ]
+      }
+     }
+    },
+    "odd": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 28,
+       "repeats": 22,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "odd-2-🧥🧤🧣-🩴",
+        "odd-1-🐟🐬🦈-🐻",
+        "odd-1-🚀✈️🚁-🌼",
+        "odd-2-🎸🎺🪕-🎨"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "odd-2-☀️🌙⭐-🧀",
+        "odd-3-🧃🥛💧-🥖",
+        "odd-3-🔺⬜⬟-⚪",
+        "odd-2-🛁🪥🧼-🪁"
+       ]
+      }
+     }
+    },
+    "sequence": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sequence-2-🧺🫧👕-0",
+        "sequence-2-🖍️✂️🧴🖼️-2",
+        "sequence-2-🌧️🌂🚶🏠-1",
+        "sequence-2-🥕🚿🔪🍲-0"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sequence-3-🌱🌻🐝🍯-2",
+        "sequence-2-🥖🧀🥪🍽️-0",
+        "sequence-3-🗺️📍🚶🏫-1",
+        "sequence-3-💧🧊☀️💨-1"
+       ]
+      }
+     }
+    }
+   }
+  },
+  "g3": {
+   "label": "3rd Grade",
+   "sections": {
+    "spell": {
+     "range": [
+      5,
+      5
+     ],
+     "levels": {
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "spell": 50
+       },
+       "families": 43,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "spell-make-0123",
+        "spell-purple-145",
+        "spell-apple-01234",
+        "spell-hot-012"
+       ]
+      }
+     }
+    },
+    "vocab": {
+     "range": [
+      3,
+      4
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "voc-pic-grumpy",
+        "voc-word-hatch",
+        "voc-word-predator",
+        "voc-pic-harvest"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "voc-word-author",
+        "voc-word-encourage",
+        "voc-pic-estimate",
+        "voc-word-cozy"
+       ]
+      }
+     }
+    },
+    "sent": {
+     "range": [
+      5,
+      6
+     ],
+     "levels": {
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 45,
+        "passage": 5
+       },
+       "families": 46,
+       "hints": 50,
+       "spoken": 10,
+       "pics": 17,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sent-Octopuses are amazing ocean animals. They have eight arms covered in suckers. They can change color to hide from enemies. An octopus has no bones, so it can squeeze through tiny holes. Some even use shells as a hiding place.",
+        "sent-Tyler forgot to do his homework. He thought about making up an excuse. Instead, he told his teacher the truth. She thanked him for being honest. He did the homework at recess and turned it in.",
+        "sent-p23-Priya wanted to win the art contest.",
+        "sent-p23-Monarch butterflies travel a very long way each autumn."
+       ]
+      },
+      "6": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "passage": 9,
+        "choice": 41
+       },
+       "families": 42,
+       "hints": 50,
+       "spoken": 21,
+       "pics": 10,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sent-p23-Text A: Cats are good pets because they are quiet and clean.",
+        "sent-p23-The Great Lakes are five large lakes in North America.",
+        "sent-The Great Wall of China is one of the longest structures ever built. People built it over many hundreds of years to protect China from attacks. It stretches across mountains, deserts and grasslands. Soldiers used towers along the wall to watch for enemies and send smoke signals. Today, millions of visitors walk on the wall every year.",
+        "sent-Students built a small rain garden using plants that could tolerate wet soil. Before planting, they tested how quickly water drained through different mixes of sand, soil, and compost. One mixture drained too rapidly for their chosen plants, and another stayed soggy. They selected a balanced mixture, planted the garden, and measured how it performed after several storms. The class wrote about both successful results and changes they would make next year."
+       ]
+      }
+     }
+    },
+    "words": {
+     "range": [
+      4,
+      5
+     ],
+     "levels": {
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 10,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ws-sim-as busy as a ___",
+        "ws-mean-light-not heavy",
+        "gr-same-shout",
+        "gr-con-could not"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 12,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "gr-aff-homeless",
+        "gr-past-cry",
+        "ws-pre-dis",
+        "ws-idiom-Let's call it a day."
+       ]
+      }
+     }
+    },
+    "gp": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 32,
+       "repeats": 18,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "gp-list-Tom likes soccer, swimming and chess.",
+        "gp-coll-a ___ of fish",
+        "gp-list-I saw a cow, a pig and a goat.",
+        "gp-refl-You can do it ___!"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 35,
+       "repeats": 15,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "gp-q-\"I found a frog!\" shouted Leo.",
+        "gp-cmp-This is the ___ day of the year.",
+        "gp-adv-The rabbit hopped ___.",
+        "gp-agr-The birds ___ in the tree."
+       ]
+      }
+     }
+    },
+    "match": {
+     "range": [
+      4,
+      5
+     ],
+     "levels": {
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "match": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "match-read-<span class=\"m-word\">nurse</span><span class=\"m-word\">sister</span><span class=\"m-word\">robot</span><span class=\"m-word\">brown</span><span class=\"m-word\">balloon</span>",
+        "match-math-<span class=\"m-eq\">60 + 2</span><span class=\"m-eq\">5 × 2</span><span class=\"m-eq\">55 + 3</span><span class=\"m-eq\">73 + 7</span><span class=\"m-eq\">2 × 8</span>",
+        "match-math-<span class=\"m-eq\">45 + 5</span><span class=\"m-eq\">10 × 8</span><span class=\"m-eq\">10 × 6</span><span class=\"m-eq\">60 + 1</span><span class=\"m-eq\">5 × 1</span>",
+        "match-read-<span class=\"m-word\">pizza</span><span class=\"m-word\">white</span><span class=\"m-word\">snake</span><span class=\"m-word\">balloon</span><span class=\"m-word\">spider</span>"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "match": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "match-read-<span class=\"m-word\">yellow</span><span class=\"m-word\">orange</span><span class=\"m-word\">monkey</span><span class=\"m-word\">flower</span><span class=\"m-word\">rocket</span>",
+        "match-math-<span class=\"m-eq\">4 ÷ 2</span><span class=\"m-eq\">4 ÷ 4</span><span class=\"m-eq\">3 × 2</span><span class=\"m-eq\">3 × 8</span><span class=\"m-eq\">4 × 1</span>",
+        "match-math-<span class=\"m-eq\">20 ÷ 5</span><span class=\"m-eq\">1 × 1</span><span class=\"m-eq\">10 ÷ 2</span><span class=\"m-eq\">2 × 3</span><span class=\"m-eq\">5 × 7</span>",
+        "match-read-<span class=\"m-word\">castle</span><span class=\"m-word\">purple</span><span class=\"m-word\">banana</span><span class=\"m-word\">anchor</span><span class=\"m-word\">balloon</span>"
+       ]
+      }
+     }
+    },
+    "add": {
+     "range": [
+      6,
+      8
+     ],
+     "levels": {
+      "6": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "add-37-25",
+        "add-27-13",
+        "add-38-48",
+        "add-46-52"
+       ]
+      },
+      "7": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "add-142-704",
+        "add-115-602",
+        "add-502-85",
+        "add-642-54"
+       ]
+      },
+      "8": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "add-117-148",
+        "add-243-489",
+        "add-494-350",
+        "add-332-449"
+       ]
+      }
+     }
+    },
+    "sub": {
+     "range": [
+      6,
+      8
+     ],
+     "levels": {
+      "6": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-84-42",
+        "sub-65-55",
+        "sub-89-23",
+        "sub-51-26"
+       ]
+      },
+      "7": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-868-63",
+        "sub-269-209",
+        "sub-479-56",
+        "sub-362-231"
+       ]
+      },
+      "8": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sub-930-368",
+        "sub-966-517",
+        "sub-662-335",
+        "sub-363-108"
+       ]
+      }
+     }
+    },
+    "story": {
+     "range": [
+      4,
+      5
+     ],
+     "levels": {
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "explorer-math-g2-visual-garden-arrays",
+        "explorer-math-g2-lunch-schedule",
+        "explorer-math-g2-visual-array-tiles",
+        "explorer-math-g2-muffin-trays"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "explorer-math-g2-seed-packets",
+        "wp-−-16-5",
+        "explorer-math-g3-visual-tile-perimeter",
+        "wp-two-9-9-8"
+       ]
+      }
+     }
+    },
+    "mul": {
+     "range": [
+      3,
+      6
+     ],
+     "levels": {
+      "3": {
+       "cards": 16,
+       "distinct": 16,
+       "repeats": 0,
+       "kinds": {
+        "choice": 16
+       },
+       "families": 1,
+       "hints": 16,
+       "spoken": 16,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 3,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "mul-4-5",
+        "mul-4-3",
+        "mul-4-2",
+        "mul-3-3"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "mul-4-5",
+        "mul-8-3",
+        "mul-5-4",
+        "mul-6-9"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 13,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "mul-7-10",
+        "mul-6-4",
+        "mul-2-9",
+        "mul-8-7"
+       ]
+      },
+      "6": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 40,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "mul6s-7-6-4",
+        "mul6s-8-9-1",
+        "mul6s-7-5-3",
+        "mul6s-4-8-3"
+       ]
+      }
+     }
+    },
+    "div": {
+     "range": [
+      3,
+      5
+     ],
+     "levels": {
+      "3": {
+       "cards": 16,
+       "distinct": 16,
+       "repeats": 0,
+       "kinds": {
+        "choice": 16
+       },
+       "families": 1,
+       "hints": 16,
+       "spoken": 16,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 3,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "div-15-5",
+        "div-20-4",
+        "div-25-5",
+        "div-4-2"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "div-20-5",
+        "div-12-3",
+        "div-40-5",
+        "div-64-8"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 29,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "div-12-4",
+        "div5s-60-6-bags",
+        "div5s-42-6-baskets",
+        "div5s-42-6-boxes"
+       ]
+      }
+     }
+    },
+    "clock": {
+     "range": [
+      4,
+      6
+     ],
+     "levels": {
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "clock-read-11:50",
+        "clock-read-9:20",
+        "clock-read-3:40",
+        "clock-read-11:05"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "clock-pick-1:05",
+        "clock-read-7:55",
+        "clock-read-1:10",
+        "clock-pick-8:53"
+       ]
+      },
+      "6": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "clk-el-8-5-30",
+        "clk-el-9-50-20",
+        "clk-el-7-15-20",
+        "clk-el-1-30-55"
+       ]
+      }
+     }
+    },
+    "frac": {
+     "range": [
+      2,
+      4
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 45,
+       "repeats": 5,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "frac-pick-1-3",
+        "frac-name-3-6",
+        "frac-pick-5-8",
+        "frac-pick-2-3"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "frac-line-2-8-2",
+        "frac-line-1-4-1",
+        "frac-cmp-3-4",
+        "frac-cmp-8-3"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 41,
+       "repeats": 9,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 33,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "frac-eq-1-4-3",
+        "frac-set-3-6",
+        "frac-whole-3-8",
+        "frac-set-3-9"
+       ]
+      }
+     }
+    },
+    "measure": {
+     "range": [
+      2,
+      4
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ms-ruler-3-7-cm",
+        "ms-pict-243-0",
+        "ms-pict-145-1",
+        "ms-longer-11-5-in"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 28,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ms-per-3-4-cm",
+        "ms-bar-16-6-8-14-23",
+        "ms-area-10-4-3",
+        "ms-bar-16-8-6-4-21"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 31,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ms-sbar-10-30-25",
+        "ms-units-a pencil",
+        "ms-units-a bag of potatoes",
+        "ms-sbar-tot-10-15-35"
+       ]
+      }
+     }
+    },
+    "shape2": {
+     "range": [
+      4,
+      4
+     ],
+     "levels": {
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "s2-name-diamond",
+        "s2-name-octagon",
+        "s3-dim-0.043527018977329135",
+        "s3-name-cylinder"
+       ]
+      }
+     }
+    },
+    "numsense": {
+     "range": [
+      3,
+      5
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 10,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ns-money-36",
+        "ns-money-17",
+        "ns-blocks3-142",
+        "ns-blocks3-181"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 6,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 16,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ns-cmp-2-1-6",
+        "ns-pie-4-3",
+        "ns-pie-4-2",
+        "ns-blocks3-104"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 7,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 18,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ns-eq-132",
+        "ns-cmp-5-2-6",
+        "ns-of-2-18",
+        "ns-of-10-40"
+       ]
+      }
+     }
+    },
+    "sci": {
+     "range": [
+      3,
+      4
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 32,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 32,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sci23-Two magnets pull together. Which ends are facing?",
+        "sci23-Which is something you learn, not inherit?",
+        "explorer-science-g2-plant-cycle",
+        "sci-What is this material best described as?-thick cardboard sheet"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 33,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 26,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "explorer-science-g3-pollinators",
+        "sci-What is its role in a simple food chain?-fox eating a mouse",
+        "sci-Which animal group is it in?-dog",
+        "explorer-science-g3-flood-map"
+       ]
+      }
+     }
+    },
+    "community": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 19,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 22,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "com-gov-us-Who leads a city or town?",
+        "com-dir-school-library-west",
+        "com-Mia wants a $20 game but has $12. What can she do?",
+        "com-What should you do with litter in the park?"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 16,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 23,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "com-Which helps the community?",
+        "com-What do taxes help pay for?",
+        "com-dir-fountain-house-west",
+        "com-gov-us-Who leads a city or town?"
+       ]
+      }
+     }
+    },
+    "region": {
+     "range": [
+      2,
+      3
+     ],
+     "levels": {
+      "2": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "reg-is-Texas-Which one is a state of the United States?",
+        "reg-Michigan-What is the state bird of Michigan?",
+        "reg-Michigan-Which is the largest city in Michigan?",
+        "reg-Michigan-What is Michigan's state tree?"
+       ]
+      },
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 4,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "reg-ocap-New Hampshire-What is the capital of New Hampshire?",
+        "reg-Michigan-Detroit is called the Motor City because it is famous for making…",
+        "reg-Michigan-What is Michigan's state reptile?",
+        "reg-Michigan-What is a nickname for Michigan?"
+       ]
+      }
+     }
+    },
+    "home": {
+     "range": [
+      3,
+      4
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 11,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "home-Which one is a state of the United States?-North Dakota",
+        "home-Which one is a state of the United States?-Nevada",
+        "home-How many stars are on the flag of the United States?-50",
+        "home-What is the capital city of the United States?-Washington, D.C."
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 43,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 1,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "home-What is the capital of New Jersey?-Trenton",
+        "home-Which one is a state of the United States?-Mississippi",
+        "home-What is the capital of Oklahoma?-Oklahoma City",
+        "home-What is the capital of Colorado?-Denver"
+       ]
+      }
+     }
+    },
+    "gk": {
+     "range": [
+      4,
+      4
+     ],
+     "levels": {
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 50,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 13,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "gk-What do the symbols on a map help us understand?",
+        "gk-In a survey, 12 students choose swimming and 8 choose biking. How many were surveyed?",
+        "gk-Which method helps compare two products fairly?",
+        "gk-Which part of a plant drinks water from the soil?"
+       ]
+      }
+     }
+    },
+    "anatomy": {
+     "range": [
+      3,
+      4
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 32,
+       "repeats": 18,
+       "kinds": {
+        "choice": 34,
+        "tap": 16
+       },
+       "families": 18,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 33,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ana-Which food helps build strong bones?",
+        "ana-What is the biggest organ of your body?",
+        "ana-tap-liver",
+        "ana-What keeps germs away from your hands?"
+       ]
+      },
+      "4": {
+       "cards": 50,
+       "distinct": 24,
+       "repeats": 26,
+       "kinds": {
+        "choice": 34,
+        "tap": 16
+       },
+       "families": 10,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 38,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ana-Your brain sends messages to your body through…",
+        "ana-About how many bones does a grown-up have?",
+        "ana-tap-lungs",
+        "ana-name-heart"
+       ]
+      }
+     }
+    },
+    "flags": {
+     "range": [
+      3,
+      3
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 48,
+       "repeats": 2,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 2,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 0,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "flag-f-Japan",
+        "flag-c-South Korea",
+        "flag-c-India",
+        "flag-f-China"
+       ]
+      }
+     }
+    },
+    "animals": {
+     "range": [
+      3,
+      3
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 28,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "ani-which-alligator",
+        "ani-orangutan",
+        "ani-which-beaver",
+        "ani-which-Asian elephant"
+       ]
+      }
+     }
+    },
+    "places": {
+     "range": [
+      3,
+      3
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 32,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "lm-city-stonehenge",
+        "lm-nametext-stbasil",
+        "lm-city-machupicchu",
+        "lm-where-stonehenge"
+       ]
+      }
+     }
+    },
+    "maps": {
+     "range": [
+      3,
+      3
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 41,
+        "tap": 9
+       },
+       "families": 5,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "map-kname-Greece",
+        "map-kname-Kenya",
+        "map-cap-Italy",
+        "map-cap-France"
+       ]
+      }
+     }
+    },
+    "pattern": {
+     "range": [
+      4,
+      5
+     ],
+     "levels": {
+      "4": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 17,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "advanced-pattern-0-4-5-7-10-14",
+        "advanced-pattern-0-1-4-8-13-19",
+        "advanced-pattern-0-2-4-7-11-16",
+        "advanced-pattern-1-2-4-8-16-32"
+       ]
+      },
+      "5": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 3,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 10,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "pattern-2-🐢🦉🦋🐳",
+        "advanced-pattern-0-2-5-10-17-26",
+        "advanced-pattern-2-15-12-16-9-17",
+        "pattern-2-🏈🏀⚽🎾"
+       ]
+      }
+     }
+    },
+    "odd": {
+     "range": [
+      3,
+      3
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "odd-2-🛁🪥🧼-🪁",
+        "odd-3-📚📰📖-🎧",
+        "odd-3-🧃🥛💧-🥖",
+        "odd-1-🚀✈️🚁-🌼"
+       ]
+      }
+     }
+    },
+    "sequence": {
+     "range": [
+      3,
+      3
+     ],
+     "levels": {
+      "3": {
+       "cards": 50,
+       "distinct": 50,
+       "repeats": 0,
+       "kinds": {
+        "choice": 50
+       },
+       "families": 1,
+       "hints": 50,
+       "spoken": 50,
+       "pics": 50,
+       "below": 0,
+       "emptyRounds": 0,
+       "badAnswers": [],
+       "badCount": 0,
+       "unfit": [],
+       "unfitCount": 0,
+       "sample": [
+        "sequence-3-📍🗺️🧭🏠-0",
+        "sequence-2-🌧️🌂🚶🏠-2",
+        "sequence-3-🌰🌱🌳-1",
+        "sequence-3-🌱🌻🐝🍯-1"
+       ]
+      }
+     }
+    }
+   }
+  }
+ },
+ "games": {
+  "prek": [
+   {
+    "id": "ttt",
+    "title": "Tic-Tac-Toe",
+    "brain": false,
+    "visible": true,
+    "band": [
+     1,
+     1
+    ]
+   },
+   {
+    "id": "memory",
+    "title": "Memory Match",
+    "brain": true,
+    "visible": true,
+    "band": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "pop",
+    "title": "Pop the Balloons",
+    "brain": false,
+    "visible": true,
+    "band": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "color",
+    "title": "Coloring Book",
+    "brain": false,
+    "visible": true,
+    "band": null
+   },
+   {
+    "id": "c4",
+    "title": "Connect Four",
+    "brain": true,
+    "visible": false,
+    "band": null
+   },
+   {
+    "id": "sudoku",
+    "title": "Sudoku",
+    "brain": true,
+    "visible": false,
+    "band": [
+     1,
+     1
+    ]
+   },
+   {
+    "id": "puzzle",
+    "title": "Picture Puzzle",
+    "brain": true,
+    "visible": true,
+    "band": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "ball",
+    "title": "Rolling Ball 3D",
+    "brain": false,
+    "visible": true,
+    "band": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "pinball",
+    "title": "3D Pinball",
+    "brain": false,
+    "visible": true,
+    "band": [
+     1,
+     1
+    ]
+   },
+   {
+    "id": "maze",
+    "title": "Ball Maze",
+    "brain": false,
+    "visible": true,
+    "band": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "path",
+    "title": "Finger Maze",
+    "brain": true,
+    "visible": true,
+    "band": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "whack",
+    "title": "Whack-a-Mole",
+    "brain": false,
+    "visible": true,
+    "band": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "draw",
+    "title": "Draw & Copy",
+    "brain": false,
+    "visible": true,
+    "band": [
+     1,
+     1
+    ]
+   },
+   {
+    "id": "moves",
+    "title": "Silly Moves",
+    "brain": false,
+    "visible": true,
+    "band": null
+   }
+  ],
+  "k": [
+   {
+    "id": "ttt",
+    "title": "Tic-Tac-Toe",
+    "brain": false,
+    "visible": true,
+    "band": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "memory",
+    "title": "Memory Match",
+    "brain": true,
+    "visible": true,
+    "band": [
+     2,
+     3
+    ]
+   },
+   {
+    "id": "pop",
+    "title": "Pop the Balloons",
+    "brain": false,
+    "visible": true,
+    "band": [
+     2,
+     3
+    ]
+   },
+   {
+    "id": "color",
+    "title": "Coloring Book",
+    "brain": false,
+    "visible": true,
+    "band": null
+   },
+   {
+    "id": "c4",
+    "title": "Connect Four",
+    "brain": true,
+    "visible": false,
+    "band": null
+   },
+   {
+    "id": "sudoku",
+    "title": "Sudoku",
+    "brain": true,
+    "visible": true,
+    "band": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "puzzle",
+    "title": "Picture Puzzle",
+    "brain": true,
+    "visible": true,
+    "band": [
+     2,
+     3
+    ]
+   },
+   {
+    "id": "ball",
+    "title": "Rolling Ball 3D",
+    "brain": false,
+    "visible": true,
+    "band": [
+     2,
+     3
+    ]
+   },
+   {
+    "id": "pinball",
+    "title": "3D Pinball",
+    "brain": false,
+    "visible": true,
+    "band": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "maze",
+    "title": "Ball Maze",
+    "brain": false,
+    "visible": true,
+    "band": [
+     2,
+     3
+    ]
+   },
+   {
+    "id": "path",
+    "title": "Finger Maze",
+    "brain": true,
+    "visible": true,
+    "band": [
+     2,
+     4
+    ]
+   },
+   {
+    "id": "whack",
+    "title": "Whack-a-Mole",
+    "brain": false,
+    "visible": true,
+    "band": [
+     2,
+     3
+    ]
+   },
+   {
+    "id": "draw",
+    "title": "Draw & Copy",
+    "brain": false,
+    "visible": true,
+    "band": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "moves",
+    "title": "Silly Moves",
+    "brain": false,
+    "visible": true,
+    "band": null
+   }
+  ],
+  "g1": [
+   {
+    "id": "ttt",
+    "title": "Tic-Tac-Toe",
+    "brain": false,
+    "visible": true,
+    "band": [
+     2,
+     3
+    ]
+   },
+   {
+    "id": "memory",
+    "title": "Memory Match",
+    "brain": true,
+    "visible": true,
+    "band": [
+     3,
+     4
+    ]
+   },
+   {
+    "id": "pop",
+    "title": "Pop the Balloons",
+    "brain": false,
+    "visible": true,
+    "band": [
+     3,
+     4
+    ]
+   },
+   {
+    "id": "color",
+    "title": "Coloring Book",
+    "brain": false,
+    "visible": true,
+    "band": null
+   },
+   {
+    "id": "c4",
+    "title": "Connect Four",
+    "brain": true,
+    "visible": true,
+    "band": [
+     1,
+     2
+    ]
+   },
+   {
+    "id": "sudoku",
+    "title": "Sudoku",
+    "brain": true,
+    "visible": true,
+    "band": [
+     2,
+     3
+    ]
+   },
+   {
+    "id": "puzzle",
+    "title": "Picture Puzzle",
+    "brain": true,
+    "visible": true,
+    "band": [
+     3,
+     4
+    ]
+   },
+   {
+    "id": "ball",
+    "title": "Rolling Ball 3D",
+    "brain": false,
+    "visible": true,
+    "band": [
+     3,
+     5
+    ]
+   },
+   {
+    "id": "pinball",
+    "title": "3D Pinball",
+    "brain": false,
+    "visible": true,
+    "band": [
+     2,
+     3
+    ]
+   },
+   {
+    "id": "maze",
+    "title": "Ball Maze",
+    "brain": false,
+    "visible": true,
+    "band": [
+     3,
+     5
+    ]
+   },
+   {
+    "id": "path",
+    "title": "Finger Maze",
+    "brain": true,
+    "visible": true,
+    "band": [
+     4,
+     6
+    ]
+   },
+   {
+    "id": "whack",
+    "title": "Whack-a-Mole",
+    "brain": false,
+    "visible": true,
+    "band": [
+     3,
+     4
+    ]
+   },
+   {
+    "id": "draw",
+    "title": "Draw & Copy",
+    "brain": false,
+    "visible": true,
+    "band": [
+     2,
+     3
+    ]
+   },
+   {
+    "id": "moves",
+    "title": "Silly Moves",
+    "brain": false,
+    "visible": true,
+    "band": null
+   }
+  ],
+  "g2": [
+   {
+    "id": "ttt",
+    "title": "Tic-Tac-Toe",
+    "brain": false,
+    "visible": true,
+    "band": [
+     3,
+     3
+    ]
+   },
+   {
+    "id": "memory",
+    "title": "Memory Match",
+    "brain": true,
+    "visible": true,
+    "band": [
+     4,
+     5
+    ]
+   },
+   {
+    "id": "pop",
+    "title": "Pop the Balloons",
+    "brain": false,
+    "visible": true,
+    "band": [
+     4,
+     5
+    ]
+   },
+   {
+    "id": "color",
+    "title": "Coloring Book",
+    "brain": false,
+    "visible": true,
+    "band": null
+   },
+   {
+    "id": "c4",
+    "title": "Connect Four",
+    "brain": true,
+    "visible": true,
+    "band": [
+     2,
+     3
+    ]
+   },
+   {
+    "id": "sudoku",
+    "title": "Sudoku",
+    "brain": true,
+    "visible": true,
+    "band": [
+     3,
+     4
+    ]
+   },
+   {
+    "id": "puzzle",
+    "title": "Picture Puzzle",
+    "brain": true,
+    "visible": true,
+    "band": [
+     4,
+     5
+    ]
+   },
+   {
+    "id": "ball",
+    "title": "Rolling Ball 3D",
+    "brain": false,
+    "visible": true,
+    "band": [
+     5,
+     7
+    ]
+   },
+   {
+    "id": "pinball",
+    "title": "3D Pinball",
+    "brain": false,
+    "visible": true,
+    "band": [
+     3,
+     4
+    ]
+   },
+   {
+    "id": "maze",
+    "title": "Ball Maze",
+    "brain": false,
+    "visible": true,
+    "band": [
+     5,
+     7
+    ]
+   },
+   {
+    "id": "path",
+    "title": "Finger Maze",
+    "brain": true,
+    "visible": true,
+    "band": [
+     6,
+     8
+    ]
+   },
+   {
+    "id": "whack",
+    "title": "Whack-a-Mole",
+    "brain": false,
+    "visible": true,
+    "band": [
+     4,
+     5
+    ]
+   },
+   {
+    "id": "draw",
+    "title": "Draw & Copy",
+    "brain": false,
+    "visible": true,
+    "band": [
+     3,
+     4
+    ]
+   },
+   {
+    "id": "moves",
+    "title": "Silly Moves",
+    "brain": false,
+    "visible": true,
+    "band": null
+   }
+  ],
+  "g3": [
+   {
+    "id": "ttt",
+    "title": "Tic-Tac-Toe",
+    "brain": false,
+    "visible": true,
+    "band": [
+     3,
+     3
+    ]
+   },
+   {
+    "id": "memory",
+    "title": "Memory Match",
+    "brain": true,
+    "visible": true,
+    "band": [
+     5,
+     5
+    ]
+   },
+   {
+    "id": "pop",
+    "title": "Pop the Balloons",
+    "brain": false,
+    "visible": true,
+    "band": [
+     5,
+     5
+    ]
+   },
+   {
+    "id": "color",
+    "title": "Coloring Book",
+    "brain": false,
+    "visible": true,
+    "band": null
+   },
+   {
+    "id": "c4",
+    "title": "Connect Four",
+    "brain": true,
+    "visible": true,
+    "band": [
+     3,
+     3
+    ]
+   },
+   {
+    "id": "sudoku",
+    "title": "Sudoku",
+    "brain": true,
+    "visible": true,
+    "band": [
+     4,
+     5
+    ]
+   },
+   {
+    "id": "puzzle",
+    "title": "Picture Puzzle",
+    "brain": true,
+    "visible": true,
+    "band": [
+     5,
+     5
+    ]
+   },
+   {
+    "id": "ball",
+    "title": "Rolling Ball 3D",
+    "brain": false,
+    "visible": true,
+    "band": [
+     6,
+     8
+    ]
+   },
+   {
+    "id": "pinball",
+    "title": "3D Pinball",
+    "brain": false,
+    "visible": true,
+    "band": [
+     4,
+     5
+    ]
+   },
+   {
+    "id": "maze",
+    "title": "Ball Maze",
+    "brain": false,
+    "visible": true,
+    "band": [
+     6,
+     8
+    ]
+   },
+   {
+    "id": "path",
+    "title": "Finger Maze",
+    "brain": true,
+    "visible": true,
+    "band": [
+     9,
+     11
+    ]
+   },
+   {
+    "id": "whack",
+    "title": "Whack-a-Mole",
+    "brain": false,
+    "visible": true,
+    "band": [
+     5,
+     5
+    ]
+   },
+   {
+    "id": "draw",
+    "title": "Draw & Copy",
+    "brain": false,
+    "visible": true,
+    "band": [
+     4,
+     4
+    ]
+   },
+   {
+    "id": "moves",
+    "title": "Silly Moves",
+    "brain": false,
+    "visible": true,
+    "band": null
+   }
+  ]
+ },
+ "sectionTitles": {
+  "trace": "Letters & Numbers",
+  "phonics": "Letter Sounds",
+  "cvc": "Little Words",
+  "w4": "Big Words",
+  "sight": "Sight Words",
+  "spell": "Spell It",
+  "vocab": "Word Wonders",
+  "sent": "Read & Answer",
+  "words": "Word Study",
+  "gp": "Grammar",
+  "match": "Match It",
+  "syl": "Clap It!",
+  "add": "Adding",
+  "sub": "Subtraction",
+  "story": "Word Problems",
+  "cmp": "Compare",
+  "mul": "Multiply",
+  "div": "Divide",
+  "clock": "Clock",
+  "frac": "Fractions",
+  "measure": "Measure & Graphs",
+  "shape2": "Shapes",
+  "numsense": "Number Sense",
+  "sci": "Science",
+  "community": "Our Community",
+  "placement": "Quick Check",
+  "check": "Test Practice",
+  "region": "My State",
+  "home": "My Country",
+  "body": "Body Parts",
+  "gk": "Did You Know?",
+  "anatomy": "Inside My Body",
+  "jobs": "Jobs",
+  "flags": "Flags",
+  "animals": "Animals of the World",
+  "places": "Famous Places",
+  "maps": "World Map",
+  "mix": "Mix It Up!",
+  "pattern": "Pattern Puzzle",
+  "odd": "Odd One Out",
+  "sequence": "What Comes Next?"
+ },
+ "seed": 20261106,
+ "pageErrors": []
+}
