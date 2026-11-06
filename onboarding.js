@@ -1,5 +1,5 @@
 /* =========================================================
-   First run: "Who's playing?" — name and grade in one step, then an offer of the
+   First run: "Who's learning today?" — name and grade in one step, then an offer of the
    2-minute placement check. Until a grade is picked, the home screen would show every
    section for every age, so the app asks before anything else.
    Picking the grade here needs no PIN (there is nothing to protect yet); changing it
@@ -23,13 +23,13 @@
     const d = document.createElement('div');
     d.id = 'welcomeSheet'; d.className = 'time-up welcome';
     d.innerHTML = `<div class="tu-box welcome-box">
-      <h2>Who's playing?</h2>
+      <h2>Who's learning today?</h2>
       <label class="wel-name">Name <input id="welName" type="text" maxlength="16" autocomplete="off" placeholder="Optional" value="${(state.name || '').replace(/"/g, '&quot;')}"></label>
       <p class="wel-ask">Pick their grade</p>
       <div class="wel-grades">${Object.keys(GRADES).map((g) => `<button class="wel-grade" data-g="${g}"><b>${gradeName(g)}</b><small>${AGES[g] || ''}</small></button>`).join('')}</div>
       <small class="note">You can change this later in ⚙️ Settings.</small></div>`;
     document.body.appendChild(d);
-    say('Who is playing?');
+    say("Who's learning today?");
     d.querySelectorAll('.wel-grade').forEach((b) => (b.onclick = () => {
       sfx.tap();
       const name = d.querySelector('#welName').value.trim();

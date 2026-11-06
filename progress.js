@@ -348,6 +348,7 @@ function renderDashboard() {
   const coverageHTML = authoredCatalog.length
     ? `<div class="ds"><h3>Practice goals tried</h3>
       <p><b>${attempted.length} of ${authoredCatalog.length}</b> of this grade's practice goals tried (${coveredPct}%).</p>
+      <p class="note">This shows what your child has tried, not grade completion.</p>
       ${notYet.length ? `<p class="note">${notYet.length} still to try.</p>` : ''}
       ${nextNew ? `<button class="big-btn small" id="dashExploreObjective"
         data-category="${esc(nextNew.cat)}" data-objective="${esc(nextNew.objective)}"
