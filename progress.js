@@ -122,6 +122,35 @@ function reviewAgeDays(last, today = dayKey()) {
   const a = parse(last), b = parse(today);
   return a === null || b === null ? -1 : Math.floor((b - a) / 86400000);
 }
+// Authored coverage is the set of grade-eligible objectives actually present
+// in offline question banks, not an invented checklist of generic games.
+function authoredObjectiveCatalog(grade) {
+  if (!GRADES[grade]) return [];
+  const found = new Map();
+  const add = (cat, objective, level) => {
+    if (!gradeRange(grade,cat) || typeof objective !== 'string' ||
+        !objective.trim() || !Number.isInteger(level)) return;
+    const key = objectiveKey(grade,cat,objective);
+    const prior = found.get(key);
+    if (prior) prior.level = Math.min(prior.level,level);
+    else found.set(key,{key,grade,cat,objective,level});
+  };
+  for (const routes of Object.values(ContentData.get('curriculum-map','ROUTES'))) {
+    if (!Array.isArray(routes)) continue;
+    for (const route of routes) {
+      if (route.grade===grade) add(route.section,route.skill,route.level);
+    }
+  }
+  for (const [book,cat] of [['explorer-math','story'],['explorer-science','sci']]) {
+    const rows=ContentData.get(book,'questions');
+    for (const item of rows) {
+      if (Array.isArray(item.grades) && item.grades.includes(grade))
+        add(cat,item.domain,item.level);
+    }
+  }
+  return [...found.values()];
+}
+
 function dueObjectiveReviews(cat, today = dayKey(), forcedObjective = null) {
   const grade = state.grade;
   if (!GRADES[grade] || !gradeRange(grade, cat)) return [];
@@ -131,16 +160,24 @@ function dueObjectiveReviews(cat, today = dayKey(), forcedObjective = null) {
     row && row.grade === grade && row.cat === cat &&
     typeof row.objective === 'string' && row.objective.trim() &&
     typeof row.recent === 'string');
-  return rows.map(row => {
+  const due = rows.map(row => {
     const status = objectiveState(row).s;
     const age = reviewAgeDays(row.last, today);
-    const due = age >= rule.intervalDays[status];
+    const scheduled = age >= rule.intervalDays[status];
     const manual = forcedObjective !== null && row.objective === forcedObjective;
-    return { objective: row.objective, status, age, due: due || manual,
+    return { objective: row.objective, status, age, due: scheduled || manual,
       priority: rank[status], manual };
   }).filter(item => item.due && item.age >= 0 &&
-    (forcedObjective === null || item.manual))
-    .sort((a, b) => a.priority-b.priority || b.age-a.age);
+    (forcedObjective === null || item.manual));
+  // A parent's explicit request may also introduce a previously unseen,
+  // *authored* objective. Never create a synthetic performance record.
+  if (forcedObjective !== null && !rows.some(row=>row.objective===forcedObjective) &&
+      authoredObjectiveCatalog(grade).some(row=>row.cat===cat &&
+        row.objective===forcedObjective)) {
+    due.push({ objective:forcedObjective,status:'new',age:0,due:true,
+      priority:rank.new,manual:true });
+  }
+  return due.sort((a,b)=>a.priority-b.priority || b.age-a.age);
 }
 function authoredReviewQuestions(cat, level, forcedObjective = null, today = dayKey()) {
   const grade = state.grade;
@@ -297,6 +334,29 @@ function renderDashboard() {
   const objectiveNew = objectiveRows.filter(row => row.s === 'new')
     .sort((a,b) => b.n-a.n);
   const objectiveLabel = value => String(value).replaceAll('-', ' ').replace(/^./, x => x.toUpperCase());
+  // Coverage measures which *authored, tagged* objectives have been attempted,
+  // never a child's overall grade completion or an inferred achievement score.
+  const authoredCatalog = authoredObjectiveCatalog(state.grade);
+  const attempted = authoredCatalog.filter(item =>
+    Number.isInteger(st.objectives?.[item.key]?.n) && st.objectives[item.key].n > 0);
+  const notYet = authoredCatalog.filter(item =>
+    !Number.isInteger(st.objectives?.[item.key]?.n) || st.objectives[item.key].n <= 0);
+  const nextNew = notYet.find(item => item.level <= levelOf(item.cat) &&
+    CATEGORIES.some(cat => cat.id===item.cat && !!cat.gen));
+  const coveredPct = authoredCatalog.length
+    ? Math.round(attempted.length/authoredCatalog.length*100) : 0;
+  const coverageHTML = authoredCatalog.length
+    ? `<div class="ds"><h3>Authored objective coverage</h3>
+      <p><b>${attempted.length} of ${authoredCatalog.length}</b> tagged objectives tried (${coveredPct}%).</p>
+      <p class="note">This measures access to authored practice, not grade completion.
+        Untagged games still contribute to the game-level progress below.</p>
+      ${notYet.length ? `<p class="note">${notYet.length} tagged objectives not yet sampled.</p>` : ''}
+      ${nextNew ? `<button class="big-btn small" id="dashExploreObjective"
+        data-category="${esc(nextNew.cat)}" data-objective="${esc(nextNew.objective)}"
+        aria-label="Explore ${esc(objectiveLabel(nextNew.objective))}">
+        Explore new objective: ${esc(objectiveLabel(nextNew.objective))}
+      </button>` : ''}</div>`
+    : '<div class="ds"><h3>Authored objective coverage</h3><p class="note">This grade currently has game-level progress; no tagged objectives are available for coverage tracking yet.</p></div>';
   const objectiveItem = row => {
     const category = CATEGORIES.find(c => c.id === row.cat);
     const cards = Number.isInteger(row.n) && row.n >= 0 ? row.n : row.recentCards;
@@ -318,10 +378,15 @@ function renderDashboard() {
   const weak = skills.filter((s) => s.s === 'learning').sort((a, b) => a.acc - b.acc);
   const going = skills.filter((s) => s.s === 'practicing');
   const row = (s) => `<li><span>${s.name}</span><small>${(CATEGORIES.find((c) => c.id === s.cat) || {}).icon || ''} ${Math.round(s.acc * 100)}%</small></li>`;
-  $('#dashSkills').innerHTML = objectivesHTML + `
+  $('#dashSkills').innerHTML = coverageHTML + objectivesHTML + `
     <div class="ds good"><h3>🌟 Doing well</h3>${good.length ? `<ul>${good.slice(0, 8).map(row).join('')}</ul>` : '<p class="note">Skills show here after 8 or more cards with mostly right answers.</p>'}</div>
     <div class="ds weak"><h3>🧩 Needs practice</h3>${weak.length ? `<ul>${weak.slice(0, 8).map(row).join('')}</ul>` : '<p class="note">Nothing stuck right now. 👍</p>'}</div>
     ${going.length ? `<div class="ds"><h3>📈 Getting there</h3><ul>${going.slice(0, 8).map(row).join('')}</ul></div>` : ''}`;
+  const explore = $('#dashExploreObjective');
+  if (explore) explore.onclick = () => {
+    sfx.tap();
+    startRound(explore.dataset.category,5,false,null,explore.dataset.objective);
+  };
   // Give parents a small, practical next step rather than only performance charts.
   // Recommendations are derived locally from the child's saved skill results.
   const priority = [...objectiveWeak,...objectiveDeveloping,...weak,...going]
