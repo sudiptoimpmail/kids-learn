@@ -97,6 +97,73 @@
       <button type="button" class="explorer-fraction-reset">Clear model</button>
     </section>`;
   };
+  // Two more independent model-building interactions, derived only from
+  // bounded, validated diagram metadata. Neither submits an answer.
+  const modelLab = m => {
+    if (!m) return '';
+    if (m.kind === 'number-line') {
+      const ticks=Array.from({length:m.steps+1},(_,i)=>{
+        const value=m.start+(m.end-m.start)*i/m.steps;
+        const label=Number(value.toFixed(3));
+        return `<button type="button" class="explorer-line-tick" aria-pressed="false"
+          data-tick="${label}" aria-label="Mark ${label} on the number line">${label}</button>`;
+      }).join('');
+      return `<section class="explorer-model-lab explorer-line-lab" aria-label="Try a number line">
+        <p class="explorer-lab-heading">Try it: choose a point on the number line.</p>
+        <div class="explorer-line-ticks" role="group" aria-label="Number line choices">${ticks}</div>
+        <output class="explorer-model-result" aria-live="polite">No point selected</output>
+        <button type="button" class="explorer-model-reset">Clear point</button>
+      </section>`;
+    }
+    if (m.kind === 'array') {
+      return `<section class="explorer-model-lab explorer-array-lab" aria-label="Build an array"
+        data-rows="1" data-columns="1" data-max-rows="${m.rows}" data-max-columns="${m.columns}">
+        <p class="explorer-lab-heading">Try it: build an array using rows and columns.</p>
+        <div class="explorer-array-controls">
+          <button type="button" data-array-change="rows:-1" aria-label="Remove a row">− Row</button>
+          <button type="button" data-array-change="rows:1" aria-label="Add a row">+ Row</button>
+          <button type="button" data-array-change="columns:-1" aria-label="Remove a column">− Column</button>
+          <button type="button" data-array-change="columns:1" aria-label="Add a column">+ Column</button>
+        </div>
+        <div class="explorer-array-grid" aria-label="Array of 1 row and 1 column"
+          style="--array-columns:1"><span class="explorer-array-dot" aria-hidden="true"></span></div>
+        <output class="explorer-model-result" aria-live="polite">1 row × 1 column = 1 tile</output>
+        <button type="button" class="explorer-model-reset">Reset array</button>
+      </section>`;
+    }
+    return '';
+  };
+  document.addEventListener('click', event => {
+    const button=event.target.closest?.('.explorer-line-tick, [data-array-change], .explorer-model-reset');
+    if (!button) return;
+    const lab=button.closest('.explorer-model-lab');
+    if (!lab) return;
+    const reset=button.classList.contains('explorer-model-reset');
+    if (lab.classList.contains('explorer-line-lab')) {
+      const ticks=[...lab.querySelectorAll('.explorer-line-tick')];
+      for(const tick of ticks) tick.setAttribute('aria-pressed',
+        String(!reset && tick===button));
+      lab.querySelector('output').textContent=reset?'No point selected':`Selected point: ${button.dataset.tick}`;
+      return;
+    }
+    if (!lab.classList.contains('explorer-array-lab')) return;
+    let rows=Number(lab.dataset.rows),columns=Number(lab.dataset.columns);
+    if (reset) rows=columns=1;
+    else {
+      const [dimension,delta]=button.dataset.arrayChange.split(':');
+      if (dimension==='rows') rows=Math.max(1,Math.min(Number(lab.dataset.maxRows),rows+Number(delta)));
+      else columns=Math.max(1,Math.min(Number(lab.dataset.maxColumns),columns+Number(delta)));
+    }
+    lab.dataset.rows=rows;lab.dataset.columns=columns;
+    const grid=lab.querySelector('.explorer-array-grid');
+    grid.style.setProperty('--array-columns',String(columns));
+    grid.setAttribute('aria-label',`Array of ${rows} rows and ${columns} columns`);
+    grid.replaceChildren(...Array.from({length:rows*columns},()=>{
+      const dot=document.createElement('span');dot.className='explorer-array-dot';
+      dot.setAttribute('aria-hidden','true');return dot;
+    }));
+    lab.querySelector('output').textContent=`${rows} row${rows===1?'':'s'} × ${columns} column${columns===1?'':'s'} = ${rows*columns} tile${rows*columns===1?'':'s'}`;
+  });
   // Event delegation survives each new question render without per-card listeners.
   document.addEventListener('click', event => {
     const button=event.target.closest?.('.explorer-fraction-cell, .explorer-fraction-reset');
@@ -146,7 +213,7 @@
       ? `<img class="explorer-asset" src="${esc(row.asset)}" alt="" loading="lazy" decoding="async">`
       : '';
     const diagram = row.representation ? renderDiagram(row.representation) : '';
-    const lab = row.representation ? fractionLab(row.representation) : '';
+    const lab = row.representation ? fractionLab(row.representation) + modelLab(row.representation) : '';
     const reasoning = Array.isArray(row.reasoningSteps) && row.reasoningSteps.length === 3
       ? `<details class="explorer-reasoning"><summary>Show solving steps</summary><ol>${row.reasoningSteps.map(step=>`<li>${esc(step)}</li>`).join('')}</ol></details>` : '';
     const choices = shuffle(row.choices).map(answer => ({v:answer,html:esc(answer)}));

@@ -97,6 +97,45 @@ const {chromium} = require('playwright');
             }
           } else require(!article.querySelector('.explorer-fraction-lab'),
             'Fraction lab leaked into another model '+q.id);
+          if(q.representation.kind==='number-line'){
+            const lab=article.querySelector('.explorer-line-lab');
+            const ticks=[...(lab?.querySelectorAll('.explorer-line-tick')||[])];
+            require(ticks.length===q.representation.steps+1,'Missing number-line ticks '+q.id);
+            if(ticks.length){
+              ticks.at(-1).click();
+              require(ticks.at(-1).getAttribute('aria-pressed')==='true' &&
+                ticks.filter(t=>t.getAttribute('aria-pressed')==='true').length===1,
+                'Number-line selection failed '+q.id);
+              ticks[0].click();
+              require(ticks[0].getAttribute('aria-pressed')==='true' &&
+                ticks.at(-1).getAttribute('aria-pressed')==='false',
+                'Number-line replacement failed '+q.id);
+              lab.querySelector('.explorer-model-reset').click();
+              require(ticks.every(t=>t.getAttribute('aria-pressed')==='false'),
+                'Number-line reset failed '+q.id);
+            }
+          }
+          if(q.representation.kind==='array'){
+            const lab=article.querySelector('.explorer-array-lab');
+            require(!!lab,'Missing array builder '+q.id);
+            if(lab){
+              const rows=lab.querySelector('[data-array-change="rows:1"]');
+              const cols=lab.querySelector('[data-array-change="columns:1"]');
+              for(let i=1;i<q.representation.rows;i++)rows.click();
+              for(let i=1;i<q.representation.columns;i++)cols.click();
+              require(lab.querySelectorAll('.explorer-array-dot').length===
+                q.representation.rows*q.representation.columns,
+                'Array builder count incorrect '+q.id);
+              rows.click();cols.click();
+              require(lab.querySelectorAll('.explorer-array-dot').length===
+                q.representation.rows*q.representation.columns,
+                'Array builder exceeded authored bounds '+q.id);
+              lab.querySelector('.explorer-model-reset').click();
+              require(lab.querySelectorAll('.explorer-array-dot').length===1 &&
+                lab.dataset.rows==='1' && lab.dataset.columns==='1',
+                'Array builder reset failed '+q.id);
+            }
+          }
           const details=article.querySelector('details.explorer-reasoning');
           if(q.reasoningSteps){
             require(!!details && details.querySelectorAll('li').length===3,
