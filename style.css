@@ -1584,3 +1584,47 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
   .wel-grade { min-height: 64px; padding: 10px 6px; }
   .wel-grade b { font-size: 16px; }
 }
+
+
+/* Parent dashboard: grade-level expectations first, details only on request. */
+.panel.dash { display: grid; gap: 14px; }
+.dash-summary h2 { margin: 0 0 8px; font-size: clamp(20px, 4vw, 26px); }
+.dash-summary { font-weight: 500; }
+.dash-summary p { margin: 5px 0; }
+.dash-grade { padding: 2px 0; }
+.dash-grade-header { display: flex; flex-wrap: wrap; gap: 14px; align-items: start; justify-content: space-between; }
+.dash-grade-header h2 { margin: 0 0 6px; font-size: clamp(20px, 3.7vw, 25px); }
+.dash-grade-header p { margin: 0; color: #5c5473; font-size: 14px; line-height: 1.4; max-width: 48ch; }
+.dash-grade-count { display: grid; align-content: center; justify-items: center; gap: 2px; min-width: 120px; padding: 12px 14px; border: 1px solid #d2c7e5; border-radius: 16px; background: #fff; text-align: center; }
+.dash-grade-count b { font-size: 24px; font-variant-numeric: tabular-nums; }
+.dash-grade-count small { font-size: 12px; color: #5c5473; max-width: 130px; }
+.dash-evidence-note { font-size: 13px; line-height: 1.45; color: #4c4e5c; margin: 8px 0 2px; }
+.dash-grade-list { display: grid; gap: 9px; }
+.dash-grade-item { background: #fff; border: 1px solid #dddfe8; border-radius: 14px; padding: 11px 13px; }
+.dash-grade-row { display: flex; align-items: start; justify-content: space-between; flex-wrap: wrap; gap: 5px 12px; }
+.panel.dash .dash-grade-item h3 { font-size: 17px; margin: 0; }
+.dash-grade-item p { font-size: 14px; color: #353744; margin: 6px 0; line-height: 1.45; }
+.dash-grade-item small { color: #5c6473; font-size: 12px; }
+.dash-grade-status { font-weight: 700; border: 1px solid #d7d7e1; border-radius: 30px; background: #f1f2f5; color: #434a5b; font-size: 12px; padding: 5px 9px; }
+.dash-grade-status.strong { background: #ebf8ed; color: #22603d; border-color: #c2e8ce; }
+.dash-grade-status.support { background: #fff3e5; color: #814810; border-color: #eed0a5; }
+.dash-next-habit { border-top: 1px solid #dad5e4; padding: 12px 2px 2px; }
+.dash-next-habit p { margin: 6px 0 0; font-size: 15px; line-height: 1.5; }
+.dash-fold, .dash-level-group, .settings-level-fold { border: 1px solid #d9d3e4; background: #fff; border-radius: 14px; overflow: hidden; }
+.dash-fold > summary, .dash-level-group > summary, .settings-level-fold > summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; padding: 14px 16px; cursor: pointer; font-weight: 700; list-style-position: inside; }
+.dash-fold > summary small, .dash-level-group > summary span, .settings-level-fold > summary small { font-size: 13px; font-weight: 500; color: #57516e; }
+.dash-fold[open] > summary, .dash-level-group[open] > summary, .settings-level-fold[open] > summary { border-bottom: 1px solid #e5e0ed; }
+.dash-fold > :not(summary), .dash-level-group > :not(summary), .settings-level-fold > :not(summary) { margin: 10px 14px 14px; }
+.dash-subjects { display: grid; gap: 10px; }
+.dash-subjects td:first-child { font-weight: 700; }
+.settings-level-fold .levels { display: grid; gap: 8px; }
+.settings-level-fold .lvrow { gap: 10px; }
+.settings-level-fold .lvrow select { max-width: 44%; min-width: 108px; }
+.dash-level-heading { margin: 2px 0 0 !important; }
+@media (max-width: 480px) {
+  .dash-grade-count { width: 100%; }
+  .dash-fold > summary, .dash-level-group > summary, .settings-level-fold > summary { padding: 13px; }
+  .dash-subjects table { font-size: 12px; }
+  .dash-subjects th { font-size: 11px; }
+  .dash-subjects td { padding: 8px 3px; }
+}
