@@ -33,4 +33,12 @@ Secure requires enough independent recent answers on multiple days for **every**
 
 ## Follow-on modules from the parent review
 
-Still to implement: persistent themed sticker collections, a configurable creations/word portfolio, expanded reading/phonics demonstrations and Grade 1 read-alongs, family story-speed controls, optional session limits/quiet hours, and physical-device acceptance. Existing saved drawings and story readers remain available. These are not claimed complete by this foundational PR.
+Still to implement: expanded reading/phonics demonstrations and Grade 1 read-alongs, plus physical-device acceptance. The family modules below add collections, portfolios, speed controls and optional time rules. Existing saved drawings and story readers remain available. These are not claimed complete by this foundational PR.
+
+## Family modules
+
+`family-learning.js` consumes `family` and `collections` configuration. Collections reference existing sticker IDs, preserving earned rewards. The portfolio stores up to `portfolioLimit` independently spelled words per child and displays existing saved drawings. Family reading pace and time rules are device settings, while session usage and portfolio entries belong to the child.
+
+`storyRates` defines supported playback rates and labels. Story highlights use duration divided by rate; altered-rate playback uses pitch-preserving HTML audio. Default speed leaves existing playback unchanged. `sessionMinutes`, `breakMinutes` and `limitedScreens` configure optional foreground session accounting. Quiet hours use local device time and support midnight crossings; equal start/end disables the window. Parent PIN protection is inherited from Settings. Progress is saved on background/reload by the existing lifecycle handler.
+
+Added browser regression covers quiet-hour boundaries, session reset after a break, child isolation, shared settings persistence, collections and portfolio. Physical iOS audio and timing acceptance remains required.

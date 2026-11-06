@@ -119,19 +119,21 @@ const sayParts = (text) => (Array.isArray(text) ? text.map(String) : splitSenten
 function prefetch(text) { if (text) sayParts(text).forEach((p) => { const f = CLIPS[clipKey(p)]; if (f) getBuf(f).catch(() => {}); }); }
 function stopClip() { try { curSrc && curSrc.stop(); } catch {} curSrc = null; try { htmlPlayer.pause(); } catch {} }
 
-function htmlPlay(file, token = sayToken) {
+function htmlPlay(file, token = sayToken, rate = 1) {
   if (token !== sayToken) return Promise.resolve();
   return new Promise((res) => {
     let done = false; const fin = () => { if (!done) { done = true; res(); } };
     htmlPlayer.onended = fin; htmlPlayer.onerror = fin;
     htmlPlayer.src = 'audio/' + file;
+    htmlPlayer.playbackRate = rate; htmlPlayer.preservesPitch = true;
     const p = htmlPlayer.play(); if (p && p.catch) p.catch(fin);
-    setTimeout(fin, 10000);
+    setTimeout(fin, 30000 / rate);
   });
 }
 const lastAudio = { path: '', err: '' };
-async function playClip(file, token = sayToken) {
+async function playClip(file, token = sayToken, rate = 1) {
   if (token !== sayToken) return;
+  if (rate !== 1) { lastAudio.path = 'html'; return htmlPlay(file, token, rate); }
   const c = ctx();
   if (c.state !== 'running') { await Promise.race([c.resume().catch(() => {}), sleep(300)]); }
   if (token !== sayToken) return;
