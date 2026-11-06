@@ -69,6 +69,7 @@ function logAttempt(q, cat, level) {
   sk.n++; if (alone) sk.ok++; sk.recent = (sk.recent + (alone ? '1' : first ? 'h' : '0')).slice(-12); sk.last = dayKey();
   sk.days = [...new Set([...(sk.days || []), dayKey()])].slice(-5);   // on which days it was practiced
   logObjectiveAttempt(q, cat, first, alone);
+  if(typeof logGradeEvidence === 'function') logGradeEvidence(q,cat,level,alone);
   // keep 120 days of daily numbers
   const days = Object.keys(state.stats.days).sort(); while (days.length > 120) delete state.stats.days[days.shift()];
   if (d.q >= DAILY_GOAL() && d.q - n < DAILY_GOAL()) dailyGoalReached();
@@ -363,7 +364,7 @@ function renderDashboard() {
   };
   const objectivesHTML = objectiveRows.length
     ? `<div class="ds"><h3>Learning objectives · ${esc(gradeName(state.grade))}</h3>
-       <p class="note">Based on authored questions tagged with a specific learning objective. Untagged questions still count toward game progress.</p>
+       <p class="note">Based on the specific skills practised in this grade.</p>
        ${objectiveGood.length ? `<h4>Mastered</h4><ul>${objectiveGood.slice(0,6).map(objectiveItem).join('')}</ul>` : ''}
        ${objectiveWeak.length ? `<h4>Needs practice</h4><ul>${objectiveWeak.slice(0,6).map(objectiveItem).join('')}</ul>` : ''}
        ${objectiveDeveloping.length ? `<h4>Developing</h4><ul>${objectiveDeveloping.slice(0,6).map(objectiveItem).join('')}</ul>` : ''}
@@ -422,7 +423,7 @@ function renderDashboard() {
   const shown = CATEGORIES.filter((c) => c.gen && c.id !== 'mix' && (catWeek[c.id] || state.levels[c.id]));
   $('#dashSubjects').innerHTML = `${typeof CURRICULUM_AREAS !== 'undefined' ? `<p class="curr-name">Matched to: <b>${(CURRICULUM_AREAS[levelsCC()] || CURRICULUM_AREAS.us).name}</b></p>` : ''}<table><tr><th>Game</th><th>Level</th><th>This week</th></tr>${shown.map((c) => {
     const w = catWeek[c.id];
-    const area = typeof curriculumArea === 'function' ? curriculumArea(c.id) : '';
+    const area = '';
     return `<tr><td>${c.icon} ${typeof localTileTitle === 'function' ? localTileTitle(c.id, c.title) : c.title}<small>${skillName(c.id, levelOf(c.id))}</small>${area ? `<small class="curr-area">📘 ${area}</small>` : ''}</td><td>${levelOf(c.id)}<small>/${maxLevelOf(c.id)}</small></td><td>${w ? `${w[0]} cards · ${Math.round(w[1] / w[0] * 100)}%` : '—'}</td></tr>`;
   }).join('')}</table>`;
   // summary in plain words
