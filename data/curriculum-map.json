@@ -13,15 +13,10 @@
         "g": {
           "trace": "1-1",
           "phonics": "1-2",
-          "animals": "1-1",
-          "places": "1-1",
           "body": "1-1",
           "gk": "1-1",
           "anatomy": "1-1",
           "match": "1-1",
-          "cvc": "1-1",
-          "sight": "1-1",
-          "spell": "1-1",
           "vocab": "1-1",
           "syl": "1-1",
           "add": "1-1",
@@ -29,8 +24,6 @@
           "cmp": "1-1",
           "shape2": "1-1",
           "jobs": "1-1",
-          "flags": "1-1",
-          "maps": "1-1",
           "pattern": "1-1",
           "odd": "1-1",
           "sequence": "1-1",
@@ -48,13 +41,11 @@
           "trace": "1-1",
           "phonics": "1-3",
           "animals": "1-2",
-          "places": "1-2",
           "body": "1-2",
           "gk": "1-2",
           "anatomy": "1-2",
           "match": "1-2",
           "cvc": "2-3",
-          "w4": "1-2",
           "sight": "1-2",
           "spell": "1-2",
           "vocab": "1-2",
@@ -67,7 +58,7 @@
           "shape2": "1-2",
           "jobs": "1-2",
           "flags": "1-2",
-          "maps": "1-2",
+          "maps": "1-1",
           "home": "1-1",
           "pattern": "1-2",
           "odd": "1-2",
@@ -233,28 +224,6 @@
             "approach": "play-and-practice",
             "bank": "generated"
           },
-          "animals": {
-            "levels": [
-              1,
-              1
-            ],
-            "skills": [
-              "recognize-and-name"
-            ],
-            "approach": "play-and-practice",
-            "bank": "generated"
-          },
-          "places": {
-            "levels": [
-              1,
-              1
-            ],
-            "skills": [
-              "recognize-and-name"
-            ],
-            "approach": "play-and-practice",
-            "bank": "generated"
-          },
           "body": {
             "levels": [
               1,
@@ -289,39 +258,6 @@
             "bank": "generated"
           },
           "match": {
-            "levels": [
-              1,
-              1
-            ],
-            "skills": [
-              "recognize-and-name"
-            ],
-            "approach": "play-and-practice",
-            "bank": "generated"
-          },
-          "cvc": {
-            "levels": [
-              1,
-              1
-            ],
-            "skills": [
-              "recognize-and-name"
-            ],
-            "approach": "play-and-practice",
-            "bank": "generated"
-          },
-          "sight": {
-            "levels": [
-              1,
-              1
-            ],
-            "skills": [
-              "recognize-and-name"
-            ],
-            "approach": "play-and-practice",
-            "bank": "generated"
-          },
-          "spell": {
             "levels": [
               1,
               1
@@ -399,28 +335,6 @@
             "bank": "generated"
           },
           "jobs": {
-            "levels": [
-              1,
-              1
-            ],
-            "skills": [
-              "recognize-and-name"
-            ],
-            "approach": "play-and-practice",
-            "bank": "generated"
-          },
-          "flags": {
-            "levels": [
-              1,
-              1
-            ],
-            "skills": [
-              "recognize-and-name"
-            ],
-            "approach": "play-and-practice",
-            "bank": "generated"
-          },
-          "maps": {
             "levels": [
               1,
               1
@@ -513,17 +427,6 @@
             "approach": "play-and-practice",
             "bank": "generated"
           },
-          "places": {
-            "levels": [
-              1,
-              2
-            ],
-            "skills": [
-              "identify-and-match"
-            ],
-            "approach": "play-and-practice",
-            "bank": "generated"
-          },
           "body": {
             "levels": [
               1,
@@ -572,17 +475,6 @@
             "levels": [
               2,
               3
-            ],
-            "skills": [
-              "identify-and-match"
-            ],
-            "approach": "play-and-practice",
-            "bank": "generated"
-          },
-          "w4": {
-            "levels": [
-              1,
-              2
             ],
             "skills": [
               "identify-and-match"
@@ -725,7 +617,7 @@
           "maps": {
             "levels": [
               1,
-              2
+              1
             ],
             "skills": [
               "identify-and-match"

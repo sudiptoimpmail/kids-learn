@@ -458,8 +458,8 @@ $('#dashBtn').onclick = () => { sfx.tap(); openDashboard('settings'); };
    topic (and tracing for Pre-K/K). Each step is 5 cards. All done → a gift.
    ========================================================= */
 const QUEST_LEN = 5;
-const QUEST_READING = { prek: ['phonics', 'cvc'], k: ['phonics', 'cvc', 'sight'], g1: ['sent', 'sight', 'phonics', 'spell', 'words'], g2: ['sent', 'spell', 'vocab', 'words'], g3: ['sent', 'vocab', 'spell', 'words'] };
-const QUEST_MATH = { prek: ['add', 'cmp', 'shape2'], k: ['add', 'sub', 'cmp'], g1: ['add', 'sub', 'story', 'numsense'], g2: ['add', 'sub', 'mul', 'story', 'numsense'], g3: ['mul', 'div', 'story', 'numsense'] };
+const QUEST_READING = { prek: ['phonics', 'vocab', 'syl'], k: ['phonics', 'cvc', 'sight'], g1: ['sent', 'sight', 'phonics', 'spell', 'words'], g2: ['sent', 'spell', 'vocab', 'words'], g3: ['sent', 'vocab', 'spell', 'words'] };
+const QUEST_MATH = { prek: ['add', 'sub', 'shape2'], k: ['add', 'sub', 'story'], g1: ['add', 'sub', 'story', 'numsense'], g2: ['add', 'sub', 'mul', 'story', 'numsense'], g3: ['mul', 'div', 'story', 'numsense'] };
 const QUEST_WORLD = ['sci', 'home', 'animals', 'places', 'maps', 'body', 'gk', 'shape2', 'jobs', 'flags', 'anatomy'];
 const QUEST_THINKING = ['pattern', 'odd', 'sequence'];
 function questFor() {

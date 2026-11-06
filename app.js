@@ -375,6 +375,8 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
     });
     q.grades = Array.isArray(q.grades) ? q.grades.filter(g => eligibleGrades.includes(g)) : eligibleGrades;
     if (!browse && state.grade && !state.showAll && !q.grades.includes(state.grade)) continue;
+    // safety net: skip any card a child this age cannot do (Pre-K can't read words, K reads short ones)
+    if (!browse && state.grade && c.id !== 'placement' && typeof gradeFits === 'function' && !gradeFits(q, state.grade, c.id)) continue;
     seen.add(q.key); seenContent.add(contentId); q.cat = c; q.level = lv; qs.push(q);
     if (reviewedQuestion === q) { reviewed++; q.reviewScheduled = true; }
   }
