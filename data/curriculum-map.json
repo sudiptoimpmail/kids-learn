@@ -124,7 +124,6 @@
         "presentation": {"readingScale":1.24,"readingLineHeight":1.52},
         "progression": {"minQuestions":6,"promote":{"minFirstTryRate":0.85,"maxMistakeRate":0.2,"rounds":2},"support":{"maxFirstTryRate":0.4,"minMistakeRate":0.5,"rounds":2}},
         "objectiveEvidence": {"window":12,"minCards":8,"minDays":2,"masteryRate":0.85,"practiceRate":0.65},
-      "reviewSchedule": {"maxReviewCards":2,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":10}},
         "practiceFocus": ["sent","numsense","sci"],
         "reviewSchedule": {"maxReviewCards":2,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":10}},
         "g": {
@@ -3041,7 +3040,8 @@
       "offline": true,
       "presentation": {"readingScale": 1.24, "readingLineHeight": 1.52},
       "adaptive": {"minQuestions":6,"promote":{"minFirstTryRate":0.85,"maxMistakeRate":0.2,"rounds":2},"support":{"maxFirstTryRate":0.4,"minMistakeRate":0.5,"rounds":2}},
-      "objectiveEvidence": {"window":12,"minCards":8,"minDays":2,"masteryRate":0.85,"practiceRate":0.65}
+      "objectiveEvidence": {"window":12,"minCards":8,"minDays":2,"masteryRate":0.85,"practiceRate":0.65},
+      "reviewSchedule": {"maxReviewCards":2,"intervalDays":{"new":1,"learning":1,"practicing":2,"mastered":10}}
     },
     "version": 1
   }
