@@ -46,6 +46,7 @@
     const c = CATEGORIES.find((x) => x.id === id);
     if (!c || !c.gen) continue;
     const base = c.gen;
+    c.baseGen = c.baseGen || base;   // the plain pick-one-answer generator stays reachable for placement and tests
     c.gen = (level) => (Math.random() < share && (() => { try { return make(level); } catch { return null; } })()) || base(level);
   }
 })();
