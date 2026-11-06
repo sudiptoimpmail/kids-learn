@@ -21,7 +21,7 @@ def main():
     entries = []
     for landmark_id, (filename, page, creator) in SOURCES.items():
         url = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + quote(filename.replace(' ', '_'))
-        request = Request(url, headers={'User-Agent': 'KidsLearnEducationalMedia/1.0 (GitHub Actions review preparation)'})
+        request = Request(url, headers={'User-Agent': 'KidsLearnEducationalMedia/1.0 (GitHub Actions review preparation)', 'Accept': 'image/jpeg,image/png,image/webp'})
         with urlopen(request, timeout=45) as response:
             if response.status != 200 or not response.headers.get('Content-Type', '').lower().startswith('image/'):
                 raise ValueError(f'{landmark_id}: unexpected image response')
@@ -29,7 +29,8 @@ def main():
         if len(data) > 12_000_000:
             raise ValueError(f'{landmark_id}: source file exceeds safety limit')
         with Image.open(io.BytesIO(data)) as source:
-            if source.format not in ('JPEG', 'PNG', 'WEBP'):
+            if source.format not in ('JPEG', 'PNG', 'WEBP', 'AVIF'):
+                print(f'{landmark_id}: received format {source.format!r}, {len(data)} bytes, URL {response.url}', flush=True)
                 # Wikimedia may negotiate a WebP thumbnail for a JPEG URL.
                 raise ValueError(f'{landmark_id}: unexpected image format')
             image = ImageOps.exif_transpose(source).convert('RGB')
