@@ -35,12 +35,27 @@ const validateProgression = (rule, label) => {
     label+': success and struggle conditions overlap');
 };
 validateProgression(map.policy.adaptive,'fallback');
+// Objectives are graded from authored metadata, using grade-owned evidence rules.
+const verifyObjectiveEvidence = (rule,label) => {
+  assert.ok(rule && Number.isInteger(rule.window) && rule.window >= 5 && rule.window <= 24,
+    label+': invalid recent-window size');
+  assert.ok(Number.isInteger(rule.minCards) && rule.minCards >= 4 &&
+    rule.minCards <= rule.window,label+': invalid minimum cards');
+  assert.ok(Number.isInteger(rule.minDays) && rule.minDays >= 2 &&
+    rule.minDays <= 7,label+': mastery needs repeated days');
+  assert.ok(Number.isFinite(rule.masteryRate) && rule.masteryRate >= 0.7 &&
+    rule.masteryRate <= 1,label+': invalid mastery rate');
+  assert.ok(Number.isFinite(rule.practiceRate) && rule.practiceRate >= 0 &&
+    rule.practiceRate < rule.masteryRate,label+': invalid practice threshold');
+};
+verifyObjectiveEvidence(map.policy.objectiveEvidence,'fallback');
 const fallbackPresentation = map.policy.presentation;
 assert.ok(fallbackPresentation && fallbackPresentation.readingScale > 1, 'Missing default reading presentation');
 let previousScale = Infinity;
 for(const name of names){
   assert.ok(map.GRADES[name]&&map.PROFILES[name],name+' must have a profile');
   validateProgression(map.GRADES[name].progression,name);
+  verifyObjectiveEvidence(map.GRADES[name].objectiveEvidence,name);
   const presentation = map.GRADES[name].presentation;
   assert.ok(presentation && Number.isFinite(presentation.readingScale) && presentation.readingScale > 1 && presentation.readingScale <= 1.6,
     name+' must define a child-readable scale');
