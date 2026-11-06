@@ -334,6 +334,29 @@ function renderDashboard() {
   const objectiveNew = objectiveRows.filter(row => row.s === 'new')
     .sort((a,b) => b.n-a.n);
   const objectiveLabel = value => String(value).replaceAll('-', ' ').replace(/^./, x => x.toUpperCase());
+  // Coverage measures which *authored, tagged* objectives have been attempted,
+  // never a child's overall grade completion or an inferred achievement score.
+  const authoredCatalog = authoredObjectiveCatalog(state.grade);
+  const attempted = authoredCatalog.filter(item =>
+    Number.isInteger(st.objectives?.[item.key]?.n) && st.objectives[item.key].n > 0);
+  const notYet = authoredCatalog.filter(item =>
+    !Number.isInteger(st.objectives?.[item.key]?.n) || st.objectives[item.key].n <= 0);
+  const nextNew = notYet.find(item => item.level <= levelOf(item.cat) &&
+    CATEGORIES.some(cat => cat.id===item.cat && !!cat.gen));
+  const coveredPct = authoredCatalog.length
+    ? Math.round(attempted.length/authoredCatalog.length*100) : 0;
+  const coverageHTML = authoredCatalog.length
+    ? `<div class="ds"><h3>Authored objective coverage</h3>
+      <p><b>${attempted.length} of ${authoredCatalog.length}</b> tagged objectives tried (${coveredPct}%).</p>
+      <p class="note">This measures access to authored practice, not grade completion.
+        Untagged games still contribute to the game-level progress below.</p>
+      ${notYet.length ? `<p class="note">${notYet.length} tagged objectives not yet sampled.</p>` : ''}
+      ${nextNew ? `<button class="big-btn small" id="dashExploreObjective"
+        data-category="${esc(nextNew.cat)}" data-objective="${esc(nextNew.objective)}"
+        aria-label="Explore ${esc(objectiveLabel(nextNew.objective))}">
+        Explore new objective: ${esc(objectiveLabel(nextNew.objective))}
+      </button>` : ''}</div>`
+    : '<div class="ds"><h3>Authored objective coverage</h3><p class="note">This grade currently has game-level progress; no tagged objectives are available for coverage tracking yet.</p></div>';
   const objectiveItem = row => {
     const category = CATEGORIES.find(c => c.id === row.cat);
     const cards = Number.isInteger(row.n) && row.n >= 0 ? row.n : row.recentCards;
@@ -355,10 +378,15 @@ function renderDashboard() {
   const weak = skills.filter((s) => s.s === 'learning').sort((a, b) => a.acc - b.acc);
   const going = skills.filter((s) => s.s === 'practicing');
   const row = (s) => `<li><span>${s.name}</span><small>${(CATEGORIES.find((c) => c.id === s.cat) || {}).icon || ''} ${Math.round(s.acc * 100)}%</small></li>`;
-  $('#dashSkills').innerHTML = objectivesHTML + `
+  $('#dashSkills').innerHTML = coverageHTML + objectivesHTML + `
     <div class="ds good"><h3>🌟 Doing well</h3>${good.length ? `<ul>${good.slice(0, 8).map(row).join('')}</ul>` : '<p class="note">Skills show here after 8 or more cards with mostly right answers.</p>'}</div>
     <div class="ds weak"><h3>🧩 Needs practice</h3>${weak.length ? `<ul>${weak.slice(0, 8).map(row).join('')}</ul>` : '<p class="note">Nothing stuck right now. 👍</p>'}</div>
     ${going.length ? `<div class="ds"><h3>📈 Getting there</h3><ul>${going.slice(0, 8).map(row).join('')}</ul></div>` : ''}`;
+  const explore = $('#dashExploreObjective');
+  if (explore) explore.onclick = () => {
+    sfx.tap();
+    startRound(explore.dataset.category,5,false,null,explore.dataset.objective);
+  };
   // Give parents a small, practical next step rather than only performance charts.
   // Recommendations are derived locally from the child's saved skill results.
   const priority = [...objectiveWeak,...objectiveDeveloping,...weak,...going]
