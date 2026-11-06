@@ -1623,7 +1623,7 @@ function genAnimals(level) {
     const wrong = sample(pool.filter((b) => b[0] !== name && b[1] !== emoji && !livesIn(b, ans)), numOpts(level) - 1);
     const map = kind === 'country' ? worldSVG({ hl: ans, level: 3 }) : worldSVG({ mode: 'cont', hl: ans });
     return {
-      key: `ani-which-${name}`, text: `Which animal lives in <b>${theC(ans)}</b>? ${COUNTRY_FLAG[ans] || ''}`, say: ['Which animal lives in', `${theC(ans)}?`],
+      key: `ani-which-${name}`, text: `Which animal lives in <b>${theC(ans)}</b>? ${COUNTRY_FLAG[ans] || ''}`, say: `Which animal lives in ${theC(ans)}?`,   // one recorded sentence: no pause, and "lives" as in "he lives"
       main: `<div class="hint-map">${map}</div>`, mainClass: 'map-main',
       options: shuffle([A, ...wrong]).map((b) => ({ v: b[0], html: `<span class="ani-opt"><span class="ani-e">${b[1]}</span>${b[0]}</span>` })), answer: name, optClass: 'opt-text two-col',
       hint: { html: '', say: 'Think about where each animal lives!', remove: true },
