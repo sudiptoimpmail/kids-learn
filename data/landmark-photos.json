@@ -2,8 +2,11 @@
   "schema": 1,
   "namespace": "landmark-photos",
   "datasets": {
-    "ids": [],
-    "status": "pending-curated-photographs",
+    "ids": [
+      "eiffel",
+      "liberty"
+    ],
+    "status": "partially-curated-photographs",
     "acceptedLicense": [
       "CC0",
       "Public Domain",
@@ -12,6 +15,27 @@
     ],
     "minimumWidth": 480,
     "minimumHeight": 320,
-    "records": {}
+    "records": {
+      "liberty": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Statue_of_Liberty_front_shot.JPG",
+        "creator": "L E X commons",
+        "license": "CC0",
+        "reviewedBy": "Source-page verified; PR maintainer visual approval required before merge",
+        "reviewedOn": "2026-11-06",
+        "altReviewed": "yes",
+        "attribution": "Photo: L E X commons (CC0 1.0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Statue_of_Liberty_front_shot.JPG",
+        "sha256": "e83092d222a1db412d26a05562e60e40fbb81107418514be4ea586790c758504"
+      },
+      "eiffel": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Eiffel_tower_in_the_morning.jpg",
+        "creator": "Phivospharconides",
+        "license": "CC0",
+        "reviewedBy": "Source-page verified; PR maintainer visual approval required before merge",
+        "reviewedOn": "2026-11-06",
+        "altReviewed": "yes",
+        "attribution": "Photo: Phivospharconides (CC0 1.0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Eiffel_tower_in_the_morning.jpg",
+        "sha256": "c3d0774b182807d48ac974a5a88ba75c95431a7ceda97fe83aafca6353535842"
+      }
+    }
   }
 }
