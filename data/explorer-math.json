@@ -1861,7 +1861,12 @@
           "rows": 4,
           "columns": 6,
           "answerRule": "count"
-        }
+        },
+        "reasoningSteps": [
+          "Count the number of rows.",
+          "Count how many items are in each row.",
+          "Multiply the number of rows by the items in each row."
+        ]
       },
       {
         "id": "g2-art-table",
@@ -1890,7 +1895,12 @@
           "rows": 3,
           "columns": 7,
           "answerRule": "count"
-        }
+        },
+        "reasoningSteps": [
+          "Count the number of rows.",
+          "Count how many items are in each row.",
+          "Multiply the number of rows by the items in each row."
+        ]
       },
       {
         "id": "g2-sports-chart",
@@ -1927,7 +1937,12 @@
             8
           ],
           "answerRule": "total"
-        }
+        },
+        "reasoningSteps": [
+          "Read each bar's label and value.",
+          "Add the values for all the bars.",
+          "Check that your result matches the question."
+        ]
       },
       {
         "id": "g2-fruit-chart",
@@ -1968,7 +1983,12 @@
             0,
             1
           ]
-        }
+        },
+        "reasoningSteps": [
+          "Read each bar's label and value.",
+          "Find the two named bars and subtract the smaller count from the larger count.",
+          "Check that your result matches the question."
+        ]
       },
       {
         "id": "g2-line-35",
@@ -1999,7 +2019,12 @@
           "steps": 10,
           "point": 35,
           "answerRule": "point"
-        }
+        },
+        "reasoningSteps": [
+          "Read the starting and ending labels.",
+          "Find the value of one equal step.",
+          "Count steps from the start to the marked dot."
+        ]
       },
       {
         "id": "g2-line-72",
@@ -2030,7 +2055,12 @@
           "steps": 10,
           "point": 72,
           "answerRule": "point"
-        }
+        },
+        "reasoningSteps": [
+          "Read the starting and ending labels.",
+          "Find the value of one equal step.",
+          "Count steps from the start to the marked dot."
+        ]
       },
       {
         "id": "g3-rows-stage",
@@ -2058,7 +2088,12 @@
           "rows": 8,
           "columns": 7,
           "answerRule": "count"
-        }
+        },
+        "reasoningSteps": [
+          "Count the number of rows.",
+          "Count how many items are in each row.",
+          "Multiply the number of rows by the items in each row."
+        ]
       },
       {
         "id": "g3-rows-gallery",
@@ -2086,7 +2121,12 @@
           "rows": 6,
           "columns": 9,
           "answerRule": "count"
-        }
+        },
+        "reasoningSteps": [
+          "Count the number of rows.",
+          "Count how many items are in each row.",
+          "Multiply the number of rows by the items in each row."
+        ]
       },
       {
         "id": "g3-chart-recycling",
@@ -2122,7 +2162,12 @@
             22
           ],
           "answerRule": "total"
-        }
+        },
+        "reasoningSteps": [
+          "Read each bar's label and value.",
+          "Add the values for all the bars.",
+          "Check that your result matches the question."
+        ]
       },
       {
         "id": "g3-chart-flowers",
@@ -2162,7 +2207,12 @@
             0,
             1
           ]
-        }
+        },
+        "reasoningSteps": [
+          "Read each bar's label and value.",
+          "Find the two named bars and subtract the smaller count from the larger count.",
+          "Check that your result matches the question."
+        ]
       },
       {
         "id": "g3-fraction-sixths",
@@ -2190,7 +2240,12 @@
           "parts": 6,
           "shaded": 4,
           "answerRule": "fraction"
-        }
+        },
+        "reasoningSteps": [
+          "Count all equal parts of the strip.",
+          "Count only the shaded parts.",
+          "Write shaded parts over total parts."
+        ]
       },
       {
         "id": "g3-fraction-tenths",
@@ -2218,7 +2273,12 @@
           "parts": 10,
           "shaded": 7,
           "answerRule": "fraction"
-        }
+        },
+        "reasoningSteps": [
+          "Count all equal parts of the strip.",
+          "Count only the shaded parts.",
+          "Write shaded parts over total parts."
+        ]
       }
     ]
   }
