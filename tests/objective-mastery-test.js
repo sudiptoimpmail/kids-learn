@@ -45,7 +45,7 @@ const {chromium} = require('playwright');
           bank+': advanced objectives leaked into Grade 1');
       state.grade = 'g2';
       const extRead = READING().filter(row=>!!row[4]);
-      check(extRead.length===5 && extRead.every(row=>row[4]==='text-details-and-reasoning'),
+      check(extRead.length===9 && extRead.every(row=>row[4]==='text-details-and-reasoning'),
         'Grade 2 reading objectives are not routed from authored story metadata');
       let readingTagged=false, oddTagged=false, sequenceTagged=false;
       for(let i=0;i<180;i++) {

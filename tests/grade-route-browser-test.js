@@ -18,8 +18,14 @@ const {chromium}=require('playwright');
     }
     const reading=READING();
     const extension=ContentData.get('grade23-extension','STORIES');
-    owned.passageIncludesG2=extension.slice(0,5).filter(x=>reading.some(y=>y[0]===x[1])).length;
-    owned.passageIncludesG3=extension.slice(5).filter(x=>reading.some(y=>y[0]===x[1])).length;
+    // Ownership comes from curriculum route metadata, never row positions.
+    const routes=ContentData.get('curriculum-map','ROUTES').STORIES;
+    owned.passageIncludesG2=extension.filter((x,i)=>routes[i].grade==='g2' &&
+      reading.some(y=>y[0]===x[1])).length;
+    owned.passageIncludesG3=extension.filter((x,i)=>routes[i].grade==='g3' &&
+      reading.some(y=>y[0]===x[1])).length;
+    owned.expectedG2=g==='g2'?routes.filter(r=>r.grade==='g2').length:0;
+    owned.expectedG3=g==='g3'?routes.filter(r=>r.grade==='g3').length:0;
     out[g]=owned;
    }
    return out;
@@ -30,10 +36,12 @@ const {chromium}=require('playwright');
   for(const bank of ['SCIENCE','GK','THINKING_ODD','THINKING_SEQUENCES','STORIES']){
     assert.ok(r.g2[bank]>0&&r.g3[bank]>0,bank+' has thin grade routing');
   }
-  assert.equal(r.g2.passageIncludesG2,5,'Grade2 missing its own comprehension passages');
+  assert.ok(r.g2.expectedG2>=9,'Grade 2 authored reading bank is too small');
+  assert.ok(r.g3.expectedG3>=18,'Grade 3 authored reading bank is too small');
+  assert.equal(r.g2.passageIncludesG2,r.g2.expectedG2,'Grade2 missing its own comprehension passages');
   assert.equal(r.g2.passageIncludesG3,0,'Grade2 saw Grade3 comprehension passages');
-  assert.equal(r.g3.passageIncludesG3,10,'Grade3 missing its own comprehension passages');
+  assert.equal(r.g3.passageIncludesG3,r.g3.expectedG3,'Grade3 missing its own comprehension passages');
   assert.equal(r.g3.passageIncludesG2,0,'Grade3 saw Grade2 comprehension passages');
-  console.log('PASS grade-scoped 115 authored question rows and reading passages remain isolated across Pre-K–Grade 3');
+  console.log('PASS grade-scoped 135 authored question rows and reading passages remain isolated across Pre-K–Grade 3');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});

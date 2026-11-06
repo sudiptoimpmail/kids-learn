@@ -61,8 +61,8 @@ const {chromium}=require('playwright');
       return {errors,out};
     });
     assert.deepEqual(inspected.errors,[],inspected.errors.join('\n'));
-    assert.equal(inspected.out.math,62);
+    assert.equal(inspected.out.math,74);
     assert.equal(inspected.out.science,36);
-    console.log('PASS 98 original Grade 2–3 inquiry questions with checked answers, media, offline manifests and 320px layout');
+    console.log('PASS 110 Grade 2–3 inquiry questions with checked answers, media, offline manifests and 320px layout');
   } finally {await browser.close()}
 })().catch(err=>{console.error(err);process.exitCode=1});

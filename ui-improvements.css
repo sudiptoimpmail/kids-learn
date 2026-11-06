@@ -189,3 +189,13 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
   font-weight: 700;
   overflow-wrap: break-word;
 }
+
+/* JSON-authored Explorer diagrams fit narrow phones and portrait iPads. */
+#play .explorer-diagram {
+  display: block;
+  width: min(100%, 460px);
+  max-width: 100%;
+  height: auto;
+  margin: .75rem auto;
+  overflow: visible;
+}
