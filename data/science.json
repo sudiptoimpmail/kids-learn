@@ -53,7 +53,7 @@
       ],
       [
         1,
-        "Which season is the coldest?",
+        "In places with four seasons, which season is usually coldest?",
         "❄️ winter",
         "☀️ summer",
         "🌷 spring",
@@ -61,7 +61,7 @@
       ],
       [
         1,
-        "In which season do many trees lose their leaves?",
+        "In places with four seasons, when do many deciduous trees lose their leaves?",
         "🍂 autumn (fall)",
         "🌷 spring",
         "☀️ summer",
@@ -77,7 +77,7 @@
       ],
       [
         1,
-        "What do you see after rain when the sun comes out?",
+        "What colorful arc can sunlight and raindrops sometimes make?",
         "🌈 a rainbow",
         "⛄ a snowman",
         "🌙 the moon",
@@ -109,7 +109,7 @@
       ],
       [
         1,
-        "What does a caterpillar turn into?",
+        "What does a monarch butterfly caterpillar grow into?",
         "🦋 a butterfly",
         "🐝 a bee",
         "🐦 a bird",
@@ -117,7 +117,7 @@
       ],
       [
         1,
-        "What do bees make?",
+        "What do honeybees make?",
         "🍯 honey",
         "🥛 milk",
         "🍞 bread",
@@ -133,11 +133,11 @@
       ],
       [
         1,
-        "Which one helps you stay safe in the sun?",
+        "Which product is made to protect skin from the sun's UV rays?",
         "🧴 sunscreen",
         "🧤 mittens",
         "🧣 a scarf",
-        "☂️ an umbrella"
+        "🎧 headphones"
       ],
       [
         2,
@@ -310,7 +310,7 @@
       [
         3,
         "When water boils, it turns into…",
-        "♨️ steam (a gas)",
+        "♨️ water vapor (an invisible gas)",
         "🧊 ice",
         "🪨 rock",
         "🧈 butter"
@@ -341,7 +341,7 @@
       ],
       [
         3,
-        "In a food chain, where does the energy start?",
+        "In a food chain beginning with green plants, where does most energy come from?",
         "☀️ the sun",
         "🦁 the lion",
         "🐛 the worm",
@@ -621,7 +621,7 @@
       ],
       [
         4,
-        "Which gas do plants take in from the air?",
+        "Which gas do green plants use to make food in sunlight?",
         "carbon dioxide",
         "helium",
         "smoke",
