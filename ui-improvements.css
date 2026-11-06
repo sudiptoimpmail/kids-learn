@@ -234,3 +234,15 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .lm-online-preview{display:block;margin:.5rem auto;min-height:44px;max-width:100%;padding:.45rem .75rem;border:2px solid #285b86;border-radius:10px;background:#f2f8ff;color:#163f66;font-weight:750;cursor:pointer;white-space:normal}
 .lm-online-preview:focus-visible{outline:3px solid #d36b16;outline-offset:3px}
 .lm-online-preview:disabled{opacity:.75;cursor:default}
+
+/* Inside My Body: offline, touch-friendly independent organ exploration. */
+.organ-explorer{margin:1rem auto;padding:.85rem;max-width:580px;min-width:0;border:2px solid #8db0ca;border-radius:14px;background:#f2f9ff;color:#193951;text-align:left}
+.organ-explorer-title{font-size:1.15rem!important;font-weight:800!important;margin:0 0 .3rem!important}
+.organ-explorer p{margin:.35rem 0 .7rem}
+.organ-explorer-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.organ-explorer button{min-height:44px;padding:.4rem .55rem;border:2px solid #37638a;border-radius:9px;background:#fff;color:#183c60;font-weight:750;cursor:pointer;touch-action:manipulation}
+.organ-explorer button[aria-pressed="true"]{background:#186eaf;color:#fff}
+.organ-explorer button:focus-visible{outline:3px solid #cb5d14;outline-offset:3px}
+.organ-explorer-fact{display:block;min-height:3em;margin:.8rem 0;font-weight:700;line-height:1.45}
+.organ-fig .org.explore-hl ellipse{fill:#ffe66a;fill-opacity:.6;stroke:#c65b12;stroke-width:3}
+@media(min-width:550px){.organ-explorer-choices{grid-template-columns:repeat(4,minmax(0,1fr))}}
