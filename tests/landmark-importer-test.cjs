@@ -12,7 +12,7 @@ try{
  bytes.writeUIntLE(639,24,3);bytes.writeUIntLE(479,27,3);fs.writeFileSync(file,bytes);
  const wrapper=JSON.parse(fs.readFileSync('data/landmark-photos.json','utf8'));
  const landmarks=JSON.parse(fs.readFileSync('data/landmarks.json','utf8')).datasets;
- const sw=fs.readFileSync('sw.js','utf8');
+ const sw=fs.readFileSync('sw.js','utf8').replace(/^.*assets\/landmark-photos\/liberty\.webp.*\n/gm,'');
  const record={sourceUrl:'https://commons.wikimedia.org/wiki/File:Example.webp',creator:'Curator verified',license:'CC0',reviewedBy:'Human reviewer',reviewedOn:'2026-11-06',altReviewed:'yes'};
  const emptyManifest={...wrapper.datasets,ids:[],records:{}};
  const args={id:'liberty',file,record,manifest:emptyManifest,landmarks,sw};
