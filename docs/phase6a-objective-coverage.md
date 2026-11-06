@@ -54,3 +54,10 @@ educator review before their coverage can be represented truthfully.
 from valid grade-routed items, zero-practice counts, a real first authored
 focus card, authentic attempt recording, grade isolation, invalid objective
 rejection and an honest fallback for untagged Pre-K material.
+
+## Release CI after retargeting
+
+This PR was originally stacked on the landmark-accessibility changes, then
+retargeted to `main` after that change merged. Both normal browser and offline
+content workflows must pass on the **final** PR head; no workflow result from
+an older stacked base is a substitute for the final merge gate.
