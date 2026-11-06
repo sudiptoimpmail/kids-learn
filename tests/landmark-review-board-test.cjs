@@ -1,0 +1,16 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const cp=require('node:child_process');
+cp.execFileSync(process.execPath,['scripts/build-landmark-review-board.cjs'],{stdio:'pipe'});
+const html=fs.readFileSync('docs/landmark-photo-review.html','utf8');
+const report=JSON.parse(fs.readFileSync('docs/landmark-candidate-review.json','utf8'));
+assert.ok(report.candidateCount>=24);
+assert.equal((html.match(/<article>/g)||[]).length,report.candidateCount);
+assert.match(html,/NOT approved or published/);
+assert.match(html,/SHA-256 matches/);
+assert.match(html,/target="_blank" rel="noopener noreferrer"/);
+assert.match(html,/checkbox/);
+const sw=fs.readFileSync('sw.js','utf8');
+assert.doesNotMatch(sw,/assets\/landmark-candidates/);
+console.log('PASS 24 real candidate photos visible on review board, not exposed to learners');
