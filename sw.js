@@ -4,7 +4,7 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v103';
+const VERSION = PREFIX + 'v104';
 const AUDIO = PREFIX + 'audio';
 const FILES = [
   "./",
@@ -712,6 +712,27 @@ const FILES = [
   "trace.js",
   "progress.js",
   "onboarding.js",
+  "library.js",
+  "library/red-riding-hood/book.json",
+  "library/red-riding-hood/cover.webp",
+  "library/red-riding-hood/p01.webp",
+  "library/red-riding-hood/p02.webp",
+  "library/red-riding-hood/p03.webp",
+  "library/red-riding-hood/p04.webp",
+  "library/red-riding-hood/p05.webp",
+  "library/red-riding-hood/p06.webp",
+  "library/red-riding-hood/p07.webp",
+  "library/red-riding-hood/p08.webp",
+  "library/red-riding-hood/p09.webp",
+  "library/red-riding-hood/p10.webp",
+  "library/red-riding-hood/p11.webp",
+  "library/red-riding-hood/q-blue.webp",
+  "library/red-riding-hood/q-grandma.webp",
+  "library/red-riding-hood/q-mother.webp",
+  "library/red-riding-hood/q-red.webp",
+  "library/red-riding-hood/q-wolf.webp",
+  "library/red-riding-hood/q-woodcutter.webp",
+  "library/red-riding-hood/q-yellow.webp",
   "ball3d.js",
   "pinball3d.js",
   "geo.js",

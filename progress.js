@@ -267,7 +267,7 @@ function skillState(sk) {
   if (acc >= 0.7) return { s: 'practicing', acc };
   return { s: 'learning', acc };
 }
-const isLearningDay = (d) => !!d && ((d.q || 0) > 0 || (d.brain || 0) > 0 || (d.traced || 0) > 0);
+const isLearningDay = (d) => !!d && ((d.q || 0) > 0 || (d.brain || 0) > 0 || (d.traced || 0) > 0 || (d.books || 0) > 0);
 function dayStreak() {
   const days = (state.stats && state.stats.days) || {};
   let n = 0; const d = new Date();
@@ -304,14 +304,14 @@ function renderDashboard() {
   const week = [];
   for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); const k = dayKey(d); week.push([d, st.days[k] || { q: 0, first: 0, secs: 0, play: 0, hints: 0, cats: {} }]); }
   const sum = (f) => week.reduce((a, [, x]) => a + f(x), 0);
-  const q7 = sum((x) => x.q), f7 = sum((x) => (x.alone != null ? x.alone : x.first)), traced7 = sum((x) => x.traced || 0), learnSecs = sum((x) => x.secs), learnMin = Math.round(learnSecs / 60), learnShow = learnSecs > 0 && learnSecs < 60 ? '<1' : learnMin, playMin = Math.round(sum((x) => x.play) / 60), days7 = week.filter(([, x]) => isLearningDay(x)).length, hints7 = sum((x) => x.hints), brain7 = sum((x) => x.brain || 0);
+  const q7 = sum((x) => x.q), f7 = sum((x) => (x.alone != null ? x.alone : x.first)), traced7 = sum((x) => x.traced || 0), books7 = sum((x) => x.books || 0), learnSecs = sum((x) => x.secs), learnMin = Math.round(learnSecs / 60), learnShow = learnSecs > 0 && learnSecs < 60 ? '<1' : learnMin, playMin = Math.round(sum((x) => x.play) / 60), days7 = week.filter(([, x]) => isLearningDay(x)).length, hints7 = sum((x) => x.hints), brain7 = sum((x) => x.brain || 0);
   const maxQ = Math.max(10, ...week.map(([, x]) => x.q));
   const goal = DAILY_GOAL();
   $('#dashTop').innerHTML = `
     <div class="dash-cards">
       <div class="dc"><b>${q7}</b><small>cards answered</small></div>
       <div class="dc"><b>${q7 ? Math.round(f7 / q7 * 100) : 0}%</b><small>right on their own (no hint)</small></div>
-      <div class="dc"><b>${days7}<small>/7</small></b><small>learning days${traced7 ? ` · ${traced7} letters traced` : ''}</small></div>
+      <div class="dc"><b>${days7}<small>/7</small></b><small>learning days${traced7 ? ` · ${traced7} letters traced` : ''}${books7 ? ` · ${books7} book${books7 === 1 ? '' : 's'} read` : ''}</small></div>
       <div class="dc"><b>${learnShow}<small> min</small></b><small>learning · ${playMin} min play</small></div>
        <div class="dc"><b>${brain7}</b><small>brain puzzles solved</small></div>
     </div>

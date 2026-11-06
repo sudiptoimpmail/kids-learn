@@ -284,7 +284,7 @@ function renderHome() {
   if (typeof renderQuest === 'function') renderQuest();
   const groups = [
     ['📝 Practice', ['check']],
-    ['📖 Reading & Words', ['trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'gp', 'match', 'syl']],
+    ['📖 Reading & Words', ['library', 'trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'gp', 'match', 'syl']],
     ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'frac', 'measure', 'mul', 'div', 'clock', 'shape2']],
     ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], 'brain'],
     ['🌍 Science & World', ['sci', 'home', 'region', 'community', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
@@ -1174,6 +1174,7 @@ $('#grid').addEventListener('click', (e) => {
   if (!t.dataset.cat) return;
   if (t.dataset.cat === 'vocab') return openLearn();
   if (t.dataset.cat === 'trace') { TR.quest = null; return openTrace(); }
+  if (t.dataset.cat === 'library') return openLibrary();
   startRound(t.dataset.cat);
 });
 $('#hintBtn').onclick = () => { sfx.tap(); showHint(R.qs[R.i]); };

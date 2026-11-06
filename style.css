@@ -1459,3 +1459,44 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .gift-learned { font-weight: 700; }
 /* zero: an empty dashed circle, not a math symbol */
 .none-pic { display: inline-block; width: 1.1em; height: 1.1em; border: 3px dashed #b9a9e6; border-radius: 50%; vertical-align: middle; }
+
+/* ---------- Library: picture books read aloud ---------- */
+#library { background: #f7efe1; }
+.lib-top { gap: 10px; }
+.lib-title { flex: 1; text-align: center; font-weight: 800; font-size: 20px; color: #5a3a24; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lib-body { padding: 8px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px)); max-width: 980px; margin: 0 auto; }
+.lib-shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; padding-top: 8px; }
+.lib-book { display: grid; gap: 6px; padding: 10px 10px 14px; border: 0; border-radius: 18px; background: #fffaf2; box-shadow: 0 6px 0 #e3d3b8, 0 10px 24px rgba(90, 58, 36, .12); font: inherit; color: #3e2a1c; cursor: pointer; text-align: center; }
+.lib-book img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 12px; }
+.lib-book b { font-size: 19px; } .lib-book small { color: #8a6a4e; }
+.lib-book:active { transform: translateY(3px); box-shadow: 0 3px 0 #e3d3b8; }
+.lib-soon { display: grid; place-items: center; gap: 6px; border: 3px dashed #e3d3b8; border-radius: 18px; color: #a08066; min-height: 180px; font-size: 40px; }
+.lib-soon small { font-size: 14px; }
+.lib-page { display: grid; gap: 14px; }
+.lib-art { border-radius: 18px; overflow: hidden; box-shadow: 0 8px 24px rgba(90, 58, 36, .18); background: #fbf5e9; }
+.lib-art img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; max-height: 58vh; }
+.lib-text { background: #fffaf2; border-radius: 18px; padding: 14px 20px; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(22px, 3.4vw, 30px); line-height: 1.55; color: #2e2118; }
+.lib-text p { margin: 0 0 6px; }
+.lib-text .w { border-radius: 8px; padding: 0 2px; transition: background .12s, color .12s; cursor: pointer; }
+.lib-text .w.read { color: #2e2118; }
+.lib-text .w.on { background: #ffd66b; color: #2e2118; box-shadow: 0 0 0 3px #ffd66b; }
+.lib-nav { display: flex; align-items: center; justify-content: center; gap: 14px; }
+.lib-count { min-width: 64px; text-align: center; font-weight: 800; color: #8a6a4e; font-variant-numeric: tabular-nums; }
+.lib-next.pulse { animation: libPulse 1.2s ease-in-out infinite; }
+@keyframes libPulse { 50% { transform: scale(1.12); } }
+.lib-cover-title { margin: 0; text-align: center; font-family: Georgia, serif; font-size: clamp(30px, 5vw, 44px); color: #9a2a22; }
+.lib-start { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+.lib-ask { margin: 8px 0 0; text-align: center; font-size: clamp(24px, 4vw, 32px); font-weight: 800; color: #3e2a1c; }
+.lib-opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.lib-opt { padding: 6px; border: 4px solid transparent; border-radius: 20px; background: #fffaf2; box-shadow: 0 5px 0 #e3d3b8; cursor: pointer; }
+.lib-opt img { display: block; width: 100%; aspect-ratio: 1; border-radius: 14px; }
+.lib-opt.right { border-color: #40c057; } .lib-opt.wrong { border-color: #fa5252; animation: libShake .35s; }
+@keyframes libShake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.lib-done h2 { margin: 0; text-align: center; color: #9a2a22; } .lib-done p { margin: 0; text-align: center; font-size: 22px; }
+@media (prefers-reduced-motion: reduce) { .lib-next.pulse, .lib-opt.wrong { animation: none; } }
+
+/* Connect Four: a drop button over each column */
+.c4-drops { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; max-width: min(92vw, 520px); margin: 0 auto 4px; }
+.c4-drop { min-height: 44px; border: 0; border-radius: 12px; background: #efe9ff; color: #5f3dc4; font-size: 20px; cursor: pointer; }
+.c4-drop:focus-visible { outline: 3px solid #7950f2; outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

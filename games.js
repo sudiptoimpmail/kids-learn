@@ -632,8 +632,13 @@ function startC4() {
   const g = Array.from({ length: R6 }, () => Array(C7).fill(0));
   let busy = false, over = false;
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">You are 🔴 · Get four in a row!</div><div class="c4-board">${
-    Array.from({ length: R6 * C7 }, (_, k) => `<div class="c4-cell" data-r="${Math.floor(k / C7)}" data-c="${k % C7}"><i></i></div>`).join('')}</div>`;
+  // a real button per column (tap, keyboard or screen reader), plus a spoken-word record of each move
+  area.innerHTML = `<div class="g-msg">You are 🔴 · Get four in a row!</div>
+    <div class="c4-drops" role="toolbar" aria-label="Pick a column">${Array.from({ length: C7 }, (_, c) => `<button class="c4-drop" data-c="${c}" aria-label="Drop in column ${c + 1}">⬇</button>`).join('')}</div>
+    <div class="c4-board" role="img" aria-label="Connect Four board">${
+    Array.from({ length: R6 * C7 }, (_, k) => `<div class="c4-cell" data-r="${Math.floor(k / C7)}" data-c="${k % C7}" aria-hidden="true"><i></i></div>`).join('')}</div>
+    <div class="sr-only" aria-live="polite" id="c4Live"></div>`;
+  const live = (t) => { const l = $('#c4Live', area); if (l) l.textContent = t; };
   say('Get four in a row!');
   const cell = (r, c) => $(`.c4-cell[data-r="${r}"][data-c="${c}"]`, area);
   const dropRow = (c) => { for (let r = R6 - 1; r >= 0; r--) if (!g[r][c]) return r; return -1; };
@@ -679,12 +684,19 @@ function startC4() {
     }
     return c;
   }
-  area.querySelector('.c4-board').addEventListener('click', (e) => {
-    const t = e.target.closest('.c4-cell'); if (!t || busy || over) return;
-    const c = +t.dataset.c; const r = place(c, ME); if (r == null) return;
-    if (after(r, c, ME)) return;
+  function play(c) {
+    if (busy || over) return;
+    const r = place(c, ME); if (r == null) { live(`Column ${c + 1} is full.`); return; }
+    live(`You dropped in column ${c + 1}.`);
+    if (after(r, c, ME)) { live(over ? $('.g-msg', area).textContent : ''); return; }
     busy = true;
-    later(() => { const bc = botCol(); const br = place(bc, BOT); busy = false; after(br, bc, BOT); }, 650);
+    later(() => { const bc = botCol(); const br = place(bc, BOT); busy = false; live(`Robot dropped in column ${bc + 1}. Your turn.`); after(br, bc, BOT); }, 650);
+  }
+  area.querySelector('.c4-board').addEventListener('click', (e) => { const t = e.target.closest('.c4-cell'); if (t) play(+t.dataset.c); });
+  const drops = [...area.querySelectorAll('.c4-drop')];
+  drops.forEach((b, i) => {
+    b.onclick = () => play(i);
+    b.onkeydown = (e) => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); drops[(i + (e.key === 'ArrowRight' ? 1 : C7 - 1)) % C7].focus(); } };
   });
 }
 
