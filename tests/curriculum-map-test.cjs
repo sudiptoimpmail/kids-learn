@@ -56,6 +56,12 @@ for(const name of names){
   assert.ok(map.GRADES[name]&&map.PROFILES[name],name+' must have a profile');
   validateProgression(map.GRADES[name].progression,name);
   verifyObjectiveEvidence(map.GRADES[name].objectiveEvidence,name);
+  const recommended = map.GRADES[name].practiceFocus;
+  assert.ok(Array.isArray(recommended) && recommended.length >= 1 &&
+    recommended.length <= 5 && new Set(recommended).size === recommended.length,
+    name+': invalid recommended practice categories');
+  assert.ok(recommended.every(id=>!!map.GRADES[name].g[id]),
+    name+': recommended section is outside the selected grade');
   const presentation = map.GRADES[name].presentation;
   assert.ok(presentation && Number.isFinite(presentation.readingScale) && presentation.readingScale > 1 && presentation.readingScale <= 1.6,
     name+' must define a child-readable scale');
