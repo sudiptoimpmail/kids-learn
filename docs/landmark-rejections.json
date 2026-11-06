@@ -1,0 +1,196 @@
+{
+  "schema": 1,
+  "note": "Candidates rejected on sight. A rejected source URL or file hash can never be staged or imported again.",
+  "rejected": [
+    {
+      "id": "amazon",
+      "landmark": "Amazon Rainforest",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Amazon_MODIS.jpg",
+      "sourceSha256": "61049da9feefae8ce603b0a1a597f77472e20068a64db88683619598d67e3a51",
+      "category": "unrecognizable",
+      "reason": "Satellite image: a child cannot recognise a rainforest from orbit",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "cappadocia",
+      "landmark": "Balloons of Cappadocia",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_Cappadocia_from_hot_air_balloon_01.jpg",
+      "sourceSha256": "ea946e5255aaca6365f40b4138016ac002ed0e3a723666ceffbc0885c88fe279",
+      "category": "unrecognizable",
+      "reason": "Tiny balloons against grey sky; no Cappadocia landscape",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "chichen",
+      "landmark": "Chichen Itza",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Atlante,_Chichen_Itza,_Mexique.jpg",
+      "sourceSha256": "50faa5d7a74a55bdded59251606ae921008865c13036666187f7407f427014ad",
+      "category": "wrong-subject",
+      "reason": "Atlante sculpture, not the El Castillo pyramid",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "christ",
+      "landmark": "Christ the Redeemer",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mantegna,_redentore_a_correggio.jpg",
+      "sourceSha256": "a9614b531649490b5a82d1652c6268b4fec9883e26b79445b1706fd55b1c1d94",
+      "category": "not-a-photo",
+      "reason": "Mantegna painting of Christ, not the Rio de Janeiro statue",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "cntower",
+      "landmark": "CN Tower",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:CN_Tower,_Toronto,_Canada_(Unsplash_DJ_kOgH5u0o).jpg",
+      "sourceSha256": "5b5fb576633789b478cc445fbd92626a186e32599a95fed503f77d97ec8b05ce",
+      "category": "unrecognizable",
+      "reason": "Shot straight up from the base; tower shape not recognisable",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "colosseum",
+      "landmark": "Colosseum",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Giovanni_Battista_Piranesi,_The_Colosseum.png",
+      "sourceSha256": "2b17bfbd0fd7f2f2333615238fe7ab26ba61c03038925bb5f5d46b16d34208ba",
+      "category": "not-a-photo",
+      "reason": "Piranesi engraving, not a photograph",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "forbidden",
+      "landmark": "Forbidden City",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Forbidden_City_1918.jpg",
+      "sourceSha256": "bc4486260c71c1e56f643f3749d48b8f022821a391d3b03a361810c29a876020",
+      "category": "wrong-subject",
+      "reason": "Poster for the 1920s film \"The Forbidden City\", not the palace",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "fuji",
+      "landmark": "Mount Fuji",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Red_Fuji_southern_wind_clear_morning.jpg",
+      "sourceSha256": "5df4e100c1290649602fae9d2bbef7f56f72395c0369579c998d03d2cd6705ff",
+      "category": "not-a-photo",
+      "reason": "Hokusai woodblock print, not a photograph",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "grandcanyon",
+      "landmark": "Grand Canyon",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arizona._Grand_Canyon,_photographer_suspended_on_climber%27s_rope_LCCN2012648368.jpg",
+      "sourceSha256": "0763e2ab6ee1c63bb6d44b16419255320366abfba169b228cdea181555ad5244",
+      "category": "wrong-subject",
+      "reason": "Black-and-white photo of a man on a rope in a crevice; canyon not shown",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "hagia",
+      "landmark": "Hagia Sophia",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hagia-Sophia-Laengsschnitt.jpg",
+      "sourceSha256": "878075bc141c081bf20d3543c907e200ea6c7e932efbaf6dd7b4afb2677da9bb",
+      "category": "not-a-photo",
+      "reason": "Architectural cross-section drawing, not the exterior",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "iguazu",
+      "landmark": "Iguazu Falls",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:09.07a_Iguazu_falls.png",
+      "sourceSha256": "baadc76180a459f8bb4501daa75a19ee32f9063cac43e35cb635f5207a905377",
+      "category": "unrecognizable",
+      "reason": "Close-up of falling water; could be any waterfall",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "niagara",
+      "landmark": "Niagara Falls",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Benches_at_Oakes_Garden_Theatre,_Niagara_Falls,_Canada.jpg",
+      "sourceSha256": "61f26ea73eeed6264bb5c7139ffa4327418c5ff2947b6eba4feb53f539c323f4",
+      "category": "wrong-subject",
+      "reason": "Benches with striped shadows at Oakes Garden Theatre; falls not shown",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "pyramid",
+      "landmark": "Great Pyramid of Giza",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Spelterini_Pyramids.jpg",
+      "sourceSha256": "ae5e73dc111fc567689fd4776310169689192ea1fd56b9f70cdb9d851bc46e04",
+      "category": "unrecognizable",
+      "reason": "Grainy black-and-white aerial view; pyramids barely visible",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "reef",
+      "landmark": "Great Barrier Reef",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:GreatBarrierReef-EO.JPG",
+      "sourceSha256": "1e9d97dac7c1677480f25e11e26646c1f6c65fbd39b7c408f8bac71b5f903352",
+      "category": "unrecognizable",
+      "reason": "Satellite image of the coast; reef not recognisable to a child",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "sagrada",
+      "landmark": "Sagrada Familia",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sagrada_Familia_del_pajarito_(Murillo).jpg",
+      "sourceSha256": "789f8f2a4532bb36022deef59aba8ff153de24da5a4b36dbca7b7cd681452afa",
+      "category": "not-a-photo",
+      "reason": "Murillo painting of the Holy Family, not the Barcelona basilica",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "sphinx",
+      "landmark": "Great Sphinx",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Great_Sphinx,_Pyramids_of_Gizeh-1839)_by_David_Roberts,_RA.jpg",
+      "sourceSha256": "7c69208c63b7e1faf208a883e46745f81085343527300203670620a380f510bb",
+      "category": "not-a-photo",
+      "reason": "David Roberts illustration, not a photograph",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "tablemtn",
+      "landmark": "Table Mountain",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cape_Town_(ZA),_Table_Mountain,_Blick_auf_Lion%27s_Head_--_2024_--_2761.jpg",
+      "sourceSha256": "5f157fc08d6bdbf734ec039369438e613c29db532dedf16d2071de38af7c5743",
+      "category": "wrong-subject",
+      "reason": "Lion's Head peak, not Table Mountain's flat top",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "towerbridge",
+      "landmark": "Tower Bridge",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tower_Bridge_Sacramento_edit.jpg",
+      "sourceSha256": "f4d9c56a1e7af004f705da6b8746f0ce9d3f0fc16cc8ed6a4578da3595505e31",
+      "category": "wrong-subject",
+      "reason": "Sacramento Tower Bridge (USA), not Tower Bridge in London",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    },
+    {
+      "id": "venice",
+      "landmark": "Canals of Venice",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Piazzetta_San_Marco_Venice_BLS.jpg",
+      "sourceSha256": "cf34e701a11b676818cf30932b64a14b09bf3903997d2bd0bf4828c0767f3edc",
+      "category": "wrong-subject",
+      "reason": "St Mark's Square at night; no canal in the picture",
+      "checkedBy": "Claude visual identity check",
+      "checkedOn": "2026-11-06"
+    }
+  ]
+}

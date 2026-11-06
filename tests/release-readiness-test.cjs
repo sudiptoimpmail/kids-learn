@@ -19,4 +19,14 @@ assert.equal(report.realOfflinePhotos+report.remainingLandmarkIds.length,39);
 assert.equal(report.manualDeviceAcceptanceVerified,false);
 assert.equal(report.manualMediaReviewVerified,false);
 assert.equal(report.readyForFinalSignoff,false);
+// the gate never opens on photos + model alone: both manual checks must be recorded by a person
+const {evaluate}=require('../scripts/release-readiness.cjs');
+const all={missing:[],bodyModel:true};
+const done={verified:true,by:'Sudipta Das',on:'2026-11-20'};
+assert.equal(evaluate({...all,signoff:{}}).readyForFinalSignoff,false,'complete media without sign-off must not pass');
+assert.equal(evaluate({...all,signoff:{manualMediaReview:done}}).readyForFinalSignoff,false,'device acceptance still required');
+assert.equal(evaluate({...all,signoff:{manualMediaReview:done,manualDeviceAcceptance:{verified:true,by:'',on:'2026-11-20'}}}).readyForFinalSignoff,false,'a sign-off needs a name');
+assert.equal(evaluate({...all,signoff:{manualMediaReview:done,manualDeviceAcceptance:{verified:true,by:'QA',on:'soon'}}}).readyForFinalSignoff,false,'a sign-off needs a date');
+assert.equal(evaluate({...all,signoff:{manualMediaReview:done,manualDeviceAcceptance:done}}).readyForFinalSignoff,true);
+assert.equal(evaluate({missing:['fuji'],bodyModel:true,signoff:{manualMediaReview:done,manualDeviceAcceptance:done}}).readyForFinalSignoff,false);
 console.log('PASS remaining landmark discovery remains review-only; release gaps accurately reported');

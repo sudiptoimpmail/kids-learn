@@ -12,12 +12,14 @@ subprocess.run([sys.executable,str(ROOT/'scripts/prepare-landmark-batch.py')],cw
 source=ROOT/'tests/out/landmark-batch'
 new=json.loads((source/'REVIEW.json').read_text())
 existing={row['id']:row for row in old['candidates']}
+rejected=json.loads((ROOT/'docs/landmark-rejections.json').read_text())['rejected']
+bad={r['sourceUrl'] for r in rejected}|{r['sourceSha256'] for r in rejected}
 dest=ROOT/'assets/landmark-candidates'
 dest.mkdir(exist_ok=True)
 added=0
 for row in new['candidates']:
-    if row['id'] in existing:
-        continue
+    if row['id'] in existing or row['sourceUrl'] in bad or row['sourceSha256'] in bad:
+        continue  # already staged, or rejected on sight before
     if not row['reviewStatus'].startswith('PENDING HUMAN REVIEW'):
         raise ValueError('Review flag missing')
     shutil.copyfile(source/row['file'],dest/row['file'])

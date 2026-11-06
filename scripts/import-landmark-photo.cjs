@@ -5,13 +5,16 @@
 const fs=require('node:fs');
 const path=require('node:path');
 const {dimensions}=require('./landmark-webp.cjs');
-function plan({id,file,record,manifest,landmarks,sw}){
+function plan({id,file,record,manifest,landmarks,sw,rejected=[]}){
  if(!/^[a-z0-9-]+$/.test(id)||!landmarks.LANDMARKS.some(row=>row[0]===id))throw Error('Unknown/unsafe landmark ID');
  if(manifest.ids.includes(id)||manifest.records[id])throw Error('Landmark already enabled: '+id);
  const r=record;
  for(const key of ['sourceUrl','creator','license','reviewedBy','reviewedOn','altReviewed'])
   if(typeof r[key]!=='string'||!r[key].trim())throw Error('Missing reviewed '+key);
  if(!/^https:\/\//.test(r.sourceUrl))throw Error('Source URL must use HTTPS');
+ // a picture rejected on sight (wrong landmark, a painting, unrecognisable) can never be imported
+ const hit=rejected.find(x=>x.sourceUrl===r.sourceUrl||(r.sourceSha256&&x.sourceSha256===r.sourceSha256));
+ if(hit)throw Error('Rejected source for '+hit.landmark+': '+hit.reason);
  if(!manifest.acceptedLicense.includes(r.license))throw Error('Unapproved license');
  if(r.altReviewed!=='yes'||!/^\d{4}-\d{2}-\d{2}$/.test(r.reviewedOn))throw Error('Invalid review metadata');
  if(/CC BY/.test(r.license)&&!r.attribution?.trim())throw Error('Attribution required');
@@ -35,7 +38,8 @@ function main(){
  const landmarks=JSON.parse(fs.readFileSync('data/landmarks.json','utf8')).datasets;
  const sw=fs.readFileSync('sw.js','utf8');
  const record=JSON.parse(fs.readFileSync(recordFile,'utf8'));
- const result=plan({id,file,record,manifest:wrapper.datasets,landmarks,sw});
+ const rejected=JSON.parse(fs.readFileSync('docs/landmark-rejections.json','utf8')).rejected;
+ const result=plan({id,file,record,manifest:wrapper.datasets,landmarks,sw,rejected});
  // All checks finish before any write. The caller must commit the three files.
  fs.mkdirSync(path.dirname(result.destination),{recursive:true});
  fs.copyFileSync(file,result.destination,fs.constants.COPYFILE_EXCL);
