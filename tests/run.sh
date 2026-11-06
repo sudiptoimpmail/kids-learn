@@ -13,5 +13,6 @@ for t in phase1-test phase2-math-test fraction-semantic-answer-test phase3-langu
   echo "== $t"; node "tests/$t.js" || { echo "FAILED: $t" >&2; FAILED=1; }
 done
 node tests/anatomy-explorer-test.cjs || FAILED=1
+node tests/landmark-preview-interaction-test.cjs || FAILED=1
 kill $SERVER
 exit "$FAILED"
