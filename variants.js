@@ -24,21 +24,21 @@
   const addMatch = (level) => {
     const [e] = pick(THINGS);
     const pairs = uniqPairs(() => {
-      const [a, b] = addPair(level);
-      if (level === 1 && (!a || !b)) return [null, null, 'x' + Math.random(), 'x' + Math.random()];
+      let [a, b] = addPair(level);
+      for (let t = 0; level === 1 && (!a || !b) && t < 50; t++) [a, b] = addPair(level);   // Pre-K: two real groups, never 0
       const left = level === 1 ? `<span class="m-sum"><span>${objects(e, a)}</span><b>+</b><span>${objects(e, b)}</span></span>` : `<span class="m-eq">${a} + ${b}</span>`;
       return [left, `<span class="m-num">${a + b}</span>`, `${a}+${b}`, a + b];
-    }, n(level)).filter((p) => p[0]);
+    }, n(level));
     return pairs.length >= 3 ? matchCard('vadd-' + pairsKey(pairs), pairs, 'Match each problem to its answer!', 'Match each problem to its answer!') : null;
   };
   const subMatch = (level) => {
     const [e] = pick(THINGS);
     const pairs = uniqPairs(() => {
-      const [a, b] = subPair(level);
-      if (level === 1 && (!b || a === b)) return [null, null, 'x' + Math.random(), 'x' + Math.random()];
+      let [a, b] = subPair(level);
+      for (let t = 0; level === 1 && (!b || a === b) && t < 50; t++) [a, b] = subPair(level);   // something is taken, something is left
       const left = level === 1 ? `<span class="m-sum">${Array.from({ length: a }, (_, i) => `<span class="${i >= a - b ? 'gone' : ''}">${e}</span>`).join('')}</span>` : `<span class="m-eq">${a} − ${b}</span>`;
       return [left, `<span class="m-num">${a - b}</span>`, `${a}-${b}`, a - b];
-    }, n(level)).filter((p) => p[0]);
+    }, n(level));
     return pairs.length >= 3 ? matchCard('vsub-' + pairsKey(pairs), pairs, 'Match each problem to its answer!', 'Match each problem to its answer!') : null;
   };
   // times tables by level: 2s, 5s and 10s first, then up to 5, then the full table (never × 1 from level 3)
@@ -108,6 +108,7 @@
     const c = CATEGORIES.find((x) => x.id === id);
     if (!c || !c.gen) continue;
     const base = c.gen;
+    c.baseGen = base;   // the plain pick-one-answer generator (placement and choice-integrity tests use it)
     c.gen = (level) => (Math.random() < share && (() => { try { return make(level); } catch { return null; } })()) || base(level);
   }
 })();

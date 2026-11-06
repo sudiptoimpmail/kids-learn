@@ -59,7 +59,7 @@ function startPlacement() {
   // never consume a plan slot and silently introduce a fifth fallback section.
   const used = new Set();
   placePlan = chosen.flatMap((id) => {
-    const lv = gradeRange(state.grade, id)[1], gen = CATEGORIES.find((c) => c.id === id).gen;
+    const lv = gradeRange(state.grade, id)[1], cat = CATEGORIES.find((c) => c.id === id), gen = cat.baseGen || cat.gen;
     return Array.from({length: 2}, () => {
       let q, identity;
       for (let tries = 0; tries < 100; tries++) {
@@ -88,7 +88,7 @@ function genPlacement() {
   if (placementRunning) throw new Error('Placement plan exhausted during an assessment');
   const id = PLACE_POOL.find((section) => state.grade && gradeRange(state.grade, section)) || 'add';
   const lv = state.grade && gradeRange(state.grade, id) ? gradeRange(state.grade, id)[1] : 1;
-  const q = CATEGORIES.find((c) => c.id === id).gen(lv);
+  const cat = CATEGORIES.find((c) => c.id === id), q = (cat.baseGen || cat.gen)(lv);
   q.placeSection = id; q.assessedLevel = lv; q.key = 'place-preview-' + q.key;
   return q;
 }
