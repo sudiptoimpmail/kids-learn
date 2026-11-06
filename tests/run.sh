@@ -7,6 +7,7 @@ FAILED=0
 node tests/original-media-test.cjs || FAILED=1
 node tests/curriculum-map-test.cjs || FAILED=1
 node scripts/audit-content.cjs || FAILED=1
+node tests/editorial-content-test.cjs || FAILED=1
 for t in phase1-test phase2-math-test fraction-semantic-answer-test phase3-language-test phase4-world-test phase5-art-test phase6-levels-test phase7-editions-test placement-test question-integrity-test grade-ladder-test explorer-grade23-test explorer-grade-routing-test explorer-math-answer-audit grade-route-browser-test grade23-content-test generated-curriculum-audit grade-ux-and-media-test reading-text-hierarchy-test content-assets-test content-pack-test visual-library-test curriculum-depth-test grade-pinball-layout-test ipad-polish-test qa-navigation-test workbook-coverage-test workbook-test issue-audit-test g1readtest child-regressions learningtest brain-games-test kidtest lifetest pintest tracetest tracetest2 tracetest3 dashtest questtest badbackup reviewtest swtest voiceaudit; do
   echo "== $t"; node "tests/$t.js" || { echo "FAILED: $t" >&2; FAILED=1; }
 done

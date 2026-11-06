@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "description": "Source-grounded editorial reviews for authored answer integrity. These fixtures document specific corrections; they are not a full scientific accuracy guarantee.",
+  "reviews": [
+    {
+      "bank": "science",
+      "question": "Which product is made to protect skin from the sun's UV rays?",
+      "answer": "🧴 sunscreen",
+      "excludedChoices": [
+        "☂️ an umbrella"
+      ],
+      "source": "https://www.aad.org/public/everyday-care/sun-protection/shade-clothing-sunscreen/practice-safe-sun",
+      "reason": "Umbrellas can also provide shade; the original generic sun-safety prompt had two valid answers."
+    },
+    {
+      "bank": "science",
+      "question": "What colorful arc can sunlight and raindrops sometimes make?",
+      "answer": "🌈 a rainbow",
+      "source": "https://www.usgs.gov/water-science-school/science/rainbows-water-and-light",
+      "reason": "Sunshine after rain does not guarantee a rainbow."
+    },
+    {
+      "bank": "science",
+      "question": "When water boils, it turns into…",
+      "answer": "♨️ water vapor (an invisible gas)",
+      "source": "https://weather.metoffice.gov.uk/learn-about/weather/types-of-weather/clouds",
+      "reason": "Water vapor is invisible; visible mist consists of droplets."
+    },
+    {
+      "bank": "country:uk",
+      "question": "Which body of water separates England and France?",
+      "answer": "the English Channel",
+      "source": "https://www.dover.gov.uk/News/Press-Releases/2023/New-Dover-Museum-Exhibition-Charts-History-of-Channel-Crossings.aspx",
+      "reason": "The English Channel is not itself named a sea."
+    },
+    {
+      "bank": "stories",
+      "passageContains": "When water boils, some of it changes",
+      "question": "What forms when boiling water changes into a gas?",
+      "answer": "water vapor",
+      "evidence": "invisible water vapor",
+      "forbiddenPassage": [
+        "Steam is a gas you can see"
+      ],
+      "source": "https://www.usgs.gov/glossary/glossary-water-cycle-terms",
+      "reason": "Distinguishes gaseous water from visible condensed droplets."
+    },
+    {
+      "bank": "stories",
+      "passageContains": "Sea turtles hatch from eggs",
+      "question": "What helps sea turtle hatchlings find the ocean?",
+      "answer": "the brighter, open ocean horizon",
+      "evidence": "brighter, open horizon over the ocean",
+      "forbiddenPassage": [
+        "guided by the light of the moon"
+      ],
+      "source": "https://myfwc.com/research/wildlife/sea-turtles/threats/artificial-lighting/",
+      "reason": "Hatchlings orient toward the brighter open horizon, including on moonless nights."
+    },
+    {
+      "bank": "stories",
+      "passageContains": "The bee hummingbird is",
+      "question": "Why are they called hummingbirds?",
+      "answer": "their wings make a humming sound",
+      "evidence": "The bee hummingbird is the smallest bird species",
+      "forbiddenPassage": [
+        "Hummingbirds are the smallest birds."
+      ],
+      "source": "https://nationalzoo.si.edu/migratory-birds/hummingbirds",
+      "reason": "The bee hummingbird is the smallest species, not every hummingbird."
+    },
+    {
+      "bank": "stories",
+      "passageContains": "Spiders are not insects.",
+      "question": "What is a web made of?",
+      "answer": "silk",
+      "evidence": "Some spiders build silk webs",
+      "forbiddenPassage": [
+        "Most spiders spin webs"
+      ],
+      "source": "https://sercblog.si.edu/deadly-tricks-of-spiders-without-webs/",
+      "reason": "Some species hunt rather than build prey-capture webs."
+    },
+    {
+      "bank": "stories",
+      "passageContains": "Honeybees live together",
+      "question": "Which bee normally lays eggs in the hive?",
+      "answer": "the queen bee",
+      "evidence": "The queen bee normally lays the eggs",
+      "forbiddenPassage": [
+        "The queen bee lays all the eggs"
+      ],
+      "source": "https://naturalhistory.si.edu/visit/accessibility/audio-and-visual-description/insect-zoo-audio-description-tour",
+      "reason": "Use normal colony behavior rather than an absolute claim."
+    },
+    {
+      "bank": "stories",
+      "passageContains": "Tropical rainforests are warm forests",
+      "question": "Why do people protect rainforests?",
+      "answer": "many plants, animals and medicines are there",
+      "evidence": "many different kinds of plants and animals",
+      "forbiddenPassage": [
+        "more than half of all animal and plant kinds"
+      ],
+      "source": "https://www.worldwildlife.org/places/amazon/",
+      "reason": "Avoid an unsupported precise fraction of Earth's biodiversity."
+    }
+  ]
+}

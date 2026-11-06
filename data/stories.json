@@ -1019,7 +1019,7 @@
       ],
       [
         5,
-        "Spiders are not insects. Insects have six legs, but spiders have eight. Most spiders spin webs made of silk. The sticky web catches flies and other bugs. Spiders help people by eating pests.",
+        "Spiders are not insects. Insects have six legs, but spiders have eight. Some spiders build silk webs to catch insects. Other spiders hunt without webs. Spiders help people by eating pests.",
         [
           [
             "How many legs does a spider have?",
@@ -1079,7 +1079,7 @@
       ],
       [
         5,
-        "The Sahara is the largest hot desert in the world. It gets very little rain. In the day, the sand can be hotter than a stove. At night, it can get cold. Camels can live there because they store fat in their humps.",
+        "The Sahara is the largest hot desert in the world. It gets very little rain. During the day, the sand can become very hot. At night, the desert can get cold. Camels have several adaptations for desert life, including humps that store fat.",
         [
           [
             "What is the Sahara?",
@@ -1090,7 +1090,7 @@
             ]
           ],
           [
-            "Why can camels live there?",
+            "Which adaptation helps camels survive in the desert?",
             [
               "they store fat in their humps",
               "they can fly",
@@ -1131,7 +1131,7 @@
       ],
       [
         5,
-        "Water can be a solid, a liquid or a gas. Ice is water that is frozen solid. When ice warms up, it melts into liquid water. When water gets very hot, it turns into steam. Steam is a gas you can see above a hot pot.",
+        "Water can be a solid, a liquid or a gas. Ice is water that is frozen solid. When ice warms up, it melts into liquid water. When water boils, some of it changes into invisible water vapor. The white mist above a hot pot is made of tiny liquid water droplets that form as vapor cools.",
         [
           [
             "What is ice?",
@@ -1142,11 +1142,11 @@
             ]
           ],
           [
-            "What happens when water gets very hot?",
+            "What forms when boiling water changes into a gas?",
             [
-              "it turns into steam",
-              "it turns into ice",
-              "it turns into sand"
+              "water vapor",
+              "ice",
+              "sand"
             ]
           ]
         ]
@@ -1295,7 +1295,7 @@
       ],
       [
         5,
-        "Hummingbirds are the smallest birds. Their wings beat so fast that they make a humming sound. They can fly forward, backward and even upside down. They drink nectar from flowers with their long beaks. Some hummingbirds fly thousands of miles each year.",
+        "The bee hummingbird is the smallest bird species in the world. Other hummingbirds are also small. Their wings beat so fast that they make a humming sound. They can fly forward, backward and even upside down. They drink nectar from flowers with their long beaks. Some hummingbirds travel long distances each year.",
         [
           [
             "Why are they called hummingbirds?",
@@ -1339,7 +1339,7 @@
       ],
       [
         5,
-        "The Moon is about a quarter the size of Earth. It has no air and no water we can drink. Astronauts first walked on the Moon in 1969. Their footprints are still there because there is no wind. Someday people may visit again.",
+        "The Moon is about one-quarter as wide as Earth. It has almost no atmosphere and no water we can drink. Astronauts first walked on the Moon in 1969. Their footprints can last a very long time because the Moon has almost no wind or rain. Someday people may visit again.",
         [
           [
             "Why are the footprints still there?",
@@ -1481,7 +1481,7 @@
       ],
       [
         6,
-        "Bats are the only mammals that can truly fly. Their wings are made of thin skin stretched over long finger bones. Most bats come out at night to eat insects. To find food in the dark, they make high sounds and listen for the echoes. This is called echolocation. One bat can eat hundreds of mosquitoes in a single hour.",
+        "Bats are the only mammals that can truly fly. Their wings are made of thin skin stretched over long finger bones. Many bats are active at night and eat insects. Some use high sounds and listen for the echoes to find food in the dark. This is called echolocation. Some insect-eating bats catch mosquitoes and other pests.",
         [
           [
             "What are bat wings made of?",
@@ -1541,7 +1541,7 @@
       ],
       [
         6,
-        "Rainforests are warm, wet forests that get rain almost every day. They cover only a small part of Earth, but more than half of all animal and plant kinds live there. The tall trees make a roof of leaves called the canopy. Monkeys, birds and frogs live high up in the canopy. Many medicines come from rainforest plants. That is why people work hard to protect them.",
+        "Tropical rainforests are warm forests that receive a lot of rain each year. They cover a small part of Earth's land but support many different kinds of plants and animals. The tall trees make a roof of leaves called the canopy. Monkeys, birds and frogs can live high up in the canopy. Some important medicines come from rainforest plants. Protecting these habitats helps protect living things.",
         [
           [
             "What is the canopy?",
@@ -1653,10 +1653,10 @@
       ],
       [
         6,
-        "Honeybees live together in a hive that can hold thousands of bees. The queen bee lays all the eggs. Worker bees do many jobs, like cleaning, building wax combs and collecting nectar. When a worker finds good flowers, it does a special dance. The dance tells the other bees which way to fly and how far to go.",
+        "Honeybees live together in a hive that can hold thousands of bees. The queen bee normally lays the eggs. Worker bees do many jobs, like cleaning, building wax combs and collecting nectar. When a worker finds good flowers, it does a special dance. The dance can tell other bees which way to fly and how far to go.",
         [
           [
-            "Who lays all the eggs?",
+            "Which bee normally lays eggs in the hive?",
             [
               "the queen bee",
               "the worker bees",
@@ -1705,12 +1705,12 @@
       ],
       [
         6,
-        "Sea turtles hatch from eggs buried in the sand. When the babies hatch, usually at night, they dig out of the nest together. They crawl toward the ocean, guided by the light of the moon on the water. Bright lights from buildings can confuse them. That is why some beach towns turn off lights during nesting season. Only a few hatchlings grow up, so every one counts.",
+        "Sea turtles hatch from eggs buried in beach sand. The babies often come out of their nests at night. On a naturally dark beach, they crawl toward the brighter, open horizon over the ocean and away from darker dunes. Bright lights from buildings can lead them in the wrong direction. Some beach towns turn off or shield lights during nesting season. Only a few hatchlings survive to adulthood, so protecting their route to the sea matters.",
         [
           [
-            "What guides baby turtles to the ocean?",
+            "What helps sea turtle hatchlings find the ocean?",
             [
-              "moonlight on the water",
+              "the brighter, open ocean horizon",
               "the smell of fish",
               "the wind"
             ]
