@@ -22,8 +22,11 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     entries = []
     for landmark_id, (filename, page, creator) in SOURCES.items():
-        url = ('https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Statue_of_Liberty_front_shot.JPG/960px-Statue_of_Liberty_front_shot.JPG' if landmark_id == 'liberty' else
-               'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Eiffel_tower_in_the_morning.jpg/960px-Eiffel_tower_in_the_morning.jpg')
+        origin = ('upload.wikimedia.org/wikipedia/commons/thumb/7/71/Statue_of_Liberty_front_shot.JPG/960px-Statue_of_Liberty_front_shot.JPG' if landmark_id == 'liberty' else
+                  'upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Eiffel_tower_in_the_morning.jpg/960px-Eiffel_tower_in_the_morning.jpg')
+        # Use a public caching image proxy to avoid Wikimedia's runner-IP 429.
+        # Provenance always points to the original Wikimedia Commons file page.
+        url = 'https://wsrv.nl/?url=' + quote(origin, safe='') + '&output=jpg'
         request = Request(url, headers={'User-Agent': 'KidsLearnEducationalMedia/1.0 (GitHub Actions review preparation)', 'Accept': 'image/jpeg,image/png,image/webp'})
         for attempt in range(3):
             try:
