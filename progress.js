@@ -304,7 +304,7 @@ function renderDashboard() {
   const week = [];
   for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); const k = dayKey(d); week.push([d, st.days[k] || { q: 0, first: 0, secs: 0, play: 0, hints: 0, cats: {} }]); }
   const sum = (f) => week.reduce((a, [, x]) => a + f(x), 0);
-  const q7 = sum((x) => x.q), f7 = sum((x) => (x.alone != null ? x.alone : x.first)), traced7 = sum((x) => x.traced || 0), learnMin = Math.round(sum((x) => x.secs) / 60), playMin = Math.round(sum((x) => x.play) / 60), days7 = week.filter(([, x]) => isLearningDay(x)).length, hints7 = sum((x) => x.hints), brain7 = sum((x) => x.brain || 0);
+  const q7 = sum((x) => x.q), f7 = sum((x) => (x.alone != null ? x.alone : x.first)), traced7 = sum((x) => x.traced || 0), learnSecs = sum((x) => x.secs), learnMin = Math.round(learnSecs / 60), learnShow = learnSecs > 0 && learnSecs < 60 ? '<1' : learnMin, playMin = Math.round(sum((x) => x.play) / 60), days7 = week.filter(([, x]) => isLearningDay(x)).length, hints7 = sum((x) => x.hints), brain7 = sum((x) => x.brain || 0);
   const maxQ = Math.max(10, ...week.map(([, x]) => x.q));
   const goal = DAILY_GOAL();
   $('#dashTop').innerHTML = `
@@ -312,7 +312,7 @@ function renderDashboard() {
       <div class="dc"><b>${q7}</b><small>cards answered</small></div>
       <div class="dc"><b>${q7 ? Math.round(f7 / q7 * 100) : 0}%</b><small>right on their own (no hint)</small></div>
       <div class="dc"><b>${days7}<small>/7</small></b><small>learning days${traced7 ? ` · ${traced7} letters traced` : ''}</small></div>
-      <div class="dc"><b>${learnMin}<small> min</small></b><small>learning · ${playMin} min play</small></div>
+      <div class="dc"><b>${learnShow}<small> min</small></b><small>learning · ${playMin} min play</small></div>
        <div class="dc"><b>${brain7}</b><small>brain puzzles solved</small></div>
     </div>
     <div class="dash-week">${week.map(([d, x]) => `<div class="bar-col"><div class="bar" style="height:${Math.round(x.q / maxQ * 100)}%"><span class="bar-ok" style="height:${x.q ? Math.round((x.alone != null ? x.alone : x.first) / x.q * 100) : 0}%"></span></div>
@@ -346,17 +346,15 @@ function renderDashboard() {
   const coveredPct = authoredCatalog.length
     ? Math.round(attempted.length/authoredCatalog.length*100) : 0;
   const coverageHTML = authoredCatalog.length
-    ? `<div class="ds"><h3>Authored objective coverage</h3>
-      <p><b>${attempted.length} of ${authoredCatalog.length}</b> tagged objectives tried (${coveredPct}%).</p>
-      <p class="note">This measures access to authored practice, not grade completion.
-        Untagged games still contribute to the game-level progress below.</p>
-      ${notYet.length ? `<p class="note">${notYet.length} tagged objectives not yet sampled.</p>` : ''}
+    ? `<div class="ds"><h3>Practice goals tried</h3>
+      <p><b>${attempted.length} of ${authoredCatalog.length}</b> of this grade's practice goals tried (${coveredPct}%).</p>
+      ${notYet.length ? `<p class="note">${notYet.length} still to try.</p>` : ''}
       ${nextNew ? `<button class="big-btn small" id="dashExploreObjective"
         data-category="${esc(nextNew.cat)}" data-objective="${esc(nextNew.objective)}"
         aria-label="Explore ${esc(objectiveLabel(nextNew.objective))}">
         Explore new objective: ${esc(objectiveLabel(nextNew.objective))}
       </button>` : ''}</div>`
-    : '<div class="ds"><h3>Authored objective coverage</h3><p class="note">This grade currently has game-level progress; no tagged objectives are available for coverage tracking yet.</p></div>';
+    : '';
   const objectiveItem = row => {
     const category = CATEGORIES.find(c => c.id === row.cat);
     const cards = Number.isInteger(row.n) && row.n >= 0 ? row.n : row.recentCards;
@@ -513,15 +511,27 @@ function questFor() {
   save();
   return state.quest;
 }
+// names of what today's quest practised, for the All done line
+const questNames = (q) => q.steps.map((s) => (s.cat === 'trace' ? 'Tracing' : (CATEGORIES.find((x) => x.id === s.cat) || { title: s.cat }).title));
+// one obvious next step for the child: start, keep going, open the gift, or done for today
+function questGoHTML(q, nextI, all) {
+  if (all && q.gift) return `<div class="quest-done">✅ <b>All done for today!</b> <span>You practised ${questNames(q).join(', ')}.</span></div>`;
+  if (all) return '<button id="questGo" class="quest-go">🎁 Open your gift!</button>';
+  const started = q.steps.some((s) => s.done);
+  return `<button id="questGo" class="quest-go">▶ ${started ? 'Keep going' : "Start today's 10 minutes"}</button>`;
+}
 function renderQuest() {
   const box = $('#questBox'); if (!box) return;
   const q = questFor(), doneN = q.steps.filter((s) => s.done).length, all = doneN === q.steps.length;
   const nextI = q.steps.findIndex((s) => !s.done);
   box.innerHTML = `<div class="quest-head"><b>🗺️ Today's Quest</b><span class="quest-checks">${q.steps.map((s) => `<i class="${s.done ? 'on' : ''}">✓</i>`).join('')}<i class="gift ${all ? (q.gift ? 'opened' : 'ready') : ''}">🎁</i></span></div>
+    ${questGoHTML(q, nextI, all)}
     <div class="quest-steps">${q.steps.map((s, i) => {
       const c = s.cat === 'trace' ? { icon: '✍️', title: 'Tracing', color: '#f76707' } : CATEGORIES.find((x) => x.id === s.cat) || { icon: '⭐', title: s.cat, color: '#8f6bff' };
       return `<button class="quest-step ${s.done ? 'done' : ''} ${i === nextI ? 'next' : ''}" data-i="${i}" style="--c:${c.color}"><span class="qs-ico">${c.icon}</span><span class="qs-t">${c.title}</span><span class="qs-why">${{ 'warm-up': 'Warm up', practice: 'Practice', math: 'Math', reading: 'Reading', discover: 'Discover', thinking: 'Think', tracing: 'Write' }[s.why] || ''}</span>${s.done ? '<span class="qs-ok">✓</span>' : ''}</button>`;
     }).join('')}${all ? `<button class="quest-step gift-step ${q.gift ? 'done' : 'next'}" data-gift="1"><span class="qs-ico">🎁</span><span class="qs-t">${q.gift ? 'Gift opened!' : 'Open your gift!'}</span></button>` : ''}</div>`;
+  const go = $('#questGo', box);
+  if (go) go.onclick = () => { sfx.tap(); if (all) { if (!q.gift) openQuestGift(); } else startQuestStep(nextI); };
   $$('.quest-step', box).forEach((b) => (b.onclick = () => {
     sfx.tap();
     if (b.dataset.gift) return openQuestGift();
@@ -557,7 +567,7 @@ function openQuestGift() {
   say(['Surprise!', givesPlay ? 'Five stars, a new sticker, and play time!' : 'Five stars and a new sticker!']);
   const d = document.createElement('div'); d.className = 'time-up quest-gift';
   d.innerHTML = `<div class="tu-box"><div class="gift-open">🎁</div><div class="gift-items"><span>⭐ +5</span><span class="gs">${sticker}</span>${givesPlay ? '<span>🎮 Play time</span>' : ''}</div>
-    <h2>Quest complete!</h2><p>${state.quests} quest${state.quests === 1 ? '' : 's'} finished so far</p>
+    <h2>All done for today!</h2><p class="gift-learned">You practised ${questNames(q).join(', ')}.</p><p>${state.quests} quest${state.quests === 1 ? '' : 's'} finished so far</p>
     <div class="res-btns">${canPlay ? '<button class="big-btn ico" data-a="play" aria-label="Play now">🎮 Play</button>' : ''}<button class="big-btn alt ico" data-a="home" aria-label="Home">🏠 Home</button></div></div>`;
   document.body.appendChild(d);
   if (canPlay) d.querySelector('[data-a="play"]').onclick = () => { d.remove(); openPlayZone(); };

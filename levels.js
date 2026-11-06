@@ -43,7 +43,13 @@ const CURRICULUM_AREAS = {
   in: { name: 'NCERT (CBSE)', add: 'Maths Mela / Joyful Mathematics: addition', sub: 'Maths Mela / Joyful Mathematics: subtraction', story: 'Maths Mela: word problems', numsense: 'Maths Mela: numbers and place value', frac: 'Maths Mela: parts and wholes', measure: 'Maths Mela: measurement, data and money', clock: 'Maths Mela: time', mul: 'Maths Mela: multiplication', div: 'Maths Mela: sharing and division', shape2: 'Maths Mela: shapes', cmp: 'Joyful Mathematics: comparing numbers', phonics: 'Mridang: sounds and letters', cvc: 'Mridang: reading words', sight: 'Mridang: word reading', spell: 'Santoor: spelling', sent: 'Santoor: reading with understanding (NIPUN)', words: 'Santoor: word study', gp: 'Santoor: grammar and punctuation', vocab: 'Santoor: vocabulary', sci: 'EVS — Our Wondrous World', community: 'EVS — Our Wondrous World (family, community)', region: 'EVS: my state', home: 'EVS: India' },
 };
 CURRICULUM_AREAS.ie = { ...CURRICULUM_AREAS.uk, name: 'Primary Curriculum (Ireland)', region: 'SESE Geography: my province', home: 'SESE Geography: Ireland', community: 'SESE · SPHE: my community' };
-function curriculumArea(id) { const c = CURRICULUM_AREAS[levelsCC()] || CURRICULUM_AREAS.us; return c[id] || ''; }
+// show a standard only for the child's own grade: a Pre-K child's Adding is not "2.NBT · 3.NBT add within 1000"
+function curriculumArea(id) {
+  const c = CURRICULUM_AREAS[levelsCC()] || CURRICULUM_AREAS.us, s = c[id] || '';
+  if (!/\b[K1-3]\.[A-Z]/.test(s)) return s;                     // plain curriculum names fit every grade
+  const tag = { k: 'K', g1: '1', g2: '2', g3: '3' }[state.grade];
+  return tag && new RegExp('\\b' + tag + '\\.[A-Z]').test(s) ? s : '';
+}
 
 /* ---------- quick placement check: 8 cards at the top of the grade ----------
    Two cards from each of four core sections. Both right first time → that section starts
