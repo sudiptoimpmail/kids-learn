@@ -183,13 +183,40 @@ function renderDashboard() {
     <div class="dash-week">${week.map(([d, x]) => `<div class="bar-col"><div class="bar" style="height:${Math.round(x.q / maxQ * 100)}%"><span class="bar-ok" style="height:${x.q ? Math.round((x.alone != null ? x.alone : x.first) / x.q * 100) : 0}%"></span></div>
       ${x.q >= goal ? '<i class="goal">✅</i>' : ''}<small>${x.q || ''}</small><em>${d.toLocaleDateString(undefined, { weekday: 'short' }).slice(0, 2)}</em></div>`).join('')}</div>
     <div class="dash-legend"><span class="lg ok"></span> right on their own <span class="lg all"></span> all cards · ✅ daily goal (${goal}) reached · 🔥 streak: ${dayStreak()} day${dayStreak() === 1 ? '' : 's'}</div>`;
-  // skills
+  // Display verified learning objectives separately from generic game levels.
+  // Old profiles need no migration: they simply have no objective records yet.
+  const objectiveRows = Object.values(st.objectives || {})
+    .filter(row => row && row.grade === state.grade &&
+      row.cat && gradeRange(state.grade, row.cat) &&
+      typeof row.objective === 'string' && row.objective.trim())
+    .map(row => ({ ...row, ...objectiveState(row) }));
+  const objectiveGood = objectiveRows.filter(row => row.s === 'mastered')
+    .sort((a,b) => b.acc-a.acc);
+  const objectiveWeak = objectiveRows.filter(row => row.s === 'learning')
+    .sort((a,b) => a.acc-b.acc);
+  const objectiveDeveloping = objectiveRows.filter(row => row.s === 'practicing')
+    .sort((a,b) => a.acc-b.acc);
+  const objectiveLabel = value => String(value).replaceAll('-', ' ').replace(/^./, x => x.toUpperCase());
+  const objectiveItem = row => {
+    const category = CATEGORIES.find(c => c.id === row.cat);
+    return `<li><span>${esc(objectiveLabel(row.objective))}<small>${esc(category?.title || row.cat)}</small></span><small>${Math.round(row.acc*100)}% · ${row.n} cards</small></li>`;
+  };
+  const objectivesHTML = objectiveRows.length
+    ? `<div class="ds"><h3>Learning objectives · ${esc(gradeName(state.grade))}</h3>
+       <p class="note">Based on authored questions tagged with a specific learning objective. Untagged questions still count toward game progress.</p>
+       ${objectiveGood.length ? `<h4>Mastered</h4><ul>${objectiveGood.slice(0,6).map(objectiveItem).join('')}</ul>` : ''}
+       ${objectiveWeak.length ? `<h4>Needs practice</h4><ul>${objectiveWeak.slice(0,6).map(objectiveItem).join('')}</ul>` : ''}
+       ${objectiveDeveloping.length ? `<h4>Developing</h4><ul>${objectiveDeveloping.slice(0,6).map(objectiveItem).join('')}</ul>` : ''}
+       ${objectiveRows.some(row => row.s === 'new') ? '<p class="note">More practice is needed before some objectives can be assessed.</p>' : ''}
+       </div>`
+    : '';
+  // Existing game-level summaries are kept for the large untagged question banks.
   const skills = Object.entries(st.skills).map(([k, sk]) => { const [cat, lv] = k.split(':'); return { cat, lv: +lv, name: skillName(cat, +lv), ...skillState(sk), n: sk.n, last: sk.last }; });
   const good = skills.filter((s) => s.s === 'mastered').sort((a, b) => b.acc - a.acc);
   const weak = skills.filter((s) => s.s === 'learning').sort((a, b) => a.acc - b.acc);
   const going = skills.filter((s) => s.s === 'practicing');
   const row = (s) => `<li><span>${s.name}</span><small>${(CATEGORIES.find((c) => c.id === s.cat) || {}).icon || ''} ${Math.round(s.acc * 100)}%</small></li>`;
-  $('#dashSkills').innerHTML = `
+  $('#dashSkills').innerHTML = objectivesHTML + `
     <div class="ds good"><h3>🌟 Doing well</h3>${good.length ? `<ul>${good.slice(0, 8).map(row).join('')}</ul>` : '<p class="note">Skills show here after 8 or more cards with mostly right answers.</p>'}</div>
     <div class="ds weak"><h3>🧩 Needs practice</h3>${weak.length ? `<ul>${weak.slice(0, 8).map(row).join('')}</ul>` : '<p class="note">Nothing stuck right now. 👍</p>'}</div>
     ${going.length ? `<div class="ds"><h3>📈 Getting there</h3><ul>${going.slice(0, 8).map(row).join('')}</ul></div>` : ''}`;
@@ -200,7 +227,8 @@ function renderDashboard() {
     g1: ['sent','add','numsense'], g2: ['sent','numsense','sci'],
     g3: ['sent','mul','sci']
   };
-  const priority = [...weak,...going].filter(x=>gradeRange(state.grade,x.cat)).map(x=>x.cat);
+  const priority = [...objectiveWeak,...objectiveDeveloping,...weak,...going]
+    .filter(x=>gradeRange(state.grade,x.cat)).map(x=>x.cat);
   const candidates = [...new Set([...priority,...(defaults[state.grade]||defaults.k)])]
     .filter(id=>gradeRange(state.grade,id)).slice(0,3);
   const practiceTips = {
