@@ -189,16 +189,27 @@
     </header>
     <div id="dashKids" class="kid-chips"></div>
     <div class="panel dash">
-      <div id="dashSummary" class="dash-summary"></div>
-      <h3>Last 7 days</h3>
-      <div id="dashTop"></div>
-      <div id="dashSkills" class="dash-skills"></div>
-      <h3>Recommended next activities</h3>
-      <div id="dashNext" class="dash-next" aria-label="Recommended next learning activities"></div>
-      <h3>Games and levels</h3>
+      <div id="dashSummary" class="dash-summary" aria-live="polite"></div>
+      <div id="dashGrade" class="dash-grade" aria-label="Expected skills and learning evidence"></div>
+      <details class="dash-fold" id="dashWeekDetails">
+        <summary><b>Last 7 days</b> <small id="dashWeekSummary"></small></summary>
+        <div id="dashTop"></div>
+      </details>
+      <details class="dash-fold" id="dashEvidenceDetails">
+        <summary><b>Detailed learning activity history</b> <small>More practice and objective information</small></summary>
+        <div id="dashSkills" class="dash-skills"></div>
+      </details>
+      <details class="dash-fold" id="dashPracticeDetails">
+        <summary><b>Practice activities in the app</b> <small>Three suggestions to try together</small></summary>
+        <div id="dashNext" class="dash-next" aria-label="Recommended next learning activities"></div>
+      </details>
+      <h3 class="dash-level-heading">Current challenge levels</h3>
+      <p class="note small">These are game difficulty settings, not a score for grade-level learning. Arcade games are not included.</p>
       <div id="dashSubjects" class="dash-subjects"></div>
-      <label class="lvrow">Daily goal (cards a day)<select id="dashGoal"><option>10</option><option>15</option><option>20</option><option>30</option><option>40</option></select></label>
-      <p class="note small">Kept only on this device. "Right on first try" counts cards answered correctly without a wrong tap; a skill is "doing well" after 8+ recent cards at 85% or more, and "needs practice" below 70%.</p>
+      <details class="dash-fold"><summary>Parent controls and scoring notes</summary>
+        <label class="lvrow">Daily goal (cards a day)<select id="dashGoal"><option>10</option><option>15</option><option>20</option><option>30</option><option>40</option></select></label>
+        <p class="note small">Data is stored only on this device. Independent means right on the first attempt without a hint. Skill progress is estimated from recent answers and is not a standardized grade-level assessment.</p>
+      </details>
     </div>
   </section>
 
@@ -256,8 +267,13 @@
       </div>
       <p id="voiceStatus" class="note small"></p>
       <div class="field" id="contentPacksSettings"><b>Learning packs</b><small>All included lessons work offline. Purchased extra lessons can be saved on this device for offline play. Children never see purchase prompts.</small><p id="contentPacksStatus" class="note small" role="status"></p><button id="contentPacksSync" type="button" class="big-btn alt small" hidden>⬇ Download purchased lessons</button></div>
-      <div class="field">Level for each game <small>(goes up automatically after a great round)</small></div>
-      <div id="levels" class="levels"></div>
+      <div class="field"><b>Difficulty settings</b><small>(usually adjust automatically with practice; change these only when needed)</small></div>
+      <details id="settingsLearningLevels" class="settings-level-fold"><summary>Learning activity levels <small id="settingsLearningSummary">Grade-based starting steps</small></summary>
+        <div id="levels" class="levels"></div>
+      </details>
+      <details id="settingsBrainLevels" class="settings-level-fold"><summary>Brain Game levels <small id="settingsBrainSummary">Separate from arcade play</small></summary>
+        <div id="brainLevels" class="levels"></div>
+      </details>
       <div id="testSection" class="test-box" hidden>
         <label class="field row">🧪 Test mode <small>(shows answers, skip buttons, every game, play zone always open)</small><input id="testMode" type="checkbox"></label>
         <div id="testInfo" class="note small"></div>
