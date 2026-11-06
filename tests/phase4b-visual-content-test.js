@@ -74,6 +74,15 @@ const {chromium} = require('playwright');
           require(svg.getBoundingClientRect().width<=article.clientWidth+2,
             'SVG bigger than card in '+q.id+' at '+viewport.width+'px');
           require(!article.querySelector('script,iframe'),'Unsafe visual content: '+q.id);
+          const details=article.querySelector('details.explorer-reasoning');
+          if(q.reasoningSteps){
+            require(!!details && details.querySelectorAll('li').length===3,
+              'Missing 3-step interactive reasoning '+q.id);
+            if(details){details.open=true;
+              require(details.open && details.querySelector('summary')?.textContent.includes('steps'),
+                'Reasoning disclosure cannot open '+q.id);
+              details.open=false;}
+          }
         }
       }
       article.remove();
