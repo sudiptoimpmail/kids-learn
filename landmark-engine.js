@@ -8,6 +8,7 @@ const lmWhere = (id, name) =>
   `Where ${LM_PLURAL.has(id) ? 'are' : 'is'} ${LM_NO_THE.has(id) ? '' : 'the '}${name}?`;
 const LANDMARK_DESCRIPTIONS = ContentData.get('landmarks','MEDIA_DESCRIPTIONS');
 const LANDMARK_PHOTO_IDS = new Set(ContentData.get('landmark-photos','ids'));
+const LANDMARK_ONLINE_PREVIEWS = ContentData.get('landmark-online-previews','records');
 // Never use a rough cartoon as an exact photographic-recognition exercise.
 // Add only reviewed, locally bundled real photographs to this allowlist.
 const landmarkHasPhoto = id => LANDMARK_PHOTO_IDS.has(id);
@@ -24,5 +25,39 @@ function landmarkArt(id, cls = '') {
   const photo = landmarkHasPhoto(id);
   const src = photo ? `assets/landmark-photos/${id}.webp` : `assets/landmarks/${id}.svg`;
   const alt = (photo ? 'Photograph showing ' : 'Illustration showing ') + safeDescription;
-  return `<span class="lm-box ${photo ? 'lm-real-photo' : 'lm-illustration'}"><img class="lm-art ${safeClass}" src="${src}" alt="${alt}" loading="lazy" decoding="async">${photo ? '' : '<small class="lm-art-note">Illustration</small>'}</span>`;
+  const preview = !photo && LANDMARK_ONLINE_PREVIEWS[id];
+  const onlineControl = preview && preview.mode === 'online-only' &&
+    /^https:\/\/commons\.wikimedia\.org\/wiki\/File:/.test(preview.sourceUrl) &&
+    /^[a-zA-Z0-9 ,()._-]+\.jpe?g$/i.test(preview.file)
+    ? `<button type="button" class="lm-online-preview" data-landmark-id="${id}">View real photo (internet required)</button>` : '';
+  return `<span class="lm-box ${photo ? 'lm-real-photo' : 'lm-illustration'}"><img class="lm-art ${safeClass}" src="${src}" alt="${alt}" loading="lazy" decoding="async">${photo ? '' : '<small class="lm-art-note">Illustration</small>'}${onlineControl}</span>`;
 }
+
+// Explicit opt-in avoids external requests during offline games or without consent.
+document.addEventListener('click', event => {
+  const button=event.target.closest?.('.lm-online-preview');
+  if(!button) return;
+  const id=button.dataset.landmarkId;
+  const preview=LANDMARK_ONLINE_PREVIEWS[id];
+  if(!preview || preview.mode!=='online-only' || !navigator.onLine) {
+    button.textContent='Photo needs an internet connection';return;
+  }
+  const box=button.closest('.lm-box');
+  const image=box?.querySelector('img.lm-art');
+  if(!image) return;
+  const local=image.getAttribute('src');
+  const remote='https://commons.wikimedia.org/wiki/Special:FilePath/' +
+    encodeURIComponent(preview.file) + '?width=640';
+  image.onerror=()=>{
+    image.onerror=null;image.src=local;
+    button.textContent='Photo unavailable; illustration restored';
+  };
+  image.onload=()=>{
+    image.alt='Photograph showing '+(LANDMARK_DESCRIPTIONS[id]||'a landmark');
+    box.classList.remove('lm-illustration');box.classList.add('lm-real-photo');
+    box.querySelector('.lm-art-note')?.remove();
+    button.textContent='Photo loaded (online)';button.disabled=true;
+  };
+  image.src=remote;
+  button.textContent='Loading photograph…';
+});
