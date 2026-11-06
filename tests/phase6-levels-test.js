@@ -23,9 +23,12 @@ const { chromium } = require('playwright');
   assert.equal(r.lvInTiles, false, 'tiles show no raw level numbers');
   assert.ok(r.dots > 15, 'tiles show step dots');
   assert.match(r.diff, /^Step \d of \d$/);
-  assert.ok(r.dash.includes('Common Core') && r.dash.includes('NBT'), 'US progress shows Common Core areas');
-  assert.ok(r.dashUK.includes('National Curriculum'), 'UK progress shows the English National Curriculum');
+  // The parent overview now describes child-level expected skills, not lesson-section standards.
+  assert.match(r.dash, /Learning activities.*Overall difficulty/s, 'parent can expand learning challenge levels');
+  assert.match(r.dashUK, /Brain Games.*Overall difficulty/s, 'parent can expand brain challenge levels');
+  assert.ok(!r.dash.includes('Common Core') && !r.dashUK.includes('National Curriculum'),
+    'technical curriculum mappings should not dominate the parent progress overview');
   assert.deepEqual(errs, []);
   await b.close();
-  console.log('PASS local grade names in 7 countries, step dots instead of levels, curriculum areas in Progress');
+  console.log('PASS local grade names in 7 countries, step dots instead of levels, generic skill expectations and collapsible challenge levels in Progress');
 })().catch((e) => { console.error(e); process.exit(1); });
