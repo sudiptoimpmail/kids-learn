@@ -1,25 +1,167 @@
 {
   "id": "red-riding-hood",
   "title": "Little Red Riding Hood",
-  "retold": "A gentle retelling of the traditional tale (Perrault, 1697; Brothers Grimm, 1812) for children aged 4 to 6. Nobody is eaten: Grandma hides, and the woodcutter chases the wolf away.",
-  "grades": ["prek", "k"],
+  "retold": "A gentle retelling of the traditional tale (Perrault, 1697; Brothers Grimm, 1812) for children aged 4 to 6. Nobody is eaten: Grandma hides, and the woodcutter chases the wolf away. This edition uses gentle suspense, expressive page pacing and quiet scene effects without changing the recorded words.",
+  "grades": [
+    "prek",
+    "k"
+  ],
   "cover": "cover.webp",
   "pages": [
-    { "art": "p01.webp", "text": ["Once upon a time, a little girl lived near a big green forest.", "She wore a red cape with a hood, so everyone called her Little Red Riding Hood."] },
-    { "art": "p02.webp", "text": ["One morning, her mother filled a basket with bread and apples.", "\"Please take this to Grandma. Stay on the path!\" said Mother."] },
-    { "art": "p03.webp", "text": ["Little Red skipped along the forest path.", "Birds sang, and flowers grew all around."] },
-    { "art": "p04.webp", "text": ["Soon, she met a wolf.", "\"Where are you going, little girl?\" asked the wolf.", "\"To Grandma's house,\" said Little Red."] },
-    { "art": "p05.webp", "text": ["\"Pick some flowers for Grandma,\" said the wolf.", "Little Red stopped to pick flowers, and the wolf ran ahead."] },
-    { "art": "p06.webp", "text": ["The wolf knocked on Grandma's door.", "Grandma peeked out, saw the wolf, and hid in the closet."] },
-    { "art": "p07.webp", "text": ["The wolf put on Grandma's nightcap and jumped into her bed."] },
-    { "art": "p08.webp", "text": ["Little Red came in with her flowers.", "\"Grandma, what big ears you have!\"", "\"All the better to hear you with!\""] },
-    { "art": "p09.webp", "text": ["\"Grandma, what big teeth you have!\"", "\"That is not Grandma!\" said Little Red.", "\"Help!\""] },
-    { "art": "p10.webp", "text": ["A kind woodcutter heard her call.", "He ran in, and the wolf ran far, far away."] },
-    { "art": "p11.webp", "text": ["Grandma came out of the closet, and they all shared bread and apples.", "\"I will always stay on the path,\" said Little Red.", "The End."] }
+    {
+      "art": "p01.webp",
+      "text": [
+        "Once upon a time, a little girl lived near a big green forest.",
+        "She wore a red cape with a hood, so everyone called her Little Red Riding Hood."
+      ],
+      "scene": "sunny"
+    },
+    {
+      "art": "p02.webp",
+      "text": [
+        "One morning, her mother filled a basket with bread and apples.",
+        "\"Please take this to Grandma. Stay on the path!\" said Mother."
+      ],
+      "scene": "promise"
+    },
+    {
+      "art": "p03.webp",
+      "text": [
+        "Little Red skipped along the forest path.",
+        "Birds sang, and flowers grew all around."
+      ],
+      "scene": "forest"
+    },
+    {
+      "art": "p04.webp",
+      "text": [
+        "Soon... she met a wolf!",
+        "\"Where are you going, little girl?\" asked the wolf.",
+        "\"To Grandma's house,\" said Little Red."
+      ],
+      "scene": "wolf",
+      "sound": "rustle"
+    },
+    {
+      "art": "p05.webp",
+      "text": [
+        "\"Pick some flowers for Grandma,\" said the wolf.",
+        "Little Red stopped to pick flowers... and the wolf ran ahead!"
+      ],
+      "scene": "hurry",
+      "sound": "footsteps"
+    },
+    {
+      "art": "p06.webp",
+      "text": [
+        "The wolf knocked... on Grandma's door.",
+        "Grandma peeked out, saw the wolf... and hid in the closet!"
+      ],
+      "scene": "knock",
+      "sound": "knock"
+    },
+    {
+      "art": "p07.webp",
+      "text": [
+        "The wolf put on Grandma's nightcap... and jumped into her bed!"
+      ],
+      "scene": "disguise",
+      "sound": "sneak"
+    },
+    {
+      "art": "p08.webp",
+      "text": [
+        "Little Red came in with her flowers...",
+        "\"Grandma, what big ears you have!\"",
+        "\"All the better to hear you with!\""
+      ],
+      "scene": "suspense",
+      "sound": "heartbeat"
+    },
+    {
+      "art": "p09.webp",
+      "text": [
+        "\"Grandma, what big teeth you have!\"",
+        "\"That is NOT Grandma!\" said Little Red.",
+        "\"HELP!\""
+      ],
+      "scene": "brave",
+      "sound": "heartbeat"
+    },
+    {
+      "art": "p10.webp",
+      "text": [
+        "A kind woodcutter heard her call!",
+        "He ran in—and the wolf ran far, far away!"
+      ],
+      "scene": "rescue",
+      "sound": "rescue"
+    },
+    {
+      "art": "p11.webp",
+      "text": [
+        "Grandma came out of the closet... and they all shared bread and apples!",
+        "\"I will always stay on the path,\" said Little Red.",
+        "The End."
+      ],
+      "scene": "safe",
+      "sound": "celebrate"
+    }
   ],
   "questions": [
-    { "ask": "What color was Little Red's cape?", "options": [["red", "q-red.webp"], ["blue", "q-blue.webp"], ["yellow", "q-yellow.webp"]], "answer": "red" },
-    { "ask": "Who did Little Red meet in the forest?", "options": [["wolf", "q-wolf.webp"], ["grandma", "q-grandma.webp"], ["woodcutter", "q-woodcutter.webp"]], "answer": "wolf" },
-    { "ask": "Who chased the wolf away?", "options": [["mother", "q-mother.webp"], ["woodcutter", "q-woodcutter.webp"], ["grandma", "q-grandma.webp"]], "answer": "woodcutter" }
+    {
+      "ask": "What color was Little Red's cape?",
+      "options": [
+        [
+          "red",
+          "q-red.webp"
+        ],
+        [
+          "blue",
+          "q-blue.webp"
+        ],
+        [
+          "yellow",
+          "q-yellow.webp"
+        ]
+      ],
+      "answer": "red"
+    },
+    {
+      "ask": "Who did Little Red meet in the forest?",
+      "options": [
+        [
+          "wolf",
+          "q-wolf.webp"
+        ],
+        [
+          "grandma",
+          "q-grandma.webp"
+        ],
+        [
+          "woodcutter",
+          "q-woodcutter.webp"
+        ]
+      ],
+      "answer": "wolf"
+    },
+    {
+      "ask": "Who chased the wolf away?",
+      "options": [
+        [
+          "mother",
+          "q-mother.webp"
+        ],
+        [
+          "woodcutter",
+          "q-woodcutter.webp"
+        ],
+        [
+          "grandma",
+          "q-grandma.webp"
+        ]
+      ],
+      "answer": "woodcutter"
+    }
   ]
 }
