@@ -189,3 +189,25 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
   font-weight: 700;
   overflow-wrap: break-word;
 }
+
+/* Phase 4B: authored math representations remain readable and touch-safe on
+   phone and tablet screens; text alternatives are provided by each diagram. */
+#play .explorer-visual {
+  width: 100%;
+  max-width: 480px;
+  margin: .75em auto;
+  padding: .5em;
+  box-sizing: border-box;
+  background: #f6fbff;
+  border: 2px solid #9cbdd5;
+  border-radius: 14px;
+}
+#play .explorer-visual svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+@media (max-width: 380px) {
+  #play .explorer-visual { padding: .25em; margin: .5em auto; }
+}
