@@ -1,67 +1,123 @@
-/* =========================================================
-   First run: "Who's learning today?" — name and grade in one step, then an offer of the
-   2-minute placement check. Until a grade is picked, the home screen would show every
-   section for every age, so the app asks before anything else.
-   Picking the grade here needs no PIN (there is nothing to protect yet); changing it
-   later stays behind the grown-up PIN in Settings.
-   Automated browsers skip this sheet unless the page is opened with ?welcome=1.
-   ========================================================= */
+/* Parent-led first run. A child needs a name and grade before reaching Home.
+   Existing profiles retain their progress; the parent may add siblings during setup. */
 (() => {
-  const AGES = { prek: 'age 4–5', k: 'age 5–6', g1: 'age 6–7', g2: 'age 7–8', g3: 'age 8–9' };
-  const skipForAutomation = () => navigator.webdriver && !/[?&]welcome=1\b/.test(location.search);
-  const close = (d) => { d.remove(); renderHome(); };
+  'use strict';
+  const ages = { prek: 'Ages 3–5', k: 'Ages 5–6', g1: 'Ages 6–7', g2: 'Ages 7–8', g3: 'Ages 8–9' };
+  const escapeHTML = value => String(value || '').replace(/[&<>"']/g,
+    char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  // Existing Playwright tests deliberately bypass the sheet; ?welcome=1 exercises real setup.
+  // Human visitors never bypass the grade requirement.
+  const automatedTest = () => navigator.webdriver && !/[?&]welcome=1\b/.test(location.search);
+  const needsSetup = () => !(state.grade && Object.prototype.hasOwnProperty.call(GRADES, state.grade));
+  const availableSlots = () => Math.max(0, MAX_KIDS - Store.kids().length);
 
-  function chooseGrade(g) {
-    state.grade = g; state.levels = {}; state.progressionStreaks = {};
-    Object.entries(GRADES[g].g).forEach(([id, r]) => (state.levels[id] = gradeStart(r)));
-    state.welcomed = true; state.quest = null;
+  function finish(d) {
+    d.remove();
+    document.getElementById('home').inert = false;
+    renderHome();
+    show('home');
+    say("Let's play!");
+  }
+  function chooseGrade(g, d) {
+    const input = d.querySelector('#welName');
+    const name = input.value.trim().replace(/[<>&"']/g, '').slice(0, 20);
+    if (!name) {
+      d.querySelector('#welError').textContent = 'Please enter a name so each child has their own progress.';
+      input.focus();
+      return;
+    }
+    if (!Object.prototype.hasOwnProperty.call(GRADES, g)) return;
+    state.name = name;
+    state.grade = g;
+    state.levels = {};
+    state.progressionStreaks = {};
+    Object.entries(GRADES[g].g).forEach(([id, range]) => { state.levels[id] = gradeStart(range); });
+    state.welcomed = true;
+    state.quest = null;
     save();
+    renderHome();
+    offerCheck(d);
   }
 
   function openWelcome() {
-    if (document.getElementById('welcomeSheet')) return;
-    const d = document.createElement('div');
-    d.id = 'welcomeSheet'; d.className = 'time-up welcome';
-    d.innerHTML = `<div class="tu-box welcome-box">
-      <h2>Who's learning today?</h2>
-      <label class="wel-name">Name <input id="welName" type="text" maxlength="16" autocomplete="off" placeholder="Optional" value="${(state.name || '').replace(/"/g, '&quot;')}"></label>
-      <p class="wel-ask">Pick their grade</p>
-      <div class="wel-grades">${Object.keys(GRADES).map((g) => `<button class="wel-grade" data-g="${g}"><b>${gradeName(g)}</b><small>${AGES[g] || ''}</small></button>`).join('')}</div>
-      <small class="note">You can change this later in ⚙️ Settings.</small></div>`;
-    document.body.appendChild(d);
-    say("Who's learning today?");
-    d.querySelectorAll('.wel-grade').forEach((b) => (b.onclick = () => {
-      sfx.tap();
-      const name = d.querySelector('#welName').value.trim();
-      if (name) state.name = name;
-      chooseGrade(b.dataset.g);
-      renderHome();
-      offerCheck(d);
-    }));
+    // Keep unconfigured Home completely unfocusable beneath the parent dialog.
+    document.getElementById('home').inert = true;
+    let d = document.getElementById('welcomeSheet');
+    if (!d) {
+      d = document.createElement('div');
+      d.id = 'welcomeSheet';
+      d.className = 'time-up welcome';
+      d.setAttribute('role', 'dialog');
+      d.setAttribute('aria-modal', 'true');
+      d.setAttribute('aria-labelledby', 'welTitle');
+      document.body.appendChild(d);
+    }
+    const kids = Store.kids().filter(k => !!k.grade);
+    d.innerHTML = '<div class="tu-box welcome-box">' +
+      '<div class="wel-kicker">A little adventure for every learner</div>' +
+      '<h2 id="welTitle">Who is learning today?</h2>' +
+      '<p class="wel-lead">Give each child their own name, grade, stories and stars.</p>' +
+      '<label class="wel-name" for="welName">Child’s name<input id="welName" name="child-name" type="text" maxlength="20" autocomplete="off" required placeholder="First name" value="' + escapeHTML(state.name) + '"></label>' +
+      '<p class="wel-ask">Pick their grade to begin</p>' +
+      '<div class="wel-grades">' + Object.keys(GRADES).map(g =>
+        '<button type="button" class="wel-grade" data-g="' + g + '"><b>' + escapeHTML(gradeName(g)) + '</b><small>' + ages[g] + '</small></button>').join('') + '</div>' +
+      '<p id="welError" class="wel-error" role="alert" aria-live="polite"></p>' +
+      '<div class="wel-siblings"><b>More than one child?</b><span>You can add up to ' + MAX_KIDS +
+      ' children during setup or later in Grown-up Settings. Each child keeps separate progress.</span>' +
+      (kids.length ? '<small>Already set up: ' + kids.map(k => escapeHTML(k.name)).join(', ') + '</small>' : '') + '</div>' +
+      (Store.kids().length > 1 && needsSetup() ?
+        '<button type="button" class="wel-cancel" id="welCancel">Cancel adding this child</button>' : '') +
+      '</div>';
+    const input = d.querySelector('#welName');
+    input.addEventListener('input', () => { d.querySelector('#welError').textContent = ''; });
+    d.querySelectorAll('.wel-grade').forEach(b => b.onclick = () => { sfx.tap(); chooseGrade(b.dataset.g, d); });
+    const cancel = d.querySelector('#welCancel');
+    if (cancel) cancel.onclick = () => {
+      Store.removeKid(Store.activeId(), state);
+      finish(d);
+    };
+    input.focus();
   }
 
-  // step 2: a short check finds the right step inside the grade (optional)
   function offerCheck(d) {
-    const box = d.querySelector('.tu-box');
-    box.innerHTML = `<h2>${state.name ? `Hi, ${state.name.replace(/</g, '&lt;')}!` : 'All set!'}</h2>
-      <p>Want a quick check to find the right starting step? It takes about 2 minutes: 8 cards across reading and math.</p>
-      <div class="res-btns wel-btns"><button class="big-btn" data-a="check">🎯 Quick check</button>
-      <button class="big-btn alt" data-a="start">Start at the beginning</button></div>`;
-    box.querySelector('[data-a="check"]').onclick = () => { sfx.tap(); d.remove(); try { startPlacement(); } catch (e) { renderHome(); } };
-    box.querySelector('[data-a="start"]').onclick = () => { sfx.tap(); close(d); say("Let's play!"); };
+    const name = escapeHTML(state.name);
+    const canAdd = availableSlots() > 0;
+    d.querySelector('.tu-box').innerHTML =
+      '<div class="wel-kicker">Ready for the next chapter</div>' +
+      '<h2 id="welTitle">' + name + '’s adventure is ready!</h2>' +
+      '<p>One child, one learning journey. Their stars, books and progress stay separate.</p>' +
+      '<p>Would you like a quick 2-minute check? Eight reading and math cards help choose a starting step.</p>' +
+      '<div class="wel-actions"><button class="big-btn" type="button" data-a="start">▶ Start learning</button>' +
+      '<button class="big-btn alt" type="button" data-a="check">🎯 Quick level check</button>' +
+      (canAdd ? '<button class="big-btn alt wel-add" type="button" data-a="add">＋ Set up another child</button>' : '') +
+      '</div><p class="wel-sibling-note">You can switch children by tapping their picture on Home. Add or edit profiles later in Grown-up Settings.</p>';
+    d.querySelector('[data-a="start"]').onclick = () => { sfx.tap(); finish(d); };
+    d.querySelector('[data-a="check"]').onclick = () => {
+      sfx.tap();
+      d.remove();
+      document.getElementById('home').inert = false;
+      try { startPlacement(); } catch (e) { renderHome(); show('home'); }
+    };
+    const add = d.querySelector('[data-a="add"]');
+    if (add) add.onclick = () => {
+      sfx.tap();
+      if (Store.addKid({ name: '', grade: null, welcomed: false }, state)) {
+        renderHome();
+        openWelcome();
+      }
+    };
   }
 
-  function maybeWelcome() {
-    if (state.grade || state.welcomed || skipForAutomation()) return;
+  function welcomeIfNeeded() {
+    if (automatedTest() || !needsSetup()) return false;
     openWelcome();
+    return true;
   }
+  window.welcomeIfNeeded = welcomeIfNeeded;
   window.openWelcome = openWelcome;
-
-  // with no grade yet, the grade chip opens this sheet (no PIN needed); afterwards it opens Settings
   const chip = document.getElementById('gradeChip');
-  if (chip) chip.onclick = () => (state.grade ? $('#settingsBtn').onclick() : openWelcome());
-  const start = document.getElementById('startBtn');
-  if (start) start.addEventListener('click', () => setTimeout(maybeWelcome, 250));
-  // the splash can already be gone (reload after an update)
-  if (document.getElementById('splash')?.classList.contains('gone')) setTimeout(maybeWelcome, 250);
+  if (chip) chip.onclick = () =>
+    needsSetup() ? openWelcome() : document.getElementById('settingsBtn').click();
+  // When a tab was already started, never flash Home before asking for the child.
+  if (document.getElementById('splash')?.classList.contains('gone')) welcomeIfNeeded();
 })();
