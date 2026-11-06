@@ -115,6 +115,45 @@ function compute(meta) {
     default: throw Error('Unknown solution type '+meta.kind);
   }
 }
+// Recompute the visual meaning independently from the authored solution
+// expression; this catches inconsistent arrays, points, bars, and fraction strips.
+function visualValue(rep) {
+  const integer=(n,min,max)=>Number.isInteger(n)&&n>=min&&n<=max;
+  assert.ok(rep && typeof rep==='object');
+  if(rep.kind==='array') {
+    assert.ok(integer(rep.rows,1,10)&&integer(rep.columns,1,10)&&
+      rep.rows*rep.columns<=80,'Invalid tile array');
+    assert.ok(['count','perimeter'].includes(rep.answerRule),'Invalid array answer rule');
+    return rep.answerRule==='count'?rep.rows*rep.columns:2*(rep.rows+rep.columns);
+  }
+  if(rep.kind==='number-line') {
+    assert.ok(integer(rep.steps,2,16)&&Number.isFinite(rep.start)&&
+      Number.isFinite(rep.end)&&Number.isFinite(rep.point) &&
+      rep.end>rep.start && rep.point>=rep.start && rep.point<=rep.end &&
+      rep.answerRule==='point','Invalid number-line geometry');
+    const idx=(rep.point-rep.start)*rep.steps/(rep.end-rep.start);
+    assert.ok(Math.abs(idx-Math.round(idx))<1e-8,'Point not aligned to a tick');
+    return rep.point;
+  }
+  if(rep.kind==='bar-chart') {
+    assert.ok(Array.isArray(rep.labels)&&Array.isArray(rep.values)&&
+      rep.labels.length===rep.values.length &&
+      integer(rep.labels.length,2,5)&&rep.values.every(v=>integer(v,1,40)),
+      'Invalid chart dimensions');
+    if(rep.answerRule==='total')return rep.values.reduce((a,b)=>a+b,0);
+    assert.equal(rep.answerRule,'difference');
+    assert.ok(Array.isArray(rep.compare)&&rep.compare.length===2 &&
+      rep.compare.every(i=>integer(i,0,rep.values.length-1)) &&
+      rep.compare[0]!==rep.compare[1],'Invalid chart comparison');
+    return rep.values[rep.compare[0]]-rep.values[rep.compare[1]];
+  }
+  if(rep.kind==='fraction-strip') {
+    assert.ok(integer(rep.parts,2,12)&&integer(rep.shaded,1,rep.parts-1)&&
+      rep.answerRule==='fraction','Invalid fraction strip');
+    return rep.shaded/rep.parts;
+  }
+  throw Error('Unsupported visual model '+rep.kind);
+}
 const seen=new Set(),counts={};
 for (const q of questionBank) {
   assert.ok(q.id && !seen.has(q.id),'Duplicate math mission id '+q.id);
@@ -126,6 +165,12 @@ for (const q of questionBank) {
     assert.ok(range&&q.level>=range[0]&&q.level<=range[1],q.id+' invalid curriculum eligibility '+grade);
   }
   const result=compute(q.verification);
+  if(q.representation) {
+    assert.equal(result.kind,'number','Diagrams require a numeric verified answer: '+q.id);
+    const drawn=visualValue(q.representation);
+    assert.ok(Math.abs(drawn-result.value)<1e-9,
+      q.id+': rendered diagram means '+drawn+', calculation means '+result.value);
+  }
   const actual=result.kind==='number'?valueOf(q.answer):q.answer;
   if (result.kind==='number') assert.ok(Math.abs(result.value-actual)<1e-9,
     q.id+': expected '+result.value+', got '+q.answer);
@@ -140,5 +185,6 @@ for (const q of questionBank) {
   }
   counts[result.kind]=(counts[result.kind]||0)+1;
 }
-assert.equal(questionBank.length,62,'Every authored math mission must have a solution');
+assert.equal(questionBank.length,74,'Every authored math mission must have a solution');
+assert.equal(questionBank.filter(q=>q.representation).length,12,'Twelve visual missions required');
 console.log('PASS '+questionBank.length+' Explorer math missions independently evaluated; '+JSON.stringify(counts));
