@@ -65,7 +65,7 @@ const {chromium} = require('playwright');
           rendered++;
           require(svg.getAttribute('role')==='img'&&
             svg.getAttribute('aria-label')?.length>10,'Unlabelled visual: '+q.id);
-          require(svg.getAttribute('viewBox')?.split(/\\s+/).length===4,
+          require(svg.getAttribute('viewBox')?.split(/\s+/).length===4,
             'Invalid diagram viewBox: '+q.id);
           require(svg.querySelectorAll('circle,rect,line').length>=2,
             'Missing graphical geometry: '+q.id);
@@ -120,6 +120,34 @@ const {chromium} = require('playwright');
         science:newScience.length};
     });
     assert.deepEqual(report.failures,[],report.failures.slice(0,20).join('\n'));
+    // Exercise real viewport changes too, not only constrained card widths.
+    for(const viewport of [
+      {width:320,height:660},{width:390,height:844},
+      {width:820,height:1180},{width:1180,height:820}
+    ]){
+      await page.setViewportSize(viewport);
+      const issues=await page.evaluate(()=>{
+        state.grade='g2';state.showAll=false;state.testMode=false;
+        startRound('story',1);
+        const visual=ContentData.get('explorer-math','questions')
+          .filter(row=>!!row.representation);
+        const container=document.createElement('section');
+        container.className='q-main explorer-main';
+        container.style.width='calc(100vw - 48px)';
+        document.querySelector('#play').appendChild(container);
+        const bad=[];
+        for(const row of visual){
+          container.innerHTML=ExplorerCurriculum.getQuestion('math',row.id).main;
+          const svg=container.querySelector('svg.explorer-diagram');
+          if(!svg||svg.getBoundingClientRect().width>container.clientWidth+2 ||
+             container.scrollWidth>container.clientWidth+2)
+            bad.push(row.id+' overflows at '+innerWidth+'px');
+        }
+        container.remove();
+        return bad;
+      });
+      assert.deepEqual(issues,[],'Responsive Explorer diagrams: '+viewport.width);
+    }
     assert.deepEqual(pageErrors,[]);
     console.log('PASS '+report.visuals+' visual math missions on 4 viewports; '+
       report.reading+' new reading passages and '+report.science+
