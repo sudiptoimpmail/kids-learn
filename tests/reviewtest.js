@@ -7,6 +7,8 @@ const { chromium } = require('playwright');
   await p.reload(); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady);
   await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(300);
   const r = await p.evaluate(async () => {
+    // this test is about scoring and mastery, so it answers pick-one cards only (no match or order variants)
+    for (const c of CATEGORIES) if (c.baseGen) c.gen = c.baseGen;
     const out = [];
     // 1. every grade, with and without a weak skill and a strong skill: discovery always there; little ones trace
     for (const g of ['prek', 'k', 'g1', 'g2', 'g3']) for (const withSkills of [false, true]) {
