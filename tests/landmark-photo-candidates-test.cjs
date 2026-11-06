@@ -1,0 +1,17 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const py=fs.readFileSync('scripts/prepare-landmark-candidates.py','utf8');
+const workflow=fs.readFileSync('.github/workflows/landmark-photo-candidates.yml','utf8');
+const manifest=JSON.parse(fs.readFileSync('data/landmark-photos.json','utf8')).datasets;
+assert.match(workflow,/workflow_dispatch:/);
+assert.match(workflow,/permissions:\s*\n\s*contents: read/);
+assert.match(workflow,/actions\/upload-artifact@v4/);
+assert.doesNotMatch(workflow,/git push|create-pull-request|contents: write/);
+assert.match(py,/reviewStatus.*PENDING/);
+assert.match(py,/sourceSha256/);
+assert.match(py,/webpSha256/);
+assert.match(py,/ImageOps\.exif_transpose/);
+assert.match(py,/Image\.Resampling\.LANCZOS/);
+assert.deepEqual(manifest.ids,[], 'Candidate downloads must not silently enable unreviewed photographs');
+console.log('PASS candidate photo workflow remains manual, review-gated, and read-only');
