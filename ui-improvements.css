@@ -199,3 +199,10 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
   margin: .75rem auto;
   overflow: visible;
 }
+
+/* Explorer visual reasoning: native disclosure works with touch and keyboard. */
+.explorer-reasoning{margin:1rem 0;border:2px solid #9cb8d8;border-radius:12px;padding:.65rem .85rem;background:#f5f9ff;color:#20354e}
+.explorer-reasoning summary{cursor:pointer;font-weight:700;min-height:44px;display:list-item;padding:.45rem .3rem}
+.explorer-reasoning summary:focus-visible{outline:3px solid #1b65a7;outline-offset:3px}
+.explorer-reasoning ol{padding-left:1.6rem;line-height:1.6;margin:.5rem 0}
+.explorer-reasoning li+li{margin-top:.4rem}
