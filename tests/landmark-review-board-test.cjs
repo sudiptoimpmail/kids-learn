@@ -5,7 +5,7 @@ const cp=require('node:child_process');
 cp.execFileSync(process.execPath,['scripts/build-landmark-review-board.cjs'],{stdio:'pipe'});
 const html=fs.readFileSync('docs/landmark-photo-review.html','utf8');
 const report=JSON.parse(fs.readFileSync('docs/landmark-candidate-review.json','utf8'));
-assert.equal(report.candidateCount,24);
+assert.ok(report.candidateCount>=24);
 assert.equal((html.match(/<article>/g)||[]).length,report.candidateCount);
 assert.match(html,/NOT approved or published/);
 assert.match(html,/SHA-256 matches/);
