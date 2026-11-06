@@ -1206,14 +1206,33 @@ function syncPlayMode() {
   $$('.rounds-only').forEach((x) => (x.hidden = hourly));
 }
 $('#playMode').onchange = syncPlayMode;
+/* Grown-up difficulty controls: hide individual levels until requested.
+   Learning activity settings and Brain Games are separate; arcade is excluded. */
+function renderLevelSettings() {
+  const learning = visibleGames().filter(c=>c.gen&&c.id!=='mix'&&c.id!=='check'&&!!gradeRange(state.grade,c.id));
+  $('#levels').innerHTML = learning.map(c=>{
+    const range = openRange(c.id) || [1,maxLevelOf(c.id)], current=levelOf(c.id);
+    return `<label class="lvrow">${c.icon} ${esc(c.title)}<select data-id="${c.id}" aria-label="${esc(c.title)} learning level">${Array.from({length:range[1]-range[0]+1},(_,i)=>range[0]+i).map(l=>`<option value="${l}" ${current===l?'selected':''}>Level ${l}</option>`).join('')}</select></label>`;
+  }).join('');
+  const brain = typeof GAMES === 'undefined' ? [] :
+    GAMES.filter(g=>BRAIN_GAME_IDS.has(g.id)&&!!gameRange(g.id));
+  $('#brainLevels').innerHTML = brain.map(g=>{
+    const range=gameRange(g.id),current=GL(g.id);
+    return `<label class="lvrow">${typeof g.icon==='string'&&g.icon.length<=3?g.icon:'🧩'} ${esc(g.title)}<select data-brain-id="${g.id}" aria-label="${esc(g.title)} brain game level">${Array.from({length:range[1]-range[0]+1},(_,i)=>range[0]+i).map(l=>`<option value="${l}" ${current===l?'selected':''}>Level ${l}</option>`).join('')}</select></label>`;
+  }).join('');
+  const gradeDifficulty = typeof gradeRelativeDifficulty === 'function' ? gradeRelativeDifficulty : ()=> '—';
+  $('#settingsLearningSummary').textContent =
+    'Overall challenge '+gradeDifficulty(learning.map(c=>({level:levelOf(c.id),range:openRange(c.id)})))+' · '+learning.length+' activities';
+  $('#settingsBrainSummary').textContent =
+    'Overall challenge '+gradeDifficulty(brain.map(g=>({level:GL(g.id),range:gameRange(g.id)})))+' · '+brain.length+' games';
+}
 function renderGrades() {
   $('#gradeBtns').innerHTML = Object.entries(GRADES).map(([k, g]) =>
     `<button class="grade-btn ${state.grade === k ? 'on' : ''}" data-g="${k}">${gradeName(k)}</button>`).join('');
   $$('#gradeBtns .grade-btn').forEach((b) => (b.onclick = () => {
     sfx.tap(); state.grade = b.dataset.g; state.levels = {}; state.progressionStreaks = {};
     Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = gradeStart(r))); save();
-    renderGrades();
-    $$('#levels select').forEach((sel) => (sel.value = levelOf(sel.dataset.id)));
+    renderGrades(); renderLevelSettings();
   }));
   $('#placeBtn').hidden = !state.grade;
 }
@@ -1226,8 +1245,7 @@ function openSettings() {
   $('#countrySel').value = countryCode();
   fillRegions();
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !state.hideClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
-  $('#levels').innerHTML = CATEGORIES.filter((c) => c.gen && c.id !== 'placement').map((c) =>
-    `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option ${levelOf(c.id) === l ? 'selected' : ''}>${l}</option>`).join('')}</select></label>`).join('');
+  renderLevelSettings();
   renderTestBrowser();
   // This section is accessible only after the parent PIN. No child-facing paywall.
   ContentPacks.load().then(() => {
@@ -1358,6 +1376,19 @@ function collectSettings() {
     if (state.levels[id] !== level && state.progressionStreaks)
       delete state.progressionStreaks[id];
     state.levels[id] = level;
+  });
+  // Game challenge levels are NOT academic mastery and are only adjustable for Brain Games.
+  $$('#brainLevels select').forEach(sel => {
+    const id = sel.dataset.brainId, level = Number(sel.value);
+    const range = gameRange(id);
+    if (!range || !Number.isInteger(level) || level < range[0] || level > range[1]) return;
+    const current=GL(id);
+    if (level===current) return;
+    if (id==='sudoku') { state.sdkLevel=level; state.sdkWins=0; }
+    else {
+      state.gameLv=state.gameLv||{};state.gameWins=state.gameWins||{};
+      state.gameLv[id]=level;state.gameWins[id]=0;
+    }
   });
   save();
 }
