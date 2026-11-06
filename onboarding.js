@@ -13,6 +13,7 @@
 
   function finish(d) {
     d.remove();
+    document.getElementById('home').inert = false;
     renderHome();
     show('home');
     say("Let's play!");
@@ -39,6 +40,8 @@
   }
 
   function openWelcome() {
+    // Keep unconfigured Home completely unfocusable beneath the parent dialog.
+    document.getElementById('home').inert = true;
     let d = document.getElementById('welcomeSheet');
     if (!d) {
       d = document.createElement('div');
@@ -92,6 +95,7 @@
     d.querySelector('[data-a="check"]').onclick = () => {
       sfx.tap();
       d.remove();
+      document.getElementById('home').inert = false;
       try { startPlacement(); } catch (e) { renderHome(); show('home'); }
     };
     const add = d.querySelector('[data-a="add"]');
