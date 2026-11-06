@@ -3030,6 +3030,102 @@
           "section": "sent",
           "level": 6,
           "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-16",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sent",
+          "level": 4,
+          "skill": "text-details-and-reasoning"
+        },
+        {
+          "id": "stories-17",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sent",
+          "level": 4,
+          "skill": "text-details-and-reasoning"
+        },
+        {
+          "id": "stories-18",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sent",
+          "level": 4,
+          "skill": "text-details-and-reasoning"
+        },
+        {
+          "id": "stories-19",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sent",
+          "level": 4,
+          "skill": "text-details-and-reasoning"
+        },
+        {
+          "id": "stories-20",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sent",
+          "level": 4,
+          "skill": "text-details-and-reasoning"
+        },
+        {
+          "id": "stories-21",
+          "source": "grade23-extension",
+          "grade": "g2",
+          "section": "sent",
+          "level": 4,
+          "skill": "text-details-and-reasoning"
+        },
+        {
+          "id": "stories-22",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 6,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-23",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 6,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-24",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 6,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-25",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 6,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-26",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 6,
+          "skill": "inference-and-evidence"
+        },
+        {
+          "id": "stories-27",
+          "source": "grade23-extension",
+          "grade": "g3",
+          "section": "sent",
+          "level": 6,
+          "skill": "inference-and-evidence"
         }
       ]
     },
