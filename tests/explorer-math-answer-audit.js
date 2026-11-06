@@ -115,6 +115,37 @@ function compute(meta) {
     default: throw Error('Unknown solution type '+meta.kind);
   }
 }
+// The diagram is a second mathematical representation of the same answer.
+// Assert visual values agree with the independently evaluated verification.
+function visualValue(v) {
+  switch(v.kind) {
+    case 'array':
+      assert.ok(Number.isInteger(v.rows)&&Number.isInteger(v.columns) &&
+        v.rows>0&&v.rows<=10&&v.columns>0&&v.columns<=10);
+      return v.rows*v.columns;
+    case 'fraction-strip':
+      assert.ok(Number.isInteger(v.parts)&&Number.isInteger(v.shaded) &&
+        v.parts>=2&&v.parts<=10&&v.shaded>=1&&v.shaded<=v.parts);
+      return v.shaded/v.parts;
+    case 'number-line':
+      assert.ok(Number.isInteger(v.start)&&Number.isInteger(v.end) &&
+        Number.isInteger(v.step)&&Number.isInteger(v.mark) &&
+        v.start>=0&&v.end>v.start&&v.step>0 &&
+        (v.end-v.start)%v.step===0 && v.mark>=v.start &&
+        v.mark<=v.end && (v.mark-v.start)%v.step===0);
+      return v.mark;
+    case 'bar-graph':
+      assert.ok(Array.isArray(v.values)&&v.values.length>=2&&
+        Array.isArray(v.labels)&&v.labels.length===v.values.length &&
+        Array.isArray(v.compare)&&v.compare.length===2 &&
+        v.compare.every(i=>Number.isInteger(i)&&i>=0&&i<v.values.length) &&
+        v.compare[0]!==v.compare[1]);
+      assert.ok(v.values.every(x=>Number.isInteger(x)&&x>=0&&x<=100));
+      return v.values[v.compare[0]]-v.values[v.compare[1]];
+    default: throw Error('Unknown visual representation: '+v.kind);
+  }
+}
+let diagramCount=0,visualKinds=new Set();
 const seen=new Set(),counts={};
 for (const q of questionBank) {
   assert.ok(q.id && !seen.has(q.id),'Duplicate math mission id '+q.id);
@@ -126,6 +157,13 @@ for (const q of questionBank) {
     assert.ok(range&&q.level>=range[0]&&q.level<=range[1],q.id+' invalid curriculum eligibility '+grade);
   }
   const result=compute(q.verification);
+  if(q.visual) {
+    diagramCount++; visualKinds.add(q.visual.kind);
+    assert.equal(result.kind,'number',q.id+' visual must verify a numeric result');
+    const expected=visualValue(q.visual);
+    assert.ok(Math.abs(expected-result.value)<1e-9,
+      q.id+': diagram represents '+expected+' but independent verification gives '+result.value);
+  }
   const actual=result.kind==='number'?valueOf(q.answer):q.answer;
   if (result.kind==='number') assert.ok(Math.abs(result.value-actual)<1e-9,
     q.id+': expected '+result.value+', got '+q.answer);
@@ -141,4 +179,6 @@ for (const q of questionBank) {
   counts[result.kind]=(counts[result.kind]||0)+1;
 }
 assert.equal(questionBank.length,78,'Every authored math mission must have a solution');
-console.log('PASS '+questionBank.length+' Explorer math missions independently evaluated; '+JSON.stringify(counts));
+assert.equal(diagramCount,16,'Expected all new authored visual math exercises');
+assert.deepEqual([...visualKinds].sort(),['array','bar-graph','fraction-strip','number-line']);
+console.log('PASS '+questionBank.length+' Explorer math missions with '+diagramCount+' checked visual models; '+JSON.stringify(counts));
