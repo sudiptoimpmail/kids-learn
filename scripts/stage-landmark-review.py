@@ -12,6 +12,11 @@ src=ROOT/'tests/out/landmark-batch'
 report=json.loads((src/'REVIEW.json').read_text())
 dest=ROOT/'assets/landmark-candidates'
 dest.mkdir(parents=True,exist_ok=True)
+rejected=json.loads((ROOT/'docs/landmark-rejections.json').read_text())['rejected']
+bad={r['sourceUrl'] for r in rejected}|{r['sourceSha256'] for r in rejected}
+# a source rejected on sight (wrong subject, painting, unrecognisable) is never staged again
+report['candidates']=[r for r in report['candidates'] if r['sourceUrl'] not in bad and r['sourceSha256'] not in bad]
+report['candidateCount']=len(report['candidates'])
 for row in report['candidates']:
     if row['reviewStatus'].startswith('PENDING HUMAN REVIEW') is False:
         raise ValueError('Candidate review flag missing')

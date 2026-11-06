@@ -22,16 +22,29 @@ for(const id of manifest.ids){
 }
 for(const [id] of landmarks)if(!seen.has(id))missing.push(id);
 const bodyModel=fs.existsSync('vendor/body.glb');
+// A manual check counts only when a person recorded it: verified=true, a name and an ISO date.
+const signed=e=>!!(e&&e.verified===true&&typeof e.by==='string'&&e.by.trim()&&/^\d{4}-\d{2}-\d{2}$/.test(e.on||''));
+function evaluate({missing,bodyModel,signoff}){
+  const media=signed(signoff.manualMediaReview), device=signed(signoff.manualDeviceAcceptance);
+  const blockers=[];
+  if(missing.length)blockers.push(missing.length+' landmark photo(s) not enabled');
+  if(!bodyModel)blockers.push('accurate 3D anatomy model not bundled');
+  if(!media)blockers.push('manual media review not recorded');
+  if(!device)blockers.push('physical-device acceptance not recorded');
+  return {manualDeviceAcceptanceVerified:device,manualMediaReviewVerified:media,readyForFinalSignoff:blockers.length===0,blockers};
+}
+const signoff=fs.existsSync('docs/release-signoff.json')?JSON.parse(fs.readFileSync('docs/release-signoff.json','utf8')):{};
 const result={
   landmarkTotal:landmarks.length,realOfflinePhotos:seen.size,
   remainingLandmarkIds:missing,
   accurate3DAnatomyModelBundled:bodyModel,
-  manualDeviceAcceptanceVerified:false,
-  manualMediaReviewVerified:false,
-  readyForFinalSignoff:missing.length===0&&bodyModel
+  ...evaluate({missing,bodyModel,signoff})
 };
-console.log(JSON.stringify(result,null,2));
-if(process.argv.includes('--require-complete')&&!result.readyForFinalSignoff){
- console.error('Release incomplete: photos or 3D anatomy model missing');
- process.exitCode=1;
+if(require.main===module){
+  console.log(JSON.stringify(result,null,2));
+  if(process.argv.includes('--require-complete')&&!result.readyForFinalSignoff){
+    console.error('Release incomplete: '+result.blockers.join('; '));
+    process.exitCode=1;
+  }
 }
+module.exports={evaluate,signed};

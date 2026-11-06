@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "note": "Filled in by a person after doing the check. The release gate stays closed until both entries have verified=true, a name and a date.",
+  "manualMediaReview": { "verified": false, "by": "", "on": "", "scope": "Every enabled landmark photo and anatomy image checked for identity, source, license, attribution and alt text" },
+  "manualDeviceAcceptance": { "verified": false, "by": "", "on": "", "devices": [], "scope": "Physical iPad and iPhone: portrait/landscape, VoiceOver, audio, airplane-mode restart, profile persistence" }
+}
