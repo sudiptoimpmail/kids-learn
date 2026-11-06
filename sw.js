@@ -4,9 +4,32 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v108';
+const VERSION = PREFIX + 'v109';
 const AUDIO = PREFIX + 'audio';
 const FILES = [
+  "library/three-little-pigs/book.json",
+  "library/three-little-pigs/cover.webp",
+  "library/three-little-pigs/p01.webp",
+  "library/three-little-pigs/p02.webp",
+  "library/three-little-pigs/p03.webp",
+  "library/three-little-pigs/p04.webp",
+  "library/three-little-pigs/p05.webp",
+  "library/three-little-pigs/p06.webp",
+  "library/three-little-pigs/p07.webp",
+  "library/three-little-pigs/p08.webp",
+  "library/three-little-pigs/p09.webp",
+  "library/three-little-pigs/p10.webp",
+  "library/three-little-pigs/p11.webp",
+  "library/three-little-pigs/q-bricks.webp",
+  "library/three-little-pigs/q-straw.webp",
+  "library/three-little-pigs/q-sticks.webp",
+  "library/three-little-pigs/q-wolf.webp",
+  "library/three-little-pigs/q-pig.webp",
+  "library/three-little-pigs/q-bird.webp",
+  "library/three-little-pigs/q-three.webp",
+  "library/three-little-pigs/q-two.webp",
+  "library/three-little-pigs/q-one.webp",
+
   "./",
   "index.html",
   "style.css",
