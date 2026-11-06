@@ -12,7 +12,9 @@ assert.ok(sw.includes('data/landmark-online-previews.json'),'Missing offline pre
 assert.ok(loader.includes("'landmark-online-previews'"),'Preview metadata not loaded');
 assert.ok(engine.includes('lm-online-preview'),'No photo preview control');
 assert.ok(engine.includes('image.onerror'),'Missing illustration fallback');
-assert.equal(photos.ids.length,0,'Online previews must not be mistaken for offline photos');
+assert.ok(Array.isArray(photos.ids),'Offline photo allowlist must exist');
+for(const id of photos.ids)assert.ok(fs.existsSync('assets/landmark-photos/'+id+'.webp'),
+  'Offline photograph missing: '+id);
 for(const [id,p] of Object.entries(previews)){
  assert.ok(landmarks.has(id),'Unknown landmark '+id);
  assert.ok(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/.test(p.sourceUrl));

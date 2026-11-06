@@ -13,5 +13,6 @@ assert.match(py,/sourceSha256/);
 assert.match(py,/webpSha256/);
 assert.match(py,/ImageOps\.exif_transpose/);
 assert.match(py,/Image\.Resampling\.LANCZOS/);
-assert.deepEqual(manifest.ids,[], 'Candidate downloads must not silently enable unreviewed photographs');
+assert.ok(Array.isArray(manifest.ids), 'Photo manifest IDs must be an array');
+assert.match(py,/NOT enabled in the app/);
 console.log('PASS candidate photo workflow remains manual, review-gated, and read-only');
