@@ -88,7 +88,8 @@ function genPattern(level) {
 const THINKING_ODD = ContentData.get('thinking','THINKING_ODD');
 function genOdd(level) {
   const pool = THINKING_ODD.concat(curriculumRows('THINKING_ODD',level)).filter(x=>x[0] <= level);
-  const [difficulty, similar, different, reason] = pick(pool);
+  const selected = pick(pool);
+  const [difficulty, similar, different, reason] = selected;
   const chosen = level === 1 ? sample(similar, 2) : similar;
   const choices = [...chosen, different];
   const q = thinkingQuestion(`odd-${difficulty}-${chosen.join('')}-${different}`,
@@ -96,6 +97,7 @@ function genOdd(level) {
   // The written explanation remains visible. This generic spoken hint already
   // exists in the bundled recordings, including for newly authored prompts.
   q.hint.say = 'Think about it!';
+  if (selected.curriculumSkill) q.curriculumSkill = selected.curriculumSkill;
   return q;
 }
 const THINKING_SEQUENCES = ContentData.get('thinking','THINKING_SEQUENCES');
@@ -103,8 +105,9 @@ function genSequence(level) {
   const pool = THINKING_SEQUENCES.concat(curriculumRows('THINKING_SEQUENCES',level)).filter(x=>x[0] <= level);
   const exact = pool.filter(row => row[0] === level);
   const review = pool.filter(row => row[0] === level-1);
-  const [difficulty, steps, reason] = pick(exact.length && (Math.random() < 0.82 || !review.length) ? exact :
+  const selected = pick(exact.length && (Math.random() < 0.82 || !review.length) ? exact :
     review.length ? review : pool);
+  const [difficulty, steps, reason] = selected;
   // Show either the missing middle event or the final event; older children can also
   // work backward from the last two events. This triples useful variations.
   const missingAt = level <= 1 ? pick([1, steps.length-1]) : rand(steps.length);
@@ -120,6 +123,7 @@ function genSequence(level) {
     options, answer, reason);
   q.say = missingAt === steps.length-1 ? 'What happens next?' : 'What happens in the missing spot?';
   q.hint.say = 'Think about it!'; // detailed reasoning remains visible, with a real recorded hint
+  if (selected.curriculumSkill) q.curriculumSkill = selected.curriculumSkill;
   return q;
 }
 CATEGORIES.push(
