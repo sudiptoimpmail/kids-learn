@@ -14,7 +14,15 @@ const perHour = () => state.playPerHour || 15;
 const hourKey = () => { const d = new Date(); return `${d.toDateString()} ${d.getHours()}`; };
 const usedThisHour = () => (state.playUsed && state.playUsed.h === hourKey() ? state.playUsed.ms : 0);
 const hourLeftMs = () => Math.max(0, perHour() * 60000 - usedThisHour());
-const playOpen = () => !!state.playAlways || isTestMode() || (hourlyMode() ? hourLeftMs() > 0 : (state.playUntil || 0) > Date.now());
+// Migrate the former wall-clock deadline once; remaining time belongs to this child.
+function playBalance() {
+  if (state.playRemainingMs == null) {
+    state.playRemainingMs = Math.max(0, (state.playUntil || 0) - Date.now());
+    delete state.playUntil;
+  }
+  return Math.max(0, state.playRemainingMs || 0);
+}
+const playOpen = () => !!state.playAlways || isTestMode() || (hourlyMode() ? hourLeftMs() > 0 : playBalance() > 0);
 
 // called from finish() in app.js; returns true when a new play break was earned
 function earnPlay() {
@@ -42,7 +50,7 @@ function playStatus() {
   return { open: false, text: `Finish ${left} more round${left === 1 ? '' : 's'} to play` };
 }
 const fmtLeft = () => {
-  const ms = hourlyMode() ? hourLeftMs() : (state.playUntil || 0) - Date.now();
+  const ms = hourlyMode() ? hourLeftMs() : playBalance();
   const s = Math.max(0, Math.round(ms / 1000));
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 };
@@ -61,7 +69,7 @@ function openPlayZone() {
   if (!playOpen()) {
     if (!hourlyMode() && state.playPasses > 0) {
       state.playPasses--;
-      state.playUntil = Date.now() + playMinutes() * 60000;
+      state.playRemainingMs = playMinutes() * 60000;
       save();
       say('You earned play time!');
     } else {
@@ -89,22 +97,27 @@ function startPlayTimer() {
     const inPlay = ['playzone', 'game'].some((id) => $('#' + id).classList.contains('active'));
     const now = performance.now();
     // hourly mode: count only time actually spent in the Play Zone
-    if (hourlyMode() && inPlay && !document.hidden) {
+    if (inPlay && !document.hidden && !state.playAlways && !isTestMode() && !brainMode) {
+      if (hourlyMode()) {
       const h = hourKey();
       if (!state.playUsed || state.playUsed.h !== h) state.playUsed = { h, ms: 0 };
       state.playUsed.ms += Math.max(0, Math.min(now - lastTick, 5000));
+      } else state.playRemainingMs = Math.max(0, playBalance() - Math.max(0, Math.min(now - lastTick, 5000)));
       // Do not synchronously serialize all child progress every second during animations.
       if (now - lastPlaySave >= 10000) { save(); lastPlaySave = now; }
     }
     lastTick = now;
     const txt = state.playAlways ? '∞' : fmtLeft();
     $$('.play-clock').forEach((el) => (el.textContent = `⏱ ${txt}`));
-    if (!inPlay) { clearInterval(playTimer); return; }
+    if (!inPlay) { save(); clearInterval(playTimer); return; }
     if (!playOpen()) { clearInterval(playTimer); timeUp(); }
   };
   tick();
   playTimer = setInterval(tick, 1000);
 }
+// Save the latest balance before a reload or an interruption. Hidden time is never charged.
+addEventListener('pagehide', () => save());
+document.addEventListener('visibilitychange', () => { lastTick = performance.now(); if (document.hidden) save(); });
 function timeUp() {
   stopGame();
   save(); // flush the final hourly-time balance before showing the end screen

@@ -44,7 +44,7 @@
     <div class="score-row">
       <div class="chip">⭐ <b id="starCount">0</b></div>
       <button id="gradeChip" class="chip btn grade-chip">🎓 <b id="gradeLabel">Grade</b></button>
-      <button id="stickersBtn" class="chip btn">🏅 <b id="stickerCount">0</b> stickers ›</button>
+      <button id="stickersBtn" class="chip btn">🏅 <b id="stickerCount">0</b> <span id="stickerLabel">stickers</span> ›</button>
       <div id="todayChip" class="chip today-chip"></div>
     </div>
     <button id="playBanner" class="play-banner"></button>
@@ -255,7 +255,7 @@
         <p id="offlineVoiceStatus" class="note small" role="status" aria-live="polite"></p>
       </div>
       <p id="voiceStatus" class="note small"></p>
-      <div class="field" id="contentPacksSettings"><b>Learning packs</b><small>All included lessons work offline. Purchased extra lessons can be saved on this device for offline play. Children never see purchase prompts.</small><p id="contentPacksStatus" class="note small" role="status"></p><button id="contentPacksSync" type="button" class="big-btn alt small" hidden>⬇ Download purchased lessons</button></div>
+      <div class="field" id="contentPacksSettings"><b>Learning packs</b><small>Included lessons are available offline after the app has finished saving them on this device.</small><p id="contentPacksStatus" class="note small" role="status"></p><button id="contentPacksSync" type="button" class="big-btn alt small" hidden>⬇ Download available lessons</button></div>
       <div class="field">Level for each game <small>(goes up automatically after a great round)</small></div>
       <div id="levels" class="levels"></div>
       <div id="testSection" class="test-box" hidden>

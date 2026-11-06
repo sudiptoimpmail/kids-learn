@@ -238,3 +238,21 @@ $('#trNext').onclick = () => { sfx.tap(); const n = traceItems(TR.set).length; T
 $('#trWrite').onclick = () => { sfx.tap(); TR.write = !TR.write; renderTrace(false); say(TR.write ? 'Now write it on your own!' : 'Trace the gray letter!'); };
 $$('#trace .tr-tab').forEach((b) => (b.onclick = () => { sfx.tap(); TR.set = b.dataset.set; TR.i = 0; renderTrace(true); }));
 $('#trStrip').onclick = (e) => { const b = e.target.closest('.tr-chip'); if (!b) return; sfx.tap(); TR.i = +b.dataset.k; renderTrace(true); };
+// Native touch panning plus mouse dragging for the long alphabet strip.
+(() => {
+  const strip = $('#trStrip'); let drag = null, moved = false;
+  strip.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    drag = { x: e.clientX, left: strip.scrollLeft }; moved = false;
+  });
+  strip.addEventListener('pointermove', e => {
+    if (!drag) return;
+    if (Math.abs(e.clientX - drag.x) > 5) {
+      moved = true; strip.setPointerCapture(e.pointerId);
+      strip.scrollLeft = drag.left + drag.x - e.clientX;
+    }
+  });
+  strip.addEventListener('pointerup', () => { drag = null; });
+  strip.addEventListener('pointercancel', () => { drag = null; moved = false; });
+  strip.addEventListener('click', e => { if (moved) { e.preventDefault(); e.stopImmediatePropagation(); moved = false; } }, true);
+})();

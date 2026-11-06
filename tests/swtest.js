@@ -33,6 +33,14 @@ const { chromium } = require('playwright');
       return {app:a.ok,core:b.ok,manifest:c.ok,illustrations:d.ok,styles:e.ok};
     }, result.core);
     assert.deepEqual(offline, {app:true,core:true,manifest:true,illustrations:true,styles:true});
+    // A fresh document must bootstrap offline, not merely fetch from an already loaded page.
+    const cold = await ctx.newPage();
+    cold.on('pageerror', e => errors.push(e.message));
+    await cold.goto('http://localhost:8765/index.html');
+    await cold.waitForFunction(() => !!window.KidsLearnReady);
+    await cold.evaluate(() => window.KidsLearnReady);
+    assert.ok(await cold.locator('#startBtn').isVisible(), 'Offline cold document failed to boot');
+    await cold.close();
     assert.deepEqual(errors, []);
     console.log('PASS offline app, starter audio and cache isolation', result, offline);
   } finally {

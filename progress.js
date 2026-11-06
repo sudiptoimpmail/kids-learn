@@ -463,9 +463,9 @@ const QUEST_WORLD = ['sci', 'home', 'animals', 'places', 'maps', 'body', 'gk', '
 const QUEST_THINKING = ['pattern', 'odd', 'sequence'];
 function questFor() {
   const today = dayKey(), grade = state.grade || 'k';
-  if (state.quest && state.quest.date === today && state.quest.grade === grade) return state.quest;
   const visible = new Set(visibleGames().filter((c) => c.gen && c.id !== 'mix').map((c) => c.id));
   const ok = (id) => visible.has(id);
+  if (state.quest && state.quest.date === today && state.quest.grade === grade && state.quest.steps.every(s => ok(s.cat) || (s.cat === 'trace' && ['prek', 'k'].includes(grade)))) return state.quest;
   // how many days ago each game was played (from the last 7 days)
   const ago = {};
   for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); const x = state.stats && state.stats.days[dayKey(d)]; if (x) for (const c of Object.keys(x.cats)) if (ago[c] == null) ago[c] = i; }
