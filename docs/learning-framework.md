@@ -33,7 +33,7 @@ Secure requires enough independent recent answers on multiple days for **every**
 
 ## Follow-on modules from the parent review
 
-Still to implement: expanded reading/phonics demonstrations and Grade 1 read-alongs, plus physical-device acceptance. The family modules below add collections, portfolios, speed controls and optional time rules. Existing saved drawings and story readers remain available. These are not claimed complete by this foundational PR.
+Still to implement: Grade 1 read-alongs, plus physical-device acceptance. The family modules below add collections, portfolios, speed controls and optional time rules. Existing saved drawings and story readers remain available. These are not claimed complete by this foundational PR.
 
 ## Family modules
 
@@ -42,3 +42,7 @@ Still to implement: expanded reading/phonics demonstrations and Grade 1 read-alo
 `storyRates` defines supported playback rates and labels. Story highlights use duration divided by rate; altered-rate playback uses pitch-preserving HTML audio. Default speed leaves existing playback unchanged. `sessionMinutes`, `breakMinutes` and `limitedScreens` configure optional foreground session accounting. Quiet hours use local device time and support midnight crossings; equal start/end disables the window. Parent PIN protection is inherited from Settings. Progress is saved on background/reload by the existing lifecycle handler.
 
 Added browser regression covers quiet-hour boundaries, session reset after a break, child isolation, shared settings persistence, collections and portfolio. Physical iOS audio and timing acceptance remains required.
+
+## Literacy demonstrations
+
+Seven configured examples cover initial sounds, rhyme, blending, middle vowels, digraphs, CVC words and sentence clues. Every audio key references an existing offline recording. The shared player offers replay, supported feedback and a return to independent practice; demonstrations never record mastery evidence. Configuration validation rejects missing steps, duplicate choices and answers outside the choice list. Add another example through `demonstrations[category + ":" + level]`; no grade-specific rendering branch is needed. Full Grade 1 picture-book read-alongs remain a separate content task.
