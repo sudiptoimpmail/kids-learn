@@ -48,20 +48,20 @@ def api(params):
 def plain(s):
     return re.sub(r'<[^>]+>', '', s or '').strip()
 
-def candidate(name, landmark_id):
+SEARCH_ALIASES = {\n    'tajmahal':['Taj Mahal Agra photograph'], 'niagara':['Niagara Falls waterfall photograph'],\n    'bigben':['Elizabeth Tower London photo'], 'opera':['Sydney Opera House Sydney photograph'],\n    'goldengate':['Golden Gate Bridge San Francisco photograph'], 'pisa':['Leaning Tower Pisa photograph'],\n    'brandenburg':['Brandenburg Gate Berlin photograph'], 'tokyo':['Tokyo Tower Tokyo photograph'],\n    'uluru':['Uluru Ayers Rock Australia photograph'], 'stonehenge':['Stonehenge England photograph'],\n    'safari':['Maasai Mara Kenya wildlife photograph'], 'tablemtn':['Table Mountain Cape Town photograph'],\n    'milford':['Milford Sound New Zealand photograph'], 'fuji':['Mount Fuji Japan photograph']\n}\n\ndef candidate(name, landmark_id):
     # Search is only discovery. It does NOT verify the pictured place.
-    results = api({'generator':'search','gsrsearch':'filetype:bitmap ' + name,
+    queries = [name] + SEARCH_ALIASES.get(landmark_id, [])\n    results = []\n    for query in queries:\n        results.extend(api({'generator':'search','gsrsearch':'filetype:bitmap ' + query,
                    'gsrnamespace':6,'gsrlimit':12,'prop':'imageinfo',
-                   'iiprop':'url|extmetadata|size','iiurlwidth':1000}).get('query',{}).get('pages',[])
+                   'iiprop':'url|extmetadata|size','iiurlwidth':1000}).get('query',{}).get('pages',[]))
     for page in results:
         info = (page.get('imageinfo') or [{}])[0]
         metadata = info.get('extmetadata') or {}
         license_short = plain(metadata.get('LicenseShortName',{}).get('value',''))
         restrictions = plain(metadata.get('Restrictions',{}).get('value',''))
         # Restrict to simple license classes; no attribution claims are auto-approved.
-        if license_short not in ('CC0', 'Public domain', 'Public Domain', 'PD'):
+        if license_short not in ('CC0', 'Public domain', 'Public Domain', 'PD', 'CC BY 4.0', 'CC BY-SA 4.0'):
             continue
-        if restrictions or info.get('width',0)<480 or info.get('height',0)<320:
+        if restrictions or info.get('width',0)<480 or info.get('height',0)<320:\n            continue\n        # Recognition questions need real photographs, not paintings, maps, logos or renders.\n        if any(word in page['title'].lower() for word in ('painting','watercolor','watercolour','drawing','illustration','engraving','woodblock','postcard','map of','logo','render','artwork','hokusai')):
             continue
         url = info.get('thumburl') or info.get('url')
         if not url or not url.startswith('https://'):
