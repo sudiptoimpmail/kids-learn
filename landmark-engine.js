@@ -26,7 +26,10 @@ function landmarkArt(id, cls = '') {
   const src = photo ? `assets/landmark-photos/${id}.webp` : `assets/landmarks/${id}.svg`;
   const alt = (photo ? 'Photograph showing ' : 'Illustration showing ') + safeDescription;
   const preview = !photo && LANDMARK_ONLINE_PREVIEWS[id];
-  const onlineControl = preview && preview.mode === 'online-only' &&
+  // Answer options are themselves buttons: never nest an interactive photo
+  // button inside them or let a preview tap submit an answer.
+  const onlineControl = !safeClass.split(/\s+/).includes('small') &&
+    preview && preview.mode === 'online-only' &&
     /^https:\/\/commons\.wikimedia\.org\/wiki\/File:/.test(preview.sourceUrl) &&
     /^[a-zA-Z0-9 ,()._-]+\.jpe?g$/i.test(preview.file)
     ? `<button type="button" class="lm-online-preview" data-landmark-id="${id}">View real photo (internet required)</button>` : '';
@@ -46,17 +49,31 @@ document.addEventListener('click', event => {
   const image=box?.querySelector('img.lm-art');
   if(!image) return;
   const local=image.getAttribute('src');
+  // Repeated taps while loading must not start concurrent remote requests.
+  button.disabled=true;
   const remote='https://commons.wikimedia.org/wiki/Special:FilePath/' +
     encodeURIComponent(preview.file) + '?width=640';
   image.onerror=()=>{
     image.onerror=null;image.src=local;
     button.textContent='Photo unavailable; illustration restored';
+    button.disabled=false;
   };
   image.onload=()=>{
     image.alt='Photograph showing '+(LANDMARK_DESCRIPTIONS[id]||'a landmark');
     box.classList.remove('lm-illustration');box.classList.add('lm-real-photo');
     box.querySelector('.lm-art-note')?.remove();
     button.textContent='Photo loaded (online)';button.disabled=true;
+    // Display attribution and a verifiable source link alongside the image.
+    if (!box.querySelector('.lm-photo-credit')) {
+      const credit=document.createElement('small');
+      credit.className='lm-photo-credit';
+      const link=document.createElement('a');
+      link.href=preview.sourceUrl;
+      link.target='_blank';link.rel='noopener noreferrer';
+      link.textContent='Photo source and license';
+      credit.append(document.createTextNode('Photo: '+preview.creator+' · '+preview.license+' · '),link);
+      box.append(credit);
+    }
   };
   image.src=remote;
   button.textContent='Loading photograph…';
