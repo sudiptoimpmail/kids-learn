@@ -39,7 +39,7 @@ async function loadBook(id) {
   document.body.insertBefore(s, document.getElementById('play'));
 })();
 
-function stopReading() { clearTimeout(LB.readTimer); LB.readTimer = 0; LB.reading = false; sayToken++; stopClip(); $('#libBody .w.on').forEach((w) => w.classList.remove('on')); }
+function stopReading() { clearTimeout(LB.readTimer); LB.readTimer = 0; LB.reading = false; sayToken++; stopClip(); $$('#libBody .w.on').forEach((w) => w.classList.remove('on')); }
 
 async function openLibrary() {
   stopReading(); LB.book = null;
