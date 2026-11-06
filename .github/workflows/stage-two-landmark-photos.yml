@@ -1,5 +1,7 @@
 name: Stage two landmark photos in review PR
 on:
+  pull_request:
+    branches: [main]
   push:
     branches:
       - feat/phase14-ship-two-offline-landmark-photos-20261106
@@ -10,11 +12,13 @@ permissions:
   contents: write
 jobs:
   stage:
+    if: github.head_ref == 'feat/phase14-ship-two-offline-landmark-photos-20261106' || github.ref_name == 'feat/phase14-ship-two-offline-landmark-photos-20261106'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: feat/phase14-ship-two-offline-landmark-photos-20261106
           persist-credentials: true
       - uses: actions/setup-python@v5
         with:
@@ -24,7 +28,11 @@ jobs:
           node-version: '22'
       - run: python -m pip install 'Pillow==11.3.0'
       - name: Download and stage verified-source photos
-        run: python scripts/stage-two-landmark-photos.py
+        run: |
+          if [ -f assets/landmark-photos/liberty.webp ] && [ -f assets/landmark-photos/eiffel.webp ]; then
+            echo 'Already staged'; exit 0
+          fi
+          python scripts/stage-two-landmark-photos.py
       - name: Validate provenance and offline image files
         run: |
           node tests/landmark-photo-provenance-test.cjs
