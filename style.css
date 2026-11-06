@@ -1533,8 +1533,8 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .bld-bar .fr-part:last-child { border-right: 0; }
 .fr-part.on { background: #ffa94d; }
 .bld-pie { width: min(260px, 60vw); height: auto; }
-.bld-pie .fr-part { fill: #fff; stroke: #4b2fc2; stroke-width: 4; cursor: pointer; }
-.bld-pie .fr-part.on { fill: #ffa94d; }
+.bld-pie .fr-slice { fill: #fff; stroke: #4b2fc2; stroke-width: 4; cursor: pointer; }
+.bld-pie .fr-slice.on { fill: #ffa94d; }
 .bld-clock { width: min(240px, 56vw); height: auto; }
 .bld-check { min-width: 180px; }
 
