@@ -1382,7 +1382,7 @@ function openWho() {
   $('#whoGrid').innerHTML = kids.map((k) => `<button class="who-kid ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}">
     <span class="who-av">${esc(k.avatar || '🦄')}</span><b>${esc(k.name || 'Player')}</b><small>${k.grade ? gradeName(k.grade) : ''}</small></button>`).join('')
     + (kids.length < MAX_KIDS ? '<button class="who-kid who-add" data-add="1" type="button"><span class="who-av">＋</span><b>Add another child</b><small>Grown-up PIN required</small></button>' : '');
-  $('#whoGrid .who-kid').forEach((b) => (b.onclick = () => {
+  $$('#whoGrid .who-kid').forEach((b) => (b.onclick = () => {
     sfx.tap();
     if (b.dataset.add) {
       $('#whoSheet').hidden = true;
