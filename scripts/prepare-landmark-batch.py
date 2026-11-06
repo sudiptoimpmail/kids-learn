@@ -130,8 +130,7 @@ def main():
         time.sleep(DELAY)
     (OUT/'REVIEW.json').write_text(json.dumps({'schema':1,'notPublished':True,
       'candidateCount':len(review),'remainingLandmarks':len(landmarks)-len(enabled),
-      'candidates':review,'instructions':'Do not publish before source/subject/license/alt review'},indent=2)+'
-')
+      'candidates':review,'instructions':'Do not publish before source/subject/license/alt review'},indent=2)+'\n')
     print(f'Prepared {len(review)} review-only candidates; zero photos published.')
 
 if __name__=='__main__':
