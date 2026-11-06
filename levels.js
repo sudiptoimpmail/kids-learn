@@ -48,7 +48,7 @@ function curriculumArea(id) { const c = CURRICULUM_AREAS[levelsCC()] || CURRICUL
 /* ---------- quick placement check: 8 cards at the top of the grade ----------
    Two cards from each of four core sections. Both right first time → that section starts
    at the top of the grade; one right → the middle; none → the start of the grade. */
-const PLACE_POOL = ['add', 'sub', 'mul', 'frac', 'numsense', 'sent', 'spell', 'words', 'phonics', 'cvc'];
+const PLACE_POOL = ['add', 'sub', 'mul', 'frac', 'numsense', 'sent', 'spell', 'words', 'phonics', 'cvc', 'syl'];
 let placePlan = [];
 let placementRunning = false;
 function startPlacement() {
@@ -65,9 +65,11 @@ function startPlacement() {
       for (let tries = 0; tries < 100; tries++) {
         q = gen(lv);
         identity = id + '|' + q.text + '|' + String(q.answer) + '|' + String(q.main || '');
+        // the same grade-fit rule as every round: a card this child can't do is not a fair test
+        if (typeof gradeFits === 'function' && !gradeFits(q, state.grade, id)) { identity = null; continue; }
         if (!used.has(identity)) break;
       }
-      if (used.has(identity)) throw new Error('Not enough distinct placement cards for ' + id);
+      if (!identity || used.has(identity)) throw new Error('Not enough distinct placement cards for ' + id);
       used.add(identity);
       q.placeSection = id;
       q.assessedLevel = lv;
