@@ -859,6 +859,61 @@ function next() {
   renderQ();
 }
 
+/* ---------- grade-configured evidence-based progression ---------- */
+// The algorithm stays independent of grade names. Curriculum JSON owns how
+// many full rounds establish mastery or call for additional practice.
+const DEFAULT_PROGRESSION = ContentData.get('curriculum-map', 'policy').adaptive;
+function progressionOutcome(rule, range, currentLevel, round, previous = {}) {
+  const counts = { mastery: previous.mastery || 0, support: previous.support || 0 };
+  const base = { level: currentLevel, counts, status: 'steady' };
+  if (!rule || !Array.isArray(range) || round.total < rule.minQuestions ||
+      !Number.isFinite(round.firstTry) || !Number.isFinite(round.mistakes) ||
+      round.firstTry < 0 || round.firstTry > round.total || round.mistakes < 0) {
+    return { ...base, status: 'insufficient' };
+  }
+  const firstTryRate = round.firstTry / round.total;
+  const mistakeRate = round.mistakes / round.total;
+  if (firstTryRate >= rule.promote.minFirstTryRate &&
+      mistakeRate <= rule.promote.maxMistakeRate) {
+    counts.mastery++; counts.support = 0;
+    if (counts.mastery >= rule.promote.rounds) {
+      counts.mastery = 0;
+      return currentLevel < range[1]
+        ? { level: currentLevel + 1, counts, status: 'promoted' }
+        : { level: currentLevel, counts, status: 'top' };
+    }
+    return { level: currentLevel, counts, status: 'building' };
+  }
+  if (firstTryRate <= rule.support.maxFirstTryRate &&
+      mistakeRate >= rule.support.minMistakeRate) {
+    counts.support++; counts.mastery = 0;
+    if (counts.support >= rule.support.rounds) {
+      counts.support = 0;
+      return currentLevel > range[0]
+        ? { level: currentLevel - 1, counts, status: 'supported' }
+        : { level: currentLevel, counts, status: 'floor' };
+    }
+    return { level: currentLevel, counts, status: 'practicing' };
+  }
+  // A mixed result is not consecutive evidence of either mastery or struggle.
+  return { level: currentLevel, counts: { mastery: 0, support: 0 }, status: 'steady' };
+}
+function applyRoundProgression(id, level, round) {
+  const rule = (state.grade && GRADES[state.grade]?.progression) || DEFAULT_PROGRESSION;
+  const range = openRange(id) || [1, levelCap(id)];
+  state.progressionStreaks = state.progressionStreaks || {};
+  const record = state.progressionStreaks[id];
+  const previous = record && record.grade === state.grade && record.level === level
+    ? record : {};
+  const outcome = progressionOutcome(rule, range, level, round, previous);
+  state.progressionStreaks[id] = {
+    grade: state.grade || null, level: outcome.level,
+    mastery: outcome.counts.mastery, support: outcome.counts.support
+  };
+  if (outcome.level !== level) state.levels[id] = outcome.level;
+  return outcome.status;
+}
+
 function finish() {
   if (R.browse || isTestMode()) { releaseBody3D(); renderHome(); show('home'); return; }   // the test browser does not change levels or stars
   releaseBody3D();
@@ -875,18 +930,15 @@ function finish() {
   if (id === 'placement' && typeof applyPlacement === 'function') { applyPlacement(R.qs); levelMsg = '🎯 All set! Your games now start at the right step.'; }
   else if (id !== 'mix' && !R.atLevel) {          // practice at an older level (quest) doesn't move her level
     const lv = levelOf(id);
-    // Adaptive levels stay inside the selected grade's curriculum scope.
-    // Parents can unlock wider levels with Show all games in Settings.
-    state.good = state.good || {};
-    if (rate <= 0.1) {
-      state.good[id] = (state.good[id] || 0) + 1;
-      if (lv < levelCap(id)) { state.levels[id] = lv + 1; state.good[id] = 0; levelMsg = '⬆️ Next step unlocked!'; }
-      else if (!state.showAll && state.grade) levelMsg = '⭐ Great work! Try another skill for your grade.';
-    } else {
-      state.good[id] = 0;
-      const floor = state.grade ? (gradeRange(state.grade,id)||[1])[0] : 1;
-      if (rate >= 0.5 && n >= 5 && lv > floor) { state.levels[id] = lv - 1; levelMsg = "🙂 Let's practice the step before a bit more"; }
-    }
+    // Consistent performance across enough questions changes a level; a
+    // single lucky or difficult round does not. Thresholds live in grade JSON.
+    const status = applyRoundProgression(id, lv, {
+      total: n, firstTry: R.firstTry, mistakes: R.mistakes
+    });
+    if (status === 'promoted') levelMsg = '⬆️ Next step unlocked!';
+    else if (status === 'supported') levelMsg = "🙂 Let's practice the step before a bit more";
+    else if (status === 'top' && !state.showAll && state.grade)
+      levelMsg = '⭐ Great work! Try another skill for your grade.';
   }
   const earned = earnPlay();
   // part of today's quest?
@@ -1007,7 +1059,9 @@ function openDiff() {
   $('#diffSheet').hidden = false;
 }
 $('#diffApply').onclick = () => {
-  const id = R.cat.id; state.levels[id] = +$('#diffRange').value; state.good && (state.good[id] = 0); save();
+  const id = R.cat.id; state.levels[id] = +$('#diffRange').value;
+  if (state.progressionStreaks) delete state.progressionStreaks[id];
+  save();
   $('#diffSheet').hidden = true; startRound(id);
 };
 $('#diffCancel').onclick = () => ($('#diffSheet').hidden = true);
@@ -1103,7 +1157,8 @@ function renderGrades() {
   $('#gradeBtns').innerHTML = Object.entries(GRADES).map(([k, g]) =>
     `<button class="grade-btn ${state.grade === k ? 'on' : ''}" data-g="${k}">${gradeName(k)}</button>`).join('');
   $$('#gradeBtns .grade-btn').forEach((b) => (b.onclick = () => {
-    sfx.tap(); state.grade = b.dataset.g; state.levels = {}; Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = gradeStart(r))); save();
+    sfx.tap(); state.grade = b.dataset.g; state.levels = {}; state.progressionStreaks = {};
+    Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = gradeStart(r))); save();
     renderGrades();
     $$('#levels select').forEach((sel) => (sel.value = levelOf(sel.dataset.id)));
   }));
@@ -1245,7 +1300,12 @@ function collectSettings() {
   state.showAll = $('#showAll').checked;
   state.hideClock = !$('#optClock').checked;
   state.roundsPerPlay = +$('#roundsPerPlay').value; state.playMinutes = +$('#playMinutes').value; state.playAlways = $('#playAlways').checked; state.optAnatomy = $('#optAnatomy').checked; state.playMode = $('#playMode').value; state.playPerHour = +$('#playPerHour').value;
-  $$('#levels select').forEach((s) => (state.levels[s.dataset.id] = +s.value));
+  $('#levels select').forEach((s) => {
+    const level = +s.value, id = s.dataset.id;
+    if (state.levels[id] !== level && state.progressionStreaks)
+      delete state.progressionStreaks[id];
+    state.levels[id] = level;
+  });
   save();
 }
 // every change saves right away (no Save button); typing the name saves a moment after the last key
