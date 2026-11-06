@@ -206,3 +206,13 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 .explorer-reasoning summary:focus-visible{outline:3px solid #1b65a7;outline-offset:3px}
 .explorer-reasoning ol{padding-left:1.6rem;line-height:1.6;margin:.5rem 0}
 .explorer-reasoning li+li{margin-top:.4rem}
+
+/* Interactive fraction lab: 44px minimum touch targets and keyboard focus. */
+.explorer-fraction-lab{margin:1rem 0;padding:.9rem;border:2px solid #91accf;border-radius:14px;background:#f7fbff;color:#20354e}
+.explorer-lab-heading{font-size:1rem!important;margin:0 0 .6rem!important;font-weight:750!important}
+.explorer-fraction-parts{display:grid;grid-template-columns:repeat(var(--fraction-parts),minmax(0,1fr));gap:3px;width:100%;margin:.5rem 0}
+.explorer-fraction-cell{appearance:none;min-width:0;min-height:48px;border:2px solid #345d84;border-radius:5px;background:#fff;cursor:pointer;touch-action:manipulation}
+.explorer-fraction-cell[aria-pressed="true"]{background:#1971c2;border-color:#123f72}
+.explorer-fraction-cell:focus-visible,.explorer-fraction-reset:focus-visible{outline:3px solid #c44812;outline-offset:3px}
+.explorer-fraction-result{display:block;font-weight:800;margin:.6rem 0}
+.explorer-fraction-reset{min-height:44px;border:2px solid #345d84;border-radius:9px;background:white;color:#20354e;font-weight:750;padding:.4rem .9rem;cursor:pointer}
