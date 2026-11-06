@@ -20,7 +20,7 @@ const {chromium} = require('playwright');
       const math=ContentData.get('explorer-math','questions');
       const visuals=math.filter(x=>x.representation);
       const kinds=[...new Set(visuals.map(x=>x.representation.kind))].sort();
-      require(visuals.length===12,'Expected 12 illustrated math missions');
+      require(visuals.length===24,'Expected 24 illustrated math missions');
       require(kinds.join(',')==='array,bar-chart,fraction-strip,number-line',
         'Not all representation types delivered: '+kinds.join(','));
       const originalGrade=state.grade;
@@ -74,6 +74,15 @@ const {chromium} = require('playwright');
           require(svg.getBoundingClientRect().width<=article.clientWidth+2,
             'SVG bigger than card in '+q.id+' at '+viewport.width+'px');
           require(!article.querySelector('script,iframe'),'Unsafe visual content: '+q.id);
+          const details=article.querySelector('details.explorer-reasoning');
+          if(q.reasoningSteps){
+            require(!!details && details.querySelectorAll('li').length===3,
+              'Missing 3-step interactive reasoning '+q.id);
+            if(details){details.open=true;
+              require(details.open && details.querySelector('summary')?.textContent.includes('steps'),
+                'Reasoning disclosure cannot open '+q.id);
+              details.open=false;}
+          }
         }
       }
       article.remove();

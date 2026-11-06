@@ -185,6 +185,6 @@ for (const q of questionBank) {
   }
   counts[result.kind]=(counts[result.kind]||0)+1;
 }
-assert.equal(questionBank.length,74,'Every authored math mission must have a solution');
-assert.equal(questionBank.filter(q=>q.representation).length,12,'Twelve visual missions required');
+assert.equal(questionBank.length,86,'Every authored math mission must have a solution');
+assert.equal(questionBank.filter(q=>q.representation).length,24,'Twenty-four visual missions required');
 console.log('PASS '+questionBank.length+' Explorer math missions independently evaluated; '+JSON.stringify(counts));

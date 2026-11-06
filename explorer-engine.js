@@ -97,7 +97,10 @@
           q.choices.length > 5 || !q.choices.includes(q.answer) ||
           new Set(q.choices.map(x => String(x).trim().toLowerCase())).size !== q.choices.length ||
           (q.asset && !validAsset(q.asset)) ||
-          (q.representation && !validDiagram(q.representation))) {
+          (q.representation && !validDiagram(q.representation)) ||
+          (q.reasoningSteps && (!Array.isArray(q.reasoningSteps) ||
+            q.reasoningSteps.length !== 3 || q.reasoningSteps.some(step =>
+              typeof step !== 'string' || !step.trim() || step.length > 180)))) {
         throw Error('Invalid Explorer question in ' + name + ': ' + (q?.id || '(missing id)'));
       }
       ids.add(q.id);
@@ -111,6 +114,8 @@
       ? `<img class="explorer-asset" src="${esc(row.asset)}" alt="" loading="lazy" decoding="async">`
       : '';
     const diagram = row.representation ? renderDiagram(row.representation) : '';
+    const reasoning = Array.isArray(row.reasoningSteps) && row.reasoningSteps.length === 3
+      ? `<details class="explorer-reasoning"><summary>Show solving steps</summary><ol>${row.reasoningSteps.map(step=>`<li>${esc(step)}</li>`).join('')}</ol></details>` : '';
     const choices = shuffle(row.choices).map(answer => ({v:answer,html:esc(answer)}));
     return {
       key: `explorer-${bank}-${row.id}`,
@@ -121,7 +126,7 @@
       say: 'Find the answer!',
       main: `<article class="explorer-card">
         <div class="explorer-overline"><span aria-hidden="true">${bank === 'math' ? '🧮' : '🔬'}</span> ${esc(row.domain)}</div>
-        <div class="explorer-body">${image}<p>${esc(row.context)}</p>${diagram}</div>
+        <div class="explorer-body">${image}<p>${esc(row.context)}</p>${diagram}${reasoning}</div>
         <div class="explorer-question">${esc(row.prompt)}</div>
       </article>`,
       mainClass:'explorer-main',

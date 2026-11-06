@@ -1833,6 +1833,452 @@
           "shaded": 5,
           "answerRule": "fraction"
         }
+      },
+      {
+        "id": "g2-garden-rows",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Arrays",
+        "context": "A garden has 4 rows with 6 seedlings in each row.",
+        "prompt": "How many seedlings are planted?",
+        "choices": [
+          "24",
+          "18",
+          "10",
+          "30"
+        ],
+        "answer": "24",
+        "explanation": "4 × 6 = 24 seedlings.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "4*6"
+        },
+        "representation": {
+          "kind": "array",
+          "rows": 4,
+          "columns": 6,
+          "answerRule": "count"
+        },
+        "reasoningSteps": [
+          "Count the number of rows.",
+          "Count how many items are in each row.",
+          "Multiply the number of rows by the items in each row."
+        ]
+      },
+      {
+        "id": "g2-art-table",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Arrays",
+        "context": "Children arrange 3 rows of 7 painted tiles.",
+        "prompt": "How many painted tiles are there?",
+        "choices": [
+          "21",
+          "10",
+          "24",
+          "28"
+        ],
+        "answer": "21",
+        "explanation": "3 × 7 = 21 tiles.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "3*7"
+        },
+        "representation": {
+          "kind": "array",
+          "rows": 3,
+          "columns": 7,
+          "answerRule": "count"
+        },
+        "reasoningSteps": [
+          "Count the number of rows.",
+          "Count how many items are in each row.",
+          "Multiply the number of rows by the items in each row."
+        ]
+      },
+      {
+        "id": "g2-sports-chart",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Data",
+        "context": "The chart shows how many students chose each sport.",
+        "prompt": "How many students voted altogether?",
+        "choices": [
+          "29",
+          "19",
+          "24",
+          "32"
+        ],
+        "answer": "29",
+        "explanation": "9 + 12 + 8 = 29 students.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "9+12+8"
+        },
+        "representation": {
+          "kind": "bar-chart",
+          "labels": [
+            "Soccer",
+            "Tennis",
+            "Golf"
+          ],
+          "values": [
+            9,
+            12,
+            8
+          ],
+          "answerRule": "total"
+        },
+        "reasoningSteps": [
+          "Read each bar's label and value.",
+          "Add the values for all the bars.",
+          "Check that your result matches the question."
+        ]
+      },
+      {
+        "id": "g2-fruit-chart",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Data",
+        "context": "A class counted pieces of fruit in three baskets.",
+        "prompt": "How many more apples than pears are there?",
+        "choices": [
+          "7",
+          "3",
+          "11",
+          "19"
+        ],
+        "answer": "7",
+        "explanation": "14 − 7 = 7 more apples.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "14-7"
+        },
+        "representation": {
+          "kind": "bar-chart",
+          "labels": [
+            "Apples",
+            "Pears",
+            "Plums"
+          ],
+          "values": [
+            14,
+            7,
+            9
+          ],
+          "answerRule": "difference",
+          "compare": [
+            0,
+            1
+          ]
+        },
+        "reasoningSteps": [
+          "Read each bar's label and value.",
+          "Find the two named bars and subtract the smaller count from the larger count.",
+          "Check that your result matches the question."
+        ]
+      },
+      {
+        "id": "g2-line-35",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Number lines",
+        "context": "The dot marks a number on the number line.",
+        "prompt": "Which number is marked?",
+        "choices": [
+          "35",
+          "25",
+          "30",
+          "40"
+        ],
+        "answer": "35",
+        "explanation": "The line goes from 0 to 50 in steps of 5. The dot is at 35.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "35"
+        },
+        "representation": {
+          "kind": "number-line",
+          "start": 0,
+          "end": 50,
+          "steps": 10,
+          "point": 35,
+          "answerRule": "point"
+        },
+        "reasoningSteps": [
+          "Read the starting and ending labels.",
+          "Find the value of one equal step.",
+          "Count steps from the start to the marked dot."
+        ]
+      },
+      {
+        "id": "g2-line-72",
+        "level": 4,
+        "grades": [
+          "g2",
+          "g3"
+        ],
+        "domain": "Number lines",
+        "context": "Read the marked point on the number line.",
+        "prompt": "Which number is marked?",
+        "choices": [
+          "72",
+          "62",
+          "70",
+          "82"
+        ],
+        "answer": "72",
+        "explanation": "The point is at 72 between 60 and 80.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "72"
+        },
+        "representation": {
+          "kind": "number-line",
+          "start": 60,
+          "end": 80,
+          "steps": 10,
+          "point": 72,
+          "answerRule": "point"
+        },
+        "reasoningSteps": [
+          "Read the starting and ending labels.",
+          "Find the value of one equal step.",
+          "Count steps from the start to the marked dot."
+        ]
+      },
+      {
+        "id": "g3-rows-stage",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Arrays",
+        "context": "A school stage has 8 rows of 7 seats.",
+        "prompt": "How many seats are in the diagram?",
+        "choices": [
+          "56",
+          "48",
+          "54",
+          "64"
+        ],
+        "answer": "56",
+        "explanation": "8 × 7 = 56 seats.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "8*7"
+        },
+        "representation": {
+          "kind": "array",
+          "rows": 8,
+          "columns": 7,
+          "answerRule": "count"
+        },
+        "reasoningSteps": [
+          "Count the number of rows.",
+          "Count how many items are in each row.",
+          "Multiply the number of rows by the items in each row."
+        ]
+      },
+      {
+        "id": "g3-rows-gallery",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Arrays",
+        "context": "A gallery arranges 6 rows of 9 pictures.",
+        "prompt": "How many pictures are displayed?",
+        "choices": [
+          "54",
+          "45",
+          "56",
+          "63"
+        ],
+        "answer": "54",
+        "explanation": "6 × 9 = 54 pictures.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "6*9"
+        },
+        "representation": {
+          "kind": "array",
+          "rows": 6,
+          "columns": 9,
+          "answerRule": "count"
+        },
+        "reasoningSteps": [
+          "Count the number of rows.",
+          "Count how many items are in each row.",
+          "Multiply the number of rows by the items in each row."
+        ]
+      },
+      {
+        "id": "g3-chart-recycling",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Data",
+        "context": "The chart shows kilograms collected in a recycling drive.",
+        "prompt": "How many kilograms were collected in all?",
+        "choices": [
+          "65",
+          "45",
+          "55",
+          "75"
+        ],
+        "answer": "65",
+        "explanation": "18 + 25 + 22 = 65 kilograms.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "18+25+22"
+        },
+        "representation": {
+          "kind": "bar-chart",
+          "labels": [
+            "Paper",
+            "Glass",
+            "Metal"
+          ],
+          "values": [
+            18,
+            25,
+            22
+          ],
+          "answerRule": "total"
+        },
+        "reasoningSteps": [
+          "Read each bar's label and value.",
+          "Add the values for all the bars.",
+          "Check that your result matches the question."
+        ]
+      },
+      {
+        "id": "g3-chart-flowers",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Data",
+        "context": "A garden survey counted flowers by color.",
+        "prompt": "How many more red than yellow flowers?",
+        "choices": [
+          "13",
+          "7",
+          "18",
+          "31"
+        ],
+        "answer": "13",
+        "explanation": "24 − 11 = 13 flowers.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "24-11"
+        },
+        "representation": {
+          "kind": "bar-chart",
+          "labels": [
+            "Red",
+            "Yellow",
+            "Blue"
+          ],
+          "values": [
+            24,
+            11,
+            16
+          ],
+          "answerRule": "difference",
+          "compare": [
+            0,
+            1
+          ]
+        },
+        "reasoningSteps": [
+          "Read each bar's label and value.",
+          "Find the two named bars and subtract the smaller count from the larger count.",
+          "Check that your result matches the question."
+        ]
+      },
+      {
+        "id": "g3-fraction-sixths",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Fractions",
+        "context": "A ribbon is divided into six equal parts. The blue parts are shaded.",
+        "prompt": "What fraction is shaded?",
+        "choices": [
+          "4/6",
+          "2/6",
+          "4/5",
+          "1/2"
+        ],
+        "answer": "4/6",
+        "explanation": "Four of six equal parts are shaded.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "4/6"
+        },
+        "representation": {
+          "kind": "fraction-strip",
+          "parts": 6,
+          "shaded": 4,
+          "answerRule": "fraction"
+        },
+        "reasoningSteps": [
+          "Count all equal parts of the strip.",
+          "Count only the shaded parts.",
+          "Write shaded parts over total parts."
+        ]
+      },
+      {
+        "id": "g3-fraction-tenths",
+        "level": 5,
+        "grades": [
+          "g3"
+        ],
+        "domain": "Fractions",
+        "context": "A strip is divided into ten equal parts. Count the shaded parts.",
+        "prompt": "What fraction is shaded?",
+        "choices": [
+          "7/10",
+          "3/10",
+          "7/8",
+          "1/2"
+        ],
+        "answer": "7/10",
+        "explanation": "Seven of ten equal parts are shaded.",
+        "verification": {
+          "kind": "arithmetic",
+          "expression": "7/10"
+        },
+        "representation": {
+          "kind": "fraction-strip",
+          "parts": 10,
+          "shaded": 7,
+          "answerRule": "fraction"
+        },
+        "reasoningSteps": [
+          "Count all equal parts of the strip.",
+          "Count only the shaded parts.",
+          "Write shaded parts over total parts."
+        ]
       }
     ]
   }
