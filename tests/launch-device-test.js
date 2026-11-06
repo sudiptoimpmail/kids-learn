@@ -5,10 +5,12 @@ const {chromium} = require('playwright');
   try {
     const context = await browser.newContext({locale:'en-US',hasTouch:true});
     const page = await context.newPage(), errors=[];
-    page.on('pageerror',e=>errors.push(e.message));
+    page.on('pageerror',e=>errors.push(e.stack || e.message));
+    await page.addInitScript(() => {
+      if (!localStorage.getItem('learnplay.v1')) localStorage.setItem('learnplay.v1',JSON.stringify({name:'Ava',grade:'g2',voice:false,stickers:['⭐']}));
+    });
     await page.goto('http://localhost:8765/index.html');
-    await page.evaluate(()=>localStorage.setItem('learnplay.v1',JSON.stringify({name:'Ava',grade:'g2',voice:false,stickers:['⭐']})));
-    await page.reload(); await page.waitForFunction(()=>!!window.KidsLearnReady); await page.evaluate(()=>window.KidsLearnReady);
+    await page.waitForFunction(()=>!!window.KidsLearnReady); await page.evaluate(()=>window.KidsLearnReady);
     await page.evaluate(()=>document.getElementById('startBtn').click());
     assert.equal(await page.evaluate(()=>countryCode()),'us');
     assert.equal(await page.locator('#stickerLabel').innerText(),'sticker');

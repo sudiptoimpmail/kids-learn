@@ -115,9 +115,8 @@ function startPlayTimer() {
   tick();
   playTimer = setInterval(tick, 1000);
 }
-// Save the latest balance before a reload or an interruption. Hidden time is never charged.
-addEventListener('pagehide', () => save());
-document.addEventListener('visibilitychange', () => { lastTick = performance.now(); if (document.hidden) save(); });
+// progress.js flushes state on pagehide/visibilitychange; never charge hidden time.
+document.addEventListener('visibilitychange', () => { lastTick = performance.now(); });
 function timeUp() {
   stopGame();
   save(); // flush the final hourly-time balance before showing the end screen
