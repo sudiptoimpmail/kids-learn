@@ -18,8 +18,11 @@ const {chromium}=require('playwright');
     }
     const reading=READING();
     const extension=ContentData.get('grade23-extension','STORIES');
-    owned.passageIncludesG2=extension.slice(0,5).filter(x=>reading.some(y=>y[0]===x[1])).length;
-    owned.passageIncludesG3=extension.slice(5).filter(x=>reading.some(y=>y[0]===x[1])).length;
+    const passageRoutes=ContentData.get('curriculum-map','ROUTES').STORIES;
+    owned.passageIncludesG2=extension.filter((x,i)=>passageRoutes[i].grade==='g2')
+      .filter(x=>reading.some(y=>y[0]===x[1])).length;
+    owned.passageIncludesG3=extension.filter((x,i)=>passageRoutes[i].grade==='g3')
+      .filter(x=>reading.some(y=>y[0]===x[1])).length;
     out[g]=owned;
    }
    return out;
@@ -30,10 +33,10 @@ const {chromium}=require('playwright');
   for(const bank of ['SCIENCE','GK','THINKING_ODD','THINKING_SEQUENCES','STORIES']){
     assert.ok(r.g2[bank]>0&&r.g3[bank]>0,bank+' has thin grade routing');
   }
-  assert.equal(r.g2.passageIncludesG2,5,'Grade2 missing its own comprehension passages');
+  assert.equal(r.g2.passageIncludesG2,11,'Grade2 missing its own comprehension passages');
   assert.equal(r.g2.passageIncludesG3,0,'Grade2 saw Grade3 comprehension passages');
-  assert.equal(r.g3.passageIncludesG3,10,'Grade3 missing its own comprehension passages');
+  assert.equal(r.g3.passageIncludesG3,16,'Grade3 missing its own comprehension passages');
   assert.equal(r.g3.passageIncludesG2,0,'Grade3 saw Grade2 comprehension passages');
-  console.log('PASS grade-scoped 115 authored question rows and reading passages remain isolated across Pre-K–Grade 3');
+  console.log('PASS grade-scoped 127 authored question rows and reading passages remain isolated across Pre-K–Grade 3');
  }finally{await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
