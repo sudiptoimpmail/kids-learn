@@ -1169,6 +1169,48 @@ function organSVG(highlight) {
   </svg>`;
 }
 
+// Offline, age-appropriate organ facts. Exploration never submits a quiz answer.
+const ORGAN_FACTS = Object.freeze({
+  brain: 'Your brain helps you think, remember, move, and use your senses.',
+  heart: 'Your heart is a muscle that pumps blood around your body.',
+  lungs: 'Your lungs bring oxygen into your body when you breathe.',
+  stomach: 'Your stomach helps break food down after you swallow it.',
+  intestines: 'Your intestines take nutrients and water from digested food.',
+  liver: 'Your liver helps process nutrients and clean substances from your blood.',
+  kidneys: 'Your kidneys filter waste and extra water from your blood to make urine.',
+  spine: 'Your spine is a column of bones that supports you and protects your spinal cord.'
+});
+function organExplorer() {
+  return `<section class="organ-explorer" aria-label="Explore the human body">
+    <p class="organ-explorer-title">Explore your body</p>
+    <p>Choose an organ to discover what it does. This is a learning tool, not a quiz answer.</p>
+    <div class="organ-explorer-choices" role="group" aria-label="Choose an organ">
+      ${Object.keys(ORGAN_FACTS).map(name=>`<button type="button" data-organ-explore="${name}"
+        aria-pressed="false">${name[0].toUpperCase()+name.slice(1)}</button>`).join('')}
+    </div>
+    <output class="organ-explorer-fact" aria-live="polite">Select an organ to learn about it.</output>
+    <button type="button" class="organ-explorer-clear">Clear selection</button>
+  </section>`;
+}
+// Delegated events work for every newly rendered question, including iPad taps.
+document.addEventListener('click', event=>{
+  const button=event.target.closest?.('[data-organ-explore], .organ-explorer-clear');
+  if(!button)return;
+  const panel=button.closest('.organ-explorer');
+  if(!panel)return;
+  const name=button.dataset.organExplore;
+  for(const choice of panel.querySelectorAll('[data-organ-explore]'))
+    choice.setAttribute('aria-pressed',String(!!name && choice.dataset.organExplore===name));
+  panel.querySelector('.organ-explorer-fact').textContent=
+    name && Object.prototype.hasOwnProperty.call(ORGAN_FACTS,name)
+      ? ORGAN_FACTS[name] : 'Select an organ to learn about it.';
+  const figure=panel.parentElement.querySelector('.organ-fig');
+  if(figure){
+    for(const region of figure.querySelectorAll('[data-val]'))
+      region.classList.toggle('explore-hl',!!name && region.dataset.val===name);
+  }
+});
+
 const ORGANS = [['brain',1], ['heart',1], ['lungs',1], ['stomach',1], ['intestines',2], ['liver',3], ['kidneys',3], ['spine',3]];
 const ANATOMY = ContentData.get('content','ANATOMY');
 function genAnatomy(level) {
