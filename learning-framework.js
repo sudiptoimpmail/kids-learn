@@ -12,6 +12,11 @@
         ids.add(goal.id);
       }
     }
+    for(const [source,demo] of Object.entries(config.demonstrations||{})){
+      const validText=s=>typeof s==='string'&&s.trim().length>0;
+      const q=demo.try;
+      if(!validText(demo.id)||!validText(demo.title)||!Array.isArray(demo.steps)||!demo.steps.length||demo.steps.some(s=>!validText(s.text)||!validText(s.visual)||(s.audio!==undefined&&(!Array.isArray(s.audio)||!s.audio.length||s.audio.some(a=>!validText(a)))))||!q||!validText(q.question)||!validText(q.explanation)||!Array.isArray(q.options)||q.options.length<2||q.options.some(o=>!validText(o))||new Set(q.options).size!==q.options.length||!q.options.includes(q.answer))throw Error('Invalid demonstration: '+source);
+    }
     return config;
   }
   function record(config,profile,event){

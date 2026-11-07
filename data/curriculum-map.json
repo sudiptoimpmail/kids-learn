@@ -4251,6 +4251,229 @@
             "answer": "4",
             "explanation": "Match two counters from each group. The group of four still has two extra."
           }
+        },
+        "phonics:1": {
+          "id": "phonics-1",
+          "title": "Listen to the first sound",
+          "steps": [
+            {
+              "text": "Listen to the word sun.",
+              "visual": "☀️ sun",
+              "audio": [
+                "sun"
+              ]
+            },
+            {
+              "text": "Listen to the sound at the start.",
+              "visual": "s → sun",
+              "audio": [
+                "sound s",
+                "sun"
+              ]
+            }
+          ],
+          "try": {
+            "question": "Which letter starts sun?",
+            "options": [
+              "s",
+              "m",
+              "t"
+            ],
+            "answer": "s",
+            "explanation": "Sun starts with the sound /s/."
+          }
+        },
+        "phonics:2": {
+          "id": "phonics-2",
+          "title": "Listen for a rhyme",
+          "steps": [
+            {
+              "text": "Say cat and hat.",
+              "visual": "🐈 cat · 🎩 hat",
+              "audio": [
+                "cat",
+                "hat"
+              ]
+            },
+            {
+              "text": "Their endings sound the same.",
+              "visual": "c-at · h-at",
+              "audio": [
+                "cat",
+                "hat"
+              ]
+            }
+          ],
+          "try": {
+            "question": "Which word rhymes with cat?",
+            "options": [
+              "hat",
+              "dog",
+              "sun"
+            ],
+            "answer": "hat",
+            "explanation": "Cat and hat share the same ending sound: at."
+          }
+        },
+        "phonics:3": {
+          "id": "phonics-3",
+          "title": "Blend sounds into a word",
+          "steps": [
+            {
+              "text": "Listen to each sound.",
+              "visual": "c · a · t",
+              "audio": [
+                "sound c",
+                "sound a",
+                "sound t"
+              ]
+            },
+            {
+              "text": "Put the sounds together.",
+              "visual": "c → a → t → cat",
+              "audio": [
+                "sound c",
+                "sound a",
+                "sound t",
+                "cat"
+              ]
+            }
+          ],
+          "try": {
+            "question": "What word did we blend?",
+            "options": [
+              "cat",
+              "sun",
+              "dog"
+            ],
+            "answer": "cat",
+            "explanation": "The sounds /k/, /a/, /t/ blend into cat."
+          }
+        },
+        "phonics:4": {
+          "id": "phonics-4",
+          "title": "Listen to the middle sound",
+          "steps": [
+            {
+              "text": "Say cat. Listen in the middle.",
+              "visual": "c · a · t",
+              "audio": [
+                "cat",
+                "sound a"
+              ]
+            },
+            {
+              "text": "Say mat. It has the same middle sound.",
+              "visual": "m · a · t",
+              "audio": [
+                "mat",
+                "sound a"
+              ]
+            }
+          ],
+          "try": {
+            "question": "Which word has the same middle sound as cat?",
+            "options": [
+              "mat",
+              "sun",
+              "dog"
+            ],
+            "answer": "mat",
+            "explanation": "Cat and mat both have the short a sound in the middle."
+          }
+        },
+        "phonics:5": {
+          "id": "phonics-5",
+          "title": "Two letters can make one sound",
+          "steps": [
+            {
+              "text": "These two letters work together.",
+              "visual": "s + h → sh",
+              "audio": [
+                "sound sh"
+              ]
+            },
+            {
+              "text": "Listen at the start of ship.",
+              "visual": "sh → ship 🚢",
+              "audio": [
+                "sound sh",
+                "ship"
+              ]
+            }
+          ],
+          "try": {
+            "question": "Which letters make the first sound in ship?",
+            "options": [
+              "sh",
+              "ch",
+              "th"
+            ],
+            "answer": "sh",
+            "explanation": "The letters s and h work together to make /sh/."
+          }
+        },
+        "sent:1": {
+          "id": "sent-1",
+          "title": "Read and find the clue",
+          "steps": [
+            {
+              "text": "Listen, then read the sentence.",
+              "visual": "The cat is on the mat.",
+              "audio": [
+                "the cat is on the mat"
+              ]
+            },
+            {
+              "text": "Look for the words that tell us where.",
+              "visual": "on the mat",
+              "audio": [
+                "mat"
+              ]
+            }
+          ],
+          "try": {
+            "question": "Where is the cat?",
+            "options": [
+              "on the mat",
+              "in the sun",
+              "by the dog"
+            ],
+            "answer": "on the mat",
+            "explanation": "The sentence says the cat is on the mat. Read it again to check."
+          }
+        },
+        "cvc:1": {
+          "id": "cvc-1",
+          "title": "Read a short word",
+          "steps": [
+            {
+              "text": "Look at each letter and listen.",
+              "visual": "c · a · t",
+              "audio": [
+                "sound c",
+                "sound a",
+                "sound t"
+              ]
+            },
+            {
+              "text": "Blend the sounds, then say the word.",
+              "visual": "🐈 cat",
+              "audio": [
+                "cat"
+              ]
+            }
+          ],
+          "try": {
+            "question": "Choose the word cat.",
+            "options": [
+              "cat",
+              "mat",
+              "sat"
+            ],
+            "answer": "cat",
+            "explanation": "Cat starts with c, has a in the middle, and ends with t."
+          }
         }
       },
       "milestones": [

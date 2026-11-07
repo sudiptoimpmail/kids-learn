@@ -43,9 +43,9 @@ function openDemonstration(demo,onDone){
   const close=()=>{sayToken++;stopClip();sheet.remove();};
   function paint(){
     const s=demo.steps[step];
-    sheet.innerHTML=`<div class="panel lesson-panel"><h2>${esc(demo.title)}</h2>${s?`<p>Show me · ${step+1} / ${demo.steps.length}</p><div class="lesson-visual">${esc(s.visual)}</div><p>${esc(s.text)}</p><button class="big-btn" data-next>Next</button>`:`<h3>Try together</h3><p>${esc(demo.try.question)}</p><div>${demo.try.options.map(o=>`<button class="big-btn small" data-answer="${esc(o)}">${esc(o)}</button>`).join('')}</div><p id="lessonFeedback" role="status"></p><button class="big-btn" data-done hidden>Try on my own</button>`}<button class="link-btn" data-skip>Skip demonstration</button></div>`;
+    sheet.innerHTML=`<div class="panel lesson-panel"><h2>${esc(demo.title)}</h2>${s?`<p>Show me · ${step+1} / ${demo.steps.length}</p><div class="lesson-visual">${esc(s.visual)}</div><p>${esc(s.text)}</p>${s.audio?.length?'<button class="big-btn small" data-replay>🔊 Hear again</button>':''}<button class="big-btn" data-next>Next</button>`:`<h3>Try together</h3><p>${esc(demo.try.question)}</p><div>${demo.try.options.map(o=>`<button class="big-btn small" data-answer="${esc(o)}">${esc(o)}</button>`).join('')}</div><p id="lessonFeedback" role="status"></p><button class="big-btn" data-done hidden>Try on my own</button>`}<button class="link-btn" data-skip>Skip demonstration</button></div>`;
     sheet.querySelector('[data-skip]').onclick=()=>{close();onDone?.();};
-    if(s){sheet.querySelector('[data-next]').onclick=()=>{step++;paint();};if(s.audio)say(s.audio);}
+    if(s){sheet.querySelector('[data-next]').onclick=()=>{step++;paint();};if(s.audio){say(s.audio);sheet.querySelector('[data-replay]')?.addEventListener('click',()=>say(s.audio));}}
     else sheet.querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{
       $('#lessonFeedback').textContent=(b.dataset.answer===demo.try.answer?'Yes! ':'Let us look together. ')+demo.try.explanation;
       sheet.querySelector('[data-done]').hidden=false;sheet.querySelector('[data-done]').onclick=()=>{close();onDone?.();};
