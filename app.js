@@ -425,7 +425,7 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
 }
 
 function renderProgress() {
-  $('#diffLv').textContent = R.cat.id === 'mix' ? '' : (([s, n]) => `Step ${s} of ${n}`)(gradeStep(R.cat.id, R.qs[R.i].level));
+  $('#diffLv').textContent = R.cat.id === 'mix' ? '' : (([s, n]) => `Step ${s} of ${n}`)(gradeStep(R.cat.id, R.qs[Math.min(R.i, R.qs.length - 1)].level));
   $('#diffBtn').hidden = R.cat.id === 'mix';
   $('#qaPosition').textContent = (R.i + 1) + ' / ' + R.qs.length;
   $('#prevBtn').disabled = R.i === 0;

@@ -39,6 +39,8 @@ const {chromium} = require('playwright');
     assert.equal(await page.locator('#gameArea').getAttribute('class'),'game-area g-ttt','expired balance cannot start another game');
     await page.evaluate(()=>startRound('add',1,true,5));
     assert.equal(await page.locator('#diffLv').innerText(),await page.evaluate(()=>{const [s,n]=gradeStep('add',R.qs[0].level);return `Step ${s} of ${n}`;}));
+    await page.evaluate(()=>{R.browse=false;R.i=R.qs.length;R.firstTry=R.qs.length;R.mistakes=0;finish();});
+    assert.equal(await page.locator('#result').isVisible(),true,'final card must reach results');
     assert.deepEqual(errors,[]); console.log('PASS session timing, warning, finish grace, results, audio cancellation and actual question step');
   } finally {await browser.close();}
 })().catch(e=>{console.error(e);process.exitCode=1;});
