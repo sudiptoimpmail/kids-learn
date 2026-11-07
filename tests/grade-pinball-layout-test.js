@@ -14,7 +14,6 @@ const { chromium }=require('playwright');
    state.showAll=false;state.testMode=false;state.voice=false;state.grade='prek';
    state.levels.add=5;state.levels.gk=4;state.levels.phonics=5;
    for(const id of ['add','gk','phonics','cmp']){
-     if(id==='cmp')continue; // legacy Compare remains accessible in QA only
      startRound(id,12);
      for(const q of R.qs){
        check(q.grades.includes('prek'), 'PreK saw non-PreK question: '+q.key);
@@ -24,7 +23,8 @@ const { chromium }=require('playwright');
    state.grade='g1';state.levels.add=5;state.levels.gk=4;startRound('gk',12);
    for(const q of R.qs)check(q.grades.includes('g1'),'Grade1 question lacks grade marking');
    state.grade='prek';renderHome();
-   check(!visibleGames().some(c=>c.id==='cmp'),'Compare should not be separate child tile');
+   check(visibleGames().some(c=>c.id==='cmp'),'Grade-eligible Compare should be discoverable');
+   check(!!document.querySelector('#grid [data-cat="cmp"]'),'Compare needs a home tile');
    // Comparison is still usable in math and in the QA browser.
    check(typeof genCompare==='function','Compare generator must be preserved');
    state.grade='g1';startRound('add',40);
