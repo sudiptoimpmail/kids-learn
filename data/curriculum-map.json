@@ -63,7 +63,61 @@
           "sequence": "1-1",
           "placement": "1-1"
         },
-        "roundQuestions": 5
+        "roundQuestions": 5,
+        "activityPolicy": {
+          "vocab": {
+            "words": [
+              "hungry",
+              "thirsty",
+              "sleepy",
+              "happy",
+              "scared",
+              "loud",
+              "quiet",
+              "fast",
+              "slow",
+              "wet",
+              "dry",
+              "soft",
+              "hard",
+              "empty",
+              "full",
+              "share",
+              "help",
+              "hug",
+              "jump",
+              "climb",
+              "splash",
+              "shiny",
+              "dirty",
+              "clean",
+              "huge",
+              "little",
+              "kind",
+              "rude",
+              "fix",
+              "build"
+            ],
+            "pictureAnswers": true
+          },
+          "syl": {
+            "maxSyllablesByLevel": [
+              2
+            ],
+            "picturePrompt": true
+          }
+        },
+        "placementPolicy": {
+          "math": [
+            "add",
+            "shape2"
+          ],
+          "literacy": [
+            "phonics",
+            "syl"
+          ],
+          "level": "start"
+        }
       },
       "k": {
         "label": "Kindergarten",
@@ -135,7 +189,82 @@
           "check": "1-1",
           "placement": "1-1"
         },
-        "roundQuestions": 5
+        "roundQuestions": 5,
+        "activityPolicy": {
+          "vocab": {
+            "words": [
+              "hungry",
+              "thirsty",
+              "sleepy",
+              "happy",
+              "scared",
+              "loud",
+              "quiet",
+              "fast",
+              "slow",
+              "wet",
+              "dry",
+              "soft",
+              "hard",
+              "empty",
+              "full",
+              "share",
+              "help",
+              "hug",
+              "jump",
+              "climb",
+              "splash",
+              "shiny",
+              "dirty",
+              "clean",
+              "huge",
+              "little",
+              "kind",
+              "rude",
+              "fix",
+              "build",
+              "tiny",
+              "gentle",
+              "cozy",
+              "giggle",
+              "whisper",
+              "sticky",
+              "noisy",
+              "tidy",
+              "friendly",
+              "excited",
+              "puddle",
+              "pebble",
+              "nest",
+              "bumpy",
+              "smooth",
+              "juicy",
+              "fluffy",
+              "heavy",
+              "light",
+              "bright"
+            ],
+            "pictureAnswers": true
+          },
+          "syl": {
+            "maxSyllablesByLevel": [
+              2,
+              3
+            ],
+            "picturePrompt": true
+          }
+        },
+        "placementPolicy": {
+          "math": [
+            "add",
+            "sub"
+          ],
+          "literacy": [
+            "phonics",
+            "syl"
+          ],
+          "level": "start"
+        }
       },
       "g1": {
         "label": "1st Grade",
@@ -3332,6 +3461,26 @@
       "learningRounds": {
         "defaultQuestions": 10,
         "creditUnitsPerRound": 120
+      },
+      "placement": {
+        "math": [
+          "add",
+          "sub",
+          "mul",
+          "frac",
+          "numsense"
+        ],
+        "literacy": [
+          "sent",
+          "spell",
+          "words",
+          "phonics",
+          "cvc",
+          "syl"
+        ],
+        "sectionsPerDomain": 2,
+        "questionsPerSection": 2,
+        "level": "top"
       }
     },
     "version": 1,

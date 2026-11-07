@@ -80,7 +80,7 @@ const {chromium}=require('playwright');
           grade+': stale grade evidence accelerated promotion');
         // Placement replaces a level, invalidating its former mastery record.
         state.progressionStreaks[entry]={grade,level:range[0],mastery:1,support:0};
-        applyPlacement([{placeSection:entry,ok:true},{placeSection:entry,ok:true}]);
+        applyPlacement([{placeSection:entry,assessedLevel:range[1],ok:true},{placeSection:entry,assessedLevel:range[1],ok:true}]);
         check(!state.progressionStreaks[entry]&&state.levels[entry]===range[1],
           grade+': placement retained outdated progression history');
         results[grade]={section:entry,range,

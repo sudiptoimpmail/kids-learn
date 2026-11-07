@@ -51,22 +51,30 @@ function curriculumArea(id) {
   return tag && new RegExp('\\b' + tag + '\\.[A-Z]').test(s) ? s : '';
 }
 
-/* ---------- quick placement check: 8 cards at the top of the grade ----------
-   Two cards from each of four core sections. Both right first time → that section starts
-   at the top of the grade; one right → the middle; none → the start of the grade. */
-const PLACE_POOL = ['add', 'sub', 'mul', 'frac', 'numsense', 'sent', 'spell', 'words', 'phonics', 'cvc', 'syl'];
+/* ---------- quick placement check: curriculum-configured sections and levels ----------
+   The curriculum chooses the sections and sampled level. Both right first time
+   can place at that assessed level; results never certify untested higher skills. */
+const PLACEMENT_POLICY = ContentData.get('curriculum-map', 'policy').placement;
+function placementPolicy() {
+  return { ...PLACEMENT_POLICY, ...ContentData.get('curriculum-map', 'GRADES')[state.grade]?.placementPolicy };
+}
+function placementLevel(id) {
+  const r = gradeRange(state.grade, id);
+  return r ? r[placementPolicy().level === 'start' ? 0 : 1] : 1;
+}
 let placePlan = [];
 let placementRunning = false;
 function startPlacement() {
-  const ids = PLACE_POOL.filter((id) => state.grade && gradeRange(state.grade, id));
-  const math = ids.filter((id) => ['add', 'sub', 'mul', 'frac', 'numsense'].includes(id)), read = ids.filter((id) => !math.includes(id));
-  const chosen = [...sample(math, Math.min(2, math.length)), ...sample(read, Math.min(2, read.length))];
+  const policy = placementPolicy();
+  const eligible = ids => ids.filter(id => state.grade && gradeRange(state.grade, id));
+  const math = eligible(policy.math), read = eligible(policy.literacy);
+  const chosen = [...sample(math, Math.min(policy.sectionsPerDomain, math.length)), ...sample(read, Math.min(policy.sectionsPerDomain, read.length))];
   // Generate the entire assessment BEFORE startRound. A rejected duplicate must
   // never consume a plan slot and silently introduce a fifth fallback section.
   const used = new Set();
   placePlan = chosen.flatMap((id) => {
-    const lv = gradeRange(state.grade, id)[1], cat = CATEGORIES.find((c) => c.id === id), gen = cat.baseGen || cat.gen;
-    return Array.from({length: 2}, () => {
+    const lv = placementLevel(id), cat = CATEGORIES.find((c) => c.id === id), gen = cat.baseGen || cat.gen;
+    return Array.from({length: policy.questionsPerSection}, () => {
       let q, identity;
       for (let tries = 0; tries < 100; tries++) {
         q = gen(lv);
@@ -92,8 +100,9 @@ function genPlacement() {
   // Standalone curriculum/voice audits sample category generators without
   // launching an assessment; those previews must not mutate an active plan.
   if (placementRunning) throw new Error('Placement plan exhausted during an assessment');
-  const id = PLACE_POOL.find((section) => state.grade && gradeRange(state.grade, section)) || 'add';
-  const lv = state.grade && gradeRange(state.grade, id) ? gradeRange(state.grade, id)[1] : 1;
+  const policy = placementPolicy();
+  const id = [...policy.math, ...policy.literacy].find((section) => state.grade && gradeRange(state.grade, section)) || 'add';
+  const lv = placementLevel(id);
   const cat = CATEGORIES.find((c) => c.id === id), q = (cat.baseGen || cat.gen)(lv);
   q.placeSection = id; q.assessedLevel = lv; q.key = 'place-preview-' + q.key;
   return q;
@@ -103,7 +112,9 @@ function applyPlacement(qs) {
   for (const q of qs) { const s = by[q.placeSection] || (by[q.placeSection] = [0, 0]); s[0]++; if (q.ok) s[1]++; }
   for (const [id, [n, ok]] of Object.entries(by)) {
     const r = gradeRange(state.grade, id); if (!r) continue;
-    state.levels[id] = ok >= n ? r[1] : ok > 0 ? gradeStart(r.join('-')) : r[0];
+    const assessed = qs.filter(q => q.placeSection === id).map(q => q.assessedLevel || r[0]);
+    const ceiling = Math.min(r[1], ...assessed);
+    state.levels[id] = ok >= n ? ceiling : ok > 0 ? Math.min(ceiling, gradeStart(r.join('-'))) : r[0];
     // Placement reassigns the section's level; previous round evidence belongs
     // to the old placement and must never trigger an immediate auto-level.
     if (state.progressionStreaks) delete state.progressionStreaks[id];
