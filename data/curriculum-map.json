@@ -208,7 +208,8 @@
           "sequence": "2-2",
           "community": "1-1",
           "check": "1-1",
-          "placement": "1-1"
+          "placement": "1-1",
+          "library": "1-1"
         }
       },
       "g2": {
@@ -1258,6 +1259,17 @@
             ],
             "approach": "play-and-practice",
             "bank": "mixed"
+          },
+          "library": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "listen-to-stories"
+            ],
+            "approach": "read-aloud",
+            "bank": "authored"
           }
         }
       },
@@ -4972,6 +4984,34 @@
             "🧸",
             "🪅",
             "🍉"
+          ]
+        }
+      ],
+      "books": [
+        {
+          "id": "red-riding-hood",
+          "grades": [
+            "prek",
+            "k"
+          ]
+        },
+        {
+          "id": "three-little-pigs",
+          "grades": [
+            "prek",
+            "k"
+          ]
+        },
+        {
+          "id": "max-kite",
+          "grades": [
+            "g1"
+          ]
+        },
+        {
+          "id": "little-seed",
+          "grades": [
+            "g1"
           ]
         }
       ]

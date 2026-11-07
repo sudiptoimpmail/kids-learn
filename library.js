@@ -6,7 +6,9 @@
    - At the end, three picture questions (no reading needed), then "Read it again?".
    Books live in library/<id>/book.json with their pictures beside them.
    ========================================================= */
-const LIBRARY = ['red-riding-hood', 'three-little-pigs'];
+const LIBRARY_CATALOG = ContentData.get('curriculum-map','learningFramework').books;
+const LIBRARY = LIBRARY_CATALOG.map(b=>b.id);
+const availableBooks = grade => LIBRARY_CATALOG.filter(b=>b.grades.includes(grade)).map(b=>b.id);
 const LB = { book: null, page: -1, reading: false, auto: true, t0: 0, q: 0, readTimer: 0 };
 // Gentle non-musical sounds add suspense without replacing the recorded story.
 const LIB_SCENE_SYMBOLS = { wolf: '🌲', hurry: '🐾', knock: '🚪', disguise: '🌙', suspense: '👀', brave: '❤️', rescue: '☀️', safe: '🏡' };
@@ -46,11 +48,11 @@ async function openLibrary() {
   show('library');
   $('#libTitle').textContent = 'Story Time';
   $('#libRead').hidden = true;
-  const books = await Promise.all(LIBRARY.map((id) => loadBook(id).catch(() => null)));
+  const books = await Promise.all(availableBooks(state.grade).map((id) => loadBook(id).catch(() => null)));
   $('#libBody').innerHTML = `<div class="lib-shelf">${books.filter(Boolean).map((b) => `
     <button class="lib-book" data-id="${b.id}"><img src="${libPath(b.id, b.cover)}" alt="" draggable="false"><b>${b.title}</b>
       ${(state.booksRead || {})[b.id] ? `<small>✓ read ${state.booksRead[b.id]} time${state.booksRead[b.id] === 1 ? '' : 's'}</small>` : '<small>New!</small>'}</button>`).join('')}
-    <div class="lib-soon"><span>📚</span><small>More books coming soon</small></div></div>`;
+    </div>`;
   $$('#libBody .lib-book').forEach((b) => (b.onclick = () => { sfx.tap(); openBook(b.dataset.id); }));
   say('Story time! Pick a book.');
 }
@@ -85,7 +87,7 @@ function goPage(n) {
   stopReading(); LB.page = n;
   const p = b.pages[n];
   $('#libBody').innerHTML = `<div class="lib-page" data-scene="${esc(p.scene || '')}">
-      <div class="lib-art"><img src="${libPath(b.id, p.art)}" alt="" draggable="false">${LIB_SCENE_SYMBOLS[p.scene] ? `<span class="lib-scene-symbol" aria-hidden="true">${LIB_SCENE_SYMBOLS[p.scene]}</span>` : ''}</div>
+      <div class="lib-art"><img src="${libPath(b.id, p.art)}" alt="${esc(p.alt || '')}" draggable="false">${LIB_SCENE_SYMBOLS[p.scene] ? `<span class="lib-scene-symbol" aria-hidden="true">${LIB_SCENE_SYMBOLS[p.scene]}</span>` : ''}</div>
       <div class="lib-text">${p.text.map((t, si) => `<p class="${/^["“]/.test(t) ? 'lib-dialogue' : /^The End/.test(t) ? 'lib-the-end' : ''}">${wordsHTML(t, si)}</p>`).join('')}</div>
       <div class="lib-nav">
         <button class="nav-btn" data-a="prev" aria-label="Previous page">◀</button>
@@ -96,7 +98,7 @@ function goPage(n) {
   $('[data-a="prev"]').onclick = () => { sfx.tap(); goPage(n - 1); };
   $('[data-a="next"]').onclick = () => { sfx.tap(); goPage(n + 1); };
   $('[data-a="again"]').onclick = () => { sfx.tap(); readPage(); };
-  $$('#libBody .w').forEach((w) => (w.onclick = (e) => { e.stopPropagation(); stopReading(); w.classList.add('on'); say(w.textContent.replace(/[^A-Za-z']/g, '')); setTimeout(() => w.classList.remove('on'), 900); }));
+  $$('#libBody .w').forEach((w) => { w.title=CLIPS[w.dataset.k]?'Hear this word':'Hear this word in its sentence'; w.onclick = (e) => { e.stopPropagation(); stopReading(); w.classList.add('on'); const word=w.textContent.replace(/[^A-Za-z']/g, ''); say(CLIPS[clipKey(word)] ? word : p.text[Number(w.dataset.s)]); setTimeout(() => w.classList.remove('on'), 900); }; });
   swipe($('#libBody .lib-page'), () => goPage(n + 1), () => goPage(n - 1));
   storySceneSound(p.sound);
   // A short suspense beat before the recorded voice, cancelled on every page turn.

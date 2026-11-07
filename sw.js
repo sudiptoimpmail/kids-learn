@@ -4,9 +4,24 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v113';
+const VERSION = PREFIX + 'v114';
 const AUDIO = PREFIX + 'audio';
 const FILES = [
+  "library/max-kite/p01.svg",
+  "library/max-kite/p02.svg",
+  "library/max-kite/p03.svg",
+  "library/max-kite/park.svg",
+  "library/max-kite/school.svg",
+  "library/max-kite/beach.svg",
+  "library/max-kite/book.json",
+  "library/little-seed/p01.svg",
+  "library/little-seed/p02.svg",
+  "library/little-seed/p03.svg",
+  "library/little-seed/flower.svg",
+  "library/little-seed/tree.svg",
+  "library/little-seed/carrot.svg",
+  "library/little-seed/book.json",
+
   "family-learning.js",
   "grade-journey.js",
   "learning-framework.js",

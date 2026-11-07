@@ -1,0 +1,51 @@
+{
+  "id": "max-kite",
+  "title": "Max has a red kite.",
+  "grades": [
+    "g1"
+  ],
+  "cover": "p01.svg",
+  "pages": [
+    {
+      "art": "p01.svg",
+      "text": [
+        "Max has a red kite."
+      ],
+      "alt": "Max has a red kite."
+    },
+    {
+      "art": "p02.svg",
+      "text": [
+        "He takes it to the park."
+      ],
+      "alt": "He takes it to the park."
+    },
+    {
+      "art": "p03.svg",
+      "text": [
+        "The kite flies up high."
+      ],
+      "alt": "The kite flies up high."
+    }
+  ],
+  "questions": [
+    {
+      "ask": "Where does Max take his kite?",
+      "answer": "park",
+      "options": [
+        [
+          "park",
+          "park.svg"
+        ],
+        [
+          "school",
+          "school.svg"
+        ],
+        [
+          "beach",
+          "beach.svg"
+        ]
+      ]
+    }
+  ]
+}
