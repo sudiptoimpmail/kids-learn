@@ -1103,12 +1103,17 @@ function gradeHintFor(id, lv) {
 }
 function openDiff() {
   if (!R || R.cat.id === 'mix') return;
+  const round=R;
+  askPin(()=>{if(R===round && $('#play').classList.contains('active'))showDifficulty();});
+}
+function showDifficulty() {
+  if (!R || R.cat.id === 'mix') return;
   const id = R.cat.id, max = gameMax(id);
   const sl = $('#diffRange');
   const range=!isTestMode()?openRange(id):null;
   sl.min=range?range[0]:1; sl.max=range?range[1]:max;
   sl.value=Math.min(+sl.max,Math.max(+sl.min,levelOf(id)));
-  const upd = () => { $('#diffVal').textContent = `Level ${sl.value} of ${max}`; $('#diffGrade').textContent = gradeHintFor(id, +sl.value); };
+  const upd = () => { $('#diffVal').textContent = range ? `Step ${+sl.value-range[0]+1} of ${range[1]-range[0]+1}` : `Level ${sl.value} of ${max}`; $('#diffGrade').textContent = gradeHintFor(id, +sl.value); };
   sl.oninput = upd; upd();
   $('#diffName').textContent = `${R.cat.icon} ${R.cat.title}`;
   $('#diffSheet').hidden = false;
@@ -1266,7 +1271,8 @@ function openSettings() {
 /* ---------- grown-up PIN (asked before Settings) ---------- */
 const pinHash = (p) => { let h = 5381; for (const ch of 'lp:' + p) h = ((h * 33) ^ ch.charCodeAt(0)) >>> 0; return h.toString(36); };
 function askPin(onOk, change = false) {
-  const sheet = $('#pinSheet'); let typed = '', first = null;
+  const sheet = $('#pinSheet'); let typed = '', first = null, closed=false;
+  const request=askPin.request=(askPin.request||0)+1;
   const mode = () => (!state.pinHash || change ? (first ? 'confirm' : 'new') : 'check');
   const paint = () => {
     $('#pinTitle').textContent = mode() === 'check' ? '🔒 Grown-ups only' : mode() === 'new' ? '🔒 Make a grown-up PIN' : '🔒 Type it again';
@@ -1274,7 +1280,7 @@ function askPin(onOk, change = false) {
     $$('#pinDots i').forEach((d, k) => d.classList.toggle('on', k < typed.length));
     $('#pinForgotBtn').hidden = mode() !== 'check'; $('#pinForgot').hidden = true;
   };
-  const close = () => { sheet.hidden = true; $('#pinPad').onclick = null; sheet.onclick = null; };
+  const close = () => { closed=true; sheet.hidden = true; $('#pinPad').onclick = null; sheet.onclick = null; };
   // kids who land here by accident: a big way back, and the voice tells them where it is
   const goBack = () => { sfx.tap(); sayToken++; stopClip(); close(); };
   $('#pinBack').onclick = goBack;
@@ -1289,6 +1295,7 @@ function askPin(onOk, change = false) {
     typed += k; paint();
     if (typed.length < 4) return;
     setTimeout(() => {
+      if(closed||request!==askPin.request)return;
       const m = mode();
       if (m === 'check') {
         if (Date.now() < (askPin.lockUntil || 0)) { typed = ''; shake(); $('#pinNote').textContent = 'Too many tries. Wait a little and try again.'; return; }
@@ -1300,13 +1307,10 @@ function askPin(onOk, change = false) {
       else { first = null; typed = ''; shake(); paint(); }
     }, 150);
   };
-  // forgot: a grown-up math question resets the PIN
+  // A public puzzle cannot verify a parent. Never clear the PIN from this screen.
   $('#pinForgotBtn').onclick = () => {
-    const a = 12 + Math.floor(Math.random() * 8), b = 6 + Math.floor(Math.random() * 4), ans = a * b;
-    const opts = shuffle([ans, ans + a, ans - b, ans + 10]);
-    $('#pinForgot').innerHTML = `<p>To make a new PIN, answer: <b>${a} × ${b} = ?</b></p><div class="pin-ans">${opts.map((o) => `<button data-v="${o}">${o}</button>`).join('')}</div>`;
+    $('#pinForgot').textContent = 'Your PIN stays on this device and cannot be recovered here. Try your saved PIN. Resetting the app’s stored data through device or browser settings removes the PIN, but also deletes children and progress. There is no reset puzzle or shortcut in the child app.';
     $('#pinForgot').hidden = false;
-    $$('#pinForgot [data-v]').forEach((x) => (x.onclick = () => { if (+x.dataset.v === ans) { state.pinHash = ''; save(); typed = ''; first = null; paint(); } else { shake(); $('#pinForgot').hidden = true; } }));
   };
   typed = ''; paint(); sheet.hidden = false;
   if (mode() === 'check') kidNote();
