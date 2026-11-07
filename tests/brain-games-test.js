@@ -9,10 +9,9 @@ const { chromium } = require('playwright');
     const page = await browser.newPage({ viewport: { width: 820, height: 1180 } });
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
+    await page.addInitScript(() => localStorage.setItem('learnplay.v1', JSON.stringify({ name: 'Game Tester', grade: 'g2', voice: false, playAlways: false })));
     await page.goto('http://localhost:8765/index.html');
-    await page.evaluate(() => localStorage.setItem('learnplay.v1',
-      JSON.stringify({ name: 'Game Tester', grade: 'g2', voice: false, playAlways: false })));
-    await page.reload();
+    await page.waitForFunction(() => !!window.KidsLearnReady); await page.evaluate(() => window.KidsLearnReady);
     await page.locator('#startBtn').click();
 
     const result = await page.evaluate(async () => {
