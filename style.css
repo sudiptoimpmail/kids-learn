@@ -1601,3 +1601,42 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .grade-goals{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px;margin:16px 0}.grade-goal{display:flex;flex-direction:column;gap:8px;background:#fff;padding:16px;border:2px solid #d5e6d7;border-radius:18px}.grade-goal span{font-weight:700;color:#356042}.grade-goal small{line-height:1.5}#dash summary{cursor:pointer;padding:16px;font-weight:800}#dash details{margin:12px 0;border:1px solid #d8d8e8;border-radius:12px}#journeyBtn{margin:12px 0}
 #lessonSheet{position:fixed;inset:0;z-index:500;display:grid;place-items:center;background:#18203dcc;padding:16px}.lesson-panel{width:min(560px,100%);max-height:90dvh;overflow:auto;text-align:center}.lesson-visual{font-size:clamp(25px,6vw,42px);padding:24px 4px;letter-spacing:3px;color:#237a56}
 .collection-grid{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}.collection-grid .stk{width:65px}.family-break{position:fixed;inset:0;z-index:600;background:#173043cc;display:grid;place-items:center;padding:20px}.family-break .panel{max-width:480px;text-align:center}#familyControls input[type=time]{max-width:140px}
+
+/* Shared activity sizing: grow with the viewport while reserving room for controls.
+   Short landscape screens may scroll vertically rather than shrinking touch targets. */
+#game {
+  --activity-width: min(100%, 880px);
+  --board-space: max(260px, calc(100dvh - 250px - env(safe-area-inset-top) - env(safe-area-inset-bottom)));
+  --square-board: min(var(--activity-width), var(--board-space));
+}
+#game .game-area { width: 100%; min-width: 0; }
+#game .ttt-board, #game .sdk-board { width: var(--square-board); max-width: 100%; }
+#game .mem-board { width: min(var(--activity-width), var(--board-space), 760px); max-width: 100%; }
+#game .c4-board { width: min(var(--activity-width), calc(var(--board-space) * 1.16)); max-width: 100%; }
+#game .sdk-pad { width: var(--square-board); max-width: 100%; }
+#game .pz-wrap { width: min(100%, 1000px); gap: clamp(8px, 2vw, 20px); }
+#game .pz-board { width: min(calc(100% - 100px), var(--board-space)); flex-shrink: 0; }
+#game .pz-peek { width: clamp(72px, 12vw, 120px); flex-shrink: 1; min-width: 0; }
+#game .color-wrap, #game .palette { width: min(var(--activity-width), var(--board-space), 760px); max-width: 100%; }
+#game .ttt-cell { font-size: clamp(54px, 10vw, 110px); }
+@media (min-width: 700px) {
+  #game, #trace, #library, #learn { max-width: 1400px; }
+  #game { --board-space: max(300px, calc(100dvh - 290px - env(safe-area-inset-top) - env(safe-area-inset-bottom))); }
+  #game .mem-card span { font-size: clamp(42px, 6vw, 76px); }
+  #game .mem-card .back { font-size: clamp(34px, 5vw, 60px); }
+  #game .sdk-cell { font-size: clamp(32px, 5vw, 64px); }
+  #game .sdk-board.n6 .sdk-cell { font-size: clamp(28px, 4vw, 52px); }
+  #trace .tr-pad { width: min(100%, calc(100dvh - 330px), 900px); }
+  #trace .tr-meter { max-width: 900px; width: 100%; }
+  #library .lib-body { width: 100%; max-width: 1320px; }
+}
+@media (min-width: 1000px) and (orientation: landscape) {
+  #library .lib-page:not(.lib-cover):not(.lib-quiz):not(.lib-done) {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: center; column-gap: clamp(20px, 3vw, 48px);
+  }
+  #library .lib-page:not(.lib-cover):not(.lib-quiz):not(.lib-done) .lib-art { grid-column: 1; grid-row: 1 / 3; }
+  #library .lib-page:not(.lib-cover):not(.lib-quiz):not(.lib-done) .lib-text { grid-column: 2; grid-row: 1; }
+  #library .lib-page:not(.lib-cover):not(.lib-quiz):not(.lib-done) .lib-nav { grid-column: 2; grid-row: 2; }
+  #library .lib-art img { object-fit: contain; }
+}
