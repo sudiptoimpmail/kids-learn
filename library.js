@@ -9,7 +9,7 @@
 const LIBRARY_CATALOG = ContentData.get('curriculum-map','learningFramework').books;
 const LIBRARY = LIBRARY_CATALOG.map(b=>b.id);
 const availableBooks = grade => LIBRARY_CATALOG.filter(b=>b.grades.includes(grade)).map(b=>b.id);
-const LB = { book: null, page: -1, reading: false, auto: true, t0: 0, q: 0, readTimer: 0 };
+const LB = { book: null, page: -1, reading: false, auto: true, t0: 0, q: 0, readTimer: 0, quizTimer: 0, request: 0, finished: false };
 // Gentle non-musical sounds add suspense without replacing the recorded story.
 const LIB_SCENE_SYMBOLS = { wolf: '🌲', hurry: '🐾', knock: '🚪', disguise: '🌙', suspense: '👀', brave: '❤️', rescue: '☀️', safe: '🏡' };
 const LIB_SCENE_SOUNDS = {
@@ -41,14 +41,15 @@ async function loadBook(id) {
   document.body.insertBefore(s, document.getElementById('play'));
 })();
 
-function stopReading() { clearTimeout(LB.readTimer); LB.readTimer = 0; LB.reading = false; sayToken++; stopClip(); $$('#libBody .w.on').forEach((w) => w.classList.remove('on')); }
+function stopReading() { clearTimeout(LB.quizTimer); LB.quizTimer = 0; clearTimeout(LB.readTimer); LB.readTimer = 0; LB.reading = false; sayToken++; stopClip(); $$('#libBody .w.on').forEach((w) => w.classList.remove('on')); }
 
 async function openLibrary() {
-  stopReading(); LB.book = null;
+  stopReading(); const request=++LB.request; LB.book = null;
   show('library');
   $('#libTitle').textContent = 'Story Time';
   $('#libRead').hidden = true;
   const books = await Promise.all(availableBooks(state.grade).map((id) => loadBook(id).catch(() => null)));
+  if(request!==LB.request || !$('#library').classList.contains('active'))return;
   $('#libBody').innerHTML = `<div class="lib-shelf">${books.filter(Boolean).map((b) => `
     <button class="lib-book" data-id="${b.id}"><img src="${libPath(b.id, b.cover)}" alt="" draggable="false"><b>${b.title}</b>
       ${(state.booksRead || {})[b.id] ? `<small>✓ read ${state.booksRead[b.id]} time${state.booksRead[b.id] === 1 ? '' : 's'}</small>` : '<small>New!</small>'}</button>`).join('')}
@@ -58,7 +59,9 @@ async function openLibrary() {
 }
 
 async function openBook(id) {
-  LB.book = await loadBook(id); LB.page = -1; LB.t0 = Date.now(); LB.q = 0;
+  stopReading(); const request=++LB.request, book=await loadBook(id);
+  if(request!==LB.request || !$('#library').classList.contains('active'))return;
+  LB.book=book; LB.finished=false; LB.page = -1; LB.t0 = Date.now(); LB.q = 0;
   $('#libTitle').textContent = LB.book.title;
   $('#libRead').hidden = false;
   renderCover();
@@ -146,10 +149,11 @@ async function readPage() {
 }
 
 /* ---------- after the story: three picture questions ---------- */
-function startQuestions() { stopReading(); LB.q = 0; askQuestion(); }
+function startQuestions() { stopReading(); LB.page=-1; $('#libRead').hidden=true; LB.q = 0; askQuestion(); }
 function askQuestion() {
   const b = LB.book, q = b.questions[LB.q];
   if (!q) return finishBook();
+  let answered=false; const request=LB.request;
   const opts = shuffle(q.options.slice());
   $('#libBody').innerHTML = `<div class="lib-page lib-quiz">
       <p class="lib-ask">${q.ask}</p>
@@ -158,13 +162,16 @@ function askQuestion() {
   say(q.ask);
   $('[data-a="hear"]').onclick = () => say(q.ask);
   $$('#libBody .lib-opt').forEach((o) => (o.onclick = () => {
+    if(answered)return;
     if (o.dataset.v === q.answer) {
+      answered=true; $$('#libBody .lib-opt').forEach(button=>button.disabled=true);
       o.classList.add('right'); sfx.yes(); say(pick(['Great job!', 'You remembered!', 'Wonderful!']));
-      setTimeout(() => { LB.q++; askQuestion(); }, 1400);
+      LB.quizTimer=setTimeout(() => { LB.quizTimer=0; if(request!==LB.request || LB.book!==b || !$('#library').classList.contains('active'))return; LB.q++; askQuestion(); }, 1400);
     } else { o.classList.add('wrong'); sfx.no(); say('Try again!'); setTimeout(() => o.classList.remove('wrong'), 700); }
   }));
 }
 function finishBook() {
+  if(LB.finished)return; LB.finished=true;
   const b = LB.book;
   state.booksRead = state.booksRead || {}; state.booksRead[b.id] = (state.booksRead[b.id] || 0) + 1;
   if (typeof statsDay === 'function') { const d = statsDay(); d.books = (d.books || 0) + 1; d.secs += Math.min(1200, Math.round((Date.now() - LB.t0) / 1000)); }
@@ -187,3 +194,7 @@ function swipe(el, next, prev) {
 
 $('#libHome').onclick = () => { sfx.tap(); stopReading(); if (LB.book) { LB.book = null; openLibrary(); } else { renderHome(); show('home'); } };
 $('#libRead').onclick = () => { sfx.tap(); if (LB.page >= 0) { LB.auto = true; readPage(); } };
+
+// Invalidate pending loads and feedback whenever any navigation leaves the reader.
+const originalReaderShow=show;
+show=function(id){if(id!=='library' && $('#library').classList.contains('active')){LB.request++;stopReading();}return originalReaderShow(id);};
