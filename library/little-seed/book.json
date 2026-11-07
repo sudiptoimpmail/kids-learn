@@ -1,0 +1,51 @@
+{
+  "id": "little-seed",
+  "title": "A little seed was in the dirt.",
+  "grades": [
+    "g1"
+  ],
+  "cover": "p01.svg",
+  "pages": [
+    {
+      "art": "p01.svg",
+      "text": [
+        "A little seed was in the dirt."
+      ],
+      "alt": "A little seed was in the dirt."
+    },
+    {
+      "art": "p02.svg",
+      "text": [
+        "The rain fell and the sun came out."
+      ],
+      "alt": "The rain fell and the sun came out."
+    },
+    {
+      "art": "p03.svg",
+      "text": [
+        "Soon a flower grew."
+      ],
+      "alt": "Soon a flower grew."
+    }
+  ],
+  "questions": [
+    {
+      "ask": "What grew from the seed?",
+      "answer": "flower",
+      "options": [
+        [
+          "flower",
+          "flower.svg"
+        ],
+        [
+          "tree",
+          "tree.svg"
+        ],
+        [
+          "carrot",
+          "carrot.svg"
+        ]
+      ]
+    }
+  ]
+}
