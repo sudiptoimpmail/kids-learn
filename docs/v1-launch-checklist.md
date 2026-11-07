@@ -15,7 +15,7 @@ The latest parent QA review controls scope. Pause the unshipped puzzle-size, dra
 - [ ] Audit Grade 2 multiplication representations, Read & Answer and Science content routes with concrete reproduced examples.
 - [ ] Reproduce Letter Sounds number-2 trap; show target counts for multi-selection questions.
 - [ ] Add brief interaction teaching for matching tasks.
-- [ ] Configure shorter Pre-K/K rounds and preserve earned learning credit when leaving mid-round.
+- [ ] Configure shorter Pre-K/K rounds and preserve earned learning credit when leaving mid-round. Implemented curriculum-owned lengths (5 for Pre-K/K, 8 for Grade 1, 10 for Grades 2–3), per-completed-card credit and duplicate protection. Reload/profile-isolation browser tests pass; family acceptance remains.
 
 ## Content and discovery
 

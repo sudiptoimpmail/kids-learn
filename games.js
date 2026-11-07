@@ -24,18 +24,19 @@ function playBalance() {
 }
 const playOpen = () => !!state.playAlways || isTestMode() || (hourlyMode() ? hourLeftMs() > 0 : playBalance() > 0);
 
-// called from finish() in app.js; returns true when a new play break was earned
-function earnPlay() {
+// Question activities deposit a fraction on each completed card. The default
+// argument preserves compatibility with full-round reward callers.
+function earnPlay(credit = ROUND_POLICY.creditUnitsPerRound) {
   if (hourlyMode()) return false;
-  state.roundsSincePlay = (state.roundsSincePlay || 0) + 1;
-  if (state.roundsSincePlay >= roundsPerPlay()) {
-    state.roundsSincePlay = 0;
-    state.playPasses = (state.playPasses || 0) + 1;
-    save();
-    return true;
-  }
-  save();
-  return false;
+  const units = ROUND_POLICY.creditUnitsPerRound;
+  const total = (state.learningPlayCredit || 0) + credit;
+  state.learningPlayCredit = total % units;
+  state.roundsSincePlay = (state.roundsSincePlay || 0) + Math.floor(total / units);
+  const passes = Math.floor(state.roundsSincePlay / roundsPerPlay());
+  state.roundsSincePlay %= roundsPerPlay();
+  if (passes) state.playPasses = (state.playPasses || 0) + passes;
+  save(); // persist before feedback/navigation so an interruption loses no credit
+  return passes > 0;
 }
 
 const nextHourLabel = () => { const d = new Date(); d.setHours(d.getHours() + 1, 0, 0, 0); return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); };
@@ -47,7 +48,7 @@ function playStatus() {
   if (playOpen()) return { open: true, text: `${fmtLeft()} left` };
   if (state.playPasses > 0) return { open: true, ready: true, text: `Ready! ${playMinutes()} min of play` };
   const left = roundsPerPlay() - (state.roundsSincePlay || 0);
-  return { open: false, text: `Finish ${left} more round${left === 1 ? '' : 's'} to play` };
+  return { open: false, text: state.learningPlayCredit ? 'Progress saved · Keep learning to play' : `Finish ${left} more round${left === 1 ? '' : 's'} to play` };
 }
 const fmtLeft = () => {
   const ms = hourlyMode() ? hourLeftMs() : playBalance();
