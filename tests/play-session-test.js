@@ -1,0 +1,46 @@
+const assert = require('node:assert/strict');
+const {chromium} = require('playwright');
+(async () => {
+  const browser=await chromium.launch({executablePath:process.env.CHROME_BIN || '/usr/bin/google-chrome'});
+  try {
+    const page=await browser.newPage(); const errors=[];
+    page.on('pageerror',e=>errors.push(e.message));
+    await page.addInitScript(()=>localStorage.setItem('learnplay.v1',JSON.stringify({name:'Ava',grade:'g2',voice:false})));
+    await page.goto('http://localhost:8765');
+    await page.waitForFunction(()=>!!window.KidsLearnReady); await page.evaluate(()=>window.KidsLearnReady);
+    await page.evaluate(()=>{document.getElementById('startBtn').click();state.playRemainingMs=31000;openPlayZone();clearInterval(playTimer);});
+    assert.equal(await page.evaluate(()=>{tickPlayTimer(lastTick+5000);return playBalance();}),31000);
+    await page.evaluate(()=>{openGame('ttt');clearInterval(playTimer);state.playRemainingMs=31000;tickPlayTimer(lastTick+2000);});
+    assert.equal(await page.evaluate(()=>playBalance()),29000);
+    assert.equal(await page.locator('#game .time-warning').count(),1);
+    await page.evaluate(()=>{state.playRemainingMs=500;tickPlayTimer(lastTick+1000);});
+    assert.equal(await page.evaluate(()=>playBalance()),0);
+    assert.equal(await page.locator('#timeUp').isVisible(),false,'round must continue after expiry');
+    assert.match(await page.locator('#game .play-clock').innerText(),/Finish this round/);
+    await page.evaluate(()=>{endPanel('Finished','⭐',()=>{});tickPlayTimer(lastTick+1000);});
+    assert.equal(await page.locator('#timeUp').isVisible(),true,'completed round closes expired session');
+    await page.evaluate(()=>{$('#timeUpBtn').click();state.playRemainingMs=1000;openPlayZone();openGame('ttt');clearInterval(playTimer);for(let n=0;n<26;n++)tickPlayTimer(lastTick+5000);});
+    assert.equal(await page.locator('#timeUp').isVisible(),true,'open-ended rounds have bounded grace');
+    await page.evaluate(()=>{$('#timeUpBtn').click();state.playRemainingMs=50000;openPlayZone();openGame('ttt');clearInterval(playTimer);endPanel('Done','⭐',()=>{});});
+    const before=await page.evaluate(()=>playBalance());
+    assert.equal(await page.evaluate(()=>{tickPlayTimer(lastTick+5000);return playBalance();}),before,'results must be free');
+    assert.equal(await page.evaluate(()=>{let stopped=false;curSrc={stop(){stopped=true;}};show('settings');return stopped;}),true,'navigation stops playing clips');
+    assert.equal(await page.evaluate(async()=>{let stopped=false;curSrc={stop(){stopped=true;}};state.voice=false;await say('Hello');return stopped;}),true,'muting also stops existing clips');
+    assert.equal(await page.evaluate(async()=>{window.stale=false;later(()=>{window.stale=true;},20);show('game');show('home');await new Promise(r=>setTimeout(r,40));return window.stale;}),false,'leaving invalidates old game callbacks');
+    await page.evaluate(()=>{state.playMode='hourly';state.playUsed={h:hourKey(),ms:0};openPlayZone();clearInterval(playTimer);tickPlayTimer(lastTick+5000);});
+    assert.equal(await page.evaluate(()=>state.playUsed.ms),0,'hourly menu must also be free');
+    await page.evaluate(()=>{openGame('color');clearInterval(playTimer);tickPlayTimer(lastTick+5000);});
+    assert.equal(await page.evaluate(()=>state.playUsed.ms),0,'picture picker must be free');
+    await page.evaluate(()=>{openGame('ttt');clearInterval(playTimer);state.playUsed={h:hourKey(),ms:0};tickPlayTimer(lastTick+1000);});
+    assert.equal(await page.evaluate(()=>state.playUsed.ms),1000,'hourly play charges once');
+    await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});tickPlayTimer(lastTick+5000);});
+    assert.equal(await page.evaluate(()=>state.playUsed.ms),1000,'background must be free');
+    await page.evaluate(()=>{delete document.hidden;state.playMode='earned';state.playRemainingMs=0;openGame('pop');});
+    assert.equal(await page.locator('#gameArea').getAttribute('class'),'game-area g-ttt','expired balance cannot start another game');
+    await page.evaluate(()=>startRound('add',1,true,5));
+    assert.equal(await page.locator('#diffLv').innerText(),await page.evaluate(()=>{const [s,n]=gradeStep('add',R.qs[0].level);return `Step ${s} of ${n}`;}));
+    await page.evaluate(()=>{R.browse=false;R.i=R.qs.length;R.firstTry=R.qs.length;R.mistakes=0;finish();});
+    assert.equal(await page.locator('#result').isVisible(),true,'final card must reach results');
+    assert.deepEqual(errors,[]); console.log('PASS session timing, warning, finish grace, results, audio cancellation and actual question step');
+  } finally {await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});

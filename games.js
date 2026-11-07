@@ -66,12 +66,13 @@ function renderPlayBanner() {
 }
 
 function openPlayZone() {
+  let earned = false;
   if (!playOpen()) {
     if (!hourlyMode() && state.playPasses > 0) {
       state.playPasses--;
       state.playRemainingMs = playMinutes() * 60000;
       save();
-      say('You earned play time!');
+      earned = true;
     } else {
       sfx.no();
       if (hourlyMode()) say('Play time is all used up for now. Let us learn!');
@@ -84,36 +85,54 @@ function openPlayZone() {
   $$('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = false));
   document.body.style.setProperty('--theme', '#ff6bb5');
   show('playzone');
+  if (earned) say('You earned play time!');
   startPlayTimer();
 }
 
 /* ---------- play timer ---------- */
-let playTimer = 0, lastTick = 0, lastPlaySave = 0;
+// A round may finish after the budget expires, with a bounded grace period for
+// open-ended activities. Menus, results, settings and hidden tabs cost nothing.
+const PLAY_FINISH_GRACE_MS = 120000;
+let playTimer = 0, lastTick = 0, lastPlaySave = 0, playGraceMs = 0;
+function activeArcadeRound() {
+  return !brainMode && !!curGame && $('#game').classList.contains('active') &&
+    !$('#gameArea .end-panel, #gameArea .pic-pick, #gameArea .sdk-mode') && $('#timeUp').hidden;
+}
+function tickPlayTimer(now = performance.now()) {
+  const elapsed = Math.max(0, Math.min(now - lastTick, 5000));
+  lastTick = now;
+  const active = activeArcadeRound() && !document.hidden;
+  if (active && !state.playAlways && !isTestMode()) {
+    const remaining = hourlyMode() ? hourLeftMs() : playBalance();
+    if (remaining > 0) {
+      if (hourlyMode()) {
+        const h = hourKey();
+        if (!state.playUsed || state.playUsed.h !== h) state.playUsed = { h, ms: 0 };
+        state.playUsed.ms += Math.min(remaining, elapsed);
+      } else state.playRemainingMs = Math.max(0, remaining - elapsed);
+      playGraceMs += Math.max(0, elapsed - remaining);
+    } else playGraceMs += elapsed;
+    if (now - lastPlaySave >= 10000 || !playOpen()) { save(); lastPlaySave = now; }
+  }
+  const remaining = hourlyMode() ? hourLeftMs() : playBalance();
+  const finishing = activeArcadeRound() && !playOpen();
+  $$('.play-clock').forEach(el => {
+    el.textContent = finishing ? '🏁 Finish this round' : `${remaining > 0 && remaining <= 30000 && !state.playAlways ? '⌛' : '⏱'} ${state.playAlways ? '∞' : fmtLeft()}`;
+    el.classList.toggle('time-warning', !state.playAlways && remaining > 0 && remaining <= 30000);
+    el.setAttribute('aria-label', finishing ? 'Finish this round. Up to two extra minutes.' : remaining <= 30000 ? 'Less than 30 seconds of play time left' : el.textContent);
+  });
+  if (!['playzone', 'game'].some(id => $('#' + id).classList.contains('active'))) {
+    save(); clearInterval(playTimer); return;
+  }
+  if (!playOpen() && !brainMode && (!finishing || playGraceMs >= PLAY_FINISH_GRACE_MS)) {
+    clearInterval(playTimer); timeUp();
+  }
+}
 function startPlayTimer() {
   clearInterval(playTimer);
-  lastTick = performance.now();
-  lastPlaySave = lastTick;
-  const tick = () => {
-    const inPlay = ['playzone', 'game'].some((id) => $('#' + id).classList.contains('active'));
-    const now = performance.now();
-    // hourly mode: count only time actually spent in the Play Zone
-    if (inPlay && !document.hidden && !state.playAlways && !isTestMode() && !brainMode) {
-      if (hourlyMode()) {
-      const h = hourKey();
-      if (!state.playUsed || state.playUsed.h !== h) state.playUsed = { h, ms: 0 };
-      state.playUsed.ms += Math.max(0, Math.min(now - lastTick, 5000));
-      } else state.playRemainingMs = Math.max(0, playBalance() - Math.max(0, Math.min(now - lastTick, 5000)));
-      // Do not synchronously serialize all child progress every second during animations.
-      if (now - lastPlaySave >= 10000) { save(); lastPlaySave = now; }
-    }
-    lastTick = now;
-    const txt = state.playAlways ? '∞' : fmtLeft();
-    $$('.play-clock').forEach((el) => (el.textContent = `⏱ ${txt}`));
-    if (!inPlay) { save(); clearInterval(playTimer); return; }
-    if (!playOpen()) { clearInterval(playTimer); timeUp(); }
-  };
-  tick();
-  playTimer = setInterval(tick, 1000);
+  lastTick = performance.now(); lastPlaySave = lastTick;
+  playTimer = setInterval(tickPlayTimer, 1000);
+  tickPlayTimer();
 }
 // progress.js flushes state on pagehide/visibilitychange; never charge hidden time.
 document.addEventListener('visibilitychange', () => { lastTick = performance.now(); });
@@ -227,6 +246,8 @@ function openGame(id) {
   stopGame();                      // never two games running at once
   const g = GAMES.find((x) => x.id === id);
   if (!g || (brainMode && !brainVisible(g))) return;
+  if (!brainMode && !playOpen()) { timeUp(); return; }
+  playGraceMs = 0;
   curGame = g;
   document.body.style.setProperty('--theme', g.color);
   $('#gameTitle').innerHTML = `${g.icon === BALL_ICON ? '🔵' : g.icon} ${g.title}${GAME_MAX[id] || id === 'sudoku' ? ` <small class="g-lv">${gameStepDots(id).replace(/<\/?span[^>]*>/g, '')}</small>` : ''}`;
@@ -237,7 +258,7 @@ function openGame(id) {
   gameStart = brainMode ? 0 : Date.now();
   g.start();
 }
-function stopGame() { gameSession++; if (gameStart) { playActive += Date.now() - gameStart; gameStart = 0; } if (playActive) { logPlay(playActive / 1000); playActive = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
+function stopGame() { sayToken++; stopClip(); gameSession++; if (gameStart) { playActive += Date.now() - gameStart; gameStart = 0; } if (playActive) { logPlay(playActive / 1000); playActive = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
 let gameStart = 0, playActive = 0;   // play time for the grown-ups' numbers: only while the app is on screen
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && gameStart) { playActive += Date.now() - gameStart; gameStart = 0; }

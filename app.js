@@ -158,6 +158,7 @@ async function playClip(file, token = sayToken, rate = 1) {
 
 async function say(text, opts = {}) {
   const my = ++sayToken;
+  stopClip();
   if (!text || !state.voice) return;
   // only touch system speech if it is actually talking (cancelling it can pause iPhone audio)
   // No system speech synthesis; only prerecorded clips are played.
@@ -267,6 +268,11 @@ $('#qZoomReset').onclick = () => setQuestionZoom(1);
 /* ---------- screens ---------- */
 let homeScrollY = 0;
 function show(id) {
+  const previous = $('.screen.active');
+  if (previous && previous.id !== id) {
+    sayToken++; stopClip();
+    if (previous.id === 'game' && typeof stopGame === 'function') stopGame();
+  }
   if ($('#home').classList.contains('active') && id !== 'home') homeScrollY = window.scrollY;
   if (id !== 'play') { const pop = $('#pop'); pop.classList.remove('show'); pop.replaceChildren(); }
   $$('.screen').forEach((s) => s.classList.toggle('active', s.id === id));
@@ -419,7 +425,7 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
 }
 
 function renderProgress() {
-  $('#diffLv').textContent = R.cat.id === 'mix' ? '' : (([s, n]) => `Step ${s} of ${n}`)(gradeStep(R.cat.id));
+  $('#diffLv').textContent = R.cat.id === 'mix' ? '' : (([s, n]) => `Step ${s} of ${n}`)(gradeStep(R.cat.id, R.qs[Math.min(R.i, R.qs.length - 1)].level));
   $('#diffBtn').hidden = R.cat.id === 'mix';
   $('#qaPosition').textContent = (R.i + 1) + ' / ' + R.qs.length;
   $('#prevBtn').disabled = R.i === 0;

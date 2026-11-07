@@ -11,7 +11,7 @@ const { chromium } = require('playwright');
     await page.locator('#startBtn').click();
     await page.evaluate(() => clipsReady);
     const result = await page.evaluate(() => {
-      state.voice = false; state.grade = 'k';
+      state.voice = false; state.grade = 'k'; state.playRemainingMs = 180000;
       state.gameLv = state.gameLv || {};
       const failures = [];
       const check = (ok, why) => { if(!ok) failures.push(why); };
