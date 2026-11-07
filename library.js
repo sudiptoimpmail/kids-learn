@@ -6,8 +6,10 @@
    - At the end, three picture questions (no reading needed), then "Read it again?".
    Books live in library/<id>/book.json with their pictures beside them.
    ========================================================= */
-const LIBRARY = ['red-riding-hood', 'three-little-pigs'];
-const LB = { book: null, page: -1, reading: false, auto: true, t0: 0, q: 0, readTimer: 0 };
+const LIBRARY_CATALOG = ContentData.get('curriculum-map','learningFramework').books;
+const LIBRARY = LIBRARY_CATALOG.map(b=>b.id);
+const availableBooks = grade => LIBRARY_CATALOG.filter(b=>b.grades.includes(grade)).map(b=>b.id);
+const LB = { book: null, page: -1, reading: false, auto: true, t0: 0, q: 0, readTimer: 0, quizTimer: 0, request: 0, finished: false };
 // Gentle non-musical sounds add suspense without replacing the recorded story.
 const LIB_SCENE_SYMBOLS = { wolf: '🌲', hurry: '🐾', knock: '🚪', disguise: '🌙', suspense: '👀', brave: '❤️', rescue: '☀️', safe: '🏡' };
 const LIB_SCENE_SOUNDS = {
@@ -39,24 +41,27 @@ async function loadBook(id) {
   document.body.insertBefore(s, document.getElementById('play'));
 })();
 
-function stopReading() { clearTimeout(LB.readTimer); LB.readTimer = 0; LB.reading = false; sayToken++; stopClip(); $$('#libBody .w.on').forEach((w) => w.classList.remove('on')); }
+function stopReading() { clearTimeout(LB.quizTimer); LB.quizTimer = 0; clearTimeout(LB.readTimer); LB.readTimer = 0; LB.reading = false; sayToken++; stopClip(); $$('#libBody .w.on').forEach((w) => w.classList.remove('on')); }
 
 async function openLibrary() {
-  stopReading(); LB.book = null;
+  stopReading(); const request=++LB.request; LB.book = null;
   show('library');
   $('#libTitle').textContent = 'Story Time';
   $('#libRead').hidden = true;
-  const books = await Promise.all(LIBRARY.map((id) => loadBook(id).catch(() => null)));
+  const books = await Promise.all(availableBooks(state.grade).map((id) => loadBook(id).catch(() => null)));
+  if(request!==LB.request || !$('#library').classList.contains('active'))return;
   $('#libBody').innerHTML = `<div class="lib-shelf">${books.filter(Boolean).map((b) => `
     <button class="lib-book" data-id="${b.id}"><img src="${libPath(b.id, b.cover)}" alt="" draggable="false"><b>${b.title}</b>
       ${(state.booksRead || {})[b.id] ? `<small>✓ read ${state.booksRead[b.id]} time${state.booksRead[b.id] === 1 ? '' : 's'}</small>` : '<small>New!</small>'}</button>`).join('')}
-    <div class="lib-soon"><span>📚</span><small>More books coming soon</small></div></div>`;
+    </div>`;
   $$('#libBody .lib-book').forEach((b) => (b.onclick = () => { sfx.tap(); openBook(b.dataset.id); }));
   say('Story time! Pick a book.');
 }
 
 async function openBook(id) {
-  LB.book = await loadBook(id); LB.page = -1; LB.t0 = Date.now(); LB.q = 0;
+  stopReading(); const request=++LB.request, book=await loadBook(id);
+  if(request!==LB.request || !$('#library').classList.contains('active'))return;
+  LB.book=book; LB.finished=false; LB.page = -1; LB.t0 = Date.now(); LB.q = 0;
   $('#libTitle').textContent = LB.book.title;
   $('#libRead').hidden = false;
   renderCover();
@@ -85,7 +90,7 @@ function goPage(n) {
   stopReading(); LB.page = n;
   const p = b.pages[n];
   $('#libBody').innerHTML = `<div class="lib-page" data-scene="${esc(p.scene || '')}">
-      <div class="lib-art"><img src="${libPath(b.id, p.art)}" alt="" draggable="false">${LIB_SCENE_SYMBOLS[p.scene] ? `<span class="lib-scene-symbol" aria-hidden="true">${LIB_SCENE_SYMBOLS[p.scene]}</span>` : ''}</div>
+      <div class="lib-art"><img src="${libPath(b.id, p.art)}" alt="${esc(p.alt || '')}" draggable="false">${LIB_SCENE_SYMBOLS[p.scene] ? `<span class="lib-scene-symbol" aria-hidden="true">${LIB_SCENE_SYMBOLS[p.scene]}</span>` : ''}</div>
       <div class="lib-text">${p.text.map((t, si) => `<p class="${/^["“]/.test(t) ? 'lib-dialogue' : /^The End/.test(t) ? 'lib-the-end' : ''}">${wordsHTML(t, si)}</p>`).join('')}</div>
       <div class="lib-nav">
         <button class="nav-btn" data-a="prev" aria-label="Previous page">◀</button>
@@ -96,7 +101,7 @@ function goPage(n) {
   $('[data-a="prev"]').onclick = () => { sfx.tap(); goPage(n - 1); };
   $('[data-a="next"]').onclick = () => { sfx.tap(); goPage(n + 1); };
   $('[data-a="again"]').onclick = () => { sfx.tap(); readPage(); };
-  $$('#libBody .w').forEach((w) => (w.onclick = (e) => { e.stopPropagation(); stopReading(); w.classList.add('on'); say(w.textContent.replace(/[^A-Za-z']/g, '')); setTimeout(() => w.classList.remove('on'), 900); }));
+  $$('#libBody .w').forEach((w) => { w.title=CLIPS[w.dataset.k]?'Hear this word':'Hear this word in its sentence'; w.onclick = (e) => { e.stopPropagation(); stopReading(); w.classList.add('on'); const word=w.textContent.replace(/[^A-Za-z']/g, ''); say(CLIPS[clipKey(word)] ? word : p.text[Number(w.dataset.s)]); setTimeout(() => w.classList.remove('on'), 900); }; });
   swipe($('#libBody .lib-page'), () => goPage(n + 1), () => goPage(n - 1));
   storySceneSound(p.sound);
   // A short suspense beat before the recorded voice, cancelled on every page turn.
@@ -144,10 +149,11 @@ async function readPage() {
 }
 
 /* ---------- after the story: three picture questions ---------- */
-function startQuestions() { stopReading(); LB.q = 0; askQuestion(); }
+function startQuestions() { stopReading(); LB.page=-1; $('#libRead').hidden=true; LB.q = 0; askQuestion(); }
 function askQuestion() {
   const b = LB.book, q = b.questions[LB.q];
   if (!q) return finishBook();
+  let answered=false; const request=LB.request;
   const opts = shuffle(q.options.slice());
   $('#libBody').innerHTML = `<div class="lib-page lib-quiz">
       <p class="lib-ask">${q.ask}</p>
@@ -156,13 +162,16 @@ function askQuestion() {
   say(q.ask);
   $('[data-a="hear"]').onclick = () => say(q.ask);
   $$('#libBody .lib-opt').forEach((o) => (o.onclick = () => {
+    if(answered)return;
     if (o.dataset.v === q.answer) {
+      answered=true; $$('#libBody .lib-opt').forEach(button=>button.disabled=true);
       o.classList.add('right'); sfx.yes(); say(pick(['Great job!', 'You remembered!', 'Wonderful!']));
-      setTimeout(() => { LB.q++; askQuestion(); }, 1400);
+      LB.quizTimer=setTimeout(() => { LB.quizTimer=0; if(request!==LB.request || LB.book!==b || !$('#library').classList.contains('active'))return; LB.q++; askQuestion(); }, 1400);
     } else { o.classList.add('wrong'); sfx.no(); say('Try again!'); setTimeout(() => o.classList.remove('wrong'), 700); }
   }));
 }
 function finishBook() {
+  if(LB.finished)return; LB.finished=true;
   const b = LB.book;
   state.booksRead = state.booksRead || {}; state.booksRead[b.id] = (state.booksRead[b.id] || 0) + 1;
   if (typeof statsDay === 'function') { const d = statsDay(); d.books = (d.books || 0) + 1; d.secs += Math.min(1200, Math.round((Date.now() - LB.t0) / 1000)); }
@@ -185,3 +194,7 @@ function swipe(el, next, prev) {
 
 $('#libHome').onclick = () => { sfx.tap(); stopReading(); if (LB.book) { LB.book = null; openLibrary(); } else { renderHome(); show('home'); } };
 $('#libRead').onclick = () => { sfx.tap(); if (LB.page >= 0) { LB.auto = true; readPage(); } };
+
+// Invalidate pending loads and feedback whenever any navigation leaves the reader.
+const originalReaderShow=show;
+show=function(id){if(id!=='library' && $('#library').classList.contains('active')){LB.request++;stopReading();}return originalReaderShow(id);};
