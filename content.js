@@ -10,6 +10,10 @@ const CURRICULUM_ROUTES = ContentData.get('curriculum-map','ROUTES');
 const CURRICULUM_PROFILES = ContentData.get('curriculum-map','PROFILES');
 const curriculumGrade = () => typeof state !== 'undefined' && state &&
   Object.hasOwn(CURRICULUM_PROFILES,state.grade) ? state.grade : null;
+// Grade-specific bank constraints also apply to learn cards and assessments.
+function activityPolicy(id) {
+  return ContentData.get('curriculum-map', 'GRADES')[curriculumGrade()]?.activityPolicy?.[id] || {};
+}
 function curriculumRows(bank, level) {
   const grade=curriculumGrade();
   if (!grade) return [];
@@ -451,10 +455,11 @@ function genSentence(level, authoredRow = null) {
 const SYL = ContentData.get('content','SYL');
 
 function genSyllable(level) {
-  const pool = level === 1 ? SYL.filter((s) => s[1].split('-').length <= 3) : SYL;
+  const rule = activityPolicy('syl'), limits = rule.maxSyllablesByLevel;
+  const max = limits ? limits[Math.min(Math.max(1, level), limits.length) - 1] : level === 1 ? 3 : 4;
+  const pool = SYL.filter(s => s[1].split('-').length <= max);
   const [w, split, e] = pick(pool);
   const count = split.split('-').length;
-  const max = level === 1 ? 3 : 4;
   const opts = [];
   for (let i = 1; i <= max; i++) opts.push(i);
   return {
@@ -464,7 +469,7 @@ function genSyllable(level) {
     speak: w,
     // Scale long words to the available width, not to a fixed 76–120px font size.
     // Old 11-letter words overflowed the phone card at 320–390px.
-    main: `<div class="word syl-word" style="--syl-font:${Math.min(18, 140 / w.length).toFixed(2)}vw" aria-label="${w}">${w}</div><button type="button" class="mini-speaker" data-speak="${w}" aria-label="Hear ${w}">🔊</button>`,
+    main: `${rule.picturePrompt ? `<div class="big-emoji" aria-hidden="true">${e}</div>` : ''}<div class="word syl-word" style="--syl-font:${Math.min(18, 140 / w.length).toFixed(2)}vw" aria-label="${w}">${w}</div><button type="button" class="mini-speaker" data-speak="${w}" aria-label="Hear ${w}">🔊</button>`,
     mainClass: 'syl-main',
     options: opts.map((n) => ({ v: n, html: `<b>${n}</b><small aria-hidden="true">${'👏'.repeat(n)}</small>` })),
     answer: count,
@@ -1718,9 +1723,15 @@ const vocabMeaning = (v) => `${v[0][0].toUpperCase() + v[0].slice(1)} means ${v[
 // word level: the first 55 words keep their old levels; the new ones come from words.js
 const VOCAB_LEVEL = new Map(VOCAB.map((v, i) => [v, i < 20 ? 1 : i < 40 ? 2 : 3]));
 Object.entries(VOCAB_MORE).forEach(([lv, list]) => list.forEach((v) => { VOCAB.push(v); VOCAB_LEVEL.set(v, +lv); }));
-const vocabPool = (level) => VOCAB.filter((v) => VOCAB_LEVEL.get(v) <= level);
+const vocabPool = (level) => {
+  const words = activityPolicy('vocab').words;
+  return VOCAB.filter(v => VOCAB_LEVEL.get(v) <= level && (!words || words.includes(v[0])));
+};
 // learn cards: this level's words first, then the ones before
-const vocabLearnList = (level) => VOCAB.filter((v) => VOCAB_LEVEL.get(v) === level).concat(VOCAB.filter((v) => VOCAB_LEVEL.get(v) < level));
+const vocabLearnList = (level) => {
+  const pool = vocabPool(level);
+  return pool.filter(v => VOCAB_LEVEL.get(v) === level).concat(pool.filter(v => VOCAB_LEVEL.get(v) < level));
+};
 
 function vocabDistractors(v, pool, n) {
   // no word from the same meaning group, and never two choices with the same picture
@@ -1735,7 +1746,7 @@ function genVocab(level) {
   const [word, pic, gloss] = v;
   const others = vocabDistractors(v, pool, numOpts(level) - 1);
   const meaningHint = { html: `<div class="hint-note">${vocabMeaning(v)}</div>`, say: vocabMeaning(v) };
-  if (Math.random() < 0.5) {
+  if (activityPolicy('vocab').pictureAnswers || Math.random() < 0.5) {
     return {
       key: `voc-pic-${word}`, text: `Which picture shows <b>${word}</b>?`, say: `Which picture shows ${word}?`,
       main: `<div class="word sm">${word}</div><button class="mini-speaker" data-speak="${word}">🔊</button>`,

@@ -11,7 +11,7 @@ The latest parent QA review controls scope. Pause the unshipped puzzle-size, dra
 
 ## Learning quality
 
-- [ ] Verify Word Wonders, Clap It and Quick Check against every grade, particularly Pre-K/K vocabulary and subtraction.
+- [ ] Verify Word Wonders, Clap It and Quick Check against every grade, particularly Pre-K/K vocabulary and subtraction. Added shared curriculum policies for everyday early-grade vocabulary (learn cards and picture-answer quizzes), one/two-syllable starting pools with picture cues, and entry-level assessment sections. Pre-K Quick Check uses addition/shapes and sounds/claps, not subtraction. Older content remains available. Browser regression and recorded-prompt checks pass; family review remains.
 - [ ] Audit Grade 2 multiplication representations, Read & Answer and Science content routes with concrete reproduced examples.
 - [ ] Reproduce Letter Sounds number-2 trap; show target counts for multi-selection questions.
 - [ ] Add brief interaction teaching for matching tasks.
