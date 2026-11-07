@@ -5014,6 +5014,75 @@
             "g1"
           ]
         }
+      ],
+      "catalogGroups": [
+        {
+          "title": "📝 Practice",
+          "activities": [
+            "check"
+          ]
+        },
+        {
+          "title": "📖 Reading & Words",
+          "activities": [
+            "library",
+            "trace",
+            "phonics",
+            "cvc",
+            "w4",
+            "sight",
+            "spell",
+            "vocab",
+            "sent",
+            "words",
+            "gp",
+            "match",
+            "syl"
+          ]
+        },
+        {
+          "title": "🔢 Math",
+          "activities": [
+            "add",
+            "sub",
+            "story",
+            "cmp",
+            "numsense",
+            "frac",
+            "measure",
+            "mul",
+            "div",
+            "clock",
+            "shape2"
+          ]
+        },
+        {
+          "title": "🧩 Brain Teasers",
+          "activities": [
+            "pattern",
+            "odd",
+            "sequence"
+          ],
+          "brain": true
+        },
+        {
+          "title": "🌍 Science & World",
+          "activities": [
+            "sci",
+            "home",
+            "region",
+            "community",
+            "body",
+            "gk",
+            "anatomy",
+            "jobs",
+            "flags",
+            "animals",
+            "places",
+            "maps",
+            "mix"
+          ]
+        }
       ]
     }
   }

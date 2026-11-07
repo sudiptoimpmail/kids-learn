@@ -18,7 +18,8 @@ const COUNTRIES = Object.fromEntries(
 const COUNTRY_ORDER = ['us', 'uk', 'ca', 'au', 'nz', 'in', 'ie'];
 // first guess from the device language (en-GB → uk …); a grown-up can change it in Settings
 function guessCountry() {
-  const r = ((navigator.language || '').split('-')[1] || '').toLowerCase();
+  let r='';
+  try { r=(new Intl.Locale(navigator.language || 'en-US').region || '').toLowerCase(); } catch {}
   return { us: 'us', gb: 'uk', ca: 'ca', au: 'au', nz: 'nz', in: 'in', ie: 'ie' }[r] || 'us';
 }
 const myCountry = () => (state.country === 'other' ? null : COUNTRIES[state.country || guessCountry()] || null);

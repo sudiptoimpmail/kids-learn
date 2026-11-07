@@ -52,3 +52,7 @@ Seven configured examples cover initial sounds, rhyme, blending, middle vowels, 
 `learningFramework.books` lists stable book IDs and supported grade IDs. The reader filters this catalog by the active grade; each book uses the existing `library/<id>/book.json` contract (cover, illustrated pages, recorded sentences, picture questions). Enable the library in a grade’s activity map to expose it. Two Grade 1 starter read-alongs reuse reviewed, recorded short passages about a kite and a seed. They are three-page practice readers, not a comprehensive Grade 1 library. Each page provides descriptive alternative text. New books require sentence and word recordings, original artwork and offline manifest entries.
 
 When a separate word recording is unavailable, tapping that word replays its recorded sentence. The tooltip identifies this behavior; it does not silently fall back to device speech.
+
+## Activity discovery
+
+`catalogGroups` defines titles, activity IDs and the group that includes brain games. Explore uses the same grade-filtered activity list as quests and parent activity settings. Duplicate group references render once, and ungrouped activities appear under More to explore so new question banks do not disappear. The Explore total counts its rendered activity and brain-game tiles, excluding the repeated recommendation row. Parent history can still show previously played activities from other grades.

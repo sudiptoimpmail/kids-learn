@@ -1,3 +1,4 @@
+const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 const S = require('path').join(__dirname, 'out/');
 (async () => {
@@ -5,9 +6,10 @@ const S = require('path').join(__dirname, 'out/');
   const errs = [];
   for (const [name, vp, grade] of [['phone', { width: 390, height: 844 }, 'k'], ['ipad', { width: 820, height: 1180 }, 'g2']]) {
     const p = await b.newPage({ viewport: vp }); p.on('pageerror', e => errs.push(e.message));
+    await p.addInitScript((g) => localStorage.setItem('learnplay.v1', JSON.stringify({ name: 'Shivika', voice: false, grade: g })), grade);
     await p.goto('http://localhost:8765/index.html');
-    await p.evaluate((g) => localStorage.setItem('learnplay.v1', JSON.stringify({ name: 'Shivika', voice: false, grade: g })), grade);
-    await p.reload(); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(400);
+    await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady);
+    assert.equal(await p.evaluate(()=>state.grade),grade); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(400);
     console.log(name, 'plan:', await p.evaluate(() => questFor().steps.map(s => s.cat + '/' + s.why).join(', ')));
     await p.screenshot({ path: S + `quest_${name}.png` });
     // do every step
@@ -30,5 +32,5 @@ const S = require('path').join(__dirname, 'out/');
     console.log('gift:', await p.evaluate(() => ({ quests: state.quests, passes: state.playPasses, giftShown: !!document.querySelector('.quest-gift') })));
     await p.close();
   }
-  console.log('errors', JSON.stringify(errs)); await b.close();
+  assert.deepEqual(errs, []); console.log('errors', JSON.stringify(errs)); await b.close();
 })();

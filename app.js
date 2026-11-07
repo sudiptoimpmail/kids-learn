@@ -42,12 +42,11 @@ const belowGrade = (id) => {
 // Pre-K (pre-readers) always stays inside its own band
 const liftTop = (id) => { const r = gradeRange(state.grade, id); return state.grade === 'prek' ? r[1] : Math.min(gameMax(id), r[1] + 1); };
 const openRange = (id) => { const r = state.grade && gradeRange(state.grade, id); return r ? (state.showAll ? [r[0], Math.max(r[1], liftTop(id))] : r) : null; };
-const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CATEGORIES.filter((c) => c.id !== 'placement' && !belowGrade(c.id)) : CATEGORIES.filter((c) => c.id !== 'cmp' && c.id !== 'placement' && !belowGrade(c.id) // comparisons are mixed into math, not shown as a separate game
+const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CATEGORIES.filter((c) => c.id !== 'placement' && !belowGrade(c.id)) : CATEGORIES.filter((c) => c.id !== 'placement' && !belowGrade(c.id)
   && !sectionOff(c.id)
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'region' && typeof myRegion === 'function' && !myRegion())
   && !(c.id === 'check' && !(typeof checkFor === 'function' && checkFor()))
-  && !(c.id === 'syl' && !state.showAll && strongReader())
   // the grade decides the sections; Show harder levels only lifts the level cap inside them
   && (!state.grade || c.id === 'mix' || gradeRange(state.grade, c.id)));
 // auto level-up stops at the top of the child's grade (unless all games are shown)
@@ -285,13 +284,7 @@ function renderHome() {
   if (typeof renderPlayBanner === 'function') renderPlayBanner();
   if (typeof renderToday === 'function') renderToday();
   if (typeof renderQuest === 'function') renderQuest();
-  const groups = [
-    ['📝 Practice', ['check']],
-    ['📖 Reading & Words', ['library', 'trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'gp', 'match', 'syl']],
-    ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'frac', 'measure', 'mul', 'div', 'clock', 'shape2']],
-    ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], 'brain'],
-    ['🌍 Science & World', ['sci', 'home', 'region', 'community', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
-  ];
+  const groups = ContentData.get('curriculum-map','learningFramework').catalogGroups;
   const visible = visibleGames();
   const makeTile = (c) => {
     const best = Math.min(3, state.best[c.id] || 0);
@@ -303,11 +296,16 @@ function renderHome() {
   };
   // brain games (memory, puzzles, mazes …) sit right inside Brain Teasers: a tap opens the game
   const gameTile = (g) => `<button class="tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span><span class="ts">puzzle game</span></button>`;
-  const catalog = groups.map(([title, ids, brain]) => {
-    const cats = visible.filter((c) => ids.includes(c.id));
-    const games = brain === 'brain' && typeof brainGames === 'function' ? brainGames() : [];
+  const rendered = new Set(); let total = 0, includedBrain = false;
+  let catalog = groups.map(({title, activities: ids, brain}) => {
+    const cats = visible.filter((c) => ids.includes(c.id) && !rendered.has(c.id));
+    cats.forEach(c=>rendered.add(c.id));
+    const games = brain && !includedBrain && typeof brainGames === 'function' ? brainGames() : [];
+    if(brain)includedBrain=true; total += cats.length + games.length;
     return cats.length || games.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${cats.map(makeTile).join('')}${games.map(gameTile).join('')}</div></section>` : '';
   }).join('');
+  const remaining=visible.filter(c=>!rendered.has(c.id)); total+=remaining.length;
+  if(remaining.length)catalog+=`<section class="catalog-section"><h2>More to explore</h2><div class="grid">${remaining.map(makeTile).join('')}</div></section>`;
   // 1st–3rd grade see 28–35 activities: show a short recommended row first and fold the rest behind "Explore"
   const fold = ['g1', 'g2', 'g3'].includes(state.grade) && !isTestMode();
   if (!fold) { $('#grid').innerHTML = locHTML(catalog); return; }
@@ -315,7 +313,6 @@ function renderHome() {
   const quest = typeof questFor === 'function' ? questFor().steps.filter((x) => !x.done).map((x) => x.cat) : [];
   const recIds = [...new Set([...quest, ...(GRADES[state.grade].practiceFocus || [])])].filter((id) => ok.has(id) && id !== 'mix').slice(0, 6);
   const rec = recIds.map((id) => visible.find((c) => c.id === id)).filter(Boolean);
-  const total = visible.filter((c) => c.id !== 'mix').length;
   // automated test browsers keep the catalog open unless they ask for the folded view (?explore=closed)
   const open = state.exploreOpen != null ? state.exploreOpen : (navigator.webdriver && !/[?&]explore=closed\b/.test(location.search));
   $('#grid').innerHTML = locHTML(`${rec.length ? `<section class="catalog-section rec-section"><h2>⭐ Recommended for you</h2><div class="grid">${rec.map(makeTile).join('')}</div></section>` : ''}
@@ -1245,7 +1242,7 @@ function openSettings() {
   if (!sync.hidden) sync.onclick = async () => {
     sync.disabled = true;
     const status = $('#contentPacksStatus');
-    status.textContent = 'Checking purchased lesson updates…';
+    status.textContent = 'Checking available lesson updates…';
     try {
       // The native bridge MUST check Apple/Google entitlements and authorize
       // each data-only payload with the publisher service before returning it.
@@ -1253,7 +1250,7 @@ function openSettings() {
       if (!Array.isArray(verified)) throw new Error('Invalid download response');
       for (const pack of verified) await ContentPacks.installVerified(pack);
       status.textContent = verified.length
-        ? 'Saved ' + verified.length + ' purchased learning pack(s). Ready offline.'
+        ? 'Saved ' + verified.length + ' learning pack(s). Ready offline.'
         : 'All your downloaded lessons are up to date.';
     } catch (error) {
       status.textContent = 'Could not check updates. The included and previously saved lessons still work offline.';
