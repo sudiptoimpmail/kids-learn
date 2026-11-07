@@ -3,9 +3,8 @@ const { chromium } = require('playwright');
   const b = await chromium.launch({ executablePath: process.env.CHROME_BIN || '/usr/bin/google-chrome', args: ['--use-angle=swiftshader','--enable-unsafe-swiftshader','--ignore-gpu-blocklist'] });
   const p = await b.newPage({ viewport: { width: 390, height: 844 } });
   const errs = []; p.on('pageerror', e => errs.push(e.message));
-  await p.goto('http://localhost:8765/index.html'); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady);
-  await p.evaluate(() => localStorage.setItem('learnplay.v1', JSON.stringify({ voice: false, grade: 'g1', optAnatomy: true, playAlways: true, pinHash: 'x', stars: 9, good: 3, traced: { bigA: 1 }, recent: { sent: ['a'] }, pinBest: 500, art: { a: {} }, gameLv: { ttt: 2 } })));
-  await p.reload(); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(300);
+  await p.addInitScript(() => localStorage.setItem('learnplay.v1', JSON.stringify({ voice: false, grade: 'g1', optAnatomy: true, playAlways: true, pinHash: 'x', stars: 9, good: 3, traced: { bigA: 1 }, recent: { sent: ['a'] }, pinBest: 500, art: { a: {} }, gameLv: { ttt: 2 } })));
+  await p.goto('http://localhost:8765/index.html'); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady); await p.evaluate(() => document.getElementById('startBtn').click()); await p.waitForTimeout(300);
   // 1. body 3D: open, leave, open again
   const r1 = [];
   for (let k = 0; k < 3; k++) {

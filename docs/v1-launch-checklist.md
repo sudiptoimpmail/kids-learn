@@ -5,9 +5,9 @@ The latest parent QA review controls scope. Pause the unshipped puzzle-size, dra
 ## Parent trust — release blockers
 
 - [ ] Merge and verify PIN-gated in-game difficulty changes, removal of the arithmetic Forgot PIN bypass, and cancellation of pending PIN callbacks. Implementation and automated coverage are in the parent-gate change; device verification remains.
-- [ ] Audit all activity transitions for stale narration, delayed callbacks and overlapping question audio.
+- [ ] Audit all activity transitions for stale narration, delayed callbacks and overlapping question audio. Shared screen/game exits now cancel clips and invalidate game callbacks; browser regressions pass. Device audio verification remains.
 - [ ] Use consistent grade-relative steps in Home, Settings and play; distinguish brain-game levels from learning progress.
-- [ ] Play Zone: charge only active arcade play, retain earned credit, give a 30-second warning, and permit an active round to finish. Define bounded behavior for endless games.
+- [ ] Play Zone: charge only active arcade play, retain earned credit, give a 30-second warning, and permit an active round to finish. Implemented active-play charging, persistent balances, a visual 30-second warning and up to two minutes of foreground finishing time. No new round can start after expiry; browser coverage includes hourly mode, menus, results and backgrounding. Device acceptance remains.
 
 ## Learning quality
 

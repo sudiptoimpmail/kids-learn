@@ -1640,3 +1640,5 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
   #library .lib-page:not(.lib-cover):not(.lib-quiz):not(.lib-done) .lib-nav { grid-column: 2; grid-row: 2; }
   #library .lib-art img { object-fit: contain; }
 }
+
+.play-clock.time-warning { background: #fff3bf; color: #713f12; outline: 2px solid #f59f00; }
