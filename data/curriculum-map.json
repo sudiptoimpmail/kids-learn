@@ -62,7 +62,8 @@
           "odd": "1-1",
           "sequence": "1-1",
           "placement": "1-1"
-        }
+        },
+        "roundQuestions": 5
       },
       "k": {
         "label": "Kindergarten",
@@ -133,7 +134,8 @@
           "sequence": "1-2",
           "check": "1-1",
           "placement": "1-1"
-        }
+        },
+        "roundQuestions": 5
       },
       "g1": {
         "label": "1st Grade",
@@ -210,7 +212,8 @@
           "check": "1-1",
           "placement": "1-1",
           "library": "1-1"
-        }
+        },
+        "roundQuestions": 8
       },
       "g2": {
         "label": "2nd Grade",
@@ -288,7 +291,8 @@
           "region": "1-2",
           "check": "1-1",
           "placement": "1-1"
-        }
+        },
+        "roundQuestions": 10
       },
       "g3": {
         "label": "3rd Grade",
@@ -363,7 +367,8 @@
           "region": "2-3",
           "check": "1-1",
           "placement": "1-1"
-        }
+        },
+        "roundQuestions": 10
       }
     },
     "PROFILES": {
@@ -3323,6 +3328,10 @@
           "practicing": 2,
           "mastered": 10
         }
+      },
+      "learningRounds": {
+        "defaultQuestions": 10,
+        "creditUnitsPerRound": 120
       }
     },
     "version": 1,

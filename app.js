@@ -3,7 +3,12 @@
    ========================================================= */
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-const ROUND = 10;
+const ROUND_POLICY = ContentData.get('curriculum-map', 'policy').learningRounds;
+const ROUND = ROUND_POLICY.defaultQuestions;
+function roundQuestionCount(cat, count) {
+  if (count) return count; // explicit assessment, quest and preview lengths
+  return Math.min(cat.roundLen || ROUND, GRADES[state.grade]?.roundQuestions || ROUND);
+}
 const KEY = 'learnplay.v1';
 
 /* ---------- saved progress ---------- */
@@ -339,7 +344,7 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
   const real = visibleGames().filter((c) => c.gen);
   const qs = [], seen = new Set(), seenContent = new Set();
   let guard = 0, drop = 0, misses = 0;
-  const N = count || cat.roundLen || ROUND;
+  const N = roundQuestionCount(cat, count);
   // Schedule a small number of explicit authored-objective review cards without
   // displacing the full grade-level mix. The grade's JSON policy owns the cap.
   const reviewPolicy = state.grade && GRADES[state.grade]?.reviewSchedule;
@@ -672,6 +677,7 @@ function checkSpell(q) {
       clearTimeout(R.nudge);
       const first = q.tries === 0;
       q.ok = first;
+      creditLearningQuestion(q);
       if (first) { R.firstTry++; R.streak++; R.best = Math.max(R.best, R.streak); } else R.streak = 0;
       $$('.slot').forEach((s, k) => { s.classList.add('win'); s.style.animationDelay = `${k * 90}ms`; });
       celebrate(first);
@@ -848,6 +854,7 @@ function matchDone(q) {
   R.locked = true; clearTimeout(R.nudge);
   const first = q.tries === 0;
   q.ok = first;
+  creditLearningQuestion(q);
   if (first) { R.firstTry++; R.streak++; R.best = Math.max(R.best, R.streak); } else R.streak = 0;
   setTimeout(onCard(q, () => { celebrate(first); setTimeout(onCard(q, next), first ? 2000 : 1700); }), 300);
 }
@@ -869,6 +876,7 @@ function choose(q, v, el) {
     R.locked = true; clearTimeout(R.nudge);
     const first = q.tries === 0;
     q.ok = first;
+    creditLearningQuestion(q);
     if (first) { R.firstTry++; R.streak++; R.best = Math.max(R.best, R.streak); } else R.streak = 0;
     el.classList.add('right');
     if (q.fill) { const b = $('.blank'); if (b) { b.textContent = q.answer; b.classList.add('filled'); } }
@@ -909,6 +917,17 @@ function celebrate(first) {
   confetti(first ? 110 : 50);
   // spoken praise uses the recorded voice; the name is shown on screen
   say(R.streak >= 3 && R.streak % 3 === 0 ? `${phrase} ${R.streak} in a row!` : phrase, { pitch: 1.3, rate: 1 });
+}
+
+function creditLearningQuestion(q) {
+  if (!R || R.browse || isTestMode() || q.ok === undefined || q.playCredited) return;
+  const i = R.qs.indexOf(q);
+  if (i < 0) return;
+  q.playCredited = true;
+  const units = ROUND_POLICY.creditUnitsPerRound;
+  // Integer partitions sum to exactly one round, including shortened banks.
+  const credit = Math.floor((i + 1) * units / R.qs.length) - Math.floor(i * units / R.qs.length);
+  R.playEarned = earnPlay(credit) || R.playEarned;
 }
 
 function next() {
@@ -1001,7 +1020,7 @@ function finish() {
     else if (status === 'top' && !state.showAll && state.grade)
       levelMsg = '⭐ Great work! Try another skill for your grade.';
   }
-  const earned = earnPlay();
+  const earned = !!R.playEarned;
   // part of today's quest?
   const questI = R.questStep;
   if (questI != null && typeof questStepDone === 'function') questStepDone(questI);
