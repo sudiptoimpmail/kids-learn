@@ -1723,3 +1723,10 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .qa-card li.ok { font-weight: 800; color: #2b8a3e; }
 .qa-card small { color: #8a7fa8; }
 .qa-issue { color: #c92a2a; font-weight: 700; }
+
+/* missing number: the "?" is a drop target for the answer buttons */
+.think-missing.drop-ready { outline: 3px dashed #ffa94d; outline-offset: 3px; animation: pulse 1.8s ease-in-out infinite; }
+.think-missing.drop-hit { transform: scale(1.25); background: #fff3bf; }
+.think-missing.filled { background: #d3f9d8; color: #2b8a3e; outline: 3px solid #69db7c; outline-offset: 3px; animation: bounce .45s; }
+.options .opt { touch-action: none; }
+.opt.lifting{opacity:.35}

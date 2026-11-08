@@ -525,6 +525,7 @@ function renderQ() {
     };
   });
   $$('[data-speak]', $('#qMain')).forEach((b) => (b.onclick = () => { sfx.tap(); say(b.dataset.speak, { rate: 0.8 }); }));
+  wireMissingSlot(q);
   // nudge the hint after a while, but never show the picture by itself
   clearTimeout(R.nudge);
   R.nudge = setTimeout(onCard(q, () => { if (!q.hintShown) $('#hintBtn').classList.add('glow'); }), 12000);
@@ -836,6 +837,23 @@ const partMiss = (q, el) => { q.tries++; R.mistakes++; R.streak = 0; sfx.no(); i
 const live = (q) => !R.locked && R.qs[R.i] === q;
 // word box: tap a blank, then a word from the box (the first open blank is picked for you)
 // drag a word chip onto a blank (tapping a chip still works); onDrop(blankEl) runs when it lands on one
+// Missing number / pattern cards: drag an answer onto the "?" (tapping an answer still works)
+function wireMissingSlot(q) {
+  const slot = $('#qMain .think-missing');
+  if (!slot || q.spell || q.match || q.fillIn || q.passageFill || q.order || q.multi || q.puzzle || q.tap || q.illustrated) return;
+  slot.classList.add('drop-ready');
+  const kids = [...$('#options').children];
+  kids.forEach((b, k) => {
+    const fillIfRight = () => { if (String(q.options[k].v) === String(q.answer)) { slot.textContent = plainText(q.options[k].html != null ? q.options[k].html : q.options[k].v); slot.classList.add('filled'); slot.classList.remove('drop-ready'); } };
+    b.addEventListener('click', fillIfRight);
+    chipDrag(b, () => (slot.classList.contains('filled') ? [] : [slot]), (target) => {
+      if (!live(q) || b.disabled) return;
+      target.classList.add('drop-hit'); setTimeout(() => target.classList.remove('drop-hit'), 350);
+      b.click();
+    });
+  });
+}
+const plainText = (h) => { const d = document.createElement('div'); d.innerHTML = String(h); return d.textContent.trim(); };
 function chipDrag(chip, blanksOf, onDrop) {
   chip.style.touchAction = 'none';
   chip.addEventListener('pointerdown', (e) => {
