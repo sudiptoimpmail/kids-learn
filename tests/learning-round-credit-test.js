@@ -4,7 +4,7 @@ const {chromium}=require('playwright');
  const browser=await chromium.launch({executablePath:process.env.CHROME_BIN||'/usr/bin/google-chrome'});
  try {
   const page=await browser.newPage(), errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.addInitScript(()=>{if(!localStorage.getItem('learnplay.v1'))localStorage.setItem('learnplay.v1',JSON.stringify({name:'Ava',grade:'prek',voice:false}));});
+  await page.addInitScript(()=>{if(!localStorage.getItem('learnplay.v1'))localStorage.setItem('learnplay.v1',JSON.stringify({name:'Ava',grade:'prek',voice:false,roundsPerPlay:2}));});
   const ready=async()=>{await page.waitForFunction(()=>!!window.KidsLearnReady);await page.evaluate(()=>window.KidsLearnReady);};
   await page.goto('http://localhost:8765');await ready();
   await page.evaluate(()=>$('#startBtn').click());
@@ -28,7 +28,8 @@ const {chromium}=require('playwright');
   assert.equal(await page.evaluate(()=>state.playPasses||0),0);
   // A full second round earns exactly one pass, with no extra award at finish.
   await page.evaluate(()=>{state.recent={};state.recentContent={};startRound('add');while(R.i<R.qs.length){const q=R.qs[R.i];choose(q,q.answer,document.createElement('button'));next();}});
-  assert.equal(await page.evaluate(()=>state.playPasses),1);
+  assert.equal(await page.evaluate(()=>state.playRemainingMs),180000);
+  assert.equal(await page.evaluate(()=>state.playPasses||0),0);
   assert.equal(await page.evaluate(()=>state.roundsSincePlay),0);
   assert.equal(await page.locator('#result').isVisible(),true);
   assert.equal(await page.locator('#playEarned').isVisible(),true);

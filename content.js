@@ -1563,7 +1563,8 @@ function genMaps(level) {
   const n = numOpts(level) - 1;
   const types = level === 1 ? ['cname', 'ctap', 'kname', 'kname', 'kcont'] : level === 2 ? ['cname', 'ctap', 'kname', 'kname', 'ktap', 'ktap', 'kcont', 'kcont']
     : ['cname', 'kname', 'kname', 'ktap', 'ktap', 'kcont', 'capital', 'capital', 'capital'];
-  const type = pick(types);
+  // v1: tiny SVG targets can strand touch users; retain large-button questions.
+  const type = pick(types.filter(t => t !== 'ctap' && t !== 'ktap'));
   if (type === 'cname' || type === 'ctap') {
     const c = pick(conts);
     if (type === 'ctap') return {

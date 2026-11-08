@@ -117,6 +117,27 @@
             "syl"
           ],
           "level": "start"
+        },
+        "playPolicy": {
+          "pop": {
+            "target": 4,
+            "seconds": 45,
+            "speedScale": 0.65,
+            "accelerate": false
+          },
+          "whack": {
+            "target": 3,
+            "seconds": 45,
+            "upMs": 3500,
+            "accelerate": false
+          },
+          "pinball": {
+            "target": 500
+          },
+          "maze": {
+            "dragGain": 24,
+            "maxSpeed": 14
+          }
         }
       },
       "k": {
@@ -264,6 +285,23 @@
             "syl"
           ],
           "level": "start"
+        },
+        "playPolicy": {
+          "pop": {
+            "target": 6,
+            "seconds": 40,
+            "speedScale": 0.8,
+            "accelerate": false
+          },
+          "whack": {
+            "target": 5,
+            "seconds": 40,
+            "upMs": 2800,
+            "accelerate": false
+          },
+          "pinball": {
+            "target": 1000
+          }
         }
       },
       "g1": {

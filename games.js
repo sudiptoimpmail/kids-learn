@@ -7,7 +7,8 @@
 // Two rules a parent can pick in Settings:
 //  'rounds' (default): every N finished learning rounds earns a play break of M minutes
 //  'hourly': free play for up to K minutes in each clock hour (e.g. 15 min per hour)
-const roundsPerPlay = () => state.roundsPerPlay || 2;
+const roundsPerPlay = () => state.roundsPerPlay || 1;
+function gamePlayPolicy(id) { return GRADES[state.grade]?.playPolicy?.[id] || {}; }
 const playMinutes = () => state.playMinutes || 3;
 const hourlyMode = () => state.playMode === 'hourly';
 const perHour = () => state.playPerHour || 15;
@@ -34,7 +35,7 @@ function earnPlay(credit = ROUND_POLICY.creditUnitsPerRound) {
   state.roundsSincePlay = (state.roundsSincePlay || 0) + Math.floor(total / units);
   const passes = Math.floor(state.roundsSincePlay / roundsPerPlay());
   state.roundsSincePlay %= roundsPerPlay();
-  if (passes) state.playPasses = (state.playPasses || 0) + passes;
+  if (passes) state.playRemainingMs = playBalance() + passes * playMinutes() * 60000;
   save(); // persist before feedback/navigation so an interruption loses no credit
   return passes > 0;
 }
@@ -97,7 +98,7 @@ const PLAY_FINISH_GRACE_MS = 120000;
 let playTimer = 0, lastTick = 0, lastPlaySave = 0, playGraceMs = 0;
 function activeArcadeRound() {
   return !brainMode && !!curGame && $('#game').classList.contains('active') &&
-    !$('#gameArea .end-panel, #gameArea .pic-pick, #gameArea .sdk-mode') && $('#timeUp').hidden;
+    !$('#gameArea .end-panel, #gameArea .wm-final, #gameArea .pic-pick, #gameArea .sdk-mode') && $('#timeUp').hidden;
 }
 function tickPlayTimer(now = performance.now()) {
   const elapsed = Math.max(0, Math.min(now - lastTick, 5000));
@@ -380,9 +381,10 @@ function fitCanvas(cv, minH = 360) {
 }
 function startPop() {
   const lv = GL('pop');
-  const target = [8, 12, 15, 18, 22][lv - 1];
+  const policy=gamePlayPolicy('pop'), duration=policy.seconds || 30;
+  const target = policy.target || [8, 12, 15, 18, 22][lv - 1];
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Pop ${target} balloons! <b class="pop-score">0</b> 🎈 · <span class="pop-time">30</span>s <small class="pop-speed">Speed 🐢</small></div><div class="cv-wrap"><canvas class="game-cv pop-cv"></canvas></div>`;
+  area.innerHTML = `<div class="g-msg">Pop ${target} balloons! <b class="pop-score">0</b> 🎈 · <span class="pop-time">${duration}</span>s <small class="pop-speed">Speed 🐢</small></div><div class="cv-wrap"><canvas class="game-cv pop-cv"></canvas></div>`;
   say('Pop the balloons!');
   const cv = $('.pop-cv', area);
   let { c, w, h } = fitCanvas(cv);
@@ -393,7 +395,7 @@ function startPop() {
     const r = (lv <= 2 ? 40 : lv <= 4 ? 34 : 30) + Math.random() * 10;
     const star = Math.random() < 0.1;
     balloons.push({ x: r + Math.random() * (w - 2 * r), y: h + r, r, color: star ? '#fcc419' : pick(colors),
-      vy: (55 + lv * 20) * (0.85 + Math.random() * 0.4) * Math.min(2.6, 1 + score * 0.06) + elapsed * 1.5, wob: Math.random() * 6, star });
+      vy: (55 + lv * 20) * (policy.speedScale || 1) * (0.85 + Math.random() * 0.4) * (policy.accelerate === false ? 1 : Math.min(2.6, 1 + score * 0.06)) + (policy.accelerate === false ? 0 : elapsed * 1.5), wob: Math.random() * 6, star });
   }
   function draw() {
     c.clearRect(0, 0, w, h);
@@ -414,7 +416,7 @@ function startPop() {
     if (!alive) return;
     const dt = last ? Math.min(0.05, (t - last) / 1000) : 0; last = t;
     elapsed += dt;
-    const left = Math.max(0, 30 - elapsed);
+    const left = Math.max(0, duration - elapsed);
     $('.pop-time', area).textContent = Math.ceil(left);
     spawnIn -= dt;
     if (spawnIn <= 0) { spawn(); spawnIn = Math.max(0.22, (1.0 - lv * 0.1) - elapsed * 0.01 - score * 0.015); }
@@ -436,7 +438,7 @@ function startPop() {
       if (Math.hypot((x - bx) / 1.0, (y - b.y) / 1.15) < b.r * 1.25) {     // generous for little fingers
         balloons.splice(k, 1);
         score += b.star ? 3 : 1; $('.pop-score', area).textContent = score;
-        $('.pop-speed', area).textContent = 'Speed ' + (score < 6 ? '🐢' : score < 12 ? '🐇' : score < 20 ? '🐆' : '🚀');
+        $('.pop-speed', area).textContent = policy.accelerate === false ? 'Speed: Gentle' : 'Speed ' + (score < 6 ? '🐢' : score < 12 ? '🐇' : score < 20 ? '🐆' : '🚀');
         for (let n = 0; n < 12; n++) { const a = Math.random() * 6.3; bits.push({ x: bx, y: b.y, vx: Math.cos(a) * 160, vy: Math.sin(a) * 160, life: 1, color: b.color }); }
         tone([b.star ? 1200 : 650 + Math.random() * 350, 280], { dur: 0.05, type: 'square', gap: 0.04, vol: 0.12 });
         return;
@@ -462,15 +464,18 @@ function startPop() {
 // Moles pop up; tap them before they hide. Faster each level; from level 3, don't tap the 🌸.
 function startWhack() {
   const lv = GL('whack');
-  const target = [8, 11, 14, 16, 18][lv - 1];
-  const upMs = [1800, 1450, 1200, 1000, 850][lv - 1];
-  const speedAt = () => Math.max(420, upMs * (1 - 0.5 * Math.min(1, (Date.now() - t0) / 30000)));
+  const policy=gamePlayPolicy('whack'), duration=policy.seconds || 30;
+  const target = policy.target || [8, 11, 14, 16, 18][lv - 1];
+  const upMs = policy.upMs || [1800, 1450, 1200, 1000, 850][lv - 1];
+  let gentle=policy.accelerate === false;
+  const speedAt = () => gentle ? Math.max(3500,upMs) : Math.max(420, upMs * (1 - 0.5 * Math.min(1, (Date.now() - t0) / (duration*1000))));
 
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg wm-banner"><span class="wm-heading">🌿 Mole Meadow</span><span class="wm-task">Catch ${target} friendly critters!</span><span class="wm-hud"><span>⭐ <b class="wm-score">0</b> / ${target}</span><span>⏱ <b class="wm-time">30</b>s</span></span>${lv >= 3 ? '<small>Let the flowers grow — tap only the animals!</small>' : '<small>Tap the animals when they peek out!</small>'}</div>
+  area.innerHTML = `<div class="g-msg wm-banner"><span class="wm-heading">🌿 Mole Meadow</span><span class="wm-task">Catch ${target} friendly critters!</span><span class="wm-hud"><span>⭐ <b class="wm-score">0</b> / ${target}</span><span>⏱ <b class="wm-time">${duration}</b>s</span></span>${lv >= 3 ? '<small>Let the flowers grow — tap only the animals!</small>' : '<small>Tap the animals when they peek out!</small>'}</div>
     <div class="wm-field">${Array.from({ length: 9 }, (_, i) => `<button type="button" class="wm-hole" data-i="${i}" aria-label="Garden hole ${i+1}"><span class="wm-earth"></span><span class="wm-pop"></span><span class="wm-rim"></span></button>`).join('')}</div>`;
   say('Tap the moles!');
   const holes = $$('.wm-hole', area);
+  const speed=document.createElement('button');speed.className='big-btn small';speed.textContent=gentle?'Speed: Gentle':'Speed: Normal';area.prepend(speed);speed.onclick=()=>{gentle=!gentle;speed.textContent=gentle?'Speed: Gentle':'Speed: Normal';};
   let score = 0, alive = true, t0 = Date.now(), tick = 0;
   const up = new Map();
   function popUp() {
@@ -501,7 +506,7 @@ function startWhack() {
     $('.wm-score', area).textContent = score;
   }));
   tick = setInterval(() => {
-    const left = Math.max(0, 30 - Math.floor((Date.now() - t0) / 1000));
+    const left = Math.max(0, duration - Math.floor((Date.now() - t0) / 1000));
     $('.wm-time', area).textContent = left;
     if (left <= 0) return finish();
     if (Math.random() < 0.75 + 0.2 * (1 - speedAt() / upMs)) popUp();
@@ -514,7 +519,7 @@ function startWhack() {
     const lvUp = won ? gameLevelUp('whack', 1) : false;
     gameWin(won ? 'Awesome job!' : 'Great job!');
     area.innerHTML = `<div class="wm-final" role="status"><div class="wm-final-icon">🐹</div><h2>Time’s up!</h2><div class="wm-final-score">${score}</div><p>Moles caught</p><button class="big-btn" data-a="again">Play again</button><button class="big-btn alt" data-a="back">Back to games</button></div>`;
-    area.querySelector('[data-a="again"]').onclick = startWhack;
+    area.querySelector('[data-a="again"]').onclick = () => openGame('whack');
     area.querySelector('[data-a="back"]').onclick = () => $('#gameBack').click();
   }
   gameCleanup = () => { alive = false; clearInterval(tick); up.forEach((m) => clearTimeout(m.timer)); };
@@ -572,7 +577,8 @@ function startBallMaze() {
   const toUnits = (e) => { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left - ox) / u, y: (e.clientY - r.top - oy) / u }; };
   cv.addEventListener('pointerdown', (e) => { e.preventDefault(); cv.setPointerCapture && cv.setPointerCapture(e.pointerId); finger = toUnits(e); });
   cv.addEventListener('pointermove', (e) => { if (finger) finger = toUnits(e); });
-  const lift = () => (finger = null);
+  let dragTarget=null;
+  const lift = () => { dragTarget=finger; finger=null; };
   cv.addEventListener('pointerup', lift); cv.addEventListener('pointercancel', lift);
   const onTilt = (e) => { tilt = { x: Math.max(-30, Math.min(30, e.gamma || 0)) / 30, y: Math.max(-30, Math.min(30, (e.beta || 0) - 20)) / 30 }; };
   area.querySelector('[data-a="tilt"]').onclick = async (ev) => {
@@ -605,11 +611,12 @@ function startBallMaze() {
       return;
     }
     let ax = 0, ay = 0;
-    if (finger) { ax = (finger.x - ball.x) * 9; ay = (finger.y - ball.y) * 9; }
+    const target=finger || dragTarget;
+    if (target) { const gain=gamePlayPolicy('maze').dragGain || 18; ax=(target.x-ball.x)*gain;ay=(target.y-ball.y)*gain; if(!finger && Math.hypot(target.x-ball.x,target.y-ball.y)<0.2)dragTarget=null; }
     else if (tilt) { ax = tilt.x * 22; ay = tilt.y * 22; }
-    const amax = 30, am = Math.hypot(ax, ay); if (am > amax) { ax *= amax / am; ay *= amax / am; }
+    const amax = 60, am = Math.hypot(ax, ay); if (am > amax) { ax *= amax / am; ay *= amax / am; }
     ball.vx = (ball.vx + ax * dt) * (1 - 2.2 * dt); ball.vy = (ball.vy + ay * dt) * (1 - 2.2 * dt);
-    const vmax = 9, vm = Math.hypot(ball.vx, ball.vy); if (vm > vmax) { ball.vx *= vmax / vm; ball.vy *= vmax / vm; }
+    const vmax = gamePlayPolicy('maze').maxSpeed || 12, vm = Math.hypot(ball.vx, ball.vy); if (vm > vmax) { ball.vx *= vmax / vm; ball.vy *= vmax / vm; }
     // small sub-steps so the ball never slips through a thin wall
     const n = Math.ceil(vm * dt / 0.15) || 1;
     for (let k = 0; k < n; k++) { ball.x += ball.vx * dt / n; ball.y += ball.vy * dt / n; collide(); }
