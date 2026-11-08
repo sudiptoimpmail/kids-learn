@@ -40,6 +40,7 @@ function buildTrack(lv) {
   for (let k = 0, prev = 2; k < T.gates[i]; k++) {
     const r = 16 + Math.floor(((k + 0.5) / T.gates[i]) * (rows - 32)) + Math.floor(Math.random() * 3) - 1;
     if ([r - 4, r - 2, r, r + 2, r + 4].some((q) => jumpRows.has(q) || nearJump(q))) continue;
+    if ([...jumpRows].some((j) => r >= j - 6 && r <= j + 12)) continue;      // never right where a jump lands: no time to steer
     const open = prev <= 2 ? [3, 4][Math.floor(Math.random() * 2)] : [0, 1][Math.floor(Math.random() * 2)];
     gates.push({ r, open }); prev = open;
   }
