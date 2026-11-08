@@ -19,7 +19,7 @@ for (const f of Object.values(man)) assert.ok(sw.includes('assets/fluent/' + f),
     startRound('animals', 3); await new Promise((res) => setTimeout(res, 300));
     const cardImgs = document.querySelectorAll('#play img.fx').length;
     const broken = [...document.querySelectorAll('img.fx')].filter((i) => i.complete && i.naturalWidth === 0).length;
-    $('#quitBtn').click(); state.playAlways = true; openGame('whack'); await new Promise((res) => setTimeout(res, 2500));
+    $('#quitBtn').click(); state.playAlways = true; openGame('whack');
     const critters = [...document.querySelectorAll('.wm-character')].map((i) => i.getAttribute('src'));
     return { tileImgs, cardImgs, broken, critters };
   });

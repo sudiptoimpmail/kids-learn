@@ -256,9 +256,10 @@ function openGame(id) {
   $('#gameArea').innerHTML = '';
   $('#gameArea').className = 'game-area g-' + id;
   show('game');
-  if (!brainMode) startPlayTimer();
   gameStart = brainMode ? 0 : Date.now();
   g.start();
+  // Inspect the rendered screen before charging: a picture picker is not a round.
+  if (!brainMode) startPlayTimer();
 }
 function stopGame() { sayToken++; stopClip(); gameSession++; if (gameStart) { playActive += Date.now() - gameStart; gameStart = 0; } if (playActive) { logPlay(playActive / 1000); playActive = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
 let gameStart = 0, playActive = 0;   // play time for the grown-ups' numbers: only while the app is on screen
@@ -505,6 +506,8 @@ function startWhack() {
     if (m.flower) { score = Math.max(0, score - 1); sfx.no(); } else { score++; tone([520, 780], { dur: 0.05, gap: 0.05, vol: 0.12, type: 'square' }); }
     $('.wm-score', area).textContent = score;
   }));
+  // Begin with a visible target; the first interaction must not depend on a random roll.
+  popUp();
   tick = setInterval(() => {
     const left = Math.max(0, duration - Math.floor((Date.now() - t0) / 1000));
     $('.wm-time', area).textContent = left;
