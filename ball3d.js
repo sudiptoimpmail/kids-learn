@@ -12,7 +12,7 @@ const CHECK = 15;                     // checkpoint every 15 rows
 const T = {
   speed: [4.6, 5.2, 5.8, 6.3, 6.8, 7.3, 7.8, 8.4],
   rows: [70, 85, 100, 115, 130, 145, 160, 180],
-  hole: [0, 0.18, 0.3, 0.42, 0.5, 0.6, 0.68, 0.76],     // chance a side tile is missing
+  hole: [0, 0.1, 0.17, 0.24, 0.3, 0.36, 0.42, 0.48],     // chance a side tile is missing
   block: [0.03, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18],
   drift: [0.06, 0.1, 0.14, 0.18, 0.22, 0.26, 0.3, 0.34],  // how often the safe path moves sideways
   jumps: [0, 0, 1, 2, 3, 4, 5, 6],                        // full-width gaps you must jump
@@ -24,7 +24,8 @@ const T = {
   gates: [1, 2, 3, 4, 5, 6, 7, 8],                        // tall candy walls with one opening: you must steer left or right
   bend: [0.9, 1.2, 1.5, 1.8, 2.0, 2.2, 2.4, 2.6],         // how far the winding track swings sideways
 };
-const LAUNCH = 8.6, GRAV = 15;                           // ramp launch speed and gravity
+const LAUNCH = 8.6, GRAV = 15;
+const RAMP_LEN = 3.6, RAMP_H = 0.7;                       // a long run-up that climbs to the launch lip                           // ramp launch speed and gravity
 
 function buildTrack(lv) {
   const i = lv - 1, rows = T.rows[i];
@@ -64,13 +65,13 @@ function buildTrack(lv) {
     for (let d = -3; d <= 3; d++) { const q = r + d; if (q > 0 && q < rows && safe[q] !== safe[q - 1]) { keep.add(safe[q]); keep.add(safe[q - 1]); } }
     const f = [], b = [];
     for (let x = 0; x < LANES; x++) {
-      let on = easy || near || keep.has(x) || Math.random() > T.hole[i];
+      let on = easy || near || keep.has(x) || Math.random() > T.hole[i] * (0.25 + 0.75 * Math.min(1, r / (rows * 0.65)));
       if (jumpRows.has(r)) on = false;
       f.push(on);
       b.push(on && !easy && !near && !keep.has(x) && Math.random() < T.block[i]);
     }
     floor.push(f); block.push(b);
-    gem.push(!easy && !jumpRows.has(r) && r % 3 === 0 && Math.random() < 0.6 ? safe[r] : -1);
+    gem.push(!easy && !jumpRows.has(r) && (r % 2 === 0 || r % 3 === 0) && Math.random() < 0.9 ? safe[r] : -1);
   }
   // 3) sliding blocks sit on full rows away from jumps
   const movers = [];
@@ -93,7 +94,7 @@ function buildTrack(lv) {
       ramps.add(r);
       features.push({ kind, ramp: r, gs: r + 1, ge: r + gap, from, to });
       // a trail of gems along the flying arc
-      for (let k = 1; k < 6; k++) { const t = k / 6 * (2 * LAUNCH / GRAV), z = r + speed * t; airGems.push([safe[r] - 2, 0.35 + LAUNCH * t - GRAV * t * t / 2 + 0.2, z]); }
+      for (let k = 1; k < 10; k++) { const t = k / 10 * (2 * LAUNCH / GRAV), z = r + speed * t; airGems.push([safe[r] - 2, 0.35 + LAUNCH * t - GRAV * t * t / 2 + 0.2, z]); }
       for (let q = from; q <= to; q++) safe[q] = safe[r];
       return true;
     }
@@ -115,27 +116,39 @@ function buildTrack(lv) {
       break;
     }
   }
-  // the whole track winds from side to side; straight stretches hold it still around ramps, bridges and planks
+  // treasure crates on the safe path: roll into one to smash it open
+  const crates = [];
+  for (let r0 = 11; r0 < rows - 9; r0 += 10 + Math.floor(Math.random() * 5)) {
+    let at = -1;
+    for (let d = 0; d < 7 && at < 0; d++) { const q = r0 + d; if (q < rows - 9 && !busy(q - 1, q + 1) && !nearJump(q) && floor[q][safe[q]] && !block[q][safe[q]]) at = q; }
+    if (at >= 0) { crates.push({ r: at, lane: safe[at] }); gem[at] = -1; if (gem[at + 1] >= 0) gem[at + 1] = -1; }
+  }
+  // the whole track winds from side to side; straight stretches hold it still around bridges and planks
   const raw = (z) => Math.sin(z * 0.075) * T.bend[i] + Math.sin(z * 0.031 + 1.3) * T.bend[i] * 0.7;
   const ease = (z) => Math.min(1, Math.max(0, Math.min(z - 6, rows - 8 - z) / 12));
   const off = Array.from({ length: rows + 12 }, (_, r) => raw(r) * ease(r));
-  for (const f of features) {
+  for (const f of features.filter((x) => x.kind === 'plank')) {
     const a = f.from - 2, b = f.to + 2, v = off[Math.max(0, a)];
     for (let q = Math.max(0, a - 8); q <= Math.min(rows + 11, b + 8); q++) {
       const w = q < a ? 1 - (a - q) / 8 : q > b ? 1 - (q - b) / 8 : 1, e = w * w * (3 - 2 * w);
       off[q] = off[q] + (v - off[q]) * e;
     }
   }
+  // every ramp swings the track one way as you climb it and back the other way after the jump (left, then right, then left…)
+  features.filter((x) => x.kind !== 'plank').forEach((f, fi) => {
+    const sgn = fi % 2 ? 1 : -1, A = 2.1 * sgn, c = f.ramp + 5;
+    for (let q = Math.max(0, f.ramp - 18); q <= Math.min(rows + 11, f.ramp + 28); q++) off[q] += A * Math.exp(-((q - c) ** 2) / 72);
+  });
   const offAt = (z) => { const z0 = Math.max(0, Math.min(rows + 10, Math.floor(z))), f = z - z0; return off[z0] + (off[Math.min(rows + 11, z0 + 1)] - off[z0]) * f; };
   // gate walls stand on full tiles
   for (const g of gates) for (let x = 0; x < LANES; x++) { floor[g.r][x] = true; block[g.r][x] = false; gem[g.r] = -1; }
-  return { rows, floor, block, gem, safe, movers, jumpRows, ramps, features, plankRows, airGems, gates, off, offAt };
+  return { rows, floor, block, gem, safe, movers, jumpRows, ramps, features, plankRows, airGems, gates, off, offAt, crates };
 }
 
 export function start() {
   const lv = GL('ball');
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Steer to the finish! 🏁<small>Drag left & right · tap to jump${lv >= 3 ? ' over gaps' : ''}</small></div>
+  area.innerHTML = `<div class="g-msg">Steer to the finish! 🏁<small>Drag left & right · tap to jump · tap twice for a double jump · flick up for a super jump · drag forward to speed up</small></div>
     <div class="b3-wrap"><canvas class="game-cv b3-cv"></canvas>
       <div class="b3-hud"><div class="b3-bar"><i></i></div><span class="b3-gems">⭐ 0  🍬 0</span></div>
       <div class="b3-msg" hidden></div></div>
@@ -267,6 +280,34 @@ export function start() {
   track.airGems.forEach(([x, y, z]) => addGem(x, y, z));
   // an arc of hovering treats floats above each gate opening
   track.gates.forEach((g) => { for (let d = -2; d <= 2; d++) addGem(g.open - 2, 1.0 + (2 - Math.abs(d)) * 0.18, g.r + d * 0.9); });
+  const flyers = [], bits = [];
+  const hudPoint = () => { const a = $('.b3-gems', area).getBoundingClientRect(), c = cv.getBoundingClientRect();
+    return new THREE.Vector3(((a.left + a.width / 2 - c.left) / c.width) * 2 - 1, -(((a.top + a.height / 2 - c.top) / c.height) * 2 - 1), 0.5).unproject(camera); };
+  function fly(mesh) { mesh.visible = true; flyers.push({ mesh, t: 0, from: mesh.position.clone(), s0: mesh.scale.x }); }
+  const bumpHud = () => { const h = $('.b3-gems', area); h.classList.remove('bump'); void h.offsetWidth; h.classList.add('bump'); };
+  // treasure crates: smash them to make candy and stars burst out and fly to your score
+  const crateWood = new THREE.MeshStandardMaterial({ color: '#e0a65e', roughness: 0.7 }), crateDark = new THREE.MeshStandardMaterial({ color: '#8d5a2b', roughness: 0.7 });
+  const crateBody = new THREE.BoxGeometry(0.86, 0.8, 0.86), crateBand = new THREE.BoxGeometry(0.92, 0.12, 0.92), cratePost = new THREE.BoxGeometry(0.1, 0.84, 0.1), shardGeo = new THREE.BoxGeometry(0.2, 0.08, 0.2);
+  const crates = track.crates.map((c) => {
+    const g = new THREE.Group(), b = new THREE.Mesh(crateBody, crateWood); b.position.y = 0.42; g.add(b);
+    for (const y of [0.12, 0.72]) { const bd = new THREE.Mesh(crateBand, crateDark); bd.position.y = y; g.add(bd); }
+    for (const [px, pz] of [[-0.43, -0.43], [0.43, -0.43], [-0.43, 0.43], [0.43, 0.43]]) { const p = new THREE.Mesh(cratePost, crateDark); p.position.set(px, 0.42, pz); g.add(p); }
+    const st = new THREE.Mesh(starGeo, starMat); st.position.y = 1.15; st.scale.setScalar(0.75); g.add(st);
+    put(g, c.lane - 2, 0, c.r); scene.add(g); return { mesh: g, star: st, x: c.lane - 2, r: c.r, hit: false };
+  });
+  function smash(c) {
+    c.hit = true; scene.remove(c.mesh);
+    const [wx, wz] = W3(c.x, c.r);
+    tone([196, 147, 262, 330], { dur: 0.05, gap: 0.04, vol: 0.12, type: 'square' });
+    for (let k = 0; k < 12; k++) { const m = new THREE.Mesh(shardGeo, k % 2 ? crateWood : crateDark); m.position.set(wx, 0.5, wz); scene.add(m);
+      bits.push({ m, shard: true, vx: (Math.random() - 0.5) * 4, vy: 2 + Math.random() * 3, vz: 1 + Math.random() * 3, rx: Math.random() * 9, rz: Math.random() * 9, age: 0 }); }
+    const n = 6 + Math.floor(Math.random() * 3);
+    for (let k = 0; k < n; k++) { const it = makeCollectible(k); it.mesh.position.set(wx, 0.6, wz); it.mesh.scale.setScalar(1.15); scene.add(it.mesh);
+      bits.push({ m: it.mesh, kind: it.kind, vx: (Math.random() - 0.5) * 3.2, vy: 3.2 + Math.random() * 2.4, vz: 0.5 + Math.random() * 2.2, rx: 0, rz: 0, age: 0, treat: true });
+      S.gems++; S[it.kind === 'star' ? 'stars' : 'candies']++; }
+    $('.b3-gems', area).textContent = `⭐ ${S.stars}  🍬 ${S.candies}`;
+    flash(`Smash! +${n} 🍬`);
+  }
   const bursts = [];    // little sparkles when something is collected
   const burstGeo = new THREE.SphereGeometry(0.05, 6, 5);
   function burst(x, y, z, color) {
@@ -357,8 +398,8 @@ export function start() {
         continue;
       }
       // the ramp: an orange wedge with arrows across all lanes
-      const ramp = new THREE.Mesh(new THREE.BoxGeometry(5, 0.2, 1.4), [rock, rock, new THREE.MeshLambertMaterial({ map: rampTex }), rock, rock, rock]);
-      ramp.position.set(0, 0.12, f.ramp); ramp.rotation.x = -0.32; holder.add(ramp);
+      const ramp = new THREE.Mesh(new THREE.BoxGeometry(5, 0.2, RAMP_LEN + 0.15), [rock, rock, new THREE.MeshLambertMaterial({ map: rampTex }), rock, rock, rock]);
+      ramp.position.set(0, RAMP_H / 2 - 0.02, f.ramp - RAMP_LEN / 2); ramp.rotation.x = -Math.atan(RAMP_H / RAMP_LEN); holder.add(ramp);
       const g0 = f.gs - 0.5, g1 = f.ge + 0.5, gl = g1 - g0;
       if (f.kind === 'bridge') {
         // posts at both broken ends, snapped ropes and planks hanging into the gap
@@ -396,7 +437,9 @@ export function start() {
   }
 
   // state
-  const S = { x: track.safe[0] - 2, tx: track.safe[0] - 2, y: 0.35, vy: 0, z: 0, falling: false, dead: 0, gems: 0, stars: 0, candies: 0, tries: 0, done: false, check: 0, coyote: 0, buffer: 0 };
+  // height of the ground under the ball: flat, except on the run-up of a ramp
+  const gy = (z) => { for (const f of track.features) if (f.ramp != null && z > f.ramp - RAMP_LEN && z <= f.ramp + 0.2) return 0.35 + RAMP_H * Math.min(1, (z - (f.ramp - RAMP_LEN)) / RAMP_LEN); return 0.35; };
+  const S = { x: track.safe[0] - 2, tx: track.safe[0] - 2, y: 0.35, vy: 0, z: 0, falling: false, dead: 0, gems: 0, stars: 0, candies: 0, tries: 0, done: false, check: 0, coyote: 0, buffer: 0, air2: false, boost: 0 };
   const speed0 = T.speed[lv - 1];
   window.__b3 = { S, track };   // used by automated tests
   const floorAt = (x, z) => {
@@ -410,25 +453,40 @@ export function start() {
   // input: drag to steer, quick tap to jump
   let drag = null, tilt = null;
   cv.style.touchAction = 'none';
-  cv.addEventListener('pointerdown', (e) => { e.preventDefault(); drag = { x0: e.clientX, t0: S.tx, time: performance.now(), moved: 0 }; cv.setPointerCapture && cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointerdown', (e) => { e.preventDefault(); drag = { x0: e.clientX, y0: e.clientY, t0: S.tx, time: e.timeStamp, moved: 0, act: null }; cv.setPointerCapture && cv.setPointerCapture(e.pointerId); });
   cv.addEventListener('pointermove', (e) => {
     if (!drag) return;
-    const dx = e.clientX - drag.x0; drag.moved = Math.max(drag.moved, Math.abs(dx));
+    const dx = e.clientX - drag.x0, dy = e.clientY - drag.y0; drag.moved = Math.max(drag.moved, Math.abs(dx), Math.abs(dy));
+    if (!drag.act && dy < -55) {                       // a sudden flick up = big jump; a longer drag forward = speed boost
+      if (e.timeStamp - drag.time < 300) { drag.act = 'jump'; bigJump(); } else { drag.act = 'boost'; speedBoost(); }
+    }
     S.tx = Math.max(-2.2, Math.min(2.2, drag.t0 - dx / (w / 5.5)));   // camera faces +z: screen-right is lane -x
   });
-  const up = () => {
-    if (drag && drag.moved < 12 && performance.now() - drag.time < 300) jump();
+  const up = (e) => {
+    if (drag && !drag.act && drag.moved < 12 && e.timeStamp - drag.time < 300) jump();
     drag = null;
   };
   cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', () => (drag = null));
   function jump() {
     if (S.done) return;
     // on the ground, or only just off an edge (a little grace so a late tap still counts)
-    const can = (S.y <= 0.36 && !S.falling) || (S.coyote > 0 && S.vy <= 0 && S.y > -0.4);
-    if (!can) { S.buffer = 0.18; return; }          // too early: remember the tap for the landing
+    const can = (S.y <= gy(S.z) + 0.01 && !S.falling) || (S.coyote > 0 && S.vy <= 0 && S.y > -0.4);
+    if (!can) {
+      if (!S.air2 && !S.falling && S.y > 0.6) { S.air2 = true; S.vy = 6.6; flash('Double jump! 🦘'); tone([587, 880, 1175], { dur: 0.05, gap: 0.04, vol: 0.09 }); return; }   // a second tap in the air lifts higher
+      S.buffer = 0.18; return;                      // too early: remember the tap for the landing
+    }
     S.falling = false; S.coyote = 0; S.buffer = 0; S.vy = 6.4;
     tone([440, 660], { dur: 0.05, gap: 0.05, vol: 0.08 });
   }
+  function bigJump() {
+    if (S.done) return;
+    const can = (S.y <= gy(S.z) + 0.01 && !S.falling) || (S.coyote > 0 && S.vy <= 0 && S.y > -0.4);
+    if (can) { S.falling = false; S.coyote = 0; S.buffer = 0; S.vy = 9.2; }
+    else if (!S.air2 && !S.falling) { S.air2 = true; S.vy = Math.max(S.vy, 0) + 7.4; }
+    else return;
+    flash('Super jump! 🚀'); tone([392, 587, 880, 1175], { dur: 0.05, gap: 0.04, vol: 0.1, type: 'triangle' });
+  }
+  function speedBoost() { if (S.done) return; S.boost = 1.8; flash('Speed boost! 💨'); tone([220, 330, 494, 659], { dur: 0.05, gap: 0.03, vol: 0.09, type: 'sawtooth' }); }
   const onTilt = (e) => { tilt = Math.max(-25, Math.min(25, e.gamma || 0)) / 25; };
   area.querySelector('[data-a="tilt"]').onclick = async (ev) => {
     try {
@@ -455,7 +513,8 @@ export function start() {
     if (!alive) return;
     const dt = last ? Math.min(0.04, (now - last) / 1000) : 0; last = now; t += dt;
     if (!S.done) {
-      const v = speed0 * (1 + Math.min(0.25, S.z / track.rows * 0.25));    // speeds up a bit along the track
+      S.boost = Math.max(0, S.boost - dt);
+      const v = speed0 * (1 + Math.min(0.25, S.z / track.rows * 0.25)) * (S.boost > 0 ? 1.7 : 1);    // speeds up a bit along the track (and a lot while boosting)
       if (tilt != null && !drag) S.tx = Math.max(-2.2, Math.min(2.2, S.tx - tilt * 5 * dt));
       S.x += (S.tx - S.x) * Math.min(1, dt * 12);
       if (!S.falling) S.z += v * dt;
@@ -463,9 +522,9 @@ export function start() {
       S.coyote = Math.max(0, S.coyote - dt); S.buffer = Math.max(0, S.buffer - dt);
       S.vy -= 15 * dt; S.y += S.vy * dt;
       const ground = floorAt(S.x, S.z);
-      if (!S.falling && S.y <= 0.35) {
+      if (!S.falling && S.y <= gy(S.z)) {
         if (ground) {
-          S.y = 0.35; S.vy = 0; S.coyote = 0.14;
+          S.y = gy(S.z); S.vy = 0; S.coyote = 0.14; S.air2 = false;
           if (S.buffer > 0) jump();
           if (track.ramps.has(Math.round(S.z)) && !S.launched) { S.vy = LAUNCH; S.launched = true; tone([330, 494, 660, 880], { dur: 0.06, gap: 0.05, vol: 0.1, type: 'triangle' }); flash('Wheee! 🚀'); }
           if (!track.ramps.has(Math.round(S.z))) S.launched = false;
@@ -479,8 +538,9 @@ export function start() {
         const hitBlock = (bx, bz, tall) => Math.abs(bx - S.x) < 0.62 && Math.abs(bz - S.z) < 0.6 && S.y < (tall ? 2.2 : 0.95);
         if (blocks.some((b) => hitBlock(b.x, b.r, b.tall)) || movers.some((m) => hitBlock(m.x, m.r))) { tone([160, 120], { dur: 0.08, gap: 0.08, vol: 0.12 }); respawn(); }
       }
+      if (S.dead <= 0) for (const c of crates) if (!c.hit && Math.abs(c.x - S.x) < 0.72 && Math.abs(c.r - S.z) < 0.7 && S.y < 1.5) smash(c);
       for (const g of gems) if (!g.got && Math.abs(g.x - S.x) < 0.55 && Math.abs(g.r - S.z) < 0.55 && Math.abs(g.y - S.y) < 0.75) {
-        g.got = true; g.mesh.visible = false; S.gems++; S[g.kind === 'star' ? 'stars' : 'candies']++;
+        g.got = true; fly(g.mesh); S.gems++; S[g.kind === 'star' ? 'stars' : 'candies']++;
         $('.b3-gems', area).textContent = `⭐ ${S.stars}  🍬 ${S.candies}`;
         const [bx, bz] = W3(g.x, g.r); burst(bx, g.y, bz, g.kind === 'star' ? '#ffe066' : '#ff8fab');
         tone(g.kind === 'star' ? [988, 1319] : [784, 1047, 1319], { dur: 0.05, gap: 0.05, vol: 0.09 });
@@ -493,6 +553,14 @@ export function start() {
     for (const m of movers) { m.x = Math.sin(t * m.speed + m.phase) * 2; put(m.mesh, m.x, Math.abs(Math.sin(t * 4 + m.phase)) * 0.12, m.r); m.mesh.scale.set(1 + Math.sin(t * 8 + m.phase) * 0.04, 1 - Math.sin(t * 8 + m.phase) * 0.05, 1); }
     for (const g of gems) if (!g.got) { put(g.mesh, g.x, g.y + Math.sin(t * 3 + g.r) * 0.1, g.r); g.mesh.rotation.y = t * 2.4 + g.r; }
     for (const f of floaters) { f.g.position.y = f.base + Math.sin(t * f.sp + f.ph) * 0.35; f.g.rotation.y += dt * 0.25; }
+    for (const c of crates) if (!c.hit) c.star.rotation.y = t * 2.4;
+    for (let k = bits.length - 1; k >= 0; k--) { const b = bits[k]; b.age += dt;
+      if (b.shard) { b.vy -= 12 * dt; b.m.position.x += b.vx * dt; b.m.position.y = Math.max(0.1, b.m.position.y + b.vy * dt); b.m.position.z += b.vz * dt; b.m.rotation.x += b.rx * dt; b.m.rotation.z += b.rz * dt;
+        if (b.age > 1.1) { scene.remove(b.m); bits.splice(k, 1); } continue; }
+      // candy and stars pop out, bounce on the track, then fly up to the score
+      b.vy -= 11 * dt; b.m.position.x += b.vx * dt; b.m.position.y += b.vy * dt; b.m.position.z += b.vz * dt; b.m.rotation.y += dt * 6;
+      if (b.m.position.y < 0.3) { b.m.position.y = 0.3; b.vy = Math.abs(b.vy) * 0.5; b.vx *= 0.7; b.vz *= 0.7; }
+      if (b.age > 0.65) { bits.splice(k, 1); fly(b.m); } }
     for (const w of water) w.offset.y = (w.offset.y - dt * w.userData.speed) % 1;
     for (let k = bursts.length - 1; k >= 0; k--) { const bb = bursts[k]; bb.life -= dt; bb.vy -= 6 * dt; bb.m.position.x += bb.vx * dt; bb.m.position.y += bb.vy * dt; bb.m.position.z += bb.vz * dt; bb.m.material.opacity = Math.max(0, bb.life / 0.6);
       if (bb.life <= 0) { scene.remove(bb.m); bb.m.material.dispose(); bursts.splice(k, 1); } }
@@ -506,6 +574,13 @@ export function start() {
     const [cx, cz] = W3(S.x * 0.6, S.z - 5.2), [lx, lz] = W3(S.x * 0.75, S.z + 4.5);
     const roll = Math.max(-0.07, Math.min(0.07, (slope(S.z + 3) - slope(S.z)) * 1.2));
     camera.up.set(Math.sin(roll), Math.cos(roll), 0); camera.position.set(cx, 3.1, cz); camera.lookAt(lx, 0, lz);
+    const wantFov = S.boost > 0 ? 72 : 60; if (Math.abs(camera.fov - wantFov) > 0.1) { camera.fov += (wantFov - camera.fov) * Math.min(1, dt * 6); camera.updateProjectionMatrix(); }
+    camera.updateMatrixWorld();
+    if (flyers.length) { const tp = hudPoint();
+      for (let k = flyers.length - 1; k >= 0; k--) { const f = flyers[k]; f.t += dt / 0.55; const e = Math.min(1, f.t); const q = e * e * (3 - 2 * e);
+        f.mesh.position.lerpVectors(f.from, tp, q); f.mesh.scale.setScalar(f.s0 * (1 - 0.75 * q)); f.mesh.rotation.y += dt * 9;
+        if (f.t >= 1) { scene.remove(f.mesh); flyers.splice(k, 1); bumpHud(); } } }
+    if (S.boost > 0 && !S.falling && (t * 30) % 1 < dt * 30) burst(bwx, S.y + 0.1, bwz - 0.3, '#a5d8ff');
     renderer.render(scene, camera);
     raf = requestAnimationFrame(frame);
   }

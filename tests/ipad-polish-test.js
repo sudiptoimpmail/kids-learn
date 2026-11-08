@@ -70,7 +70,7 @@ const { chromium } = require('playwright');
       }
       check(middleVowelCases > 5, 'Could not exercise middle-vowel phonics audio');
       state.gameLv.draw = 2;
-      openGame('draw');
+      openGame('draw'); document.querySelector('#gameArea [data-a="surprise"]')?.click();
       const area=document.querySelector('#gameArea');
       check(area.querySelectorAll('.dr-size').length===4, 'Four pencil/brush sizes missing');
       check(area.querySelectorAll('.dr-ink').length===10, 'Drawing palette changed unexpectedly');
@@ -83,17 +83,17 @@ const { chromium } = require('playwright');
       openGame('puzzle');
       startPuzzle(ALL_PICS[0]);
       const tiles=area.querySelectorAll('.jigsaw-piece');
-      check(tiles.length===9, 'Grade-appropriate jigsaw count missing');
+      check(tiles.length===puzzleSize()**2, 'Grade-appropriate jigsaw count missing');
       const beforeAngle = tiles[0].querySelector('.jigsaw-art').style.transform;
       tiles[0].click(); area.querySelector('.jigsaw-piece').click();
       check(!!area.querySelector('.jigsaw-art'), 'Puzzle rotation artwork missing');
       check(area.querySelector('.jigsaw-piece .jigsaw-art').style.transform !== beforeAngle,
         'Tap-twice should rotate a selected piece by 90 degrees');
-      check(area.querySelectorAll('.jigsaw-outline').length === 9,
+      check(area.querySelectorAll('.jigsaw-outline').length === puzzleSize()**2,
         'Every puzzle piece must have a real interlocking silhouette');
       startPuzzle(PHOTO_PUZZLE[0]);
-      check(area.querySelectorAll('.jigsaw-svg image').length===9, 'Photographic jigsaw pieces missing image fragments');
-      check(area.querySelectorAll('.jigsaw-outline').length===9, 'Real puzzle silhouettes are missing');
+      check(area.querySelectorAll('.jigsaw-svg image').length===puzzleSize()**2, 'Photographic jigsaw pieces missing image fragments');
+      check(area.querySelectorAll('.jigsaw-outline').length===puzzleSize()**2, 'Real puzzle silhouettes are missing');
       check([...area.querySelectorAll('.jigsaw-outline')].some(el => /C/.test(el.getAttribute('d'))), 'Interlocking puzzle curves are missing');
       check(!!area.querySelector('.pz-photo-peek'), 'Photo preview is missing from puzzle');
 
@@ -106,7 +106,7 @@ const { chromium } = require('playwright');
     await page.setViewportSize({width:1180,height:820});
     const landscape = await page.evaluate(() => {
       state.gameLv.draw = 2;
-      openGame('draw');
+      openGame('draw'); document.querySelector('#gameArea [data-a="surprise"]')?.click();
       const pad = document.querySelector('.dr-pad').getBoundingClientRect();
       const done = document.querySelector('.g-draw [data-a="done"]');
       done.scrollIntoView({block:'end'});
