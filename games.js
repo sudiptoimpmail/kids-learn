@@ -1262,7 +1262,7 @@ function puzzleFills(p) {
   if (p.orig) { const f = { 0: '#d0ebff' }; p.orig.forEach((c, i) => (f[i + 1] = c)); return f; }
   const f = {}; for (let k = 0; k < 40; k++) f[k] = AUTO_FILL[k % AUTO_FILL.length]; return f;
 }
-const puzzleSize = () => [2, 2, 3, 3, 4][GL('puzzle') - 1]; // short puzzles: 4–16 pieces
+const puzzleSize = () => ({ prek: 4, k: 5, g1: 5, g2: 6, g3: 6 }[state.grade] || 4); // pre-K 4×4, K and 1st 5×5, 2nd and 3rd 6×6
 
 const puzSrc = (p) => p.url || visualPath(p.photo || p.art), puzImg = (p) => !!(p.photo || p.art || p.url);
 function startPuzzleMenu() {
@@ -1299,7 +1299,7 @@ function startPuzzle(p) {
   do { order = shuffle([...Array(N).keys()]); } while (order.every((v, i) => v === i));
   let pickA = null, solved = false;
   // A handful of pieces begin rotated at harder levels; the child rotates by tapping a selected piece again.
-  const turns = Array.from({length:N}, () => GL('puzzle') >= 2 && Math.random() < 0.28 ? 1 + rand(3) : 0);
+  const turns = Array.from({length:N}, () => state.grade !== 'prek' && Math.random() < 0.28 ? 1 + rand(3) : 0);
   const area = $('#gameArea');
   // Each photo/illustration fragment has an actual complementary tab/notch silhouette.
   // Shape is attached to the ORIGINAL image location, not the scrambled board position.
@@ -1333,34 +1333,85 @@ function startPuzzle(p) {
       <path class="jigsaw-outline" d="${shape}" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
     </svg>`;
   };
-  area.innerHTML = `<div class="g-msg">Put the picture back together! <small>Tap two pieces to swap. Tap a selected piece again to rotate.</small></div>
-    <div class="pz-wrap"><div class="pz-board" style="grid-template-columns:repeat(${n},1fr)"></div>
+  area.innerHTML = `<div class="g-msg">Put the picture back together! <small>Drag a piece to move it. Hold a piece to turn it.</small></div>
+    <div class="pz-wrap"><div class="pz-board${n >= 5 ? ' pz-big' : ''}" style="grid-template-columns:repeat(${n},1fr)"></div>
     <div class="pz-peek">${p.url ? `<img class="pz-photo-peek" src="${p.url}" alt="">` : p.photo || p.art ? visualImage(p.photo || p.art,'pz-photo-peek') : `<svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`}<small>Look!</small></div></div>
     <div class="color-btns"><button class="big-btn alt small ico" data-a="restart" aria-label="Restart">🔄 Restart</button><button class="big-btn alt small ico" data-a="pictures" aria-label="Pictures">🖼️ Pictures</button></div>`;
   say('Put the picture back together!');
   const board = $('.pz-board', area);
   function draw() {
-    board.innerHTML = order.map((t, i) => `<button class="pzl-tile jigsaw-piece ${t === i && turns[i] === 0 ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}" data-piece="${t}" aria-label="Piece ${i + 1}; tap twice to rotate"><span class="jigsaw-art" style="transform:rotate(${turns[i] * 90}deg)">${tileSVG(t)}</span></button>`).join('');
+    board.innerHTML = order.map((t, i) => `<button class="pzl-tile jigsaw-piece ${t === i && turns[i] === 0 ? 'ok' : ''} ${pickA === i ? 'picked' : ''}" data-i="${i}" data-piece="${t}" aria-label="Piece ${i + 1}; drag to move, hold to turn"><span class="jigsaw-art" style="transform:rotate(${turns[i] * 90}deg)">${tileSVG(t)}</span>${rotI === i ? '<span class="rot-ring"><span class="rot-ico" role="button" aria-label="Turn left" data-d="-1">↺</span><span class="rot-ico" role="button" aria-label="Turn right" data-d="1">↻</span></span>' : ''}</button>`).join('');
   }
-  board.addEventListener('click', (e) => {
-    const b = e.target.closest('.pzl-tile'); if (!b || solved) return;
+  const check = () => {
+    if (!order.every((v, j) => v === j && turns[j] === 0)) return;
+    solved = true;
+    board.classList.add('solved');
+    const up = gameLevelUp('puzzle', 1);
+    gameWin(pick(['Awesome job!', 'You did it!', 'Fantastic!']));
+    later(() => endPanel(up ? 'You did it! Keep going!' : 'You did it!', '🧩', startPuzzleMenu, up), 1300);
+  };
+  const swap = (a, b) => {
+    [order[a], order[b]] = [order[b], order[a]];
+    [turns[a], turns[b]] = [turns[b], turns[a]];
+    tone([order[a] === a || order[b] === b ? 880 : 520], { dur: 0.06, vol: 0.1 });
+  };
+  // Touch: tap two pieces to swap, drag a piece onto another, hold ~2 s to show the turn icons.
+  let g = null, rotI = null, quiet = 0;
+  const endHold = () => { if (g) { clearTimeout(g.timer); } };
+  board.addEventListener('pointerdown', (e) => {
+    if (solved) return;
+    const ico = e.target.closest('.rot-ico');
+    if (ico) { e.preventDefault(); e.stopPropagation(); const i = rotI; turns[i] = (turns[i] + 4 + (+ico.dataset.d)) % 4; sfx.tap(); draw(); check(); quiet = Date.now(); return; }
+    const b = e.target.closest('.pzl-tile'); if (!b) return;
     const i = +b.dataset.i;
-    if (pickA == null) { pickA = i; sfx.tap(); draw(); return; }
-    if (pickA === i) { turns[i] = (turns[i] + 1) % 4; sfx.tap(); }
-    else {
-      [order[pickA], order[i]] = [order[i], order[pickA]];
-      [turns[pickA], turns[i]] = [turns[i], turns[pickA]];
-      tone([order[i] === i || order[pickA] === pickA ? 880 : 520], { dur: 0.06, vol: 0.1 });
+    if (rotI != null && rotI !== i) { rotI = null; draw(); }
+    const el = board.querySelector(`.pzl-tile[data-i="${i}"]`);
+    g = { i, x: e.clientX, y: e.clientY, drag: false, held: false, id: e.pointerId, ghost: null };
+    g.timer = setTimeout(() => { if (!g || g.drag) return; g.held = true; rotI = i; pickA = null; sfx.tap(); draw(); }, 2000);
+    try { board.setPointerCapture(e.pointerId); } catch {}
+  });
+  board.addEventListener('pointermove', (e) => {
+    if (!g || e.pointerId !== g.id || g.held) return;
+    if (!g.drag && Math.hypot(e.clientX - g.x, e.clientY - g.y) > 8) {
+      g.drag = true; clearTimeout(g.timer);
+      const el = board.querySelector(`.pzl-tile[data-i="${g.i}"]`), r = el.getBoundingClientRect();
+      g.ghost = el.cloneNode(true); g.ghost.classList.add('pz-ghost'); g.ghost.style.cssText = `position:fixed;left:${r.left}px;top:${r.top}px;width:${r.width}px;height:${r.height}px;margin:0;z-index:9999;pointer-events:none;transform:scale(1.12);box-shadow:0 10px 24px #0005`;
+      document.body.appendChild(g.ghost); el.classList.add('pz-lifted'); g.dx = e.clientX - r.left; g.dy = e.clientY - r.top;
     }
-    pickA = null; draw();
-    if (order.every((v, j) => v === j && turns[j] === 0)) {
-      solved = true;
-      board.classList.add('solved');
-      const up = gameLevelUp('puzzle', 1);
-      gameWin(pick(['Awesome job!', 'You did it!', 'Fantastic!']));
-      later(() => endPanel(up ? `You did it! Next: ${puzzleSize()}×${puzzleSize()} puzzles` : 'You did it!', '🧩', startPuzzleMenu, up), 1300);
+    if (g.drag) {
+      g.ghost.style.left = e.clientX - g.dx + 'px'; g.ghost.style.top = e.clientY - g.dy + 'px';
+      const over = document.elementsFromPoint(e.clientX, e.clientY).find((n) => n.classList?.contains('pzl-tile') && !n.classList.contains('pz-ghost'));
+      board.querySelectorAll('.pz-target').forEach((n) => n.classList.remove('pz-target'));
+      if (over && +over.dataset.i !== g.i) over.classList.add('pz-target');
     }
   });
+  const release = (e) => {
+    if (!g || e.pointerId !== g.id) return;
+    const me = g; g = null; endHold();
+    if (me.ghost) me.ghost.remove();
+    board.querySelectorAll('.pz-target').forEach((n) => n.classList.remove('pz-target'));
+    if (me.drag) {
+      const over = e.type === 'pointerup' && document.elementsFromPoint(e.clientX, e.clientY).find((n) => n.classList?.contains('pzl-tile'));
+      if (over && +over.dataset.i !== me.i) { swap(me.i, +over.dataset.i); pickA = null; rotI = null; draw(); check(); }
+      else draw();
+      return;
+    }
+    if (me.held) return;                // the turn icons are showing
+    if (rotI != null) { rotI = null; draw(); return; }
+    tapPiece(me.i);
+  };
+  // a plain tap: select, then swap with the next tap; tapping the chosen piece again turns it
+  function tapPiece(i) {
+    if (pickA == null) { pickA = i; sfx.tap(); }
+    else if (pickA === i) { turns[i] = (turns[i] + 1) % 4; sfx.tap(); pickA = null; }
+    else { swap(pickA, i); pickA = null; }
+    draw(); check();
+  }
+  // keyboard / assistive-tech activation arrives as a click with no pointer
+  board.addEventListener('click', (e) => { if (e.detail !== 0 || solved) return; const b = e.target.closest('.pzl-tile'); if (b) tapPiece(+b.dataset.i); });
+  board.addEventListener('pointerup', release);
+  board.addEventListener('pointercancel', release);
+  board.addEventListener('contextmenu', (e) => e.preventDefault());
   area.querySelector('[data-a="restart"]').onclick = () => { gameSession++; startPuzzle(p); };
   area.querySelector('[data-a="pictures"]').onclick = () => { gameSession++; startPuzzleMenu(); };
   draw();
