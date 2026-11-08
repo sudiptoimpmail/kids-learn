@@ -1397,18 +1397,26 @@ function startDraw(refIndex) {
   const area = $('#gameArea');
   area.innerHTML = `<div class="dr-top"><div class="dr-ref">${ref.svg}<small>${ref.name}</small></div>
       <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>${lv <= 2 ? 'Follow the gray lines with your finger.' : lv === 3 ? 'Look at the picture. The thin lines can help.' : 'Look at the picture. The faint lines can help.'}</small></div></div>
-    <div class="dr-zoom"><button data-dz="out" aria-label="Zoom out">−</button><button data-dz="reset" aria-label="Reset zoom">1×</button><button data-dz="in" aria-label="Zoom in">＋</button><span>Two fingers: zoom / move</span></div><div class="dr-pad">${(([w, o]) => `<div class="dr-guide dr-guide-${Math.min(4, lv)}" style="opacity:${o}">${drawSVG(ref.d, w)}</div>`)(DRAW_GUIDE[Math.min(4, Math.max(1, lv))])}<canvas class="dr-cv"></canvas></div>
+    <div class="dr-zoom"><button data-dz="out" aria-label="Zoom out">−</button><button data-dz="reset" aria-label="Reset zoom">1×</button><button data-dz="in" aria-label="Zoom in">＋</button><span>Two fingers: zoom / move</span></div><div class="dr-pad"><canvas class="dr-fill"></canvas>${(([w, o]) => `<div class="dr-guide dr-guide-${Math.min(4, lv)}" style="opacity:${o}">${drawSVG(ref.d, w)}</div>`)(DRAW_GUIDE[Math.min(4, Math.max(1, lv))])}<canvas class="dr-cv"></canvas></div>
     <div class="dr-tools">${INK.map((c, i) => `<button class="dr-ink ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}"></button>`).join('')}
       <button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✎<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
-      <button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>
-    <div class="color-btns"><button class="big-btn alt small ico" data-a="new" aria-label="New picture">🔄 New</button><button class="big-btn alt small ico" data-a="gallery" aria-label="My drawings">🖼️ Mine</button><button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
+      <button class="dr-tool" data-t="bucket" aria-label="Pour paint">🪣<small>Pour</small></button><button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>
+    <div class="color-btns"><button class="big-btn alt small ico" data-a="choose" aria-label="Choose a picture">🎯 Choose</button><button class="big-btn alt small ico" data-a="new" aria-label="New picture">🔄 New</button><button class="big-btn alt small ico" data-a="gallery" aria-label="My drawings">🖼️ Mine</button><button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
   say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
   const cv = $('.dr-cv', area), pad = $('.dr-pad', area);
   const dpr = Math.min(devicePixelRatio || 1, 2);
   const W = pad.clientWidth;
   cv.width = cv.height = Math.round(W * dpr); cv.style.width = cv.style.height = W + 'px';
   const c = cv.getContext('2d'); c.scale(dpr, dpr); c.lineCap = c.lineJoin = 'round';
-  let color = INK[0], size = 7, tool = "pencil", erase = false, strokes = [], cur = null;
+  // paint goes on its own layer under the guide and the pencil lines
+  const fc = $('.dr-fill', area); fc.width = fc.height = cv.width; fc.style.width = fc.style.height = W + 'px';
+  const fctx = fc.getContext('2d');
+  // the guide's outlines hold the paint in, like the child's own lines
+  const gl = document.createElement('canvas'); gl.width = gl.height = cv.width; const gctx = gl.getContext('2d');
+  { const gw = Math.max(5, DRAW_GUIDE[Math.min(4, Math.max(1, lv))][0] * 0.8), img = new Image();
+    img.onload = () => gctx.drawImage(img, 0.06 * cv.width, 0.06 * cv.width, 0.88 * cv.width, 0.88 * cv.width);
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="400" height="400"><g fill="none" stroke="#000" stroke-width="${gw}" stroke-linecap="round" stroke-linejoin="round">${ref.d}</g></svg>`); }
+  let color = INK[0], size = 7, tool = "pencil", erase = false, strokes = [], cur = null, bucket = false;
   // Keep gesture pointers separate from drawing strokes.
   let zoom = 1, panX = 0, panY = 0, gesture = null;
   const touches = new Map();
@@ -1417,6 +1425,7 @@ function startDraw(refIndex) {
     cv.style.transform = transform;
     const guide = $('.dr-guide', area);
     if (guide) guide.style.transform = transform;
+    fc.style.transform = transform;
     $('[data-dz="reset"]', area).textContent = zoom.toFixed(1) + '×';
   }
   function setZoom(next) {
@@ -1431,7 +1440,42 @@ function startDraw(refIndex) {
     c.clearRect(0, 0, W, W);
     for (const s of strokes) paint(s);
   };
+  // flood fill: pour paint into the closed shape under the finger; lines (guide or drawn) hold it in
+  function fillAt(op) {
+    const N = cv.width, sd = c.getImageData(0, 0, N, N).data, gd = gctx.getImageData(0, 0, N, N).data;
+    const blocked = (i) => sd[i * 4 + 3] > 60 || gd[i * 4 + 3] > 60;
+    let sx = Math.round(op.x * dpr), sy = Math.round(op.y * dpr);
+    if (sx < 0 || sy < 0 || sx >= N || sy >= N) return false;
+    if (blocked(sy * N + sx)) {                       // landed on a line: use the nearest open spot
+      let found = false;
+      for (let r = 1; r <= 6 * dpr && !found; r++) for (let dy = -r; dy <= r && !found; dy++) for (let dx = -r; dx <= r && !found; dx++) {
+        const x = sx + dx, y = sy + dy; if (x >= 0 && y >= 0 && x < N && y < N && !blocked(y * N + x)) { sx = x; sy = y; found = true; }
+      }
+      if (!found) return false;
+    }
+    const mask = new Uint8Array(N * N), stack = [sy * N + sx]; mask[sy * N + sx] = 1;
+    while (stack.length) {
+      const p = stack.pop(), x = p % N, y = (p - x) / N;
+      for (const q of [x > 0 ? p - 1 : -1, x < N - 1 ? p + 1 : -1, y > 0 ? p - N : -1, y < N - 1 ? p + N : -1]) if (q >= 0 && !mask[q] && !blocked(q)) { mask[q] = 1; stack.push(q); }
+    }
+    // grow the paint a hair under the lines so no pale halo shows
+    const grown = new Uint8Array(mask); const g = Math.max(2, Math.round(2 * dpr));
+    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (mask[y * N + x]) for (let d = 1; d <= g; d++) {
+      if (x + d < N) grown[y * N + x + d] = 1; if (x - d >= 0) grown[y * N + x - d] = 1; if (y + d < N) grown[(y + d) * N + x] = 1; if (y - d >= 0) grown[(y - d) * N + x] = 1;
+    }
+    const out = fctx.createImageData(N, N), rgb = op.color ? [parseInt(op.color.slice(1, 3), 16), parseInt(op.color.slice(3, 5), 16), parseInt(op.color.slice(5, 7), 16)] : [0, 0, 0];
+    for (let i = 0; i < N * N; i++) if (grown[i]) { out.data[i * 4] = rgb[0]; out.data[i * 4 + 1] = rgb[1]; out.data[i * 4 + 2] = rgb[2]; out.data[i * 4 + 3] = 255; }
+    const tmp = document.createElement('canvas'); tmp.width = tmp.height = N; tmp.getContext('2d').putImageData(out, 0, 0);
+    fctx.save(); fctx.setTransform(1, 0, 0, 1, 0, 0); fctx.globalCompositeOperation = op.color ? 'source-over' : 'destination-out'; fctx.drawImage(tmp, 0, 0); fctx.restore();
+    return true;
+  }
+  function replay() {              // after an undo or clear: rebuild strokes and paint in order
+    fctx.clearRect(0, 0, fc.width, fc.height); c.clearRect(0, 0, W, W);
+    const all = strokes.slice(); strokes = [];
+    for (const s of all) { strokes.push(s); if (s.fill) fillAt(s); else paint(s); }
+  }
   function paint(s) {
+    if (s.fill) return;
     c.globalCompositeOperation = s.erase ? 'destination-out' : 'source-over';
     c.strokeStyle = s.color; c.fillStyle = s.color; c.lineWidth = s.size;
     c.globalAlpha = s.erase ? 1 : s.tool === "brush" ? 0.66 : 1;
@@ -1459,6 +1503,13 @@ function startDraw(refIndex) {
       const points = [...touches.values()];
       gesture = { distance: Math.hypot(points[0][0] - points[1][0], points[0][1] - points[1][1]),
         zoom, panX, panY, cx: (points[0][0] + points[1][0]) / 2, cy: (points[0][1] + points[1][1]) / 2 };
+      return;
+    }
+    if (bucket) {                                            // pour paint instead of drawing
+      const [bx, by] = pt(e), op = { fill: true, x: bx, y: by, color: erase ? null : color };
+      if (fillAt(op)) { strokes.push(op); sfx.tap(); tone([330, 440, 587], { dur: 0.05, gap: 0.04, vol: 0.08 }); pad.classList.remove('poured'); void pad.offsetWidth; pad.classList.add('poured'); }
+      else sfx.no();
+      touches.delete(e.pointerId);
       return;
     }
     // One finger always draws; use two fingers to pan or zoom without ink.
@@ -1492,22 +1543,32 @@ function startDraw(refIndex) {
   pad.addEventListener('pointercancel', end);
   function redrawLast() { redraw(); }
   $$('.dr-ink', area).forEach((b) => (b.onclick = () => { $$('.dr-ink', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); color = b.dataset.c; erase = false; $('[data-t="erase"]', area).classList.remove('on'); sfx.tap(); }));
-  $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; tool = b.dataset.tool || 'pencil'; sfx.tap(); }));
+  $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; tool = b.dataset.tool || 'pencil'; bucket = false; $('[data-t="bucket"]', area).classList.remove('on'); sfx.tap(); }));
   $('[data-t="erase"]', area).onclick = (e) => { erase = !erase; e.currentTarget.classList.toggle('on', erase); sfx.tap(); };
-  $('[data-t="undo"]', area).onclick = () => { strokes.pop(); redraw(); sfx.tap(); };
-  $('[data-t="clear"]', area).onclick = () => { strokes = []; redraw(); sfx.tap(); };
+  $('[data-t="bucket"]', area).onclick = (e) => { bucket = !bucket; e.currentTarget.classList.toggle('on', bucket); if (bucket) $$('.dr-size', area).forEach((x) => x.classList.remove('on')); sfx.tap(); say(bucket ? 'Tap a shape to pour paint in!' : 'Draw with your finger!'); };
+  $('[data-t="undo"]', area).onclick = () => { strokes.pop(); replay(); sfx.tap(); };
+  $('[data-t="clear"]', area).onclick = () => { strokes = []; replay(); sfx.tap(); };
+  area.querySelector('[data-a="choose"]').onclick = () => { sfx.tap(); drawChooser(); };
   area.querySelector('[data-a="new"]').onclick = () => { sfx.tap(); startDraw(); };
   area.querySelector('[data-a="gallery"]').onclick = () => { sfx.tap(); drawGallery(); };
   area.querySelector('[data-a="done"]').onclick = () => {
     if (!strokes.length) { say('Draw something first!'); return; }
     // save a small copy on a white background
     const t = document.createElement('canvas'); t.width = t.height = 240;
-    const tc = t.getContext('2d'); tc.fillStyle = '#fff'; tc.fillRect(0, 0, 240, 240); tc.drawImage(cv, 0, 0, 240, 240);
+    const tc = t.getContext('2d'); tc.fillStyle = '#fff'; tc.fillRect(0, 0, 240, 240); tc.drawImage(fc, 0, 0, 240, 240); tc.drawImage(cv, 0, 0, 240, 240);
     state.drawings = [{ img: t.toDataURL('image/jpeg', 0.7), name: ref.name }, ...(state.drawings || [])].slice(0, 12);
     const up = gameLevelUp('draw', 3);
     gameWin(pick(['Beautiful drawing!', 'What a great drawing!', 'Awesome job!']));
     endPanel(`What a great ${ref.name}!${up ? '' : '<br><small>Saved in My drawings 🖼️</small>'}`, '🎨', () => startDraw(), up);
   };
+}
+// pick what to draw
+function drawChooser() {
+  const area = $('#gameArea'), refs = drawRefs(GL('draw'));
+  area.innerHTML = `<div class="g-msg">What do you want to draw? <small>Tap a picture</small></div>
+    <div class="pic-grid dr-choose">${refs.map((r, i) => `<button class="pic-pick" data-i="${i}">${r.svg}<span>${r.name}</span></button>`).join('')}</div>`;
+  say('What do you want to draw?');
+  $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startDraw(+b.dataset.i); }));
 }
 function drawGallery() {
   const area = $('#gameArea');

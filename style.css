@@ -1662,3 +1662,27 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .immersive #game .play-title, .immersive .pb-dmd-msg { display:none; }
 .immersive .g-pinball .pb-dmd { padding-block:2px; }
 .pz-story .pz-photo-pick{object-fit:cover;padding:0;background:none}.pz-story-h{margin-top:10px}
+
+/* drawing: paint layer under the guide, pour animation */
+.dr-fill { position:absolute; inset:0; transform-origin:0 0; pointer-events:none; }
+.dr-pad.poured { animation:pourPop .35s ease-out; }
+@keyframes pourPop { 0% { box-shadow:0 0 0 0 #ffd43b99, 0 6px 0 #e3dcef; } 100% { box-shadow:0 0 0 18px #ffd43b00, 0 6px 0 #e3dcef; } }
+.dr-tool small { display:block; font-size:11px; }
+.dr-choose .ref-svg { width:100%; aspect-ratio:1; }
+
+/* motion polish: gentle entrances, idle life and press feedback (off for reduced motion) */
+@media (prefers-reduced-motion: no-preference) {
+  #grid .tile { animation: rise .45s cubic-bezier(.2,.9,.3,1.2) both; }
+  #grid .tile:nth-child(2) { animation-delay: .05s; } #grid .tile:nth-child(3) { animation-delay: .1s; }
+  #grid .tile:nth-child(4) { animation-delay: .15s; } #grid .tile:nth-child(5) { animation-delay: .2s; }
+  #grid .tile:nth-child(6) { animation-delay: .25s; } #grid .tile:nth-child(n+7) { animation-delay: .3s; }
+  .tile .ico, .tile .emoji { display: inline-block; animation: float 4.5s ease-in-out infinite; }
+  #grid .tile:nth-child(even) .ico, #grid .tile:nth-child(even) .emoji { animation-delay: -2s; }
+  .pic-pick { animation: popin .35s cubic-bezier(.2,.9,.3,1.3) both; }
+  .pic-pick:nth-child(3n+2) { animation-delay: .05s; } .pic-pick:nth-child(3n) { animation-delay: .1s; }
+  .dr-tool, .dr-size, .dr-ink, .big-btn { transition: transform .12s ease, box-shadow .12s ease; }
+  .dr-tool:active, .dr-size:active, .dr-ink:active { transform: scale(.88); }
+  .dr-ink.on, .dr-size.on, .dr-tool.on { animation: pulse .5s ease-out 1; }
+  #gameArea > * { animation: fadein .3s ease-out both; }
+  .dr-say b { display: inline-block; animation: wiggle 6s ease-in-out 1s infinite; }
+}
