@@ -1648,3 +1648,4 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .pb-controls button { min-height:48px; touch-action:none; }
 
 #pinPad[hidden] { display:none; }
+.kid-chip-note,.who-limit{font-size:.85rem;opacity:.7;margin:.4rem 0}

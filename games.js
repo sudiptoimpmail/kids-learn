@@ -1296,7 +1296,7 @@ function startMoves() {
   const area = $('#gameArea');
   let timer = 0, spin = 0;
   const done = state.movesDone || 0;
-  area.innerHTML = `<div class="g-msg">Roll the dice and do the move! <small class="mv-count">${done ? `⭐ ${done} moves done` : ''}</small></div>
+  area.innerHTML = `<div class="g-msg">Roll the dice and do the move! <small class="mv-count">${done ? `⭐ ${done} ${done === 1 ? 'move' : 'moves'} done` : ''}</small></div>
     <div class="mv-card"><div class="mv-emoji">🎲</div><div class="mv-text">Tap Roll!</div><svg class="mv-ring" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54"/></svg></div>
     <button class="big-btn ico mv-roll" aria-label="Roll">🎲 Roll</button>`;
   say('Roll the dice!');
@@ -1327,7 +1327,7 @@ function startMoves() {
           clearInterval(timer);
           card.classList.remove('go'); card.classList.add('done');
           state.movesDone = (state.movesDone || 0) + 1; save();
-          $('.mv-count', area).textContent = `⭐ ${state.movesDone} moves done`;
+          $('.mv-count', area).textContent = `⭐ ${state.movesDone} ${state.movesDone === 1 ? 'move' : 'moves'} done`;
           gameWin(pick(['Great moves!', 'Awesome job!', 'You are so silly!', 'Fantastic!']));
           btn.disabled = false; btn.textContent = '🎲 Roll';
         }

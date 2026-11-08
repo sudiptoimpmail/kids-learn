@@ -1458,7 +1458,7 @@ function openWho() {
   const kids = Store.kids();
   $('#whoGrid').innerHTML = kids.map((k) => `<button class="who-kid ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}">
     <span class="who-av">${esc(k.avatar || '🦄')}</span><b>${esc(k.name || 'Player')}</b><small>${k.grade ? gradeName(k.grade) : ''}</small></button>`).join('')
-    + (kids.length < MAX_KIDS ? '<button class="who-kid who-add" data-add="1" type="button"><span class="who-av">＋</span><b>Add another child</b><small>Grown-up PIN required</small></button>' : '');
+    + (kids.length < MAX_KIDS ? '<button class="who-kid who-add" data-add="1" type="button"><span class="who-av">＋</span><b>Add another child</b><small>Grown-up PIN required</small></button>' : `<p class="who-limit">This device holds up to ${MAX_KIDS} children.</p>`);
   $$('#whoGrid .who-kid').forEach((b) => (b.onclick = () => {
     sfx.tap();
     if (b.dataset.add) {
@@ -1476,7 +1476,7 @@ $('#whoSheet').onclick = (e) => { if (e.target.id === 'whoSheet') $('#whoSheet')
 function renderKids() {
   const kids = Store.kids();
   $('#kidChips').innerHTML = kids.map((k) => `<button class="kid-chip ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}"><span>${esc(k.avatar || '🦄')}</span>${esc(k.name || 'Player')}</button>`).join('')
-    + (kids.length < MAX_KIDS ? '<button class="kid-chip add" data-add="1">＋ Add a child</button>' : '');
+    + (kids.length < MAX_KIDS ? '<button class="kid-chip add" data-add="1">＋ Add a child</button>' : `<span class="kid-chip-note">Up to ${MAX_KIDS} children on this device</span>`);
   $('#avatarRow').innerHTML = AVATARS.map((a) => `<button class="av ${state.avatar === a ? 'on' : ''}" data-a="${a}">${a}</button>`).join('');
   $('#kidRemove').hidden = kids.length <= 1;
   $('#kidRemove').textContent = `Remove ${state.name || 'this child'}`;
