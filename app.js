@@ -599,10 +599,11 @@ function renderSpell(q) {
   const tray = $('#options');
   tray.innerHTML = tiles.map((l, k) => `<button class="tile-l" data-id="${k}" data-l="${l}" style="animation-delay:${k * 50}ms">${l}</button>`).join('');
   $$('.tile-l', tray).forEach((t) => t.addEventListener('pointerdown', (e) => dragStart(e, q, t)));
-  $$('.slot[data-i]', row).forEach((sl) => (sl.onclick = () => {
-    if (R.locked) return;
+  // a filled box can be picked up again: drop it in another box, back on the tray, or just tap it
+  $$('.slot[data-i]', row).forEach((sl) => sl.addEventListener('pointerdown', (e) => {
+    if (R.locked || sl.classList.contains('given')) return;
     const id = q.slots[sl.dataset.i]; if (id == null) return;
-    sfx.tap(); unplace(q, +sl.dataset.i);
+    dragStart(e, q, tileEl(id), sl);
   }));
 }
 const tileEl = (id) => $(`.tile-l[data-id="${id}"]`);
@@ -624,16 +625,16 @@ function unplace(q, i) {
 const firstEmpty = (q) => q.spell.blanks.find((i) => q.slots[i] == null);
 
 let drag = null;
-function dragStart(e, q, t) {
-  if (R.locked || t.classList.contains('used')) return;
+function dragStart(e, q, t, fromSlot = null) {
+  if (R.locked || !t || (!fromSlot && t.classList.contains('used'))) return;
   e.preventDefault();
-  const r = t.getBoundingClientRect();
+  const r = (fromSlot || t).getBoundingClientRect();
   const ghost = t.cloneNode(true);
   ghost.className = 'tile-l ghost';
   Object.assign(ghost.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
   document.body.appendChild(ghost);
-  drag = { q, t, ghost, x0: e.clientX, y0: e.clientY, dx: e.clientX - r.left, dy: e.clientY - r.top, moved: false, id: e.pointerId };
-  t.classList.add('lifting');
+  drag = { q, t, ghost, from: fromSlot ? +fromSlot.dataset.i : null, x0: e.clientX, y0: e.clientY, dx: e.clientX - r.left, dy: e.clientY - r.top, moved: false, id: e.pointerId };
+  if (!fromSlot) t.classList.add('lifting'); else fromSlot.classList.add('lifting');
   sfx.tap();
 }
 addEventListener('pointermove', (e) => {
@@ -656,11 +657,21 @@ function slotUnder(x, y) {
 }
 function dragEnd(e) {
   if (!drag || (e.pointerId != null && e.pointerId !== drag.id)) return;
-  const { q, t, ghost, moved } = drag; drag = null;
-  ghost.remove(); t.classList.remove('lifting');
+  const { q, t, ghost, moved, from } = drag; drag = null;
+  ghost.remove(); t.classList.remove('lifting'); $$('.slot.lifting').forEach((s) => s.classList.remove('lifting'));
   $$('.slot.over').forEach((s) => s.classList.remove('over'));
   if (R.locked) return;
   const id = +t.dataset.id;
+  if (from != null) {                                         // moving a letter that is already in a box
+    if (R.qs[R.i] !== q || q.slots[from] !== id) return;
+    const sl = moved ? slotUnder(e.clientX, e.clientY) : null, to = sl ? +sl.dataset.i : null;
+    if (!moved || to === from) { if (!moved) { sfx.tap(); unplace(q, from); } return; }
+    if (to == null) { sfx.tap(); unplace(q, from); return; }  // dropped on the tray: back it goes
+    const other = q.slots[to]; unplace(q, from);
+    if (other != null && slotEl(to).classList.contains('given')) { place(q, from, id); return; }
+    place(q, to, id); if (other != null) place(q, from, other);
+    return;
+  }
   if (!moved) { const i = firstEmpty(q); if (i != null) place(q, i, id); return; }   // a tap fills the next blank
   const sl = slotUnder(e.clientX, e.clientY);
   if (sl) place(q, +sl.dataset.i, id);
@@ -719,6 +730,22 @@ function renderMatch(q) {
   $$('.m-item.L', box).forEach((b) => (b.onclick = () => {
     if (R.locked || b.classList.contains('ok')) return;
     $$('.m-item.L', box).forEach((x) => x.classList.remove('sel')); b.classList.add('sel'); q.selL = +b.dataset.id; sfx.tap();
+  }));
+  // drag from a left item to its partner on the right (tapping still works)
+  $$('.m-item.L', box).forEach((b) => b.addEventListener('pointerdown', (e) => {
+    if (R.locked || b.classList.contains('ok')) return;
+    const svg = $('.m-lines', box), s0 = svg.getBoundingClientRect(), r0 = b.getBoundingClientRect();
+    const x1 = r0.right - s0.left, y1 = r0.top + r0.height / 2 - s0.top;
+    svg.insertAdjacentHTML('beforeend', `<line class="rubber" x1="${x1}" y1="${y1}" x2="${x1}" y2="${y1}"/>`);
+    const line = svg.lastElementChild; let moved = false; const id = e.pointerId;
+    const mv = (ev) => { if (ev.pointerId !== id) return; if (Math.hypot(ev.clientX - e.clientX, ev.clientY - e.clientY) > 10) moved = true;
+      line.setAttribute('x2', ev.clientX - s0.left); line.setAttribute('y2', ev.clientY - s0.top); };
+    const up = (ev) => { if (ev.pointerId !== id) return;
+      removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up); line.remove();
+      if (!moved || ev.type === 'pointercancel') return;
+      const hit = document.elementFromPoint(ev.clientX, ev.clientY)?.closest('.m-item.R');
+      if (hit && !hit.classList.contains('ok')) { b.click(); hit.click(); } };
+    addEventListener('pointermove', mv, { passive: true }); addEventListener('pointerup', up); addEventListener('pointercancel', up);
   }));
   $$('.m-item.R', box).forEach((b) => (b.onclick = () => {
     if (R.locked || b.classList.contains('ok')) return;
@@ -799,6 +826,24 @@ function renderLetterPath(q) {
 const partMiss = (q, el) => { q.tries++; R.mistakes++; R.streak = 0; sfx.no(); if (el) { el.classList.remove('bad'); void el.offsetWidth; el.classList.add('bad'); } };
 const live = (q) => !R.locked && R.qs[R.i] === q;
 // word box: tap a blank, then a word from the box (the first open blank is picked for you)
+// drag a word chip onto a blank (tapping a chip still works); onDrop(blankEl) runs when it lands on one
+function chipDrag(chip, blanksOf, onDrop) {
+  chip.style.touchAction = 'none';
+  chip.addEventListener('pointerdown', (e) => {
+    if (chip.disabled) return;
+    const r = chip.getBoundingClientRect(), id = e.pointerId; let ghost = null;
+    const mv = (ev) => { if (ev.pointerId !== id) return;
+      if (!ghost && Math.hypot(ev.clientX - e.clientX, ev.clientY - e.clientY) > 8) { ghost = chip.cloneNode(true); ghost.classList.add('chip-ghost'); document.body.appendChild(ghost); chip.classList.add('lifting'); }
+      if (ghost) { ghost.style.left = ev.clientX - r.width / 2 + 'px'; ghost.style.top = ev.clientY - r.height / 2 + 'px'; } };
+    const up = (ev) => { if (ev.pointerId !== id) return;
+      removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up);
+      if (!ghost) return; ghost.remove(); chip.classList.remove('lifting');
+      if (ev.type === 'pointercancel') return;
+      let best = null, bd = 60; blanksOf().forEach((b) => { const k = b.getBoundingClientRect(); const d = Math.hypot(ev.clientX - (k.left + k.width / 2), ev.clientY - (k.top + k.height / 2)); if (d < bd) { bd = d; best = b; } });
+      if (best) { chip.dataset.dragged = '1'; onDrop(best); } };
+    addEventListener('pointermove', mv, { passive: true }); addEventListener('pointerup', up); addEventListener('pointercancel', up);
+  });
+}
 function renderFillIn(q) {
   const { words, lines } = q.fillIn, wrap = document.createElement('div'); wrap.className = 'g1-fill';
   wrap.innerHTML = `<div class="g1-box">${words.map((w) => `<button class="g1-chip" data-w="${w}">${w}</button>`).join('')}</div>` +
@@ -816,6 +861,7 @@ function renderFillIn(q) {
       sel = lines.findIndex((_, i) => !done.has(i)); mark();
     } else partMiss(q, blank(sel));
   }));
+  $$('.g1-chip', wrap).forEach((c) => chipDrag(c, () => $$('.g1-blank', wrap).filter((b) => !done.has(+b.dataset.i)), (b) => { if (!live(q)) return; sel = +b.dataset.i; mark(); c.click(); }));
   mark();
   q.partHint = () => { const c = $(`.g1-chip[data-w="${lines[sel].answer}"]`, wrap); if (c) { c.classList.remove('glow-l'); void c.offsetWidth; c.classList.add('glow-l'); } };
 }
@@ -836,6 +882,7 @@ function renderPassageFill(q) {
       } else { c.disabled = true; partMiss(q, c); }
     }));
   });
+  $$('.g1-q', wrap).forEach((row) => $$('.g1-chip', row).forEach((c) => chipDrag(c, () => $$('.g1-blank', wrap), (b) => { if (b.closest('.g1-q') === row) c.click(); else if (live(q)) partMiss(q, b); })));
   q.partHint = () => { const i = q.passageFill.findIndex((_, k) => !done.has(k)); const row = $(`.g1-q[data-i="${i}"]`, wrap); if (row) row.scrollIntoView({ block: 'center', behavior: 'smooth' }); };
 }
 // tap the pictures in the order of the story
