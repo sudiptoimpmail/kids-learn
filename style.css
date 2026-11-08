@@ -1657,3 +1657,7 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
   .g-pinball .pb-controls { position:absolute; left:0; right:0; bottom:14px; display:flex; justify-content:space-between; padding:0 130px 0 18px; pointer-events:none; z-index:4; }
   .g-pinball .pb-controls .big-btn { pointer-events:auto; width:auto; padding:10px 20px; font-size:20px; white-space:nowrap; opacity:.88; }
 }
+#gameFull { margin-left:auto; margin-right:8px; }
+.immersive #game .play-top { padding-top:4px; padding-bottom:4px; }
+.immersive #game .play-title, .immersive .pb-dmd-msg { display:none; }
+.immersive .g-pinball .pb-dmd { padding-block:2px; }

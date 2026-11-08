@@ -5,7 +5,7 @@ Based on *Learn & Play — Parent Review*, November 6, 2026, especially first-te
 ## New behavior
 
 - Fresh real-user profile: tapping Play opens a setup modal immediately, before an ungraded Home catalog. The parent must provide a name and grade. Existing completed profiles are preserved.
-- The first setup screen explains that up to six children can be added. After saving a first profile the parent can start learning, take the optional eight-card placement check, or set up another child. An unfinished second profile can be cancelled.
+- The first setup screen explains that up to four children can be added. After saving a first profile the parent can start learning, take the optional eight-card placement check, or set up another child. An unfinished second profile can be cancelled.
 - Each sibling has separate grade, name, rewards, books and progress. The Home avatar opens sibling selection; its Add another child action requires a grown-up PIN.
 - Service-worker upgrades no longer silently reload just after Play. A visible Update ready button requests restart explicitly; no automatic update interval interrupts children.
 - Little Red Riding Hood retains 11 illustrations, all original recorded sentences, comprehension questions and gentle ending. Dramatic punctuation, dialogue styling, subtle scene-sound effects and cancellable suspense delays add atmosphere. Reduced-motion users do not receive zoom animation.

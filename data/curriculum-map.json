@@ -457,7 +457,8 @@
           "community": "1-2",
           "region": "1-2",
           "check": "1-1",
-          "placement": "1-1"
+          "placement": "1-1",
+          "library": "1-1"
         },
         "roundQuestions": 10
       },
@@ -533,7 +534,8 @@
           "community": "2-3",
           "region": "2-3",
           "check": "1-1",
-          "placement": "1-1"
+          "placement": "1-1",
+          "library": "1-1"
         },
         "roundQuestions": 10
       }
@@ -1913,6 +1915,17 @@
             ],
             "approach": "guided-investigation",
             "bank": "mixed"
+          },
+          "library": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "listen-to-stories"
+            ],
+            "approach": "read-aloud",
+            "bank": "authored"
           }
         }
       },
@@ -2362,6 +2375,17 @@
             ],
             "approach": "reason-explain",
             "bank": "mixed"
+          },
+          "library": {
+            "levels": [
+              1,
+              1
+            ],
+            "skills": [
+              "listen-to-stories"
+            ],
+            "approach": "read-aloud",
+            "bank": "authored"
           }
         }
       }
@@ -5208,6 +5232,18 @@
           "id": "little-seed",
           "grades": [
             "g1"
+          ]
+        },
+        {
+          "id": "little-red-hen",
+          "grades": [
+            "g2"
+          ]
+        },
+        {
+          "id": "lion-and-mouse",
+          "grades": [
+            "g3"
           ]
         }
       ]

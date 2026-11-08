@@ -241,7 +241,18 @@ $('#pzGrid').addEventListener('click', (e) => {
   sfx.tap(); openGame(t.dataset.game);
 });
 $('#pzHome').onclick = () => { sayToken++; stopClip(); renderHome(); show('home'); };
-$('#gameBack').onclick = () => { stopGame(); if (brainMode) { renderHome(); show('home'); return; } renderPZ(); show('playzone'); startPlayTimer(); };
+// Full screen: the browser's own full screen where it exists (iPad, desktop); otherwise a roomier layout
+const gameFullOff = () => { document.body.classList.remove('immersive'); const b = $('#gameFull'); if (b) { b.setAttribute('aria-pressed', 'false'); b.setAttribute('aria-label', 'Full screen'); } try { if (document.fullscreenElement) document.exitFullscreen(); } catch {} };
+$('#gameFull').onclick = () => {
+  sfx.tap();
+  const on = !document.body.classList.contains('immersive');
+  if (!on) return gameFullOff();
+  document.body.classList.add('immersive'); $('#gameFull').setAttribute('aria-pressed', 'true'); $('#gameFull').setAttribute('aria-label', 'Leave full screen');
+  try { const el = document.documentElement; (el.requestFullscreen || el.webkitRequestFullscreen)?.call(el)?.catch?.(() => {}); } catch {}
+  setTimeout(() => dispatchEvent(new Event('resize')), 250);
+};
+document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && document.body.classList.contains('immersive')) gameFullOff(); setTimeout(() => dispatchEvent(new Event('resize')), 200); });
+$('#gameBack').onclick = () => { gameFullOff(); stopGame(); if (brainMode) { renderHome(); show('home'); return; } renderPZ(); show('playzone'); startPlayTimer(); };
 
 let curGame = null, gameCleanup = null, gameCleanupPanel = null;
 function openGame(id) {
@@ -261,7 +272,7 @@ function openGame(id) {
   // Inspect the rendered screen before charging: a picture picker is not a round.
   if (!brainMode) startPlayTimer();
 }
-function stopGame() { sayToken++; stopClip(); gameSession++; if (gameStart) { playActive += Date.now() - gameStart; gameStart = 0; } if (playActive) { logPlay(playActive / 1000); playActive = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
+function stopGame() { try { gameFullOff(); } catch {} sayToken++; stopClip(); gameSession++; if (gameStart) { playActive += Date.now() - gameStart; gameStart = 0; } if (playActive) { logPlay(playActive / 1000); playActive = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
 let gameStart = 0, playActive = 0;   // play time for the grown-ups' numbers: only while the app is on screen
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && gameStart) { playActive += Date.now() - gameStart; gameStart = 0; }

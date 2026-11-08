@@ -18,7 +18,7 @@ const { chromium } = require('playwright');
     // No delay, return to splash, or exposed ungraded home before the modal.
     assert.equal(await page.locator('#welcomeSheet').count(), 1);
     assert.equal(await page.locator('#welcomeSheet[aria-modal="true"]').count(), 1);
-    assert.match(await page.locator('.wel-siblings').innerText(), /add up to 6 children/i);
+    assert.match(await page.locator('.wel-siblings').innerText(), /add up to 4 children/i);
     assert.equal(await page.evaluate(() => state.grade || null), null);
     await page.locator('.wel-grade[data-g="prek"]').click();
     assert.match(await page.locator('#welError').innerText(), /enter a name/i);
