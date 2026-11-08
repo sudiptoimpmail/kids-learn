@@ -4,10 +4,10 @@
   "grades": [
     "g3"
   ],
-  "cover": "p01.svg",
+  "cover": "p01.webp",
   "pages": [
     {
-      "art": "p01.svg",
+      "art": "p01.webp",
       "text": [
         "A mighty lion was sleeping under a big tree.",
         "A tiny mouse ran across his paw by mistake."
@@ -15,7 +15,7 @@
       "alt": "The mouse runs over the sleeping lion"
     },
     {
-      "art": "p02.svg",
+      "art": "p02.webp",
       "text": [
         "The lion woke with a roar and caught the mouse.",
         "\"Please let me go!\" squeaked the mouse.",
@@ -24,7 +24,7 @@
       "alt": "The lion holds the mouse"
     },
     {
-      "art": "p03.svg",
+      "art": "p03.webp",
       "text": [
         "The lion laughed.",
         "\"How could a mouse ever help a lion?\" he said.",
@@ -33,7 +33,7 @@
       "alt": "The lion lets the mouse go"
     },
     {
-      "art": "p04.svg",
+      "art": "p04.webp",
       "text": [
         "A few days later, hunters set a strong rope net in the forest.",
         "The lion walked right into it."
@@ -41,31 +41,31 @@
       "alt": "The lion is caught in a net"
     },
     {
-      "art": "p05.svg",
+      "art": "p05.webp",
       "text": [
         "The lion roared and pulled, but the ropes held tight.",
         "All the animals in the forest heard him."
       ],
-      "alt": "The lion roars"
+      "alt": "The lion roars and the forest listens"
     },
     {
-      "art": "p06.svg",
+      "art": "p06.webp",
       "text": [
         "The little mouse heard him too.",
         "She ran as fast as she could to find the lion."
       ],
-      "alt": "The mouse runs"
+      "alt": "The mouse runs through the forest"
     },
     {
-      "art": "p07.svg",
+      "art": "p07.webp",
       "text": [
         "\"Hold still,\" said the mouse.",
         "She chewed the ropes with her sharp little teeth, one by one."
       ],
-      "alt": "The mouse chews the ropes"
+      "alt": "The mouse chews through the ropes"
     },
     {
-      "art": "p08.svg",
+      "art": "p08.webp",
       "text": [
         "Soon the lion was free.",
         "\"You were kind to me, so I am glad I could help you,\" said the mouse.",

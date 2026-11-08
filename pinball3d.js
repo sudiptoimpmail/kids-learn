@@ -44,7 +44,7 @@ export function start(tableIndex) {
   const area = $('#gameArea');
   area.innerHTML = `<div class="pb-dmd"><div class="pb-dmd-top"><b class="pb-score">0</b><span class="pb-balls">● ● ●</span></div>
       <div class="pb-dmd-msg">${T.icon} ${T.name.toUpperCase()}</div><div class="pb-dmd-bot"><span>TARGET ${target.toLocaleString()}</span><span class="pb-mult">×1</span></div></div>
-    <div class="b3-wrap pb-wrap"><canvas class="game-cv pb-cv"></canvas><div class="b3-msg" hidden></div><button class="pb-launch" aria-label="Pull down and release to launch the ball"><span class="pb-plunger-handle" aria-hidden="true"></span><span class="pb-launch-label">PULL</span></button></div><div class="pb-controls"><button class="big-btn" data-flipper="L">◀ Left flipper</button><button class="big-btn" data-flipper="R">Right flipper ▶</button></div>`;
+    <div class="b3-wrap pb-wrap"><canvas class="game-cv pb-cv"></canvas><div class="b3-msg" hidden></div><button class="pb-launch" aria-label="Pull down and release to launch the ball"><span class="pb-plunger-handle" aria-hidden="true"></span><span class="pb-launch-label">PULL</span></button></div>`;
   say('Tap to launch the ball!');
 
   const cv = $('.pb-cv', area), wrap = $('.b3-wrap', area);
@@ -61,8 +61,7 @@ export function start(tableIndex) {
   const P = (x, y, h = 0) => new THREE.Vector3(x - 5, h, -y);          // table (x, y) → 3D
   function size() {
     const w = wrap.clientWidth, top = wrap.getBoundingClientRect().top;
-    const wide = innerWidth > innerHeight && innerWidth >= 900;   // iPad landscape: flipper buttons float over the table, so it gets the full height
-    const h = Math.max(380, Math.min(innerHeight - top - (wide ? 14 : 150), w * 1.8));
+    const h = Math.max(380, Math.min(innerHeight - top - 16, w * 1.8));   // no button bar: touch the left or right half of the table to flip
     renderer.setSize(w, h, true); camera.aspect = w / h;
     // keep the whole table in view whatever the screen shape
     camera.fov = THREE.MathUtils.clamp(46 * Math.pow(0.62 / camera.aspect, 0.55), 40, 64);
@@ -317,12 +316,6 @@ export function start(tableIndex) {
     pointers.set(e.pointerId, side); press(side, true);
   });
   const release = (e) => { const side = pointers.get(e.pointerId); if (side) { pointers.delete(e.pointerId); if (![...pointers.values()].includes(side)) press(side, false); } };
-  area.querySelectorAll('[data-flipper]').forEach(button=>{
-    button.onpointerdown=e=>{e.preventDefault();button.setPointerCapture?.(e.pointerId);pointers.set(e.pointerId,button.dataset.flipper);press(button.dataset.flipper,true);};
-    button.onpointerup=release;button.onpointercancel=release;button.onlostpointercapture=release;
-    button.onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();press(button.dataset.flipper,true);}};
-    button.onkeyup=()=>press(button.dataset.flipper,false);button.onblur=()=>press(button.dataset.flipper,false);
-  });
   cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', release); cv.addEventListener('lostpointercapture', release);
   // Touch either half of the playfield to operate its physical flipper.
   // A dedicated plunger lives next to the launch lane. Drag downward and let go.
