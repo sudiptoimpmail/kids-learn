@@ -1,0 +1,133 @@
+{
+  "id": "lion-and-mouse",
+  "title": "The Lion and the Mouse",
+  "grades": [
+    "g3"
+  ],
+  "cover": "p01.svg",
+  "pages": [
+    {
+      "art": "p01.svg",
+      "text": [
+        "A mighty lion was sleeping under a big tree.",
+        "A tiny mouse ran across his paw by mistake."
+      ],
+      "alt": "The mouse runs over the sleeping lion"
+    },
+    {
+      "art": "p02.svg",
+      "text": [
+        "The lion woke with a roar and caught the mouse.",
+        "\"Please let me go!\" squeaked the mouse.",
+        "\"Someday I will help you.\""
+      ],
+      "alt": "The lion holds the mouse"
+    },
+    {
+      "art": "p03.svg",
+      "text": [
+        "The lion laughed.",
+        "\"How could a mouse ever help a lion?\" he said.",
+        "But he lifted his paw and let her go."
+      ],
+      "alt": "The lion lets the mouse go"
+    },
+    {
+      "art": "p04.svg",
+      "text": [
+        "A few days later, hunters set a strong rope net in the forest.",
+        "The lion walked right into it."
+      ],
+      "alt": "The lion is caught in a net"
+    },
+    {
+      "art": "p05.svg",
+      "text": [
+        "The lion roared and pulled, but the ropes held tight.",
+        "All the animals in the forest heard him."
+      ],
+      "alt": "The lion roars"
+    },
+    {
+      "art": "p06.svg",
+      "text": [
+        "The little mouse heard him too.",
+        "She ran as fast as she could to find the lion."
+      ],
+      "alt": "The mouse runs"
+    },
+    {
+      "art": "p07.svg",
+      "text": [
+        "\"Hold still,\" said the mouse.",
+        "She chewed the ropes with her sharp little teeth, one by one."
+      ],
+      "alt": "The mouse chews the ropes"
+    },
+    {
+      "art": "p08.svg",
+      "text": [
+        "Soon the lion was free.",
+        "\"You were kind to me, so I am glad I could help you,\" said the mouse.",
+        "From then on, the two were friends."
+      ],
+      "alt": "The lion and the mouse are friends"
+    }
+  ],
+  "questions": [
+    {
+      "ask": "What trapped the lion?",
+      "answer": "net",
+      "options": [
+        [
+          "net",
+          "net.svg"
+        ],
+        [
+          "cage",
+          "cage.svg"
+        ],
+        [
+          "hole",
+          "hole.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "What did the mouse chew?",
+      "answer": "rope",
+      "options": [
+        [
+          "rope",
+          "rope.svg"
+        ],
+        [
+          "stick",
+          "stick.svg"
+        ],
+        [
+          "leaf",
+          "leaf.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "Who helped the lion?",
+      "answer": "mouse",
+      "options": [
+        [
+          "mouse",
+          "mouse.svg"
+        ],
+        [
+          "bird",
+          "bird.svg"
+        ],
+        [
+          "hunter",
+          "hunter.svg"
+        ]
+      ]
+    }
+  ]
+}

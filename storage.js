@@ -11,7 +11,7 @@ const SCHEMA = 3;            // bump when the shape of the saved data changes, a
 // saved once for the whole device; everything else belongs to one child
 const DEVICE_KEYS = ['voice', 'pinHash', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'country', 'region', 'offlineAudio', 'familySettings'];
 const AVATARS = ['🦄', '🐶', '🐱', '🦊', '🐼', '🐯', '🦁', '🐸', '🐵', '🐰', '🐻', '🐨', '🐧', '🦖', '🐙', '🦋', '🚀', '⚽', '🌈', '⭐'];
-const MAX_KIDS = 6;
+const MAX_KIDS = 4;
 const profileDefaults = () => ({ name: '', avatar: '🦄', stars: 0, stickers: [], levels: {}, best: {}, recent: {}, traced: {} });
 
 /* Saved shape (schema 3):

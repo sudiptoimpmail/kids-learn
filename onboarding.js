@@ -28,6 +28,8 @@
     }
     if (!Object.prototype.hasOwnProperty.call(GRADES, g)) return;
     state.name = name;
+    const cs = d.querySelector('#welCountry'), rs = d.querySelector('#welRegion');
+    if (cs) { state.country = cs.value; state.region = cs.value !== 'other' && rs && !rs.closest('label').hidden ? rs.value : ''; }
     state.grade = g;
     state.levels = {};
     state.progressionStreaks = {};
@@ -58,6 +60,9 @@
       '<h2 id="welTitle">Who is learning today?</h2>' +
       '<p class="wel-lead">Give each child their own name, grade, stories and stars.</p>' +
       '<label class="wel-name" for="welName">Child’s name<input id="welName" name="child-name" type="text" maxlength="20" autocomplete="off" required placeholder="First name" value="' + escapeHTML(state.name) + '"></label>' +
+      '<div class="wel-place"><label for="welCountry">Country<select id="welCountry">' +
+        COUNTRY_ORDER.map(k => '<option value="' + k + '">' + COUNTRIES[k].flag + ' ' + COUNTRIES[k].label + '</option>').join('') + '<option value="other">🌍 Somewhere else</option></select></label>' +
+        '<label for="welRegion" id="welRegionRow"><span id="welRegionLabel">State</span><select id="welRegion"></select></label></div>' +
       '<p class="wel-ask">Pick their grade to begin</p>' +
       '<div class="wel-grades">' + Object.keys(GRADES).map(g =>
         '<button type="button" class="wel-grade" data-g="' + g + '"><b>' + escapeHTML(gradeName(g)) + '</b><small>' + ages[g] + '</small></button>').join('') + '</div>' +
@@ -76,6 +81,18 @@
       Store.removeKid(Store.activeId(), state);
       finish(d);
     };
+    const cSel = d.querySelector('#welCountry'), rSel = d.querySelector('#welRegion'), rRow = d.querySelector('#welRegionRow');
+    cSel.value = countryCode();
+    const fill = () => {
+      const C = cSel.value !== 'other' && COUNTRIES[cSel.value];
+      if (!C || !C.regions || !C.regions.length) { rRow.hidden = true; rSel.innerHTML = ''; return; }
+      rRow.hidden = false;
+      d.querySelector('#welRegionLabel').textContent = REGION_WORD[cSel.value] || 'State';
+      rSel.innerHTML = C.regions.map(r => '<option value="' + escapeHTML(r[0]) + '">' + escapeHTML(r[0].replace(/^the /, '')) + '</option>').join('');
+      const mine = cSel.value === countryCode() && typeof myRegion === 'function' && myRegion();
+      rSel.value = mine ? mine[0] : C.regions[0][0];
+    };
+    cSel.onchange = fill; fill();
     input.focus();
   }
 

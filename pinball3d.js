@@ -61,7 +61,8 @@ export function start(tableIndex) {
   const P = (x, y, h = 0) => new THREE.Vector3(x - 5, h, -y);          // table (x, y) → 3D
   function size() {
     const w = wrap.clientWidth, top = wrap.getBoundingClientRect().top;
-    const h = Math.max(380, Math.min(innerHeight - top - 150, w * 1.8));
+    const wide = innerWidth > innerHeight && innerWidth >= 900;   // iPad landscape: flipper buttons float over the table, so it gets the full height
+    const h = Math.max(380, Math.min(innerHeight - top - (wide ? 14 : 150), w * 1.8));
     renderer.setSize(w, h, true); camera.aspect = w / h;
     // keep the whole table in view whatever the screen shape
     camera.fov = THREE.MathUtils.clamp(46 * Math.pow(0.62 / camera.aspect, 0.55), 40, 64);

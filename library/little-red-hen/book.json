@@ -1,0 +1,134 @@
+{
+  "id": "little-red-hen",
+  "title": "The Little Red Hen",
+  "grades": [
+    "g2"
+  ],
+  "cover": "p01.svg",
+  "pages": [
+    {
+      "art": "p01.svg",
+      "text": [
+        "A little red hen found some seeds of wheat.",
+        "\"Who will help me plant them?\" she asked."
+      ],
+      "alt": "The hen holds wheat seeds"
+    },
+    {
+      "art": "p02.svg",
+      "text": [
+        "\"Not I,\" said the dog.",
+        "\"Not I,\" said the cat.",
+        "So the little red hen planted the seeds herself."
+      ],
+      "alt": "The dog and cat say no, the hen plants"
+    },
+    {
+      "art": "p03.svg",
+      "text": [
+        "The sun shone and the rain fell.",
+        "Soon the wheat grew tall and golden."
+      ],
+      "alt": "Tall golden wheat"
+    },
+    {
+      "art": "p04.svg",
+      "text": [
+        "\"Who will help me cut the wheat?\" asked the hen.",
+        "\"Not I,\" said the dog. \"Not I,\" said the cat.",
+        "So she cut it herself."
+      ],
+      "alt": "The hen cuts the wheat"
+    },
+    {
+      "art": "p05.svg",
+      "text": [
+        "The hen took the wheat to the mill to make flour.",
+        "Then she asked, \"Who will help me bake the bread?\"",
+        "\"Not I,\" said the dog and the cat."
+      ],
+      "alt": "The hen at the mill"
+    },
+    {
+      "art": "p06.svg",
+      "text": [
+        "So the little red hen baked the bread herself.",
+        "It smelled warm and sweet."
+      ],
+      "alt": "Warm bread"
+    },
+    {
+      "art": "p07.svg",
+      "text": [
+        "\"Who will help me eat it?\" asked the hen.",
+        "\"I will!\" said the dog. \"I will!\" said the cat.",
+        "\"You did not help,\" said the hen. \"My chicks and I will eat it.\""
+      ],
+      "alt": "The hen and chicks eat the bread"
+    },
+    {
+      "art": "p08.svg",
+      "text": [
+        "The dog and the cat felt sorry.",
+        "Next time, they said, they would help right away."
+      ],
+      "alt": "The dog and cat ready to help"
+    }
+  ],
+  "questions": [
+    {
+      "ask": "What did the hen find?",
+      "answer": "wheat",
+      "options": [
+        [
+          "wheat",
+          "wheat.svg"
+        ],
+        [
+          "apple",
+          "apple.svg"
+        ],
+        [
+          "cake",
+          "cake.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "What did the hen make?",
+      "answer": "bread",
+      "options": [
+        [
+          "bread",
+          "bread.svg"
+        ],
+        [
+          "soup",
+          "soup.svg"
+        ],
+        [
+          "cake",
+          "cake.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "Who said \"Not I\"?",
+      "answer": "dog",
+      "options": [
+        [
+          "dog",
+          "dog.svg"
+        ],
+        [
+          "hen",
+          "hen.svg"
+        ],
+        [
+          "bird",
+          "bird.svg"
+        ]
+      ]
+    }
+  ]
+}

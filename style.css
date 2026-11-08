@@ -1648,3 +1648,16 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .pb-controls button { min-height:48px; touch-action:none; }
 
 #pinPad[hidden] { display:none; }
+.kid-chip-note,.who-limit{font-size:.85rem;opacity:.7;margin:.4rem 0}
+.wel-place{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.wel-place label{display:grid;gap:4px;font-weight:700;text-align:left}.wel-place select{font:inherit;font-size:17px;padding:8px 10px;border-radius:12px;border:2px solid #d9d2f2;min-width:9em}
+.m-lines .rubber{stroke:#9b8fd0;stroke-width:4;stroke-dasharray:6 6;pointer-events:none}.m-item{touch-action:none}.slot.full{touch-action:none;cursor:grab}.slot.lifting{opacity:.35}
+.chip-ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.9;transform:scale(1.1)}.g1-chip.lifting{opacity:.4}
+@media (orientation:landscape) and (min-width:900px) {
+  .g-pinball { position:relative; }
+  .g-pinball .pb-controls { position:absolute; left:0; right:0; bottom:14px; display:flex; justify-content:space-between; padding:0 130px 0 18px; pointer-events:none; z-index:4; }
+  .g-pinball .pb-controls .big-btn { pointer-events:auto; width:auto; padding:10px 20px; font-size:20px; white-space:nowrap; opacity:.88; }
+}
+#gameFull { margin-left:auto; margin-right:8px; }
+.immersive #game .play-top { padding-top:4px; padding-bottom:4px; }
+.immersive #game .play-title, .immersive .pb-dmd-msg { display:none; }
+.immersive .g-pinball .pb-dmd { padding-block:2px; }

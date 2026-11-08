@@ -14,7 +14,7 @@ const SHOTS = (() => { const i = process.argv.indexOf('--shots'); return i > 0 ?
   await p.locator('#startBtn').click(); await p.waitForTimeout(300);
   // 1. who sees the Library
   const tiles = await p.evaluate(() => Object.fromEntries(['prek', 'k', 'g1', 'g3'].map((g) => { state.grade = g; state.showAll = false; renderHome(); return [g, !!document.querySelector('#grid .tile[data-cat="library"]')]; })));
-  assert.deepEqual(tiles, { prek: true, k: true, g1: true, g3: false }, 'Story Time should include configured Grade 1 read-alongs');
+  assert.deepEqual(tiles, { prek: true, k: true, g1: true, g3: true }, 'Story Time should include configured Grade 1 read-alongs');
   await p.evaluate(() => { state.grade = 'prek'; state.voice = true; state.stats = { days: {}, skills: {} }; renderHome(); });
   // 2. shelf → cover
   await p.locator('#grid .tile[data-cat="library"]').click();
