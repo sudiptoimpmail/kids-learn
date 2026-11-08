@@ -65,7 +65,9 @@ const { chromium } = require('playwright');
       for (const k of '1234') await page.locator(`#pinPad [data-k="${k}"]`).click();
       await page.waitForTimeout(220);
     };
-    await enterPin(); await enterPin();
+    await page.evaluate(()=>{Object.defineProperty(navigator.credentials,'create',{configurable:true,value:async()=>({type:'public-key',response:{getAuthenticatorData:()=>{const a=new Uint8Array(37);a[32]=4;return a.buffer;}}})});});
+    await page.locator('#pinVerifyBtn').click();
+    await enterPin(); await enterPin(); await enterPin();
     assert.deepEqual(await page.evaluate(() => ({name:state.name,grade:state.grade,stars:state.stars})),
       {name:'Ava',grade:'k',stars:0});
     await page.evaluate(() => { openWho(); });

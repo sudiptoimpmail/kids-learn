@@ -47,7 +47,7 @@ function openDemonstration(demo,onDone){
     sheet.querySelector('[data-skip]').onclick=()=>{close();onDone?.();};
     if(s){sheet.querySelector('[data-next]').onclick=()=>{step++;paint();};if(s.audio){say(s.audio);sheet.querySelector('[data-replay]')?.addEventListener('click',()=>say(s.audio));}}
     else sheet.querySelectorAll('[data-answer]').forEach(b=>b.onclick=()=>{
-      $('#lessonFeedback').textContent=(b.dataset.answer===demo.try.answer?'Yes! ':'Let us look together. ')+demo.try.explanation;
+      $('#lessonFeedback').textContent=((demo.try.answers || [demo.try.answer]).includes(b.dataset.answer)?'Yes! ':'Let us look together. ')+demo.try.explanation;
       sheet.querySelector('[data-done]').hidden=false;sheet.querySelector('[data-done]').onclick=()=>{close();onDone?.();};
     });
   }paint();sheet.querySelector('button')?.focus();
@@ -57,7 +57,18 @@ const originalLearningRound=startRound;
 startRound=function(...args){
   const result=originalLearningRound(...args);
   const demo=learningConfig.demonstrations[args[0]+':'+(args[3]||levelOf(args[0]))];
-  showMe.hidden=!demo;showMe.onclick=()=>openDemonstration(demo);
+  showMe.hidden=!demo && args[0]!=='phonics';showMe.onclick=()=>{
+    if(R?.locked)return;
+    const q=R?.qs[R.i];
+    if(args[0]==='phonics' && q){
+      const right=q.letterPath ? [q.letterPath.L] : q.multi ? q.multi.map(String) : [String(q.answer)];
+      const options=q.letterPath ? [...new Set(q.letterPath.grid)].slice(0,4) : q.options?.length ? q.options.map(o=>String(o.v)) : right;
+      if(!options.includes(right[0]))options[0]=right[0];
+      const recorded=right.filter(word=>CLIPS[clipKey(word)]);
+      openDemonstration({title:'This question',steps:[{visual:q.letterSound?.toUpperCase() || q.blend?.join(' · ') || '',text:fitText(q.text),audio:Array.isArray(q.say)?q.say:[q.say]},{visual:right.join(' · '),text:q.letterPath ? `Follow the ${right[0]} letters.` : 'Listen to these words.',...(recorded.length?{audio:recorded}:{})}],try:{question:fitText(q.text),options,answer:right[0],answers:right,explanation:right.join(', ')}});
+    }else if(demo){openDemonstration(demo);}
+
+  };
   return result;
 };
 const originalJourneyOpen=journeyButton.onclick;

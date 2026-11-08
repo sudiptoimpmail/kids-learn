@@ -39,12 +39,12 @@ const TABLES = [
 ];
 
 export function start(tableIndex) {
-  const lv = GL('pinball');
+  const lv = GL('pinball'), target=gamePlayPolicy('pinball').target || TARGET[GL('pinball')-1];
   const T = TABLES[tableIndex != null ? tableIndex : Math.floor(Math.random() * 3)]; // Three child-friendly tables, randomized each new game
   const area = $('#gameArea');
   area.innerHTML = `<div class="pb-dmd"><div class="pb-dmd-top"><b class="pb-score">0</b><span class="pb-balls">● ● ●</span></div>
-      <div class="pb-dmd-msg">${T.icon} ${T.name.toUpperCase()}</div><div class="pb-dmd-bot"><span>TARGET ${TARGET[lv - 1].toLocaleString()}</span><span class="pb-mult">×1</span></div></div>
-    <div class="b3-wrap pb-wrap"><canvas class="game-cv pb-cv"></canvas><div class="b3-msg" hidden></div><button class="pb-launch" aria-label="Pull down and release to launch the ball"><span class="pb-plunger-handle" aria-hidden="true"></span><span class="pb-launch-label">PULL</span></button></div>`;
+      <div class="pb-dmd-msg">${T.icon} ${T.name.toUpperCase()}</div><div class="pb-dmd-bot"><span>TARGET ${target.toLocaleString()}</span><span class="pb-mult">×1</span></div></div>
+    <div class="b3-wrap pb-wrap"><canvas class="game-cv pb-cv"></canvas><div class="b3-msg" hidden></div><button class="pb-launch" aria-label="Pull down and release to launch the ball"><span class="pb-plunger-handle" aria-hidden="true"></span><span class="pb-launch-label">PULL</span></button></div><div class="pb-controls"><button class="big-btn" data-flipper="L">◀ Left flipper</button><button class="big-btn" data-flipper="R">Right flipper ▶</button></div>`;
   say('Tap to launch the ball!');
 
   const cv = $('.pb-cv', area), wrap = $('.b3-wrap', area);
@@ -293,7 +293,7 @@ export function start(tableIndex) {
     G.score += pts; $('.pb-score', area).textContent = G.score.toLocaleString();
     if (x != null) popup(x, y, `+${pts}`, pts >= 500 ? T.glow : '#ffffff');
     if (label) dmd(`${label}  +${pts}`);
-    if (!G.leveled && G.score >= TARGET[lv - 1]) { G.leveled = true; flash('🎯 Target reached!'); sfx.win(); confetti(80, 0.4); }
+    if (!G.leveled && G.score >= target) { G.leveled = true; flash('🎯 Target reached!'); sfx.win(); confetti(80, 0.4); }
   };
   const hit = (k) => (G.hits[k] = (G.hits[k] || 0) + 1);
   const ballsTxt = () => ($('.pb-balls', area).textContent = '● '.repeat(Math.max(0, G.balls)).trim());
@@ -316,6 +316,12 @@ export function start(tableIndex) {
     pointers.set(e.pointerId, side); press(side, true);
   });
   const release = (e) => { const side = pointers.get(e.pointerId); if (side) { pointers.delete(e.pointerId); if (![...pointers.values()].includes(side)) press(side, false); } };
+  area.querySelectorAll('[data-flipper]').forEach(button=>{
+    button.onpointerdown=e=>{e.preventDefault();button.setPointerCapture?.(e.pointerId);pointers.set(e.pointerId,button.dataset.flipper);press(button.dataset.flipper,true);};
+    button.onpointerup=release;button.onpointercancel=release;button.onlostpointercapture=release;
+    button.onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();press(button.dataset.flipper,true);}};
+    button.onkeyup=()=>press(button.dataset.flipper,false);button.onblur=()=>press(button.dataset.flipper,false);
+  });
   cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', release); cv.addEventListener('lostpointercapture', release);
   // Touch either half of the playfield to operate its physical flipper.
   // A dedicated plunger lives next to the launch lane. Drag downward and let go.
@@ -459,7 +465,7 @@ export function start(tableIndex) {
     state.pinBest = Math.max(state.pinBest || 0, G.score);
     const up = G.leveled ? gameLevelUp('pinball', 1) : (save(), false);
     gameWin(G.leveled ? 'Awesome job!' : 'Great game!');
-    later(() => endPanel(`Score: ${G.score.toLocaleString()}${G.leveled ? '' : `<br><small>Score ${TARGET[lv - 1].toLocaleString()} to reach the next level</small>`}<br><small>Best: ${state.pinBest.toLocaleString()}</small>`, '🎯', () => start(), up), 700);
+    later(() => endPanel(`Score: ${G.score.toLocaleString()}${G.leveled ? '' : `<br><small>Score ${target.toLocaleString()} to reach the next level</small>`}<br><small>Best: ${state.pinBest.toLocaleString()}</small>`, '🎯', () => start(), up), 700);
   }
 
   /* ---------------- the loop ---------------- */

@@ -122,7 +122,7 @@ const spokenNumber = (p) => {
 };
 const sayParts = (text) => (Array.isArray(text) ? text.map(String) : splitSentences(text)).flatMap(spokenNumber).map((p) => (typeof localSpoken === 'function' ? localSpoken(p) : p));
 function prefetch(text) { if (text) sayParts(text).forEach((p) => { const f = CLIPS[clipKey(p)]; if (f) getBuf(f).catch(() => {}); }); }
-function stopClip() { try { curSrc && curSrc.stop(); } catch {} curSrc = null; try { htmlPlayer.pause(); } catch {} }
+function stopClip() { try { curSrc && curSrc.stop(); } catch {} curSrc = null; try { htmlPlayer.pause(); htmlPlayer.removeAttribute('src'); htmlPlayer.load(); } catch {} }
 
 function htmlPlay(file, token = sayToken, rate = 1) {
   if (token !== sayToken) return Promise.resolve();
@@ -131,7 +131,7 @@ function htmlPlay(file, token = sayToken, rate = 1) {
     htmlPlayer.onended = fin; htmlPlayer.onerror = fin;
     htmlPlayer.src = 'audio/' + file;
     htmlPlayer.playbackRate = rate; htmlPlayer.preservesPitch = true;
-    const p = htmlPlayer.play(); if (p && p.catch) p.catch(fin);
+    const p = htmlPlayer.play(); if (p && p.then) p.then(() => { if (token !== sayToken) { htmlPlayer.pause(); fin(); } }).catch(fin);
     setTimeout(fin, 30000 / rate);
   });
 }
@@ -271,10 +271,11 @@ $('#qZoomOut').onclick = () => setQuestionZoom(questionZoom / 1.4);
 $('#qZoomReset').onclick = () => setQuestionZoom(1);
 
 /* ---------- screens ---------- */
-let homeScrollY = 0;
+let homeScrollY = 0, navigationEpoch = 0;
 function show(id) {
   const previous = $('.screen.active');
   if (previous && previous.id !== id) {
+    navigationEpoch++;
     sayToken++; stopClip();
     if (previous.id === 'game' && typeof stopGame === 'function') stopGame();
   }
@@ -422,7 +423,7 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
     save();
   }
   if (!qs.length) { renderHome(); show('home'); return; }   // nothing for this grade (e.g. a stale link)
-  R = { cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse, atLevel };
+  R = { sessionLevel: levelOf(cat.id), cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse, atLevel };
   $('#playTitle').textContent = `${cat.icon} ${typeof editionTitle === 'function' ? editionTitle(cat.id, localTileTitle(cat.id, cat.title)) : cat.title}`;
   document.body.style.setProperty('--theme', cat.color);
   show('play');
@@ -430,7 +431,7 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
 }
 
 function renderProgress() {
-  $('#diffLv').textContent = R.cat.id === 'mix' ? '' : (([s, n]) => `Step ${s} of ${n}`)(gradeStep(R.cat.id, R.qs[Math.min(R.i, R.qs.length - 1)].level));
+  $('#diffLv').textContent = R.cat.id === 'mix' ? '' : (([s, n]) => `Step ${s} of ${n}`)(gradeStep(R.cat.id, R.sessionLevel));
   $('#diffBtn').hidden = R.cat.id === 'mix';
   $('#qaPosition').textContent = (R.i + 1) + ' / ' + R.qs.length;
   $('#prevBtn').disabled = R.i === 0;
@@ -527,7 +528,7 @@ function renderQ() {
   // nudge the hint after a while, but never show the picture by itself
   clearTimeout(R.nudge);
   R.nudge = setTimeout(onCard(q, () => { if (!q.hintShown) $('#hintBtn').classList.add('glow'); }), 12000);
-  setTimeout(onCard(q, () => say(q.say || '')), 250);
+  setTimeout(onCard(q, () => { if(!$('#lessonSheet'))say(q.say || ''); }), 250);
   const nq = R.qs[R.i + 1]; if (nq) { prefetch(nq.say); nq.hint && prefetch(nq.hint.say); }
   q.hint && prefetch(q.hint.say);
 }
@@ -752,11 +753,13 @@ function renderPuzzle(q) {
 // tap ALL the right ones: each right tap stays lit; a wrong tap is a mistake; the last right one answers the card
 function renderMulti(q) {
   const want = new Set(q.multi.map(String)), got = new Set();
+  const status = document.createElement('p'); status.className='multi-status'; status.setAttribute('role','status'); $('#qMain').appendChild(status);
+  const paint = () => { status.textContent = `${got.size} of ${want.size} found`; }; paint();
   [...$('#options').children].forEach((b, k) => (b.onclick = () => {
     if (R.locked || R.qs[R.i] !== q) return;
     const v = String(q.options[k].v);
     if (got.has(v)) return;
-    if (want.has(v)) { got.add(v); b.classList.add('right'); sfx.yes(); if (got.size === want.size) matchDone(q); }
+    if (want.has(v)) { got.add(v); paint(); b.classList.add('right'); sfx.yes(); if (got.size === want.size) matchDone(q); }
     else { q.tries++; R.mistakes++; R.streak = 0; b.classList.add('wrong'); b.disabled = true; sfx.no(); if (q.tries === 1) say('Look carefully, and try again!'); }
   }));
   if (isTestMode()) [...$('#options').children].forEach((b, k) => { if (want.has(String(q.options[k].v))) b.dataset.ok = '1'; });
@@ -1091,9 +1094,9 @@ function speakPart(v, part) {
 }
 function lightPart(part) { $$('#learnCard [data-part]').forEach((b) => b.classList.toggle('reading', b.dataset.part === part)); }
 async function readCard(v) {
-  const my = L.i;
+  const my = L.i, epoch=navigationEpoch;
   for (const part of ['word', 'meaning', 'example']) {
-    if (L.i !== my || !$('#learn').classList.contains('active')) return;
+    if (epoch !== navigationEpoch || L.i !== my || !$('#learn').classList.contains('active')) return;
     lightPart(part);
     await say([{ word: v[0], meaning: vocabMeaning(v), example: v[3] }[part]]);
   }
@@ -1258,7 +1261,7 @@ function openSettings() {
   $('#countrySel').innerHTML = COUNTRY_ORDER.map((k) => `<option value="${k}">${COUNTRIES[k].flag} ${COUNTRIES[k].label}</option>`).join('') + '<option value="other">🌍 Somewhere else</option>';
   $('#countrySel').value = countryCode();
   fillRegions();
-  $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !state.hideClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 2); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
+  $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !state.hideClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 1); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = visibleGames().filter((c) => c.gen && c.id !== 'placement').map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option value="${l}" ${levelOf(c.id) === l ? 'selected' : ''}>${((r) => r && l >= r[0] && l <= r[1] ? `Step ${l - r[0] + 1} of ${r[1] - r[0] + 1}` : `Library level ${l}`)(state.grade && gradeRange(state.grade, c.id))}</option>`).join('')}</select></label>`).join('');
   renderTestBrowser();
@@ -1295,7 +1298,46 @@ function openSettings() {
 
 /* ---------- grown-up PIN (asked before Settings) ---------- */
 const pinHash = (p) => { let h = 5381; for (const ch of 'lp:' + p) h = ((h * 33) ^ ch.charCodeAt(0)) >>> 0; return h.toString(36); };
-function askPin(onOk, change = false) {
+let parentVerificationEpoch=0;
+function verifyParentDevice(onVerified) {
+  const epoch=++parentVerificationEpoch;
+  const sheet=$('#pinSheet'); sheet.hidden=false;
+  $('#pinTitle').textContent='Grown-up setup';
+  $('#pinNote').textContent='Use the device owner’s fingerprint, face or device passcode before creating a PIN.';
+  $('#pinPad').hidden=true; $('#pinPad').onclick=null; $('#pinForgotBtn').hidden=true; $('#pinForgot').hidden=true;
+  let cancelled=false;
+  $('#pinVerifyBtn')?.remove();
+  const button=document.createElement('button'); button.id='pinVerifyBtn';button.className='big-btn';button.textContent='Verify device owner';
+  $('#pinPad').before(button);
+  const close=()=>{cancelled=true;sheet.hidden=true;button.remove();$('#pinPad').hidden=false;};
+  $('#pinBack').onclick=close;sheet.onclick=e=>{if(e.target===sheet)close();};
+  button.onclick=async()=>{
+    button.disabled=true;
+    try {
+      if(!window.isSecureContext || !navigator.credentials?.create || !window.PublicKeyCredential) throw Error('unsupported');
+      const credential=await navigator.credentials.create({publicKey:{
+        challenge:crypto.getRandomValues(new Uint8Array(32)),rp:{name:'Learn & Play parent setup'},
+        user:{id:crypto.getRandomValues(new Uint8Array(16)),name:'parent-'+Date.now(),displayName:'Learn & Play parent'},
+        pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],
+        authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},
+        timeout:60000,attestation:'none'
+      }});
+      if(cancelled || epoch!==parentVerificationEpoch)return;
+      const authData=credential?.response?.getAuthenticatorData?.();
+      if(!credential || credential.type!=='public-key' || !authData || !(new Uint8Array(authData)[32]&4))throw Error('not verified');
+      close();onVerified();
+    } catch(error) {
+      if(cancelled || epoch!==parentVerificationEpoch)return;
+      $('#pinNote').textContent='Device verification was not completed. Set up a device passcode or biometric unlock and try again in a supported browser. Parent controls stay locked.';
+      button.disabled=false;
+    }
+  };
+}
+function askPin(onOk, change = false, verified = false) {
+  parentVerificationEpoch++;
+  if(change && state.pinHash && !verified)return askPin(()=>askPin(onOk,true,true));
+  if (!state.pinHash && !verified) return verifyParentDevice(() => askPin(onOk, change, true));
+  $('#pinPad').hidden=false;
   const sheet = $('#pinSheet'); let typed = '', first = null, closed=false;
   const request=askPin.request=(askPin.request||0)+1;
   const mode = () => (!state.pinHash || change ? (first ? 'confirm' : 'new') : 'check');
@@ -1328,7 +1370,7 @@ function askPin(onOk, change = false) {
         else { typed = ''; shake(); paint(); kidNote(); askPin.misses = (askPin.misses || 0) + 1; if (askPin.misses >= 3) { askPin.lockUntil = Date.now() + 30000 * (askPin.misses - 2); $('#pinNote').textContent = 'Too many tries. Wait 30 seconds.'; } }
       }
       else if (m === 'new') { first = typed; typed = ''; paint(); }
-      else if (typed === first) { state.pinHash = pinHash(typed); save(); close(); sfx.yes(); onOk(); }
+      else if (typed === first) { state.pinHash = pinHash(typed); save(); close(); sfx.yes(); askPin(onOk); }
       else { first = null; typed = ''; shake(); paint(); }
     }, 150);
   };
@@ -1377,6 +1419,9 @@ function fillRegions() {
   state.region = $('#regionSel').value;
 }
 function collectSettings() {
+  const oldMinutes=playMinutes();
+  const nextMinutes=+$('#playMinutes').value;
+  if(nextMinutes>oldMinutes && playBalance()>0 && !hourlyMode()) state.playRemainingMs += (nextMinutes-oldMinutes)*60000;
   state.name = $('#nameInput').value.trim().slice(0, 20);
   state.voice = $('#voiceToggle').checked;
   const countryChanged = state.country !== $('#countrySel').value;

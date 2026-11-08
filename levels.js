@@ -19,13 +19,13 @@ function gradeName(g) { return (GRADE_NAMES[levelsCC()] || GRADE_NAMES.us)[g] ||
 // where the child is inside their grade: [step, steps]
 function gradeStep(id, lv = levelOf(id)) {
   const r = state.grade && gradeRange(state.grade, id);
-  if (!r) { const max = maxLevelOf(id); return [Math.max(1, Math.ceil((lv / max) * 3)), 3]; }
+  if (!r) { const max = maxLevelOf(id); return [Math.max(1, Math.min(max, lv)), max]; }
   const steps = r[1] - r[0] + 1;
   return [Math.min(steps, Math.max(1, lv - r[0] + 1)), steps];
 }
 function stepDots(id, lv) {
   const [s, n] = gradeStep(id, lv);
-  return `<span class="lv steps" aria-label="Step ${s} of ${n}">${'●'.repeat(s)}${'○'.repeat(Math.max(0, n - s))}</span>`;
+  return `<span class="lv steps" aria-label="Step ${s} of ${n}">Step ${s} of ${n}</span>`;
 }
 // a game's own level (mazes, puzzles…) shown as three dots
 function gameDots(lv, max) {

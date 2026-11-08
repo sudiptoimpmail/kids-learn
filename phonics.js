@@ -42,10 +42,13 @@ function wireBlend(q) {
   const playOne = (i) => { lit(i); return say([soundClip(q.blend[i])]).then(() => lit(-1)); };
   // keyboard only: a finger or mouse tap is handled on pointerdown below (the row captures the pointer, so taps never reach a tile's click)
   tiles.forEach((t, i) => (t.onclick = (e) => { e.stopPropagation(); if (e.detail === 0) playOne(i); }));
+  const epoch=navigationEpoch;
+  const current = () => epoch===navigationEpoch && R && R.qs[R.i] === q && $('#play').classList.contains('active');
   let blending = false;
   const blendAll = async () => {
     if (blending) return; blending = true;
-    for (let i = 0; i < tiles.length; i++) { lit(i); await say([soundClip(q.blend[i])]); await sleep(120); }
+    for (let i = 0; i < tiles.length; i++) { if (!current()) { blending=false; return; } lit(i); await say([soundClip(q.blend[i])]); await sleep(120); }
+    if (!current()) { blending=false; return; }
     lit(-1); tiles.forEach((t) => t.classList.add('joined'));
     await say([q.answer]); setTimeout(() => tiles.forEach((t) => t.classList.remove('joined')), 900); blending = false;
   };
@@ -61,7 +64,7 @@ function wireBlend(q) {
   row.onpointermove = (e) => {
     if (!e.buttons && e.pointerType === 'mouse') return;
     const i = tileAt(e.clientX);
-    if (i > seen) { seen = i; lit(i); say([soundClip(q.blend[i])]); if (i === tiles.length - 1) setTimeout(() => { lit(-1); say([q.answer]); }, 450); }
+    if (i > seen) { seen = i; lit(i); say([soundClip(q.blend[i])]); if (i === tiles.length - 1) setTimeout(onCard(q, () => { lit(-1); say([q.answer]); }), 450); }
   };
 }
 // a big letter you can tap to hear its sound

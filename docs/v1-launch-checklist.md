@@ -33,3 +33,12 @@ The latest parent QA review controls scope. Pause the unshipped puzzle-size, dra
 - [ ] Review all arcade games for speed and frustration in Pre-K, particularly Pinball, Ball Maze and Rolling Ball.
 
 Automated browser results are evidence of regression coverage, not physical-device or App Store acceptance. Mark items complete only with recorded verification.
+
+## Follow-up QA blockers (cache v123)
+
+- Removed country/continent SVG tap questions from v1; World Map retains highlighted-map questions with large answer buttons.
+- First PIN setup requires platform WebAuthn device-owner verification with the user-verified flag; cancellation/unsupported browsers stay locked. Creation is followed by a separate PIN check. This verifies a device credential, not age or legal parenthood. Real iPhone/iPad verification is a release gate.
+- Excluded ambiguous nut/peanut, mug/coffee and two pictures from phonics; multi-answer cards show found/total; Show me derives its example from the current card.
+- Phonics blending and Word Wonders narration stop across navigation epochs; fallback audio is unloaded. Device audio retest remains required. Home now displays explicit grade-step text, matching the current activity progress shown in play and Settings. Review questions do not redefine saved activity progress.
+- Pre-K Balloon target 4 in 45 seconds; Whack target 3 with longer visibility and Gentle/Normal control; Pinball target 500 and visible pointer/keyboard flipper buttons. Kindergarten uses separate shared-policy targets. Ball Maze continues toward the last swipe position with faster collision-checked movement; touch feel still needs device acceptance.
+- New default earn interval is one learning round; existing explicit parent intervals remain honored. Earned breaks immediately add to remaining time, including active grants. Increasing minutes in Settings adds only the increase to an active grant, once. Arcade results cannot restart an expired grant.

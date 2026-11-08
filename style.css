@@ -1642,3 +1642,9 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 }
 
 .play-clock.time-warning { background: #fff3bf; color: #713f12; outline: 2px solid #f59f00; }
+
+.multi-status { font-size: 1.2rem; font-weight: 800; padding: 8px; color: #1864ab; }
+.pb-controls { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.pb-controls button { min-height:48px; touch-action:none; }
+
+#pinPad[hidden] { display:none; }
