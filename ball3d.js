@@ -453,17 +453,17 @@ export function start() {
   // input: drag to steer, quick tap to jump
   let drag = null, tilt = null;
   cv.style.touchAction = 'none';
-  cv.addEventListener('pointerdown', (e) => { e.preventDefault(); drag = { x0: e.clientX, y0: e.clientY, t0: S.tx, time: performance.now(), moved: 0, act: null }; cv.setPointerCapture && cv.setPointerCapture(e.pointerId); });
+  cv.addEventListener('pointerdown', (e) => { e.preventDefault(); drag = { x0: e.clientX, y0: e.clientY, t0: S.tx, time: e.timeStamp, moved: 0, act: null }; cv.setPointerCapture && cv.setPointerCapture(e.pointerId); });
   cv.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const dx = e.clientX - drag.x0, dy = e.clientY - drag.y0; drag.moved = Math.max(drag.moved, Math.abs(dx), Math.abs(dy));
     if (!drag.act && dy < -55) {                       // a sudden flick up = big jump; a longer drag forward = speed boost
-      if (performance.now() - drag.time < 300) { drag.act = 'jump'; bigJump(); } else { drag.act = 'boost'; speedBoost(); }
+      if (e.timeStamp - drag.time < 300) { drag.act = 'jump'; bigJump(); } else { drag.act = 'boost'; speedBoost(); }
     }
     S.tx = Math.max(-2.2, Math.min(2.2, drag.t0 - dx / (w / 5.5)));   // camera faces +z: screen-right is lane -x
   });
-  const up = () => {
-    if (drag && !drag.act && drag.moved < 12 && performance.now() - drag.time < 300) jump();
+  const up = (e) => {
+    if (drag && !drag.act && drag.moved < 12 && e.timeStamp - drag.time < 300) jump();
     drag = null;
   };
   cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', () => (drag = null));

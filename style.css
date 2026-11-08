@@ -1738,3 +1738,5 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .question-line::before { content: "❓ "; }
 
 .b3-gems.bump { animation: bounce .3s; }
+.dr-tool .bk-ico { width: 34px; height: 34px; display: block; margin: 0 auto -2px; }
+.dr-tool.on .bk-ico { animation: wiggle .5s ease-in-out infinite; }

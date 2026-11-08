@@ -166,7 +166,7 @@ const GAMES = [
   { id: 'maze', title: 'Ball Maze', icon: '🟫', color: '#c0874f', start: startBallMaze },
   { id: 'path', title: 'Finger Maze', icon: '🐥', color: '#f59f00', start: () => startPathMaze() },
   { id: 'whack', title: 'Whack-a-Mole', icon: '🐹', color: '#a9734a', start: startWhack, max: 5 },
-  { id: 'draw', title: 'Draw & Copy', icon: '✏️', color: '#e8590c', start: startDraw },
+  { id: 'draw', title: 'Draw & Copy', icon: '✏️', color: '#e8590c', start: drawChooser },
   { id: 'moves', title: 'Silly Moves', icon: '🤸', color: '#12b886', start: startMoves },
 ];
 // level per game; winning moves you up (needWins wins per level)
@@ -421,7 +421,7 @@ function startPop() {
     const r = (lv <= 2 ? 40 : lv <= 4 ? 34 : 30) + Math.random() * 10;
     const star = Math.random() < 0.1;
     balloons.push({ x: r + Math.random() * (w - 2 * r), y: h + r, r, color: star ? '#fcc419' : pick(colors),
-      vy: (55 + lv * 20) * (policy.speedScale || 1) * (0.85 + Math.random() * 0.4) * (policy.accelerate === false ? 1 : Math.min(2.6, 1 + score * 0.06)) + (policy.accelerate === false ? 0 : elapsed * 1.5), wob: Math.random() * 6, star });
+      vy: 0.9 * ((55 + lv * 20) * (policy.speedScale || 1) * (0.85 + Math.random() * 0.4) * (policy.accelerate === false ? 1 : Math.min(2.6, 1 + score * 0.06)) + (policy.accelerate === false ? 0 : elapsed * 1.5)), wob: Math.random() * 6, star });
   }
   const clouds = Array.from({ length: 5 }, (_, k) => ({ x: Math.random() * 1.2, y: 0.08 + k * 0.13 + Math.random() * 0.05, s: 0.6 + Math.random() * 0.8, v: 0.004 + Math.random() * 0.006 })), pops = [];
   const cloudAt = (x, y, s) => { c.fillStyle = '#ffffffcc'; c.beginPath(); c.arc(x, y, 22 * s, 0, 7); c.arc(x + 26 * s, y - 10 * s, 28 * s, 0, 7); c.arc(x + 58 * s, y, 22 * s, 0, 7); c.arc(x + 30 * s, y + 8 * s, 24 * s, 0, 7); c.fill(); };
@@ -1467,7 +1467,7 @@ function startDraw(refIndex) {
     <div class="dr-zoom"><button data-dz="out" aria-label="Zoom out">−</button><button data-dz="reset" aria-label="Reset zoom">1×</button><button data-dz="in" aria-label="Zoom in">＋</button><span>Two fingers: zoom / move</span></div><div class="dr-pad"><canvas class="dr-fill"></canvas>${(([w, o]) => `<div class="dr-guide dr-guide-${Math.min(4, lv)}" style="opacity:${o}">${drawSVG(ref.d, w)}</div>`)(DRAW_GUIDE[Math.min(4, Math.max(1, lv))])}<canvas class="dr-cv"></canvas></div>
     <div class="dr-tools">${INK.map((c, i) => `<button class="dr-ink ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}"></button>`).join('')}
       <button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✎<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
-      <button class="dr-tool" data-t="bucket" aria-label="Pour paint">🪣<small>Pour</small></button><button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>
+      <button class="dr-tool" data-t="bucket" aria-label="Pour paint"><svg class="bk-ico" viewBox="0 0 36 36" aria-hidden="true"><g transform="rotate(-22 18 20)"><path d="M7 14h20l-2.4 15.2a2.4 2.4 0 0 1-2.4 2H11.8a2.4 2.4 0 0 1-2.4-2z" fill="#e9ecef" stroke="#495057" stroke-width="1.8" stroke-linejoin="round"/><path d="M7.6 17h18.8l-.6 4H8.2z" fill="var(--pour,#4dabf7)"/><path d="M8 14c0-5 4-8 9-8s9 3 9 8" fill="none" stroke="#495057" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="17" cy="14" rx="10" ry="2.2" fill="var(--pour,#4dabf7)" stroke="#495057" stroke-width="1.6"/></g><path d="M29 22c2.6 3.4 3.8 5.4 3.8 7a3.8 3.8 0 0 1-7.6 0c0-1.6 1.2-3.6 3.8-7z" fill="var(--pour,#4dabf7)" stroke="#495057" stroke-width="1.4"/></svg><small>Fill</small></button><button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>
     <div class="color-btns"><button class="big-btn alt small ico" data-a="choose" aria-label="Choose a picture">🎯 Choose</button><button class="big-btn alt small ico" data-a="new" aria-label="New picture">🔄 New</button><button class="big-btn alt small ico" data-a="gallery" aria-label="My drawings">🖼️ Mine</button><button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
   say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
   const cv = $('.dr-cv', area), pad = $('.dr-pad', area);
@@ -1478,11 +1478,6 @@ function startDraw(refIndex) {
   // paint goes on its own layer under the guide and the pencil lines
   const fc = $('.dr-fill', area); fc.width = fc.height = cv.width; fc.style.width = fc.style.height = W + 'px';
   const fctx = fc.getContext('2d');
-  // the guide's outlines hold the paint in, like the child's own lines
-  const gl = document.createElement('canvas'); gl.width = gl.height = cv.width; const gctx = gl.getContext('2d');
-  { const gw = Math.max(5, DRAW_GUIDE[Math.min(4, Math.max(1, lv))][0] * 0.8), img = new Image();
-    img.onload = () => gctx.drawImage(img, 0.06 * cv.width, 0.06 * cv.width, 0.88 * cv.width, 0.88 * cv.width);
-    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="400" height="400"><g fill="none" stroke="#000" stroke-width="${gw}" stroke-linecap="round" stroke-linejoin="round">${ref.d}</g></svg>`); }
   let color = INK[0], size = 7, tool = "pencil", erase = false, strokes = [], cur = null, bucket = false;
   // Keep gesture pointers separate from drawing strokes.
   let zoom = 1, panX = 0, panY = 0, gesture = null;
@@ -1509,8 +1504,8 @@ function startDraw(refIndex) {
   };
   // flood fill: pour paint into the closed shape under the finger; lines (guide or drawn) hold it in
   function fillAt(op) {
-    const N = cv.width, sd = c.getImageData(0, 0, N, N).data, gd = gctx.getImageData(0, 0, N, N).data;
-    const blocked = (i) => sd[i * 4 + 3] > 60 || gd[i * 4 + 3] > 60;
+    const N = cv.width, sd = c.getImageData(0, 0, N, N).data;
+    const blocked = (i) => sd[i * 4 + 3] > 60;     // only the child's own lines hold paint in, not the template
     let sx = Math.round(op.x * dpr), sy = Math.round(op.y * dpr);
     if (sx < 0 || sy < 0 || sx >= N || sy >= N) return false;
     if (blocked(sy * N + sx)) {                       // landed on a line: use the nearest open spot
@@ -1525,6 +1520,9 @@ function startDraw(refIndex) {
       const p = stack.pop(), x = p % N, y = (p - x) / N;
       for (const q of [x > 0 ? p - 1 : -1, x < N - 1 ? p + 1 : -1, y > 0 ? p - N : -1, y < N - 1 ? p + N : -1]) if (q >= 0 && !mask[q] && !blocked(q)) { mask[q] = 1; stack.push(q); }
     }
+    let area = 0; for (let i = 0; i < N * N; i++) area += mask[i];
+    if (area > N * N * 0.82) { fillAt.open = true; return false; }     // not a closed shape: don't flood the whole page
+    fillAt.open = false;
     // grow the paint a hair under the lines so no pale halo shows
     const grown = new Uint8Array(mask); const g = Math.max(2, Math.round(2 * dpr));
     for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (mask[y * N + x]) for (let d = 1; d <= g; d++) {
@@ -1575,7 +1573,7 @@ function startDraw(refIndex) {
     if (bucket) {                                            // pour paint instead of drawing
       const [bx, by] = pt(e), op = { fill: true, x: bx, y: by, color: erase ? null : color };
       if (fillAt(op)) { strokes.push(op); sfx.tap(); tone([330, 440, 587], { dur: 0.05, gap: 0.04, vol: 0.08 }); pad.classList.remove('poured'); void pad.offsetWidth; pad.classList.add('poured'); }
-      else sfx.no();
+      else { sfx.no(); say(fillAt.open ? 'Draw a shape with no gaps, then pour paint inside it!' : 'Tap inside a shape to pour paint.'); }
       touches.delete(e.pointerId);
       return;
     }
@@ -1609,14 +1607,14 @@ function startDraw(refIndex) {
   pad.addEventListener('pointerup', end);
   pad.addEventListener('pointercancel', end);
   function redrawLast() { redraw(); }
-  $$('.dr-ink', area).forEach((b) => (b.onclick = () => { $$('.dr-ink', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); color = b.dataset.c; erase = false; $('[data-t="erase"]', area).classList.remove('on'); sfx.tap(); }));
+  $$('.dr-ink', area).forEach((b) => (b.onclick = () => { $$('.dr-ink', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); color = b.dataset.c; $('[data-t="bucket"]', area).style.setProperty('--pour', color); erase = false; $('[data-t="erase"]', area).classList.remove('on'); sfx.tap(); }));
   $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; tool = b.dataset.tool || 'pencil'; bucket = false; $('[data-t="bucket"]', area).classList.remove('on'); sfx.tap(); }));
   $('[data-t="erase"]', area).onclick = (e) => { erase = !erase; e.currentTarget.classList.toggle('on', erase); sfx.tap(); };
   $('[data-t="bucket"]', area).onclick = (e) => { bucket = !bucket; e.currentTarget.classList.toggle('on', bucket); if (bucket) $$('.dr-size', area).forEach((x) => x.classList.remove('on')); sfx.tap(); say(bucket ? 'Tap a shape to pour paint in!' : 'Draw with your finger!'); };
   $('[data-t="undo"]', area).onclick = () => { strokes.pop(); replay(); sfx.tap(); };
   $('[data-t="clear"]', area).onclick = () => { strokes = []; replay(); sfx.tap(); };
   area.querySelector('[data-a="choose"]').onclick = () => { sfx.tap(); drawChooser(); };
-  area.querySelector('[data-a="new"]').onclick = () => { sfx.tap(); startDraw(); };
+  area.querySelector('[data-a="new"]').onclick = () => { sfx.tap(); drawChooser(); };
   area.querySelector('[data-a="gallery"]').onclick = () => { sfx.tap(); drawGallery(); };
   area.querySelector('[data-a="done"]').onclick = () => {
     if (!strokes.length) { say('Draw something first!'); return; }
@@ -1626,16 +1624,19 @@ function startDraw(refIndex) {
     state.drawings = [{ img: t.toDataURL('image/jpeg', 0.7), name: ref.name }, ...(state.drawings || [])].slice(0, 12);
     const up = gameLevelUp('draw', 3);
     gameWin(pick(['Beautiful drawing!', 'What a great drawing!', 'Awesome job!']));
-    endPanel(`What a great ${ref.name}!${up ? '' : '<br><small>Saved in My drawings 🖼️</small>'}`, '🎨', () => startDraw(), up);
+    endPanel(`What a great ${ref.name}!${up ? '' : '<br><small>Saved in My drawings 🖼️</small>'}`, '🎨', () => drawChooser(), up);
   };
 }
 // pick what to draw
 function drawChooser() {
   const area = $('#gameArea'), refs = drawRefs(GL('draw'));
-  area.innerHTML = `<div class="g-msg">What do you want to draw? <small>Tap a picture</small></div>
+  area.innerHTML = `<div class="g-msg">Pick a picture to draw! <small>${refs.length} pictures · ✏️ trace or copy it, then pour paint inside your own drawing</small></div>
+    <div class="color-btns"><button class="big-btn alt small ico" data-a="surprise">🎲 Surprise me</button><button class="big-btn alt small ico" data-a="gallery">🖼️ My drawings</button></div>
     <div class="pic-grid dr-choose">${refs.map((r, i) => `<button class="pic-pick" data-i="${i}">${r.svg}<span>${r.name}</span></button>`).join('')}</div>`;
-  say('What do you want to draw?');
+  say('Pick a picture to draw!');
   $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startDraw(+b.dataset.i); }));
+  area.querySelector('[data-a="surprise"]').onclick = () => { sfx.tap(); startDraw(); };
+  area.querySelector('[data-a="gallery"]').onclick = () => { sfx.tap(); drawGallery(); };
 }
 function drawGallery() {
   const area = $('#gameArea');
@@ -1643,7 +1644,7 @@ function drawGallery() {
   area.innerHTML = `<div class="g-msg">🖼️ My drawings <small>${list.length ? 'Your last ' + list.length + ' drawings' : 'Finish a drawing to see it here!'}</small></div>
     <div class="dr-gal">${list.map((d) => `<figure><img src="${d.img}" alt=""><figcaption>${d.name}</figcaption></figure>`).join('')}</div>
     <div class="color-btns"><button class="big-btn small ico" data-a="back" aria-label="Draw more">✏️ Draw</button></div>`;
-  area.querySelector('[data-a="back"]').onclick = () => { sfx.tap(); startDraw(); };
+  area.querySelector('[data-a="back"]').onclick = () => { sfx.tap(); drawChooser(); };
 }
 
 $('#playBanner').onclick = () => { sfx.tap(); openPlayZone(); };
