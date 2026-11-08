@@ -183,6 +183,13 @@ function mountCrossword(root, nWords, lv, cb) {
     sfx.tap(); selK = c.dataset.k; paint();
   });
   $$('.xw-key', root).forEach((b) => (b.onclick = () => { if (done || !selK) return; sfx.tap(); put(selK, b.dataset.l); }));
+  // drag a letter from the tray into a box, or move a typed letter to another box (tapping still works)
+  const okCell = (k) => !given.has(k) && !words.some((p) => p.ok && wordCells(p).includes(k));
+  $$('.xw-key:not(.del)', root).forEach((b) => chipDrag(b, () => open.filter(okCell).map(cellEl), (el) => { if (done) return; selK = el.dataset.k; sfx.tap(); put(selK, b.dataset.l); }));
+  open.forEach((k) => chipDrag(cellEl(k), () => open.filter((x) => x !== k && okCell(x)).map(cellEl), (el) => {
+    const l = typed.get(k); if (done || !l || !okCell(k)) return;
+    typed.delete(k); cellEl(k).textContent = ''; selK = el.dataset.k; sfx.tap(); put(selK, l);
+  }));
   paint();
   if (testFeatureAvailable()) window.__crossword = { words, cells, given, type: (k, l) => { selK = k; put(k, l); } };
   // hint: one right letter goes in

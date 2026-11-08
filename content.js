@@ -436,10 +436,10 @@ function genSentence(level, authoredRow = null) {
   return {
     key: `sent-${s}`, qkey: q,
     ...(curriculumSkill ? { curriculumSkill } : {}),
-    text: '📖 Read, then answer',     // the question is shown once, under the sentence
+    text: '<span class="read-note">📖 Read the sentence. Then answer the question.</span>',     // the question is shown once, under the sentence
     // New print-first passages deliberately use only a known natural recording;
     // do not synthesize question text whose audio has not been recorded.
-    say: printFirst ? 'Find the answer.' : '',
+    say: 'Read the sentence. Then answer the question.',
     readQ: printFirst ? null : q,
     main: `<div class="sentence${long}">${words}</div>${photo}<div class="question-line">${q}</div>`,
     options: shuffle(opts).map((o) => ({ v: o, html: o })),

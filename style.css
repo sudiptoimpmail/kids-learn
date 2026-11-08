@@ -1724,9 +1724,15 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .qa-card small { color: #8a7fa8; }
 .qa-issue { color: #c92a2a; font-weight: 700; }
 
-/* missing number: the "?" is a drop target for the answer buttons */
-.think-missing.drop-ready { outline: 3px dashed #ffa94d; outline-offset: 3px; animation: pulse 1.8s ease-in-out infinite; }
-.think-missing.drop-hit { transform: scale(1.25); background: #fff3bf; }
-.think-missing.filled { background: #d3f9d8; color: #2b8a3e; outline: 3px solid #69db7c; outline-offset: 3px; animation: bounce .45s; }
+/* missing number: an empty answer box, like the spelling boxes; the answer can be dragged in or tapped */
+.think-pattern span.think-missing { min-width: 62px; min-height: 74px; border: 0; border-radius: 16px; background: #fff; color: transparent;
+  box-shadow: inset 0 0 0 3px var(--theme), inset 0 -6px 0 color-mix(in srgb, var(--theme) 35%, #fff); }
+.think-pattern span.think-missing.drop-ready { animation: pulse 1.8s ease-in-out infinite; }
+.think-pattern span.think-missing.drop-hit { transform: scale(1.12); background: #fff3bf; }
+.think-pattern span.think-missing.filled { background: #d3f9d8; color: #2b8a3e; box-shadow: inset 0 -5px 0 #69db7c; animation: bounce .45s; }
 .options .opt { touch-action: none; }
-.opt.lifting{opacity:.35}
+.opt.lifting { opacity: .35; }
+/* reading cards: the instruction is quiet; the sentence and the question are clearly separate lines */
+.read-note { display: block; font-size: 14px; font-weight: 700; color: #868e96; }
+.sentence + .question-line, .reading-photo-wrap + .question-line { margin-top: 14px; padding-top: 10px; border-top: 2px dashed #e3dcef; }
+.question-line::before { content: "❓ "; }
