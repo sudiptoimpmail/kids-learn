@@ -1248,6 +1248,7 @@ function renderTestInfo() {
 }
 // QA unlocked by the ?qa=1 link: a grown-up can lock it again here (same as opening ?qa=0)
 $('#qaLock').onclick = () => { try { localStorage.removeItem(QA_KEY); } catch {} state.testMode = false; save(); applyTheme(); $('#testSection').hidden = !testFeatureAvailable(); };
+$('#tbAll').onclick = async () => { const b = $('#tbAll'); b.disabled = true; try { await QAQuestions.open(); } finally { b.disabled = false; } };
 $('#testMode').onchange = () => { state.testMode = testFeatureAvailable() && $('#testMode').checked; save(); applyTheme(); };
 // Test navigation never treats a skipped card as correct or changes persistent progress.
 function qaMove(step) {

@@ -16,7 +16,7 @@ const T = {
   block: [0.03, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18],
   drift: [0.06, 0.1, 0.14, 0.18, 0.22, 0.26, 0.3, 0.34],  // how often the safe path moves sideways
   jumps: [0, 0, 1, 2, 3, 4, 5, 6],                        // full-width gaps you must jump
-  gapLen: [1, 1, 1, 1, 1, 2, 2, 2],
+  gapLen: [1, 1, 1, 1, 1, 1, 2, 2],
   movers: [0, 0, 0, 0, 0, 2, 4, 6],                       // sliding blocks
   bridges: [0, 1, 1, 1, 2, 2, 2, 3],                      // ramp + broken bridge to fly over
   falls: [0, 0, 0, 1, 1, 1, 2, 2],                        // ramp + waterfall canyon to fly over
@@ -40,6 +40,7 @@ function buildTrack(lv) {
   for (let k = 0, prev = 2; k < T.gates[i]; k++) {
     const r = 16 + Math.floor(((k + 0.5) / T.gates[i]) * (rows - 32)) + Math.floor(Math.random() * 3) - 1;
     if ([r - 4, r - 2, r, r + 2, r + 4].some((q) => jumpRows.has(q) || nearJump(q))) continue;
+    if ([...jumpRows].some((j) => r >= j - 6 && r <= j + 12)) continue;      // never right where a jump lands: no time to steer
     const open = prev <= 2 ? [3, 4][Math.floor(Math.random() * 2)] : [0, 1][Math.floor(Math.random() * 2)];
     gates.push({ r, open }); prev = open;
   }
@@ -98,7 +99,7 @@ function buildTrack(lv) {
     }
     return false;
   };
-  const gapFor = (kind) => Math.max(2, Math.min(kind === 'falls' ? 5 : 4, Math.floor(flight - 2.2)));
+  const gapFor = (kind) => Math.max(2, Math.min(kind === 'falls' ? 4 : 3, Math.floor(flight - 3.2)));
   for (let k = 0; k < T.falls[i]; k++) place('falls', gapFor('falls'));
   for (let k = 0; k < T.bridges[i]; k++) place('bridge', gapFor('bridge'));
   for (let k = 0; k < T.planks[i]; k++) {
@@ -173,8 +174,12 @@ export function start() {
   // floor tiles (instanced for speed)
   const featAt = (r) => track.features.find((f) => r >= f.from && r <= f.to);
   let nTiles = 0; track.floor.forEach((r) => r.forEach((v) => v && nTiles++));
-  const tileGeo = new THREE.BoxGeometry(0.94, 0.3, 0.94);
-  const tiles = new THREE.InstancedMesh(tileGeo, new THREE.MeshLambertMaterial(), nTiles);
+  const tileGeo = (() => { const h = 0.47, r = 0.13, sh = new THREE.Shape();
+    sh.moveTo(-h + r, -h); sh.lineTo(h - r, -h); sh.quadraticCurveTo(h, -h, h, -h + r); sh.lineTo(h, h - r); sh.quadraticCurveTo(h, h, h - r, h);
+    sh.lineTo(-h + r, h); sh.quadraticCurveTo(-h, h, -h, h - r); sh.lineTo(-h, -h + r); sh.quadraticCurveTo(-h, -h, -h + r, -h);
+    const g = new THREE.ExtrudeGeometry(sh, { depth: 0.18, bevelEnabled: true, bevelSize: 0.03, bevelThickness: 0.05, bevelSegments: 3, curveSegments: 5 });
+    g.rotateX(-Math.PI / 2); g.translate(0, -0.14, 0); return g; })();
+  const tiles = new THREE.InstancedMesh(tileGeo, new THREE.MeshStandardMaterial({ roughness: 0.55, metalness: 0.05 }), nTiles);
   const dummy = new THREE.Object3D(), col = new THREE.Color();
   let k = 0;
   track.floor.forEach((row, r) => row.forEach((on, x) => {
@@ -193,28 +198,56 @@ export function start() {
   // blocks
   const candyTex = (c1, c2) => { const c = document.createElement('canvas'); c.width = c.height = 64; const x = c.getContext('2d'); x.fillStyle = c1; x.fillRect(0, 0, 64, 64); x.fillStyle = c2;
     for (let i = -64; i < 128; i += 32) { x.beginPath(); x.moveTo(i, 64); x.lineTo(i + 16, 64); x.lineTo(i + 80, 0); x.lineTo(i + 64, 0); x.fill(); } const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; return t; };
-  const blockGeo = new THREE.BoxGeometry(0.8, 0.8, 0.8);
-  const blockMat = new THREE.MeshStandardMaterial({ map: candyTex('#ff6b6b', '#fff'), roughness: 0.5 });
+  // gift boxes: glossy box, crossed ribbon, big bow
+  const giftBox = new THREE.BoxGeometry(0.78, 0.7, 0.78), lidGeo = new THREE.BoxGeometry(0.84, 0.16, 0.84);
+  const ribA = new THREE.BoxGeometry(0.17, 0.72, 0.8), ribB = new THREE.BoxGeometry(0.8, 0.72, 0.17), ribLid = new THREE.BoxGeometry(0.17, 0.18, 0.86), ribLid2 = new THREE.BoxGeometry(0.86, 0.18, 0.17);
+  const loopGeo = new THREE.TorusGeometry(0.13, 0.04, 8, 14), knotGeo = new THREE.SphereGeometry(0.07, 10, 8);
+  const giftSets = [['#ff6b6b', '#ffd43b'], ['#4dabf7', '#ffffff'], ['#69db7c', '#ff8fab'], ['#b197fc', '#ffd43b']].map(([bx, rb]) => ({
+    box: new THREE.MeshStandardMaterial({ color: bx, roughness: 0.35, metalness: 0.1 }), rib: new THREE.MeshStandardMaterial({ color: rb, roughness: 0.3 }) }));
+  const makeGift = (n) => {
+    const m = giftSets[n % giftSets.length], g = new THREE.Group();
+    const box = new THREE.Mesh(giftBox, m.box); box.position.y = 0.35;
+    const lid = new THREE.Mesh(lidGeo, m.box); lid.position.y = 0.74;
+    const a = new THREE.Mesh(ribA, m.rib); a.position.y = 0.36; const b = new THREE.Mesh(ribB, m.rib); b.position.y = 0.36;
+    const a2 = new THREE.Mesh(ribLid, m.rib); a2.position.y = 0.76; const b2 = new THREE.Mesh(ribLid2, m.rib); b2.position.y = 0.76;
+    g.add(box, lid, a, b, a2, b2);
+    for (const sgn of [-1, 1]) { const lp = new THREE.Mesh(loopGeo, m.rib); lp.position.set(sgn * 0.13, 0.95, 0); lp.rotation.set(0, 0, sgn * 0.5); lp.scale.set(1, 1.25, 1); g.add(lp); }
+    const kn = new THREE.Mesh(knotGeo, m.rib); kn.position.y = 0.88; g.add(kn);
+    return g;
+  };
   const blocks = [];
   track.block.forEach((row, r) => row.forEach((on, x) => {
     if (!on) return;
-    const b = new THREE.Mesh(blockGeo, blockMat); put(b, x - 2, 0.4, r); scene.add(b); blocks.push({ mesh: b, x: x - 2, r });
+    const b = makeGift(x + r); put(b, x - 2, 0, r); scene.add(b); blocks.push({ mesh: b, x: x - 2, r });
   }));
   // gate walls: tall striped candy pillars with a round top and a single opening
   const pillarGeo = new THREE.CylinderGeometry(0.42, 0.46, 2.1, 14), capGeo = new THREE.SphereGeometry(0.5, 14, 10);
   const pillarMats = [candyTex('#ff4d8d', '#fff'), candyTex('#3bc9db', '#fff'), candyTex('#ffa94d', '#fff')].map((map) => { map.repeat.set(1, 2); return new THREE.MeshStandardMaterial({ map, roughness: 0.45 }); });
+  const pillarBase = new THREE.CylinderGeometry(0.62, 0.7, 0.14, 16), pillarRing = new THREE.TorusGeometry(0.46, 0.05, 8, 18), finialGeo = new THREE.ConeGeometry(0.14, 0.42, 10);
+  const baseMat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.4 }), starMatP = new THREE.MeshStandardMaterial({ color: '#ffd43b', emissive: '#a66f00', emissiveIntensity: 0.5, roughness: 0.3 });
   track.gates.forEach((g, gi) => {
     for (let x = 0; x < LANES; x++) {
       if (x === g.open) continue;
       const grp = new THREE.Group(), body = new THREE.Mesh(pillarGeo, pillarMats[(x + gi) % 3]), cap = new THREE.Mesh(capGeo, pillarMats[(x + gi + 1) % 3]);
-      body.position.y = 1.05; cap.position.y = 2.15; grp.add(body, cap); put(grp, x - 2, 0, g.r); scene.add(grp);
+      body.position.y = 1.05; cap.position.y = 2.15;
+      const base = new THREE.Mesh(pillarBase, baseMat), fin = new THREE.Mesh(finialGeo, starMatP), ring = new THREE.Mesh(pillarRing, baseMat);
+      base.position.y = 0.07; ring.position.y = 1.75; ring.rotation.x = Math.PI / 2; fin.position.y = 2.72;
+      grp.add(body, cap, base, ring, fin); put(grp, x - 2, 0, g.r); scene.add(grp);
       blocks.push({ mesh: grp, x: x - 2, r: g.r, tall: true });
     }
     // a ring of little arrows points at the opening
     for (let d = 1; d <= 3; d++) { const a = new THREE.Mesh(new THREE.ConeGeometry(0.2, 0.45, 3), new THREE.MeshBasicMaterial({ color: '#ffffff' })); a.rotation.x = Math.PI / 2; put(a, g.open - 2, 0.03, g.r - d * 1.4); a.rotation.y = 0; scene.add(a); }
   });
   const moverMat = new THREE.MeshStandardMaterial({ map: candyTex('#845ef7', '#e5dbff'), roughness: 0.5 });
-  const movers = track.movers.map((m) => { const b = new THREE.Mesh(blockGeo, moverMat); put(b, 0, 0.4, m.r); scene.add(b); return { ...m, mesh: b, x: 0 }; });
+  const gumGeo = new THREE.SphereGeometry(0.46, 20, 14, 0, Math.PI * 2, 0, Math.PI / 2), gumBase = new THREE.CylinderGeometry(0.46, 0.5, 0.14, 20);
+  const eyeW = new THREE.SphereGeometry(0.12, 12, 10), eyeP = new THREE.SphereGeometry(0.06, 10, 8), horn = new THREE.ConeGeometry(0.07, 0.2, 8);
+  const gumMat = new THREE.MeshStandardMaterial({ color: '#845ef7', roughness: 0.25, metalness: 0.05 }), gumDark = new THREE.MeshStandardMaterial({ color: '#5f3dc4', roughness: 0.5 });
+  const white = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.3 }), blackM = new THREE.MeshBasicMaterial({ color: '#1b1230' });
+  const makeGum = () => { const g = new THREE.Group(), dome = new THREE.Mesh(gumGeo, gumMat), base = new THREE.Mesh(gumBase, gumDark); dome.position.y = 0.1; base.position.y = 0.07; g.add(dome, base);
+    for (const sx of [-0.17, 0.17]) { const e = new THREE.Mesh(eyeW, white), p = new THREE.Mesh(eyeP, blackM); e.position.set(sx, 0.4, -0.3); p.position.set(sx, 0.4, -0.4); g.add(e, p);
+      const h = new THREE.Mesh(horn, gumDark); h.position.set(sx * 1.7, 0.66, 0); h.rotation.z = -sx * 1.6; g.add(h); }
+    return g; };
+  const movers = track.movers.map((m) => { const b = makeGum(); put(b, 0, 0, m.r); scene.add(b); return { ...m, mesh: b, x: 0 }; });
   // hovering stars and wrapped candies
   const starShape = (() => { const sh = new THREE.Shape(); for (let k = 0; k < 10; k++) { const rr = k % 2 ? 0.11 : 0.27, an = Math.PI / 2 + (k * Math.PI) / 5; k ? sh.lineTo(Math.cos(an) * rr, Math.sin(an) * rr) : sh.moveTo(Math.cos(an) * rr, Math.sin(an) * rr); } sh.closePath(); return sh; })();
   const starGeo = new THREE.ExtrudeGeometry(starShape, { depth: 0.1, bevelEnabled: true, bevelSize: 0.03, bevelThickness: 0.03, bevelSegments: 2 }); starGeo.translate(0, 0, -0.05);
@@ -250,11 +283,21 @@ export function start() {
     }
   });
   // finish arch
-  const archMat = new THREE.MeshLambertMaterial({ color: '#40c057' });
   const archZ = track.rows - 2;
-  [[-2.7, 1.1, 0.25, 2.2], [2.7, 1.1, 0.25, 2.2], [0, 2.3, 5.65, 0.3]].forEach(([x, y, ww, hh]) => {
-    const m = new THREE.Mesh(new THREE.BoxGeometry(ww, hh, 0.3), archMat); m.position.set(x, y, archZ); scene.add(m);
-  });
+  const postMat = new THREE.MeshStandardMaterial({ map: candyTex('#ff4d8d', '#fff'), roughness: 0.4 });
+  postMat.map.repeat.set(1, 3);
+  const banner = (() => { const c = document.createElement('canvas'); c.width = 512; c.height = 128; const x = c.getContext('2d');
+    x.fillStyle = '#fff'; x.fillRect(0, 0, 512, 128);
+    for (let i = 0; i < 32; i++) for (let j = 0; j < 8; j++) if ((i + j) % 2 === 0 && (j === 0 || j === 7 || i < 2 || i > 29)) { x.fillStyle = '#222'; x.fillRect(i * 16, j * 16, 16, 16); }
+    x.fillStyle = '#e8590c'; x.font = 'bold 64px sans-serif'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('FINISH', 256, 66);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+  for (const px of [-2.75, 2.75]) {
+    const post = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.2, 2.9, 14), postMat); post.position.set(px, 1.45, archZ); scene.add(post);
+    const top = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 12), starMatP); top.position.set(px, 3.05, archZ); scene.add(top);
+    const flag = new THREE.Mesh(new THREE.PlaneGeometry(0.7, 0.4), new THREE.MeshBasicMaterial({ color: px < 0 ? '#ff4d8d' : '#3bc9db', side: THREE.DoubleSide })); flag.position.set(px + (px < 0 ? 0.4 : -0.4), 3.55, archZ); scene.add(flag);
+    const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.7, 6), baseMat); pole.position.set(px, 3.4, archZ); scene.add(pole);
+  }
+  const sign = new THREE.Mesh(new THREE.PlaneGeometry(5.5, 1.1), new THREE.MeshBasicMaterial({ map: banner, side: THREE.DoubleSide })); sign.position.set(0, 2.55, archZ); scene.add(sign);
   for (let x = 0; x < 10; x++) {   // checkered finish line
     const m = new THREE.Mesh(new THREE.BoxGeometry(0.47, 0.02, 0.47), new THREE.MeshBasicMaterial({ color: x % 2 ? '#222' : '#fff' }));
     m.position.set(-2.25 + x * 0.5, 0.01, archZ); scene.add(m);
@@ -353,7 +396,7 @@ export function start() {
   }
 
   // state
-  const S = { x: track.safe[0] - 2, tx: track.safe[0] - 2, y: 0.35, vy: 0, z: 0, falling: false, dead: 0, gems: 0, stars: 0, candies: 0, tries: 0, done: false, check: 0 };
+  const S = { x: track.safe[0] - 2, tx: track.safe[0] - 2, y: 0.35, vy: 0, z: 0, falling: false, dead: 0, gems: 0, stars: 0, candies: 0, tries: 0, done: false, check: 0, coyote: 0, buffer: 0 };
   const speed0 = T.speed[lv - 1];
   window.__b3 = { S, track };   // used by automated tests
   const floorAt = (x, z) => {
@@ -371,14 +414,21 @@ export function start() {
   cv.addEventListener('pointermove', (e) => {
     if (!drag) return;
     const dx = e.clientX - drag.x0; drag.moved = Math.max(drag.moved, Math.abs(dx));
-    S.tx = Math.max(-2.2, Math.min(2.2, drag.t0 + dx / (w / 5.5)));
+    S.tx = Math.max(-2.2, Math.min(2.2, drag.t0 - dx / (w / 5.5)));   // camera faces +z: screen-right is lane -x
   });
   const up = () => {
     if (drag && drag.moved < 12 && performance.now() - drag.time < 300) jump();
     drag = null;
   };
   cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', () => (drag = null));
-  function jump() { if (!S.falling && S.y <= 0.36 && !S.done) { S.vy = 5.6; tone([440, 660], { dur: 0.05, gap: 0.05, vol: 0.08 }); } }
+  function jump() {
+    if (S.done) return;
+    // on the ground, or only just off an edge (a little grace so a late tap still counts)
+    const can = (S.y <= 0.36 && !S.falling) || (S.coyote > 0 && S.vy <= 0 && S.y > -0.4);
+    if (!can) { S.buffer = 0.18; return; }          // too early: remember the tap for the landing
+    S.falling = false; S.coyote = 0; S.buffer = 0; S.vy = 6.4;
+    tone([440, 660], { dur: 0.05, gap: 0.05, vol: 0.08 });
+  }
   const onTilt = (e) => { tilt = Math.max(-25, Math.min(25, e.gamma || 0)) / 25; };
   area.querySelector('[data-a="tilt"]').onclick = async (ev) => {
     try {
@@ -406,15 +456,17 @@ export function start() {
     const dt = last ? Math.min(0.04, (now - last) / 1000) : 0; last = now; t += dt;
     if (!S.done) {
       const v = speed0 * (1 + Math.min(0.25, S.z / track.rows * 0.25));    // speeds up a bit along the track
-      if (tilt != null && !drag) S.tx = Math.max(-2.2, Math.min(2.2, S.tx + tilt * 5 * dt));
+      if (tilt != null && !drag) S.tx = Math.max(-2.2, Math.min(2.2, S.tx - tilt * 5 * dt));
       S.x += (S.tx - S.x) * Math.min(1, dt * 12);
       if (!S.falling) S.z += v * dt;
       // vertical
+      S.coyote = Math.max(0, S.coyote - dt); S.buffer = Math.max(0, S.buffer - dt);
       S.vy -= 15 * dt; S.y += S.vy * dt;
       const ground = floorAt(S.x, S.z);
       if (!S.falling && S.y <= 0.35) {
         if (ground) {
-          S.y = 0.35; S.vy = 0;
+          S.y = 0.35; S.vy = 0; S.coyote = 0.14;
+          if (S.buffer > 0) jump();
           if (track.ramps.has(Math.round(S.z)) && !S.launched) { S.vy = LAUNCH; S.launched = true; tone([330, 494, 660, 880], { dur: 0.06, gap: 0.05, vol: 0.1, type: 'triangle' }); flash('Wheee! 🚀'); }
           if (!track.ramps.has(Math.round(S.z))) S.launched = false;
         }
@@ -438,7 +490,7 @@ export function start() {
       if (S.z >= archZ) finish();
     }
     // animate
-    for (const m of movers) { m.x = Math.sin(t * m.speed + m.phase) * 2; put(m.mesh, m.x, 0.4 + Math.sin(t * 3 + m.phase) * 0.06, m.r); m.mesh.rotation.y += Math.sin(t * 2) * 0.02; }
+    for (const m of movers) { m.x = Math.sin(t * m.speed + m.phase) * 2; put(m.mesh, m.x, Math.abs(Math.sin(t * 4 + m.phase)) * 0.12, m.r); m.mesh.scale.set(1 + Math.sin(t * 8 + m.phase) * 0.04, 1 - Math.sin(t * 8 + m.phase) * 0.05, 1); }
     for (const g of gems) if (!g.got) { put(g.mesh, g.x, g.y + Math.sin(t * 3 + g.r) * 0.1, g.r); g.mesh.rotation.y = t * 2.4 + g.r; }
     for (const f of floaters) { f.g.position.y = f.base + Math.sin(t * f.sp + f.ph) * 0.35; f.g.rotation.y += dt * 0.25; }
     for (const w of water) w.offset.y = (w.offset.y - dt * w.userData.speed) % 1;

@@ -1686,3 +1686,40 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
   #gameArea > * { animation: fadein .3s ease-out both; }
   .dr-say b { display: inline-block; animation: wiggle 6s ease-in-out 1s infinite; }
 }
+
+/* memory: patterned card backs, lifted flips, glowing matches */
+.mem-card { transition: transform .2s; transform-style: preserve-3d; }
+.mem-card:active:not(.flip) { transform: scale(.94); }
+.mem-card .back { background: radial-gradient(circle at 25% 20%, #ffffff55 0 14%, transparent 15%), repeating-linear-gradient(45deg, #ffffff14 0 10px, transparent 10px 20px), linear-gradient(135deg, #74c0fc, #4c6ef5); box-shadow: 0 5px 0 #364fc7, inset 0 0 0 4px #ffffff66; }
+.mem-card .back i { font-style: normal; color: #fff; text-shadow: 0 3px 0 #364fc7; font-size: 1.2em; animation: pulse 2.6s ease-in-out infinite; }
+.mem-card:nth-child(3n) .back i { animation-delay: -.8s; } .mem-card:nth-child(3n+1) .back i { animation-delay: -1.6s; }
+.mem-card .front { background: radial-gradient(circle at 50% 40%, #fff 40%, hsl(var(--hue, 200) 90% 92%)); box-shadow: 0 5px 0 hsl(var(--hue, 200) 50% 82%); }
+.mem-card.flip { animation: memLift .45s ease; }
+@keyframes memLift { 40% { transform: translateY(-10px) scale(1.06); } }
+.mem-card.done .front { background: radial-gradient(circle at 50% 40%, #fff 30%, #b2f2bb); box-shadow: 0 5px 0 #69db7c, 0 0 18px #8ce99a; animation: bounce .5s, memGlow 2.4s ease-in-out .5s infinite; }
+@keyframes memGlow { 50% { box-shadow: 0 5px 0 #69db7c, 0 0 28px #b2f2bb; } }
+.mem-card.nope { animation: shake .4s .35s; }
+
+/* tic-tac-toe: a proper board with tinted cells and shiny pieces */
+.ttt-board { background: linear-gradient(145deg, #c7b6f5, #9b8bd8); padding: 12px; border-radius: 30px; box-sizing: content-box; box-shadow: 0 8px 0 #7a68c2, 0 14px 24px #5b49a433; }
+.ttt-cell { background: linear-gradient(160deg, #ffffff, #f1ecff); box-shadow: inset 0 -5px 0 #e0d7f7, 0 2px 0 #ffffff88; position: relative; transition: transform .12s, background .2s; }
+.ttt-cell:nth-child(even) { background: linear-gradient(160deg, #fffdf5, #fff1c9); box-shadow: inset 0 -5px 0 #f4e2a8, 0 2px 0 #ffffff88; }
+.ttt-cell:not(.placed):hover, .ttt-cell:not(.placed):active { transform: scale(.95); }
+.ttt-cell:not(.placed)::after { content: ""; position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px; border-radius: 50%; background: #b8a9e8; opacity: .35; animation: pulse 2.4s ease-in-out infinite; }
+.ttt-cell.placed { filter: drop-shadow(0 4px 3px #0003); }
+.ttt-cell.mine.placed { background: radial-gradient(circle, #fff, #ffe3f1); }
+.ttt-cell.bots.placed { background: radial-gradient(circle, #fff, #dcebff); }
+.ttt-cell.win { background: radial-gradient(circle, #fff, #b2f2bb); box-shadow: inset 0 -5px 0 #69db7c, 0 0 20px #8ce99a; }
+
+/* QA: all-questions viewer */
+.qa-all { position: fixed; inset: 0; z-index: 200; background: #fffaf0; overflow: auto; padding: 14px 16px 40px; }
+.qa-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; position: sticky; top: -14px; background: #fffaf0; padding: 8px 0; z-index: 1; }
+.qa-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 14px; }
+.qa-tools select, .qa-tools input[type=search] { font: inherit; padding: 8px 10px; border-radius: 12px; border: 2px solid #e3dcef; background: #fff; }
+.qa-status { color: #6b5b95; font-weight: 700; }
+.qa-card { background: #fff; border-radius: 14px; padding: 10px 14px; margin: 8px 0; box-shadow: 0 3px 0 #e3dcef; display: grid; gap: 4px; }
+.qa-card.flag { box-shadow: 0 3px 0 #ff8787; background: #fff5f5; }
+.qa-card ul { list-style: none; margin: 4px 0; padding: 0; display: grid; gap: 2px; }
+.qa-card li.ok { font-weight: 800; color: #2b8a3e; }
+.qa-card small { color: #8a7fa8; }
+.qa-issue { color: #c92a2a; font-weight: 700; }
