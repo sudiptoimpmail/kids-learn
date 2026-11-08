@@ -722,52 +722,61 @@ function spellHint(q) {
 /* ---------- Match It: tap left, then tap its partner on the right ---------- */
 function renderMatch(q) {
   const { left, right } = q.match;
-  q.done = new Set(); q.selL = null;
+  q.done = new Set(); q.selL = null; q.selSide = null;
   const box = $('#options');
   box.innerHTML = `<div class="m-cols"><div class="m-col">${left.map((x) => `<button class="m-item L" data-id="${x.id}">${x.html}</button>`).join('')}</div>
-    <svg class="m-lines"></svg>
+    <svg class="m-lines"><defs>${['ok', 'rubber'].map((c) => `<marker id="mArrow-${c}" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" class="m-arrow ${c}"/></marker>`).join('')}</defs></svg>
     <div class="m-col">${right.map((x) => `<button class="m-item R" data-id="${x.id}">${x.html}</button>`).join('')}</div></div>`;
-  $$('.m-item.L', box).forEach((b) => (b.onclick = () => {
+  const svg = $('.m-lines', box), items = () => $$('.m-item', box);
+  const side = (el) => (el.classList.contains('L') ? 'L' : 'R');
+  const clearSel = () => items().forEach((x) => x.classList.remove('sel'));
+  // a pair is one left and one right item, picked in either order or dragged from either side
+  function pair(a, b) {
+    if (R.locked || a === b || side(a) === side(b)) return;
+    const L = side(a) === 'L' ? a : b, Rt = L === a ? b : a;
+    if (L.classList.contains('ok') || Rt.classList.contains('ok')) return;
+    clearSel(); q.selL = null; q.selSide = null;
+    if (L.dataset.id === Rt.dataset.id) {
+      L.classList.add('ok'); Rt.classList.add('ok'); drawLine(a, b, true);
+      q.done.add(+L.dataset.id); sfx.yes();
+      if (q.done.size === left.length) matchDone(q);
+    } else {
+      q.tries++; R.mistakes++; R.streak = 0; sfx.no();
+      L.classList.add('bad'); Rt.classList.add('bad');
+      setTimeout(() => { L.classList.remove('bad'); Rt.classList.remove('bad'); }, 500);
+      if (q.tries === 2) say('Look carefully, and try again!');
+    }
+  }
+  const picked = () => items().find((x) => x.classList.contains('sel'));
+  items().forEach((b) => (b.onclick = () => {
     if (R.locked || b.classList.contains('ok')) return;
-    $$('.m-item.L', box).forEach((x) => x.classList.remove('sel')); b.classList.add('sel'); q.selL = +b.dataset.id; sfx.tap();
+    const cur = picked();
+    if (cur && side(cur) !== side(b)) return pair(cur, b);
+    clearSel(); b.classList.add('sel'); sfx.tap();
   }));
-  // drag from a left item to its partner on the right (tapping still works)
-  $$('.m-item.L', box).forEach((b) => b.addEventListener('pointerdown', (e) => {
+  // drag an arrow from any item to its partner on the other side (tapping one then the other still works)
+  items().forEach((b) => b.addEventListener('pointerdown', (e) => {
     if (R.locked || b.classList.contains('ok')) return;
-    const svg = $('.m-lines', box), s0 = svg.getBoundingClientRect(), r0 = b.getBoundingClientRect();
-    const x1 = r0.right - s0.left, y1 = r0.top + r0.height / 2 - s0.top;
-    svg.insertAdjacentHTML('beforeend', `<line class="rubber" x1="${x1}" y1="${y1}" x2="${x1}" y2="${y1}"/>`);
+    const s0 = svg.getBoundingClientRect(), r0 = b.getBoundingClientRect(), fromL = side(b) === 'L';
+    const x1 = (fromL ? r0.right : r0.left) - s0.left, y1 = r0.top + r0.height / 2 - s0.top;
+    svg.insertAdjacentHTML('beforeend', `<line class="rubber" x1="${x1}" y1="${y1}" x2="${x1}" y2="${y1}" marker-end="url(#mArrow-rubber)"/>`);
     const line = svg.lastElementChild; let moved = false; const id = e.pointerId;
     const mv = (ev) => { if (ev.pointerId !== id) return; if (Math.hypot(ev.clientX - e.clientX, ev.clientY - e.clientY) > 10) moved = true;
       line.setAttribute('x2', ev.clientX - s0.left); line.setAttribute('y2', ev.clientY - s0.top); };
     const up = (ev) => { if (ev.pointerId !== id) return;
       removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up); line.remove();
       if (!moved || ev.type === 'pointercancel') return;
-      const hit = document.elementFromPoint(ev.clientX, ev.clientY)?.closest('.m-item.R');
-      if (hit && !hit.classList.contains('ok')) { b.click(); hit.click(); } };
+      const hit = document.elementFromPoint(ev.clientX, ev.clientY)?.closest('.m-item');
+      if (hit && hit !== b && side(hit) !== side(b) && !hit.classList.contains('ok')) { clearSel(); pair(b, hit); } };
     addEventListener('pointermove', mv, { passive: true }); addEventListener('pointerup', up); addEventListener('pointercancel', up);
-  }));
-  $$('.m-item.R', box).forEach((b) => (b.onclick = () => {
-    if (R.locked || b.classList.contains('ok')) return;
-    if (q.selL == null) { b.classList.add('nudge'); setTimeout(() => b.classList.remove('nudge'), 400); return; }
-    const L = $(`.m-item.L[data-id="${q.selL}"]`, box);
-    if (+b.dataset.id === q.selL) {
-      L.classList.remove('sel'); L.classList.add('ok'); b.classList.add('ok'); drawLine(L, b, true);
-      q.done.add(q.selL); q.selL = null; sfx.yes();
-      if (q.done.size === left.length) matchDone(q);
-    } else {
-      q.tries++; R.mistakes++; R.streak = 0; sfx.no();
-      b.classList.add('bad'); L.classList.add('bad');
-      setTimeout(() => { b.classList.remove('bad'); L.classList.remove('bad'); }, 500);
-      if (q.tries === 2) say('Look carefully, and try again!');
-    }
   }));
 }
 function drawLine(a, b, ok) {
   const svg = $('.m-lines'); if (!svg) return;
   const s = svg.getBoundingClientRect(), ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
-  const x1 = ra.right - s.left, y1 = ra.top + ra.height / 2 - s.top, x2 = rb.left - s.left, y2 = rb.top + rb.height / 2 - s.top;
-  svg.insertAdjacentHTML('beforeend', `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${ok ? 'ok' : ''}"/>`);
+  const fromL = a.classList.contains('L');   // the arrow points the way it was drawn
+  const x1 = (fromL ? ra.right : ra.left) - s.left, y1 = ra.top + ra.height / 2 - s.top, x2 = (fromL ? rb.left : rb.right) - s.left, y2 = rb.top + rb.height / 2 - s.top;
+  svg.insertAdjacentHTML('beforeend', `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="${ok ? 'ok' : ''}" marker-end="url(#mArrow-ok)"/>`);
 }
 // a word search or crossword as one card in the round: mistakes count, finishing it answers the card
 function renderPuzzle(q) {

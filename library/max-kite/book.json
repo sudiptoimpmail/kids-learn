@@ -4,24 +4,24 @@
   "grades": [
     "g1"
   ],
-  "cover": "p01.svg",
+  "cover": "p01.webp",
   "pages": [
     {
-      "art": "p01.svg",
+      "art": "p01.webp",
       "text": [
         "Max has a red kite."
       ],
       "alt": "Max has a red kite."
     },
     {
-      "art": "p02.svg",
+      "art": "p02.webp",
       "text": [
         "He takes it to the park."
       ],
       "alt": "He takes it to the park."
     },
     {
-      "art": "p03.svg",
+      "art": "p03.webp",
       "text": [
         "The kite flies up high."
       ],

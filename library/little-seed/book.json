@@ -4,24 +4,24 @@
   "grades": [
     "g1"
   ],
-  "cover": "p01.svg",
+  "cover": "p01.webp",
   "pages": [
     {
-      "art": "p01.svg",
+      "art": "p01.webp",
       "text": [
         "A little seed was in the dirt."
       ],
       "alt": "A little seed was in the dirt."
     },
     {
-      "art": "p02.svg",
+      "art": "p02.webp",
       "text": [
         "The rain fell and the sun came out."
       ],
       "alt": "The rain fell and the sun came out."
     },
     {
-      "art": "p03.svg",
+      "art": "p03.webp",
       "text": [
         "Soon a flower grew."
       ],

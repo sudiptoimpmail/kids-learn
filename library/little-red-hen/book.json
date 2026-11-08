@@ -4,75 +4,75 @@
   "grades": [
     "g2"
   ],
-  "cover": "p01.svg",
+  "cover": "p01.webp",
   "pages": [
     {
-      "art": "p01.svg",
+      "art": "p01.webp",
       "text": [
         "A little red hen found some seeds of wheat.",
         "\"Who will help me plant them?\" she asked."
       ],
-      "alt": "The hen holds wheat seeds"
+      "alt": "The little red hen holds wheat seeds"
     },
     {
-      "art": "p02.svg",
+      "art": "p02.webp",
       "text": [
         "\"Not I,\" said the dog.",
         "\"Not I,\" said the cat.",
         "So the little red hen planted the seeds herself."
       ],
-      "alt": "The dog and cat say no, the hen plants"
+      "alt": "The dog and cat say no while the hen plants the seeds"
     },
     {
-      "art": "p03.svg",
+      "art": "p03.webp",
       "text": [
         "The sun shone and the rain fell.",
         "Soon the wheat grew tall and golden."
       ],
-      "alt": "Tall golden wheat"
+      "alt": "Tall golden wheat in the sun and rain"
     },
     {
-      "art": "p04.svg",
+      "art": "p04.webp",
       "text": [
         "\"Who will help me cut the wheat?\" asked the hen.",
         "\"Not I,\" said the dog. \"Not I,\" said the cat.",
         "So she cut it herself."
       ],
-      "alt": "The hen cuts the wheat"
+      "alt": "The hen cuts the wheat while the dog and cat watch"
     },
     {
-      "art": "p05.svg",
+      "art": "p05.webp",
       "text": [
         "The hen took the wheat to the mill to make flour.",
         "Then she asked, \"Who will help me bake the bread?\"",
         "\"Not I,\" said the dog and the cat."
       ],
-      "alt": "The hen at the mill"
+      "alt": "The hen at the windmill"
     },
     {
-      "art": "p06.svg",
+      "art": "p06.webp",
       "text": [
         "So the little red hen baked the bread herself.",
         "It smelled warm and sweet."
       ],
-      "alt": "Warm bread"
+      "alt": "Warm bread cooling on a table"
     },
     {
-      "art": "p07.svg",
+      "art": "p07.webp",
       "text": [
         "\"Who will help me eat it?\" asked the hen.",
         "\"I will!\" said the dog. \"I will!\" said the cat.",
         "\"You did not help,\" said the hen. \"My chicks and I will eat it.\""
       ],
-      "alt": "The hen and chicks eat the bread"
+      "alt": "The hen and her chicks share the bread"
     },
     {
-      "art": "p08.svg",
+      "art": "p08.webp",
       "text": [
         "The dog and the cat felt sorry.",
         "Next time, they said, they would help right away."
       ],
-      "alt": "The dog and cat ready to help"
+      "alt": "The dog and cat feel sorry"
     }
   ],
   "questions": [

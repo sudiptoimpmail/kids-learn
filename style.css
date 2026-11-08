@@ -1621,7 +1621,7 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 #game .ttt-cell { font-size: clamp(54px, 10vw, 110px); }
 @media (min-width: 700px) {
   #game, #trace, #library, #learn { max-width: 1400px; }
-  #game { --board-space: max(300px, calc(100dvh - 290px - env(safe-area-inset-top) - env(safe-area-inset-bottom))); }
+  #game { --board-space: max(300px, calc(100dvh - 235px - env(safe-area-inset-top) - env(safe-area-inset-bottom))); }
   #game .mem-card span { font-size: clamp(42px, 6vw, 76px); }
   #game .mem-card .back { font-size: clamp(34px, 5vw, 60px); }
   #game .sdk-cell { font-size: clamp(32px, 5vw, 64px); }
@@ -1650,7 +1650,7 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 #pinPad[hidden] { display:none; }
 .kid-chip-note,.who-limit{font-size:.85rem;opacity:.7;margin:.4rem 0}
 .wel-place{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.wel-place label{display:grid;gap:4px;font-weight:700;text-align:left}.wel-place select{font:inherit;font-size:17px;padding:8px 10px;border-radius:12px;border:2px solid #d9d2f2;min-width:9em}
-.m-lines .rubber{stroke:#9b8fd0;stroke-width:4;stroke-dasharray:6 6;pointer-events:none}.m-item{touch-action:none}.slot.full{touch-action:none;cursor:grab}.slot.lifting{opacity:.35}
+.m-lines .rubber{stroke:#7c5cff;stroke-width:7;stroke-linecap:round;stroke-dasharray:none;stroke-dashoffset:0;animation:none;pointer-events:none}.m-arrow.ok{fill:var(--good)}.m-arrow.rubber{fill:#7c5cff}.m-item{touch-action:none}.slot.full{touch-action:none;cursor:grab}.slot.lifting{opacity:.35}
 .chip-ghost{position:fixed;z-index:9999;pointer-events:none;opacity:.9;transform:scale(1.1)}.g1-chip.lifting{opacity:.4}
 @media (orientation:landscape) and (min-width:900px) {
   .g-pinball { position:relative; }
@@ -1661,3 +1661,4 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .immersive #game .play-top { padding-top:4px; padding-bottom:4px; }
 .immersive #game .play-title, .immersive .pb-dmd-msg { display:none; }
 .immersive .g-pinball .pb-dmd { padding-block:2px; }
+.pz-story .pz-photo-pick{object-fit:cover;padding:0;background:none}.pz-story-h{margin-top:10px}
