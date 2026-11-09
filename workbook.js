@@ -48,7 +48,7 @@ const IllustratedActivities = (() => {
       options:[s[1],s[2],s[3],s[4]].sort(()=>Math.random()-.5).map(w=>({v:w,html:w})),answer:s[1],
       optClass:'opt-text',hint:{html:'Read the sentence and look at the picture.',say:'Look at the picture!'}
     };}
-    if(mode==='sequence'){text='Read the fox story. Tap the four pictures in story order.';theme='park';}
+    if(mode==='sequence'){text='<span class="read-note">📖 Read the story. Then tap the pictures in story order.</span>';theme='park';}
     const voice = mode==='letters' ? ['Help the baby zebra reach its family.','Follow only the letter Z.'] :
       mode==='longa' ? 'Follow only words with the long A sound to reach TAIL.' :
       mode==='sounds' ? ['Tap all the pictures that start with','A'] :
@@ -256,6 +256,7 @@ const IllustratedActivities = (() => {
       story.className='ia-story';
       story.innerHTML='<p>A fox saw an apple. The fox ran to the tree. It jumped. The apple fell down.</p>';
       host.insertBefore(story,stage);
+      host.classList.add('ia-seq');   // the story is the focus: big text, pictures beside it on wide screens
       const cards=[
         {id:2,label:'Fox jumps',mark:'↗',desc:'The fox jumps.'},
         {id:0,label:'Fox sees apple',mark:'?',desc:'The fox sees an apple.'},
@@ -292,7 +293,7 @@ const IllustratedActivities = (() => {
       });
       host.append(tray);
       note.textContent='Tap the picture for event 1, then 2, 3 and 4.';
-      stage.classList.add('ia-small-scene');
+      stage.classList.add('ia-small-scene','ia-seq-scene');   // the cards are the pictures; no extra scene competing with the text
       q.illHint=()=>setFeedback(host,'Read the story from the beginning. Start with what the fox saw.');
     }
     return stage;

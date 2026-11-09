@@ -1807,3 +1807,22 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 /* real landmark photos as answer choices: fill the button instead of overflowing it */
 .lm-opts .lm-box.lm-real-photo, .opt .lm-box.lm-real-photo { width: 100%; max-width: 100%; }
 .lm-opts .lm-box.lm-real-photo .lm-art, .opt .lm-box.lm-real-photo .lm-art { object-fit: cover; object-position: 50% 25%; }
+
+/* Cards with nothing in the answer column (interactive workbook pages, read-and-tap tasks)
+   use the whole width in landscape instead of leaving the right half empty. */
+@media (min-width: 1000px) and (orientation: landscape) {
+  #play.active:has(#options:empty) { grid-template-areas: "top top" "prog prog" "card card" "hint hint"; }
+  #play.active:has(#options:empty) .card { width: 100%; max-width: 1180px; justify-self: center; }
+  #play.active:has(#options:empty) .hint-btn { justify-self: center; margin-top: 12px; }
+  #play.active:has(#options:empty) #options { display: none; }
+}
+/* landscape: the open hint sits under the Hint button, never on top of it */
+@media (min-width: 1000px) and (orientation: landscape) {
+  #play.active { grid-template-areas: "top top" "prog prog" "card opts" "card hint" "card hbox"; }
+  #play .hint-box { grid-area: hbox; align-self: start; }
+  #play.active:has(#options:empty) { grid-template-areas: "top top" "prog prog" "card card" "hint hint" "hbox hbox"; }
+}
+/* Tic-Tac-Toe: three equal columns and rows whatever is in a square, pictures scale inside */
+.ttt-board { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); }
+.ttt-cell { min-width: 0; min-height: 0; aspect-ratio: 1; overflow: hidden; display: grid; place-items: center; padding: 0; }
+.ttt-cell img, .ttt-cell .fl, .ttt-cell > * { max-width: 72%; max-height: 72%; width: 72%; height: auto; object-fit: contain; }
