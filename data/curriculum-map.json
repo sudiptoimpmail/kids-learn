@@ -1648,7 +1648,7 @@
           "div": {
             "levels": [
               1,
-              2
+              1
             ],
             "skills": [
               "equal-sharing",
@@ -1727,11 +1727,10 @@
           "numsense": {
             "levels": [
               2,
-              4
+              3
             ],
             "skills": [
               "three-digit-place-value",
-              "fractions",
               "money",
               "measurements"
             ],
@@ -1811,14 +1810,11 @@
           "frac": {
             "levels": [
               1,
-              2
+              1
             ],
             "skills": [
               "equal-shares",
-              "unit-fractions",
-              "fractions-on-number-line",
-              "compare-fractions",
-              "equivalent-fractions"
+              "unit-fractions"
             ],
             "approach": "guided-investigation",
             "bank": "generated"
@@ -2102,7 +2098,7 @@
           },
           "div": {
             "levels": [
-              3,
+              2,
               5
             ],
             "skills": [
