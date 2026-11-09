@@ -1,385 +1,58 @@
 {
- "batch": 2,
+ "batch": 3,
  "items": {
-  "assets/animals/panda.webp": {
-   "file": "Dalian Liaoning China Forest-Zoo-02.jpg",
-   "max": 720
-  },
-  "assets/animals/kangaroo.webp": {
-   "file": "Macropus giganteus - Brunkerville.jpg",
-   "max": 720
-  },
-  "assets/animals/koala.webp": {
-   "file": "Koala in Zoo Duisburg.jpg",
-   "max": 720
-  },
-  "assets/animals/lion.webp": {
-   "file": "020 The lion king Snyggve in the Serengeti National Park Photo by Giles Laurent.jpg",
-   "max": 720
-  },
-  "assets/animals/giraffe.webp": {
-   "file": "Three giraffes 01.jpg",
-   "max": 720
-  },
-  "assets/animals/zebra.webp": {
-   "file": "Equus quagga burchellii - Etosha, 2014.jpg",
-   "max": 720
-  },
-  "assets/animals/polar-bear.webp": {
-   "file": "Polar bear (Ursus maritimus) in the drift ice region north of Svalbard.jpg",
-   "max": 720
-  },
-  "assets/animals/penguin.webp": {
-   "file": "A chinstrap penguin (Pygoscelis antarcticus) on Deception Island in Antarctica.jpg",
-   "max": 720
-  },
-  "assets/animals/tiger.webp": {
-   "file": "Bengal tiger (Panthera tigris tigris) female 3.jpg",
-   "max": 720
-  },
-  "assets/animals/bald-eagle.webp": {
-   "file": "Bald eagle at the Hawk Conservancy Trust 2-2.jpg",
+  "assets/animals/beaver.webp": {
+   "search": "Castor canadensis incategory:Quality_images",
    "max": 720
   },
   "assets/animals/anaconda.webp": {
-   "file": "Green Anaconda (15836846663).jpg",
-   "max": 720
-  },
-  "assets/animals/sloth.webp": {
-   "file": "Bradypus variegatus.jpg",
-   "max": 720
-  },
-  "assets/animals/gorilla.webp": {
-   "file": "Mountain gorilla (Gorilla beringei beringei) 03.jpg",
-   "max": 720
-  },
-  "assets/animals/hippo.webp": {
-   "file": "Hippopotamus amphibius Whipsnade Zoo.jpg",
-   "max": 720
-  },
-  "assets/animals/moose.webp": {
-   "file": "Alces alces Cape Breton Highlands National Park.jpg",
-   "max": 720
-  },
-  "assets/animals/african-elephant.webp": {
-   "file": "African elephant (Loxodonta africana) 2.jpg",
-   "max": 720
-  },
-  "assets/animals/llama.webp": {
-   "file": "Lama glama Laguna Colorada 2.jpg",
-   "max": 720
-  },
-  "assets/animals/macaw-parrot.webp": {
-   "file": "Scarlet macaw (Ara macao cyanopterus) Copan.jpg",
-   "max": 720
-  },
-  "assets/animals/orangutan.webp": {
-   "file": "Orangutan Kalimantan.jpg",
-   "max": 720
-  },
-  "assets/animals/komodo-dragon.webp": {
-   "file": "Komodo dragon (Varanus komodoensis).jpg",
-   "max": 720
-  },
-  "assets/animals/bison.webp": {
-   "file": "American bison in Yellowstone National Park.jpg",
-   "max": 720
-  },
-  "assets/animals/beaver.webp": {
-   "file": "Biting off plenty to chew (32903707522).jpg",
-   "max": 720
-  },
-  "assets/animals/peacock.webp": {
-   "file": "Paonroue.JPG",
-   "max": 720
-  },
-  "assets/animals/alligator.webp": {
-   "file": "Alligator mississippiensis 113744549.jpg",
-   "max": 720
-  },
-  "assets/animals/cheetah.webp": {
-   "file": "Cheetah (Acinonyx jubatus) female 2.jpg",
-   "max": 720
-  },
-  "assets/animals/rhino.webp": {
-   "file": "Rhinoceros in South Africa adjusted.jpg",
-   "max": 720
-  },
-  "assets/animals/wild-turkey.webp": {
-   "file": "Male wild turkey (Meleagris gallopavo) strutting.jpg",
-   "max": 720
-  },
-  "assets/animals/monkey.webp": {
-   "file": "Macaca fascicularis. Monkey in the jungle, on a branch.jpg",
-   "max": 720
-  },
-  "assets/animals/crocodile.webp": {
-   "file": "Crocodylus acutus in La Manzanilla.jpg",
-   "max": 720
-  },
-  "assets/animals/jaguar.webp": {
-   "file": "Jaguar (Panthera onca palustris) male Three Brothers River 2.jpg",
-   "max": 720
-  },
-  "assets/animals/reindeer.webp": {
-   "file": "20070818-0001-strolling reindeer.jpg",
-   "max": 720
-  },
-  "assets/animals/hedgehog.webp": {
-   "file": "Erinaceus europaeus (Linnaeus, 1758) crop.jpg",
-   "max": 720
-  },
-  "assets/animals/water-buffalo.webp": {
-   "file": "Asian water buffalo (Bubalus bubalis) with cattle egret.jpg",
-   "max": 720
-  },
-  "assets/animals/asian-elephant.webp": {
-   "file": "Elephas maximus, (wild) Asian elephant - Huai Kha Khaeng (20497002282).jpg",
+   "search": "Eunectes murinus green anaconda",
    "max": 720
   },
   "assets/animals/red-fox.webp": {
-   "file": "Vulpes vulpes Mallnitz 01.jpg",
+   "search": "Vulpes vulpes red fox incategory:Quality_images",
    "max": 720
   },
-  "assets/animals/flamingo.webp": {
-   "file": "Greater flamingos (Phoenicopterus roseus).jpg",
+  "assets/animals/moose.webp": {
+   "search": "Alces alces moose incategory:Quality_images",
    "max": 720
-  },
-  "assets/animals/snowy-owl.webp": {
-   "file": "Bubo scandiacus male Muskegon.jpg",
-   "max": 720
-  },
-  "assets/photos/cat.jpg": {
-   "file": "Felis catus-cat on snow.jpg",
-   "max": 512,
-   "square": true
-  },
-  "assets/photos/dog.jpg": {
-   "file": "Labrador Retriever (1210559).jpg",
-   "max": 512,
-   "square": true
-  },
-  "assets/photos/rabbit.jpg": {
-   "file": "Oryctolagus cuniculus 115212580.jpg",
-   "max": 512,
-   "square": true
-  },
-  "assets/photos/duck.jpg": {
-   "file": "Anas platyrhynchos male female.jpg",
-   "max": 512,
-   "square": true
-  },
-  "assets/photos/horse.jpg": {
-   "file": "Haflinger Fohlen 01.jpg",
-   "max": 512,
-   "square": true
-  },
-  "assets/photos/butterfly.jpg": {
-   "file": "Monarch butterfly in BBG (84685).jpg",
-   "max": 512,
-   "square": true
-  },
-  "assets/photos/elephant.jpg": {
-   "file": "African elephant (Loxodonta africana) 2.jpg",
-   "max": 512,
-   "square": true
-  },
-  "assets/photos/tiger.jpg": {
-   "file": "Bengal tiger (Panthera tigris tigris) female 3.jpg",
-   "max": 512,
-   "square": true
   },
   "assets/animals/camel.webp": {
-   "search": "dromedary camel desert profile",
+   "search": "Camelus dromedarius dromedary incategory:Quality_images",
    "max": 720
   },
-  "assets/landmark-photos/pyramid.webp": {
-   "file": "All Gizah Pyramids.jpg",
-   "max": 1200
-  },
   "assets/landmark-photos/cntower.webp": {
-   "file": "CN Tower, Toronto, Canada (Unsplash DJ kOgH5u0o).jpg",
-   "max": 1200
-  },
-  "assets/landmark-photos/niagara.webp": {
-   "file": "Niagara Falls, Ontario 3.jpg",
-   "max": 1200
-  },
-  "assets/landmark-photos/fuji.webp": {
-   "file": "Kodaki fuji frm shojinko refurb.jpg",
-   "max": 1200
-  },
-  "assets/landmark-photos/colosseum.webp": {
-   "file": "Colosseum-exterior-2007.JPG",
-   "max": 1200
-  },
-  "assets/landmark-photos/christ.webp": {
-   "file": "Christ the Redeemer - Cristo Redentor.jpg",
-   "max": 1200
-  },
-  "assets/landmark-photos/amazon.webp": {
-   "file": "Amazon Manaus forest.jpg",
-   "max": 1200
-  },
-  "assets/landmark-photos/grandcanyon.webp": {
-   "file": "Grand Canyon National Park View from Shoshone Point 8400 (7563441552).jpg",
-   "max": 1200
-  },
-  "assets/landmark-photos/reef.webp": {
-   "file": "Coral Outcrop Flynn Reef.jpg",
-   "max": 1200
-  },
-  "assets/landmark-photos/venice.webp": {
-   "file": "Gondola Gondolier Grand Canal.jpg",
-   "max": 1200
-  },
-  "assets/landmark-photos/chichen.webp": {
-   "file": "Chichen-Itza-Castillo-Seen-From-East.JPG",
-   "max": 1200
-  },
-  "assets/landmark-photos/sphinx.webp": {
-   "file": "Great Sphinx of Giza (أبو الهول).jpg",
+   "search": "CN Tower Toronto skyline incategory:Quality_images",
    "max": 1200
   },
   "assets/landmark-photos/forbidden.webp": {
-   "file": "20090528 Beijing Forbidden City 7913.jpg",
+   "search": "Forbidden City Hall of Supreme Harmony incategory:Quality_images",
    "max": 1200
   },
-  "assets/landmark-photos/hagia.webp": {
-   "file": "Istanbul Hagia Sophia IMG 7406 1800.jpg",
-   "max": 1200
-  },
-  "assets/landmark-photos/cappadocia.webp": {
-   "file": "Hot air balloons over Cappadocia 1.jpg",
-   "max": 1200
-  },
-  "assets/landmark-photos/sagrada.webp": {
-   "search": "Sagrada Familia exterior facade Barcelona",
-   "max": 1200
-  },
-  "assets/landmark-photos/towerbridge.webp": {
-   "file": "Tower Bridge from Shad Thames.jpg",
-   "max": 1200
-  },
-  "assets/landmark-photos/tablemtn.webp": {
-   "file": "Table Mountain from harbour.jpg",
+  "assets/landmark-photos/grandcanyon.webp": {
+   "search": "Grand Canyon incategory:Featured_pictures_on_Wikimedia_Commons",
    "max": 1200
   },
   "assets/landmark-photos/iguazu.webp": {
-   "file": "Iguazu Décembre 2007 - Panorama 7.jpg",
+   "search": "Iguazu Falls incategory:Quality_images",
    "max": 1200
   },
-  "assets/photos/sunflower.jpg": {
-   "file": "Sonnenblume Helianthus 2.JPG",
-   "max": 512,
-   "square": true
+  "assets/landmark-photos/sagrada.webp": {
+   "search": "Sagrada Familia Nativity facade incategory:Quality_images",
+   "max": 1200
   },
-  "assets/photos/rose.jpg": {
-   "file": "Red rose with black background.jpg",
-   "max": 512,
-   "square": true
+  "assets/landmark-photos/tablemtn.webp": {
+   "search": "Table Mountain Cape Town incategory:Quality_images",
+   "max": 1200
   },
-  "assets/photos/tulip.jpg": {
-   "file": "Tulp R01.jpg",
-   "max": 512,
-   "square": true
-  },
-  "assets/photos/daisy.jpg": {
-   "file": "Bellis perennis 001.JPG",
-   "max": 512,
-   "square": true
-  },
-  "assets/photos/car.jpg": {
-   "file": "2013 Porsche 911 Carrera 4S (991) (9626546987).jpg",
-   "max": 512,
-   "square": true
+  "assets/landmark-photos/amazon.webp": {
+   "search": "Amazon rainforest river aerial",
+   "max": 1200
   },
   "assets/photos/airplane.jpg": {
-   "file": "Lufthansa Airbus A320-211 D-AIQT 01.jpg",
+   "search": "Airbus A320 takeoff incategory:Featured_pictures_on_Wikimedia_Commons",
    "max": 512,
-   "square": true
-  },
-  "assets/photos/helicopter.jpg": {
-   "file": "Airbus AS355F1 Twin Squirrel Helicopter with Buachaille Etive Mòr.jpg",
-   "max": 512,
-   "square": true
-  },
-  "assets/photos/truck.jpg": {
-   "file": "MAN TGS 26.480. Free image Spielvogel 1.JPG",
-   "max": 512,
-   "square": true
-  },
-  "meta/landmark-candidates/bigben.webp": {
-   "file": "London (UK), Elizabeth Tower, -Big Ben- -- 2010 -- 1979.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/borobudur.webp": {
-   "file": "Borobudur-Nothwest-view.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/brandenburg.webp": {
-   "file": "Berlin, Brandenburger Tor -- 2008 -- 0153.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/goldengate.webp": {
-   "file": "Golden Gate Bridge as seen from Battery East.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/greatwall.webp": {
-   "file": "Great Wall of China July 2006.JPG",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/himeji.webp": {
-   "file": "Himeji Castle 0804 1.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/machupicchu.webp": {
-   "file": "Peru Machu Picchu Sunrise.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/milford.webp": {
-   "file": "Milford Sound in Fiordland National Park 01.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/neuschwanstein.webp": {
-   "file": "Neuschwanstein Castle LOC print rotated.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/opera.webp": {
-   "file": "Sydneyoperahouse at night.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/parthenon.webp": {
-   "file": "Parthenon from west.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/pisa.webp": {
-   "file": "The Duomo and Tower of Pisa at sunrise.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/safari.webp": {
-   "file": "Three giraffes 01.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/stbasil.webp": {
-   "file": "Catedral de San Basilio, Moscú, Rusia, 2016-10-03, DD 05-06 HDR.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/stonehenge.webp": {
-   "file": "Stonehenge, Condado de Wiltshire, Inglaterra, 2014-08-12, DD 09.JPG",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/tajmahal.webp": {
-   "file": "El Taj Mahal-Agra India0023.JPG",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/tokyo.webp": {
-   "file": "Japan-Tokyo-tower-1024.jpg",
-   "metaOnly": true
-  },
-  "meta/landmark-candidates/uluru.webp": {
-   "file": "Petermann Ranges (AU), Uluru-Kata Tjuta National Park, Uluru, Kuniya Walk -- 2019 -- 3615.jpg",
-   "metaOnly": true
+   "square": "pad"
   }
  }
 }

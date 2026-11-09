@@ -76,8 +76,8 @@ def by_search(q, landscape=True):
         i = info(p)
         if i['mime'] != 'image/jpeg' or not FREE.match(i['license']) or i['width'] < 1200:
             continue
-        if landscape and i['width'] < i['height']:
-            continue
+        if landscape and not (1.15 <= i['width'] / max(1, i['height']) <= 1.85):
+            continue                           # landscape, but not a thin panorama
         return i
     raise ValueError('no freely licensed landscape photo found for: ' + q)
 
@@ -96,7 +96,11 @@ def main():
                 url = 'https://commons.wikimedia.org/wiki/Special:FilePath/' + quote(meta['file']) + f'?width={min(meta["width"], 1600)}'
                 with Image.open(io.BytesIO(get(url))) as src:
                     im = ImageOps.exif_transpose(src).convert('RGB')
-                if it.get('square'):                      # centre crop to a square (picture cards)
+                if it.get('square') == 'pad':             # whole subject on a soft blurred square
+                    from PIL import ImageFilter
+                    side = max(im.size); bg = im.resize((side, side)).filter(ImageFilter.GaussianBlur(side // 25))
+                    bg.paste(im, ((side - im.width) // 2, (side - im.height) // 2)); im = bg
+                elif it.get('square'):                    # centre crop to a square (picture cards)
                     side = min(im.size); l = (im.width - side) // 2; t = (im.height - side) // 2
                     im = im.crop((l, t, l + side, t + side))
                 im.thumbnail((size, size), Image.Resampling.LANCZOS)
