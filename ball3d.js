@@ -11,7 +11,7 @@ const CHECK = 15;                     // checkpoint every 15 rows
 // level tuning (index 0 = level 1)
 const T = {
   speed: [4.6, 5.2, 5.8, 6.3, 6.8, 7.3, 7.8, 8.4],
-  rows: [70, 85, 100, 115, 130, 145, 160, 180],
+  rows: [280, 340, 400, 460, 520, 580, 640, 720],          // 4× the old runs: a long adventure with checkpoints
   hole: [0, 0.1, 0.17, 0.24, 0.3, 0.36, 0.42, 0.48],     // chance a side tile is missing
   block: [0.03, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18],
   drift: [0.06, 0.1, 0.14, 0.18, 0.22, 0.26, 0.3, 0.34],  // how often the safe path moves sideways
@@ -28,18 +28,18 @@ const LAUNCH = 8.6, GRAV = 15;
 const RAMP_LEN = 3.6, RAMP_H = 0.7;                       // a long run-up that climbs to the launch lip                           // ramp launch speed and gravity
 
 function buildTrack(lv) {
-  const i = lv - 1, rows = T.rows[i];
+  const i = lv - 1, rows = T.rows[i], X = (a) => a[i] * 4;   // feature counts scale with the 4× longer track
   const floor = [], block = [], gem = [], safe = [];
   const jumpRows = new Set();
-  for (let k = 0; k < T.jumps[i]; k++) {
-    const r = 20 + Math.floor(((k + 0.5) / T.jumps[i]) * (rows - 35));
+  for (let k = 0; k < X(T.jumps); k++) {
+    const r = 20 + Math.floor(((k + 0.5) / X(T.jumps)) * (rows - 35));
     for (let g = 0; g < T.gapLen[i]; g++) jumpRows.add(r + g);
   }
   const nearJump = (r) => [...jumpRows].some((j) => (r >= j - 4 && r < j) || (r > j && r <= j + 3 && !jumpRows.has(r)));
   // gate walls: tall candy blocks across the track with a single opening, so the ball has to be steered left or right
   const gates = [];
-  for (let k = 0, prev = 2; k < T.gates[i]; k++) {
-    const r = 16 + Math.floor(((k + 0.5) / T.gates[i]) * (rows - 32)) + Math.floor(Math.random() * 3) - 1;
+  for (let k = 0, prev = 2; k < X(T.gates); k++) {
+    const r = 16 + Math.floor(((k + 0.5) / X(T.gates)) * (rows - 32)) + Math.floor(Math.random() * 3) - 1;
     if ([r - 4, r - 2, r, r + 2, r + 4].some((q) => jumpRows.has(q) || nearJump(q))) continue;
     if ([...jumpRows].some((j) => r >= j - 6 && r <= j + 12)) continue;      // never right where a jump lands: no time to steer
     const open = prev <= 2 ? [3, 4][Math.floor(Math.random() * 2)] : [0, 1][Math.floor(Math.random() * 2)];
@@ -66,7 +66,7 @@ function buildTrack(lv) {
     const f = [], b = [];
     for (let x = 0; x < LANES; x++) {
       let on = easy || near || keep.has(x) || Math.random() > T.hole[i] * (0.25 + 0.75 * Math.min(1, r / (rows * 0.65)));
-      if (jumpRows.has(r)) on = false;
+      if (jumpRows.has(r)) on = x === safe[r] || (r % 3 === 0 && Math.abs(x - safe[r]) === 1);   // holes cover part of the track, never all of it
       f.push(on);
       b.push(on && !easy && !near && !keep.has(x) && Math.random() < T.block[i]);
     }
@@ -75,7 +75,7 @@ function buildTrack(lv) {
   }
   // 3) sliding blocks sit on full rows away from jumps
   const movers = [];
-  for (let k = 0; k < T.movers[i]; k++) {
+  for (let k = 0; k < X(T.movers); k++) {
     const r = 25 + Math.floor(Math.random() * (rows - 40));
     if ([r - 1, r, r + 1].some((q) => jumpRows.has(q) || nearJump(q) || [...gateRows].some((g) => Math.abs(g - q) < 3))) continue;
     for (let x = 0; x < LANES; x++) { floor[r][x] = true; block[r][x] = false; }
@@ -101,9 +101,9 @@ function buildTrack(lv) {
     return false;
   };
   const gapFor = (kind) => Math.max(2, Math.min(kind === 'falls' ? 4 : 3, Math.floor(flight - 3.2)));
-  for (let k = 0; k < T.falls[i]; k++) place('falls', gapFor('falls'));
-  for (let k = 0; k < T.bridges[i]; k++) place('bridge', gapFor('bridge'));
-  for (let k = 0; k < T.planks[i]; k++) {
+  for (let k = 0; k < X(T.falls); k++) place('falls', gapFor('falls'));
+  for (let k = 0; k < X(T.bridges); k++) place('bridge', gapFor('bridge'));
+  for (let k = 0; k < X(T.planks); k++) {
     for (let tries = 0; tries < 40; tries++) {
       const len = 6 + Math.floor(Math.random() * 5), r = 12 + Math.floor(Math.random() * (rows - 30));
       if (busy(r - 2, r + len + 2)) continue;
@@ -161,10 +161,10 @@ export function start() {
   renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
   const scene = new THREE.Scene();
   const skyTex = (() => { const c = document.createElement('canvas'); c.width = 8; c.height = 256; const x = c.getContext('2d'); const g = x.createLinearGradient(0, 0, 0, 256);
-    g.addColorStop(0, '#5fb6ff'); g.addColorStop(0.55, '#bfe6ff'); g.addColorStop(1, '#fff1d6'); x.fillStyle = g; x.fillRect(0, 0, 8, 256); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+    g.addColorStop(0, '#3d8bfd'); g.addColorStop(0.5, '#9fd4ff'); g.addColorStop(0.8, '#ffd8a8'); g.addColorStop(1, '#ffb88c'); x.fillStyle = g; x.fillRect(0, 0, 8, 256); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
   scene.background = skyTex;
-  scene.fog = new THREE.Fog('#d6efff', 16, 40);
-  const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 80);
+  scene.fog = new THREE.Fog('#cfe6f5', 22, 58);
+  const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 90);
   scene.add(new THREE.HemisphereLight('#ffffff', '#88a', 1.1));
   const sun = new THREE.DirectionalLight('#ffffff', 1.3); sun.position.set(3, 8, -4); scene.add(sun);
 
@@ -345,25 +345,78 @@ export function start() {
   }
   // clouds, floating islands and hovering treats for depth
   const cloudMat = new THREE.MeshLambertMaterial({ color: '#ffffff' });
-  const floaters = [];
   for (let c = 0; c < track.rows / 6; c++) {
     const g = new THREE.Group();
     for (let p = 0; p < 3; p++) { const sph = new THREE.Mesh(new THREE.SphereGeometry(0.7 + Math.random() * 0.5, 10, 8), cloudMat); sph.position.set(p * 0.8, Math.random() * 0.3, 0); g.add(sph); }
     const z = c * 6 + Math.random() * 4; g.position.set(track.offAt(z) + (Math.random() < 0.5 ? -1 : 1) * (5 + Math.random() * 5), -2 - Math.random() * 3, z);
     scene.add(g);
   }
-  const grassMat = new THREE.MeshLambertMaterial({ color: '#6fcf5a' }), dirtMat = new THREE.MeshLambertMaterial({ color: '#a9743f' });
-  const treeMat = new THREE.MeshLambertMaterial({ color: '#3fae4a' }), caneMats = [new THREE.MeshLambertMaterial({ color: '#ff4d6d' }), new THREE.MeshLambertMaterial({ color: '#ffffff' })];
-  for (let k = 0; k < track.rows / 7; k++) {            // little islands that bob in the sky beside the track
-    const g = new THREE.Group(), r = 0.9 + Math.random() * 0.9;
-    const top = new THREE.Mesh(new THREE.CylinderGeometry(r, r * 0.9, 0.25, 14), grassMat), under = new THREE.Mesh(new THREE.ConeGeometry(r * 0.9, r * 1.4, 14), dirtMat); under.rotation.x = Math.PI; under.position.y = -0.8;
-    g.add(top, under);
-    if (k % 3 === 0) { const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.09, 0.5, 6), dirtMat); trunk.position.y = 0.38; const crown = new THREE.Mesh(new THREE.SphereGeometry(0.4, 10, 8), treeMat); crown.position.y = 0.85; g.add(trunk, crown); }
-    else if (k % 3 === 1) { for (let q = 0; q < 6; q++) { const seg = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.17, 8), caneMats[q % 2]); seg.position.y = 0.2 + q * 0.16; g.add(seg); } }
-    else { const lol = new THREE.Mesh(new THREE.SphereGeometry(0.34, 12, 10), new THREE.MeshLambertMaterial({ color: ['#ff6b9d', '#74c0fc', '#ffd43b'][k % 3] })); lol.position.y = 0.62; const stick = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.55, 6), wrapMat); stick.position.y = 0.3; g.add(stick, lol); }
-    const z = k * 7 + Math.random() * 5, side = k % 2 ? 1 : -1, base = 0.2 + Math.random() * 3.2;
-    g.position.set(track.offAt(z) + side * (3.8 + Math.random() * 3.5), base, z); scene.add(g); floaters.push({ g, base, ph: Math.random() * 6, sp: 0.8 + Math.random() * 0.8 });
+  // scenery: a sky bridge high above a green valley, with a river, pine forests, snowy mountains and hot-air balloons
+  const floaters = [];
+  const valleyTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 256; const x = c.getContext('2d');
+    x.fillStyle = '#7cc36a'; x.fillRect(0, 0, 256, 256);
+    for (let k = 0; k < 900; k++) { x.fillStyle = ['#6ab45a', '#8fd17a', '#5ea84f', '#a3d98a'][k % 4]; x.fillRect(Math.random() * 256, Math.random() * 256, 3 + Math.random() * 6, 3 + Math.random() * 6); }
+    for (let k = 0; k < 40; k++) { x.fillStyle = ['#ffe066', '#ff8fab', '#ffffff'][k % 3]; x.beginPath(); x.arc(Math.random() * 256, Math.random() * 256, 1.6, 0, 7); x.fill(); }
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(14, 60); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+  const VALLEY_Y = -9, midZ = track.rows / 2;
+  const valley = new THREE.Mesh(new THREE.PlaneGeometry(140, track.rows + 120), new THREE.MeshLambertMaterial({ map: valleyTex }));
+  valley.rotation.x = -Math.PI / 2; valley.position.set(0, VALLEY_Y, midZ); scene.add(valley);
+  // a winding river far below
+  const riverPts = []; for (let z = -40; z <= track.rows + 60; z += 6) riverPts.push(new THREE.Vector3(track.offAt(Math.max(0, Math.min(track.rows, z))) * 0.5 + Math.sin(z * 0.04) * 9 - 4, VALLEY_Y + 0.05, z));
+  const riverCurve = new THREE.CatmullRomCurve3(riverPts), riverGeo = new THREE.TubeGeometry(riverCurve, riverPts.length * 4, 2.2, 6, false);
+  riverGeo.scale(1, 0.05, 1); riverGeo.translate(0, VALLEY_Y * 0.95, 0);
+  scene.add(new THREE.Mesh(riverGeo, new THREE.MeshLambertMaterial({ color: '#4dabf7' })));
+  // snowy mountains on both horizons
+  const rockMat = new THREE.MeshLambertMaterial({ color: '#8c9db5' }), snowMat = new THREE.MeshLambertMaterial({ color: '#ffffff' }), rockMat2 = new THREE.MeshLambertMaterial({ color: '#a5b4c8' });
+  for (let z = -20; z < track.rows + 60; z += 14 + Math.random() * 10) for (const side of [-1, 1]) {
+    const h = 14 + Math.random() * 16, r = 9 + Math.random() * 8, m = new THREE.Group();
+    const body = new THREE.Mesh(new THREE.ConeGeometry(r, h, 7), Math.random() < 0.5 ? rockMat : rockMat2), cap = new THREE.Mesh(new THREE.ConeGeometry(r * 0.34, h * 0.34, 7), snowMat);
+    body.position.y = h / 2; cap.position.y = h - h * 0.17 + 0.05; m.add(body, cap);
+    m.position.set(track.offAt(Math.max(0, Math.min(track.rows, z))) + side * (42 + Math.random() * 18), VALLEY_Y, z); m.rotation.y = Math.random() * 3; scene.add(m);
   }
+  // pine forests on the valley floor (instanced: hundreds of trees cost one draw call each for trunks and crowns)
+  const nTrees = Math.floor(track.rows * 1.4), pineGeo = new THREE.ConeGeometry(1, 2.6, 7), trunkGeo = new THREE.CylinderGeometry(0.18, 0.22, 0.8, 6);
+  const pines = new THREE.InstancedMesh(pineGeo, new THREE.MeshLambertMaterial({ color: '#2f9e44' }), nTrees), trunks = new THREE.InstancedMesh(trunkGeo, new THREE.MeshLambertMaterial({ color: '#8d5a2b' }), nTrees);
+  const tcol = new THREE.Color(), td = new THREE.Object3D();
+  for (let k = 0; k < nTrees; k++) {
+    const z = Math.random() * (track.rows + 60) - 20, side = Math.random() < 0.5 ? -1 : 1, x = track.offAt(Math.max(0, Math.min(track.rows, z))) + side * (5 + Math.random() * 26), sc = 0.8 + Math.random() * 1.1;
+    td.position.set(x, VALLEY_Y + 0.4 * sc, z); td.scale.setScalar(sc); td.rotation.set(0, 0, 0); td.updateMatrix(); trunks.setMatrixAt(k, td.matrix);
+    td.position.y = VALLEY_Y + (0.8 + 1.3) * sc; td.updateMatrix(); pines.setMatrixAt(k, td.matrix);
+    pines.setColorAt(k, tcol.set(['#2f9e44', '#37b24d', '#2b8a3e', '#40c057'][k % 4]));
+  }
+  scene.add(pines, trunks);
+  // hot-air balloons drift beside the bridge
+  const balloonCols = [['#ff6b6b', '#ffd43b'], ['#4dabf7', '#ffffff'], ['#b197fc', '#ffa8a8'], ['#51cf66', '#ffe066'], ['#ff922b', '#ffffff']];
+  const basketMat = new THREE.MeshLambertMaterial({ color: '#a9743f' }), ropeMat = new THREE.LineBasicMaterial({ color: '#5c3b1e' });
+  const stripeTex = (a, b) => { const c = document.createElement('canvas'); c.width = 64; c.height = 8; const x = c.getContext('2d'); for (let i = 0; i < 8; i++) { x.fillStyle = i % 2 ? b : a; x.fillRect(i * 8, 0, 8, 8); } const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; };
+  const balloonMats = balloonCols.map(([a, b]) => new THREE.MeshLambertMaterial({ map: stripeTex(a, b) }));
+  const envGeo = new THREE.SphereGeometry(1, 16, 12); envGeo.scale(1, 1.18, 1);
+  for (let k = 0; k < track.rows / 12; k++) {
+    const g = new THREE.Group(), env = new THREE.Mesh(envGeo, balloonMats[k % balloonMats.length]), basket = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.4, 0.5), basketMat);
+    basket.position.y = -1.75; g.add(env, basket);
+    const pts = []; for (const [px, pz] of [[-0.22, -0.22], [0.22, -0.22], [-0.22, 0.22], [0.22, 0.22]]) pts.push(new THREE.Vector3(px, -1.55, pz), new THREE.Vector3(px * 3, -0.75, pz * 3));
+    g.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), ropeMat));
+    const z = k * 12 + Math.random() * 8, side = k % 2 ? 1 : -1, base = 2.5 + Math.random() * 5;
+    g.position.set(track.offAt(Math.min(track.rows, z)) + side * (8 + Math.random() * 7), base, z); g.scale.setScalar(0.8 + Math.random() * 0.5);
+    scene.add(g); floaters.push({ g, base, ph: Math.random() * 6, sp: 0.5 + Math.random() * 0.5 });
+  }
+  // guard rails along both edges of the bridge, like a real bridge: wooden posts and a rounded top rail
+  const railRows = [];
+  for (let r = -2; r < track.rows + 2; r++) {
+    const row = track.floor[Math.max(0, Math.min(track.rows - 1, r))];
+    if (r >= 0 && r < track.rows && !row.some(Boolean)) continue;     // no rail across a gap you fly over
+    railRows.push(r);
+  }
+  const postGeo = new THREE.CylinderGeometry(0.07, 0.08, 0.62, 8), barGeo = new THREE.CylinderGeometry(0.06, 0.06, 1.02, 8); barGeo.rotateX(Math.PI / 2);
+  const posts = new THREE.InstancedMesh(postGeo, new THREE.MeshStandardMaterial({ color: '#c0874f', roughness: 0.7 }), railRows.length * 2);
+  const bars = new THREE.InstancedMesh(barGeo, new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.35 }), railRows.length * 4);
+  let pi = 0, bi = 0;
+  for (const r of railRows) for (const lx of [-2.62, 2.62]) {
+    const [wx, wz, wa] = W3(lx, r);
+    td.position.set(wx, 0.16, wz); td.rotation.set(0, wa, 0); td.scale.set(1, 1, 1); td.updateMatrix(); posts.setMatrixAt(pi++, td.matrix);
+    for (const y of [0.44, 0.2]) { const [mx, mz, ma] = W3(lx, r + 0.5); td.position.set(mx, y, mz); td.rotation.set(0, ma, 0); td.scale.set(1, 1, 1); td.updateMatrix(); bars.setMatrixAt(bi++, td.matrix); }
+  }
+  scene.add(posts, bars);
   // the ball
   const ballTex = (() => {
     const c = document.createElement('canvas'); c.width = 128; c.height = 64; const x = c.getContext('2d');
@@ -460,7 +513,7 @@ export function start() {
     if (!drag.act && dy < -55) {                       // a sudden flick up = big jump; a longer drag forward = speed boost
       if (e.timeStamp - drag.time < 300) { drag.act = 'jump'; bigJump(); } else { drag.act = 'boost'; speedBoost(); }
     }
-    S.tx = Math.max(-2.2, Math.min(2.2, drag.t0 - dx / (w / 5.5)));   // camera faces +z: screen-right is lane -x
+    S.tx = Math.max(-2.15, Math.min(2.15, drag.t0 - dx / (w / 5.5)));   // the guard rails keep the ball on the bridge   // camera faces +z: screen-right is lane -x
   });
   const up = (e) => {
     if (drag && !drag.act && drag.moved < 12 && e.timeStamp - drag.time < 300) jump();
@@ -515,7 +568,7 @@ export function start() {
     if (!S.done) {
       S.boost = Math.max(0, S.boost - dt);
       const v = speed0 * (1 + Math.min(0.25, S.z / track.rows * 0.25)) * (S.boost > 0 ? 1.7 : 1);    // speeds up a bit along the track (and a lot while boosting)
-      if (tilt != null && !drag) S.tx = Math.max(-2.2, Math.min(2.2, S.tx - tilt * 5 * dt));
+      if (tilt != null && !drag) S.tx = Math.max(-2.15, Math.min(2.15, S.tx - tilt * 5 * dt));
       S.x += (S.tx - S.x) * Math.min(1, dt * 12);
       if (!S.falling) S.z += v * dt;
       // vertical
