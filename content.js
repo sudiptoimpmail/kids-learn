@@ -1618,6 +1618,11 @@ function livesIn(a, place) {
   if (CONT[place]) return (kind === 'country' && countryOf(ans).c === place) || also.some((x) => countryOf(x) && countryOf(x).c === place);
   return kind === 'continent' && countryOf(place) && (countryOf(place).c === ans || also.includes(countryOf(place).c));
 }
+// real photographs (Wikimedia Commons, bundled offline) where we have them; the 3D emoji otherwise
+const ANIMAL_PHOTOS = new Set(ContentData.get('animal-photos', 'ids') || []);
+const aniSlug = (name) => name.toLowerCase().replace(/[^a-z]+/g, '-');
+const aniPic = (name, emoji, cls = 'ani-photo') => ANIMAL_PHOTOS.has(aniSlug(name))
+  ? `<img class="${cls}" src="assets/animals/${aniSlug(name)}.webp" alt="" loading="lazy" decoding="async">` : `<span class="ani-e">${emoji}</span>`;
 function genAnimals(level) {
   const pool = WORLD_ANIMALS.filter((a) => a[4] <= level);
   const exact = pool.filter((a) => a[4] === level);
@@ -1631,7 +1636,7 @@ function genAnimals(level) {
     return {
       key: `ani-which-${name}`, text: `Which animal lives in <b>${theC(ans)}</b>? ${COUNTRY_FLAG[ans] || ''}`, say: `Which animal lives in ${theC(ans)}?`,   // one recorded sentence: no pause, and "lives" as in "he lives"
       main: `<div class="hint-map">${map}</div>`, mainClass: 'map-main',
-      options: shuffle([A, ...wrong]).map((b) => ({ v: b[0], html: `<span class="ani-opt"><span class="ani-e">${b[1]}</span>${b[0]}</span>` })), answer: name, optClass: 'opt-text two-col',
+      options: shuffle([A, ...wrong]).map((b) => ({ v: b[0], html: `<span class="ani-opt">${aniPic(b[0], b[1], 'ani-photo small')}${b[0]}</span>` })), answer: name, optClass: 'opt-text two-col',
       hint: { html: '', say: 'Think about where each animal lives!', remove: true },
     };
   }
@@ -1640,7 +1645,7 @@ function genAnimals(level) {
   const map = kind === 'country' ? worldSVG({ hl: ans, level: 3 }) : worldSVG({ mode: 'cont', hl: ans });
   return {
     key: `ani-${name}`, text: `Where does the <b>${name}</b> live?`, say: `Where does the ${name} live?`,
-    main: `<div class="big-emoji">${emoji}</div>`,
+    main: ANIMAL_PHOTOS.has(aniSlug(name)) ? `<div class="ani-photo-wrap">${aniPic(name, emoji)}</div>` : `<div class="big-emoji">${emoji}</div>`,
     options: shuffle([ans, ...wrong]).map((x) => ({ v: x, html: `${COUNTRY_FLAG[x] || (CONT[x] ? '🌍' : '')} ${x}` })), answer: ans, optClass: 'opt-text',
     hint: { html: `<div class="hint-map">${map}</div>`, say: 'Look at the orange place on the map!' },
   };

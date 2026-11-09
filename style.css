@@ -1800,3 +1800,7 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .palette .sw-c.on { transform: scale(1.18) rotate(-6deg); box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--sw), 0 4px 8px #0003; }
 .color-wrap { background: #fffdf8 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .45 0 0 0 0 .4 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E"); }
 @media (prefers-reduced-motion: reduce) { .c4-cell.drop i, .c4-cell.landed i, .c4-cell.win i, .sdk-cell.pop, .wm-hole.up .wm-pop, .wm-hammer, .c4-drop.hot::after { animation: none; } }
+
+.ani-photo-wrap { display: flex; justify-content: center; }
+.ani-photo { width: min(320px, 70vw); aspect-ratio: 4/3; object-fit: cover; border-radius: 22px; border: 5px solid #fff; box-shadow: 0 6px 0 #e3dcef, 0 10px 20px #0002; }
+.ani-photo.small { width: 64px; height: 64px; aspect-ratio: 1; border-radius: 14px; border-width: 3px; box-shadow: 0 2px 0 #e3dcef; margin-right: 8px; vertical-align: middle; }
