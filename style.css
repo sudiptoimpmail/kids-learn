@@ -1804,3 +1804,6 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .ani-photo-wrap { display: flex; justify-content: center; }
 .ani-photo { width: min(320px, 70vw); aspect-ratio: 4/3; object-fit: cover; border-radius: 22px; border: 5px solid #fff; box-shadow: 0 6px 0 #e3dcef, 0 10px 20px #0002; }
 .ani-photo.small { width: 64px; height: 64px; aspect-ratio: 1; border-radius: 14px; border-width: 3px; box-shadow: 0 2px 0 #e3dcef; margin-right: 8px; vertical-align: middle; }
+/* real landmark photos as answer choices: fill the button instead of overflowing it */
+.lm-opts .lm-box.lm-real-photo, .opt .lm-box.lm-real-photo { width: 100%; max-width: 100%; }
+.lm-opts .lm-box.lm-real-photo .lm-art, .opt .lm-box.lm-real-photo .lm-art { object-fit: cover; object-position: 50% 25%; }
