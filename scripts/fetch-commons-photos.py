@@ -5,7 +5,7 @@ Each item is keyed by its destination path (.webp or .jpg) and has either
   "file":   an exact Commons file name, or
   "search": a Commons search phrase (the first freely licensed, large, landscape photo is used),
 plus optional "max" (longest side, default 640), "square" (centre crop) and "metaOnly"
-(only record licence/author, do not download).
+(only record licence/author, do not download), "skip" (take the n-th match instead of the first).
 
 The licence and author always come from the official Commons API (extmetadata), never from the
 caller: anything not CC0 / Public domain / CC BY / CC BY-SA is refused.
@@ -69,7 +69,7 @@ def by_name(name):
     return info(p)
 
 
-def by_search(q, landscape=True):
+def by_search(q, landscape=True, skip=0):
     r = api(dict(IIPROP, action='query', generator='search', gsrnamespace='6', gsrsearch=q + ' filetype:bitmap', gsrlimit='20'))
     pages = sorted(r.get('query', {}).get('pages', []), key=lambda p: p.get('index', 99))
     for p in pages:
@@ -78,6 +78,8 @@ def by_search(q, landscape=True):
             continue
         if landscape and not (1.15 <= i['width'] / max(1, i['height']) <= 1.85):
             continue                           # landscape, but not a thin panorama
+        if skip:
+            skip -= 1; continue
         return i
     raise ValueError('no freely licensed landscape photo found for: ' + q)
 
@@ -87,7 +89,7 @@ def main():
     out = {}
     for dest, it in spec['items'].items():
         try:
-            meta = by_search(it['search'], it.get('landscape', True)) if it.get('search') else by_name(it['file'])
+            meta = by_search(it['search'], it.get('landscape', True), it.get('skip', 0)) if it.get('search') else by_name(it['file'])
             if not FREE.match(meta['license']):
                 raise ValueError('licence not allowed: ' + meta['license'])
             rec = dict(meta, ok=True)
