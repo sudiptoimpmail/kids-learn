@@ -1,5 +1,5 @@
 {
- "batch": 3,
+ "batch": "3b",
  "items": {
   "assets/animals/beaver.webp": {
    "search": "Castor canadensis incategory:Quality_images",
@@ -50,7 +50,7 @@
    "max": 1200
   },
   "assets/photos/airplane.jpg": {
-   "search": "Airbus A320 takeoff incategory:Featured_pictures_on_Wikimedia_Commons",
+   "file": "Lufthansa Airbus A320-211 D-AIQT 01.jpg",
    "max": 512,
    "square": "pad"
   }
