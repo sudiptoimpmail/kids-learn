@@ -1845,3 +1845,8 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 #game .pz-peek.on, .pz-peek.on { opacity: 1; }
 .pz-peek > img, .pz-peek > svg, .pz-peek .pz-photo-peek { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 12px; box-shadow: none; }
 [data-a="peek"].on { background: #ffe066; }
+/* Boards keep exact equal columns after the iPad turns: minmax(0, 1fr) stops round cells (aspect-ratio 1)
+   from sizing their column off a stale row height and spilling past the board's right edge */
+.c4-board { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.c4-cell, .mem-card, .sdk-cell, .pzl-tile { min-width: 0; min-height: 0; }
+.c4-drops { width: min(var(--activity-width, 100%), calc(var(--board-space, 400px) * 1.16)); max-width: 100%; margin-inline: auto; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); box-sizing: border-box; padding-inline: 14px; gap: 6px; }
