@@ -552,7 +552,7 @@ export function start() {
   area.querySelector('[data-a="maze"]').onclick = () => { cleanup(); startBallMaze(); };
 
   const msg = $('.b3-msg', area);
-  function flash(t) { msg.textContent = t; msg.hidden = false; clearTimeout(flash.t); flash.t = setTimeout(() => (msg.hidden = true), 900); }
+  function flash() { }   // no pop-up words over the track: sounds and the ball's motion tell the story
   function respawn() {
     S.tries++;
     let r = Math.max(0, Math.floor(S.z / CHECK) * CHECK);
@@ -598,7 +598,7 @@ export function start() {
         const [bx, bz] = W3(g.x, g.r); burst(bx, g.y, bz, g.kind === 'star' ? '#ffe066' : '#ff8fab');
         tone(g.kind === 'star' ? [988, 1319] : [784, 1047, 1319], { dur: 0.05, gap: 0.05, vol: 0.09 });
       }
-      if (Math.floor(S.z / CHECK) > S.check) { S.check = Math.floor(S.z / CHECK); flash('✔ Checkpoint!'); }
+      if (Math.floor(S.z / CHECK) > S.check) { S.check = Math.floor(S.z / CHECK); tone([660, 990], { dur: 0.05, gap: 0.04, vol: 0.06 }); }   // a soft chime marks the checkpoint
       $('.b3-bar i', area).style.width = `${Math.min(100, (S.z / archZ) * 100)}%`;
       if (S.z >= archZ) finish();
     }

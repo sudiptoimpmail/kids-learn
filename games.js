@@ -1387,9 +1387,9 @@ function startPuzzle(p) {
     </svg>`;
   };
   area.innerHTML = `<div class="g-msg">Put the picture back together! <small>Drag a piece to move it. Hold a piece to turn it.</small></div>
-    <div class="pz-wrap"><div class="pz-board${n >= 5 ? ' pz-big' : ''}" style="grid-template-columns:repeat(${n},1fr)"></div>
-    <div class="pz-peek">${p.url ? `<img class="pz-photo-peek" src="${p.url}" alt="">` : p.photo || p.art ? visualImage(p.photo || p.art,'pz-photo-peek') : `<svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`}<small>Look!</small></div></div>
-    <div class="color-btns"><button class="big-btn alt small ico" data-a="restart" aria-label="Restart">🔄 Restart</button><button class="big-btn alt small ico" data-a="pictures" aria-label="Pictures">🖼️ Pictures</button></div>`;
+    <div class="pz-wrap"><div class="pz-stage"><div class="pz-board${n >= 5 ? ' pz-big' : ''}" style="grid-template-columns:repeat(${n},1fr)"></div>
+    <div class="pz-peek" aria-hidden="true">${p.url ? `<img class="pz-photo-peek" src="${p.url}" alt="">` : p.photo || p.art ? visualImage(p.photo || p.art,'pz-photo-peek') : `<svg viewBox="0 0 ${VB} ${VB}" class="pic ${p.om ? 'om' : ''}">${body}</svg>`}</div></div></div>
+    <div class="color-btns"><button class="big-btn alt small ico" data-a="peek" aria-label="Peek at the picture">👀 Peek</button><button class="big-btn alt small ico" data-a="restart" aria-label="Restart">🔄 Restart</button><button class="big-btn alt small ico" data-a="pictures" aria-label="Pictures">🖼️ Pictures</button></div>`;
   say('Put the picture back together!');
   const board = $('.pz-board', area);
   function draw() {
@@ -1467,6 +1467,12 @@ function startPuzzle(p) {
   board.addEventListener('contextmenu', (e) => e.preventDefault());
   area.querySelector('[data-a="restart"]').onclick = () => { gameSession++; startPuzzle(p); };
   area.querySelector('[data-a="pictures"]').onclick = () => { gameSession++; startPuzzleMenu(); };
+  // the finished picture now lives behind a Peek button: it covers the board for a moment instead of taking a side column
+  const peekBtn = area.querySelector('[data-a="peek"]'), peek = area.querySelector('.pz-peek');
+  const showPeek = (on) => { peek.classList.toggle('on', on); peekBtn.classList.toggle('on', on); };
+  peekBtn.onpointerdown = (e) => { e.preventDefault(); sfx.tap(); showPeek(true); clearTimeout(showPeek.t); showPeek.t = setTimeout(() => showPeek(false), 2500); };
+  peekBtn.onpointerup = peekBtn.onpointerleave = () => { clearTimeout(showPeek.t); showPeek.t = setTimeout(() => showPeek(false), 600); };
+  peekBtn.onclick = (e) => e.preventDefault();
   draw();
 }
 
