@@ -1,4 +1,5 @@
-/* Original, locally bundled photo assets (AI-generated, no third-party image dependencies).
+/* Real photographs from Wikimedia Commons (CC0 / public domain / CC BY / CC BY-SA), bundled locally.
+   Licence and author of each picture: data/photo-credits.json and credits.html.
    Shared by reading, Pre-K recognition, and the short picture puzzles.
    A single stable path per picture lets the offline service worker precache every asset. */
 const PHOTO_GROUPS = Object.freeze(ContentData.get('visuals', 'PHOTO_GROUPS'));

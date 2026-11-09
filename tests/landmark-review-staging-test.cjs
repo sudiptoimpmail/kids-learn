@@ -13,5 +13,8 @@ assert.doesNotMatch(script,/assets\/landmark-photos|import-landmark-photo|sw\.js
 const sw=fs.readFileSync('sw.js','utf8');
 assert.doesNotMatch(sw,/assets\/landmark-candidates/);
 const manifest=JSON.parse(fs.readFileSync('data/landmark-photos.json','utf8')).datasets;
-assert.equal(manifest.ids.length,2,'Review candidates must never be enabled as real photos');
+// Candidates are enabled only through a record whose licence and author came from the
+// official Wikimedia Commons API (scripts/fetch-commons-photos.py), after a visual check.
+for(const id of manifest.ids){const r=manifest.records[id];
+  assert.ok(r&&(r.licenseSource==='commons-api'||['liberty','eiffel'].includes(id)),'Photo enabled without verified Commons licence: '+id);}
 console.log('PASS batch candidates cannot bypass photo review, manifest, or offline cache');

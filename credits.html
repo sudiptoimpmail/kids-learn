@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Credits · Learn &amp; Play</title>
+<link rel="icon" href="icons/icon-192.png">
+<style>
+  :root { --bg: #fff8ec; --ink: #2b2140; --soft: #6c6182; --card: #fff; --theme: #7c5cff; --line: #eee4d3; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  header { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; gap: 12px; padding: calc(env(safe-area-inset-top) + 12px) 16px 12px; background: var(--bg); border-bottom: 2px solid var(--line); }
+  header a { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: var(--card); color: var(--ink); text-decoration: none; font-size: 26px; font-weight: 900; box-shadow: 0 3px 0 var(--line); }
+  h1 { margin: 0; font-size: 22px; }
+  main { max-width: 860px; margin: 0 auto; padding: 16px 16px calc(env(safe-area-inset-bottom) + 32px); }
+  h2 { font-size: 18px; margin: 28px 0 8px; }
+  p.lead { color: var(--soft); margin: 4px 0 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .item { display: flex; gap: 10px; align-items: flex-start; background: var(--card); border-radius: 16px; padding: 10px; box-shadow: 0 3px 0 var(--line); min-width: 0; }
+  .item img { width: 64px; height: 64px; flex: none; border-radius: 10px; object-fit: cover; background: #f1ece2; }
+  .item div { min-width: 0; font-size: 14px; }
+  .item b { display: block; font-size: 15px; }
+  .item a { color: #5135d6; overflow-wrap: anywhere; }
+  .lic { display: inline-block; margin-top: 2px; padding: 0 6px; border-radius: 6px; background: #f3f0ff; color: #5135d6; font-size: 12px; font-weight: 700; }
+  ul { padding-left: 20px; } li { margin: 6px 0; }
+  .empty { color: var(--soft); font-style: italic; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #1d1828; --ink: #f2eefc; --soft: #b6abc9; --card: #2a2338; --line: #3a3149; } .item a { color: #b9a8ff; } .lic { background: #3a3155; color: #d0c5ff; } }
+</style>
+</head>
+<body>
+<header><a href="./" aria-label="Back to the app">‹</a><h1>Credits</h1></header>
+<main>
+  <p class="lead">Thank you to the photographers and artists whose freely licensed work appears in Learn &amp; Play. Every picture is stored on this device so the app works offline.</p>
+
+  <h2>📷 Famous places photographs</h2>
+  <div class="grid" id="landmarks"><p class="empty">Loading…</p></div>
+
+  <h2>🐾 Animal photographs</h2>
+  <div class="grid" id="animals"><p class="empty">Loading…</p></div>
+
+  <h2>🖼️ Pictures &amp; illustrations</h2>
+  <div class="grid" id="pictures"><p class="empty">Loading…</p></div>
+
+  <h2>🎨 Other artwork and data</h2>
+  <ul>
+    <li>3D pictures: <a href="https://github.com/microsoft/fluentui-emoji" target="_blank" rel="noopener">Fluent Emoji</a> © Microsoft Corporation, MIT licence.</li>
+    <li>Maps: based on public-domain <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a> data.</li>
+    <li>Story, coloring, landmark and body illustrations: original artwork made for this app.</li>
+    <li>Voice: recorded with the open <a href="https://github.com/hexgrad/kokoro" target="_blank" rel="noopener">Kokoro</a> text-to-speech model (Apache 2.0).</li>
+  </ul>
+
+  <h2>📜 Licences</h2>
+  <ul>
+    <li><a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">CC0 1.0</a> and Public Domain: free to use with no conditions.</li>
+    <li><a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY</a>: free to use with credit to the creator.</li>
+    <li><a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA</a>: free to use with credit; changed versions (here: resized and cropped) are shared under the same licence.</li>
+  </ul>
+</main>
+<script>
+(async () => {
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const title = (id) => id.replace(/-/g, ' ').replace(/^./, (c) => c.toUpperCase());
+  const load = async (name) => { try { const r = await fetch('data/' + name + '.json'); return r.ok ? (await r.json()).datasets : null; } catch { return null; } };
+  const card = (img, name, r) => `<div class="item"><img src="${esc(img)}" alt="" loading="lazy"><div><b>${esc(name)}</b>${esc(r.creator || 'Unknown')}<br><span class="lic">${esc(r.license)}</span>${r.sourceUrl ? ` · <a href="${esc(r.sourceUrl)}" target="_blank" rel="noopener">source</a>` : ''}</div></div>`;
+  const fill = (id, rows) => { document.getElementById(id).innerHTML = rows.length ? rows.join('') : '<p class="empty">None yet.</p>'; };
+  const [lm, an, places, pics] = await Promise.all([load('landmark-photos'), load('animal-photos'), load('landmarks'), load('photo-credits')]);
+  const placeName = Object.fromEntries((places?.LANDMARKS || []).map((row) => [row[0], row[1]]));
+  fill('landmarks', Object.entries(lm?.records || {}).sort().map(([id, r]) => card(`assets/landmark-photos/${id}.webp`, r.name || placeName[id] || title(id), r)));
+  fill('animals', Object.entries(an?.records || {}).sort().map(([id, r]) => card(`assets/animals/${id}.webp`, r.name || title(id), r)));
+  fill('pictures', Object.entries(pics?.records || {}).sort().map(([id, r]) => card(r.path || `assets/photos/${id}.jpg`, r.name || title(id), r)));
+})();
+</script>
+</body>
+</html>

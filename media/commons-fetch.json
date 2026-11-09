@@ -1,0 +1,105 @@
+{
+ "batch": 4,
+ "items": {
+  "media/alts/beaver-0.webp": {
+   "search": "Castor canadensis beaver",
+   "skip": 0,
+   "max": 720
+  },
+  "media/alts/beaver-1.webp": {
+   "search": "Castor canadensis beaver",
+   "skip": 1,
+   "max": 720
+  },
+  "media/alts/beaver-2.webp": {
+   "search": "Castor canadensis beaver",
+   "skip": 2,
+   "max": 720
+  },
+  "media/alts/beaver-3.webp": {
+   "search": "Castor canadensis beaver",
+   "skip": 3,
+   "max": 720
+  },
+  "media/alts/moose-0.webp": {
+   "search": "moose bull Alces alces Alaska",
+   "skip": 0,
+   "max": 720
+  },
+  "media/alts/moose-1.webp": {
+   "search": "moose bull Alces alces Alaska",
+   "skip": 1,
+   "max": 720
+  },
+  "media/alts/moose-2.webp": {
+   "search": "moose bull Alces alces Alaska",
+   "skip": 2,
+   "max": 720
+  },
+  "media/alts/moose-3.webp": {
+   "search": "moose bull Alces alces Alaska",
+   "skip": 3,
+   "max": 720
+  },
+  "media/alts/camel-0.webp": {
+   "search": "dromedary camel Camelus dromedarius",
+   "skip": 0,
+   "max": 720
+  },
+  "media/alts/camel-1.webp": {
+   "search": "dromedary camel Camelus dromedarius",
+   "skip": 1,
+   "max": 720
+  },
+  "media/alts/camel-2.webp": {
+   "search": "dromedary camel Camelus dromedarius",
+   "skip": 2,
+   "max": 720
+  },
+  "media/alts/camel-3.webp": {
+   "search": "dromedary camel Camelus dromedarius",
+   "skip": 3,
+   "max": 720
+  },
+  "media/alts/sagrada-0.webp": {
+   "search": "Sagrada Familia Barcelona exterior",
+   "skip": 0,
+   "max": 1200
+  },
+  "media/alts/sagrada-1.webp": {
+   "search": "Sagrada Familia Barcelona exterior",
+   "skip": 1,
+   "max": 1200
+  },
+  "media/alts/sagrada-2.webp": {
+   "search": "Sagrada Familia Barcelona exterior",
+   "skip": 2,
+   "max": 1200
+  },
+  "media/alts/sagrada-3.webp": {
+   "search": "Sagrada Familia Barcelona exterior",
+   "skip": 3,
+   "max": 1200
+  },
+  "media/alts/sagrada-f-0.webp": {
+   "search": "Sagrada Familia incategory:Featured_pictures_on_Wikimedia_Commons",
+   "skip": 0,
+   "max": 1200
+  },
+  "media/alts/sagrada-f-1.webp": {
+   "search": "Sagrada Familia incategory:Featured_pictures_on_Wikimedia_Commons",
+   "skip": 1,
+   "max": 1200
+  },
+  "media/alts/sagrada-f-2.webp": {
+   "search": "Sagrada Familia incategory:Featured_pictures_on_Wikimedia_Commons",
+   "skip": 2,
+   "max": 1200
+  },
+  "media/alts/sagrada-f-3.webp": {
+   "search": "Sagrada Familia incategory:Featured_pictures_on_Wikimedia_Commons",
+   "skip": 3,
+   "max": 1200
+  }
+ }
+}

@@ -4,7 +4,7 @@
 
 | Visual collection | Distinct files | Format | Source |
 | --- | ---: | --- | --- |
-| Photo-style animal, flower and vehicle cards | 16 | JPG | Existing original AI-generated artwork in `assets/photos/` |
+| Photo-style animal, flower and vehicle cards | 16 | JPG | Real Wikimedia Commons photos in `assets/photos/` (credits: `data/photo-credits.json`) |
 | Animals (lion, giraffe, zebra, panda, etc.) | 12 | SVG | Twemoji graphics, CC BY 4.0 |
 | Weather and nature | 12 | SVG | Twemoji graphics, CC BY 4.0 |
 | Vehicles and public-safety transport | 12 | SVG | Twemoji graphics, CC BY 4.0 |

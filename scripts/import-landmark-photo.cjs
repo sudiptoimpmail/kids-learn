@@ -7,7 +7,6 @@ const path=require('node:path');
 const {dimensions}=require('./landmark-webp.cjs');
 function plan({id,file,record,manifest,landmarks,sw,rejected=[]}){
  if(!/^[a-z0-9-]+$/.test(id)||!landmarks.LANDMARKS.some(row=>row[0]===id))throw Error('Unknown/unsafe landmark ID');
- if(manifest.ids.includes(id)||manifest.records[id])throw Error('Landmark already enabled: '+id);
  const r=record;
  for(const key of ['sourceUrl','creator','license','reviewedBy','reviewedOn','altReviewed'])
   if(typeof r[key]!=='string'||!r[key].trim())throw Error('Missing reviewed '+key);
@@ -15,6 +14,7 @@ function plan({id,file,record,manifest,landmarks,sw,rejected=[]}){
  // a picture rejected on sight (wrong landmark, a painting, unrecognisable) can never be imported
  const hit=rejected.find(x=>x.sourceUrl===r.sourceUrl||(r.sourceSha256&&x.sourceSha256===r.sourceSha256));
  if(hit)throw Error('Rejected source for '+hit.landmark+': '+hit.reason);
+ if(manifest.ids.includes(id)||manifest.records[id])throw Error('Landmark already enabled: '+id);
  if(!manifest.acceptedLicense.includes(r.license))throw Error('Unapproved license');
  if(r.altReviewed!=='yes'||!/^\d{4}-\d{2}-\d{2}$/.test(r.reviewedOn))throw Error('Invalid review metadata');
  if(/CC BY/.test(r.license)&&!r.attribution?.trim())throw Error('Attribution required');
