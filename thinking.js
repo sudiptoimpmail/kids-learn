@@ -112,7 +112,7 @@ function genStepSequence(level) {
   const answer = steps[missingAt];
   const pics = new Set(steps.map((x) => x[0])), words = new Set(steps.map((x) => x[1]));
   const others = (level >= 3 ? pool.filter((r) => r[0] >= 3) : pool).flatMap((r) => r[1]).filter((x) => !pics.has(x[0]) && !words.has(x[1]));   // older grades: wrong answers from other science and how-it-is-made chains
-  const uniq = [...new Map(others.map((x) => [x[0], x])).values()];
+  const seenP = new Set(), seenW = new Set(), uniq = others.filter((x) => !seenP.has(x[0]) && !seenW.has(x[1]) && seenP.add(x[0]) && seenW.add(x[1]));   // no two answers with the same picture or word
   const opts = shuffle([answer, ...sample(uniq, level >= 3 ? 3 : 2)]);
   const last = missingAt === steps.length - 1;
   return {
@@ -121,8 +121,11 @@ function genStepSequence(level) {
     main: `<div class="seq-row" style="--n:${steps.length}">${steps.map((st, i) => (i ? '<i class="seq-arrow">➜</i>' : '') + (i === missingAt ? '<span class="seq-step think-missing">?</span>' : seqTile(st))).join('')}</div>`,
     options: opts.map((o) => ({ v: o[1], html: seqTile(o) })), answer: answer[1], optClass: 'opt-seq',
     hint: { html: `<div class="hint-note">${reason}</div>`, say: [reason] },
+    ...(seqSkill() ? { curriculumSkill: seqSkill() } : {}),
   };
 }
+// the grade's own sequencing objective (process reasoning, cause and effect…), so progress reports keep it
+const seqSkill = () => { try { return ContentData.get('curriculum-map', 'PROFILES')[curriculumGrade()].sections.sequence.skills[0]; } catch { return null; } };
 function genSequence(level, authoredRow = null) {
   if (level >= 2 && !authoredRow) return genStepSequence(level);
   const pool = THINKING_SEQUENCES.concat(curriculumRows('THINKING_SEQUENCES',level)).filter(x=>x[0] <= level);

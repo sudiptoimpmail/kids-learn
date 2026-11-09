@@ -34,7 +34,8 @@ const { chromium } = require('playwright');
           if (!gradeFits(q, g, id)) bad.push(`${q.key}: does not fit ${g}`);
         } else if (q.order) {
           if (q.order.given !== 1) bad.push(`${q.key}: first picture not placed`);
-          if (q.order.pics.some((x) => /[A-Za-z]{2}/.test(x))) bad.push(`${q.key}: words in a picture order`);
+          if (!q.key.startsWith('vseqw-') && q.order.pics.some((x) => /[A-Za-z]{2}/.test(x))) bad.push(`${q.key}: words in a picture order`);   // Grade 1-3 steps carry their word on purpose
+          if (q.key.startsWith('vseqw-') && g === 'prek') bad.push(`${q.key}: captioned steps for Pre-K`);
           if (!gradeFits(q, g, id)) bad.push(`${q.key}: does not fit ${g}`);
         } else bad.push(`${q.key}: unknown variant`);
       }

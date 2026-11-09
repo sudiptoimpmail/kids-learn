@@ -75,7 +75,7 @@
     if (level >= 2) {     // Grade 1-3: put the captioned steps of a process in order
       const pool2 = SEQ_STEPS.filter((x) => x[0] <= level), exact2 = pool2.filter((x) => x[0] === level);
       const [, steps2, reason2] = pick(exact2.length ? exact2 : pool2);
-      return { key: `vseq2-${steps2.map((x) => x[1]).join('|')}`, text: 'Tap the steps in order!', say: 'Tap the pictures in order!',
+      return { key: `vseqw-${steps2.map((x) => x[1]).join('|')}`, text: 'Tap the steps in order!', say: 'Tap the pictures in order!',
         main: '', mainClass: 'empty', options: [], answer: 'done', optClass: 'spell-tray',
         order: { pics: steps2.map(seqTile), shown: shuffle(steps2.map((_, i) => i)), given: 1 }, explain: reason2,
         hint: { html: `<div class="hint-note">${reason2}</div>`, say: 'What happened first?' } };
