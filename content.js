@@ -917,6 +917,7 @@ function genMatch(level) {
   const n = level === 1 ? 3 : level <= 3 ? 4 : 5;
   const reading = Math.random() < 0.5;
   let pairs, text, say, kind;
+  if (reading && level >= 4) return genWordLinks(level, n);
   if (reading) {
     const list = level === 1 ? W3 : level === 2 ? W4 : level === 3 ? W5 : level === 4 ? W5.concat(WL) : WL;
     pairs = sample(list, n).map(([w, e]) => [`<span class="m-word">${w}</span>`, `<span class="m-pic">${e}</span>`]);
@@ -948,6 +949,25 @@ function genMatch(level) {
     optClass: 'match-area', match: { left: shuffle(left), right, kind },
     hint: { html: '', say: 'Look carefully, and try again!' },
   };
+}
+
+// Grade 2-3 reading: match words by how they relate (no pictures): same meaning, opposites, compound words,
+// and in Grade 3 also prefixes and suffixes, sound-alike words and word meanings.
+const WORD_LINKS = {
+  same: { text: 'Match each word to a word that means the same!', pairs: [['big', 'large'], ['small', 'tiny'], ['happy', 'glad'], ['fast', 'quick'], ['start', 'begin'], ['shut', 'close'], ['smart', 'clever'], ['angry', 'mad'], ['sick', 'ill'], ['end', 'finish'], ['shout', 'yell'], ['gift', 'present'], ['rock', 'stone'], ['scared', 'afraid'], ['sad', 'unhappy'], ['look', 'see']] },
+  opposite: { text: 'Match each word to its opposite!', pairs: [['hot', 'cold'], ['early', 'late'], ['full', 'empty'], ['open', 'closed'], ['win', 'lose'], ['light', 'dark'], ['push', 'pull'], ['before', 'after'], ['loud', 'quiet'], ['wet', 'dry'], ['hard', 'soft'], ['first', 'last'], ['always', 'never'], ['above', 'below'], ['strong', 'weak'], ['buy', 'sell']] },
+  compound: { text: 'Match the two parts that make one word!', pairs: [['sun', 'flower'], ['butter', 'fly'], ['rain', 'bow'], ['foot', 'ball'], ['star', 'fish'], ['tooth', 'brush'], ['snow', 'man'], ['cup', 'cake'], ['bed', 'room'], ['pop', 'corn'], ['air', 'plane'], ['back', 'pack']] },
+  affix: { text: 'Match each word to what it means!', pairs: [['unhappy', 'not happy'], ['redo', 'do again'], ['preheat', 'heat before'], ['misspell', 'spell wrong'], ['disagree', 'not agree'], ['careful', 'full of care'], ['helpless', 'without help'], ['teacher', 'a person who teaches'], ['quickly', 'in a quick way'], ['reread', 'read again'], ['unlock', 'open a lock'], ['painless', 'without pain']] },
+  sound: { text: 'Match the words that sound the same!', pairs: [['bear', 'bare'], ['flour', 'flower'], ['knight', 'night'], ['sea', 'see'], ['son', 'sun'], ['pair', 'pear'], ['write', 'right'], ['hour', 'our'], ['blew', 'blue'], ['meet', 'meat'], ['tail', 'tale'], ['road', 'rode']] },
+  meaning: { text: 'Match each word to what it means!', pairs: [['enormous', 'very big'], ['ancient', 'very old'], ['fragile', 'easy to break'], ['timid', 'shy'], ['brave', 'not afraid'], ['gather', 'bring together'], ['journey', 'a long trip'], ['predict', 'tell what will happen'], ['observe', 'watch carefully'], ['discover', 'find for the first time'], ['habitat', 'where an animal lives'], ['vibrate', 'shake back and forth fast']] },
+};
+function genWordLinks(level, n) {
+  const kinds = level >= 5 ? ['affix', 'sound', 'meaning', 'meaning', 'opposite'] : ['same', 'opposite', 'compound'];
+  const kind = pick(kinds), set = WORD_LINKS[kind];
+  const pairs = sample(set.pairs, n).map(([a, b]) => [`<span class="m-word">${a}</span>`, `<span class="m-word${/ / .test(b) ? " m-def" : ""}">${b}</span>`]);
+  const left = pairs.map((p, i) => ({ id: i, html: p[0] })), right = shuffle(pairs.map((p, i) => ({ id: i, html: p[1] })));
+  return { key: `match-link-${kind}-${pairs.map((p) => p[0]).join('')}`, text: set.text, say: set.text, main: '', mainClass: 'empty', options: [], answer: 'all',
+    optClass: 'match-area', match: { left: shuffle(left), right, kind: 'read' }, hint: { html: '', say: 'Read both words, and try again!' } };
 }
 
 /* ---------------- MULTIPLE-CHOICE FACT QUESTIONS ---------------- */
