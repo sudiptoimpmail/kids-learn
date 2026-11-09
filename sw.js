@@ -4,7 +4,7 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v141';
+const VERSION = PREFIX + 'v142';
 const AUDIO = PREFIX + 'audio';
 const FILES = [
   "library/little-red-hen/apple.svg",
@@ -42,20 +42,41 @@ const FILES = [
   "library/lion-and-mouse/p08.webp",
   "library/lion-and-mouse/rope.svg",
   "library/lion-and-mouse/stick.svg",
-  "library/max-kite/beach.svg",
+  "library/max-kite/barn.svg",
+  "library/max-kite/bird.svg",
   "library/max-kite/book.json",
+  "library/max-kite/cat.svg",
+  "library/max-kite/dog.svg",
+  "library/max-kite/hen.svg",
+  "library/max-kite/lion.svg",
+  "library/max-kite/mouse.svg",
   "library/max-kite/p01.webp",
   "library/max-kite/p02.webp",
   "library/max-kite/p03.webp",
-  "library/max-kite/park.svg",
+  "library/max-kite/p04.webp",
+  "library/max-kite/p05.webp",
+  "library/max-kite/p06.webp",
+  "library/max-kite/p07.webp",
+  "library/max-kite/p08.webp",
   "library/max-kite/school.svg",
+  "library/max-kite/tree.svg",
+  "library/little-seed/apple.svg",
   "library/little-seed/book.json",
   "library/little-seed/carrot.svg",
   "library/little-seed/flower.svg",
   "library/little-seed/p01.webp",
   "library/little-seed/p02.webp",
   "library/little-seed/p03.webp",
+  "library/little-seed/p04.webp",
+  "library/little-seed/p05.webp",
+  "library/little-seed/p06.webp",
+  "library/little-seed/p07.webp",
+  "library/little-seed/p08.webp",
+  "library/little-seed/rain.svg",
+  "library/little-seed/seed.svg",
+  "library/little-seed/sun.svg",
   "library/little-seed/tree.svg",
+  "library/little-seed/wind.svg",
 
   "family-learning.js",
   "qa-questions.js",

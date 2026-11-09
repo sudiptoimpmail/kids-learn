@@ -1,36 +1,118 @@
 {
   "id": "little-seed",
-  "title": "A little seed was in the dirt.",
+  "title": "Pip the Little Seed",
   "grades": [
     "g1"
   ],
-  "cover": "p01.webp",
+  "cover": "p06.webp",
   "pages": [
     {
       "art": "p01.webp",
       "text": [
-        "A little seed was in the dirt."
+        "A little seed named Pip lay in the dirt.",
+        "It was dark and still."
       ],
-      "alt": "A little seed was in the dirt."
+      "alt": "Pip the seed lies in the dark dirt"
     },
     {
       "art": "p02.webp",
       "text": [
-        "The rain fell and the sun came out."
+        "\"I am so small,\" said Pip.",
+        "\"Will I ever grow?\""
       ],
-      "alt": "The rain fell and the sun came out."
+      "alt": "Pip wonders if it will grow"
     },
     {
       "art": "p03.webp",
       "text": [
-        "Soon a flower grew."
+        "Then the rain came.",
+        "Drip, drop, drip!",
+        "Pip got a big drink."
       ],
-      "alt": "Soon a flower grew."
+      "alt": "Rain falls on the dirt"
+    },
+    {
+      "art": "p04.webp",
+      "text": [
+        "Then the sun came out.",
+        "The dirt felt warm."
+      ],
+      "alt": "The sun warms the dirt"
+    },
+    {
+      "art": "p05.webp",
+      "text": [
+        "Pip pushed roots down.",
+        "Pip pushed up, up, up!"
+      ],
+      "alt": "Pip grows roots and starts to sprout"
+    },
+    {
+      "art": "p06.webp",
+      "text": [
+        "A green sprout popped out of the dirt.",
+        "Pip could see the sky!"
+      ],
+      "alt": "A green sprout pops out"
+    },
+    {
+      "art": "p07.webp",
+      "text": [
+        "A little bird sat next to Pip.",
+        "\"You are growing!\" she sang.",
+        "\"Keep going!\""
+      ],
+      "alt": "A bird cheers Pip on"
+    },
+    {
+      "art": "p08.webp",
+      "text": [
+        "Day by day, Pip grew tall.",
+        "One morning, a big pink flower opened.",
+        "\"I did it!\" said Pip. The End."
+      ],
+      "alt": "Pip is now a big pink flower"
     }
   ],
   "questions": [
     {
-      "ask": "What grew from the seed?",
+      "ask": "What was Pip?",
+      "answer": "seed",
+      "options": [
+        [
+          "seed",
+          "seed.svg"
+        ],
+        [
+          "apple",
+          "apple.svg"
+        ],
+        [
+          "carrot",
+          "carrot.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "What gave Pip a drink?",
+      "answer": "rain",
+      "options": [
+        [
+          "rain",
+          "rain.svg"
+        ],
+        [
+          "sun",
+          "sun.svg"
+        ],
+        [
+          "wind",
+          "wind.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "What did Pip grow into?",
       "answer": "flower",
       "options": [
         [

@@ -249,3 +249,58 @@ button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible
 
 .lm-photo-credit{display:block;max-width:100%;font-size:.78rem;line-height:1.35;text-align:center;overflow-wrap:anywhere}
 .lm-photo-credit a{color:#174d7b;text-decoration:underline}
+
+/* Base-ten blocks on a place-value mat (tens | ones), rods made of ten countable cubes */
+.ns-mat { --u: clamp(11px, 1.1vw + 6px, 17px); display: flex; justify-content: center; align-items: stretch; gap: clamp(8px, 2vw, 18px); width: 100%; margin: 4px auto; }
+.ns-col { display: flex; flex-direction: column; align-items: stretch; min-width: calc(var(--u) * 5); border-radius: 16px; background: #fff; border: 2px solid #e9e1f7; overflow: hidden; }
+.ns-col-h { padding: 4px 12px; font-size: clamp(13px, .5vw + 11px, 17px); font-weight: 900; text-align: center; color: #fff; }
+.ns-col-hundreds .ns-col-h { background: #4dabf7; } .ns-col-tens .ns-col-h { background: #fd7e14; } .ns-col-ones .ns-col-h { background: #40c057; }
+.ns-col-body { flex: 1; display: flex; align-items: flex-end; justify-content: center; flex-wrap: wrap; gap: calc(var(--u) * .55); padding: calc(var(--u) * .7) calc(var(--u) * .8) calc(var(--u) * .9); min-height: calc(var(--u) * 12.4); background: repeating-linear-gradient(45deg, #fcfbff 0 10px, #f7f4ff 10px 20px); }
+.ns-u { display: block; width: var(--u); height: var(--u); border-radius: 3px; box-sizing: border-box; }
+.ns-u.t { background: linear-gradient(135deg, #ffd8a8, #ff922b 60%, #e8590c); border: 1px solid #c2410c; }
+.ns-u.o { background: linear-gradient(135deg, #b2f2bb, #51cf66 60%, #2f9e44); border: 1px solid #2b8a3e; }
+.ns-rod2 { position: relative; display: flex; flex-direction: column; gap: 2px; padding: 2px; border-radius: 5px; background: #fff4e6; box-shadow: 0 0 0 2px #e8590c, 0 3px 0 2px #c2410c55; }
+.ns-cube2 { position: relative; padding: 2px; border-radius: 5px; background: #ebfbee; box-shadow: 0 0 0 2px #2f9e44, 0 3px 0 2px #2b8a3e55; }
+.ns-flat2 { position: relative; width: calc(var(--u) * 7); height: calc(var(--u) * 7); border-radius: 6px; border: 2px solid #1971c2; background-color: #a5d8ff; background-image: linear-gradient(#1971c2 1px, transparent 1px), linear-gradient(90deg, #1971c2 1px, transparent 1px); background-size: 10% 10%; }
+.ns-lab { position: absolute; left: 50%; bottom: calc(100% + 4px); transform: translateX(-50%); font-size: 14px; font-weight: 900; color: #fff; background: #5f3dc4; border-radius: 9px; padding: 0 6px; line-height: 20px; white-space: nowrap; animation: nsLab .35s both; }
+.ns-mat.labelled .ns-col-body { padding-top: 30px; }
+.ns-mat.labelled .ns-col-tens .ns-rod2:nth-child(2) .ns-lab { animation-delay: .25s; } .ns-mat.labelled .ns-col-tens .ns-rod2:nth-child(3) .ns-lab { animation-delay: .5s; }
+@keyframes nsLab { from { opacity: 0; transform: translate(-50%, 6px); } }
+.ns-pv-sum { margin-top: 8px; font-size: clamp(16px, .6vw + 13px, 20px); font-weight: 800; color: #495057; text-align: center; line-height: 1.6; }
+.ns-pv-sum b { font-size: 1.3em; color: #5f3dc4; }
+.ns-mat .ns-col-tens .ns-col-body { gap: calc(var(--u) * 1.3); }
+.ns-mat.labelled .ns-col-ones .ns-col-body { gap: calc(var(--u) * 1); }
+
+/* Number Sense teaching hints */
+.ns-hint { display: grid; justify-items: center; gap: 10px; text-align: center; font-size: clamp(16px, .6vw + 13px, 20px); font-weight: 700; color: #343a40; line-height: 1.45; }
+.ns-hint p { margin: 0; max-width: 34em; }
+.ns-hint b { color: #5f3dc4; }
+.ns-signs { font-size: 1.15em; font-weight: 900; color: #5f3dc4; letter-spacing: .02em; }
+.ns-pairs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; max-width: 420px; }
+.ns-pairs .pr { display: flex; flex-direction: column; gap: 4px; padding: 5px; border-radius: 12px; background: #e7f5ff; border: 2px solid #74c0fc; }
+.ns-pairs .pr i { width: 16px; height: 16px; border-radius: 50%; background: #1c7ed6; }
+.ns-pairs .pr.odd { background: #fff0f6; border: 2px dashed #f06595; animation: shake .6s .3s 2; }
+.ns-pairs .pr.odd i { background: #e64980; }
+.ns-skip { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px; }
+.ns-skip span { min-width: 46px; padding: 6px 8px; border-radius: 12px; background: #fff; border: 2px solid #d0bfff; font-size: 22px; font-weight: 900; }
+.ns-skip span.q { background: #fff3bf; border-color: #fab005; }
+.ns-skip em { font-style: normal; font-size: 14px; font-weight: 900; color: #2f9e44; }
+.ns-hline { display: flex; align-items: flex-end; width: min(460px, 100%); border-top: 4px solid #868e96; margin-top: 26px; }
+.ns-hline span { flex: 1; position: relative; font-size: 12px; font-weight: 800; color: #868e96; padding-top: 6px; }
+.ns-hline span i { position: absolute; left: 50%; top: -12px; width: 2px; height: 10px; background: #868e96; }
+.ns-hline span.mid { color: #e8590c; } .ns-hline span.mid i { background: #e8590c; height: 16px; top: -16px; }
+.ns-hline span.on b { position: absolute; left: 50%; bottom: calc(100% + 14px); transform: translateX(-50%); background: #5f3dc4; color: #fff; border-radius: 10px; padding: 0 8px; font-size: 16px; }
+.ns-hline span:first-child, .ns-hline span:last-child { color: #343a40; font-size: 15px; }
+.ns-pv { display: flex; gap: 6px; }
+.ns-pv div { display: grid; min-width: 70px; border-radius: 12px; background: #fff; border: 2px solid #dee2e6; overflow: hidden; }
+.ns-pv small { padding: 2px 6px; background: #f1f3f5; font-size: 13px; font-weight: 900; color: #495057; }
+.ns-pv b { font-size: 34px; padding: 4px 0; color: #343a40 !important; }
+.ns-pv div.on { border-color: #1c7ed6; } .ns-pv div.on small { background: #1c7ed6; color: #fff; } .ns-pv div.on b { color: #1c7ed6 !important; }
+.ns-frac-rule { display: grid; justify-items: center; gap: 2px; font-weight: 900; }
+.ns-frac-rule .bar { width: 160px; height: 4px; background: #343a40; border-radius: 2px; }
+.ns-frac-rule .top { color: #e8590c; } .ns-frac-rule .bot { color: #1c7ed6; }
+.ns-groups { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.ns-groups span { display: flex; flex-wrap: wrap; gap: 4px; max-width: 74px; padding: 7px; border-radius: 50%/40%; border: 3px dashed #74c0fc; background: #f1f8ff; justify-content: center; }
+.ns-groups i { width: 13px; height: 13px; border-radius: 50%; background: #f76707; }
+.ns-count .md-unit { position: relative; } .ns-count .md-unit b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 13px; color: #5c3b00; }
+.ns-more { align-self: center; font-size: 22px; font-weight: 900; color: #868e96; }

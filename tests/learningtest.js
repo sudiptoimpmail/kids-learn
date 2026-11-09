@@ -70,7 +70,7 @@ const { chromium } = require('playwright');
       state.playAlways = true;
       openPlayZone();
       const arcade = [...document.querySelectorAll('#pzGrid [data-game]')].map(x => x.dataset.game);
-      if (!arcade.includes('pinball') || !arcade.includes('ttt') || !arcade.includes('maze') || arcade.includes('memory') || arcade.includes('path'))
+      if (!arcade.includes('pinball') || !arcade.includes('ttt') || arcade.includes('maze') || arcade.includes('memory') || arcade.includes('path'))
         throw new Error('Arcade games not separated: ' + arcade.join(','));
       return { combinations: audit.length, early, older, arcade, sections };
     });

@@ -17,7 +17,7 @@ const SHOTS = arg('--shots', '');
   const rows = [];
   for (const g of ['prek', 'k', 'g1', 'g2', 'g3']) {
     const ids = await p.evaluate((g) => { Object.assign(state, { grade: g, showAll: false, testMode: false, gameLv: {}, playAlways: true });
-      return GAMES.filter((x) => !BRAIN_GAME_IDS.has(x.id) || brainVisible(x)).map((x) => x.id); }, g);
+      return GAMES.filter((x) => (!BRAIN_GAME_IDS.has(x.id) || brainVisible(x)) && gameForGrade(x)).map((x) => x.id); }, g);
     for (const id of ids) {
       const before = errs.length;
       const r = await p.evaluate(({ g, id }) => {

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Writes the free Grade 1-3 stories and their cartoon pictures:  python3 scripts/library/make-g2-g3-books.py
-  library/little-red-hen/ (Grade 2)   library/lion-and-mouse/ (Grade 3)   library/max-kite/  library/little-seed/ (Grade 1)
+  library/little-red-hen/ (Grade 2)   library/lion-and-mouse/ (Grade 3)   (Grade 1 stories: make-g1-books.py)
 After running this, run: node scripts/library/rasterize-pages.cjs little-red-hen lion-and-mouse max-kite little-seed
 (page SVGs become WebP, which the read-aloud pages and the Picture Puzzle both use). The two Grade 2/3 books are original retellings of traditional public-domain tales."""
 import json, os, sys
@@ -105,10 +105,4 @@ def build(folder, bid, title, grade, pages, qs):
 if __name__ == '__main__':
     build(H2, H2, 'The Little Red Hen', 'g2', pages2, q2)
     build(H3, H3, 'The Lion and the Mouse', 'g3', pages3, q3)
-    for folder, title, pg, qq in ((G1K, 'Max has a red kite.', pages_k, q_k), (G1S, 'The Little Seed', pages_s, q_s)):
-        old = json.load(open(os.path.join(ROOT, folder, 'book.json')))
-        for pp, (name, text, sky, body, alt) in zip(old['pages'], pg): assert pp['text'] == text, (folder, pp['text'], text)
-        for name, text, sky, body, alt in pg: put(folder, name, page(body, sky))
-        for ask, ans, opts in qq:
-            for w, art in opts: put(folder, w + '.svg', art if art.startswith('<svg') else card(art))
     print('wrote', H2, H3)

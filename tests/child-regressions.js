@@ -78,8 +78,8 @@ const { chromium } = require('playwright');
           if (question.key.startsWith('ns-blocks-')) {
             blocks++; const val = +question.key.split('-').at(-1);
             if (val > 39) fails.push('Too many blocks for beginning student: ' + val);
-            const rods = (question.main.match(/class="ns-rod"/g) || []).length;
-            const cubes = (question.main.match(/class="ns-cube"/g) || []).length;
+            const rods = (question.main.match(/class="ns-rod2"/g) || []).length;
+            const cubes = (question.main.match(/class="ns-cube2"/g) || []).length;
             if (rods > 3 || cubes > 9) fails.push('Base ten blocks not properly grouped: ' + val);
           }
         }
@@ -91,8 +91,8 @@ const { chromium } = require('playwright');
       if (!/The \w+ \w+ can \w+\./.test(q1.main) || !words.every(w => q1.main.includes(w)))
         fails.push('First-grade noun/verb choices are not all from the sentence');
       document.querySelector('#qMain').innerHTML = nsBlocks(38);
-      const block = document.querySelector('#qMain .ns-blocks');
-      if (!block || !block.querySelector('.ns-rod') || !block.querySelector('.ns-cube'))
+      const block = document.querySelector('#qMain .ns-mat');
+      if (!block || block.querySelectorAll('.ns-col-tens .ns-rod2').length !== 3 || block.querySelectorAll('.ns-col-ones .ns-cube2').length !== 8 || block.querySelectorAll('.ns-rod2 .ns-u').length !== 30)
         fails.push('Missing rendered base-ten blocks');
       return {fails,sizes,learningDay:dayStreak(),settingsCountry:state.country};
     });

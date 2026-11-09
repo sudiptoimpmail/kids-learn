@@ -266,9 +266,6 @@ function setQuestionZoom(value = 1) {
   space.style.width = Math.round(questionBaseWidth * questionZoom) + 'px';
   space.style.height = Math.round(inner.offsetHeight * questionZoom) + 'px';
 }
-$('#qZoomIn').onclick = () => setQuestionZoom(questionZoom * 1.4);
-$('#qZoomOut').onclick = () => setQuestionZoom(questionZoom / 1.4);
-$('#qZoomReset').onclick = () => setQuestionZoom(1);
 
 /* ---------- screens ---------- */
 let homeScrollY = 0, navigationEpoch = 0;
