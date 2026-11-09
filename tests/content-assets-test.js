@@ -4,16 +4,16 @@
 const fs = require('node:fs');
 const assert = require('node:assert/strict');
 const read = p => fs.readFileSync(p,'utf8');
-const loader = read('content-loader.js');
+const appConfig = JSON.parse(read('app.config.json'));   // kids-core: data and scripts are listed in the config
 const serviceWorker = read('sw.js');
-const names = Function('return ' + loader.match(/const NAMESPACES = (\[[\s\S]*?\]);/)[1])();
-const scripts = Function('return ' + loader.match(/const SCRIPTS = (\[[\s\S]*?\]);/)[1])();
+const names = appConfig.data.namespaces;
+const scripts = appConfig.scripts;
 const swList = serviceWorker.match(/const FILES = (\[[\s\S]*?\]);/)[1];
 const files = Function('return '+swList)();
 const precache = new Set(files);
 assert.equal(precache.size, files.length, 'Duplicated offline cached files');
 assert.ok(!/\b(?:stories|scenes|art|landmarks)\.js\b/.test(files.join('|')), 'Removed inlined-media scripts remain precached');
-assert.ok(/type="module" src="content-loader\.js"/.test(read('index.html')), 'App does not bootstrap external learning data');
+assert.ok(/type="module" src="core\/boot\.js"/.test(read('index.html')), 'App does not bootstrap external learning data');
 const payloads = new Map();
 for (const name of names) {
   const path='data/'+name+'.json';

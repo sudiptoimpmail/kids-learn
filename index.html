@@ -13,6 +13,8 @@
   <link rel="apple-touch-icon" href="icons/icon-180.png">
   <link rel="icon" href="icons/icon-192.png">
   <link rel="manifest" href="manifest.webmanifest">
+  <script src="core/theme-early.js"></script>
+  <link rel="stylesheet" href="core/core.css">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="ui-improvements.css">
   <link rel="stylesheet" href="workbook.css">
@@ -160,13 +162,7 @@
   </div>
 
   <!-- grown-up PIN -->
-  <div id="pinSheet" class="time-up" hidden>
-    <div class="tu-box pin-box"><button id="pinBack" class="pin-back" aria-label="Go back">🏠 Back</button><h2 id="pinTitle">🔒 Grown-ups only</h2><p id="pinNote" class="note"></p>
-      <div id="pinDots" class="pin-dots"><i></i><i></i><i></i><i></i></div>
-      <div id="pinPad" class="pin-pad"><button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button><button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button><button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button><button data-k="✕">✕</button><button data-k="0">0</button><button data-k="⌫">⌫</button></div>
-      <div id="pinForgot" class="pin-forgot" hidden></div>
-      <button id="pinForgotBtn" class="link-btn">Forgot PIN?</button></div>
-  </div>
+  <!-- the grown-up PIN sheet is added by core/parent-gate.js -->
 
   <div id="diffSheet" class="time-up" hidden>
     <div class="tu-box diff-box"><h2>🎚️ Difficulty</h2><p id="diffName"></p>
@@ -275,6 +271,6 @@
       <p class="note small">Everything is saved only on this phone. No accounts, no ads, no tracking.</p>
     </div>
   </section>
-  <script type="module" src="content-loader.js"></script>
+  <script type="module" src="core/boot.js"></script>
 </body>
 </html>

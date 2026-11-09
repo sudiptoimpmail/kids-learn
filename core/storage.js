@@ -1,18 +1,22 @@
 /* =========================================================
-   Storage: the one place where progress and settings are saved.
+   kids-core storage: the one place where progress and settings are saved.
+   The key, device-wide settings, pictures and child defaults come from app.config.json "storage".
    Web (today): the browser's localStorage, saved right away.
    Native app (later): the same data is also copied to the app's own
    storage (Capacitor Preferences) so iOS can never clear it, and it is
    restored from there if the web storage is ever empty.
    See docs/launch-architecture.md for the full plan.
    ========================================================= */
-const STORE_KEY = 'learnplay.v1';
+const STORE_CFG = AppConfig.storage;
+const STORE_KEY = STORE_CFG.key;
 const SCHEMA = 3;            // bump when the shape of the saved data changes, and add a step to migrate()
 // saved once for the whole device; everything else belongs to one child
-const DEVICE_KEYS = ['voice', 'pinHash', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'country', 'region', 'offlineAudio', 'familySettings'];
-const AVATARS = ['🦄', '🐶', '🐱', '🦊', '🐼', '🐯', '🦁', '🐸', '🐵', '🐰', '🐻', '🐨', '🐧', '🦖', '🐙', '🦋', '🚀', '⚽', '🌈', '⭐'];
-const MAX_KIDS = 4;
-const profileDefaults = () => ({ name: '', avatar: '🦄', stars: 0, stickers: [], levels: {}, best: {}, recent: {}, traced: {} });
+const DEVICE_KEYS = STORE_CFG.deviceKeys.slice();
+const AVATARS = AppConfig.avatars.slice();
+const MAX_KIDS = STORE_CFG.maxKids || 4;
+const MAX_LEVEL = STORE_CFG.maxLevel || 9;
+const profileDefaults = () => Object.assign({ name: '', avatar: AVATARS[0], stars: 0, stickers: [], levels: {}, best: {}, recent: {}, traced: {} },
+  JSON.parse(JSON.stringify(STORE_CFG.profileDefaults || {})));
 
 /* Saved shape (schema 3):
    { schema, savedAt, active: 'p1', order: ['p1', 'p2'],
@@ -68,20 +72,20 @@ const Store = {
       d.traced = d.traced || {};
       const dev = {}, kid = {};
       for (const [k, v] of Object.entries(d)) { if (k === 'schema' || k === 'savedAt') continue; (DEVICE_KEYS.includes(k) ? dev : kid)[k] = v; }
-      kid.avatar = kid.avatar || '🦄';
+      kid.avatar = kid.avatar || AVATARS[0];
       d = { schema: SCHEMA, savedAt: d.savedAt || 0, active: 'p1', order: ['p1'], device: dev, profiles: { p1: kid } };
     }
     // keep only well-formed children: an id like p1, an object, a plain-text name, a known picture
     for (const [id, p] of Object.entries(d.profiles)) {
       if (!/^p\d{1,3}$/.test(id) || !p || typeof p !== 'object' || Array.isArray(p)) { delete d.profiles[id]; continue; }
       p.name = typeof p.name === 'string' ? p.name.replace(/[<>&"'`]/g, '').slice(0, 20) : '';
-      if (!AVATARS.includes(p.avatar)) p.avatar = '🦄';
+      if (!AVATARS.includes(p.avatar)) p.avatar = AVATARS[0];
       for (const k of ['levels', 'best', 'recent', 'traced', 'stats']) if (p[k] != null && (typeof p[k] !== 'object' || Array.isArray(p[k]))) delete p[k];
       if (!Array.isArray(p.stickers)) p.stickers = [];
       const obj = (v) => v && typeof v === 'object' && !Array.isArray(v);
       if (p.stats != null) { if (!obj(p.stats)) delete p.stats; else { if (!obj(p.stats.days)) p.stats.days = {}; if (!obj(p.stats.skills)) p.stats.skills = {}; if (!obj(p.stats.objectives)) p.stats.objectives = {}; } }
       if (p.quest != null && !(obj(p.quest) && Array.isArray(p.quest.steps) && p.quest.steps.every((x) => obj(x) && typeof x.cat === 'string'))) delete p.quest;
-      if (p.levels) for (const [k, v] of Object.entries(p.levels)) if (!(Number.isInteger(v) && v >= 1 && v <= 9)) delete p.levels[k];
+      if (p.levels) for (const [k, v] of Object.entries(p.levels)) if (!(Number.isInteger(v) && v >= 1 && v <= MAX_LEVEL)) delete p.levels[k];
       if (typeof p.stars !== 'number' || !(p.stars >= 0)) p.stars = 0;
     }
     d.order = (Array.isArray(d.order) ? d.order : Object.keys(d.profiles)).filter((id, i, a) => d.profiles[id] && a.indexOf(id) === i).slice(0, MAX_KIDS);
@@ -109,7 +113,7 @@ const Store = {
     let n = Store.root.order.length + 1; while (Store.root.profiles['p' + n]) n++;
     const id = 'p' + n;
     const used = new Set(Store.kids().map((k) => k.avatar));
-    Store.root.profiles[id] = Object.assign(profileDefaults(), { avatar: AVATARS.find((a) => !used.has(a)) || '⭐' }, meta);
+    Store.root.profiles[id] = Object.assign(profileDefaults(), { avatar: AVATARS.find((a) => !used.has(a)) || AVATARS[0] }, meta);
     Store.root.order.push(id);
     Store.switchTo(id, state);
     return id;
@@ -145,11 +149,19 @@ const Store = {
       } catch {}
     })();
   },
-  // a grown-up can download a backup and load it on another device
+  // a grown-up can download a backup and load it on another device (same file format in every kids-core app)
   exportJSON: () => localStorage.getItem(STORE_KEY) || '{}',
+  backupName: () => `${STORE_CFG.backupName || AppConfig.app.id + '-backup'}-${new Date().toISOString().slice(0, 10)}.json`,
+  downloadBackup() {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([Store.exportJSON()], { type: 'application/json' }));
+    a.download = Store.backupName(); a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  },
+  // another kids-core app on the same website (for the shared grown-up PIN); read-only
+  peek(key) { try { const d = JSON.parse(localStorage.getItem(key)); return d && typeof d === 'object' ? d : null; } catch { return null; } },
   importJSON(text) {
     const d = JSON.parse(text);
-    // only a real Learn & Play backup: an object with the fields the app saves
+    // only a real backup from this app: an object with the fields the app saves
     if (typeof d !== 'object' || !d || Array.isArray(d) || !('profiles' in d || 'levels' in d || 'stars' in d) || text.length > 5e6) throw new Error('not a backup');
     const m = Store.migrate(d); m.savedAt = Date.now();
     Store.frozen = true;

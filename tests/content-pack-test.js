@@ -56,7 +56,7 @@ const { chromium } = require('playwright');
     });
     assert.equal(retained,'pack:grade-k-garden:count-01','Downloaded packs must survive reload offline');
     const sw = fs.readFileSync('sw.js','utf8');
-    assert.ok(/["']content-packs\.js["']/.test(sw),'Pack runtime not pre-cached for offline');
+    assert.ok(/["']core\/content-packs\.js["']/.test(sw),'Pack runtime not pre-cached for offline');
     console.log('PASS offline premium question-pack schema, persistence, grade gating and no child upsells');
   } finally { await browser.close(); }
 })().catch(e => {console.error(e);process.exitCode=1;});

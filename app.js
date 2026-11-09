@@ -1,8 +1,6 @@
 /* =========================================================
    Learn & Play — app logic (screens, voice, rewards, progress)
    ========================================================= */
-const $ = (s, r = document) => r.querySelector(s);
-const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const ROUND_POLICY = ContentData.get('curriculum-map', 'policy').learningRounds;
 const ROUND = ROUND_POLICY.defaultQuestions;
 function roundQuestionCount(cat, count) {
@@ -58,60 +56,9 @@ const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CAT
 // auto level-up stops at the top of the child's grade (unless all games are shown)
 const levelCap = (id) => { const r = state.grade && openRange(id); return r ? r[1] : gameMax(id); };
 
-/* ---------- voice ---------- */
-// 1) Pre-recorded natural voice clips (audio/*.mp3, listed in audio/clips.json), sentence by sentence.
-// 2) Fallback: the best voice installed on the device (Premium/Enhanced first).
-const clipKey = (t) => t.toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim();
-const splitSentences = (t) => (t.match(/[^.!?]+[.!?]*/g) || []).map((x) => x.trim()).filter((x) => clipKey(x));
-let CLIPS = {};
-const clipsReady = fetch('audio/clips.json').then((r) => r.json()).then((j) => (CLIPS = j)).catch(() => {});
-let sayToken = 0, actx, curSrc = null;
-// text that came from a person (names) is escaped before it goes into HTML
-const esc = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+/* ---------- voice: the engine is core/voice.js; Learn & Play adds English number speech and country words ---------- */
 // a delayed step that only runs if this card is still on screen (the child may have gone home meanwhile)
 const onCard = (q, fn) => { const token = R && R.navToken; return () => { if (R && R.navToken === token && R.qs[R.i] === q && $('#play').classList.contains('active')) fn(); }; };
-// let sound play even when the iPhone's silent switch is on (Safari 16.4+)
-try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch {}
-function ctx() {
-  actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-  // iOS can leave the context 'suspended' OR 'interrupted' (app switch, call, system speech)
-  if (actx.state !== 'running') actx.resume().catch(() => {});
-  return actx;
-}
-
-// Backup player: a plain <audio> element, unlocked on the first touch.
-const htmlPlayer = new Audio();
-htmlPlayer.preload = 'auto';
-let htmlUnlocked = false;
-
-// Every touch re-wakes audio (iPhone only allows this inside a tap).
-function unlockAudio() {
-  try {
-    const c = ctx();
-    const b = c.createBuffer(1, 1, 22050), s = c.createBufferSource();
-    s.buffer = b; s.connect(c.destination); s.start(0);
-  } catch {}
-  if (!htmlUnlocked) {
-    htmlPlayer.src = 'audio/silence.mp3';
-    const p = htmlPlayer.play();
-    if (p && p.then) p.then(() => { htmlUnlocked = true; }).catch(() => {});
-  }
-}
-['touchstart', 'touchend', 'pointerdown', 'click', 'keydown'].forEach((ev) =>
-  addEventListener(ev, unlockAudio, { capture: true, passive: true }));
-document.addEventListener('visibilitychange', () => { if (!document.hidden && actx) actx.resume().catch(() => {}); });
-
-// decoded voice clips, newest last; only the most recent ones are kept so memory stays small on iPads
-const bufs = new Map(), BUF_MAX = 80;
-function getBuf(file) {
-  if (bufs.has(file)) { const p = bufs.get(file); bufs.delete(file); bufs.set(file, p); return p; }
-  while (bufs.size >= BUF_MAX) bufs.delete(bufs.keys().next().value);
-  const p = fetch('audio/' + file).then((r) => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
-    .then((ab) => new Promise((ok, bad) => ctx().decodeAudioData(ab, ok, bad)));
-  bufs.set(file, p); p.catch(() => bufs.delete(file));
-  return p;
-}
 // numbers above 110 are said in pieces from recorded clips: 347 → "three hundred", "47"
 const HUNDREDS = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
 const spokenNumber = (p) => {
@@ -120,121 +67,11 @@ const spokenNumber = (p) => {
   const h = Math.floor(n / 100), r = n % 100;
   return r ? [`${HUNDREDS[h]} hundred`, r + m[2]] : [`${HUNDREDS[h]} hundred${m[2]}`];
 };
-const sayParts = (text) => (Array.isArray(text) ? text.map(String) : splitSentences(text)).flatMap(spokenNumber).map((p) => (typeof localSpoken === 'function' ? localSpoken(p) : p));
-function prefetch(text) { if (text) sayParts(text).forEach((p) => { const f = CLIPS[clipKey(p)]; if (f) getBuf(f).catch(() => {}); }); }
-function stopClip() { try { curSrc && curSrc.stop(); } catch {} curSrc = null; try { htmlPlayer.pause(); htmlPlayer.removeAttribute('src'); htmlPlayer.load(); } catch {} }
+VoiceHooks.expand.push(spokenNumber);
+VoiceHooks.map.push((p) => (typeof localSpoken === 'function' ? localSpoken(p) : p));
 
-function htmlPlay(file, token = sayToken, rate = 1) {
-  if (token !== sayToken) return Promise.resolve();
-  return new Promise((res) => {
-    let done = false; const fin = () => { if (!done) { done = true; res(); } };
-    htmlPlayer.onended = fin; htmlPlayer.onerror = fin;
-    htmlPlayer.src = 'audio/' + file;
-    htmlPlayer.playbackRate = rate; htmlPlayer.preservesPitch = true;
-    const p = htmlPlayer.play(); if (p && p.then) p.then(() => { if (token !== sayToken) { htmlPlayer.pause(); fin(); } }).catch(fin);
-    setTimeout(fin, 30000 / rate);
-  });
-}
-const lastAudio = { path: '', err: '' };
-async function playClip(file, token = sayToken, rate = 1) {
-  if (token !== sayToken) return;
-  if (rate !== 1) { lastAudio.path = 'html'; return htmlPlay(file, token, rate); }
-  const c = ctx();
-  if (c.state !== 'running') { await Promise.race([c.resume().catch(() => {}), sleep(300)]); }
-  if (token !== sayToken) return;
-  if (c.state !== 'running') { lastAudio.path = 'html'; return htmlPlay(file, token); }
-  let buf;
-  try { buf = await getBuf(file); } catch (e) { if (token !== sayToken) return; lastAudio.path = 'html'; lastAudio.err = String(e); return htmlPlay(file, token); }
-  if (token !== sayToken) return;
-  return new Promise((res) => {
-    let done = false; const fin = () => { if (!done) { done = true; res(); } };
-    try {
-      if (token !== sayToken) return fin();
-      const src = c.createBufferSource(); src.buffer = buf; src.connect(c.destination);
-      src.onended = fin; curSrc = src; src.start();
-      lastAudio.path = 'webaudio';
-      setTimeout(fin, buf.duration * 1000 + 400);
-    } catch (e) { if (token !== sayToken) return fin(); lastAudio.err = String(e); htmlPlay(file, token).then(fin); }
-  });
-}
 
-// All narration comes from the application's existing high-quality recorded clips.
-// Never select a browser/system TTS voice: mechanical voices are not allowed.
-
-async function say(text, opts = {}) {
-  const my = ++sayToken;
-  stopClip();
-  if (!text || !state.voice) return;
-  // only touch system speech if it is actually talking (cancelling it can pause iPhone audio)
-  // No system speech synthesis; only prerecorded clips are played.
-  stopClip();
-  if (!Object.keys(CLIPS).length) await Promise.race([clipsReady, sleep(4000)]);
-  if (my !== sayToken) return;
-  const parts = sayParts(text);
-  if (Array.isArray(text)) text = text.join(' ');
-  const files = parts.map((p) => CLIPS[clipKey(p)]);
-  if (parts.length && files.every(Boolean)) {
-    say.current = null;
-    for (const f of files) { if (my !== sayToken) return; await playClip(f, my); }
-    return;
-  }
-  return deviceSay(text, opts, my);
-}
-
-function deviceSay(text) {
-  // Non-robotic fallback: the question and options are still visible.
-  // This hook is intentionally retained for voiceaudit.js to report missing clips.
-  if (testFeatureAvailable()) console.warn('Missing natural recording:', text);
-  return Promise.resolve();
-}
-
-/* ---------- little sound effects (no files needed) ---------- */
-function tone(freqs, { dur = 0.12, type = 'sine', gap = 0.09, vol = 0.18 } = {}) {
-  try {
-    ctx();
-    freqs.forEach((f, i) => {
-      const o = actx.createOscillator(), g = actx.createGain();
-      const t = actx.currentTime + i * gap;
-      o.type = type; o.frequency.value = f;
-      g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + 0.02); g.gain.exponentialRampToValueAtTime(0.001, t + dur + 0.2);
-      o.connect(g).connect(actx.destination); o.start(t); o.stop(t + dur + 0.25);
-    });
-  } catch {}
-}
-const sfx = {
-  tap: () => tone([660], { dur: 0.04, vol: 0.08 }),
-  yes: () => tone([523, 659, 784, 1047], { type: 'triangle' }),
-  no: () => tone([300, 240], { type: 'sine', gap: 0.12, vol: 0.12 }),
-  win: () => tone([523, 659, 784, 1047, 784, 1047, 1319], { type: 'triangle', gap: 0.11, dur: 0.16 }),
-};
-
-/* ---------- confetti ---------- */
-const cv = $('#confetti'), cx = cv.getContext('2d');
-let parts = [], raf = 0;
-function sizeCanvas() { cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio; }
-addEventListener('resize', sizeCanvas); sizeCanvas();
-function confetti(n = 90, originY = 0.45) {
-  const colors = ['#ff6b6b', '#ffd43b', '#51cf66', '#4dabf7', '#cc5de8', '#ff922b', '#f783ac'];
-  const W = cv.width, H = cv.height;
-  for (let i = 0; i < n; i++) {
-    const a = Math.random() * Math.PI * 2, sp = (4 + Math.random() * 9) * devicePixelRatio;
-    parts.push({ x: W / 2, y: H * originY, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp - 6 * devicePixelRatio,
-      s: (5 + Math.random() * 7) * devicePixelRatio, r: Math.random() * 6, vr: Math.random() * 0.3 - 0.15,
-      c: colors[i % colors.length], life: 1, circle: Math.random() < 0.3 });
-  }
-  if (!raf) raf = requestAnimationFrame(step);
-}
-function step() {
-  cx.clearRect(0, 0, cv.width, cv.height);
-  parts.forEach((p) => {
-    p.vy += 0.35 * devicePixelRatio; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.r += p.vr; p.life -= 0.008;
-    cx.save(); cx.globalAlpha = Math.max(0, p.life); cx.translate(p.x, p.y); cx.rotate(p.r); cx.fillStyle = p.c;
-    if (p.circle) { cx.beginPath(); cx.arc(0, 0, p.s / 2, 0, 7); cx.fill(); } else cx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2);
-    cx.restore();
-  });
-  parts = parts.filter((p) => p.life > 0 && p.y < cv.height + 50);
-  raf = parts.length ? requestAnimationFrame(step) : (cx.clearRect(0, 0, cv.width, cv.height), 0);
-}
+/* sounds (tone, sfx) and confetti come from core/sounds.js and core/confetti.js */
 
 /* Browser pinch on Home/Settings can accidentally enlarge navigation.
    Keep OS accessibility zoom available; allow native pinch on question/game screens. */
@@ -1027,41 +864,7 @@ function next() {
 // The algorithm stays independent of grade names. Curriculum JSON owns how
 // many full rounds establish mastery or call for additional practice.
 const DEFAULT_PROGRESSION = ContentData.get('curriculum-map', 'policy').adaptive;
-function progressionOutcome(rule, range, currentLevel, round, previous = {}) {
-  const counts = { mastery: previous.mastery || 0, support: previous.support || 0 };
-  const base = { level: currentLevel, counts, status: 'steady' };
-  if (!rule || !Array.isArray(range) || round.total < rule.minQuestions ||
-      !Number.isFinite(round.firstTry) || !Number.isFinite(round.mistakes) ||
-      round.firstTry < 0 || round.firstTry > round.total || round.mistakes < 0) {
-    return { ...base, status: 'insufficient' };
-  }
-  const firstTryRate = round.firstTry / round.total;
-  const mistakeRate = round.mistakes / round.total;
-  if (firstTryRate >= rule.promote.minFirstTryRate &&
-      mistakeRate <= rule.promote.maxMistakeRate) {
-    counts.mastery++; counts.support = 0;
-    if (counts.mastery >= rule.promote.rounds) {
-      counts.mastery = 0;
-      return currentLevel < range[1]
-        ? { level: currentLevel + 1, counts, status: 'promoted' }
-        : { level: currentLevel, counts, status: 'top' };
-    }
-    return { level: currentLevel, counts, status: 'building' };
-  }
-  if (firstTryRate <= rule.support.maxFirstTryRate &&
-      mistakeRate >= rule.support.minMistakeRate) {
-    counts.support++; counts.mastery = 0;
-    if (counts.support >= rule.support.rounds) {
-      counts.support = 0;
-      return currentLevel > range[0]
-        ? { level: currentLevel - 1, counts, status: 'supported' }
-        : { level: currentLevel, counts, status: 'floor' };
-    }
-    return { level: currentLevel, counts, status: 'practicing' };
-  }
-  // A mixed result is not consecutive evidence of either mastery or struggle.
-  return { level: currentLevel, counts: { mastery: 0, support: 0 }, status: 'steady' };
-}
+// progressionOutcome() is in core/progression.js
 function applyRoundProgression(id, level, round) {
   const rule = (state.grade && GRADES[state.grade]?.progression) || DEFAULT_PROGRESSION;
   const range = openRange(id) || [1, levelCap(id)];
@@ -1378,97 +1181,8 @@ function openSettings() {
   show('settings');
 }
 
-/* ---------- grown-up PIN (asked before Settings) ---------- */
-const pinHash = (p) => { let h = 5381; for (const ch of 'lp:' + p) h = ((h * 33) ^ ch.charCodeAt(0)) >>> 0; return h.toString(36); };
-let parentVerificationEpoch=0;
-function verifyParentDevice(onVerified) {
-  const epoch=++parentVerificationEpoch;
-  const sheet=$('#pinSheet'); sheet.hidden=false;
-  $('#pinTitle').textContent='Grown-up setup';
-  $('#pinNote').textContent='Use the device owner’s fingerprint, face or device passcode before creating a PIN.';
-  $('#pinPad').hidden=true; $('#pinPad').onclick=null; $('#pinForgotBtn').hidden=true; $('#pinForgot').hidden=true;
-  let cancelled=false;
-  $('#pinVerifyBtn')?.remove();
-  const button=document.createElement('button'); button.id='pinVerifyBtn';button.className='big-btn';button.textContent='Verify device owner';
-  $('#pinPad').before(button);
-  const close=()=>{cancelled=true;sheet.hidden=true;button.remove();$('#pinPad').hidden=false;};
-  $('#pinBack').onclick=close;sheet.onclick=e=>{if(e.target===sheet)close();};
-  button.onclick=async()=>{
-    button.disabled=true;
-    try {
-      if(!window.isSecureContext || !navigator.credentials?.create || !window.PublicKeyCredential) throw Error('unsupported');
-      const credential=await navigator.credentials.create({publicKey:{
-        challenge:crypto.getRandomValues(new Uint8Array(32)),rp:{name:'Learn & Play parent setup'},
-        user:{id:crypto.getRandomValues(new Uint8Array(16)),name:'parent-'+Date.now(),displayName:'Learn & Play parent'},
-        pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],
-        authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'discouraged'},
-        timeout:60000,attestation:'none'
-      }});
-      if(cancelled || epoch!==parentVerificationEpoch)return;
-      const authData=credential?.response?.getAuthenticatorData?.();
-      if(!credential || credential.type!=='public-key' || !authData || !(new Uint8Array(authData)[32]&4))throw Error('not verified');
-      close();onVerified();
-    } catch(error) {
-      if(cancelled || epoch!==parentVerificationEpoch)return;
-      $('#pinNote').textContent='Device verification was not completed. Set up a device passcode or biometric unlock and try again in a supported browser. Parent controls stay locked.';
-      button.disabled=false;
-    }
-  };
-}
-function askPin(onOk, change = false, verified = false) {
-  parentVerificationEpoch++;
-  if(change && state.pinHash && !verified)return askPin(()=>askPin(onOk,true,true));
-  if (!state.pinHash && !verified) return verifyParentDevice(() => askPin(onOk, change, true));
-  $('#pinPad').hidden=false;
-  const sheet = $('#pinSheet'); let typed = '', first = null, closed=false;
-  const request=askPin.request=(askPin.request||0)+1;
-  const mode = () => (!state.pinHash || change ? (first ? 'confirm' : 'new') : 'check');
-  const paint = () => {
-    $('#pinTitle').textContent = mode() === 'check' ? '🔒 Grown-ups only' : mode() === 'new' ? '🔒 Make a grown-up PIN' : '🔒 Type it again';
-    $('#pinNote').textContent = mode() === 'check' ? 'Type your 4-digit PIN.' : mode() === 'new' ? 'Pick 4 numbers. You will need them to open Settings.' : 'Type the same 4 numbers.';
-    $$('#pinDots i').forEach((d, k) => d.classList.toggle('on', k < typed.length));
-    $('#pinForgotBtn').hidden = mode() !== 'check'; $('#pinForgot').hidden = true;
-  };
-  const close = () => { closed=true; sheet.hidden = true; $('#pinPad').onclick = null; sheet.onclick = null; };
-  // kids who land here by accident: a big way back, and the voice tells them where it is
-  const goBack = () => { sfx.tap(); sayToken++; stopClip(); close(); };
-  $('#pinBack').onclick = goBack;
-  sheet.onclick = (e) => { if (e.target === sheet) goBack(); };   // tapping outside the box also goes back
-  const kidNote = () => say(['This part is for grown-ups.', 'Tap the house to go back.']);
-  const shake = () => { const b = $('.pin-box'); b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); sfx.no(); };
-  $('#pinPad').onclick = (e) => {
-    const b = e.target.closest('button'); if (!b) return; const k = b.dataset.k; sfx.tap();
-    if (k === '✕') return close();
-    if (k === '⌫') { typed = typed.slice(0, -1); return paint(); }
-    if (typed.length >= 4) return;
-    typed += k; paint();
-    if (typed.length < 4) return;
-    setTimeout(() => {
-      if(closed||request!==askPin.request)return;
-      const m = mode();
-      if (m === 'check') {
-        if (Date.now() < (askPin.lockUntil || 0)) { typed = ''; shake(); $('#pinNote').textContent = 'Too many tries. Wait a little and try again.'; return; }
-        if (pinHash(typed) === state.pinHash) { askPin.misses = 0; close(); onOk(); }
-        else { typed = ''; shake(); paint(); kidNote(); askPin.misses = (askPin.misses || 0) + 1; if (askPin.misses >= 3) { askPin.lockUntil = Date.now() + 30000 * (askPin.misses - 2); $('#pinNote').textContent = 'Too many tries. Wait 30 seconds.'; } }
-      }
-      else if (m === 'new') { first = typed; typed = ''; paint(); }
-      else if (typed === first) { state.pinHash = pinHash(typed); save(); close(); sfx.yes(); askPin(onOk); }
-      else { first = null; typed = ''; shake(); paint(); }
-    }, 150);
-  };
-  // A public puzzle cannot verify a parent. Never clear the PIN from this screen.
-  $('#pinForgotBtn').onclick = () => {
-    $('#pinForgot').textContent = 'Your PIN stays on this device and cannot be recovered here. Try your saved PIN. Resetting the app’s stored data through device or browser settings removes the PIN, but also deletes children and progress. There is no reset puzzle or shortcut in the child app.';
-    $('#pinForgot').hidden = false;
-  };
-  typed = ''; paint(); sheet.hidden = false;
-  if (mode() === 'check') kidNote();
-}
-$('#backupBtn').onclick = () => {
-  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([Store.exportJSON()], { type: 'application/json' }));
-  a.download = `learn-and-play-backup-${new Date().toISOString().slice(0, 10)}.json`; a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-};
+/* ---------- grown-up PIN: core/parent-gate.js (askPin, shared with other kids-core apps on this site) ---------- */
+$('#backupBtn').onclick = () => Store.downloadBackup();
 $('#restoreFile').onchange = async (e) => {
   const f = e.target.files[0]; if (!f) return;
   try { Store.importJSON(await f.text()); alertNote('Backup loaded!'); setTimeout(() => location.reload(), 600); } catch { alertNote('That file is not a Learn & Play backup.'); }
@@ -1575,28 +1289,8 @@ $('#kidRemove').onclick = () => {
   Store.removeKid(Store.activeId(), state); applyTheme(); openSettings();
 };
 // Full-library downloads are opt-in to avoid silently downloading thousands of clips.
-$('#offlineVoiceBtn').onclick = async () => {
-  const status = $('#offlineVoiceStatus'), btn = $('#offlineVoiceBtn');
-  if (!('serviceWorker' in navigator)) { status.textContent = 'Offline audio download is available in the installed app over HTTPS.'; return; }
-  status.textContent = 'Preparing the offline voice library…'; btn.disabled = true;
-  try {
-    const reg = await navigator.serviceWorker.ready;
-    if (!reg.active) throw new Error('offline service unavailable');
-    state.offlineAudio = 'full'; save();
-    reg.active.postMessage({ type: 'fill-audio-all' });
-  } catch { btn.disabled = false; status.textContent = 'Could not start the download. Check the connection and try again.'; }
-};
-if ('serviceWorker' in navigator) navigator.serviceWorker.addEventListener('message', (e) => {
-  if (!e.data || e.data.type !== 'audio-pack-progress' || e.data.mode !== 'fill-audio-all') return;
-  const status = $('#offlineVoiceStatus'), btn = $('#offlineVoiceBtn');
-  if (!status) return;
-  const { done, total, saved = 0 } = e.data;
-  status.textContent = total ? `Saved ${saved} of ${total} additional voice clips (checked ${done}).` : 'All requested voice clips are already saved.';
-  if (done >= total) {
-    btn.disabled = false;
-    status.textContent = saved >= total ? 'Offline voice pack is ready.' : `Saved ${saved} of ${total} additional clips. Some could not be downloaded; try again when online.`;
-  }
-});
+$('#offlineVoiceBtn').onclick = () => CoreOffline.downloadVoices($('#offlineVoiceStatus'), $('#offlineVoiceBtn'));
+CoreOffline.watchVoiceDownload('offlineVoiceStatus', 'offlineVoiceBtn');
 $('#testVoiceBtn').onclick = async () => {
   const out = $('#voiceStatus');
   if (!state.voice) { out.textContent = 'Turn on voice first, then test again.'; return; }
@@ -1629,32 +1323,7 @@ applyTheme();
 renderHome();
 // A service-worker upgrade can reload this tab; never ask the child to press Let's Play twice.
 try { if (sessionStorage.getItem('learnplay.started') === '1') $('#splash').classList.add('gone'); } catch {}
-if ('serviceWorker' in navigator && location.protocol === 'https:') {
-  let restartApproved = false;
-  navigator.serviceWorker.register('sw.js').then((reg) => {
-    // Do not change the page underneath a child who just tapped Play or began onboarding.
-    // The parent explicitly chooses when to activate an installed update.
-    const offerUpdate = () => {
-      if (!reg.waiting || document.getElementById('updateAvailable')) return;
-      const btn = document.createElement('button');
-      btn.id = 'updateAvailable'; btn.type = 'button'; btn.className = 'update-available';
-      btn.textContent = 'A new version is ready. Tap to restart when you are finished.';
-      btn.onclick = () => { restartApproved = true; btn.disabled = true; btn.textContent = 'Updating…'; reg.waiting.postMessage({ type: 'update-now' }); };
-      document.getElementById('home').appendChild(btn);
-    };
-    reg.addEventListener('updatefound', () => {
-      const worker = reg.installing;
-      if (worker) worker.addEventListener('statechange', () => { if (worker.state === 'installed') offerUpdate(); });
-    });
-    offerUpdate();
-    // fetch any voice clips this phone doesn't have yet (after start-up, so the app opens fast)
-    setTimeout(() => reg.active && reg.active.postMessage({ type: state.offlineAudio === 'full' ? 'fill-audio-all' : 'fill-audio' }), 8000);
-  }).catch(() => {});
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    // A newly claimed first controller must not reload Home; only an approved update may.
-    if (restartApproved) location.reload();
-  });
-}
+CoreOffline.start();   // offline cache + parent-approved updates (core/offline.js)
 
 // quick placement check, started by a grown-up from Settings
 $('#placeBtn').onclick = () => { sfx.tap(); collectSettings(); startPlacement(); };

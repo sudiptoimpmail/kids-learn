@@ -6,7 +6,7 @@ const photos=read('landmark-photos');
 const previews=read('landmark-online-previews').records;
 const landmarks=new Set(read('landmarks').LANDMARKS.map(x=>x[0]));
 const sw=fs.readFileSync('sw.js','utf8');
-const loader=fs.readFileSync('content-loader.js','utf8');
+const loader=JSON.parse(fs.readFileSync('app.config.json','utf8')).data.namespaces.map(n=>`'${n}'`).join(',');
 const engine=fs.readFileSync('landmark-engine.js','utf8');
 assert.ok(sw.includes('data/landmark-online-previews.json'),'Missing offline preview metadata');
 assert.ok(loader.includes("'landmark-online-previews'"),'Preview metadata not loaded');

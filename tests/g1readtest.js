@@ -55,6 +55,6 @@ for (const word of g.G1_PICTURE_WORDS) assert.ok(g.G1_WORDS.includes(word),'spel
 assert.ok(g.G1_SHORT_WORDS.length>100 && g.G1_BLEND_WORDS.length>50 && g.G1_LONG_WORDS.length>55);
 // the word list is mixed into Letter Sounds rounds (no separate tile)
 assert.match(fs.readFileSync('phonics.js','utf8'),/genGrade1Read\(/);
-const bootstrap=fs.readFileSync('content-loader.js','utf8');
-assert.ok(bootstrap.indexOf("'grade1words.js'") < bootstrap.indexOf("'content.js'"),'grade1 word bank must load first');
+const bootScripts=JSON.parse(fs.readFileSync('app.config.json','utf8')).scripts;
+assert.ok(bootScripts.indexOf('grade1words.js') < bootScripts.indexOf('content.js'),'grade1 word bank must load first');
 console.log('PASS Grade 1 reading: '+g.G1_WORDS.length+' requested words, '+g.G1_ACTIVE_WORDS.length+' active, 5 levels, 17,500 randomized questions, '+g.G1_ACTIVE_WORDS.length+' forced-target cases');

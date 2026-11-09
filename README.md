@@ -128,3 +128,11 @@ The grade-by-grade plan (what each grade sees and ideas to add) and the launch a
 ## Grade-to-skill routing
 
 [`data/curriculum-map.json`](data/curriculum-map.json) is the source of truth for grade visibility, section levels, skill goals and the intended grade for each authored Grade 2–3 extension question. Grade 2 and Grade 3 do not inherit each other's new question banks solely because they share a numeric level. Authored text and routes are offline JSON; the JavaScript generators remain implementation logic.
+
+## Shared engine: kids-core
+
+Learn & Play and [Palabritas](https://github.com/sudiptoimpmail/palabritas) run on the same engine, **kids-core** (a separate, versioned repo). Each app keeps a copy in `core/`. Don't edit that folder here: change kids-core, then run `node ../kids-core/tools/sync-core.mjs .`, bump `sw.js` VERSION and run the tests.
+
+- `app.config.json` holds everything app-specific that isn't code: storage key, voices, the grown-up PIN (shared with Palabritas), content packs and **colours** (`theme`).
+- `core/` holds saved data, the PIN, voice, sounds, confetti, adaptive levels, content packs (schema 1) and offline support.
+- The rest of this repo is Learn & Play's own games, questions and cards.

@@ -1,11 +1,5 @@
 :root {
-  --bg: #fff8ec;
-  --ink: #2b2140;
-  --soft: #7a6f8f;
-  --card: #ffffff;
-  --theme: #7c5cff;
-  --good: #2fb344;
-  --bad: #ff5c5c;
+  /* colours (--bg --ink --soft --card --theme --good --bad …) come from app.config.json → theme */
   --radius: 26px;
   font-family: ui-rounded, "SF Pro Rounded", "Nunito", "Comic Sans MS", system-ui, sans-serif;
   color: var(--ink);
@@ -24,7 +18,6 @@ body {
   padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
 }
 button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
-#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 50; }
 
 /* splash */
 #splash { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center;
@@ -847,15 +840,7 @@ body.test-mode .prog-row { flex-wrap: wrap; }
 @media (min-width: 700px) { .tr-main { flex-direction: row; justify-content: center; align-items: flex-start; } .tr-pic { flex-direction: column; } }
 
 /* ---------- grown-up PIN ---------- */
-.pin-box { width: min(340px, 92vw); }
-.pin-box.shake { animation: shake .4s; }
 @keyframes shake { 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
-.pin-dots { display: flex; gap: 14px; justify-content: center; margin: 10px 0 14px; }
-.pin-dots i { width: 18px; height: 18px; border-radius: 50%; border: 3px solid #8f6bff; }
-.pin-dots i.on { background: #8f6bff; }
-.pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.pin-pad button { height: 58px; border-radius: 16px; background: #f3f0ff; font-size: 24px; font-weight: 900; box-shadow: 0 4px 0 #0001; }
-.pin-pad button:active { transform: translateY(3px); }
 .pin-forgot p { margin: 12px 0 8px; }
 .pin-ans { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .pin-ans button { height: 46px; border-radius: 14px; background: #fff3bf; font-weight: 900; font-size: 18px; }
@@ -882,7 +867,6 @@ body.test-mode .prog-row { flex-wrap: wrap; }
 
 .backup-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
 
-.save-warn { position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 90; background: #fff3bf; border: 2px solid #f59f00; border-radius: 16px; padding: 10px 14px; font-weight: 800; font-size: 14px; box-shadow: 0 6px 16px #0003; }
 
 /* ---------- Letter Sounds ---------- */
 .ph-main { min-height: 0; }
@@ -988,8 +972,6 @@ header.top { align-items: center; }
 @media (max-width: 420px) { .quest-checks i { width: 20px; height: 20px; font-size: 11px; } .quest-head b { font-size: 20px; } }
 
 /* PIN screen: a big, clear way back for kids */
-.pin-box { position: relative; padding-top: 64px; }
-.pin-back { position: absolute; left: 12px; top: 12px; padding: 10px 16px; border-radius: 16px; background: #ffe066; color: #5c3c00; font-size: 20px; font-weight: 900; box-shadow: 0 4px 0 #f0b400; }
 
 /* Test mode preview navigation – hidden from all child profiles. */
 body.test-mode .qa-nav { padding:8px 12px; font-size:14px; min-height:38px; background:#fef9c3; color:#473618; border:2px solid #b9a14e; }
@@ -1556,8 +1538,6 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .wel-cancel { border: 0; background: transparent; font: inherit; text-decoration: underline; color: #583ca0; cursor: pointer; }
 .wel-sibling-note { font-size: 14px; line-height: 1.45; color: #5a4d76; }
 .who-add { border: 2px dashed #8f6bff; background: #f3edff; }
-.update-available { display: block; width: calc(100% - 32px); margin: 16px auto 20px; padding: 12px; border: 2px solid #5d4097; border-radius: 14px; background: #f2edff; color: #382266; font: inherit; font-size: 15px; font-weight: 700; cursor: pointer; }
-.update-available:focus-visible { outline: 3px solid #4b2fc2; outline-offset: 3px; }
 /* Story suspense is expressive but never blocks text or traps a child on the page. */
 .lib-page[data-scene] .lib-art { position: relative; }
 .lib-page[data-scene="wolf"] .lib-art,

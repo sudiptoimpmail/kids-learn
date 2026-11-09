@@ -1,11 +1,14 @@
-/* Downloaded question packs are DATA, never remote executable code.
+/* kids-core content packs (schema 1, the same downloadable format in every kids-core app).
+   Downloaded question packs are DATA, never remote executable code.
+   DB name and allowed grades come from app.config.json "packs".
    Store-verified content is installed by trusted native purchase/update plumbing,
    outside child-facing screens. Bundled questions work with no packs at all. */
 const ContentPacks = (() => {
-  const DB_NAME = 'kids-learn-content-packs';
+  const PACK_CFG = AppConfig.packs || {};
+  const DB_NAME = PACK_CFG.db || AppConfig.app.id + '-content-packs';
   const STORE = 'packs';
   const MAX_PACK_BYTES = 2_000_000;
-  const GRADES_ALLOWED = ['prek', 'k', 'g1', 'g2', 'g3'];
+  const GRADES_ALLOWED = (PACK_CFG.grades || ['prek', 'k', 'g1', 'g2', 'g3']).slice();
   const installed = new Map();
   let ready = null;
   const plain = (s) => String(s).replace(/[&<>"']/g, (c) =>

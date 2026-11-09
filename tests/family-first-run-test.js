@@ -88,9 +88,10 @@ const { chromium } = require('playwright');
     assert.equal(await page.evaluate(() => state.name), 'Ava', 'reload must not authorize a switch');
     assert.deepEqual(errors, []);
     // Service-worker updates are chosen by a parent; never auto-skipWaiting or auto-reload on entry.
-    const src = fs.readFileSync('app.js','utf8');
+    const src = fs.readFileSync('app.js','utf8') + fs.readFileSync('core/offline.js','utf8');   // updates live in kids-core
     assert.match(src, /restartApproved/);
     assert.match(src, /btn\.onclick = \(\) => \{ restartApproved = true/);
+    assert.doesNotMatch(src, /skipWaiting\(\)/);
     assert.doesNotMatch(src, /setInterval\(tryUpdate/);
     console.log('PASS first-run named-child setup, sibling profiles, onboarding, no surprise reload');
     await page.close();
