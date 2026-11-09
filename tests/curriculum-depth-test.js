@@ -71,7 +71,7 @@ const {chromium} = require('playwright');
       for(let i=0;i<300;i++){
         const q=genSequence(3);
         check(valid(q),'Invalid Grade 3 sequencing question: '+q?.key);
-        if((q.main.match(/<span/g)||[]).length>=7) fourEventRounds++;
+        if((q.main.match(/<span/g)||[]).length>=7 || (q.main.match(/class="seq-step/g)||[]).length>=4) fourEventRounds++;   // captioned Grade 1-3 steps
         const grade1Pattern=genPattern(3);
         check(!grade1Pattern.key.startsWith('advanced-pattern'),'Grade 1 received multiplication-based pattern');
       }

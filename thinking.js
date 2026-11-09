@@ -101,7 +101,33 @@ function genOdd(level, authoredRow = null) {
   return q;
 }
 const THINKING_SEQUENCES = ContentData.get('thinking','THINKING_SEQUENCES');
+// Grade 1-3 sequences: every step is a picture with its word, so a child can read what each step is.
+const SEQ_STEPS = ContentData.get('thinking', 'SEQ_STEPS');
+const seqTile = ([e, w]) => `<span class="seq-step"><b>${e}</b><small>${w}</small></span>`;
+function genStepSequence(level) {
+  const pool = SEQ_STEPS.filter((r) => r[0] <= level), exact = pool.filter((r) => r[0] === level);
+  const [difficulty, steps, reason] = pick(exact.length && Math.random() < 0.8 ? exact : pool);
+  // the last step at first, any step once a child knows the process (older grades work backward too)
+  const missingAt = level <= 2 ? pick([steps.length - 1, steps.length - 2, 1]) : rand(steps.length);
+  const answer = steps[missingAt];
+  const pics = new Set(steps.map((x) => x[0])), words = new Set(steps.map((x) => x[1]));
+  const others = (level >= 3 ? pool.filter((r) => r[0] >= 3) : pool).flatMap((r) => r[1]).filter((x) => !pics.has(x[0]) && !words.has(x[1]));   // older grades: wrong answers from other science and how-it-is-made chains
+  const seenP = new Set(), seenW = new Set(), uniq = others.filter((x) => !seenP.has(x[0]) && !seenW.has(x[1]) && seenP.add(x[0]) && seenW.add(x[1]));   // no two answers with the same picture or word
+  const opts = shuffle([answer, ...sample(uniq, level >= 3 ? 3 : 2)]);
+  const last = missingAt === steps.length - 1;
+  return {
+    key: `seq2-${difficulty}-${steps.map((x) => x[1]).join('|')}-${missingAt}`,
+    text: last ? 'What happens next?' : 'What happens in the missing spot?', say: last ? 'What happens next?' : 'What happens in the missing spot?',
+    main: `<div class="seq-row" style="--n:${steps.length}">${steps.map((st, i) => (i ? '<i class="seq-arrow">➜</i>' : '') + (i === missingAt ? '<span class="seq-step think-missing">?</span>' : seqTile(st))).join('')}</div>`,
+    options: opts.map((o) => ({ v: o[1], html: seqTile(o) })), answer: answer[1], optClass: 'opt-seq',
+    hint: { html: `<div class="hint-note">${reason}</div>`, say: [reason] },
+    ...(seqSkill() ? { curriculumSkill: seqSkill() } : {}),
+  };
+}
+// the grade's own sequencing objective (process reasoning, cause and effect…), so progress reports keep it
+const seqSkill = () => { try { return ContentData.get('curriculum-map', 'PROFILES')[curriculumGrade()].sections.sequence.skills[0]; } catch { return null; } };
 function genSequence(level, authoredRow = null) {
+  if (level >= 2 && !authoredRow) return genStepSequence(level);
   const pool = THINKING_SEQUENCES.concat(curriculumRows('THINKING_SEQUENCES',level)).filter(x=>x[0] <= level);
   const exact = pool.filter(row => row[0] === level);
   const review = pool.filter(row => row[0] === level-1);
@@ -129,6 +155,6 @@ function genSequence(level, authoredRow = null) {
 CATEGORIES.push(
   { id: 'pattern', title: 'Pattern Puzzle', sub: 'patterns & number sequences', icon: '🧩', color: '#7048e8', gen: genPattern, maxLevel: 5 },
   { id: 'odd', title: 'Odd One Out', sub: 'sort, group & explain', icon: '🔍', color: '#e8590c', gen: genOdd, maxLevel: 3 },
-  { id: 'sequence', title: 'What Comes Next?', sub: 'order & cause and effect', icon: '🪴', color: '#0b7285', gen: genSequence, maxLevel: 3 },
+  { id: 'sequence', title: 'What Comes Next?', sub: 'order & cause and effect', icon: '🪴', color: '#0b7285', gen: genSequence, maxLevel: 4 },
 );
 // Grade visibility and level ranges are now defined in data/curriculum-map.json.

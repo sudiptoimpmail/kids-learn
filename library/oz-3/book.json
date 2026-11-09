@@ -1,0 +1,133 @@
+{
+  "id": "oz-3",
+  "title": "The Wizard of Oz · 3. The Tin Woodman and the Lion",
+  "grades": [
+    "g3"
+  ],
+  "cover": "p08.webp",
+  "source": "Retold from L. Frank Baum, The Wonderful Wizard of Oz (1900), public domain. https://www.gutenberg.org/ebooks/55",
+  "series": "oz",
+  "chapter": 3,
+  "pages": [
+    {
+      "art": "p01.webp",
+      "text": [
+        "The road led into a deep, dark forest.",
+        "Suddenly they heard a groan from among the trees."
+      ],
+      "alt": "The road leads into a dark forest"
+    },
+    {
+      "art": "p02.webp",
+      "text": [
+        "A man made entirely of tin stood very still with his axe raised high.",
+        "\"Please oil my joints,\" he groaned. \"I have rusted, and I cannot move.\""
+      ],
+      "alt": "A rusted Tin Woodman stands frozen with his axe raised"
+    },
+    {
+      "art": "p03.webp",
+      "text": [
+        "Dorothy found an oil can in his cottage. She oiled his neck, his arms, and his legs.",
+        "Slowly the Tin Woodman lowered his axe and smiled."
+      ],
+      "alt": "Dorothy oils the Tin Woodman"
+    },
+    {
+      "art": "p04.webp",
+      "text": [
+        "\"I have no heart,\" said the Tin Woodman sadly. \"May I come and ask the Wizard for one?\"",
+        "\"Of course!\" said Dorothy."
+      ],
+      "alt": "The Tin Woodman wishes for a heart"
+    },
+    {
+      "art": "p05.webp",
+      "text": [
+        "Just then a terrible roar rang through the forest, and a great Lion sprang onto the road.",
+        "He knocked the Scarecrow over and opened his mouth wide at Toto."
+      ],
+      "alt": "The Lion springs out roaring"
+    },
+    {
+      "art": "p06.webp",
+      "text": [
+        "Dorothy rushed forward and slapped the Lion on the nose.",
+        "\"Don't you dare bite Toto! You should be ashamed of yourself, a big beast like you!\""
+      ],
+      "alt": "Dorothy slaps the Lion on the nose"
+    },
+    {
+      "art": "p07.webp",
+      "text": [
+        "\"I know,\" said the Lion, wiping a tear with his paw. \"I am a coward.\"",
+        "\"I roar so others will be afraid of me, but inside I am scared of everything.\""
+      ],
+      "alt": "The Lion admits he is a coward"
+    },
+    {
+      "art": "p08.webp",
+      "text": [
+        "\"Perhaps the Wizard will give me courage,\" said the Lion.",
+        "So the four friends and Toto walked on together toward the Emerald City."
+      ],
+      "alt": "Four friends walk toward the Emerald City"
+    }
+  ],
+  "questions": [
+    {
+      "ask": "What did the Tin Woodman need so he could move?",
+      "answer": "oil",
+      "options": [
+        [
+          "oil",
+          "oil.svg"
+        ],
+        [
+          "apple",
+          "apple.svg"
+        ],
+        [
+          "bread",
+          "bread.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "What did the Tin Woodman wish for?",
+      "answer": "heart",
+      "options": [
+        [
+          "heart",
+          "heart.svg"
+        ],
+        [
+          "house",
+          "house.svg"
+        ],
+        [
+          "kite",
+          "kite.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "Who said he was a coward?",
+      "answer": "lion",
+      "options": [
+        [
+          "lion",
+          "lion.svg"
+        ],
+        [
+          "scarecrow",
+          "scarecrow.svg"
+        ],
+        [
+          "tinman",
+          "tinman.svg"
+        ]
+      ]
+    }
+  ]
+}

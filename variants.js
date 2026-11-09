@@ -72,6 +72,14 @@
     return matchCard('vflag-' + pairsKey(pairs), pairs, 'Match each flag to its country!', 'Match each flag to its country!');
   };
   const sequenceOrder = (level) => {
+    if (level >= 2) {     // Grade 1-3: put the captioned steps of a process in order
+      const pool2 = SEQ_STEPS.filter((x) => x[0] <= level), exact2 = pool2.filter((x) => x[0] === level);
+      const [, steps2, reason2] = pick(exact2.length ? exact2 : pool2);
+      return { key: `vseqw-${steps2.map((x) => x[1]).join('|')}`, text: 'Tap the steps in order!', say: 'Tap the pictures in order!',
+        main: '', mainClass: 'empty', options: [], answer: 'done', optClass: 'spell-tray',
+        order: { pics: steps2.map(seqTile), shown: shuffle(steps2.map((_, i) => i)), given: 1 }, explain: reason2,
+        hint: { html: `<div class="hint-note">${reason2}</div>`, say: 'What happened first?' } };
+    }
     const pool = THINKING_SEQUENCES.concat(curriculumRows('THINKING_SEQUENCES', level)).filter((x) => x[0] <= level && x[1].length >= 3);
     const exact = pool.filter((x) => x[0] === level);
     const row = pick(exact.length ? exact : pool);
@@ -103,7 +111,7 @@
   };
 
   const VARIANTS = { jobs: [0.2, jobMatch], frac: [0.2, fracMatch], add: [0.18, addMatch], sub: [0.18, subMatch], mul: [0.2, mulMatch], div: [0.2, divMatch],
-    clock: [0.2, clockMatch], flags: [0.2, flagMatch], sequence: [0.25, sequenceOrder] };
+    clock: [0.2, clockMatch], flags: [0.2, flagMatch], sequence: [0.35, sequenceOrder] };
   for (const [id, [share, make]] of Object.entries(VARIANTS)) {
     const c = CATEGORIES.find((x) => x.id === id);
     if (!c || !c.gen) continue;

@@ -1,0 +1,133 @@
+{
+  "id": "oz-1",
+  "title": "The Wizard of Oz · 1. The Cyclone",
+  "grades": [
+    "g3"
+  ],
+  "cover": "p04.webp",
+  "source": "Retold from L. Frank Baum, The Wonderful Wizard of Oz (1900), public domain. https://www.gutenberg.org/ebooks/55",
+  "series": "oz",
+  "chapter": 1,
+  "pages": [
+    {
+      "art": "p01.webp",
+      "text": [
+        "Dorothy lived in the middle of the great Kansas prairies with Uncle Henry, Aunt Em, and her little black dog, Toto.",
+        "Everything around the small farmhouse was gray, but Toto made Dorothy laugh every day."
+      ],
+      "alt": "Dorothy and Toto on the gray Kansas prairie"
+    },
+    {
+      "art": "p02.webp",
+      "text": [
+        "One day the sky grew dark, and a low wail came from the north.",
+        "\"A cyclone is coming!\" cried Uncle Henry. \"Run for the cellar!\""
+      ],
+      "alt": "A cyclone comes across the prairie"
+    },
+    {
+      "art": "p03.webp",
+      "text": [
+        "Toto was frightened and hid under the bed.",
+        "By the time Dorothy caught him, the house was shaking, and it was too late to reach the cellar."
+      ],
+      "alt": "Dorothy chases Toto as the house begins to shake"
+    },
+    {
+      "art": "p04.webp",
+      "text": [
+        "The cyclone lifted the whole house high into the air and carried it far away.",
+        "Dorothy hugged Toto, and after many hours she fell fast asleep."
+      ],
+      "alt": "The cyclone carries the house through the sky"
+    },
+    {
+      "art": "p05.webp",
+      "text": [
+        "Dorothy woke with a bump. The house had landed in a beautiful country full of flowers and fruit trees.",
+        "Little people in blue hats came to meet her. They were the Munchkins."
+      ],
+      "alt": "The Munchkins in blue hats greet Dorothy"
+    },
+    {
+      "art": "p06.webp",
+      "text": [
+        "A kind old woman stepped forward. \"I am the Good Witch of the North,\" she said.",
+        "\"Your house landed on the Wicked Witch of the East. She is gone, and the Munchkins are free!\""
+      ],
+      "alt": "The Good Witch of the North talks to Dorothy"
+    },
+    {
+      "art": "p07.webp",
+      "text": [
+        "The witch gave Dorothy a pair of silver shoes.",
+        "\"They have a magic power,\" she said, \"but no one knows what it is.\""
+      ],
+      "alt": "The Good Witch gives Dorothy the silver shoes"
+    },
+    {
+      "art": "p08.webp",
+      "text": [
+        "\"How can I get back to Kansas?\" asked Dorothy.",
+        "\"Go to the Emerald City and ask the great Wizard of Oz,\" said the witch. \"Follow the road of yellow brick.\""
+      ],
+      "alt": "The yellow brick road leads toward the Emerald City"
+    }
+  ],
+  "questions": [
+    {
+      "ask": "What carried the house away?",
+      "answer": "cyclone",
+      "options": [
+        [
+          "cyclone",
+          "cyclone.svg"
+        ],
+        [
+          "balloon",
+          "balloon.svg"
+        ],
+        [
+          "kite",
+          "kite.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "What did the Good Witch give Dorothy?",
+      "answer": "shoes",
+      "options": [
+        [
+          "shoes",
+          "shoes.svg"
+        ],
+        [
+          "apple",
+          "apple.svg"
+        ],
+        [
+          "kite",
+          "kite.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "What should Dorothy follow to the Emerald City?",
+      "answer": "road",
+      "options": [
+        [
+          "road",
+          "road.svg"
+        ],
+        [
+          "forest",
+          "forest.svg"
+        ],
+        [
+          "balloon",
+          "balloon.svg"
+        ]
+      ]
+    }
+  ]
+}
