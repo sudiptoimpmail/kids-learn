@@ -1185,12 +1185,15 @@ const ORGAN_FACTS = Object.freeze({
   kidneys: 'Your kidneys filter waste and extra water from your blood to make urine.',
   spine: 'Your spine is a column of bones that supports you and protects your spinal cord.'
 });
+// Pre-K explores the four big organs only; K adds the intestines; Grade 1 and up see them all
+const ORGAN_GRADE_MAX = { prek: 1, k: 2 };
+const organForGrade = (name) => ((ORGANS.find((o) => o[0] === name) || [0, 1])[1]) <= (ORGAN_GRADE_MAX[state.grade] || 3);
 function organExplorer() {
   return `<section class="organ-explorer" aria-label="Explore the human body">
     <p class="organ-explorer-title">Explore your body</p>
     <p>Choose an organ to discover what it does. This is a learning tool, not a quiz answer.</p>
     <div class="organ-explorer-choices" role="group" aria-label="Choose an organ">
-      ${Object.keys(ORGAN_FACTS).map(name=>`<button type="button" data-organ-explore="${name}"
+      ${Object.keys(ORGAN_FACTS).filter(organForGrade).map(name=>`<button type="button" data-organ-explore="${name}"
         aria-pressed="false">${name[0].toUpperCase()+name.slice(1)}</button>`).join('')}
     </div>
     <output class="organ-explorer-fact" aria-live="polite">Select an organ to learn about it.</output>
@@ -1221,7 +1224,7 @@ const ANATOMY = ContentData.get('content','ANATOMY');
 function genAnatomy(level) {
   if (HAS3D) return genAnatomy3D(level);
   const t = Math.random();
-  const organs = ORGANS.filter((o) => o[1] <= Math.min(level + 1, 3));
+  const organs = ORGANS.filter((o) => o[1] <= Math.min(level + 1, 3) && organForGrade(o[0]));
   if (t < 0.25) {
     const o = pick(organs)[0];
     return {
