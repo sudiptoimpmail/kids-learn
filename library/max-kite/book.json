@@ -1,6 +1,6 @@
 {
   "id": "max-kite",
-  "title": "Max has a red kite.",
+  "title": "Max and the Red Kite",
   "grades": [
     "g1"
   ],
@@ -9,41 +9,123 @@
     {
       "art": "p01.webp",
       "text": [
-        "Max has a red kite."
+        "Max has a red kite.",
+        "It is his best toy."
       ],
-      "alt": "Max has a red kite."
+      "alt": "Max holds up his red kite"
     },
     {
       "art": "p02.webp",
       "text": [
-        "He takes it to the park."
+        "\"Let's go to the park!\" said Max.",
+        "His dog Spot ran with him."
       ],
-      "alt": "He takes it to the park."
+      "alt": "Max and Spot run to the park"
     },
     {
       "art": "p03.webp",
       "text": [
-        "The kite flies up high."
+        "The wind blew.",
+        "Up, up, up went the kite!"
       ],
-      "alt": "The kite flies up high."
+      "alt": "The kite flies up high"
+    },
+    {
+      "art": "p04.webp",
+      "text": [
+        "Then a big gust came.",
+        "The string slipped out of Max's hand!"
+      ],
+      "alt": "The kite blows away"
+    },
+    {
+      "art": "p05.webp",
+      "text": [
+        "The kite flew into a tall tree and got stuck.",
+        "\"Oh no!\" said Max."
+      ],
+      "alt": "The kite is stuck in a tall tree"
+    },
+    {
+      "art": "p06.webp",
+      "text": [
+        "Max jumped and jumped.",
+        "Spot jumped too.",
+        "The kite was too high."
+      ],
+      "alt": "Max and Spot jump but cannot reach the kite"
+    },
+    {
+      "art": "p07.webp",
+      "text": [
+        "A little bird flew to the kite.",
+        "She tugged the string with her beak.",
+        "Tug, tug, tug!"
+      ],
+      "alt": "A bird tugs the kite loose"
+    },
+    {
+      "art": "p08.webp",
+      "text": [
+        "Down came the kite, right into Max's arms.",
+        "\"Thank you, bird!\" said Max.",
+        "Now he holds the string tight. The End."
+      ],
+      "alt": "Max flies his kite again with Spot and the bird"
     }
   ],
   "questions": [
     {
-      "ask": "Where does Max take his kite?",
-      "answer": "park",
+      "ask": "Who went to the park with Max?",
+      "answer": "dog",
       "options": [
         [
-          "park",
-          "park.svg"
+          "dog",
+          "dog.svg"
+        ],
+        [
+          "cat",
+          "cat.svg"
+        ],
+        [
+          "hen",
+          "hen.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "Where did the kite get stuck?",
+      "answer": "tree",
+      "options": [
+        [
+          "tree",
+          "tree.svg"
+        ],
+        [
+          "barn",
+          "barn.svg"
         ],
         [
           "school",
           "school.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "Who helped Max get his kite?",
+      "answer": "bird",
+      "options": [
+        [
+          "bird",
+          "bird.svg"
         ],
         [
-          "beach",
-          "beach.svg"
+          "mouse",
+          "mouse.svg"
+        ],
+        [
+          "lion",
+          "lion.svg"
         ]
       ]
     }
