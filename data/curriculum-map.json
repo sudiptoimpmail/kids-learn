@@ -527,7 +527,7 @@
           "home": "3-4",
           "pattern": "4-5",
           "odd": "3-3",
-          "sequence": "3-3",
+          "sequence": "3-4",
           "frac": "2-4",
           "measure": "2-4",
           "gp": "2-3",
@@ -2255,7 +2255,7 @@
           "sequence": {
             "levels": [
               3,
-              3
+              4
             ],
             "skills": [
               "scientific-method",

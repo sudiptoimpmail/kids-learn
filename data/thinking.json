@@ -1412,6 +1412,784 @@
         ],
         "Read a question, research evidence, write an answer and explain it."
       ]
+    ],
+    "SEQ_STEPS": [
+      [
+        2,
+        [
+          [
+            "🥚",
+            "egg"
+          ],
+          [
+            "🐛",
+            "caterpillar"
+          ],
+          [
+            "💤",
+            "chrysalis"
+          ],
+          [
+            "🦋",
+            "butterfly"
+          ]
+        ],
+        "A butterfly starts as an egg. A caterpillar hatches, rests in a chrysalis, and comes out as a butterfly."
+      ],
+      [
+        2,
+        [
+          [
+            "🌰",
+            "seed"
+          ],
+          [
+            "🌱",
+            "sprout"
+          ],
+          [
+            "🪴",
+            "young plant"
+          ],
+          [
+            "🌻",
+            "flower"
+          ]
+        ],
+        "A seed sprouts, grows into a young plant, and then flowers."
+      ],
+      [
+        2,
+        [
+          [
+            "🥚",
+            "egg"
+          ],
+          [
+            "🐣",
+            "hatching"
+          ],
+          [
+            "🐥",
+            "chick"
+          ],
+          [
+            "🐔",
+            "hen"
+          ]
+        ],
+        "A chick hatches from an egg and grows into a hen."
+      ],
+      [
+        2,
+        [
+          [
+            "🌾",
+            "wheat"
+          ],
+          [
+            "🏭",
+            "flour mill"
+          ],
+          [
+            "🥣",
+            "mix dough"
+          ],
+          [
+            "🍞",
+            "bread"
+          ]
+        ],
+        "Wheat is ground into flour, mixed into dough, and baked into bread."
+      ],
+      [
+        2,
+        [
+          [
+            "💧",
+            "wet hands"
+          ],
+          [
+            "🧼",
+            "add soap"
+          ],
+          [
+            "👐",
+            "scrub"
+          ],
+          [
+            "🧻",
+            "dry"
+          ]
+        ],
+        "Wet your hands, add soap, scrub, then dry them."
+      ],
+      [
+        2,
+        [
+          [
+            "✏️",
+            "write a letter"
+          ],
+          [
+            "✉️",
+            "seal it"
+          ],
+          [
+            "📮",
+            "mail it"
+          ],
+          [
+            "📬",
+            "it arrives"
+          ]
+        ],
+        "Write the letter, seal the envelope, mail it, and it arrives."
+      ],
+      [
+        2,
+        [
+          [
+            "⛅",
+            "clouds gather"
+          ],
+          [
+            "🌧️",
+            "rain falls"
+          ],
+          [
+            "💦",
+            "puddles"
+          ],
+          [
+            "☀️",
+            "sun dries them"
+          ]
+        ],
+        "Clouds bring rain, puddles form, and the sun dries them up."
+      ],
+      [
+        2,
+        [
+          [
+            "🌅",
+            "wake up"
+          ],
+          [
+            "🪥",
+            "brush teeth"
+          ],
+          [
+            "🎒",
+            "pack bag"
+          ],
+          [
+            "🏫",
+            "school"
+          ]
+        ],
+        "Wake up, brush your teeth, pack your bag, then go to school."
+      ],
+      [
+        2,
+        [
+          [
+            "🌷",
+            "spring"
+          ],
+          [
+            "☀️",
+            "summer"
+          ],
+          [
+            "🍂",
+            "fall"
+          ],
+          [
+            "❄️",
+            "winter"
+          ]
+        ],
+        "The seasons go spring, summer, fall, then winter."
+      ],
+      [
+        2,
+        [
+          [
+            "🧊",
+            "ice"
+          ],
+          [
+            "🔥",
+            "heat"
+          ],
+          [
+            "💧",
+            "water"
+          ],
+          [
+            "♨️",
+            "steam"
+          ]
+        ],
+        "Heat melts ice into water, and more heat turns water into steam."
+      ],
+      [
+        2,
+        [
+          [
+            "🐑",
+            "sheep"
+          ],
+          [
+            "✂️",
+            "cut wool"
+          ],
+          [
+            "🧶",
+            "yarn"
+          ],
+          [
+            "🧣",
+            "scarf"
+          ]
+        ],
+        "Wool is cut from a sheep, spun into yarn, and knitted into a scarf."
+      ],
+      [
+        2,
+        [
+          [
+            "🌳",
+            "tree"
+          ],
+          [
+            "🪓",
+            "cut logs"
+          ],
+          [
+            "🪚",
+            "saw boards"
+          ],
+          [
+            "🪑",
+            "chair"
+          ]
+        ],
+        "A tree is cut into logs, sawn into boards, and made into a chair."
+      ],
+      [
+        2,
+        [
+          [
+            "🌸",
+            "flower"
+          ],
+          [
+            "🐝",
+            "bee drinks nectar"
+          ],
+          [
+            "🍯",
+            "honey"
+          ],
+          [
+            "🥞",
+            "honey on pancakes"
+          ]
+        ],
+        "A bee drinks nectar from flowers and makes honey, and we can eat the honey on pancakes."
+      ],
+      [
+        3,
+        [
+          [
+            "🌊",
+            "ocean water"
+          ],
+          [
+            "☀️",
+            "sun warms it"
+          ],
+          [
+            "💨",
+            "it evaporates"
+          ],
+          [
+            "☁️",
+            "clouds form"
+          ],
+          [
+            "🌧️",
+            "rain falls"
+          ]
+        ],
+        "The sun warms water, it evaporates into the air, clouds form, and rain falls."
+      ],
+      [
+        3,
+        [
+          [
+            "🌰",
+            "seed in soil"
+          ],
+          [
+            "💧",
+            "water and warmth"
+          ],
+          [
+            "🌱",
+            "roots and sprout"
+          ],
+          [
+            "🌼",
+            "flower"
+          ],
+          [
+            "🍎",
+            "fruit with seeds"
+          ]
+        ],
+        "A seed needs water and warmth to sprout. The plant flowers, and the flower becomes fruit with new seeds."
+      ],
+      [
+        3,
+        [
+          [
+            "🥫",
+            "empty can"
+          ],
+          [
+            "♻️",
+            "recycling bin"
+          ],
+          [
+            "🚛",
+            "truck"
+          ],
+          [
+            "🏭",
+            "factory melts it"
+          ],
+          [
+            "🚲",
+            "new bike"
+          ]
+        ],
+        "A can goes in the recycling bin, a truck takes it to a factory, and the metal is used to make something new."
+      ],
+      [
+        3,
+        [
+          [
+            "🌾",
+            "grow wheat"
+          ],
+          [
+            "🚜",
+            "harvest"
+          ],
+          [
+            "🏭",
+            "grind flour"
+          ],
+          [
+            "🧑‍🍳",
+            "bake"
+          ],
+          [
+            "🍞",
+            "bread"
+          ]
+        ],
+        "Farmers grow and harvest wheat, a mill grinds it into flour, and bakers bake bread."
+      ],
+      [
+        3,
+        [
+          [
+            "❓",
+            "ask a question"
+          ],
+          [
+            "💭",
+            "make a guess"
+          ],
+          [
+            "🧪",
+            "test it"
+          ],
+          [
+            "📝",
+            "record results"
+          ],
+          [
+            "📢",
+            "share"
+          ]
+        ],
+        "Scientists ask a question, make a guess, test it, record the results, and share what they learned."
+      ],
+      [
+        3,
+        [
+          [
+            "✍️",
+            "write"
+          ],
+          [
+            "✉️",
+            "address it"
+          ],
+          [
+            "📮",
+            "mailbox"
+          ],
+          [
+            "🚚",
+            "mail truck"
+          ],
+          [
+            "📬",
+            "delivered"
+          ]
+        ],
+        "A letter is written, addressed, posted, carried by the mail truck, and delivered."
+      ],
+      [
+        3,
+        [
+          [
+            "🐔",
+            "hen lays an egg"
+          ],
+          [
+            "🥚",
+            "egg kept warm"
+          ],
+          [
+            "🐣",
+            "chick hatches"
+          ],
+          [
+            "🐥",
+            "chick grows"
+          ],
+          [
+            "🐓",
+            "grown chicken"
+          ]
+        ],
+        "A hen lays an egg and keeps it warm until the chick hatches and grows up."
+      ],
+      [
+        3,
+        [
+          [
+            "📐",
+            "draw a plan"
+          ],
+          [
+            "🧱",
+            "build walls"
+          ],
+          [
+            "🪵",
+            "add the roof"
+          ],
+          [
+            "🎨",
+            "paint"
+          ],
+          [
+            "🏠",
+            "move in"
+          ]
+        ],
+        "Builders follow a plan, build the walls, add the roof, and paint before a family moves in."
+      ],
+      [
+        3,
+        [
+          [
+            "🌑",
+            "new moon"
+          ],
+          [
+            "🌓",
+            "quarter moon"
+          ],
+          [
+            "🌕",
+            "full moon"
+          ],
+          [
+            "🌗",
+            "quarter moon again"
+          ]
+        ],
+        "The moon looks dark, then half lit, then full, then half lit again as it goes around Earth."
+      ],
+      [
+        3,
+        [
+          [
+            "💼",
+            "work"
+          ],
+          [
+            "💵",
+            "earn money"
+          ],
+          [
+            "🐷",
+            "save it"
+          ],
+          [
+            "🛒",
+            "shop"
+          ],
+          [
+            "🎁",
+            "buy a gift"
+          ]
+        ],
+        "People work to earn money, save it, and then spend it on what they need or want."
+      ],
+      [
+        4,
+        [
+          [
+            "☀️",
+            "sun"
+          ],
+          [
+            "🌿",
+            "grass"
+          ],
+          [
+            "🐛",
+            "caterpillar"
+          ],
+          [
+            "🐦",
+            "bird"
+          ],
+          [
+            "🦅",
+            "hawk"
+          ]
+        ],
+        "Energy passes from the sun to plants, then to the animals that eat them: grass, caterpillar, bird, hawk."
+      ],
+      [
+        4,
+        [
+          [
+            "🐎",
+            "horse"
+          ],
+          [
+            "🚂",
+            "steam train"
+          ],
+          [
+            "🚗",
+            "car"
+          ],
+          [
+            "✈️",
+            "airplane"
+          ],
+          [
+            "🚀",
+            "rocket"
+          ]
+        ],
+        "People travelled first by horse, then by train, car, airplane, and finally rocket."
+      ],
+      [
+        4,
+        [
+          [
+            "📜",
+            "letters"
+          ],
+          [
+            "☎️",
+            "telephone"
+          ],
+          [
+            "📻",
+            "radio"
+          ],
+          [
+            "📺",
+            "television"
+          ],
+          [
+            "📱",
+            "smartphone"
+          ]
+        ],
+        "Ways to share news came in this order: letters, telephone, radio, television, then smartphones."
+      ],
+      [
+        4,
+        [
+          [
+            "🌑",
+            "new moon"
+          ],
+          [
+            "🌒",
+            "crescent"
+          ],
+          [
+            "🌓",
+            "first quarter"
+          ],
+          [
+            "🌔",
+            "gibbous"
+          ],
+          [
+            "🌕",
+            "full moon"
+          ]
+        ],
+        "Each night a little more of the moon is lit: new, crescent, first quarter, gibbous, full."
+      ],
+      [
+        4,
+        [
+          [
+            "🌼",
+            "flower"
+          ],
+          [
+            "🐝",
+            "pollen carried"
+          ],
+          [
+            "🌰",
+            "seeds form"
+          ],
+          [
+            "💨",
+            "wind spreads seeds"
+          ],
+          [
+            "🌱",
+            "new plant"
+          ]
+        ],
+        "A bee carries pollen, seeds form, the wind spreads the seeds, and a new plant grows."
+      ],
+      [
+        4,
+        [
+          [
+            "💡",
+            "idea"
+          ],
+          [
+            "✏️",
+            "sketch"
+          ],
+          [
+            "🔧",
+            "build a model"
+          ],
+          [
+            "🧪",
+            "test it"
+          ],
+          [
+            "🔁",
+            "improve it"
+          ]
+        ],
+        "Engineers have an idea, sketch it, build a model, test it, and then improve it."
+      ],
+      [
+        4,
+        [
+          [
+            "🌧️",
+            "heavy rain"
+          ],
+          [
+            "🏞️",
+            "river rises"
+          ],
+          [
+            "🌊",
+            "flood"
+          ],
+          [
+            "🏚️",
+            "damage"
+          ],
+          [
+            "🧹",
+            "clean up"
+          ]
+        ],
+        "Heavy rain makes the river rise and flood. After the damage, people clean up."
+      ],
+      [
+        4,
+        [
+          [
+            "⛏️",
+            "dig clay"
+          ],
+          [
+            "🏺",
+            "shape a pot"
+          ],
+          [
+            "🔥",
+            "bake it"
+          ],
+          [
+            "🎨",
+            "paint it"
+          ],
+          [
+            "💐",
+            "use as a vase"
+          ]
+        ],
+        "Clay is dug, shaped into a pot, baked hard, painted, and then used."
+      ],
+      [
+        4,
+        [
+          [
+            "🌋",
+            "volcano erupts"
+          ],
+          [
+            "🔥",
+            "hot lava flows"
+          ],
+          [
+            "🪨",
+            "lava cools to rock"
+          ],
+          [
+            "🌱",
+            "plants grow"
+          ],
+          [
+            "🌳",
+            "forest"
+          ]
+        ],
+        "Lava cools into rock, and over a long time plants grow there and a forest returns."
+      ]
     ]
   }
 }

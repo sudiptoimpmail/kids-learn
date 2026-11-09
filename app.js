@@ -841,7 +841,7 @@ function wireMissingSlot(q) {
   slot.classList.add('drop-ready');
   const kids = [...$('#options').children];
   kids.forEach((b, k) => {
-    const fillIfRight = () => { if (String(q.options[k].v) === String(q.answer)) { slot.textContent = plainText(q.options[k].html != null ? q.options[k].html : q.options[k].v); slot.classList.add('filled'); slot.classList.remove('drop-ready'); } };
+    const fillIfRight = () => { if (String(q.options[k].v) === String(q.answer)) { { const h = q.options[k].html != null ? String(q.options[k].html) : String(q.options[k].v); if (/<(img|svg|span)/.test(h)) slot.innerHTML = h; else slot.textContent = plainText(h); } slot.classList.add('filled'); slot.classList.remove('drop-ready'); } };
     b.addEventListener('click', fillIfRight);
     chipDrag(b, () => (slot.classList.contains('filled') ? [] : [slot]), (target) => {
       if (!live(q) || b.disabled) return;
@@ -857,13 +857,23 @@ function chipDrag(chip, blanksOf, onDrop) {
     if (chip.disabled) return;
     const r = chip.getBoundingClientRect(), id = e.pointerId; let ghost = null;
     const mv = (ev) => { if (ev.pointerId !== id) return;
-      if (!ghost && Math.hypot(ev.clientX - e.clientX, ev.clientY - e.clientY) > 8) { ghost = chip.cloneNode(true); ghost.classList.add('chip-ghost'); document.body.appendChild(ghost); chip.classList.add('lifting'); }
-      if (ghost) { ghost.style.left = ev.clientX - r.width / 2 + 'px'; ghost.style.top = ev.clientY - r.height / 2 + 'px'; } };
+      if (!ghost && Math.hypot(ev.clientX - e.clientX, ev.clientY - e.clientY) > 8) { ghost = chip.cloneNode(true); ghost.classList.add('chip-ghost'); document.body.appendChild(ghost); chip.classList.add('lifting');
+        // a big answer card shrinks to the size of the spot it goes into, so it is clear where it will land
+        const t = blanksOf()[0], tr = t && t.getBoundingClientRect(); ghost.style.width = r.width + 'px'; ghost.style.height = r.height + 'px';
+        ghost.style.transform = `scale(${tr ? Math.min(1, Math.max(0.45, Math.max(tr.width / r.width, tr.height / r.height) * 1.08)) : 1})`; }
+      if (ghost) { ghost.style.left = ev.clientX - r.width / 2 + 'px'; ghost.style.top = ev.clientY - r.height / 2 + 'px'; const hit = dropTarget(ev); blanksOf().forEach((b) => b.classList.toggle('drop-over', b === hit)); } };
+    const dropTarget = (ev) => {   // over the spot (with a generous margin), or else the nearest spot within reach
+      let best = null, bd = Infinity;
+      blanksOf().forEach((b) => { const k = b.getBoundingClientRect(), m = Math.max(36, Math.min(k.width, k.height) * 0.5);
+        const inside = ev.clientX > k.left - m && ev.clientX < k.right + m && ev.clientY > k.top - m && ev.clientY < k.bottom + m;
+        const d = Math.hypot(ev.clientX - (k.left + k.width / 2), ev.clientY - (k.top + k.height / 2));
+        if ((inside || d < 90) && d < bd) { bd = d; best = b; } });
+      return best; };
     const up = (ev) => { if (ev.pointerId !== id) return;
       removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up);
       if (!ghost) return; ghost.remove(); chip.classList.remove('lifting');
       if (ev.type === 'pointercancel') return;
-      let best = null, bd = 60; blanksOf().forEach((b) => { const k = b.getBoundingClientRect(); const d = Math.hypot(ev.clientX - (k.left + k.width / 2), ev.clientY - (k.top + k.height / 2)); if (d < bd) { bd = d; best = b; } });
+      blanksOf().forEach((b) => b.classList.remove('drop-over')); const best = dropTarget(ev);
       if (best) { chip.dataset.dragged = '1'; onDrop(best); } };
     addEventListener('pointermove', mv, { passive: true }); addEventListener('pointerup', up); addEventListener('pointercancel', up);
   });
