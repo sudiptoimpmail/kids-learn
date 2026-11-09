@@ -181,6 +181,9 @@ function brainVisible(g) {
   return BRAIN_GAME_IDS.has(g.id) && (!!state.testMode || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') >= BRAIN_GRADE_ORDER.indexOf(BRAIN_MIN_GRADE[g.id]));
 }
 const brainGames = () => GAMES.filter(brainVisible);
+// Ball Maze is a little-kid game (Pre-K and K); "Show all games" and test mode lift the limit
+const GAME_MAX_GRADE = { maze: 'k' };
+const gameForGrade = (g) => !GAME_MAX_GRADE[g.id] || !!state.showAll || !!state.testMode || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') <= BRAIN_GRADE_ORDER.indexOf(GAME_MAX_GRADE[g.id]);
 // open a brain game straight from its tile on the home screen (no play clock, back goes home)
 function openBrainGame(id) {
   brainMode = true;
@@ -232,7 +235,7 @@ function gameLevelUp(id, needWins = 1) {
 const gameStepDots = (id) => { const r = gameRange(id), lv = GL(id); if (!r) return gameDots(lv, GAME_MAX[id] || 5); const n = r[1] - r[0] + 1, s = Math.min(n, lv - r[0] + 1); return `<span class="lv steps" aria-label="Step ${s} of ${n}">${'●'.repeat(s)}${'○'.repeat(n - s)}</span>`; };
 const lvBadge = (id) => (GAME_MAX[id] || id === 'sudoku' ? gameStepDots(id) : '');
 function renderPZ() {
-  $('#pzGrid').innerHTML = GAMES.filter((g) => !BRAIN_GAME_IDS.has(g.id)).map((g) =>
+  $('#pzGrid').innerHTML = GAMES.filter((g) => !BRAIN_GAME_IDS.has(g.id) && gameForGrade(g)).map((g) =>
     `<button class="tile pz-tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`).join('');
 }
 
@@ -258,7 +261,7 @@ let curGame = null, gameCleanup = null, gameCleanupPanel = null;
 function openGame(id) {
   stopGame();                      // never two games running at once
   const g = GAMES.find((x) => x.id === id);
-  if (!g || (brainMode && !brainVisible(g))) return;
+  if (!g || (brainMode && !brainVisible(g)) || !gameForGrade(g)) return;
   if (!brainMode && !playOpen()) { timeUp(); return; }
   playGraceMs = 0;
   curGame = g;
@@ -598,9 +601,13 @@ async function startPinball() {
 // Steer the ball to the flag. Drag your finger (the ball rolls toward it) or tilt the phone.
 // Board is 10 × 14 units. Walls are [x, y, w, h]; holes send you back to the start.
 const MAZES = [
-  { start: [5, 12], goal: [5, 2], walls: [], holes: [], stars: [[3, 7], [7, 7]] },
-  { start: [5, 12], goal: [5, 2], walls: [[0, 6.8, 7, 0.6]], holes: [], stars: [[8.5, 7.1]] },
-  { start: [1.6, 12.4], goal: [8.4, 1.6], walls: [[3, 4.4, 7, 0.6], [0, 9, 7, 0.6]], holes: [], stars: [[8.5, 11], [1.5, 6.7]] },
+  // movers: friendly beach balls sliding between two points (a bump just bounces you away); pads: speed boosts [x, y, dirX, dirY]
+  { start: [5, 12.5], goal: [5, 1.6], walls: [], holes: [], stars: [[2, 10.2], [8, 8.6], [2, 7], [8, 5.4], [5, 3.6]],
+    movers: [{ a: [1.6, 7.9], b: [8.4, 7.9], t: 7 }], pads: [] },
+  { start: [5, 12.5], goal: [5, 1.6], walls: [[0, 6.8, 7, 0.6]], holes: [], stars: [[8.5, 8.6], [1.5, 10.6], [1.5, 4.2], [8.5, 4.2], [5, 2.8], [8.6, 12.4]],
+    movers: [{ a: [1.6, 9.6], b: [8.4, 9.6], t: 6 }, { a: [8.4, 3.4], b: [1.6, 3.4], t: 6.5 }], pads: [[8.2, 6.6, 0, -1]] },
+  { start: [1.6, 12.4], goal: [8.4, 1.6], walls: [[3, 4.4, 7, 0.6], [0, 9, 7, 0.6]], holes: [], stars: [[8.5, 11], [1.5, 6.7], [5, 6.9], [1.5, 2.2], [5, 2.2], [8.5, 7.2]],
+    movers: [{ a: [3.5, 11.8], b: [8.8, 11.8], t: 5 }, { a: [1.6, 6.8], b: [8.4, 6.8], t: 5.5 }, { a: [1.6, 2.4], b: [6.4, 2.4], t: 4.5 }], pads: [[7.6, 9.8, 0, -1], [1.6, 4.6, 1, -1]] },
   { start: [1.6, 12.4], goal: [8.4, 1.6], walls: [[3, 4.4, 7, 0.6], [0, 9, 7, 0.6]], holes: [[5, 6.8], [4.5, 11.3]], stars: [[8.5, 7], [1.5, 2.5]] },
   { start: [1.5, 12.8], goal: [1.5, 1.4], walls: [[0, 3.4, 7.6, 0.6], [2.4, 6.9, 7.6, 0.6], [0, 10.4, 7.6, 0.6]], holes: [[8.6, 5.2], [1.2, 8.7], [5, 12.4]], stars: [[8.6, 12.5], [8.6, 1.5]] },
   { start: [1.2, 12.8], goal: [8.8, 1.3], walls: [[2.4, 0, 0.6, 10], [4.9, 4, 0.6, 10], [7.4, 0, 0.6, 10]], holes: [[3.7, 6], [6.2, 3], [1.2, 5]], stars: [[3.7, 1.5], [6.2, 12.5]] },
@@ -611,7 +618,7 @@ const MAZES = [
 function startBallMaze() {
   const lv = GL('maze'), M = MAZES[lv - 1];
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Roll the ball to the flag! 🚩<small>Drag your finger — the ball follows. ${M.holes.length ? 'Watch out for holes!' : ''}</small></div>
+  area.innerHTML = `<div class="g-msg">Roll the ball to the flag! 🚩<small>Drag your finger — the ball follows. ${M.holes.length ? 'Watch out for holes!' : ''}</small><span class="maze-hud">⭐ <b class="mz-got">0</b> / ${M.stars.length}</span></div>
     <div class="cv-wrap"><canvas class="game-cv ball-cv"></canvas></div>
     <div class="color-btns"><button class="big-btn alt small ico" data-a="tilt" aria-label="Tilt to play">📱 Tilt</button></div>`;
   say(M.holes.length ? ['Roll the ball to the flag!', 'Watch out for holes!'] : 'Roll the ball to the flag!');
@@ -623,6 +630,11 @@ function startBallMaze() {
   const ball = { x: M.start[0], y: M.start[1], vx: 0, vy: 0, s: 1 };
   const stars = M.stars.map((p) => ({ x: p[0], y: p[1], got: false }));
   let finger = null, tilt = null, alive = true, raf = 0, last = 0, falling = 0, won = false;
+  // beach-ball bumpers glide back and forth; speed pads shoot the ball along an arrow
+  const movers = (M.movers || []).map((m) => ({ ...m, x: m.a[0], y: m.a[1], spin: 0 }));
+  const pads = (M.pads || []).map(([x, y, dx, dy]) => ({ x, y, dx, dy }));
+  let clock = 0, bumpCool = 0, padCool = 0, combo = 0, comboT = 0, hits = 0, flash = 0;
+  const hudGot = $('.mz-got', area);
   const toUnits = (e) => { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left - ox) / u, y: (e.clientY - r.top - oy) / u }; };
   cv.addEventListener('pointerdown', (e) => { e.preventDefault(); cv.setPointerCapture && cv.setPointerCapture(e.pointerId); finger = toUnits(e); });
   cv.addEventListener('pointermove', (e) => { if (finger) finger = toUnits(e); });
@@ -659,17 +671,28 @@ function startBallMaze() {
       if (ball.s <= 0) { falling = 0; ball.x = M.start[0]; ball.y = M.start[1]; ball.vx = ball.vy = 0; ball.s = 1; }
       return;
     }
+    clock += dt; bumpCool = Math.max(0, bumpCool - dt); padCool = Math.max(0, padCool - dt); comboT = Math.max(0, comboT - dt); flash = Math.max(0, flash - dt); if (!comboT) combo = 0;
+    for (const m of movers) { const k = (1 - Math.cos(clock * 6.283 / m.t)) / 2; m.x = m.a[0] + (m.b[0] - m.a[0]) * k; m.y = m.a[1] + (m.b[1] - m.a[1]) * k; m.spin += dt * 3; }
+    for (const m of movers) if (!bumpCool && Math.hypot(m.x - ball.x, m.y - ball.y) < R + 0.62) {
+      const dx = ball.x - m.x, dy = ball.y - m.y, d = Math.hypot(dx, dy) || 1;
+      ball.vx = dx / d * 10; ball.vy = dy / d * 10; bumpCool = 0.5; hits++; flash = 0.25;
+      tone([260, 420], { dur: 0.07, gap: 0.05, vol: 0.1 });
+    }
+    for (const p of pads) if (!padCool && Math.hypot(p.x - ball.x, p.y - ball.y) < 0.75) {
+      const n = Math.hypot(p.dx, p.dy) || 1; ball.vx = p.dx / n * 13; ball.vy = p.dy / n * 13; padCool = 0.6; flash = 0.2;
+      tone([500, 700, 1000], { dur: 0.05, gap: 0.04, vol: 0.09 });
+    }
     let ax = 0, ay = 0;
     const target=finger || dragTarget;
     if (target) { const gain=gamePlayPolicy('maze').dragGain || 18; ax=(target.x-ball.x)*gain;ay=(target.y-ball.y)*gain; if(!finger && Math.hypot(target.x-ball.x,target.y-ball.y)<0.2)dragTarget=null; }
     else if (tilt) { ax = tilt.x * 22; ay = tilt.y * 22; }
     const amax = 60, am = Math.hypot(ax, ay); if (am > amax) { ax *= amax / am; ay *= amax / am; }
     ball.vx = (ball.vx + ax * dt) * (1 - 2.2 * dt); ball.vy = (ball.vy + ay * dt) * (1 - 2.2 * dt);
-    const vmax = gamePlayPolicy('maze').maxSpeed || 12, vm = Math.hypot(ball.vx, ball.vy); if (vm > vmax) { ball.vx *= vmax / vm; ball.vy *= vmax / vm; }
+    const vmax = padCool > 0 || bumpCool > 0.3 ? 16 : (gamePlayPolicy('maze').maxSpeed || 12), vm = Math.hypot(ball.vx, ball.vy); if (vm > vmax) { ball.vx *= vmax / vm; ball.vy *= vmax / vm; }
     // small sub-steps so the ball never slips through a thin wall
     const n = Math.ceil(vm * dt / 0.15) || 1;
     for (let k = 0; k < n; k++) { ball.x += ball.vx * dt / n; ball.y += ball.vy * dt / n; collide(); }
-    for (const s of stars) if (!s.got && Math.hypot(s.x - ball.x, s.y - ball.y) < 0.75) { s.got = true; for (let k = 0; k < 10; k++) { const an = k / 10 * 6.28; parts.push({ x: s.x, y: s.y, vx: Math.cos(an) * 0.08, vy: Math.sin(an) * 0.08 - 0.03, life: 1 }); } tone([880, 1320], { dur: 0.06, gap: 0.06, vol: 0.1 }); }
+    for (const s of stars) if (!s.got && Math.hypot(s.x - ball.x, s.y - ball.y) < 0.75) { s.got = true; for (let k = 0; k < 10; k++) { const an = k / 10 * 6.28; parts.push({ x: s.x, y: s.y, vx: Math.cos(an) * 0.08, vy: Math.sin(an) * 0.08 - 0.03, life: 1 }); } combo = comboT > 0 ? combo + 1 : 1; comboT = 2.5; const n = stars.filter((q) => q.got).length; if (hudGot) hudGot.textContent = n; const f = 880 * Math.pow(1.122, Math.min(combo - 1, 6)); tone([f, f * 1.5], { dur: 0.06, gap: 0.06, vol: 0.1 }); }
     for (const [hx, hy] of M.holes) if (Math.hypot(hx - ball.x, hy - ball.y) < 0.45) { falling = 1; sfx.no(); say('Oops! Try again.'); }
     if (Math.hypot(M.goal[0] - ball.x, M.goal[1] - ball.y) < 0.6) win();
   }
@@ -693,6 +716,11 @@ function startBallMaze() {
       const hg = c.createRadialGradient(x, y + u * 0.08, u * 0.05, x, y, u * 0.52); hg.addColorStop(0, '#000'); hg.addColorStop(0.7, '#2b2140'); hg.addColorStop(1, '#4a3560');
       c.fillStyle = hg; c.beginPath(); c.arc(x, y, u * 0.52, 0, 7); c.fill();
       c.strokeStyle = '#8d5a2b'; c.lineWidth = 4; c.stroke(); c.strokeStyle = '#ffffff44'; c.lineWidth = 1.5; c.beginPath(); c.arc(x, y, u * 0.56, Math.PI * 0.9, Math.PI * 1.7); c.stroke(); }
+    // speed pads: pulsing arrows
+    for (const p of pads) { const x = ox + p.x * u, y = oy + p.y * u, a = Math.atan2(p.dy, p.dx), pl = 0.5 + 0.5 * Math.sin(T * 6);
+      c.save(); c.translate(x, y); c.rotate(a + Math.PI / 2); c.fillStyle = '#74c0fc66'; c.beginPath(); c.arc(0, 0, u * 0.62, 0, 7); c.fill();
+      for (let k = 0; k < 2; k++) { c.strokeStyle = `rgba(25,113,194,${0.45 + 0.4 * (k ? pl : 1 - pl)})`; c.lineWidth = u * 0.14; c.lineCap = 'round'; c.lineJoin = 'round'; c.beginPath(); c.moveTo(-u * 0.3, u * (0.12 - k * 0.26)); c.lineTo(0, -u * (0.14 + k * 0.26)); c.lineTo(u * 0.3, u * (0.12 - k * 0.26)); c.stroke(); }
+      c.restore(); }
     // goal: glowing pad with a flag
     const gx = ox + M.goal[0] * u, gy = oy + M.goal[1] * u, pulse = 1 + Math.sin(T * 3) * 0.06;
     const gg = c.createRadialGradient(gx, gy, u * 0.1, gx, gy, u * 0.95 * pulse); gg.addColorStop(0, '#b2f2bb'); gg.addColorStop(0.6, '#69db7c88'); gg.addColorStop(1, '#69db7c00');
@@ -712,6 +740,14 @@ function startBallMaze() {
       sg.addColorStop(0, '#ffe06688'); sg.addColorStop(1, '#ffe06600'); c.fillStyle = sg; c.beginPath(); c.arc(x, y, u * 0.6, 0, 7); c.fill();
       starPath(x, y, u * 0.38, u * 0.17); c.fillStyle = '#ffd43b'; c.fill(); c.strokeStyle = '#f08c00'; c.lineWidth = 2; c.lineJoin = 'round'; c.stroke();
       starPath(x - u * 0.04, y - u * 0.05, u * 0.17, u * 0.08); c.fillStyle = '#fff3bf'; c.fill(); }
+    // beach-ball bumpers
+    for (const m of movers) { const x = ox + m.x * u, y = oy + m.y * u, r = u * 0.55;
+      c.fillStyle = '#2b214030'; c.beginPath(); c.ellipse(x + r * 0.2, y + r * 0.45, r, r * 0.8, 0, 0, 7); c.fill();
+      c.save(); c.translate(x, y); c.rotate(m.spin); c.beginPath(); c.arc(0, 0, r, 0, 7); c.clip();
+      const cols = ['#ff6b6b', '#fff', '#ffd43b', '#fff', '#4dabf7', '#fff']; for (let k = 0; k < 6; k++) { c.fillStyle = cols[k]; c.beginPath(); c.moveTo(0, 0); c.arc(0, 0, r, k * Math.PI / 3, (k + 1) * Math.PI / 3); c.fill(); }
+      c.restore(); c.strokeStyle = '#00000026'; c.lineWidth = 2; c.beginPath(); c.arc(x, y, r, 0, 7); c.stroke();
+      c.fillStyle = '#ffffffaa'; c.beginPath(); c.ellipse(x - r * 0.35, y - r * 0.4, r * 0.22, r * 0.13, -0.6, 0, 7); c.fill(); }
+    if (flash > 0) { c.fillStyle = `rgba(255,255,255,${flash})`; c.fillRect(ox, oy, u * 10, u * 14); }
     if (finger) { c.fillStyle = '#ffffff55'; c.beginPath(); c.arc(ox + finger.x * u, oy + finger.y * u, u * 0.45, 0, 7); c.fill(); c.strokeStyle = '#ffffffaa'; c.lineWidth = 2; c.stroke(); }
     // ball trail and sparkles
     if (!falling && !won) { trail.push([ball.x, ball.y]); if (trail.length > 10) trail.shift(); } else trail.length = 0;
@@ -742,7 +778,7 @@ function startBallMaze() {
     const got = stars.filter((s) => s.got).length;
     const up = gameLevelUp('maze', 1);
     gameWin(pick(['You did it!', 'Awesome job!', 'Fantastic!']));
-    later(() => { alive = false; endPanel(`You reached the flag!<br><small>⭐ ${got} of ${stars.length} stars</small>`, '🟫', startBallMaze, up); }, 900);
+    later(() => { alive = false; endPanel(`${got === stars.length ? 'Perfect! ' : ''}You reached the flag!<br><small>⭐ ${got} of ${stars.length} stars${hits ? '' : ' · no bumps!'}</small>`, '🟫', startBallMaze, up); }, 900);
   }
   const onResize = () => { ({ c, w, h } = fitCanvas(cv, 380)); u = Math.min(w / 10, h / 14); ox = (w - u * 10) / 2; oy = (h - u * 14) / 2; };
   addEventListener('resize', onResize);
@@ -1088,8 +1124,7 @@ function startColoring(p) {
   const fills = state.art[p.id] = state.art[p.id] || {};
   let cur = PALETTE_C[0];
   const area = $('#gameArea');
-  area.innerHTML = `<div class="color-stage"><div class="color-wrap cz-view"><div class="cz-inner">${picSVG(p, fills, 'big')}</div>
-      <div class="cz-btns"><button data-z="in" aria-label="Zoom in">＋</button><button data-z="out" aria-label="Zoom out">－</button></div></div>
+  area.innerHTML = `<div class="color-stage"><div class="color-wrap cz-view"><div class="cz-inner">${picSVG(p, fills, 'big')}</div></div>
     <div class="palette">${PALETTE_C.map((c, i) => `<button class="sw-c ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}" aria-label="color">${c === '#ffffff' ? '🧽' : ''}</button>`).join('')}</div></div>
     <div class="color-btns"><button class="big-btn alt small ico" data-a="pics" aria-label="Pictures">🖼️ Pictures</button>${p.orig ? '<button class="big-btn alt small ico" data-a="peek" aria-label="Peek">👀 Peek</button>' : ''}<button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
   say('Pick a color, then tap the picture.');
@@ -1097,7 +1132,6 @@ function startColoring(p) {
     $$('.sw-c', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); cur = b.dataset.c; sfx.tap();
   }));
   const zoom = zoomable($('.cz-view', area), $('.cz-inner', area));
-  $$('[data-z]', area).forEach((b) => (b.onclick = () => { sfx.tap(); zoom.by(b.dataset.z === 'in' ? 1.5 : 1 / 1.5); }));
   $$('.color-wrap .r', area).forEach((r) => (r.onclick = () => {
     if (zoom.busy()) return;          // that was a pinch or a drag, not a tap
     r.style.fill = cur; fills[r.dataset.k] = cur; save();
@@ -1534,11 +1568,11 @@ function startDraw(refIndex) {
   const area = $('#gameArea');
   area.innerHTML = `<div class="dr-top"><div class="dr-ref">${ref.svg}<small>${ref.name}</small></div>
       <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>${lv <= 2 ? 'Follow the gray lines with your finger.' : lv === 3 ? 'Look at the picture. The thin lines can help.' : 'Look at the picture. The faint lines can help.'}</small></div></div>
-    <div class="dr-zoom"><button data-dz="out" aria-label="Zoom out">−</button><button data-dz="reset" aria-label="Reset zoom">1×</button><button data-dz="in" aria-label="Zoom in">＋</button><span>Two fingers: zoom / move</span></div><div class="dr-pad"><canvas class="dr-fill"></canvas>${(([w, o]) => `<div class="dr-guide dr-guide-${Math.min(4, lv)}" style="opacity:${o}">${drawSVG(ref.d, w)}</div>`)(DRAW_GUIDE[Math.min(4, Math.max(1, lv))])}<canvas class="dr-cv"></canvas></div>
+    <div class="dr-pad"><canvas class="dr-fill"></canvas>${(([w, o]) => `<div class="dr-guide dr-guide-${Math.min(4, lv)}" style="opacity:${o}">${drawSVG(ref.d, w)}</div>`)(DRAW_GUIDE[Math.min(4, Math.max(1, lv))])}<canvas class="dr-cv"></canvas></div>
     <div class="dr-tools">${INK.map((c, i) => `<button class="dr-ink ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}"></button>`).join('')}
       <button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✎<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
       <button class="dr-tool" data-t="bucket" aria-label="Pour paint"><svg class="bk-ico" viewBox="0 0 36 36" aria-hidden="true"><g transform="rotate(-22 18 20)"><path d="M7 14h20l-2.4 15.2a2.4 2.4 0 0 1-2.4 2H11.8a2.4 2.4 0 0 1-2.4-2z" fill="#e9ecef" stroke="#495057" stroke-width="1.8" stroke-linejoin="round"/><path d="M7.6 17h18.8l-.6 4H8.2z" fill="var(--pour,#4dabf7)"/><path d="M8 14c0-5 4-8 9-8s9 3 9 8" fill="none" stroke="#495057" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="17" cy="14" rx="10" ry="2.2" fill="var(--pour,#4dabf7)" stroke="#495057" stroke-width="1.6"/></g><path d="M29 22c2.6 3.4 3.8 5.4 3.8 7a3.8 3.8 0 0 1-7.6 0c0-1.6 1.2-3.6 3.8-7z" fill="var(--pour,#4dabf7)" stroke="#495057" stroke-width="1.4"/></svg><small>Fill</small></button><button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>
-    <div class="color-btns"><button class="big-btn alt small ico" data-a="choose" aria-label="Choose a picture">🎯 Choose</button><button class="big-btn alt small ico" data-a="new" aria-label="New picture">🔄 New</button><button class="big-btn alt small ico" data-a="gallery" aria-label="My drawings">🖼️ Mine</button><button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
+    <div class="color-btns"><button class="big-btn alt small ico" data-a="choose" aria-label="Choose a picture">🎯 Choose</button><button class="big-btn alt small ico" data-a="gallery" aria-label="My drawings">🖼️ Mine</button><button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
   say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
   const cv = $('.dr-cv', area), pad = $('.dr-pad', area);
   const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -1558,16 +1592,12 @@ function startDraw(refIndex) {
     const guide = $('.dr-guide', area);
     if (guide) guide.style.transform = transform;
     fc.style.transform = transform;
-    $('[data-dz="reset"]', area).textContent = zoom.toFixed(1) + '×';
   }
   function setZoom(next) {
     zoom = Math.max(1, Math.min(3.5, next));
     if (zoom === 1) { panX = 0; panY = 0; }
     view();
   }
-  $$('[data-dz]', area).forEach(b => {
-    b.onclick = () => setZoom(b.dataset.dz === 'reset' ? 1 : zoom * (b.dataset.dz === 'in' ? 1.35 : 1 / 1.35));
-  });
   const redraw = () => {
     c.clearRect(0, 0, W, W);
     for (const s of strokes) paint(s);
@@ -1684,7 +1714,6 @@ function startDraw(refIndex) {
   $('[data-t="undo"]', area).onclick = () => { strokes.pop(); replay(); sfx.tap(); };
   $('[data-t="clear"]', area).onclick = () => { strokes = []; replay(); sfx.tap(); };
   area.querySelector('[data-a="choose"]').onclick = () => { sfx.tap(); drawChooser(); };
-  area.querySelector('[data-a="new"]').onclick = () => { sfx.tap(); drawChooser(); };
   area.querySelector('[data-a="gallery"]').onclick = () => { sfx.tap(); drawGallery(); };
   area.querySelector('[data-a="done"]').onclick = () => {
     if (!strokes.length) { say('Draw something first!'); return; }

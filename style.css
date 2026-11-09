@@ -1826,3 +1826,34 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .ttt-board { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); }
 .ttt-cell { min-width: 0; min-height: 0; aspect-ratio: 1; overflow: hidden; display: grid; place-items: center; padding: 0; }
 .ttt-cell img, .ttt-cell .fl, .ttt-cell > * { max-width: 72%; max-height: 72%; width: 72%; height: auto; object-fit: contain; }
+/* Short landscape screens (phones turned sideways, small browser windows): keep the picture, the blanks and the letters all in view */
+@media (orientation:landscape) and (max-height:700px) {
+  #play .reading-word-photo { width:min(120px,22vh); }
+  #play .spell-pic { font-size:min(96px,18vh); }
+  #play .reading-photo-wrap { width:min(110px,22vh); }
+  #play .spell-row .slot { height:min(76px,13vh); }
+  #play .options.spell-tray { margin-top:8px; gap:10px; }
+  #play .options.spell-tray .tile-l { width:min(72px,12vh); height:min(72px,12vh); font-size:min(44px,8vh); }
+  #play .card { padding-top:10px; padding-bottom:10px; gap:6px; }
+}
+@media (orientation:landscape) and (max-height:700px) and (min-width:700px) {
+  #play .play-top .icon-btn { width:48px; height:48px; }
+  #play .play-top { min-height:0; }
+}
+/* Coloring Book on short landscape screens: the picture takes the full height, palette and buttons sit beside it */
+@media (orientation:landscape) and (max-height:700px) and (min-width:700px) {
+  #game .game-area:has(.color-stage) { display:flex; flex-direction:row; justify-content:center; align-items:flex-start; gap:14px; margin-top:0; }
+  #game .color-stage { width:auto; flex:0 0 auto; }
+  #game .color-stage .color-wrap.cz-view { width:min(calc(100dvh - 100px - env(safe-area-inset-top)), calc(100vw - 340px)) !important; max-width:none; }
+  #game .color-stage .palette { width:112px !important; }
+  #game .game-area:has(.color-stage) .color-btns { flex-direction:column; flex:0 0 auto; gap:8px; align-self:flex-start; }
+  /* Whack-a-Mole: one slim banner, the meadow gets the height */
+  #game .wm-banner { grid-template-columns:auto auto auto; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px 14px; width:min(760px,96vw); margin:0 auto 6px; padding:6px 14px; }
+  #game .wm-banner .wm-heading { font-size:20px; }
+  #game .wm-banner .wm-task { font-size:15px; }
+  #game .wm-banner .wm-hud { width:auto; gap:10px; font-size:16px; }
+  #game .wm-banner .wm-hud>span { padding:4px 12px; }
+  #game .wm-banner .wm-note, #game .wm-banner > small { display:none; }
+  #game .wm-field { width:min(540px, calc(100dvh - 225px)); }
+}
+.maze-hud { display:inline-block; margin-left:10px; padding:2px 12px; border-radius:14px; background:#fff; font-weight:900; box-shadow:0 2px 0 #e3dcef; }
