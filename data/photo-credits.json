@@ -1,7 +1,200 @@
 {
- "schema": 1,
- "namespace": "photo-credits",
- "datasets": {
-  "records": {}
- }
+  "schema": 1,
+  "namespace": "photo-credits",
+  "datasets": {
+    "records": {
+      "cat": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Felis_catus-cat_on_snow.jpg",
+        "creator": "Von.grzanka",
+        "license": "CC BY-SA 3.0",
+        "file": "Felis catus-cat on snow.jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: Von.grzanka (CC BY-SA 3.0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Felis_catus-cat_on_snow.jpg",
+        "path": "assets/photos/cat.jpg"
+      },
+      "dog": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Labrador_Retriever_(1210559).jpg",
+        "creator": "chiemsee2016 (Pixabay)",
+        "license": "CC0",
+        "file": "Labrador Retriever (1210559).jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: chiemsee2016 (Pixabay) (CC0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Labrador_Retriever_(1210559).jpg",
+        "path": "assets/photos/dog.jpg"
+      },
+      "rabbit": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sylvilagus_floridanus_115212580.jpg",
+        "creator": "gianluigi",
+        "license": "CC0",
+        "file": "Oryctolagus cuniculus 115212580.jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: gianluigi (CC0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Sylvilagus_floridanus_115212580.jpg",
+        "path": "assets/photos/rabbit.jpg"
+      },
+      "duck": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anas_platyrhynchos_male_female.jpg",
+        "creator": "Richard Bartz",
+        "license": "CC BY-SA 2.5",
+        "file": "Anas platyrhynchos male female.jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: Richard Bartz (CC BY-SA 2.5), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Anas_platyrhynchos_male_female.jpg",
+        "path": "assets/photos/duck.jpg"
+      },
+      "horse": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Haflinger_Fohlen_01.jpg",
+        "creator": "Böhringer Friedrich",
+        "license": "CC BY-SA 2.5",
+        "file": "Haflinger Fohlen 01.jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: Böhringer Friedrich (CC BY-SA 2.5), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Haflinger_Fohlen_01.jpg",
+        "path": "assets/photos/horse.jpg"
+      },
+      "butterfly": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Monarch_butterfly_in_BBG_(84685).jpg",
+        "creator": "Rhododendrites",
+        "license": "CC BY-SA 4.0",
+        "file": "Monarch butterfly in BBG (84685).jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: Rhododendrites (CC BY-SA 4.0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Monarch_butterfly_in_BBG_(84685).jpg",
+        "path": "assets/photos/butterfly.jpg"
+      },
+      "elephant": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:African_elephant_(Loxodonta_africana)_2.jpg",
+        "creator": "Charles J. Sharp",
+        "license": "CC BY-SA 4.0",
+        "file": "African elephant (Loxodonta africana) 2.jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: Charles J. Sharp (CC BY-SA 4.0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:African_elephant_(Loxodonta_africana)_2.jpg",
+        "path": "assets/photos/elephant.jpg"
+      },
+      "tiger": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bengal_tiger_(Panthera_tigris_tigris)_female_3.jpg",
+        "creator": "Charles J. Sharp",
+        "license": "CC BY-SA 4.0",
+        "file": "Bengal tiger (Panthera tigris tigris) female 3.jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: Charles J. Sharp (CC BY-SA 4.0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Bengal_tiger_(Panthera_tigris_tigris)_female_3.jpg",
+        "path": "assets/photos/tiger.jpg"
+      },
+      "sunflower": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sonnenblume_Helianthus_2.JPG",
+        "creator": "böhringer friedrich",
+        "license": "CC BY-SA 2.5",
+        "file": "Sonnenblume Helianthus 2.JPG",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: böhringer friedrich (CC BY-SA 2.5), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Sonnenblume_Helianthus_2.JPG",
+        "path": "assets/photos/sunflower.jpg"
+      },
+      "rose": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Red_rose_with_black_background.jpg",
+        "creator": "Laitche",
+        "license": "CC BY-SA 4.0",
+        "file": "Red rose with black background.jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: Laitche (CC BY-SA 4.0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Red_rose_with_black_background.jpg",
+        "path": "assets/photos/rose.jpg"
+      },
+      "tulip": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tulp_R01.jpg",
+        "creator": "Marc Ryckaert (MJJR)",
+        "license": "CC BY 3.0",
+        "file": "Tulp R01.jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: Marc Ryckaert (MJJR) (CC BY 3.0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Tulp_R01.jpg",
+        "path": "assets/photos/tulip.jpg"
+      },
+      "daisy": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bellis_perennis_001.JPG",
+        "creator": "H. Zell",
+        "license": "CC BY-SA 3.0",
+        "file": "Bellis perennis 001.JPG",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: H. Zell (CC BY-SA 3.0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Bellis_perennis_001.JPG",
+        "path": "assets/photos/daisy.jpg"
+      },
+      "car": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:2013_Porsche_911_Carrera_4S_(991)_(9626546987).jpg",
+        "creator": "David Villarreal Fernández",
+        "license": "CC BY-SA 2.0",
+        "file": "2013 Porsche 911 Carrera 4S (991) (9626546987).jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: David Villarreal Fernández (CC BY-SA 2.0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:2013_Porsche_911_Carrera_4S_(991)_(9626546987).jpg",
+        "path": "assets/photos/car.jpg"
+      },
+      "airplane": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lufthansa_Airbus_A320-211_D-AIQT_01.jpg",
+        "creator": "Julian Herzog (Website)",
+        "license": "CC BY 4.0",
+        "file": "Lufthansa Airbus A320-211 D-AIQT 01.jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: Julian Herzog (Website) (CC BY 4.0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Lufthansa_Airbus_A320-211_D-AIQT_01.jpg",
+        "path": "assets/photos/airplane.jpg"
+      },
+      "helicopter": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Airbus_AS355F1_Twin_Squirrel_Helicopter_with_Buachaille_Etive_M%C3%B2r.jpg",
+        "creator": "Colin",
+        "license": "CC BY-SA 4.0",
+        "file": "Airbus AS355F1 Twin Squirrel Helicopter with Buachaille Etive Mòr.jpg",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: Colin (CC BY-SA 4.0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:Airbus_AS355F1_Twin_Squirrel_Helicopter_with_Buachaille_Etive_M%C3%B2r.jpg",
+        "path": "assets/photos/helicopter.jpg"
+      },
+      "truck": {
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:MAN_TGS_26.480._Free_image_Spielvogel_1.JPG",
+        "creator": "Spielvogel",
+        "license": "CC0",
+        "file": "MAN TGS 26.480. Free image Spielvogel 1.JPG",
+        "licenseSource": "commons-api",
+        "reviewedBy": "Visual check of subject; licence and author read from the Wikimedia Commons API",
+        "reviewedOn": "2026-11-08",
+        "altReviewed": "yes",
+        "attribution": "Photo: Spielvogel (CC0), Wikimedia Commons. Source: https://commons.wikimedia.org/wiki/File:MAN_TGS_26.480._Free_image_Spielvogel_1.JPG",
+        "path": "assets/photos/truck.jpg"
+      }
+    }
+  }
 }
