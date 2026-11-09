@@ -23,9 +23,14 @@ function storySceneSound(kind) {
 const libPath = (id, f) => `library/${id}/${f}`;
 const libBooks = new Map();
 async function loadBook(id) {
-  if (libBooks.has(id)) return libBooks.get(id);
-  const b = await (await fetch(libPath(id, 'book.json'))).json();
-  libBooks.set(id, b); return b;
+  if (!libBooks.has(id)) libBooks.set(id, await (await fetch(libPath(id, 'book.json'))).json());
+  return bookForGrade(libBooks.get(id));
+}
+// One story, told at each grade's reading level: a book can carry "versions" keyed by grade
+// (its own title, pages and questions over the shared pictures). Other grades read the base text.
+function bookForGrade(b, grade = state.grade) {
+  const v = b && b.versions && b.versions[grade];
+  return v ? { ...b, ...v, versions: undefined, level: grade } : b;
 }
 
 // screen shell, made once

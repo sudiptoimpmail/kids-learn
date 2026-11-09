@@ -1,0 +1,291 @@
+{
+  "id": "peter-rabbit",
+  "title": "The Tale of Peter Rabbit",
+  "grades": [
+    "g1",
+    "g2"
+  ],
+  "cover": "p05.webp",
+  "source": "Retold from Beatrix Potter, The Tale of Peter Rabbit (1902), public domain. https://www.gutenberg.org/ebooks/14838",
+  "pages": [
+    {
+      "art": "p01.webp",
+      "text": [
+        "Once upon a time there were four little rabbits: Flopsy, Mopsy, Cotton-tail, and Peter.",
+        "They lived with their mother in a sandbank, under the root of a very big fir tree."
+      ],
+      "alt": "Peter, his mother and his three sisters at their home under the fir tree"
+    },
+    {
+      "art": "p02.webp",
+      "text": [
+        "\"You may go into the fields or down the lane,\" said Mrs. Rabbit, \"but do not go into Mr. McGregor's garden.\"",
+        "\"Now run along, and don't get into trouble.\""
+      ],
+      "alt": "Mrs. Rabbit warns Peter about the garden"
+    },
+    {
+      "art": "p03.webp",
+      "text": [
+        "Flopsy, Mopsy, and Cotton-tail, who were good little bunnies, went to gather blackberries.",
+        "But Peter, who was very naughty, ran straight to the garden and squeezed under the gate."
+      ],
+      "alt": "Peter squeezes under the garden gate while his sisters pick blackberries"
+    },
+    {
+      "art": "p04.webp",
+      "text": [
+        "First he ate some lettuces and some French beans, and then he ate some radishes.",
+        "Then, feeling rather sick, he went to look for some parsley."
+      ],
+      "alt": "Peter eats lettuces, beans and radishes"
+    },
+    {
+      "art": "p05.webp",
+      "text": [
+        "But round the end of a cucumber frame, whom should he meet but Mr. McGregor!",
+        "Mr. McGregor jumped up with a rake, calling out, \"Stop, thief!\""
+      ],
+      "alt": "Mr. McGregor jumps up with a rake"
+    },
+    {
+      "art": "p06.webp",
+      "text": [
+        "Peter was dreadfully frightened. He rushed all over the garden, for he had forgotten the way back to the gate.",
+        "He lost one of his shoes among the cabbages, and the other shoe amongst the potatoes."
+      ],
+      "alt": "Peter runs and loses his shoes among the cabbages"
+    },
+    {
+      "art": "p07.webp",
+      "text": [
+        "Then Peter ran into a gooseberry net and got caught by the large buttons on his jacket.",
+        "Some friendly sparrows flew to him and begged him to try hard. \"Don't give up, Peter!\""
+      ],
+      "alt": "Peter is caught in the gooseberry net and the sparrows cheer him on"
+    },
+    {
+      "art": "p08.webp",
+      "text": [
+        "Peter wriggled out just in time, leaving his jacket behind.",
+        "He jumped into a watering can to hide, but it was full of water. Kertyschoo! Mr. McGregor was after him in no time."
+      ],
+      "alt": "Peter hides in a watering can and sneezes"
+    },
+    {
+      "art": "p09.webp",
+      "text": [
+        "Peter crept past a pond where a white cat sat very still, staring at the goldfish.",
+        "At last he climbed onto a wheelbarrow, saw the gate, and ran as fast as he could. He slipped underneath and was safe at last!"
+      ],
+      "alt": "Peter creeps past the white cat and runs for the gate"
+    },
+    {
+      "art": "p10.webp",
+      "text": [
+        "Peter was so tired that he flopped down on the soft sand floor of the rabbit hole.",
+        "His mother put him to bed and gave him a dose of camomile tea. But Flopsy, Mopsy, and Cotton-tail had bread and milk and blackberries for supper. The End."
+      ],
+      "alt": "Peter in bed with camomile tea while his sisters have blackberries"
+    }
+  ],
+  "questions": [
+    {
+      "ask": "What did Peter lose in the garden?",
+      "answer": "jacket",
+      "options": [
+        [
+          "jacket",
+          "jacket.svg"
+        ],
+        [
+          "kite",
+          "kite.svg"
+        ],
+        [
+          "apple",
+          "apple.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "Where did Peter hide from Mr. McGregor?",
+      "answer": "can",
+      "options": [
+        [
+          "can",
+          "can.svg"
+        ],
+        [
+          "barn",
+          "barn.svg"
+        ],
+        [
+          "tree",
+          "tree.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "What did Peter's sisters pick?",
+      "answer": "blackberries",
+      "options": [
+        [
+          "blackberries",
+          "blackberries.svg"
+        ],
+        [
+          "carrot",
+          "carrot.svg"
+        ],
+        [
+          "apple",
+          "apple.svg"
+        ]
+      ]
+    }
+  ],
+  "versions": {
+    "g1": {
+      "title": "Peter Rabbit",
+      "pages": [
+        {
+          "art": "p01.webp",
+          "text": [
+            "Peter Rabbit lived under a big fir tree.",
+            "He lived with his mother and his three sisters."
+          ],
+          "alt": "Peter, his mother and his three sisters at their home under the fir tree"
+        },
+        {
+          "art": "p02.webp",
+          "text": [
+            "\"Do not go into Mr. McGregor's garden,\" said Mother.",
+            "\"Be good!\""
+          ],
+          "alt": "Mrs. Rabbit warns Peter about the garden"
+        },
+        {
+          "art": "p03.webp",
+          "text": [
+            "But Peter was naughty.",
+            "He ran to the garden and squeezed under the gate."
+          ],
+          "alt": "Peter squeezes under the garden gate while his sisters pick blackberries"
+        },
+        {
+          "art": "p04.webp",
+          "text": [
+            "He ate lettuces and beans and radishes.",
+            "Yum, yum!"
+          ],
+          "alt": "Peter eats lettuces, beans and radishes"
+        },
+        {
+          "art": "p05.webp",
+          "text": [
+            "Then he saw Mr. McGregor!",
+            "\"Stop, thief!\" shouted Mr. McGregor."
+          ],
+          "alt": "Mr. McGregor jumps up with a rake"
+        },
+        {
+          "art": "p06.webp",
+          "text": [
+            "Peter ran and ran.",
+            "He lost his shoes in the cabbages."
+          ],
+          "alt": "Peter runs and loses his shoes among the cabbages"
+        },
+        {
+          "art": "p07.webp",
+          "text": [
+            "His jacket got stuck in a net.",
+            "Some kind birds called, \"Try hard, Peter!\""
+          ],
+          "alt": "Peter is caught in the gooseberry net and the sparrows cheer him on"
+        },
+        {
+          "art": "p08.webp",
+          "text": [
+            "Peter wriggled out of his jacket.",
+            "He jumped into a watering can to hide. Achoo!"
+          ],
+          "alt": "Peter hides in a watering can and sneezes"
+        },
+        {
+          "art": "p09.webp",
+          "text": [
+            "At last Peter saw the gate.",
+            "He slipped under it and ran all the way home."
+          ],
+          "alt": "Peter creeps past the white cat and runs for the gate"
+        },
+        {
+          "art": "p10.webp",
+          "text": [
+            "Peter was very tired.",
+            "Mother put him to bed with a cup of tea. The End."
+          ],
+          "alt": "Peter in bed with camomile tea while his sisters have blackberries"
+        }
+      ],
+      "questions": [
+        {
+          "ask": "Where did Mother say not to go?",
+          "answer": "garden",
+          "options": [
+            [
+              "garden",
+              "garden.svg"
+            ],
+            [
+              "school",
+              "school.svg"
+            ],
+            [
+              "beach",
+              "beach.svg"
+            ]
+          ]
+        },
+        {
+          "ask": "Who chased Peter?",
+          "answer": "farmer",
+          "options": [
+            [
+              "farmer",
+              "farmer.svg"
+            ],
+            [
+              "lion",
+              "lion.svg"
+            ],
+            [
+              "hen",
+              "hen.svg"
+            ]
+          ]
+        },
+        {
+          "ask": "Where did Peter hide?",
+          "answer": "can",
+          "options": [
+            [
+              "can",
+              "can.svg"
+            ],
+            [
+              "barn",
+              "barn.svg"
+            ],
+            [
+              "tree",
+              "tree.svg"
+            ]
+          ]
+        }
+      ]
+    }
+  }
+}

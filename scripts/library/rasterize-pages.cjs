@@ -17,6 +17,7 @@ const { chromium } = require('playwright');
       fs.unlinkSync(png); fs.unlinkSync(path.join(dir, pg.art)); pg.art = out;
     }
     if (book.cover && book.cover.endsWith('.svg')) book.cover = book.cover.replace('.svg', '.webp');
+    for (const v of Object.values(book.versions || {})) for (const pg of v.pages || []) pg.art = pg.art.replace(/\.svg$/, '.webp');   // per-grade texts share the pictures
     fs.writeFileSync(path.join(dir, 'book.json'), JSON.stringify(book, null, 2) + '\n');
   }
   await b.close();

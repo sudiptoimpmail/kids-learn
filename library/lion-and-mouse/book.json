@@ -2,7 +2,9 @@
   "id": "lion-and-mouse",
   "title": "The Lion and the Mouse",
   "grades": [
-    "g3"
+    "prek",
+    "k",
+    "g1"
   ],
   "cover": "p01.webp",
   "pages": [
@@ -129,5 +131,239 @@
         ]
       ]
     }
-  ]
+  ],
+  "versions": {
+    "prek": {
+      "pages": [
+        {
+          "art": "p01.webp",
+          "text": [
+            "A big lion is asleep.",
+            "A little mouse runs by."
+          ],
+          "alt": "The mouse runs over the sleeping lion"
+        },
+        {
+          "art": "p02.webp",
+          "text": [
+            "Roar!",
+            "The lion grabs the mouse."
+          ],
+          "alt": "The lion holds the mouse"
+        },
+        {
+          "art": "p03.webp",
+          "text": [
+            "\"Let me go!\" says the mouse.",
+            "The lion lets her go."
+          ],
+          "alt": "The lion lets the mouse go"
+        },
+        {
+          "art": "p04.webp",
+          "text": [
+            "Oh no!",
+            "The lion is stuck in a net."
+          ],
+          "alt": "The lion is caught in a net"
+        },
+        {
+          "art": "p05.webp",
+          "text": [
+            "Roar! Roar!",
+            "He can not get out."
+          ],
+          "alt": "The lion roars and the forest listens"
+        },
+        {
+          "art": "p06.webp",
+          "text": [
+            "The mouse hears him.",
+            "Run, mouse, run!"
+          ],
+          "alt": "The mouse runs through the forest"
+        },
+        {
+          "art": "p07.webp",
+          "text": [
+            "Nibble, nibble, nibble.",
+            "She bites the ropes."
+          ],
+          "alt": "The mouse chews through the ropes"
+        },
+        {
+          "art": "p08.webp",
+          "text": [
+            "The lion is free!",
+            "Now they are friends."
+          ],
+          "alt": "The lion and the mouse are friends"
+        }
+      ],
+      "questions": [
+        {
+          "ask": "Who helped the lion?",
+          "answer": "mouse",
+          "options": [
+            [
+              "mouse",
+              "mouse.svg"
+            ],
+            [
+              "bird",
+              "bird.svg"
+            ],
+            [
+              "hunter",
+              "hunter.svg"
+            ]
+          ]
+        },
+        {
+          "ask": "What trapped the lion?",
+          "answer": "net",
+          "options": [
+            [
+              "net",
+              "net.svg"
+            ],
+            [
+              "cage",
+              "cage.svg"
+            ],
+            [
+              "hole",
+              "hole.svg"
+            ]
+          ]
+        }
+      ]
+    },
+    "k": {
+      "pages": [
+        {
+          "art": "p01.webp",
+          "text": [
+            "A big lion was asleep under a tree.",
+            "A little mouse ran over his paw."
+          ],
+          "alt": "The mouse runs over the sleeping lion"
+        },
+        {
+          "art": "p02.webp",
+          "text": [
+            "The lion woke up and grabbed the mouse.",
+            "\"Please let me go!\" said the mouse.",
+            "\"I will help you one day.\""
+          ],
+          "alt": "The lion holds the mouse"
+        },
+        {
+          "art": "p03.webp",
+          "text": [
+            "The lion laughed.",
+            "\"You are too small to help me!\"",
+            "But he let the mouse go."
+          ],
+          "alt": "The lion lets the mouse go"
+        },
+        {
+          "art": "p04.webp",
+          "text": [
+            "One day, the lion got stuck in a big rope net."
+          ],
+          "alt": "The lion is caught in a net"
+        },
+        {
+          "art": "p05.webp",
+          "text": [
+            "He roared and roared.",
+            "He could not get out."
+          ],
+          "alt": "The lion roars and the forest listens"
+        },
+        {
+          "art": "p06.webp",
+          "text": [
+            "The mouse heard the roar.",
+            "She ran to help."
+          ],
+          "alt": "The mouse runs through the forest"
+        },
+        {
+          "art": "p07.webp",
+          "text": [
+            "She bit the ropes with her little teeth.",
+            "Snip, snip, snip!"
+          ],
+          "alt": "The mouse chews through the ropes"
+        },
+        {
+          "art": "p08.webp",
+          "text": [
+            "The lion was free!",
+            "\"Thank you, little friend,\" he said.",
+            "Now they are best friends."
+          ],
+          "alt": "The lion and the mouse are friends"
+        }
+      ],
+      "questions": [
+        {
+          "ask": "What trapped the lion?",
+          "answer": "net",
+          "options": [
+            [
+              "net",
+              "net.svg"
+            ],
+            [
+              "cage",
+              "cage.svg"
+            ],
+            [
+              "hole",
+              "hole.svg"
+            ]
+          ]
+        },
+        {
+          "ask": "What did the mouse chew?",
+          "answer": "rope",
+          "options": [
+            [
+              "rope",
+              "rope.svg"
+            ],
+            [
+              "stick",
+              "stick.svg"
+            ],
+            [
+              "leaf",
+              "leaf.svg"
+            ]
+          ]
+        },
+        {
+          "ask": "Who helped the lion?",
+          "answer": "mouse",
+          "options": [
+            [
+              "mouse",
+              "mouse.svg"
+            ],
+            [
+              "bird",
+              "bird.svg"
+            ],
+            [
+              "hunter",
+              "hunter.svg"
+            ]
+          ]
+        }
+      ]
+    }
+  }
 }

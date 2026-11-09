@@ -1,0 +1,141 @@
+{
+  "id": "oz-4",
+  "title": "The Wizard of Oz · 4. The Emerald City",
+  "grades": [
+    "g3"
+  ],
+  "cover": "p01.webp",
+  "source": "Retold from L. Frank Baum, The Wonderful Wizard of Oz (1900), public domain. https://www.gutenberg.org/ebooks/55",
+  "series": "oz",
+  "chapter": 4,
+  "pages": [
+    {
+      "art": "p01.webp",
+      "text": [
+        "At last they saw a green glow in the sky. It was the Emerald City, sparkling with jewels.",
+        "Everyone who went inside had to wear green spectacles."
+      ],
+      "alt": "The Emerald City sparkles green"
+    },
+    {
+      "art": "p02.webp",
+      "text": [
+        "In the throne room floated a huge head with no body.",
+        "\"I am Oz, the Great and Terrible,\" it boomed. \"Why do you come to me?\""
+      ],
+      "alt": "A huge floating head speaks in the throne room"
+    },
+    {
+      "art": "p03.webp",
+      "text": [
+        "Each friend asked for a wish.",
+        "\"First you must stop the Wicked Witch of the West,\" said Oz. \"Then I will help you.\""
+      ],
+      "alt": "Each friend asks the Wizard for a wish"
+    },
+    {
+      "art": "p04.webp",
+      "text": [
+        "The Wicked Witch captured them, but brave Dorothy never gave up.",
+        "When the angry witch grabbed one silver shoe, Dorothy threw a bucket of water at her, and the witch melted away!"
+      ],
+      "alt": "Dorothy throws water and the Wicked Witch melts away"
+    },
+    {
+      "art": "p05.webp",
+      "text": [
+        "Back in the throne room, Toto knocked over a screen in the corner.",
+        "Behind it stood a little old man. The great Wizard was just a man from Omaha!"
+      ],
+      "alt": "Toto knocks over the screen and finds a little old man"
+    },
+    {
+      "art": "p06.webp",
+      "text": [
+        "\"I am not a real wizard,\" he said, \"but I can still help.\"",
+        "He gave the Scarecrow brains made of bran, the Tin Woodman a silk heart, and the Lion a drink of courage."
+      ],
+      "alt": "The Wizard gives each friend a gift"
+    },
+    {
+      "art": "p07.webp",
+      "text": [
+        "The Wizard made a big balloon to fly Dorothy home.",
+        "But Toto ran after a kitten, and the balloon floated away without them!"
+      ],
+      "alt": "The balloon floats away without Dorothy"
+    },
+    {
+      "art": "p08.webp",
+      "text": [
+        "Then the good witch Glinda told Dorothy a secret.",
+        "\"Your silver shoes can take you anywhere. Just click your heels three times and say where you want to go.\""
+      ],
+      "alt": "Glinda tells Dorothy the secret of the silver shoes"
+    },
+    {
+      "art": "p09.webp",
+      "text": [
+        "Dorothy hugged her friends goodbye, clicked her heels, and said, \"Take me home to Aunt Em!\"",
+        "In a moment she was rolling on the Kansas grass, and Aunt Em came running. \"I'm so glad to be home again!\" said Dorothy. The End."
+      ],
+      "alt": "Dorothy is home in Kansas and Aunt Em runs to hug her"
+    }
+  ],
+  "questions": [
+    {
+      "ask": "What melted the Wicked Witch?",
+      "answer": "water",
+      "options": [
+        [
+          "water",
+          "water.svg"
+        ],
+        [
+          "stick",
+          "stick.svg"
+        ],
+        [
+          "leaf",
+          "leaf.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "Who was hiding behind the screen?",
+      "answer": "wizard",
+      "options": [
+        [
+          "wizard",
+          "wizard.svg"
+        ],
+        [
+          "goodwitch",
+          "goodwitch.svg"
+        ],
+        [
+          "munchkin",
+          "munchkin.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "What took Dorothy home?",
+      "answer": "shoes",
+      "options": [
+        [
+          "shoes",
+          "shoes.svg"
+        ],
+        [
+          "balloon",
+          "balloon.svg"
+        ],
+        [
+          "house",
+          "house.svg"
+        ]
+      ]
+    }
+  ]
+}

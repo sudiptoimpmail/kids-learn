@@ -5239,6 +5239,39 @@
         {
           "id": "lion-and-mouse",
           "grades": [
+            "prek",
+            "k",
+            "g1"
+          ]
+        },
+        {
+          "id": "peter-rabbit",
+          "grades": [
+            "g1",
+            "g2"
+          ]
+        },
+        {
+          "id": "oz-1",
+          "grades": [
+            "g3"
+          ]
+        },
+        {
+          "id": "oz-2",
+          "grades": [
+            "g3"
+          ]
+        },
+        {
+          "id": "oz-3",
+          "grades": [
+            "g3"
+          ]
+        },
+        {
+          "id": "oz-4",
+          "grades": [
             "g3"
           ]
         }

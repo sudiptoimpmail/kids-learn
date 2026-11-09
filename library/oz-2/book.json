@@ -1,0 +1,125 @@
+{
+  "id": "oz-2",
+  "title": "The Wizard of Oz · 2. The Scarecrow",
+  "grades": [
+    "g3"
+  ],
+  "cover": "p02.webp",
+  "source": "Retold from L. Frank Baum, The Wonderful Wizard of Oz (1900), public domain. https://www.gutenberg.org/ebooks/55",
+  "series": "oz",
+  "chapter": 2,
+  "pages": [
+    {
+      "art": "p01.webp",
+      "text": [
+        "Dorothy put on the silver shoes, packed a basket of bread, and set off with Toto along the yellow brick road.",
+        "The shoes twinkled in the sun with every step."
+      ],
+      "alt": "Dorothy sets off on the yellow brick road with a basket"
+    },
+    {
+      "art": "p02.webp",
+      "text": [
+        "Beside a cornfield she saw a Scarecrow up on a pole.",
+        "To her surprise, one of its painted eyes slowly winked at her!"
+      ],
+      "alt": "A scarecrow on a pole in the cornfield winks at Dorothy"
+    },
+    {
+      "art": "p03.webp",
+      "text": [
+        "\"Good day,\" said the Scarecrow in a husky voice.",
+        "\"Can you help me down? This pole is very uncomfortable.\""
+      ],
+      "alt": "The Scarecrow asks Dorothy for help"
+    },
+    {
+      "art": "p04.webp",
+      "text": [
+        "Dorothy lifted him off the pole. He was very light, because he was stuffed with straw.",
+        "\"Thank you,\" he said. \"I feel like a new man.\""
+      ],
+      "alt": "Dorothy lifts the Scarecrow down"
+    },
+    {
+      "art": "p05.webp",
+      "text": [
+        "\"I have no brains in my head, only straw,\" he sighed.",
+        "\"Do you think the Wizard of Oz would give me some brains?\""
+      ],
+      "alt": "The Scarecrow wishes he had brains"
+    },
+    {
+      "art": "p06.webp",
+      "text": [
+        "The crows had never been afraid of him, because they knew he was only straw.",
+        "\"Come with me,\" said Dorothy. \"We will ask the Wizard together.\""
+      ],
+      "alt": "Crows circle the Scarecrow"
+    },
+    {
+      "art": "p07.webp",
+      "text": [
+        "So the Scarecrow and Dorothy and Toto walked on together.",
+        "The Scarecrow stumbled over the bricks and laughed, and Dorothy laughed with him."
+      ],
+      "alt": "Dorothy, Toto and the Scarecrow walk on together"
+    }
+  ],
+  "questions": [
+    {
+      "ask": "Who did Dorothy find in the cornfield?",
+      "answer": "scarecrow",
+      "options": [
+        [
+          "scarecrow",
+          "scarecrow.svg"
+        ],
+        [
+          "tinman",
+          "tinman.svg"
+        ],
+        [
+          "lion",
+          "lion.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "What was the Scarecrow stuffed with?",
+      "answer": "straw",
+      "options": [
+        [
+          "straw",
+          "straw.svg"
+        ],
+        [
+          "bread",
+          "bread.svg"
+        ],
+        [
+          "leaf",
+          "leaf.svg"
+        ]
+      ]
+    },
+    {
+      "ask": "Which birds were not afraid of the Scarecrow?",
+      "answer": "crow",
+      "options": [
+        [
+          "crow",
+          "crow.svg"
+        ],
+        [
+          "chick",
+          "chick.svg"
+        ],
+        [
+          "hen",
+          "hen.svg"
+        ]
+      ]
+    }
+  ]
+}
