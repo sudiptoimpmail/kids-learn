@@ -546,6 +546,8 @@ function startWhack() {
     // a little burst of stars (or a red −1 for the flower) floats up from the hole
     const fx = document.createElement('span'); fx.className = 'wm-fx'; fx.innerHTML = m.flower ? '<b class="wm-minus">−1</b>' : '<img src="assets/fluent/1f4ab.webp" alt=""><b>+1</b>';
     h.appendChild(fx); later(() => fx.remove(), 650);
+    const ham = document.createElement('span'); ham.className = 'wm-hammer'; ham.textContent = '🔨'; h.appendChild(ham); later(() => ham.remove(), 420);
+    if (!m.flower) sparkAt(h, ['⭐', '✨', '💫'], 6);
     later(() => h.classList.remove('bonk', 'oops'), 300);
     if (m.flower) { score = Math.max(0, score - 1); sfx.no(); } else { score++; tone([520, 780], { dur: 0.05, gap: 0.05, vol: 0.12, type: 'square' }); }
     $('.wm-score', area).textContent = score;
@@ -778,6 +780,8 @@ function startC4() {
     g[r][c] = who;
     const el = cell(r, c);
     el.classList.add(who === ME ? 'me' : 'bot', 'drop');
+    el.style.setProperty('--rows', r + 1);
+    later(() => { el.classList.add('landed'); tone([who === ME ? 330 : 260], { dur: 0.04, vol: 0.06 }); }, 300 + r * 40);
     el.style.setProperty('--fall', `${-(r + 1) * 100}%`);
     tone([who === ME ? 520 : 380], { dur: 0.06, vol: 0.1 });
     return r;
@@ -785,7 +789,8 @@ function startC4() {
   function after(r, c, who) {
     const line = lineAt(r, c, who);
     if (line) {
-      over = true; line.forEach(([rr, cc]) => cell(rr, cc).classList.add('win'));
+      over = true; line.forEach(([rr, cc], k) => { const w = cell(rr, cc); w.style.animationDelay = `${k * 90}ms`; w.classList.add('win'); later(() => sparkAt(w, who === ME ? ['⭐', '✨', '🔴'] : ['✨', '🟡'], 6), 200 + k * 90); });
+      $('.c4-board', area).classList.add('done');
       if (who === ME) { const up = gameLevelUp('c4', 2); gameWin('You win!'); later(() => endPanel('Four in a row! You win!', '🏆', startC4, up), 1400); }
       else { say('Good game! Try again!'); later(() => endPanel('Robot got four this time!', '🤖', startC4), 1400); }
       return true;
@@ -814,7 +819,12 @@ function startC4() {
     busy = true;
     later(() => { const bc = botCol(); const br = place(bc, BOT); busy = false; live(`Robot dropped in column ${bc + 1}. Your turn.`); after(br, bc, BOT); }, 650);
   }
-  area.querySelector('.c4-board').addEventListener('click', (e) => { const t = e.target.closest('.c4-cell'); if (t) play(+t.dataset.c); });
+  const boardEl = area.querySelector('.c4-board');
+  boardEl.addEventListener('click', (e) => { const t = e.target.closest('.c4-cell'); if (t) play(+t.dataset.c); });
+  // a ghost disc hovers over the column under the finger / mouse
+  const ghost = (c) => drops.forEach((d, i) => d.classList.toggle('hot', i === c && !over && !busy && dropRow(i) >= 0));
+  boardEl.addEventListener('pointermove', (e) => { const t = e.target.closest('.c4-cell'); ghost(t ? +t.dataset.c : -1); });
+  boardEl.addEventListener('pointerleave', () => ghost(-1));
   const drops = [...area.querySelectorAll('.c4-drop')];
   drops.forEach((b, i) => {
     b.onclick = () => play(i);
@@ -1066,6 +1076,13 @@ function zoomable(view, inner, { oneFingerPan = true } = {}) {
   view.addEventListener('wheel', (e) => { e.preventDefault(); const [cx, cy] = local(e); zoomAt(s * (e.deltaY < 0 ? 1.15 : 1 / 1.15), cx, cy); }, { passive: false });
   return { by: (k) => zoomAt(s * k, view.clientWidth / 2, view.clientHeight / 2), busy: () => Date.now() - last < 250 || pts.size > 1 };
 }
+// a round blob of the chosen paint spreads out from the tapped shape
+function paintRipple(el, color) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const b = el.getBoundingClientRect(), d = document.createElement('span');
+  d.className = 'paint-ripple'; d.style.cssText = `left:${b.left + b.width / 2}px;top:${b.top + b.height / 2}px;--c:${color}`;
+  document.body.appendChild(d); setTimeout(() => d.remove(), 600);
+}
 function startColoring(p) {
   state.art = state.art || {};
   const fills = state.art[p.id] = state.art[p.id] || {};
@@ -1085,6 +1102,7 @@ function startColoring(p) {
     if (zoom.busy()) return;          // that was a pinch or a drag, not a tap
     r.style.fill = cur; fills[r.dataset.k] = cur; save();
     r.classList.remove('splash'); void r.getBoundingClientRect(); r.classList.add('splash');
+    paintRipple(r, cur);
     tone([500 + Math.random() * 400], { dur: 0.05, vol: 0.08 });
   }));
   const peek = area.querySelector('[data-a="peek"]');
@@ -1238,6 +1256,7 @@ function startSudoku(mode) {
     const [r, c] = sel;
     cur[r][c] = k.dataset.v === 'x' ? null : +k.dataset.v;
     tone([600], { dur: 0.04, vol: 0.08 });
+    { const el = cellEl(r, c); el.classList.remove('pop'); void el.offsetWidth; if (cur[r][c] != null) el.classList.add('pop'); }
     if (cur[r][c] != null && conflicts(r, c)) sfx.no();
     paint(); checkWin();
   }));
