@@ -188,5 +188,6 @@
    "max": 512,
    "square": true
   }
- }
+ },
+ "batch": 1
 }
