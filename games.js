@@ -1660,15 +1660,15 @@ function startDraw(refIndex) {
   area.innerHTML = `<div class="cb dr">
     <div class="cb-pic"><div class="dr-pad"><canvas class="dr-fill"></canvas>${(([w, o]) => `<div class="dr-guide dr-guide-${Math.min(4, lv)}" style="opacity:${o}">${drawSVG(ref.d, w)}</div>`)(DRAW_GUIDE[Math.min(4, Math.max(1, lv))])}<canvas class="dr-cv"></canvas></div></div>
     <div class="cb-rail" role="toolbar" aria-label="Drawing tools">
-      <button class="dr-ref" data-a="ref" aria-label="${trace ? 'Trace' : 'Copy'} the ${ref.name}">${ref.svg}<small>${ref.name}</small></button>
-      <div class="cb-row"><button class="cb-btn cb-done" data-a="done" aria-label="I'm done">✔</button><button class="cb-btn" data-a="choose" aria-label="Choose a picture">🎯</button><button class="cb-btn" data-a="gallery" aria-label="My drawings">🖼️</button></div>
+      <button class="cb-btn" data-a="choose" aria-label="Pick another picture">🖼️</button>
       <button class="cb-round" data-a="drtool" aria-label="Choose a pencil, brush or paint">✏️</button>
-      <button class="cb-round cb-color" data-a="drcolor" aria-label="Choose a colour" style="--c:${INK[0]}"></button>
+      <button class="cb-round cb-color" data-a="drcolor" aria-label="Choose a colour" style="--c:${CB_COLORS[0]}"></button>
       <button class="cb-round dr-tool" data-t="erase" aria-label="Eraser">🧽</button>
       <div class="cb-row"><button class="cb-btn dr-tool" data-t="undo" aria-label="Undo">↩️</button><button class="cb-btn dr-tool" data-t="clear" aria-label="Start over">🗑️</button></div>
+      <div class="cb-row"><button class="cb-btn cb-done" data-a="done" aria-label="Save my drawing">✔</button><button class="cb-btn" data-a="gallery" aria-label="My drawings">🎨</button></div>
     </div>
-    <div class="cb-pop" data-pop="color" hidden><div class="cb-colors">${CB_COLORS.map((c, i) => `<button class="dr-ink cb-c ${c === INK[0] ? 'on' : ''}" data-c="${c}" style="--c:${c};--sw:${c}" aria-label="colour ${c}"></button>`).join('')}</div></div>
-    <div class="cb-pop" data-pop="tool" hidden><div class="cb-tools dr-tools2"><button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✎<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
+    <div class="cb-pop" data-pop="color" hidden><div class="cb-colors">${CB_COLORS.map((c, i) => `<button class="dr-ink cb-c ${c === CB_COLORS[0] ? 'on' : ''}" data-c="${c}" style="--c:${c};--sw:${c}" aria-label="colour ${c}"></button>`).join('')}</div></div>
+    <div class="cb-pop" data-pop="tool" hidden><div class="cb-tools dr-tools2"><button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✏<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
       <button class="dr-tool" data-t="bucket" aria-label="Pour paint"><svg class="bk-ico" viewBox="0 0 36 36" aria-hidden="true"><g transform="rotate(-22 18 20)"><path d="M7 14h20l-2.4 15.2a2.4 2.4 0 0 1-2.4 2H11.8a2.4 2.4 0 0 1-2.4-2z" fill="#e9ecef" stroke="#495057" stroke-width="1.8" stroke-linejoin="round"/><path d="M7.6 17h18.8l-.6 4H8.2z" fill="var(--pour,#4dabf7)"/><path d="M8 14c0-5 4-8 9-8s9 3 9 8" fill="none" stroke="#495057" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="17" cy="14" rx="10" ry="2.2" fill="var(--pour,#4dabf7)" stroke="#495057" stroke-width="1.6"/></g><path d="M29 22c2.6 3.4 3.8 5.4 3.8 7a3.8 3.8 0 0 1-7.6 0c0-1.6 1.2-3.6 3.8-7z" fill="var(--pour,#4dabf7)" stroke="#495057" stroke-width="1.4"/></svg><small>Fill</small></button></div></div>
   </div>`;
   say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
@@ -1680,7 +1680,7 @@ function startDraw(refIndex) {
   // paint goes on its own layer under the guide and the pencil lines
   const fc = $('.dr-fill', area); fc.width = fc.height = cv.width; fc.style.width = fc.style.height = W + 'px';
   const fctx = fc.getContext('2d');
-  let color = INK[0], size = 7, tool = "pencil", erase = false, strokes = [], cur = null, bucket = false;
+  let color = CB_COLORS[0], size = 7, tool = "pencil", erase = false, strokes = [], cur = null, bucket = false;
   // Keep gesture pointers separate from drawing strokes.
   let zoom = 1, panX = 0, panY = 0, gesture = null;
   const touches = new Map();
@@ -1827,7 +1827,6 @@ function startDraw(refIndex) {
   railTool.onclick = () => openPop('tool'); railColor.onclick = () => openPop('color');
   $$('.dr-ink, .dr-tools2 button', area).forEach((b) => b.addEventListener('click', () => { closePops(); refreshRail(); }));
   pad.addEventListener('pointerdown', closePops, true);
-  area.querySelector('[data-a="ref"]').onclick = () => { sfx.tap(); say(`${trace ? 'Trace' : 'Copy'} the ${ref.name}!`); };
   refreshRail();
   $('[data-t="clear"]', area).onclick = () => { strokes = []; replay(); sfx.tap(); };
   area.querySelector('[data-a="choose"]').onclick = () => { sfx.tap(); drawChooser(); };
