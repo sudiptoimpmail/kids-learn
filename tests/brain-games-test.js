@@ -74,13 +74,13 @@ const { chromium } = require('playwright');
       openBrainGame('c4');
       if (area.querySelectorAll('.c4-cell').length !== 42) throw Error('Connect Four missing cells');
       // finger maze: walking the one route reaches the goal and wins once
-      state.gameLv.path = 3; openBrainGame('path');
+      state.gameLv.path = 3; brainMode = false; state.playAlways = true; openGame('path');
       if (!area.querySelector('.pm-cv')) throw Error('Finger Maze did not open');
       const pathWins = (state.gameWins && state.gameWins.path) || 0;
       window.__pathMaze.go(window.__pathMaze.route());
       if (!window.__pathMaze.done() || state.gameWins.path !== pathWins + 1) throw Error('Finger Maze did not finish');
       // a fresh maze: jumping straight to the goal through walls must not work
-      openBrainGame('path');
+      brainMode = false; state.playAlways = true; openGame('path');
       const r = window.__pathMaze.route(); window.__pathMaze.go([r[r.length - 1]]);
       if (window.__pathMaze.done()) throw Error('Finger Maze let the path go through walls');
       // Test mode plus "Show all games" previews cross-grade content without exposing it to children.

@@ -173,7 +173,7 @@ const GAMES = [
 const GAME_MAX = { path: 11, pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
 // Brain Teasers: puzzle games shown with the thinking lessons on the home screen.
 // They are learning, so they never need earned play time (Tic-Tac-Toe and Ball Maze stay in the Play Zone).
-const BRAIN_GAME_IDS = new Set(['path', 'memory', 'puzzle', 'sudoku', 'c4']);
+const BRAIN_GAME_IDS = new Set(['memory', 'puzzle', 'sudoku', 'c4']);   // Finger Maze lives with the regular games
 const BRAIN_MIN_GRADE = { path: 'prek', memory: 'prek', puzzle: 'prek', sudoku: 'k', c4: 'g1' };
 const BRAIN_GRADE_ORDER = ['prek', 'k', 'g1', 'g2', 'g3'];
 let brainMode = false;

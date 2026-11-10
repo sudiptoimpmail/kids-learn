@@ -55,7 +55,7 @@ const { chromium } = require('playwright');
       // brain games sit inside Brain Teasers on the home screen, filtered by age
       const tiles = () => [...document.querySelectorAll('#grid [data-game]')].map(x => x.dataset.game);
       const early = tiles();
-      if (!early.includes('memory') || !early.includes('path') || early.includes('sudoku') || early.includes('c4') || early.includes('ttt') || early.includes('maze'))
+      if (!early.includes('memory') || early.includes('path') || early.includes('sudoku') || early.includes('c4') || early.includes('ttt') || early.includes('maze'))
         throw new Error('Pre-K brain-game age filters failed: ' + early.join(','));
       openBrainGame('memory');
       if (!document.querySelector('#game .play-clock').hidden)
@@ -70,7 +70,7 @@ const { chromium } = require('playwright');
       state.playAlways = true;
       openPlayZone();
       const arcade = [...document.querySelectorAll('#pzGrid [data-game]')].map(x => x.dataset.game);
-      if (!arcade.includes('pinball') || !arcade.includes('ttt') || arcade.includes('maze') || arcade.includes('memory') || arcade.includes('path'))
+      if (!arcade.includes('pinball') || !arcade.includes('ttt') || arcade.includes('maze') || arcade.includes('memory') || !arcade.includes('path'))   // Finger Maze is a regular game
         throw new Error('Arcade games not separated: ' + arcade.join(','));
       return { combinations: audit.length, early, older, arcade, sections };
     });

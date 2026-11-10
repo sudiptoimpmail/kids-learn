@@ -22,7 +22,10 @@ const T = {
   falls: [0, 0, 0, 1, 1, 1, 2, 2],                        // ramp + waterfall canyon to fly over
   planks: [0, 0, 0, 0, 1, 1, 2, 2],                       // narrow one-lane plank bridges
   gates: [1, 2, 3, 4, 5, 6, 7, 8],                        // tall candy walls with one opening: you must steer left or right
-  bend: [0.9, 1.2, 1.5, 1.8, 2.0, 2.2, 2.4, 2.6],         // how far the winding track swings sideways
+  bend: [1.3, 1.7, 2.1, 2.4, 2.7, 2.9, 3.1, 3.3],         // how far the winding track swings left and right
+  hills: [0.9, 1.3, 1.7, 2.0, 2.3, 2.6, 2.8, 3.0],        // how high the bridge climbs and dips
+  pads: [3, 3, 4, 4, 5, 5, 6, 6],                         // bounce pads and speed arrows (×4 along the long track)
+  sweepers: [0, 0, 1, 1, 2, 2, 3, 3],                     // spinning logs to hop over
 };
 const LAUNCH = 8.6, GRAV = 15;
 const RAMP_LEN = 3.6, RAMP_H = 0.7;                       // a long run-up that climbs to the launch lip                           // ramp launch speed and gravity
@@ -116,15 +119,39 @@ function buildTrack(lv) {
       break;
     }
   }
+  // spinning logs: a full-width stretch where a log turns around a post; hop when it comes round
+  const sweepers = [];
+  for (let k = 0; k < X(T.sweepers); k++) {
+    for (let tries = 0; tries < 40; tries++) {
+      const r = 20 + Math.floor(Math.random() * (rows - 40));
+      if (busy(r - 4, r + 4) || sweepers.some((w) => Math.abs(w.r - r) < 12)) continue;
+      for (let q = r - 3; q <= r + 3; q++) { for (let x = 0; x < LANES; x++) { floor[q][x] = true; block[q][x] = false; } gem[q] = -1; safe[q] = 2; plankRows.delete(q); }
+      sweepers.push({ r, speed: (0.9 + Math.random() * 0.5) * (Math.random() < 0.5 ? 1 : -1), phase: Math.random() * 6 });
+      break;
+    }
+  }
+  const sweepRows = (r) => sweepers.some((w) => Math.abs(w.r - r) <= 4);
+  // bounce pads (spring the ball high) and speed arrows (a whoosh forward), on the safe lane, never back to back
+  const pads = []; let lastKind = '';
+  for (let k = 0; k < X(T.pads) * 2; k++) {
+    for (let tries = 0; tries < 30; tries++) {
+      const r = 12 + Math.floor(Math.random() * (rows - 26));
+      if (busy(r - 2, r + 2) || sweepRows(r) || pads.some((p) => Math.abs(p.r - r) < 6) || !floor[r][safe[r]] || block[r][safe[r]]) continue;
+      const kind = lastKind === 'bounce' ? 'boost' : lastKind === 'boost' ? 'bounce' : (Math.random() < 0.5 ? 'bounce' : 'boost');
+      pads.push({ r, lane: safe[r], kind }); lastKind = kind; gem[r] = -1;
+      if (kind === 'bounce') for (let q = r + 2; q <= r + 4 && q < rows; q++) if (gem[q] < 0 && floor[q][safe[q]]) gem[q] = safe[q];   // treats up in the air after the bounce
+      break;
+    }
+  }
   // treasure crates on the safe path: roll into one to smash it open
   const crates = [];
   for (let r0 = 11; r0 < rows - 9; r0 += 10 + Math.floor(Math.random() * 5)) {
     let at = -1;
-    for (let d = 0; d < 7 && at < 0; d++) { const q = r0 + d; if (q < rows - 9 && !busy(q - 1, q + 1) && !nearJump(q) && floor[q][safe[q]] && !block[q][safe[q]]) at = q; }
+    for (let d = 0; d < 7 && at < 0; d++) { const q = r0 + d; if (q < rows - 9 && !busy(q - 1, q + 1) && !nearJump(q) && !sweepRows(q) && !pads.some((p) => Math.abs(p.r - q) < 2) && floor[q][safe[q]] && !block[q][safe[q]]) at = q; }
     if (at >= 0) { crates.push({ r: at, lane: safe[at] }); gem[at] = -1; if (gem[at + 1] >= 0) gem[at + 1] = -1; }
   }
   // the whole track winds from side to side; straight stretches hold it still around bridges and planks
-  const raw = (z) => Math.sin(z * 0.075) * T.bend[i] + Math.sin(z * 0.031 + 1.3) * T.bend[i] * 0.7;
+  const ph = Math.random() * 6, raw = (z) => Math.sin(z * 0.075 + ph) * T.bend[i] + Math.sin(z * 0.031 + 1.3 + ph) * T.bend[i] * 0.7 + Math.sin(z * 0.16 + ph * 2) * T.bend[i] * 0.22;   // a new winding every run
   const ease = (z) => Math.min(1, Math.max(0, Math.min(z - 6, rows - 8 - z) / 12));
   const off = Array.from({ length: rows + 12 }, (_, r) => raw(r) * ease(r));
   for (const f of features.filter((x) => x.kind === 'plank')) {
@@ -142,7 +169,12 @@ function buildTrack(lv) {
   const offAt = (z) => { const z0 = Math.max(0, Math.min(rows + 10, Math.floor(z))), f = z - z0; return off[z0] + (off[Math.min(rows + 11, z0 + 1)] - off[z0]) * f; };
   // gate walls stand on full tiles
   for (const g of gates) for (let x = 0; x < LANES; x++) { floor[g.r][x] = true; block[g.r][x] = false; gem[g.r] = -1; }
-  return { rows, floor, block, gem, safe, movers, jumpRows, ramps, features, plankRows, airGems, gates, off, offAt, crates };
+  // hills: the bridge climbs and dips (flat at the start, the finish and the ramps); a new shape every run
+  const hp = Math.random() * 6, hillRaw = (z) => (Math.sin(z * 0.052 + hp) * 0.7 + Math.sin(z * 0.021 + hp * 1.7) * 0.6 + Math.sin(z * 0.11 + hp * 0.5) * 0.18) * T.hills[i];
+  const hillEase = (z) => { let e = Math.min(1, Math.max(0, Math.min(z - 8, rows - 10 - z) / 16)); for (const f of features) if (f.ramp != null) { const d = Math.min(Math.abs(z - f.ramp), Math.abs(z - (f.ramp + 6))); e = Math.min(e, Math.max(0, (d - 6) / 10)); } return e; };
+  const hill = Array.from({ length: rows + 40 }, (_, r) => hillRaw(r) * hillEase(r));
+  const hillAt = (z) => { const z0 = Math.max(0, Math.min(rows + 38, Math.floor(z))), f = Math.max(0, z - z0); return hill[z0] + (hill[Math.min(rows + 39, z0 + 1)] - hill[z0]) * Math.min(1, f); };
+  return { rows, floor, block, gem, safe, movers, jumpRows, ramps, features, plankRows, airGems, gates, off, offAt, crates, pads, sweepers, hill, hillAt };
 }
 
 export function start() {
@@ -178,6 +210,42 @@ export function start() {
   let { w } = size();
 
   const track = buildTrack(lv);
+  // Hills: every vertex is lifted by the bridge's height at its distance along the track, so the bridge,
+  // everything on it and the ball rise and dip together (physics stays in flat track space).
+  const HN = track.hill.length, hillTex = new THREE.DataTexture(new Float32Array(track.hill), HN, 1, THREE.RedFormat, THREE.FloatType);
+  hillTex.needsUpdate = true;
+  const hillU = { uHill: { value: hillTex }, uHillN: { value: HN } };
+  const hillify = (m) => {
+    if (!m || m.__hill || m.isShaderMaterial || m.isSpriteMaterial || m.isPointsMaterial) return;
+    m.__hill = true; m.customProgramCacheKey = () => 'b3hill';
+    m.onBeforeCompile = (sh) => {
+      Object.assign(sh.uniforms, hillU);
+      sh.vertexShader = 'uniform sampler2D uHill; uniform float uHillN;\nfloat b3hill(float z){ float zc = clamp(z, 0.0, uHillN - 2.0); int i = int(floor(zc)); return mix(texelFetch(uHill, ivec2(i, 0), 0).r, texelFetch(uHill, ivec2(i + 1, 0), 0).r, zc - floor(zc)); }\n'
+        + sh.vertexShader.replace('#include <project_vertex>', `vec4 b3w = vec4(transformed, 1.0);
+#ifdef USE_INSTANCING
+b3w = instanceMatrix * b3w;
+#endif
+b3w = modelMatrix * b3w; b3w.y += b3hill(b3w.z);
+vec4 mvPosition = viewMatrix * b3w;
+gl_Position = projectionMatrix * mvPosition;`);
+    };
+    m.needsUpdate = true;
+  };
+  const hillTree = (o) => o.traverse((c) => { if (c.material) [].concat(c.material).forEach(hillify); });
+  const sceneAdd = scene.add.bind(scene);
+  scene.add = (...objs) => { objs.forEach(hillTree); return sceneAdd(...objs); };
+  // Zones: the bridge changes theme every stretch (colours and obstacles), in a new order each run, never the same twice in a row
+  const ZONES = [
+    { id: 'candy', tiles: ['#ff8fab', '#ffd166', '#8ce99a', '#74c0fc', '#b197fc'] },
+    { id: 'forest', tiles: ['#8ce99a', '#69db7c', '#c0eb75', '#a9e34b', '#d8f5a2'] },
+    { id: 'ice', tiles: ['#e7f5ff', '#d0ebff', '#a5d8ff', '#ffffff', '#c5f6fa'] },
+    { id: 'desert', tiles: ['#ffe8cc', '#ffd8a8', '#ffc078', '#f4d19b', '#e9c46a'] },
+    { id: 'autumn', tiles: ['#ffa94d', '#ff922b', '#ffd43b', '#e8590c', '#ffc078'] },
+    { id: 'city', tiles: ['#ced4da', '#adb5bd', '#ffe066', '#dee2e6', '#a5d8ff'] },
+  ];
+  const ZLEN = 55, zoneOrder = [0];
+  while (zoneOrder.length * ZLEN < track.rows + ZLEN) { const opts = [1, 2, 3, 4, 5, 0].filter((z) => z !== zoneOrder[zoneOrder.length - 1] && z !== zoneOrder[zoneOrder.length - 2]); zoneOrder.push(opts[Math.floor(Math.random() * opts.length)]); }
+  const zoneOf = (r) => ZONES[zoneOrder[Math.max(0, Math.floor(r / ZLEN))]];
   // lane-space (x = -2…2 across the path, z = row) → world, because the whole track winds
   const slope = (z) => (track.offAt(z + 0.5) - track.offAt(z - 0.5));
   const W3 = (lx, z) => { const a = Math.atan(slope(z)), o = track.offAt(z); return [o + lx * Math.cos(a), z - lx * Math.sin(a), a]; };
@@ -204,7 +272,7 @@ export function start() {
     dummy.updateMatrix(); tiles.setMatrixAt(k, dummy.matrix);
     col.set(track.plankRows.has(r) || (feat && feat.kind === 'bridge') ? (r % 2 ? '#a9743f' : '#c08552')
       : feat && feat.kind === 'falls' ? (r % 2 ? '#adb5bd' : '#ced4da')
-      : r % CHECK === 0 && r > 0 ? '#ffffff' : tileColors[(x + Math.floor(r / 4)) % tileColors.length]);
+      : r % CHECK === 0 && r > 0 ? '#ffffff' : zoneOf(r).tiles[(x + Math.floor(r / 4)) % 5]);
     tiles.setColorAt(k++, col);
   }));
   scene.add(tiles);
@@ -228,10 +296,29 @@ export function start() {
     const kn = new THREE.Mesh(knotGeo, m.rib); kn.position.y = 0.88; g.add(kn);
     return g;
   };
+  // one obstacle look per zone: gifts, mossy rocks, snowmen, cacti, pumpkins, traffic cones
+  const M = (c, o = {}) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.5, ...o });
+  const ob = { rock: M('#868e96', { flatShading: true }), moss: M('#51cf66'), snow: M('#ffffff', { roughness: 0.3 }), coal: M('#212529'), carrot: M('#ff922b'), scarf: M('#e03131'),
+    cactus: M('#40c057'), flower: M('#f783ac'), pumpkin: M('#fd7e14', { roughness: 0.4 }), stem: M('#2f9e44'), cone: M('#ff6b00', { roughness: 0.35 }), coneW: M('#ffffff'), coneB: M('#343a40') };
+  const G = { rock: new THREE.DodecahedronGeometry(0.42), mossCap: new THREE.SphereGeometry(0.3, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2), ball: new THREE.SphereGeometry(1, 16, 12),
+    nose: new THREE.ConeGeometry(0.05, 0.22, 8), hat: new THREE.CylinderGeometry(0.15, 0.15, 0.22, 12), brim: new THREE.CylinderGeometry(0.24, 0.24, 0.03, 14), cap: new THREE.CapsuleGeometry(0.17, 0.75, 6, 10),
+    arm: new THREE.CapsuleGeometry(0.09, 0.28, 4, 8), rib: new THREE.TorusGeometry(0.33, 0.035, 6, 20), stemG: new THREE.CylinderGeometry(0.04, 0.06, 0.18, 6), coneG: new THREE.ConeGeometry(0.3, 0.8, 16), band: new THREE.CylinderGeometry(0.2, 0.235, 0.12, 16), base: new THREE.BoxGeometry(0.62, 0.06, 0.62) };
+  const mk = (geo, mat, x, y, z, sx = 1, sy = sx, sz = sx) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); m.scale.set(sx, sy, sz); return m; };
+  const makeObstacle = (r, n) => {
+    const id = zoneOf(r).id, g = new THREE.Group();
+    if (id === 'forest') { const rk = mk(G.rock, ob.rock, 0, 0.36, 0); rk.rotation.set(n, n * 2, 0); g.add(rk, mk(G.mossCap, ob.moss, 0.05, 0.62, 0, 1, 0.5, 1)); }
+    else if (id === 'ice') { g.add(mk(G.ball, ob.snow, 0, 0.3, 0, 0.32), mk(G.ball, ob.snow, 0, 0.72, 0, 0.22), mk(G.nose, ob.carrot, 0, 0.74, -0.24), mk(G.hat, ob.coal, 0, 1.02, 0), mk(G.brim, ob.coal, 0, 0.92, 0), mk(G.ball, ob.scarf, 0, 0.53, 0, 0.24, 0.06, 0.24));
+      for (const sx of [-0.08, 0.08]) g.add(mk(G.ball, ob.coal, sx, 0.8, -0.19, 0.03)); g.children[2].rotation.x = -Math.PI / 2; }
+    else if (id === 'desert') { g.add(mk(G.cap, ob.cactus, 0, 0.55, 0)); const a1 = mk(G.arm, ob.cactus, -0.27, 0.62, 0), a2 = mk(G.arm, ob.cactus, 0.27, 0.78, 0); a1.rotation.z = 0.5; a2.rotation.z = -0.5; g.add(a1, a2, mk(G.ball, ob.flower, 0, 1.05, 0, 0.08)); }
+    else if (id === 'autumn') { g.add(mk(G.ball, ob.pumpkin, 0, 0.32, 0, 0.4, 0.3, 0.4)); for (let k = 0; k < 4; k++) { const rb = mk(G.rib, ob.pumpkin, 0, 0.32, 0, 1, 0.92, 1); rb.rotation.y = k * Math.PI / 4; g.add(rb); } g.add(mk(G.stemG, ob.stem, 0, 0.66, 0)); }
+    else if (id === 'city') { g.add(mk(G.base, ob.coneB, 0, 0.03, 0), mk(G.coneG, ob.cone, 0, 0.45, 0), mk(G.band, ob.coneW, 0, 0.42, 0)); }
+    else return makeGift(n);
+    return g;
+  };
   const blocks = [];
   track.block.forEach((row, r) => row.forEach((on, x) => {
     if (!on) return;
-    const b = makeGift(x + r); put(b, x - 2, 0, r); scene.add(b); blocks.push({ mesh: b, x: x - 2, r });
+    const b = makeObstacle(r, x + r); put(b, x - 2, 0, r); scene.add(b); blocks.push({ mesh: b, x: x - 2, r });
   }));
   // gate walls: tall striped candy pillars with a round top and a single opening
   const pillarGeo = new THREE.CylinderGeometry(0.42, 0.46, 2.1, 14), capGeo = new THREE.SphereGeometry(0.5, 14, 10);
@@ -261,6 +348,23 @@ export function start() {
       const h = new THREE.Mesh(horn, gumDark); h.position.set(sx * 1.7, 0.66, 0); h.rotation.z = -sx * 1.6; g.add(h); }
     return g; };
   const movers = track.movers.map((m) => { const b = makeGum(); put(b, 0, 0, m.r); scene.add(b); return { ...m, mesh: b, x: 0 }; });
+  // bounce pads (springy drum) and speed arrows (glowing chevrons that scroll forward)
+  const arrowTex = (() => { const c = document.createElement('canvas'); c.width = 64; c.height = 128; const x = c.getContext('2d'); x.fillStyle = '#1c7ed6'; x.fillRect(0, 0, 64, 128);
+    x.strokeStyle = '#e7f5ff'; x.lineWidth = 12; x.lineCap = 'round'; x.lineJoin = 'round'; for (const y0 of [40, 104]) { x.beginPath(); x.moveTo(12, y0); x.lineTo(32, y0 - 22); x.lineTo(52, y0); x.stroke(); }
+    const t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(1, 1.5); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+  const padGeo = new THREE.PlaneGeometry(0.86, 0.94); padGeo.rotateX(-Math.PI / 2);
+  const drumGeo = new THREE.CylinderGeometry(0.4, 0.44, 0.16, 20), skinGeo = new THREE.CylinderGeometry(0.34, 0.34, 0.02, 20), springRing = new THREE.TorusGeometry(0.4, 0.04, 8, 20);
+  const drumMat = M('#e03131'), skinMat = M('#ffffff', { roughness: 0.3 }), ringMat = M('#ffd43b', { metalness: 0.3 });
+  const pads = track.pads.map((p) => {
+    const g = new THREE.Group();
+    if (p.kind === 'boost') g.add(mk(padGeo, new THREE.MeshBasicMaterial({ map: arrowTex }), 0, 0.012, 0));
+    else { g.add(mk(drumGeo, drumMat, 0, 0.08, 0), mk(skinGeo, skinMat, 0, 0.17, 0)); const ring = mk(springRing, ringMat, 0, 0.12, 0); ring.rotation.x = Math.PI / 2; g.add(ring); }
+    put(g, p.lane - 2, 0, p.r); scene.add(g); return { ...p, mesh: g, used: 0 };
+  });
+  // spinning logs: a striped log turning round a post
+  const logGeo = new THREE.CylinderGeometry(0.17, 0.17, 4.6, 14); logGeo.rotateZ(Math.PI / 2);
+  const logMat = new THREE.MeshStandardMaterial({ map: candyTex('#f76707', '#fff4e6'), roughness: 0.5 }), postGeo2 = new THREE.CylinderGeometry(0.16, 0.22, 0.7, 12);
+  const sweepers = track.sweepers.map((w) => { const g = new THREE.Group(), log = mk(logGeo, logMat, 0, 0.45, 0); g.add(mk(postGeo2, M('#5c3b1e'), 0, 0.35, 0), log, mk(G.ball, ringMat, 0, 0.75, 0, 0.16)); put(g, 0, 0, w.r); scene.add(g); return { ...w, mesh: g, log, ang: w.phase }; });
   // hovering stars and wrapped candies
   const starShape = (() => { const sh = new THREE.Shape(); for (let k = 0; k < 10; k++) { const rr = k % 2 ? 0.11 : 0.27, an = Math.PI / 2 + (k * Math.PI) / 5; k ? sh.lineTo(Math.cos(an) * rr, Math.sin(an) * rr) : sh.moveTo(Math.cos(an) * rr, Math.sin(an) * rr); } sh.closePath(); return sh; })();
   const starGeo = new THREE.ExtrudeGeometry(starShape, { depth: 0.1, bevelEnabled: true, bevelSize: 0.03, bevelThickness: 0.03, bevelSegments: 2 }); starGeo.translate(0, 0, -0.05);
@@ -561,13 +665,16 @@ export function start() {
     flash('Try again! 💪');
   }
 
+  hillTree(scene);   // anything added to a group after the group went in
+  let camHill = 0, lookHill = 0;
   let raf = 0, last = 0, alive = true, t = 0;
   function frame(now) {
     if (!alive) return;
     const dt = last ? Math.min(0.04, (now - last) / 1000) : 0; last = now; t += dt;
     if (!S.done) {
       S.boost = Math.max(0, S.boost - dt);
-      const v = speed0 * (1 + Math.min(0.25, S.z / track.rows * 0.25)) * (S.boost > 0 ? 1.7 : 1);    // speeds up a bit along the track (and a lot while boosting)
+      const hs = track.hillAt(S.z + 0.6) - track.hillAt(S.z - 0.6);   // faster rolling downhill, a little slower uphill
+      const v = speed0 * (1 + Math.min(0.25, S.z / track.rows * 0.25)) * (S.boost > 0 ? 1.7 : 1) * Math.max(0.82, Math.min(1.3, 1 - hs * 0.3));    // speeds up a bit along the track (and a lot while boosting)
       if (tilt != null && !drag) S.tx = Math.max(-2.15, Math.min(2.15, S.tx - tilt * 5 * dt));
       S.x += (S.tx - S.x) * Math.min(1, dt * 12);
       if (!S.falling) S.z += v * dt;
@@ -581,6 +688,11 @@ export function start() {
           if (S.buffer > 0) jump();
           if (track.ramps.has(Math.round(S.z)) && !S.launched) { S.vy = LAUNCH; S.launched = true; tone([330, 494, 660, 880], { dur: 0.06, gap: 0.05, vol: 0.1, type: 'triangle' }); flash('Wheee! 🚀'); }
           if (!track.ramps.has(Math.round(S.z))) S.launched = false;
+          for (const p of pads) if (!p.used && Math.abs(p.r - S.z) < 0.5 && Math.abs(p.lane - 2 - S.x) < 0.55) {
+            p.used = 0.6;
+            if (p.kind === 'bounce') { S.vy = 8.4; S.launched = true; tone([392, 523, 784, 1047], { dur: 0.05, gap: 0.04, vol: 0.1, type: 'triangle' }); }
+            else speedBoost();
+          }
         }
         else if (S.y < 0.2) { S.falling = true; sfx.no(); }
       }
@@ -589,7 +701,9 @@ export function start() {
       // blocks
       if (S.dead <= 0 && !S.falling) {
         const hitBlock = (bx, bz, tall) => Math.abs(bx - S.x) < 0.62 && Math.abs(bz - S.z) < 0.6 && S.y < (tall ? 2.2 : 0.95);
-        if (blocks.some((b) => hitBlock(b.x, b.r, b.tall)) || movers.some((m) => hitBlock(m.x, m.r))) { tone([160, 120], { dur: 0.08, gap: 0.08, vol: 0.12 }); respawn(); }
+        const hitLog = sweepers.some((w) => { const rx = S.x, rz = S.z - w.r, c = Math.cos(w.ang), sn = Math.sin(w.ang);
+          return Math.abs(rx * c + rz * sn) < 2.3 && Math.abs(rx * sn - rz * c) < 0.42 && S.y < 0.95; });
+        if (hitLog || blocks.some((b) => hitBlock(b.x, b.r, b.tall)) || movers.some((m) => hitBlock(m.x, m.r))) { tone([160, 120], { dur: 0.08, gap: 0.08, vol: 0.12 }); respawn(); }
       }
       if (S.dead <= 0) for (const c of crates) if (!c.hit && Math.abs(c.x - S.x) < 0.72 && Math.abs(c.r - S.z) < 0.7 && S.y < 1.5) smash(c);
       for (const g of gems) if (!g.got && Math.abs(g.x - S.x) < 0.55 && Math.abs(g.r - S.z) < 0.55 && Math.abs(g.y - S.y) < 0.75) {
@@ -603,6 +717,9 @@ export function start() {
       if (S.z >= archZ) finish();
     }
     // animate
+    for (const w of sweepers) { w.ang = w.phase + t * w.speed; w.log.rotation.y = -w.ang; }
+    for (const p of pads) { if (p.used > 0) p.used = Math.max(0, p.used - dt); if (p.kind === 'bounce') p.mesh.children[1].position.y = 0.17 - Math.max(0, p.used - 0.4) * 0.5; }
+    arrowTex.offset.y = (arrowTex.offset.y - dt * 1.6) % 1;
     for (const m of movers) { m.x = Math.sin(t * m.speed + m.phase) * 2; put(m.mesh, m.x, Math.abs(Math.sin(t * 4 + m.phase)) * 0.12, m.r); m.mesh.scale.set(1 + Math.sin(t * 8 + m.phase) * 0.04, 1 - Math.sin(t * 8 + m.phase) * 0.05, 1); }
     for (const g of gems) if (!g.got) { put(g.mesh, g.x, g.y + Math.sin(t * 3 + g.r) * 0.1, g.r); g.mesh.rotation.y = t * 2.4 + g.r; }
     for (const f of floaters) { f.g.position.y = f.base + Math.sin(t * f.sp + f.ph) * 0.35; f.g.rotation.y += dt * 0.25; }
@@ -626,7 +743,8 @@ export function start() {
     if (!S.done && !S.falling && (t * 14) % 1 < dt * 14) { const sp = new THREE.Mesh(burstGeo, new THREE.MeshBasicMaterial({ color: ['#fff', '#ffe066', '#a5d8ff'][Math.floor(t * 14) % 3], transparent: true })); sp.position.set(bwx, S.y - 0.1, bwz - 0.3); scene.add(sp); bursts.push({ m: sp, vx: (Math.random() - 0.5) * 0.8, vy: 0.3, vz: -0.5, life: 0.45 }); }
     const [cx, cz] = W3(S.x * 0.6, S.z - 5.2), [lx, lz] = W3(S.x * 0.75, S.z + 4.5);
     const roll = Math.max(-0.07, Math.min(0.07, (slope(S.z + 3) - slope(S.z)) * 1.2));
-    camera.up.set(Math.sin(roll), Math.cos(roll), 0); camera.position.set(cx, 3.1, cz); camera.lookAt(lx, 0, lz);
+    camera.up.set(Math.sin(roll), Math.cos(roll), 0); camHill += (track.hillAt(cz) - camHill) * Math.min(1, dt * 6); lookHill += (track.hillAt(lz) - lookHill) * Math.min(1, dt * 6);
+    camera.position.set(cx, 3.1 + camHill, cz); camera.lookAt(lx, lookHill, lz);
     const wantFov = S.boost > 0 ? 72 : 60; if (Math.abs(camera.fov - wantFov) > 0.1) { camera.fov += (wantFov - camera.fov) * Math.min(1, dt * 6); camera.updateProjectionMatrix(); }
     camera.updateMatrixWorld();
     if (flyers.length) { const tp = hudPoint();
