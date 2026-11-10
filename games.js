@@ -1075,10 +1075,30 @@ const ALL_PICS = [
 const COLOR_GROUPS = [['⭐ Easy', 0, 5], ['⭐⭐ Medium', 6, 10], ['⭐⭐⭐ Tricky', 11, 19], ['🏆 Expert', 20, 999]];
 const colorLevel = () => 1;
 
+// Coloring fills are a colour ("#ff6b6b") or a texture over a colour ("glitter|#ff6b6b").
+let cbUid = 0;
+const CB_TOOLS = ['fill', 'crayon', 'glitter', 'stripes', 'dots', 'waves', 'stars', 'rainbow'];
+const cbShade = (hex, f) => { const n = parseInt(hex.slice(1), 16), ch = (v) => Math.max(0, Math.min(255, Math.round(f < 0 ? v * (1 + f) : v + (255 - v) * f))); return '#' + [n >> 16, (n >> 8) & 255, n & 255].map((v) => ch(v).toString(16).padStart(2, '0')).join(''); };
+function cbPattern(tool, c, id, u) {   // u = one "unit" in picture coordinates
+  const lt = cbShade(c, 0.45), dk = cbShade(c, -0.25), P = (w, h, body, extra = '') => `<pattern id="${id}" patternUnits="userSpaceOnUse" width="${w}" height="${h}"${extra}><rect width="${w}" height="${h}" fill="${c}"/>${body}</pattern>`;
+  if (tool === 'crayon') return P(u * 3, u * 3, `<path d="M0 ${u * 3} L${u * 3} 0 M${-u} ${u} L${u} ${-u} M${u * 2} ${u * 4} L${u * 4} ${u * 2}" stroke="${lt}" stroke-width="${u * 0.6}" opacity=".55"/><path d="M0 ${u * 1.5} L${u * 1.5} 0" stroke="${dk}" stroke-width="${u * 0.25}" opacity=".35"/>`);
+  if (tool === 'glitter') return P(u * 4, u * 4, `<circle cx="${u * 0.8}" cy="${u * 0.9}" r="${u * 0.35}" fill="#fff"/><circle cx="${u * 2.7}" cy="${u * 2.2}" r="${u * 0.25}" fill="#ffe066"/><circle cx="${u * 1.6}" cy="${u * 3.3}" r="${u * 0.2}" fill="#fff"/><circle cx="${u * 3.5}" cy="${u * 0.5}" r="${u * 0.18}" fill="#fff9db"/><path d="M${u * 2.2} ${u * 0.6} l${u * 0.2} ${u * 0.5} ${u * 0.5} ${u * 0.2} -${u * 0.5} ${u * 0.2} -${u * 0.2} ${u * 0.5} -${u * 0.2} -${u * 0.5} -${u * 0.5} -${u * 0.2} ${u * 0.5} -${u * 0.2}z" fill="#fff"/>`);
+  if (tool === 'stripes') return P(u * 3, u * 3, `<rect width="${u * 1.4}" height="${u * 3}" fill="${lt}"/>`, ' patternTransform="rotate(45)"');
+  if (tool === 'dots') return P(u * 3, u * 3, `<circle cx="${u * 1.5}" cy="${u * 1.5}" r="${u * 0.7}" fill="${lt}"/>`);
+  if (tool === 'waves') return P(u * 4, u * 2, `<path d="M0 ${u} Q${u} 0 ${u * 2} ${u} T${u * 4} ${u}" fill="none" stroke="${lt}" stroke-width="${u * 0.5}"/>`);
+  if (tool === 'stars') return P(u * 4, u * 4, `<path transform="translate(${u * 2} ${u * 2}) scale(${u / 10})" d="M0 -9 L2.6 -3 9 -3 4 1.5 6 8 0 4 -6 8 -4 1.5 -9 -3 -2.6 -3z" fill="${lt}"/>`);
+  if (tool === 'rainbow') return `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1">${['#ff6b6b', '#ffa94d', '#ffd43b', '#69db7c', '#4dabf7', '#9775fa'].map((x, i) => `<stop offset="${i / 5}" stop-color="${x}"/>`).join('')}</linearGradient>`;
+  return '';
+}
+function cbPaint(v, defs, u) {   // returns a CSS fill and adds any pattern it needs to defs
+  if (!v || !String(v).includes('|')) return v || '#fff';
+  const [tool, c] = String(v).split('|'), id = `cbp${++cbUid}`;
+  defs.push(cbPattern(tool, c, id, u)); return `url(#${id})`;
+}
 function picSVG(p, fills = {}, cls = '') {
-  let k = 0;
-  const body = p.svg().replace(/class="r( bg)?"/g, (m, bg) => `class="r${bg || ''}" data-k="${k}" style="fill:${fills[k++] || '#fff'}"`);
-  return `<svg viewBox="0 0 ${p.vb} ${p.vb}" class="pic ${p.om ? 'om' : ''} ${cls}">${body}</svg>`;
+  let k = 0; const defs = [], u = p.vb / 60;
+  const body = p.svg().replace(/class="r( bg)?"/g, (m, bg) => `class="r${bg || ''}" data-k="${k}" style="fill:${cbPaint(fills[k++], defs, u)}"`);
+  return `<svg viewBox="0 0 ${p.vb} ${p.vb}" class="pic ${p.om ? 'om' : ''} ${cls}"><defs class="cb-defs">${defs.join('')}</defs>${body}</svg>`;
 }
 
 function startColorPicker() {
@@ -1136,26 +1156,72 @@ function paintRipple(el, color) {
   d.className = 'paint-ripple'; d.style.cssText = `left:${b.left + b.width / 2}px;top:${b.top + b.height / 2}px;--c:${color}`;
   document.body.appendChild(d); setTimeout(() => d.remove(), 600);
 }
+// 56 colours: 8 colour families (columns) in 7 shades (rows), like a big crayon box
+const CB_COLORS = (() => {
+  const H = [[0, 82], [24, 92], [48, 96], [125, 60], [190, 78], [222, 80], [272, 68]], rows = [[52, 1], [36, 1], [64, 0.95], [84, 0.9], [74, 0.6], [44, 0.55], [26, 0.6]];
+  const hsl = (h, s, l) => { s /= 100; l /= 100; const f = (n) => { const k = (n + h / 30) % 12, a = s * Math.min(l, 1 - l); return Math.round(255 * (l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1)))).toString(16).padStart(2, '0'); }; return `#${f(0)}${f(8)}${f(4)}`; };
+  const grey = ['#868e96', '#000000', '#ced4da', '#ffffff', '#8d5a2b', '#5c3b1e', '#f1c27d'];   // greys, black, white, browns and a skin tone
+  return rows.flatMap(([l, sf], r) => [...H.map(([h, sat]) => hsl(h, sat * sf, l)), grey[r]]);
+})();
+const CB_TOOL_INFO = { fill: 'Paint', crayon: 'Crayon', glitter: 'Glitter', stripes: 'Stripes', dots: 'Dots', waves: 'Waves', stars: 'Stars', rainbow: 'Rainbow' };
 function startColoring(p) {
   state.art = state.art || {};
   const fills = state.art[p.id] = state.art[p.id] || {};
-  let cur = PALETTE_C[0];
+  let cur = state.cbColor || CB_COLORS[0], tool = state.cbTool || 'fill', erase = false;
+  const undo = [];
   const area = $('#gameArea');
-  area.innerHTML = `<div class="color-stage"><div class="color-wrap cz-view"><div class="cz-inner">${picSVG(p, fills, 'big')}</div></div>
-    <div class="palette">${PALETTE_C.map((c, i) => `<button class="sw-c ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}" aria-label="color">${c === '#ffffff' ? '🧽' : ''}</button>`).join('')}</div></div>
-    <div class="color-btns"><button class="big-btn alt small ico" data-a="pics" aria-label="Pictures">🖼️ Pictures</button>${p.orig ? '<button class="big-btn alt small ico" data-a="peek" aria-label="Peek">👀 Peek</button>' : ''}<button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
+  const swatch = (t, c) => { const d = []; const f = t === 'fill' ? c : cbPaint(`${t}|${c}`, d, 1.6); return `<svg viewBox="0 0 40 40" class="cb-sw"><defs>${d.join('')}</defs><rect x="2" y="2" width="36" height="36" rx="9" style="fill:${f}" stroke="#0002" stroke-width="2"/></svg>`; };
+  area.innerHTML = `<div class="cb">
+    <div class="cb-pic"><div class="color-wrap cz-view"><div class="cz-inner">${picSVG(p, fills, 'big')}</div></div></div>
+    <div class="cb-rail" role="toolbar" aria-label="Coloring tools">
+      <div class="cb-row"><button class="cb-btn cb-done" data-a="done" aria-label="I'm done">✔</button><button class="cb-btn" data-a="pics" aria-label="Pictures">🖼️</button></div>
+      <button class="cb-round" data-a="tool" aria-label="Choose a tool">${swatch(tool, cur)}</button>
+      <button class="cb-round cb-color" data-a="color" aria-label="Choose a colour" style="--c:${cur}"></button>
+      <button class="cb-round" data-a="erase" aria-label="Eraser">🧽</button>
+      <div class="cb-row">${p.orig ? '<button class="cb-btn" data-a="peek" aria-label="Peek">👀</button>' : ''}<button class="cb-btn" data-a="undo" aria-label="Undo">↩️</button><button class="cb-btn" data-a="clear" aria-label="Start over">🗑️</button></div>
+    </div>
+    <div class="cb-pop" data-pop="color" hidden><div class="cb-colors">${CB_COLORS.map((c) => `<button class="cb-c" data-c="${c}" style="--c:${c}" aria-label="colour ${c}"></button>`).join('')}</div></div>
+    <div class="cb-pop" data-pop="tool" hidden><div class="cb-tools">${CB_TOOLS.map((t) => `<button class="cb-t" data-t="${t}" aria-label="${CB_TOOL_INFO[t]}">${swatch(t, cur)}<small>${CB_TOOL_INFO[t]}</small></button>`).join('')}</div></div>
+  </div>`;
   say('Pick a color, then tap the picture.');
-  $$('.sw-c', area).forEach((b) => (b.onclick = () => {
-    $$('.sw-c', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); cur = b.dataset.c; sfx.tap();
-  }));
+  const svg = $('.color-wrap svg', area), defs = svg.querySelector('.cb-defs'), u = p.vb / 60;
+  const refresh = () => {
+    area.querySelector('[data-a="tool"]').innerHTML = swatch(erase ? 'fill' : tool, erase ? '#ffffff' : cur);
+    area.querySelector('[data-a="color"]').style.setProperty('--c', cur);
+    $$('.cb-t', area).forEach((b) => { b.firstElementChild.outerHTML = swatch(b.dataset.t, cur); b.classList.toggle('on', b.dataset.t === tool && !erase); });
+    $$('.cb-c', area).forEach((b) => b.classList.toggle('on', b.dataset.c === cur));
+    area.querySelector('[data-a="erase"]').classList.toggle('on', erase);
+  };
+  const pops = $$('.cb-pop', area);
+  const openPop = (name) => {
+    pops.forEach((x) => (x.hidden = x.dataset.pop !== name || !x.hidden)); sfx.tap();
+    const cb = area.querySelector('.cb'), rail = area.querySelector('.cb-rail');
+    if (matchMedia('(orientation: portrait)').matches) pops.forEach((x) => { x.style.bottom = `${cb.offsetHeight - rail.offsetTop + 10}px`; x.style.top = 'auto'; });
+    else pops.forEach((x) => { x.style.bottom = ''; x.style.top = '0px'; x.style.right = `${cb.offsetWidth - rail.offsetLeft + 12}px`; });   // just left of the rail
+  };
+  const closePops = () => pops.forEach((x) => (x.hidden = true));
+  area.querySelector('[data-a="color"]').onclick = () => openPop('color');
+  area.querySelector('[data-a="tool"]').onclick = () => openPop('tool');
+  $$('.cb-c', area).forEach((b) => (b.onclick = () => { cur = state.cbColor = b.dataset.c; erase = false; refresh(); closePops(); sfx.tap(); }));
+  $$('.cb-t', area).forEach((b) => (b.onclick = () => { tool = state.cbTool = b.dataset.t; erase = false; refresh(); closePops(); sfx.tap(); }));
+  area.querySelector('[data-a="erase"]').onclick = () => { erase = !erase; refresh(); closePops(); sfx.tap(); };
   const zoom = zoomable($('.cz-view', area), $('.cz-inner', area));
+  const paint = (r, v) => { const d = []; r.style.fill = cbPaint(v, d, u); if (d.length) defs.insertAdjacentHTML('beforeend', d.join('')); if (v === '#ffffff' || v === '#fff') delete fills[r.dataset.k]; else fills[r.dataset.k] = v; };
   $$('.color-wrap .r', area).forEach((r) => (r.onclick = () => {
     if (zoom.busy()) return;          // that was a pinch or a drag, not a tap
-    r.style.fill = cur; fills[r.dataset.k] = cur; save();
+    if (pops.some((x) => !x.hidden)) { closePops(); return; }
+    const v = erase ? '#ffffff' : tool === 'fill' ? cur : `${tool}|${cur}`;
+    undo.push([r, fills[r.dataset.k]]); if (undo.length > 60) undo.shift();
+    paint(r, v); save();
     r.classList.remove('splash'); void r.getBoundingClientRect(); r.classList.add('splash');
-    paintRipple(r, cur);
+    paintRipple(r, tool === 'rainbow' && !erase ? '#ffd43b' : erase ? '#ffffff' : cur);
     tone([500 + Math.random() * 400], { dur: 0.05, vol: 0.08 });
   }));
+  area.querySelector('[data-a="undo"]').onclick = () => { const x = undo.pop(); if (!x) return; if (Array.isArray(x[0])) x.forEach(([r, v]) => paint(r, v || '#ffffff')); else paint(x[0], x[1] || '#ffffff'); save(); sfx.tap(); };
+  area.querySelector('[data-a="clear"]').onclick = () => {
+    const regs = $$('.color-wrap .r', area); undo.push(regs.map((r) => [r, fills[r.dataset.k]]));
+    regs.forEach((r) => paint(r, '#ffffff')); save(); sfx.tap();
+  };
   const peek = area.querySelector('[data-a="peek"]');
   if (peek) peek.onclick = () => {          // show the original colors for 2 seconds
     sfx.tap();
@@ -1171,6 +1237,7 @@ function startColoring(p) {
     gameWin('Beautiful picture!');
     endPanel('Beautiful picture!', '🎨', startColorPicker);
   };
+  refresh();
 }
 
 
