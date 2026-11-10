@@ -73,7 +73,7 @@ const { chromium } = require('playwright');
       openGame('draw'); document.querySelector('#gameArea [data-a="surprise"]')?.click();
       const area=document.querySelector('#gameArea');
       check(area.querySelectorAll('.dr-size').length===4, 'Four pencil/brush sizes missing');
-      check(area.querySelectorAll('.dr-ink').length===10, 'Drawing palette changed unexpectedly');
+      check(area.querySelectorAll('.dr-ink').length===CB_COLORS.length, 'Drawing palette changed unexpectedly');
       state.gameLv.puzzle=3;
       openGame('puzzle');
       startPuzzle(ALL_PICS[0]);
@@ -108,8 +108,9 @@ const { chromium } = require('playwright');
       return {padWidth:pad.width,doneBottom:done.getBoundingClientRect().bottom,
         viewport:innerHeight,documentHeight:document.documentElement.scrollHeight};
     });
-    assert.ok(landscape.padWidth > 90 && landscape.padWidth <= 520,
-      'Landscape iPad canvas should be compact: ' + JSON.stringify(landscape));
+    // the canvas now takes the screen height, with every tool in a rail beside it and nothing below the fold
+    assert.ok(landscape.padWidth > 520 && landscape.doneBottom <= landscape.viewport && landscape.documentHeight <= landscape.viewport + 12,
+      'Landscape iPad canvas should fill the height with the rail in view: ' + JSON.stringify(landscape));
     assert.ok(landscape.doneBottom <= landscape.viewport + 4,
       'Landscape iPad toolbar not reachable: ' + JSON.stringify(landscape));
     for(const name of ['cat','dog','rabbit','duck','elephant','tiger','butterfly','horse','sunflower','rose','tulip','daisy','car','airplane','helicopter','truck']) {
