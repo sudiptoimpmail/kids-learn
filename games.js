@@ -324,7 +324,7 @@ function startTTT() {
     if (b.every(Boolean)) { over = true; say("It's a tie!"); later(() => endPanel("It's a tie!", '🤝', startTTT), 900); return true; }
     return false;
   }
-  function botMove() {
+  function botChoice() {
     const free = b.map((v, i) => (v ? null : i)).filter((v) => v != null);
     const findLine = (who) => { for (const l of LINES3) { const vals = l.map((i) => b[i]); if (vals.filter((v) => v === who).length === 2 && vals.includes(null)) return l[vals.indexOf(null)]; } return null; };
     // friendly robot: always takes a win, blocks most of the time, otherwise plays loosely
@@ -334,14 +334,31 @@ function startTTT() {
     if (m == null && b[4] == null && Math.random() < [0.2, 0.5, 0.9][lv - 1]) m = 4;
     if (m == null && lv === 3) { const corners = [0, 2, 6, 8].filter((i) => !b[i]); if (corners.length) m = pick(corners); }
     if (m == null) m = free[Math.floor(Math.random() * free.length)];
-    put(m, BOT); sfx.tap();
+    return m;
+  }
+  // the robot takes its time: "thinking…", its eyes hop over a few empty squares, then it drops into its pick
+  const msg = $('.g-msg', area), turnMsg = msg.innerHTML;
+  function botTurn(done) {
+    const m = botChoice(), free = b.map((v, i) => (v ? null : i)).filter((v) => v != null && v !== m);
+    const hops = [...shuffle(free).slice(0, Math.min(2, free.length)), m];
+    msg.innerHTML = `${BOT} Robot is thinking<span class="ttt-dots"><i>.</i><i>.</i><i>.</i></span>`;
+    area.querySelector('.ttt-board').classList.add('bot-turn');
+    let k = 0;
+    const hop = () => {
+      cells.forEach((c) => c.classList.remove('consider'));
+      if (k < hops.length) { cells[hops[k]].classList.add('consider'); cells[hops[k]].dataset.peek = BOT; k++; later(hop, 420); return; }
+      area.querySelector('.ttt-board').classList.remove('bot-turn');
+      put(m, BOT); cells[m].classList.add('bot-drop'); tone([523, 392], { dur: 0.07, gap: 0.05, vol: 0.08 });
+      msg.innerHTML = turnMsg; done();
+    };
+    later(hop, 450);
   }
   cells.forEach((c, i) => (c.onclick = () => {
     if (busy || over || b[i]) return;
     put(i, ME); sfx.tap();
     if (check()) return;
     busy = true;
-    later(() => { botMove(); busy = false; check(); }, 550);
+    later(() => botTurn(() => { busy = false; check(); }), 350);
   }));
 }
 
