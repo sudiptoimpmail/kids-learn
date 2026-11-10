@@ -340,25 +340,25 @@ function startTTT() {
   const msg = $('.g-msg', area), turnMsg = msg.innerHTML;
   function botTurn(done) {
     const m = botChoice(), free = b.map((v, i) => (v ? null : i)).filter((v) => v != null && v !== m);
-    const hops = [...shuffle(free).slice(0, Math.min(2, free.length)), m];
+    const hops = [...shuffle(free).slice(0, Math.min(3, free.length)), m];
     msg.innerHTML = `${BOT} Robot is thinking<span class="ttt-dots"><i>.</i><i>.</i><i>.</i></span>`;
     area.querySelector('.ttt-board').classList.add('bot-turn');
     let k = 0;
     const hop = () => {
       cells.forEach((c) => c.classList.remove('consider'));
-      if (k < hops.length) { cells[hops[k]].classList.add('consider'); cells[hops[k]].dataset.peek = BOT; k++; later(hop, 420); return; }
+      if (k < hops.length) { cells[hops[k]].classList.add('consider'); cells[hops[k]].dataset.peek = BOT; k++; later(hop, 650); return; }
       area.querySelector('.ttt-board').classList.remove('bot-turn');
       put(m, BOT); cells[m].classList.add('bot-drop'); tone([523, 392], { dur: 0.07, gap: 0.05, vol: 0.08 });
       msg.innerHTML = turnMsg; done();
     };
-    later(hop, 450);
+    later(hop, 800);
   }
   cells.forEach((c, i) => (c.onclick = () => {
     if (busy || over || b[i]) return;
     put(i, ME); sfx.tap();
     if (check()) return;
     busy = true;
-    later(() => botTurn(() => { busy = false; check(); }), 350);
+    later(() => botTurn(() => { busy = false; check(); }), 600);
   }));
 }
 
