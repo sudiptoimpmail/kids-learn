@@ -71,7 +71,7 @@ const { chromium } = require('playwright');
       state.grade = 'g2';
       openBrainGame('memory');
       if (!area.querySelector('.mem-board')) throw Error('Memory did not open');
-      openBrainGame('c4');
+      brainMode = false; state.playAlways = true; openGame('c4');
       if (area.querySelectorAll('.c4-cell').length !== 42) throw Error('Connect Four missing cells');
       // finger maze: walking the one route reaches the goal and wins once
       state.gameLv.path = 3; brainMode = false; state.playAlways = true; openGame('path');

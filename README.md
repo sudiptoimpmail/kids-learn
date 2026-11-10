@@ -52,12 +52,12 @@ A library of picture books read aloud. Each page has a hand-painted picture and 
 
 ## 🧠 Brain Games (always available)
 
-Open **Brain Games** on Home for Finger Maze, Memory Match, Picture Puzzle, Sudoku and Connect Four (each from the grade where it fits). These problem-solving challenges are **not locked behind earned play breaks**. The available games depend on age/grade (Pre-K: Memory, Tic-Tac-Toe, Picture Puzzle; Kindergarten also Sudoku and Ball Maze; Grade 1 adds Connect Four). In Settings, **Show all games** overrides grade visibility. A completed brain puzzle is counted separately in the parent Progress dashboard.
+Open **Brain Games** on Home for Memory Match, Picture Puzzle and Sudoku (each from the grade where it fits). These problem-solving challenges are **not locked behind earned play breaks**. The available games depend on age/grade (Pre-K: Memory, Tic-Tac-Toe, Picture Puzzle; Kindergarten also Sudoku). In Settings, **Show all games** overrides grade visibility. A completed brain puzzle is counted separately in the parent Progress dashboard.
 
 Pattern recognition, Odd One Out and What Comes Next? are **education lessons**, found under **Thinking Skills** in the learning catalog, and included in alternating daily quests.
 
 ## 🎮 Play Zone (reward games)
-The Play Zone contains arcade and creativity activities (Tic-Tac-Toe, Balloons, Coloring, Rolling Ball 3D, Pinball, Ball Maze, Whack-a-Mole, Draw & Copy, Silly Moves). Brain Games listed below are available separately on Home. Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (default: every 2 finished learning rounds earn a 3-minute break) or **Minutes every hour** (free play for up to 15 minutes in each clock hour — only time actually spent playing counts). Or set "Always open". Every game shows its **level** (badge on the tile) and winning moves her up. A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
+The Play Zone contains arcade and creativity activities (Tic-Tac-Toe, Connect Four, Finger Maze, Balloons, Coloring, Rolling Ball 3D, Pinball, Ball Maze, Whack-a-Mole, Draw & Copy, Silly Moves). Brain Games listed below are available separately on Home. Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (default: every 2 finished learning rounds earn a 3-minute break) or **Minutes every hour** (free play for up to 15 minutes in each clock hour — only time actually spent playing counts). Or set "Always open". Every game shows its **level** (badge on the tile) and winning moves her up. A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
 
 | Game | Notes |
 |---|---|

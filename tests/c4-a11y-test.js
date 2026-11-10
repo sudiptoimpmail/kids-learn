@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
   const p = await b.newPage(); const errs = []; p.on('pageerror', (e) => errs.push(e.message));
   await p.goto('http://localhost:8765/index.html'); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady);
   await p.locator('#startBtn').click(); await p.waitForTimeout(300);
-  await p.evaluate(() => { state.grade = 'g2'; brainMode = true; openGame('c4'); });
+  await p.evaluate(() => { state.grade = 'g2'; openGame('c4'); });
   await p.waitForSelector('.c4-drop');
   assert.equal(await p.locator('.c4-drop').count(), 7);
   await p.locator('.c4-drop').first().focus();

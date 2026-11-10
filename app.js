@@ -1079,9 +1079,17 @@ function applyTheme() {
   $('#mascot').textContent = THEMES[t].mascot;
   document.body.classList.toggle('test-mode', isTestMode());
 }
+const SCHEMES = [['light', '☀️ Light'], ['dark', '🌙 Dark'], ['auto', '📱 Same as device']];
+function renderSchemes() {
+  const box = $('#schemeBtns'); if (!box || typeof CoreScheme === 'undefined') return;
+  const cur = CoreScheme.get();
+  box.innerHTML = SCHEMES.map(([k, label]) => `<button class="grade-btn ${cur === k ? 'on' : ''}" data-s="${k}">${label}</button>`).join('');
+  $$('#schemeBtns .grade-btn').forEach((b) => (b.onclick = () => { sfx.tap(); CoreScheme.set(b.dataset.s); renderSchemes(); }));
+}
 function renderThemes() {
   $('#themeBtns').innerHTML = Object.entries(THEMES).map(([k, t]) => `<button class="grade-btn ${(state.theme || 'rainbow') === k ? 'on' : ''}" data-t="${k}">${t.label}</button>`).join('');
   $$('#themeBtns .grade-btn').forEach((b) => (b.onclick = () => { sfx.tap(); state.theme = b.dataset.t; save(); applyTheme(); renderThemes(); }));
+  renderSchemes();
 }
 
 /* ---------- hidden test mode: tap the Settings title 5 times ---------- */

@@ -173,7 +173,7 @@ const GAMES = [
 const GAME_MAX = { path: 11, pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
 // Brain Teasers: puzzle games shown with the thinking lessons on the home screen.
 // They are learning, so they never need earned play time (Tic-Tac-Toe and Ball Maze stay in the Play Zone).
-const BRAIN_GAME_IDS = new Set(['memory', 'puzzle', 'sudoku', 'c4']);   // Finger Maze lives with the regular games
+const BRAIN_GAME_IDS = new Set(['memory', 'puzzle', 'sudoku']);   // Finger Maze and Connect Four live with the regular games
 const BRAIN_MIN_GRADE = { path: 'prek', memory: 'prek', puzzle: 'prek', sudoku: 'k', c4: 'g1' };
 const BRAIN_GRADE_ORDER = ['prek', 'k', 'g1', 'g2', 'g3'];
 let brainMode = false;
@@ -1206,7 +1206,19 @@ function startColoring(p) {
   $$('.cb-t', area).forEach((b) => (b.onclick = () => { tool = state.cbTool = b.dataset.t; erase = false; refresh(); closePops(); sfx.tap(); }));
   area.querySelector('[data-a="erase"]').onclick = () => { erase = !erase; refresh(); closePops(); sfx.tap(); };
   const zoom = zoomable($('.cz-view', area), $('.cz-inner', area));
-  const paint = (r, v) => { const d = []; r.style.fill = cbPaint(v, d, u); if (d.length) defs.insertAdjacentHTML('beforeend', d.join('')); if (v === '#ffffff' || v === '#fff') delete fills[r.dataset.k]; else fills[r.dataset.k] = v; };
+  let peeking = false, peekTimer = 0;
+  const endPeek = () => {                   // put her colours back (also when she taps the picture mid-peek)
+    if (!peeking) return; peeking = false; clearTimeout(peekTimer);
+    $$('.color-wrap .r:not(.bg)', area).forEach((r) => { if (r.dataset.was != null) r.style.fill = r.dataset.was; delete r.dataset.was; });
+  };
+  // the pattern goes into the picture BEFORE the region points at it: Safari on iPhone/iPad otherwise draws
+  // nothing for a fill that names a pattern it hasn't seen yet, and the region looks like it disappeared
+  const paint = (r, v) => {
+    if (peeking) endPeek();
+    const d = [], f = cbPaint(v, d, u);
+    if (d.length) defs.insertAdjacentHTML('beforeend', d.join(''));
+    r.style.fill = f;
+    if (v === '#ffffff' || v === '#fff') delete fills[r.dataset.k]; else fills[r.dataset.k] = v; };
   $$('.color-wrap .r', area).forEach((r) => (r.onclick = () => {
     if (zoom.busy()) return;          // that was a pinch or a drag, not a tap
     if (pops.some((x) => !x.hidden)) { closePops(); return; }
@@ -1225,9 +1237,10 @@ function startColoring(p) {
   const peek = area.querySelector('[data-a="peek"]');
   if (peek) peek.onclick = () => {          // show the original colors for 2 seconds
     sfx.tap();
-    const regs = $$('.color-wrap .r:not(.bg)', area);
-    regs.forEach((r, i) => { r.dataset.was = r.style.fill; r.style.fill = p.orig[i] || '#fff'; });
-    later(() => regs.forEach((r) => (r.style.fill = r.dataset.was)), 2000);
+    if (peeking) return;                    // a second tap while peeking must not save the peek colours as hers
+    peeking = true;
+    $$('.color-wrap .r:not(.bg)', area).forEach((r, i) => { r.dataset.was = r.style.fill; r.style.fill = p.orig[i] || '#fff'; });
+    peekTimer = later(endPeek, 2000);
   };
   area.querySelector('[data-a="pics"]').onclick = () => { sfx.tap(); startColorPicker(); };
   area.querySelector('[data-a="done"]').onclick = () => {

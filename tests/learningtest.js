@@ -65,7 +65,7 @@ const { chromium } = require('playwright');
       state.grade = 'g3';
       renderHome();
       const older = tiles();
-      if (!older.includes('sudoku') || !older.includes('c4') || older.includes('pop'))
+      if (!older.includes('sudoku') || older.includes('c4') || older.includes('pop'))
         throw new Error('Older child brain games failed: ' + older.join(','));
       state.playAlways = true;
       openPlayZone();
