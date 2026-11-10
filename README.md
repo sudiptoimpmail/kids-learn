@@ -123,6 +123,8 @@ Bundled question banks are JSON files and local media assets, while JavaScript h
 `sh tests/run.sh` runs the browser tests (needs Node, Playwright and Chrome): profiles and old-save migration, 3D clean-up, PIN, tracing (every line must be traced), dashboard, daily quest plans for every grade, short-round grading, hints vs mastery, saving after each answer, play rewards, bad backups, offline caching, and that every voice line has a recording.
 
 ## Plans
+**iPhone / iPad app:** see [docs/IOS.md](docs/IOS.md) (Capacitor wrapper; install on your own devices with a free Apple ID).
+
 The grade-by-grade plan (what each grade sees and ideas to add) and the launch architecture (native app storage, accounts, subscriptions) are in [docs/launch-architecture.md](docs/launch-architecture.md).
 
 ## Grade-to-skill routing

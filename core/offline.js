@@ -4,7 +4,8 @@
 const CoreOffline = (() => {
   const OFF_CFG = AppConfig.offline || {};
   let inFrame = true; try { inFrame = window.top !== window; } catch {}
-  const available = () => 'serviceWorker' in navigator && location.protocol === 'https:' && !inFrame && OFF_CFG.serviceWorker !== false;
+  const available = () => 'serviceWorker' in navigator && location.protocol === 'https:' && !inFrame && OFF_CFG.serviceWorker !== false
+    && !(window.CoreNative && CoreNative.isNative);   // the native app already has its files inside it
   let restartApproved = false;
   // "updateOnLaunch": apply a downloaded update by itself, but only when nobody is using the app:
   // right after it opens (before the first tap) or when it comes back on screen and the app's
