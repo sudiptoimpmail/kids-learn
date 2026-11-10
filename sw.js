@@ -4,7 +4,7 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v148';
+const VERSION = PREFIX + 'v149';
 const AUDIO = PREFIX + 'audio';
 const FILES = [
   "library/little-red-hen/apple.svg",
@@ -892,6 +892,21 @@ const FILES = [
   "assets/fluent/3030.webp",
   "assets/fluent/LICENSE-fluentui-emoji.txt",
   "assets/fluent/manifest.json",
+  "assets/fluent/1f6a0.webp",
+  "assets/fluent/1f47b.webp",
+  "assets/fluent/1f47e.webp",
+  "assets/fluent/1f6f4.webp",
+  "assets/fluent/1f920.webp",
+  "assets/fluent/1f9de-200d-2640.webp",
+  "assets/fluent/1f9a6.webp",
+  "assets/fluent/1f9b8-200d-2640.webp",
+  "assets/fluent/1f6f8.webp",
+  "assets/fluent/1fac5.webp",
+  "assets/fluent/1fa85.webp",
+  "assets/fluent/1f432.webp",
+  "assets/fluent/1f37f.webp",
+  "assets/fluent/1f648.webp",
+  "assets/fluent/1f9da-200d-2640.webp",
   "assets/fluent/260e.webp",
   "assets/fluent/26cf.webp",
   "assets/fluent/1f311.webp",

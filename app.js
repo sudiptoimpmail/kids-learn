@@ -933,13 +933,36 @@ function finish() {
   $('#againBtn').hidden = !!qn;
   show('result');
   sfx.win(); confetti(160, 0.3); setTimeout(() => confetti(120, 0.5), 600);
+  if (sticker) setTimeout(() => { if (document.querySelector('#result.active')) stickerReveal(sticker); }, 900);
   say(`${stars === 3 ? 'Wow! Awesome job!' : stars === 2 ? 'Great job!' : 'Good try!'} You got ${R.firstTry} stars.${levelMsg.startsWith('⬆️') ? ' Level up!' : ''}${sticker ? ' And a new sticker!' : ''}${earned ? ' You earned play time!' : ''}`);
 }
 
-function renderStickers() {
+function renderStickers() {   // themed shelves come from family-learning.js (learning framework collections)
   $('#stickerGrid').innerHTML = STICKERS.map((s) =>
     `<div class="stk ${state.stickers.includes(s) ? 'have' : ''}">${state.stickers.includes(s) ? s : '❔'}</div>`).join('');
-  $('#stickerNote').textContent = `${state.stickers.length} of ${STICKERS.length} — finish a game to win a new one!`;
+  $('#stickerNote').textContent = `${state.stickers.length} of ${STICKERS.length} — finish a lesson to win a new one!`;
+}
+
+// A new sticker arrives big: it bounces in over glowing rays, then shrinks into the result card.
+function stickerReveal(sticker) {
+  const set = (typeof learningConfig !== 'undefined' && learningConfig.collections || []).find((x) => x.items.includes(sticker));
+  const el = document.createElement('div'); el.className = 'stk-reveal'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', 'New sticker');
+  el.innerHTML = `<div class="stk-rays"></div><div class="stk-big">${sticker}</div><div class="stk-label">New sticker!<small>${set ? (set.icon || '') + ' ' + set.title : ''}</small></div>
+    <div class="stk-sparkles">${Array.from({ length: 14 }, (_, i) => `<i style="--a:${i * 360 / 14}deg;--d:${(i % 4) * 90}ms"></i>`).join('')}</div>`;
+  document.body.appendChild(el);
+  if (typeof sfx !== 'undefined' && sfx.yes) setTimeout(() => sfx.yes(), 350);
+  let gone = false;
+  const done = () => {
+    if (gone) return; gone = true; clearTimeout(t);
+    const big = el.querySelector('.stk-big'), target = document.querySelector('#resSticker .new-sticker');
+    if (target && big) {   // fly into its spot on the result card
+      const a = big.getBoundingClientRect(), b = target.getBoundingClientRect();
+      big.style.transform = `translate(${b.left + b.width / 2 - (a.left + a.width / 2)}px, ${b.top + b.height / 2 - (a.top + a.height / 2)}px) scale(${Math.max(0.2, b.width / a.width)})`;
+    }
+    el.classList.add('out'); setTimeout(() => el.remove(), 520);
+  };
+  el.onclick = done;
+  const t = setTimeout(done, 3200);
 }
 
 /* ---------- Word Wonders: learn cards ---------- */
