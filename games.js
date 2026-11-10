@@ -1656,13 +1656,21 @@ function startDraw(refIndex) {
   const ref = refs[refIndex != null ? refIndex % refs.length : Math.floor(Math.random() * refs.length)];
   const trace = lv <= 2;   // 2nd grade and up draw (copy); their guide lines are thin, then very faint
   const area = $('#gameArea');
-  area.innerHTML = `<div class="dr-top"><div class="dr-ref">${ref.svg}<small>${ref.name}</small></div>
-      <div class="dr-say"><b>${trace ? 'Trace the' : 'Copy the'} ${ref.name}!</b><small>${lv <= 2 ? 'Follow the gray lines with your finger.' : lv === 3 ? 'Look at the picture. The thin lines can help.' : 'Look at the picture. The faint lines can help.'}</small></div></div>
-    <div class="dr-pad"><canvas class="dr-fill"></canvas>${(([w, o]) => `<div class="dr-guide dr-guide-${Math.min(4, lv)}" style="opacity:${o}">${drawSVG(ref.d, w)}</div>`)(DRAW_GUIDE[Math.min(4, Math.max(1, lv))])}<canvas class="dr-cv"></canvas></div>
-    <div class="dr-tools">${INK.map((c, i) => `<button class="dr-ink ${i === 0 ? 'on' : ''}" data-c="${c}" style="--sw:${c}"></button>`).join('')}
-      <button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✎<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
-      <button class="dr-tool" data-t="bucket" aria-label="Pour paint"><svg class="bk-ico" viewBox="0 0 36 36" aria-hidden="true"><g transform="rotate(-22 18 20)"><path d="M7 14h20l-2.4 15.2a2.4 2.4 0 0 1-2.4 2H11.8a2.4 2.4 0 0 1-2.4-2z" fill="#e9ecef" stroke="#495057" stroke-width="1.8" stroke-linejoin="round"/><path d="M7.6 17h18.8l-.6 4H8.2z" fill="var(--pour,#4dabf7)"/><path d="M8 14c0-5 4-8 9-8s9 3 9 8" fill="none" stroke="#495057" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="17" cy="14" rx="10" ry="2.2" fill="var(--pour,#4dabf7)" stroke="#495057" stroke-width="1.6"/></g><path d="M29 22c2.6 3.4 3.8 5.4 3.8 7a3.8 3.8 0 0 1-7.6 0c0-1.6 1.2-3.6 3.8-7z" fill="var(--pour,#4dabf7)" stroke="#495057" stroke-width="1.4"/></svg><small>Fill</small></button><button class="dr-tool" data-t="erase">🧽</button><button class="dr-tool" data-t="undo">↩️</button><button class="dr-tool" data-t="clear">🗑️</button></div>
-    <div class="color-btns"><button class="big-btn alt small ico" data-a="choose" aria-label="Choose a picture">🎯 Choose</button><button class="big-btn alt small ico" data-a="gallery" aria-label="My drawings">🖼️ Mine</button><button class="big-btn small ico" data-a="done" aria-label="I'm done">✅ Done</button></div>`;
+  // same layout as the Coloring Book: the drawing pad takes the height, one rail holds everything else
+  area.innerHTML = `<div class="cb dr">
+    <div class="cb-pic"><div class="dr-pad"><canvas class="dr-fill"></canvas>${(([w, o]) => `<div class="dr-guide dr-guide-${Math.min(4, lv)}" style="opacity:${o}">${drawSVG(ref.d, w)}</div>`)(DRAW_GUIDE[Math.min(4, Math.max(1, lv))])}<canvas class="dr-cv"></canvas></div></div>
+    <div class="cb-rail" role="toolbar" aria-label="Drawing tools">
+      <button class="dr-ref" data-a="ref" aria-label="${trace ? 'Trace' : 'Copy'} the ${ref.name}">${ref.svg}<small>${ref.name}</small></button>
+      <div class="cb-row"><button class="cb-btn cb-done" data-a="done" aria-label="I'm done">✔</button><button class="cb-btn" data-a="choose" aria-label="Choose a picture">🎯</button><button class="cb-btn" data-a="gallery" aria-label="My drawings">🖼️</button></div>
+      <button class="cb-round" data-a="drtool" aria-label="Choose a pencil, brush or paint">✏️</button>
+      <button class="cb-round cb-color" data-a="drcolor" aria-label="Choose a colour" style="--c:${INK[0]}"></button>
+      <button class="cb-round dr-tool" data-t="erase" aria-label="Eraser">🧽</button>
+      <div class="cb-row"><button class="cb-btn dr-tool" data-t="undo" aria-label="Undo">↩️</button><button class="cb-btn dr-tool" data-t="clear" aria-label="Start over">🗑️</button></div>
+    </div>
+    <div class="cb-pop" data-pop="color" hidden><div class="cb-colors">${CB_COLORS.map((c, i) => `<button class="dr-ink cb-c ${c === INK[0] ? 'on' : ''}" data-c="${c}" style="--c:${c};--sw:${c}" aria-label="colour ${c}"></button>`).join('')}</div></div>
+    <div class="cb-pop" data-pop="tool" hidden><div class="cb-tools dr-tools2"><button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✎<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
+      <button class="dr-tool" data-t="bucket" aria-label="Pour paint"><svg class="bk-ico" viewBox="0 0 36 36" aria-hidden="true"><g transform="rotate(-22 18 20)"><path d="M7 14h20l-2.4 15.2a2.4 2.4 0 0 1-2.4 2H11.8a2.4 2.4 0 0 1-2.4-2z" fill="#e9ecef" stroke="#495057" stroke-width="1.8" stroke-linejoin="round"/><path d="M7.6 17h18.8l-.6 4H8.2z" fill="var(--pour,#4dabf7)"/><path d="M8 14c0-5 4-8 9-8s9 3 9 8" fill="none" stroke="#495057" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="17" cy="14" rx="10" ry="2.2" fill="var(--pour,#4dabf7)" stroke="#495057" stroke-width="1.6"/></g><path d="M29 22c2.6 3.4 3.8 5.4 3.8 7a3.8 3.8 0 0 1-7.6 0c0-1.6 1.2-3.6 3.8-7z" fill="var(--pour,#4dabf7)" stroke="#495057" stroke-width="1.4"/></svg><small>Fill</small></button></div></div>
+  </div>`;
   say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
   const cv = $('.dr-cv', area), pad = $('.dr-pad', area);
   const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -1802,6 +1810,25 @@ function startDraw(refIndex) {
   $('[data-t="erase"]', area).onclick = (e) => { erase = !erase; e.currentTarget.classList.toggle('on', erase); sfx.tap(); };
   $('[data-t="bucket"]', area).onclick = (e) => { bucket = !bucket; e.currentTarget.classList.toggle('on', bucket); if (bucket) $$('.dr-size', area).forEach((x) => x.classList.remove('on')); sfx.tap(); say(bucket ? 'Tap a shape to pour paint in!' : 'Draw with your finger!'); };
   $('[data-t="undo"]', area).onclick = () => { strokes.pop(); replay(); sfx.tap(); };
+  // rail: pop-up trays for colours and tools; the round buttons show what is chosen
+  const pops = $$('.cb-pop', area), cbx = area.querySelector('.cb'), rail = area.querySelector('.cb-rail');
+  const openPop = (name) => {
+    pops.forEach((x) => (x.hidden = x.dataset.pop !== name || !x.hidden)); sfx.tap();
+    if (matchMedia('(orientation: portrait)').matches) pops.forEach((x) => { x.style.bottom = `${cbx.offsetHeight - rail.offsetTop + 10}px`; x.style.top = 'auto'; x.style.right = ''; });
+    else pops.forEach((x) => { x.style.bottom = ''; x.style.top = '0px'; x.style.right = `${cbx.offsetWidth - rail.offsetLeft + 12}px`; });
+  };
+  const closePops = () => pops.forEach((x) => (x.hidden = true));
+  const railTool = area.querySelector('[data-a="drtool"]'), railColor = area.querySelector('[data-a="drcolor"]');
+  const refreshRail = () => {
+    railColor.style.setProperty('--c', color);
+    const on = area.querySelector('.dr-tools2 .on');
+    railTool.innerHTML = on ? on.innerHTML : '✏️'; railTool.style.setProperty('--pour', color);
+  };
+  railTool.onclick = () => openPop('tool'); railColor.onclick = () => openPop('color');
+  $$('.dr-ink, .dr-tools2 button', area).forEach((b) => b.addEventListener('click', () => { closePops(); refreshRail(); }));
+  pad.addEventListener('pointerdown', closePops, true);
+  area.querySelector('[data-a="ref"]').onclick = () => { sfx.tap(); say(`${trace ? 'Trace' : 'Copy'} the ${ref.name}!`); };
+  refreshRail();
   $('[data-t="clear"]', area).onclick = () => { strokes = []; replay(); sfx.tap(); };
   area.querySelector('[data-a="choose"]').onclick = () => { sfx.tap(); drawChooser(); };
   area.querySelector('[data-a="gallery"]').onclick = () => { sfx.tap(); drawGallery(); };

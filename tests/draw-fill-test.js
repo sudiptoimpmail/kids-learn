@@ -16,13 +16,13 @@ const fail = (m) => { console.error('FAIL ' + m); process.exitCode = 1; };
   const filled = () => p.evaluate(() => { const f = document.querySelector('.dr-fill'); const d = f.getContext('2d').getImageData(0, 0, f.width, f.height).data; let n = 0; for (let i = 3; i < d.length; i += 4) if (d[i] > 0) n++; return n / (f.width * f.height); });
   const px = (fx, fy) => p.evaluate(([fx, fy]) => { const f = document.querySelector('.dr-fill'); return f.getContext('2d').getImageData(Math.floor(fx * f.width), Math.floor(fy * f.height), 1, 1).data[3]; }, [fx, fy]);
   // 1) pouring on an empty page must NOT flood it (the template's own lines don't count)
-  await p.locator('[data-t=bucket]').click(); await p.mouse.click(bb.x + bb.width * 0.5, bb.y + bb.height * 0.5); await p.waitForTimeout(200);
+  await p.locator('[data-a=drtool]').click(); await p.locator('[data-t=bucket]').click(); await p.mouse.click(bb.x + bb.width * 0.5, bb.y + bb.height * 0.5); await p.waitForTimeout(200);
   if ((await filled()) > 0.01) fail('paint flooded a page with no drawing in it');
   // 2) draw a closed square, then pour inside it
-  await p.locator('.dr-size').first().click();
+  await p.locator('[data-a=drtool]').click(); await p.locator('.dr-size').first().click();
   const x0 = bb.x + bb.width * 0.3, y0 = bb.y + bb.height * 0.3, x1 = bb.x + bb.width * 0.7, y1 = bb.y + bb.height * 0.7;
   await p.mouse.move(x0, y0); await p.mouse.down(); for (const [x, y] of [[x1, y0], [x1, y1], [x0, y1], [x0, y0 - 2]]) await p.mouse.move(x, y, { steps: 12 }); await p.mouse.up(); await p.waitForTimeout(200);
-  await p.locator('[data-t=bucket]').click(); await p.mouse.click(bb.x + bb.width * 0.5, bb.y + bb.height * 0.5); await p.waitForTimeout(300);
+  await p.locator('[data-a=drtool]').click(); await p.locator('[data-t=bucket]').click(); await p.mouse.click(bb.x + bb.width * 0.5, bb.y + bb.height * 0.5); await p.waitForTimeout(300);
   const fr = await filled();
   if (fr < 0.1 || fr > 0.3) fail('fill covers ' + fr.toFixed(2) + ' of the page; expected about the square (0.16)');
   if ((await px(0.5, 0.5)) === 0) fail('inside the child\'s square is not painted');
