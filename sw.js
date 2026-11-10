@@ -4,7 +4,7 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v156';
+const VERSION = PREFIX + 'v157';
 const AUDIO = PREFIX + 'audio';
 const FILES = [
   "library/little-red-hen/apple.svg",
@@ -1329,6 +1329,7 @@ const FILES = [
   "core/progression.js",
   "core/content-packs.js",
   "core/offline.js",
+  "core/native.js",
   "core/sw-core.js"
 ];
 // voice clips cached right away (the rest are cached on first use, or all at once from Settings)

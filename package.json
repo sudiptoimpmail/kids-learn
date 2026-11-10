@@ -1,9 +1,12 @@
 {
-  "name": "kids-learn-browser-regression",
+  "name": "learn-and-play",
   "private": true,
   "version": "0.1.0",
-  "description": "Browser tests for the offline-first Learn & Play app",
+  "description": "Learn & Play: offline learning games (web app, and the iPhone/iPad app built with Capacitor)",
   "scripts": {
+    "build:www": "node scripts/build-www.mjs",
+    "ios": "node scripts/build-www.mjs && npx cap sync ios && npx cap open ios",
+    "ios:sync": "node scripts/build-www.mjs && npx cap sync ios",
     "test": "sh tests/run.sh",
     "check": "node --check app.js && node --check games.js && node --check thinking.js && node --check progress.js && node --check numsense.js && node --check grammar.js && node --check science.js && node --check country.js && node --check core/storage.js && node --check pathmaze.js && node --check trace.js && node --check core/boot.js && node --check story-engine.js && node --check art-engine.js && node --check landmark-engine.js && node --check scene-engine.js && node --check content.js && node --check core/content-packs.js && node tests/content-assets-test.js && node --check grade1.js && node --check grade1words.js && node --check tests/g1readtest.js && node --check sw.js && node --check tests/child-regressions.js && node --check scripts/check-cache-version.cjs && node --check radialmaze.js && node --check workbook.js && node --check tests/workbook-test.js && node --check tests/qa-navigation-test.js && node --check tests/workbook-coverage-test.js && node --check core/feature-flags.js && node --check early-words.js && node --check tests/issue-audit-test.js && node --check tests/ipad-polish-test.js && node --check tests/grade-pinball-layout-test.js && node --check tests/curriculum-depth-test.js && node --check tests/visual-library-test.js && node --check scripts/audit-content.cjs && node --check tests/grade-ux-and-media-test.js && node --check tests/generated-curriculum-audit.js && node --check tests/grade23-content-test.js && node --check explorer-engine.js && node --check tests/explorer-grade23-test.js && node --check tests/original-media-test.cjs && node --check tests/curriculum-map-test.cjs && node --check tests/grade-route-browser-test.js && node --check math23.js && node --check tests/phase1-test.js && node --check tests/phase2-math-test.js && node --check tests/explorer-grade-routing-test.js && node --check tests/explorer-math-answer-audit.js && node tests/explorer-math-answer-audit.js && node --check tests/editorial-content-test.cjs && node tests/editorial-content-test.cjs && node --check tests/grade-progression-evidence-test.js && node tests/curriculum-map-test.cjs && node --check tests/objective-mastery-test.js && node --check tests/spaced-objective-practice-test.js && node --check tests/phase4b-visual-content-test.js && node --check tests/landmark-accessibility-test.js && node --check tests/objective-coverage-dashboard-test.js && node tests/landmark-photo-provenance-test.cjs && node scripts/audit-objective-depth.cjs --json > /dev/null && node tests/landmark-online-preview-test.cjs && node tests/anatomy-illustration-test.cjs && node --check tests/anatomy-explorer-test.cjs && node --check tests/landmark-preview-interaction-test.cjs && node tests/landmark-importer-test.cjs && node tests/landmark-photo-candidates-test.cjs && node tests/release-readiness-test.cjs && node tests/landmark-review-staging-test.cjs && node tests/landmark-review-board-test.cjs && node tests/landmark-rejections-test.cjs && node --check onboarding.js && node --check library.js && node --check tests/family-first-run-test.js && node tests/story-drama-test.cjs && node tests/three-little-pigs-test.cjs && node tests/learning-framework-test.cjs && node --check grade-journey.js && node --check family-learning.js && node --check qa-questions.js && node --check tests/family-learning-test.js",
     "audit:content": "node scripts/audit-content.cjs && node tests/explorer-math-answer-audit.js && node tests/editorial-content-test.cjs",
@@ -16,6 +19,16 @@
     "review:landmarks": "node scripts/build-landmark-review-board.cjs"
   },
   "devDependencies": {
-    "playwright": "^1.56.0"
+    "playwright": "^1.56.0",
+    "@capacitor/cli": "^8.6.0"
+  },
+  "dependencies": {
+    "@capacitor/core": "^8.6.0",
+    "@capacitor/ios": "^8.6.0",
+    "@capacitor/preferences": "^8.0.0",
+    "@capacitor/haptics": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.0",
+    "@capacitor/splash-screen": "^8.0.0",
+    "@capacitor-community/keep-awake": "^8.0.1"
   }
 }

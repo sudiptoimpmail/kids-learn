@@ -1,0 +1,19 @@
+{
+  "appId": "com.sudiptodas.learnandplay",
+  "appName": "Learn & Play",
+  "webDir": "www",
+  "backgroundColor": "#fff8ec",
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#fff8ec",
+    "limitsNavigationsToAppBoundDomains": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "launchAutoHide": true,
+      "backgroundColor": "#fff8ec",
+      "showSpinner": false
+    }
+  }
+}

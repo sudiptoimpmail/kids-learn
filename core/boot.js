@@ -4,8 +4,8 @@
    3. Loads the app's bundled JSON data (schema 1 namespaces) into ContentData.
    4. Loads the core scripts, then the app's own scripts, in order.
    Data is JSON, scripts contain only logic. No eval, no remote scripts. */
-const CORE_VERSION = '1.1.0';
-const CORE_SCRIPTS = ['util.js', 'feature-flags.js', 'storage.js', 'voice.js', 'sounds.js', 'confetti.js',
+const CORE_VERSION = '1.2.0';
+const CORE_SCRIPTS = ['util.js', 'feature-flags.js', 'native.js', 'storage.js', 'voice.js', 'sounds.js', 'confetti.js',
   'parent-gate.js', 'progression.js', 'content-packs.js', 'offline.js'];
 const here = new URL('.', import.meta.url);           // …/core/
 const status = document.getElementById('loadStatus');
