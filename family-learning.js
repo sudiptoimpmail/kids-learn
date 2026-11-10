@@ -13,7 +13,7 @@ renderStickers=function(){
   originalCollections();$('#stickerGrid').style.display='block';
   $('#stickerGrid').innerHTML=learningConfig.collections.map(set=>{
     const have=set.items.filter(s=>state.stickers.includes(s));
-    return `<section class="panel"><h3>${esc(set.title)} · ${have.length}/${set.items.length}${have.length===set.items.length?' ✓':''}</h3><div class="collection-grid">${set.items.map(s=>`<div class="stk ${have.includes(s)?'have':''}" aria-label="${have.includes(s)?'Collected':'Not collected'}">${have.includes(s)?s:'❔'}</div>`).join('')}</div></section>`;
+    return `<section class="panel"><h3>${set.icon||''} ${esc(set.title)} · ${have.length}/${set.items.length}${have.length===set.items.length?' ✓':''}</h3><div class="collection-grid">${set.items.map(s=>`<div class="stk ${have.includes(s)?'have':''}" aria-label="${have.includes(s)?'Collected':'Not collected'}">${have.includes(s)?s:'❔'}</div>`).join('')}</div></section>`;
   }).join('');
 };
 const portfolio=document.createElement('section');portfolio.id='portfolio';portfolio.className='screen';document.body.append(portfolio);
