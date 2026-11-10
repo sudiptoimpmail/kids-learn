@@ -54,7 +54,7 @@ const { chromium } = require('playwright');
       }
       state.grade='g3'; state.gameLv={}; state.voice=false;
       check(GL('path') === 9, 'Grade 3 should start with circular maze');
-      openBrainGame('path');
+      brainMode = false; state.playAlways = true; openGame('path');
       check(!!window.__pathMaze?.circular, 'Circular maze did not mount');
       check(!!document.querySelector('.pm-view .pm-cv'), 'Circular maze viewport not rendered');
       const route = window.__pathMaze.route();
