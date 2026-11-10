@@ -608,12 +608,12 @@ function genAdd(level) {
   const ans = a + b;
   const [e, things] = pick(THINGS);
   const story = (level === 2 || level === 3) && Math.random() < 0.3;
-  const text = story ? `You have ${a} ${e}. You get ${b} more. How many now?` : 'Add them up!';
+  const storyText = `You have ${a} ${e}. You get ${b} more. How many now?`, text = story ? 'Story problem!' : 'Add them up!';   // the story itself is shown once, in the card
   return {
     key: `add-${a}-${b}`,
     text,
     say: story ? `You have ${a} ${things}. You get ${b} more. How many now?` : level >= 4 ? ['What is', a, 'plus', `${b}?`] : `What is ${a} plus ${b}?`,
-    main: story ? `<div class="story">${text}</div>` : level >= 6 ? columnHTML('+', a, b) : `${level === 1 ? `<div class="eq-pics" aria-hidden="true">${a ? objects(e, a) : '<span class="none-pic" role="img" aria-label="none"></span>'} <b>+</b> ${b ? objects(e, b) : '<span class="none-pic" role="img" aria-label="none"></span>'}</div>` : ''}<div class="equation">${a} + ${b} = <span class="qmark">?</span></div>`,
+    main: story ? `<div class="story">${storyText}</div>` : level >= 6 ? columnHTML('+', a, b) : `${level === 1 ? `<div class="eq-pics" aria-hidden="true">${a ? objects(e, a) : '<span class="none-pic" role="img" aria-label="none"></span>'} <b>+</b> ${b ? objects(e, b) : '<span class="none-pic" role="img" aria-label="none"></span>'}</div>` : ''}<div class="equation">${a} + ${b} = <span class="qmark">?</span></div>`,
     options: numberOptions(ans, level),
     answer: ans,
     optClass: 'opt-num',
@@ -626,12 +626,12 @@ function genSub(level) {
   const ans = a - b;
   const [e, things] = pick(THINGS);
   const story = (level === 2 || level === 3) && Math.random() < 0.3;
-  const text = story ? `You have ${a} ${e}. You give away ${b}. How many are left?` : 'Take away!';
+  const storyText = `You have ${a} ${e}. You give away ${b}. How many are left?`, text = story ? 'Story problem!' : 'Take away!';   // the story itself is shown once, in the card
   return {
     key: `sub-${a}-${b}`,
     text,
     say: story ? `You have ${a} ${things}. You give away ${b}. How many are left?` : level >= 4 ? ['What is', a, 'minus', `${b}?`] : `What is ${a} minus ${b}?`,
-    main: story ? `<div class="story">${text}</div>` : level >= 6 ? columnHTML('−', a, b) : `${level === 1 ? `<div class="eq-pics" aria-hidden="true">${Array.from({ length: a }, (_, i) => `<span class="${i >= a - b ? 'gone' : ''}">${e}</span>`).join(' ') || '<span class="none-pic" role="img" aria-label="none"></span>'}</div>` : ''}<div class="equation">${a} − ${b} = <span class="qmark">?</span></div>`,
+    main: story ? `<div class="story">${storyText}</div>` : level >= 6 ? columnHTML('−', a, b) : `${level === 1 ? `<div class="eq-pics" aria-hidden="true">${Array.from({ length: a }, (_, i) => `<span class="${i >= a - b ? 'gone' : ''}">${e}</span>`).join(' ') || '<span class="none-pic" role="img" aria-label="none"></span>'}</div>` : ''}<div class="equation">${a} − ${b} = <span class="qmark">?</span></div>`,
     options: numberOptions(ans, level),
     answer: ans,
     optClass: 'opt-num',
