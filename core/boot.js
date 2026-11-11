@@ -9,7 +9,7 @@
    3. Loads the app's bundled JSON data (schema 1 namespaces) into ContentData.
    4. Loads the core scripts, then the app's own scripts, in order.
    Data is JSON, scripts contain only logic. No eval, no remote scripts. */
-const CORE_VERSION = '1.6.0';
+const CORE_VERSION = '1.7.0';
 const CORE_SCRIPTS = ['util.js', 'feature-flags.js', 'native.js', 'storage.js', 'voice.js', 'sounds.js', 'confetti.js',
   'parent-gate.js', 'progression.js', 'content-packs.js', 'offline.js'];
 const here = new URL('.', import.meta.url);           // …/core/
@@ -90,7 +90,9 @@ export async function loadPack(theme, fetchJson) {
   async function get(id) {
     if (!ID.test(id) || seen.has(id)) throw Error('theme pack: bad or circular id ' + id);
     seen.add(id);
-    const pack = (await fetchJson('themes/' + id + '.json')) || (await fetchJson(new URL('themes/' + id + '.json', here).pathname));
+    // the app's own packs are listed in theme.appPacks; every other id is a core pack
+    const mine = Array.isArray(theme.appPacks) && theme.appPacks.includes(id);
+    const pack = await fetchJson(mine ? 'themes/' + id + '.json' : new URL('themes/' + id + '.json', here).pathname);
     if (!isObj(pack) || pack.schema !== 1 || !isObj(pack.skins)) throw Error('theme pack not found or invalid: ' + id);
     return pack.extends ? mergeDeep(await get(pack.extends), { ...pack, extends: undefined }) : pack;
   }
