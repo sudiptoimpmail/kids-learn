@@ -187,7 +187,8 @@
       "coloring-3",
       "coloring-4",
       "coloring-5",
-      "coloring-landmarks"
+      "coloring-landmarks",
+      "lessons"
     ]
   },
   "scripts": [
@@ -231,6 +232,7 @@
     "fluent.js",
     "learning-framework.js",
     "grade-journey.js",
+    "teach.js",
     "family-learning.js",
     "qa-questions.js"
   ],
@@ -244,6 +246,12 @@
     "openLearn",
     "openSettings",
     "renderStickers",
-    "renderDashboard"
+    "renderDashboard",
+    "renderQ",
+    "next",
+    "choose",
+    "logAttempt",
+    "creditLearningQuestion",
+    "applyRoundProgression"
   ]
 }

@@ -1,0 +1,25 @@
+/* Teach first: Professor Hoot's lesson cards (teach.js) */
+.teach-bar { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 0 auto 6px; padding: 4px 16px 4px 6px;
+  width: max-content; max-width: 100%; border-radius: 999px; background: var(--theme-soft, #f3edff); color: var(--theme-ink, #5f3dc4);
+  font-size: 20px; box-shadow: 0 3px 0 var(--theme-line, #d0bfff); }
+.teach-bar[hidden] { display: none; }
+.teach-bar.teach-in { animation: teachIn .45s cubic-bezier(.2, 1.4, .5, 1); }
+.teach-owl { width: 72px; height: 72px; object-fit: contain; animation: teachBob 1.6s ease-in-out infinite; font-size: 40px; }
+.teach-bar[data-kind="turn"] { background: #fff3bf; color: #8a5a00; box-shadow: 0 3px 0 #ffd43b; }
+@keyframes teachIn { from { transform: scale(.6); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes teachBob { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-4px) rotate(3deg); } }
+/* the child watches the model card */
+.options.teach-lock .opt { pointer-events: none; }
+.opt.teach-read { outline: 4px solid var(--theme-hi, #ff6bb5); outline-offset: 3px; transform: scale(1.06); transition: transform .2s; }
+.opt.teach-point { position: relative; outline: 5px solid #ffd43b; outline-offset: 4px; animation: teachGlow 1.1s ease-in-out infinite; }
+@keyframes teachGlow { 0%, 100% { box-shadow: 0 0 0 0 #ffd43b99; } 50% { box-shadow: 0 0 0 14px #ffd43b00; transform: scale(1.05); } }
+.teach-hand { position: absolute; right: -6px; bottom: -18px; font-size: 46px; pointer-events: none; animation: teachTap .9s ease-in-out infinite; filter: drop-shadow(0 3px 2px #0004); }
+@keyframes teachTap { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-6px, -10px) scale(.92); } }
+.opt.teach-off { opacity: .25; filter: grayscale(1); }
+.teach-count { position: relative; outline: 3px solid var(--theme, #7c5cff); border-radius: 12px; }
+.teach-count::after { content: attr(data-n); position: absolute; top: -14px; right: -10px; min-width: 26px; height: 26px; border-radius: 13px;
+  background: var(--theme, #7c5cff); color: #fff; font: 900 16px/26px system-ui, sans-serif; text-align: center; }
+.teach-next { display: flex; gap: 14px; justify-content: center; margin-top: 14px; padding: 0 0 6px; }
+.teach-next[hidden] { display: none; }
+.teach-dot { font-size: 18px; }
+@media (prefers-reduced-motion: reduce) { .teach-owl, .teach-hand, .opt.teach-point, .teach-bar.teach-in { animation: none; } }
