@@ -1343,6 +1343,8 @@ const FILES = [
 ];
 // voice clips cached right away (the rest are cached on first use, or all at once from Settings)
 const CORE_PHRASES = [
+      // Professor Hoot's teaching lines (data/lessons.json)
+      'watch me first','let\'s do one together','your turn','this one','i say each picture','i read each word','i listen to the first sound','i listen to the word','i say each sound','now i blend the sounds','i count them all','i count what is left','i clap each part','i look at the first letter','i read it slowly','tap the one that glows','yes now it\'s your turn','let\'s look again','read the sentence','then answer the question',
       'excellent','awesome job','great work','you did it','super star','fantastic',
       'way to go','amazing','wonderful','brilliant','try again','good try',
       'think about it','look carefully and try again','look at the picture',
