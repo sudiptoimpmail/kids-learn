@@ -8,14 +8,13 @@ function logPortfolioWord(q,alone){
   const words=state.wordPortfolio||(state.wordPortfolio={});words[word]={grade:state.grade,date:dayKey()};
   const keys=Object.keys(words);while(keys.length>familyConfig.portfolioLimit)delete words[keys.shift()];
 }
-const originalCollections=renderStickers;
-renderStickers=function(){
-  originalCollections();$('#stickerGrid').style.display='block';
+CoreHooks.after('renderStickers',()=>{
+  $('#stickerGrid').style.display='block';
   $('#stickerGrid').innerHTML=learningConfig.collections.map(set=>{
     const have=set.items.filter(s=>state.stickers.includes(s));
     return `<section class="panel"><h3>${set.icon||''} ${esc(set.title)} · ${have.length}/${set.items.length}${have.length===set.items.length?' ✓':''}</h3><div class="collection-grid">${set.items.map(s=>`<div class="stk ${have.includes(s)?'have':''}" aria-label="${have.includes(s)?'Collected':'Not collected'}">${have.includes(s)?s:'❔'}</div>`).join('')}</div></section>`;
   }).join('');
-};
+});
 const portfolio=document.createElement('section');portfolio.id='portfolio';portfolio.className='screen';document.body.append(portfolio);
 function openPortfolio(){
   const words=Object.keys(state.wordPortfolio||{}),drawings=state.drawings||[];
@@ -30,7 +29,7 @@ function renderFamilyControls(){
   $('#storyRate').value=String(familyStoryRate());$('#sessionMinutes').value=String(settings.sessionMinutes||0);$('#quietEnabled').checked=!!settings.quietEnabled;$('#quietStart').value=settings.quietStart||'20:00';$('#quietEnd').value=settings.quietEnd||'07:00';
   familyPanel.onchange=()=>{state.familySettings={storyRate:+$('#storyRate').value,sessionMinutes:+$('#sessionMinutes').value,quietEnabled:$('#quietEnabled').checked,quietStart:$('#quietStart').value,quietEnd:$('#quietEnd').value};save();};
 }
-const originalFamilySettings=openSettings;openSettings=function(){originalFamilySettings();renderFamilyControls();};
+CoreHooks.after('openSettings',()=>renderFamilyControls());
 function quietAt(settings,date=new Date()){
   if(!settings.quietEnabled)return false;
   const parse=s=>/^\d{2}:\d{2}$/.test(s||'')?+s.slice(0,2)*60 + +s.slice(3):null;
@@ -51,18 +50,16 @@ function showFamilyBreak(reason){
   const box=document.createElement('div');box.id='familyBreak';box.className='family-break';box.innerHTML=`<div class="panel"><h2>${esc(reason)}</h2><p>Let us take a break. Your progress is saved.</p><button class="big-btn" data-home>Home</button><button class="link-btn" data-parent>Grown-up settings</button></div>`;document.body.append(box);
   box.querySelector('[data-home]').onclick=()=>{box.remove();show('home');};box.querySelector('[data-parent]').onclick=()=>{box.remove();askPin(openSettings);};save();
 }
-const originalFamilyShow=show;
-show=function(id){const reason=familyConfig.limitedScreens.includes(id)&&familyBlockReason();if(reason){originalFamilyShow('home');showFamilyBreak(reason);return;}originalFamilyShow(id);};
+// Family time limits: a limited screen sends the child Home with the break note instead (runs before any other show hook).
+CoreHooks.before('show',(id)=>{const reason=familyConfig.limitedScreens.includes(id)&&familyBlockReason();if(reason){show('home');showFamilyBreak(reason);return false;}},{priority:-100});
 // Stop activity entry before generators/timers start; the screen guard also covers other routes.
-for(const name of ['startRound','openGame','openPlayZone','openTrace','openLibrary','openLearn']){
-  const original=globalThis[name];if(typeof original!=='function')continue;
-  globalThis[name]=function(...args){const reason=familyBlockReason();if(reason){showFamilyBreak(reason);return;}return original(...args);};
-}
+for(const name of ['startRound','openGame','openPlayZone','openTrace','openLibrary','openLearn'])
+  CoreHooks.before(name,()=>{const reason=familyBlockReason();if(reason){showFamilyBreak(reason);return false;}},{priority:-100});
 let familyTick=performance.now();
 setInterval(()=>{
   const now=performance.now(),delta=Math.min(2000,Math.max(0,now-familyTick));familyTick=now;
   if(document.hidden||!familyConfig.limitedScreens.some(id=>$('#'+id)?.classList.contains('active')))return;
-  const reason=familyBlockReason();if(reason){originalFamilyShow('home');showFamilyBreak(reason);return;}
+  const reason=familyBlockReason();if(reason){show('home');showFamilyBreak(reason);return;}
   if(!familyOptions().sessionMinutes)return;
   const s=state.learningSession||(state.learningSession={usedMs:0,lastActive:Date.now()});s.usedMs+=delta;s.lastActive=Date.now();
 },1000);

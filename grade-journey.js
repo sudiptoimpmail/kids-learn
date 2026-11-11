@@ -20,16 +20,14 @@ function bindGoalButtons(root) {
     if(target)startRound(target.activity.category,5,false,target.activity.level);
   });
 }
-const originalGradeDashboard=renderDashboard;
-renderDashboard=function(){
-  originalGradeDashboard();
+CoreHooks.after('renderDashboard',()=>{
   let box=$('#gradeSummary');if(!box){box=document.createElement('section');box.id='gradeSummary';$('#dashSummary').after(box);}
   box.innerHTML=gradeSummaryHTML();bindGoalButtons(box);
   const brain=GAMES.filter(g=>BRAIN_GAME_IDS.has(g.id)&&brainVisible(g));
   $('#brainProgress').innerHTML=`<p>Brain puzzles build reasoning through practice; their game levels are separate from grade skills.</p><ul>${brain.map(g=>`<li>${esc(g.title||g.name||g.id)} · Level ${state.gameLv?.[g.id]||1}</li>`).join('')}</ul>`;
   const secure=gradeGoalRows().filter(r=>r.status==='Secure').length;
   $('#learningProgressLabel').textContent=`Learning progress · ${secure} skills secure in app practice`;
-};
+});
 const journey=document.createElement('section');journey.id='journey';journey.className='screen';
 journey.innerHTML='<header class="play-top"><button class="icon-btn" id="journeyBack" aria-label="Back home">‹</button><h2>My learning journey</h2></header><div id="journeyGoals"></div>';
 document.body.append(journey);
@@ -53,9 +51,7 @@ function openDemonstration(demo,onDone){
   }paint();sheet.querySelector('button')?.focus();
 }
 const showMe=document.createElement('button');showMe.id='showMeBtn';showMe.className='big-btn small';showMe.textContent='Show me';showMe.hidden=true;$('#play .play-top').after(showMe);
-const originalLearningRound=startRound;
-startRound=function(...args){
-  const result=originalLearningRound(...args);
+CoreHooks.after('startRound',(result,...args)=>{
   const demo=learningConfig.demonstrations[args[0]+':'+(args[3]||levelOf(args[0]))];
   showMe.hidden=!demo && args[0]!=='phonics';showMe.onclick=()=>{
     if(R?.locked)return;
@@ -69,8 +65,7 @@ startRound=function(...args){
     }else if(demo){openDemonstration(demo);}
 
   };
-  return result;
-};
+});
 const originalJourneyOpen=journeyButton.onclick;
 journeyButton.onclick=()=>{
   originalJourneyOpen();

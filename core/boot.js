@@ -2,15 +2,18 @@
    1. Reads the app's config file (app.config.json): name, storage, voice, PIN, colours, data, scripts.
    2. Applies the colour scheme from the config as CSS variables (light, and dark when given; dark follows the device only when no look is chosen),
       then the app's theme pack (theme.pack): a set of skins, like WordPress themes. Each skin (a mascot) has its own colours
-      for Light, Medium and Night. Packs live in core/themes/<id>.json, or in the app's own themes/<id>.json (checked first),
+      for Light, Medium and Night. Packs live in core/themes/<id>.json, or in the app's own themes/<id>.json (listed in theme.appPacks),
       and can extend another pack. window.CoreSkins lists the skins and puts one on <body class="theme-<skin>">.
       The app's own mascot (app.config.json "mascot": one fixed character per app, not per child) goes into every
       element marked data-core-mascot; window.CoreMascot has its name and picture.
    3. Loads the app's bundled JSON data (schema 1 namespaces) into ContentData.
-   4. Loads the core scripts, then the app's own scripts, in order.
+   4. Loads the core scripts, then the app's own scripts, in order, then wraps the app's hookable functions
+      ("hooks": names of global functions; add-on scripts change them only through CoreHooks.before/after).
+   5. Sections that are not needed at start ("lazy": { group: { scripts, data, entry } }) load the first time one of
+      their entry functions is called (CoreLazy). Their files are still saved for offline use by the service worker.
    Data is JSON, scripts contain only logic. No eval, no remote scripts. */
-const CORE_VERSION = '1.7.0';
-const CORE_SCRIPTS = ['util.js', 'feature-flags.js', 'native.js', 'storage.js', 'voice.js', 'sounds.js', 'confetti.js',
+const CORE_VERSION = '1.8.0';
+const CORE_SCRIPTS = ['util.js', 'hooks.js', 'feature-flags.js', 'native.js', 'storage.js', 'voice.js', 'sounds.js', 'confetti.js',
   'parent-gate.js', 'progression.js', 'content-packs.js', 'offline.js'];
 const here = new URL('.', import.meta.url);           // …/core/
 const status = document.getElementById('loadStatus');
@@ -170,8 +173,55 @@ export function checkConfig(cfg) {
   need(isObj(cfg.voice) && isObj(cfg.voice.clips) && typeof cfg.voice.lang === 'string' && cfg.voice.clips[cfg.voice.lang], 'voice.lang and voice.clips[lang] are required');
   need(isObj(cfg.pin), 'pin is required');
   need(isObj(cfg.data) && Array.isArray(cfg.data.namespaces), 'data.namespaces is required');
-  need(Array.isArray(cfg.scripts) && cfg.scripts.every((s) => typeof s === 'string' && /^[a-z0-9][a-z0-9/_.-]*\.js$/i.test(s) && !s.includes('..')), 'scripts must be local .js files');
+  const localJs = (s) => typeof s === 'string' && /^[a-z0-9][a-z0-9/_.-]*\.js$/i.test(s) && !s.includes('..');
+  const ident = (n) => typeof n === 'string' && /^[A-Za-z_$][A-Za-z0-9_$]{0,60}$/.test(n);
+  need(Array.isArray(cfg.scripts) && cfg.scripts.every(localJs), 'scripts must be local .js files');
+  need(cfg.hooks == null || (Array.isArray(cfg.hooks) && cfg.hooks.every(ident)), 'hooks must list function names');
+  need(cfg.lazy == null || (isObj(cfg.lazy) && Object.entries(cfg.lazy).every(([g, v]) => /^[a-z0-9][a-z0-9-]{0,30}$/.test(g) && isObj(v)
+    && Array.isArray(v.scripts) && v.scripts.every(localJs) && !v.scripts.some((x) => cfg.scripts.includes(x))
+    && (v.data == null || (Array.isArray(v.data) && v.data.every((n) => typeof n === 'string' && !cfg.data.namespaces.includes(n))))
+    && Array.isArray(v.entry) && v.entry.length && v.entry.every(ident))), 'lazy groups need scripts (not also in scripts), entry function names and optional data not loaded at start');
   return cfg;
+}
+
+/* ---------- sections loaded on demand ---------- */
+// Each entry function is a stand-in until its group has loaded; then the real function (with its hooks) runs.
+function makeLazy(cfg, loadData) {
+  const groups = cfg.lazy || {}, loading = new Map(), done = new Set(), owners = new Map();
+  for (const [g, v] of Object.entries(groups)) for (const name of v.entry) owners.set(name, g);
+  function loadGroup(g) {
+    if (!groups[g]) return Promise.reject(Error('No such section: ' + g));
+    if (done.has(g)) return Promise.resolve();
+    if (!loading.has(g)) loading.set(g, (async () => {
+      await loadData(groups[g].data || []);
+      for (const src of groups[g].scripts) await load(src);
+      for (const name of groups[g].entry) {
+        if (typeof globalThis[name] !== 'function' || globalThis[name].coreStub) throw Error(`${src0(g)} did not define ${name}`);
+        CoreHooks.install(name);
+      }
+      for (const name of cfg.hooks || []) if (!(globalThis[name] && globalThis[name].coreStub)) CoreHooks.install(name);
+      done.add(g);
+      document.dispatchEvent(new CustomEvent('core:lazy-loaded', { detail: { group: g } }));
+    })().catch((e) => { loading.delete(g); throw e; }));
+    return loading.get(g);
+  }
+  const src0 = (g) => groups[g].scripts.join(', ');
+  for (const [name, g] of owners) {
+    if (typeof globalThis[name] === 'function') { console.warn(`kids-core: ${name} is already defined; it will not load on demand`); continue; }
+    const stub = function (...args) {
+      return loadGroup(g).then(() => globalThis[name](...args), (e) => { console.error('Could not open ' + g, e); throw e; });
+    };
+    stub.coreStub = g;
+    globalThis[name] = stub;
+  }
+  return Object.freeze({
+    load: loadGroup,
+    loaded: (g) => done.has(g),
+    owner: (name) => owners.get(name) || null,
+    groups: () => Object.keys(groups),
+    // load every section in the background once the app is idle (so later taps are instant)
+    preload: () => Object.keys(groups).reduce((p, g) => p.then(() => loadGroup(g)).catch(() => {}), Promise.resolve()),
+  });
 }
 
 const load = (src) => new Promise((resolve, reject) => {
@@ -197,13 +247,14 @@ window.CoreReady = (async () => {
   if (cfg.app.title) document.title = cfg.app.title;
 
   const data = new Map(), dir = cfg.data.dir || 'data/';
-  await Promise.all(cfg.data.namespaces.map(async (name) => {
+  const loadData = (names) => Promise.all(names.filter((n) => !data.has(n)).map(async (name) => {
     const response = await fetch(dir + name + '.json');
     if (!response.ok) throw Error('Missing offline data: ' + name);
     const payload = await response.json();
     if (payload.schema !== 1 || payload.namespace !== name || !isObj(payload.datasets)) throw Error('Invalid offline data: ' + name);
     data.set(name, payload.datasets);
   }));
+  await loadData(cfg.data.namespaces);
   window.ContentData = Object.freeze({
     get(namespace, key) {
       const values = data.get(namespace);
@@ -215,6 +266,8 @@ window.CoreReady = (async () => {
   });
 
   await Promise.all([...CORE_SCRIPTS.map((s) => new URL(s, here).pathname), ...cfg.scripts].map(load));
+  window.CoreLazy = makeLazy(cfg, loadData);
+  for (const name of cfg.hooks || []) if (!CoreHooks.install(name) && !window.CoreLazy.owner(name)) console.warn('kids-core: no function to hook: ' + name);
   if (status) status.textContent = '';
   if (play) play.disabled = false;
   return true;

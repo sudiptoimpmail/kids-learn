@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "core": "1.7.0",
+  "core": "1.8.0",
   "app": {
     "id": "kids-learn",
     "name": "Learn & Play",
@@ -233,5 +233,17 @@
     "grade-journey.js",
     "family-learning.js",
     "qa-questions.js"
+  ],
+  "hooks": [
+    "show",
+    "startRound",
+    "openGame",
+    "openPlayZone",
+    "openTrace",
+    "openLibrary",
+    "openLearn",
+    "openSettings",
+    "renderStickers",
+    "renderDashboard"
   ]
 }
