@@ -121,7 +121,7 @@ const { chromium } = require('playwright');
     const pin=fs.readFileSync('pinball3d.js','utf8');
     assert.ok(!pin.includes('data-a="skin"'), 'Manual pinball table change must be removed');
     assert.ok(pin.includes('Math.floor(Math.random() * 3)'), 'Pinball should choose one of three tables');
-    const whack=fs.readFileSync('games.js','utf8');
+    const whack=fs.readFileSync('games.js','utf8')+fs.readFileSync('games-play.js','utf8');   // the games load on demand from games-play.js
     assert.ok(whack.includes('speedAt()'), 'Whack-a-mole speed must increase');
     assert.ok(whack.includes('wm-final-score'), 'Whack-a-mole score must center on result screen');
     console.log('PASS iPad game controls, QA unlock, recorded curriculum, rotating puzzles and drawing zoom');
