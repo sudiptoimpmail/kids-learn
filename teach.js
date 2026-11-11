@@ -215,10 +215,14 @@ const TeachFirst = (() => {
       if (q.letterSound && CLIPS[clipKey('sound ' + q.letterSound)]) { await say(P('firstSound')); await say('sound ' + q.letterSound); }
       else if (usefulHint(q)) await ACTIONS.hint(q);
     },
-    // sound out a short regular word, then blend it
+    // sound out a word by its sound units (f · i · sh), then blend it. A missing-letter card sounds out the whole word.
+    // Only words of single sounds and digraphs are sounded out; a word with a vowel team or silent e gets its clue instead.
     sounds: async (q, _, alive) => {
-      const w = String(q.answer).toLowerCase();
-      const parts = /^[a-z]{2,4}$/.test(w) ? [...w].map((c) => 'sound ' + c) : null;
+      const a = String(q.answer).toLowerCase();
+      const w = /^[a-z]$/.test(a) && /^[a-z]{2,6}$/.test(String(q.speak || '')) ? String(q.speak).toLowerCase() : a;
+      const simple = /^[a-z]{2,6}$/.test(w) && ['short', 'digraphs'].includes(Decodable.wordStage(w));
+      const SAME = { ck: 'k', ll: 'l', ss: 's', ff: 'f', zz: 'z', tch: 'ch', ph: 'f' };   // two letters, the sound already recorded
+      const parts = simple ? Decodable.graphemes(w).map((g) => 'sound ' + (SAME[g] || g)) : null;
       if (!parts || !parts.every((p) => CLIPS[clipKey(p)])) return ACTIONS.hint(q);
       await say(P('eachSound'));
       for (const p of parts) { if (!alive()) return; await say(p); await sleep(120); }
