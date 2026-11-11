@@ -49,7 +49,13 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     // story problems: the story is in the card once, not in the prompt too
     const dup = await p.evaluate(() => { let n = 0; for (const id of ['add', 'sub']) { const c = CATEGORIES.find((x) => x.id === id); for (let i = 0; i < 200; i++) { const q = c.gen(2 + (i % 2)); if (/You have/.test(q.text)) n++; } } return n; });
     assert.equal(dup, 0, 'story problem text repeated in the prompt');
+    // Silly Moves: every move has a voice clip and comes up once before any repeat
+    await p.waitForFunction(() => Object.keys(CLIPS).length > 100);
+    const mv = await p.evaluate(() => { const seen = new Set(); for (let i = 0; i < MOVES.length; i++) seen.add(nextMove()[1]);
+      return { n: MOVES.length, uniq: seen.size, noClip: MOVES.filter((m) => !CLIPS[clipKey(m[1])]).map((m) => m[1]) }; });
+    assert.ok(mv.n >= 70, 'expected 70+ silly moves'); assert.equal(mv.uniq, mv.n, 'a move repeated before the deck ran out');
+    assert.deepEqual(mv.noClip, []);
     assert.deepEqual(errors, []);
-    console.log('PASS dark/light choice, coloring fills and peek, story problems shown once');
+    console.log('PASS dark/light choice, coloring fills and peek, story problems shown once, silly moves deck');
   } finally { await b.close(); }
 })().catch((e) => { console.error(e); process.exit(1); });

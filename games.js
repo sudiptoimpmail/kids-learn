@@ -1588,7 +1588,19 @@ const MOVES = [
   ['🤪', 'Make your silliest face!'], ['🍮', 'Wiggle like jelly!'], ['🌀', 'Spin around slowly three times!'],
   ['🏴‍☠️', 'Laugh like a pirate!'], ['🌳', 'Sway like a tree in the wind!'], ['🐭', 'Tiptoe like a mouse!'], ['🫨', 'Shake your sillies out!'],
   ['🤗', 'Give yourself a big hug!'], ['🦶', 'Touch your toes!'], ['👏', 'Clap ten times!'], ['😂', 'Do your biggest laugh!'],
+  ['🐻', 'Walk like a big bear!'], ['🐱', 'Stretch like a sleepy cat!'], ['🦆', 'Quack and waddle like a duck!'], ['🐙', 'Wave your arms like an octopus!'],
+  ['🦅', 'Soar like an eagle!'], ['🐊', 'Snap your arms like a crocodile!'], ['🐌', 'Slide like a slow snail!'], ['🦉', 'Turn your head like an owl!'],
+  ['🐿️', 'Hide a nut like a squirrel!'], ['🦖', 'Stomp like a dinosaur!'], ['🐓', 'Strut like a rooster!'], ['🐬', 'Jump like a dolphin!'],
+  ['🐛', 'Crawl like a caterpillar!'], ['🐼', 'Roll like a panda!'], ['🦭', 'Clap like a seal!'], ['🐨', 'Hug a tree like a koala!'],
+  ['🧟', 'Walk like a silly zombie!'], ['🧙', 'Wave a magic wand!'], ['👑', 'Wave like a king or queen!'], ['🥷', 'Sneak like a ninja!'],
+  ['⚽', 'Kick a pretend ball!'], ['🏀', 'Bounce a pretend basketball!'], ['🏊', 'Swim with big arms!'], ['🚴', 'Pedal a pretend bike!'],
+  ['🧘', 'Be still like a mountain!'], ['🤸', 'Do a star jump!'], ['🦵', 'Hop on one foot!'], ['🙌', 'Reach up to the sky!'],
+  ['🚂', 'Chug like a train!'], ['🚁', 'Spin your arms like a helicopter!'], ['🍿', 'Pop up like popcorn!'], ['🎈', 'Float like a balloon!'],
+  ['❄️', 'Melt like a snowman!'], ['🌧️', 'Wiggle your fingers like rain!'], ['🔥', 'Jump like the floor is hot!'], ['🤧', 'Do a giant pretend sneeze!'],
 ];
+// a shuffled deck: every move comes up once before any repeats
+let movesDeck = [];
+const nextMove = () => { if (!movesDeck.length) movesDeck = shuffle(MOVES.slice()); return movesDeck.pop(); };
 function startMoves() {
   const area = $('#gameArea');
   let timer = 0, spin = 0;
@@ -1603,7 +1615,7 @@ function startMoves() {
   btn.onclick = () => {
     if (btn.disabled) return;
     btn.disabled = true; sfx.tap();
-    const m = pick(MOVES);
+    const m = nextMove();
     let k = 0;
     card.classList.remove('go', 'done');
     tx.textContent = '…';
