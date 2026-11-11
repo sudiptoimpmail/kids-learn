@@ -4,10 +4,12 @@
       then the app's theme pack (theme.pack): a set of skins, like WordPress themes. Each skin (a mascot) has its own colours
       for Light, Medium and Night. Packs live in core/themes/<id>.json, or in the app's own themes/<id>.json (checked first),
       and can extend another pack. window.CoreSkins lists the skins and puts one on <body class="theme-<skin>">.
+      The app's own mascot (app.config.json "mascot": one fixed character per app, not per child) goes into every
+      element marked data-core-mascot; window.CoreMascot has its name and picture.
    3. Loads the app's bundled JSON data (schema 1 namespaces) into ContentData.
    4. Loads the core scripts, then the app's own scripts, in order.
    Data is JSON, scripts contain only logic. No eval, no remote scripts. */
-const CORE_VERSION = '1.5.0';
+const CORE_VERSION = '1.6.0';
 const CORE_SCRIPTS = ['util.js', 'feature-flags.js', 'native.js', 'storage.js', 'voice.js', 'sounds.js', 'confetti.js',
   'parent-gate.js', 'progression.js', 'content-packs.js', 'offline.js'];
 const here = new URL('.', import.meta.url);           // …/core/
@@ -102,6 +104,25 @@ export async function loadPack(theme, fetchJson) {
   if (!pack.skins[pack.default]) pack.default = Object.keys(pack.skins)[0];
   return pack;
 }
+/* ---------- the app's mascot: fixed per app ---------- */
+const LOCAL_IMG = /^[a-z0-9][a-z0-9/_.-]*\.(svg|png|webp|gif)$/i;
+export function mascotOf(cfg) {
+  const m = cfg && cfg.mascot;
+  if (!isObj(m) || typeof m.image !== 'string' || !LOCAL_IMG.test(m.image) || m.image.includes('..')) return null;
+  const text = (v, d) => (typeof v === 'string' && v.length <= 80 ? v : d);
+  return Object.freeze({ image: m.image, name: text(m.name, ''), alt: text(m.alt, text(m.name, 'Mascot')) });
+}
+export function placeMascot(mascot, root) {
+  if (!mascot || !root || !root.querySelectorAll) return 0;
+  const spots = [...root.querySelectorAll('[data-core-mascot]')];
+  for (const el of spots) {
+    const img = document.createElement('img');
+    img.src = mascot.image; img.alt = mascot.alt; img.className = 'core-mascot'; img.draggable = false;
+    el.replaceChildren(img); el.setAttribute('aria-label', mascot.alt);
+  }
+  return spots.length;
+}
+
 function makeSkins(pack) {
   const skins = (pack && pack.skins) || {};
   const ids = Object.keys(skins);
@@ -169,6 +190,8 @@ window.CoreReady = (async () => {
   const pack = await loadPack(cfg.theme, fetchJson);
   applyTheme(cfg.theme, pack);
   window.CoreSkins = makeSkins(pack);
+  window.CoreMascot = mascotOf(cfg);
+  placeMascot(window.CoreMascot, document);
   if (cfg.app.title) document.title = cfg.app.title;
 
   const data = new Map(), dir = cfg.data.dir || 'data/';

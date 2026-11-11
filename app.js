@@ -122,7 +122,7 @@ function show(id) {
 function renderHome() {
   $('#kidAvatar').textContent = state.avatar || '🦄';
   $('#kidBtn').classList.toggle('many', Store.kids().length > 1);
-  $('#hello').textContent = state.name ? `Hi, ${state.name}!` : 'Hi there!' + ' ' + skinOf(state.theme).mascot;
+  $('#hello').textContent = state.name ? `Hi, ${state.name}!` : 'Hi there!';
   $('#starCount').textContent = state.stars;
   $('#stickerCount').textContent = state.stickers.length;
   $('#stickerLabel').textContent = state.stickers.length === 1 ? 'sticker' : 'stickers';
@@ -1068,10 +1068,11 @@ $('#diffCancel').onclick = () => ($('#diffSheet').hidden = true);
 })();
 
 /* ---------- looks: mascot skins come from the kids-core theme pack (app.config.json → theme.pack) ---------- */
+// a swatch of the skin's own colours instead of a second animal picture (the child's avatar is the picture)
+const skinDot = (id) => { const c = ((CoreSkins.get(id) || {}).light || {}).colors || {}; return `linear-gradient(135deg, ${c.theme || '#999'} 50%, ${c['theme-hi'] || c.theme || '#ccc'} 50%)`; };
 const skinOf = (id) => { const k = CoreSkins.has(id) ? id : CoreSkins.default; return { id: k, ...(CoreSkins.list().find((x) => x.id === k) || { label: '', mascot: '' }) }; };
 function applyTheme() {
-  const t = CoreSkins.apply(state.theme);
-  $('#mascot').textContent = skinOf(t).mascot;
+  CoreSkins.apply(state.theme);
   document.body.classList.toggle('test-mode', isTestMode());
 }
 const SCHEMES = [['light', '☀️ Light'], ['medium', '🌤️ Medium'], ['dark', '🌙 Night'], ['auto', '📱 Same as device']];
@@ -1082,7 +1083,7 @@ function renderSchemes() {
   $$('#schemeBtns .grade-btn').forEach((b) => (b.onclick = () => { sfx.tap(); CoreScheme.set(b.dataset.s); renderSchemes(); }));
 }
 function renderThemes() {
-  $('#themeBtns').innerHTML = CoreSkins.list().map((t) => `<button class="grade-btn ${skinOf(state.theme).id === t.id ? 'on' : ''}" data-t="${t.id}">${t.mascot} ${t.label}</button>`).join('');
+  $('#themeBtns').innerHTML = CoreSkins.list().map((t) => `<button class="grade-btn ${skinOf(state.theme).id === t.id ? 'on' : ''}" data-t="${t.id}"><i class="skin-dot" style="background:${skinDot(t.id)}"></i>${t.label}</button>`).join('');
   $$('#themeBtns .grade-btn').forEach((b) => (b.onclick = () => { sfx.tap(); state.theme = b.dataset.t; save(); applyTheme(); renderThemes(); }));
   renderSchemes();
 }
