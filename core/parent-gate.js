@@ -28,17 +28,23 @@ if (!document.getElementById('pinSheet')) {
   </div>`);
 }
 let parentVerificationEpoch = 0;
+// wrong tries and the wait are kept on the device, so closing and reopening the app does not reset them
+const PIN_LOCK_KEY = AppConfig.storage.key + '.pinlock';
+const pinLock = {
+  get() { try { const v = JSON.parse(localStorage.getItem(PIN_LOCK_KEY)) || {}; return { misses: +v.misses || 0, until: +v.until || 0 }; } catch { return { misses: 0, until: 0 }; } },
+  set(v) { try { if (v.misses) localStorage.setItem(PIN_LOCK_KEY, JSON.stringify(v)); else localStorage.removeItem(PIN_LOCK_KEY); } catch {} },
+};
 function verifyParentDevice(onVerified) {
   const epoch = ++parentVerificationEpoch;
   const sheet = $('#pinSheet'); sheet.hidden = false;
   $('#pinTitle').textContent = 'Grown-up setup';
   $('#pinNote').textContent = 'Use the device owner’s fingerprint, face or device passcode before creating a PIN.';
-  $('#pinPad').hidden = true; $('#pinPad').onclick = null; $('#pinForgotBtn').hidden = true; $('#pinForgot').hidden = true;
+  $('#pinPad').hidden = true; $('#pinDots').hidden = true; $('#pinPad').onclick = null; $('#pinForgotBtn').hidden = true; $('#pinForgot').hidden = true;
   let cancelled = false;
   $('#pinVerifyBtn')?.remove();
   const button = document.createElement('button'); button.id = 'pinVerifyBtn'; button.className = 'big-btn'; button.textContent = 'Verify device owner';
   $('#pinPad').before(button);
-  const close = () => { cancelled = true; sheet.hidden = true; button.remove(); $('#pinPad').hidden = false; };
+  const close = () => { cancelled = true; sheet.hidden = true; button.remove(); $('#pinPad').hidden = false; $('#pinDots').hidden = false; };
   $('#pinBack').onclick = close; sheet.onclick = (e) => { if (e.target === sheet) close(); };
   button.onclick = async () => {
     button.disabled = true;
@@ -67,7 +73,7 @@ function askPin(onOk, change = false, verified = false) {
   parentVerificationEpoch++;
   if (change && currentPinHash() && !verified) return askPin(() => askPin(onOk, true, true));
   if (!currentPinHash() && !verified) return verifyParentDevice(() => askPin(onOk, change, true));
-  $('#pinPad').hidden = false;
+  $('#pinPad').hidden = false; $('#pinDots').hidden = false;
   const sheet = $('#pinSheet'); let typed = '', first = null, closed = false;
   const request = askPin.request = (askPin.request || 0) + 1;
   const mode = () => (!currentPinHash() || change ? (first ? 'confirm' : 'new') : 'check');
@@ -95,9 +101,15 @@ function askPin(onOk, change = false, verified = false) {
       if (closed || request !== askPin.request) return;
       const m = mode();
       if (m === 'check') {
-        if (Date.now() < (askPin.lockUntil || 0)) { typed = ''; shake(); $('#pinNote').textContent = 'Too many tries. Wait a little and try again.'; return; }
-        if (pinHash(typed) === currentPinHash()) { askPin.misses = 0; close(); onOk(); }
-        else { typed = ''; shake(); paint(); kidNote(); askPin.misses = (askPin.misses || 0) + 1; if (askPin.misses >= 3) { askPin.lockUntil = Date.now() + 30000 * (askPin.misses - 2); $('#pinNote').textContent = 'Too many tries. Wait 30 seconds.'; } }
+        const lock = pinLock.get();
+        if (Date.now() < lock.until) { typed = ''; shake(); $('#pinNote').textContent = 'Too many tries. Wait a little and try again.'; return; }
+        if (pinHash(typed) === currentPinHash()) { pinLock.set({ misses: 0 }); close(); onOk(); }
+        else {
+          typed = ''; shake(); paint(); kidNote();
+          const misses = lock.misses + 1, wait = misses >= 3 ? Math.min(30000 * 2 ** (misses - 3), 15 * 60000) : 0;   // 30 s, 1 min, 2 min … up to 15 min
+          pinLock.set({ misses, until: wait ? Date.now() + wait : 0 });
+          if (wait) $('#pinNote').textContent = `Too many tries. Wait ${wait >= 60000 ? Math.round(wait / 60000) + (wait >= 120000 ? ' minutes' : ' minute') : '30 seconds'}.`;
+        }
       }
       else if (m === 'new') { first = typed; typed = ''; paint(); }
       else if (typed === first) { storePinHash(pinHash(typed)); close(); sfx.yes(); askPin(onOk); }

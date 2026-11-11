@@ -15,5 +15,6 @@ try {
 } catch {}
 const qaUnlocked = () => { try { return localStorage.getItem(QA_KEY) === '1'; } catch { return false; } };
 const testFeatureAvailable = () => APP_FEATURES.testMode || qaUnlocked() ||
-  (APP_FEATURES.localTestAutomation && /^(localhost|127\.0\.0\.1)$/.test(location.hostname));
+  (APP_FEATURES.localTestAutomation && /^https?:$/.test(location.protocol) && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
+    && !(window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()));
 const isTestMode = () => testFeatureAvailable() && typeof state !== 'undefined' && !!state.testMode;

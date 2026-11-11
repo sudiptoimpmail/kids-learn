@@ -44,7 +44,7 @@ const Store = {
   save(state) {
     if (Store.frozen) return;          // a backup was just loaded and the app is reloading: don't write over it
     Store.absorb(state);
-    const r = Store.root; r.schema = SCHEMA; r.savedAt = Date.now();
+    const r = Store.root; r.schema = SCHEMA; r.savedAt = Date.now(); r.app = AppConfig.app.id;
     const json = JSON.stringify(r);
     try { localStorage.setItem(STORE_KEY, json); Store.ok = true; }
     catch (e) { Store.ok = false; if (Store.onError) Store.onError(e); }
@@ -160,9 +160,12 @@ const Store = {
   // another kids-core app on the same website (for the shared grown-up PIN); read-only
   peek(key) { try { const d = JSON.parse(localStorage.getItem(key)); return d && typeof d === 'object' ? d : null; } catch { return null; } },
   importJSON(text) {
+    if (typeof text !== 'string' || text.length > 5e6) throw new Error('not a backup');
     const d = JSON.parse(text);
+    // a backup from another kids-core app (same file format) must not replace this app's children
+    if (d && typeof d === 'object' && typeof d.app === 'string' && d.app !== AppConfig.app.id) throw new Error('backup from another app');
     // only a real backup from this app: an object with the fields the app saves
-    if (typeof d !== 'object' || !d || Array.isArray(d) || !('profiles' in d || 'levels' in d || 'stars' in d) || text.length > 5e6) throw new Error('not a backup');
+    if (typeof d !== 'object' || !d || Array.isArray(d) || !('profiles' in d || 'levels' in d || 'stars' in d)) throw new Error('not a backup');
     const m = Store.migrate(d); m.savedAt = Date.now();
     Store.frozen = true;
     localStorage.setItem(STORE_KEY, JSON.stringify(m));
