@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 280" role="img" aria-label="Professor Hoot, an owl teacher holding books and a pinwheel">
+<style>
+  .bob { animation: bob 2.6s ease-in-out infinite; transform-origin: 130px 250px; }
+  .head { animation: tilt 5.2s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 90%; }
+  .lid { animation: blink 4.6s infinite; transform-box: fill-box; transform-origin: 50% 0; }
+  .wave { animation: wave 1.8s ease-in-out infinite; transform-box: fill-box; transform-origin: 18% 92%; }
+  .spin { animation: spin 1.6s linear infinite; transform-box: fill-box; transform-origin: 50% 50%; }
+  .books { animation: books 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+  .tassel { animation: tassel 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 0; }
+  .shadow { animation: shadow 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 50%; }
+  .tw { animation: tw 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 50%; }
+  .tw2 { animation-delay: .8s; } .tw3 { animation-delay: 1.6s; }
+  @keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-7px) } }
+  @keyframes shadow { 0%,100% { transform: scaleX(1); opacity: .22 } 50% { transform: scaleX(.86); opacity: .14 } }
+  @keyframes tilt { 0%,40%,100% { transform: rotate(0) } 50% { transform: rotate(-7deg) } 62% { transform: rotate(5deg) } 72% { transform: rotate(0) } }
+  @keyframes blink { 0%,44%,50%,100% { transform: scaleY(0) } 47% { transform: scaleY(1) } }
+  @keyframes wave { 0%,100% { transform: rotate(0) } 50% { transform: rotate(-14deg) } }
+  @keyframes spin { to { transform: rotate(360deg) } }
+  @keyframes books { 0%,100% { transform: rotate(0) } 50% { transform: rotate(-3deg) } }
+  @keyframes tassel { 0%,100% { transform: rotate(10deg) } 50% { transform: rotate(-12deg) } }
+  @keyframes tw { 0%,100% { transform: scale(.4); opacity: 0 } 50% { transform: scale(1); opacity: 1 } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important } }
+</style>
+<defs>
+  <radialGradient id="body" cx="45%" cy="35%" r="70%"><stop offset="0" stop-color="#b07a52"/><stop offset="1" stop-color="#7a4b2e"/></radialGradient>
+  <radialGradient id="belly" cx="50%" cy="30%" r="75%"><stop offset="0" stop-color="#fff3dc"/><stop offset="1" stop-color="#efd2a4"/></radialGradient>
+</defs>
+<ellipse class="shadow" cx="130" cy="262" rx="70" ry="9" fill="#000" opacity=".22"/>
+<!-- sparkles -->
+<g fill="#ffd43b">
+  <path class="tw" d="M30 70l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/>
+  <path class="tw tw2" d="M232 40l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/>
+  <path class="tw tw3" d="M222 150l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/>
+</g>
+<g class="bob">
+  <!-- feet -->
+  <g fill="#f59f00"><ellipse cx="104" cy="248" rx="16" ry="7"/><ellipse cx="156" cy="248" rx="16" ry="7"/></g>
+  <!-- body -->
+  <ellipse cx="130" cy="180" rx="70" ry="72" fill="url(#body)"/>
+  <ellipse cx="130" cy="192" rx="46" ry="54" fill="url(#belly)"/>
+  <g fill="none" stroke="#d9b07a" stroke-width="3" stroke-linecap="round">
+    <path d="M112 170q6 7 12 0M136 170q6 7 12 0M100 190q6 7 12 0M124 190q6 7 12 0M148 190q6 7 12 0M112 210q6 7 12 0M136 210q6 7 12 0"/>
+  </g>
+  <!-- bow tie -->
+  <g fill="#e03131"><path d="M130 150l-22-11v24z"/><path d="M130 150l22-11v24z"/><circle cx="130" cy="150" r="6" fill="#c92a2a"/></g>
+  <!-- books, held by the left wing -->
+  <g class="books">
+    <rect x="38" y="190" width="70" height="16" rx="3" fill="#1c7ed6"/><rect x="42" y="193" width="62" height="3" fill="#d0ebff"/>
+    <rect x="44" y="174" width="62" height="16" rx="3" fill="#2f9e44"/><rect x="48" y="177" width="54" height="3" fill="#d3f9d8"/>
+    <rect x="40" y="158" width="66" height="16" rx="3" fill="#e03131"/><rect x="44" y="161" width="58" height="3" fill="#ffe3e3"/>
+    <text x="80" y="171" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">ABC</text>
+    <text x="80" y="203" font-family="Arial Rounded MT Bold, Arial, sans-serif" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">123</text>
+    <path d="M60 214c-22-2-30-24-22-52 6 2 12 4 14 2-6 14-4 34 8 50z" fill="#8d5a3b"/>
+  </g>
+  <!-- head -->
+  <g class="head">
+    <path d="M78 58l-6-34 30 20z M182 58l6-34-30 20z" fill="#7a4b2e"/>
+    <ellipse cx="130" cy="88" rx="62" ry="56" fill="url(#body)"/>
+    <circle cx="104" cy="90" r="27" fill="#fbe9cc"/><circle cx="156" cy="90" r="27" fill="#fbe9cc"/>
+    <!-- eyes -->
+    <circle cx="104" cy="91" r="12" fill="#2b1d14"/><circle cx="156" cy="91" r="12" fill="#2b1d14"/>
+    <circle cx="108" cy="86" r="4.5" fill="#fff"/><circle cx="160" cy="86" r="4.5" fill="#fff"/>
+    <circle cx="100" cy="95" r="2" fill="#fff" opacity=".7"/><circle cx="152" cy="95" r="2" fill="#fff" opacity=".7"/>
+    <!-- eyelids (blink) -->
+    <g fill="#9c6644"><rect class="lid" x="88" y="70" width="32" height="34" rx="16"/><rect class="lid" x="140" y="70" width="32" height="34" rx="16"/></g>
+    <!-- glasses -->
+    <g fill="none" stroke="#343a40" stroke-width="4"><circle cx="104" cy="90" r="22"/><circle cx="156" cy="90" r="22"/><path d="M126 88q4-5 8 0"/><path d="M82 86l-12-4M178 86l12-4"/></g>
+    <!-- beak and cheeks -->
+    <path d="M122 106h16l-8 14z" fill="#f59f00"/><path d="M122 106h16l-8 5z" fill="#ffc078"/>
+    <circle cx="86" cy="116" r="7" fill="#ff8787" opacity=".45"/><circle cx="174" cy="116" r="7" fill="#ff8787" opacity=".45"/>
+    <!-- teacher's cap -->
+    <path d="M130 14l58 20-58 20-58-20z" fill="#343a40"/>
+    <path d="M100 42v14c18 8 42 8 60 0V42l-30 10z" fill="#212529"/>
+    <circle cx="130" cy="34" r="3.5" fill="#ffd43b"/>
+    <g class="tassel"><path d="M130 34l38 6v26" fill="none" stroke="#ffd43b" stroke-width="3"/><rect x="164" y="62" width="8" height="14" rx="3" fill="#ffd43b"/></g>
+  </g>
+  <!-- right wing waving a pinwheel -->
+  <g class="wave">
+    <path d="M188 200c18-8 34-30 34-58-12 0-28 10-36 26-6 14-6 26 2 32z" fill="#8d5a3b"/>
+    <rect x="219" y="66" width="5" height="76" rx="2.5" fill="#868e96"/>
+    <g class="spin">
+      <path d="M221 68l0-28c14 0 24 12 24 24z" fill="#ff6b6b"/>
+      <path d="M221 68l28 0c0 14-12 24-24 24z" fill="#4dabf7"/>
+      <path d="M221 68l0 28c-14 0-24-12-24-24z" fill="#ffd43b"/>
+      <path d="M221 68l-28 0c0-14 12-24 24-24z" fill="#69db7c"/>
+      <circle cx="221" cy="68" r="4.5" fill="#fff" stroke="#495057" stroke-width="1.5"/>
+    </g>
+  </g>
+</g>
+</svg>

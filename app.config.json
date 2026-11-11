@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "core": "1.5.0",
+  "core": "1.6.0",
   "app": {
     "id": "kids-learn",
     "name": "Learn & Play",
@@ -28,6 +28,11 @@
       "familySettings"
     ],
     "profileDefaults": {}
+  },
+  "mascot": {
+    "image": "assets/mascot/owl-teacher.svg",
+    "name": "Professor Hoot",
+    "alt": "Professor Hoot, the owl teacher, holding books and a pinwheel"
   },
   "avatars": [
     "🦄",

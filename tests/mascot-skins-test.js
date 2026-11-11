@@ -11,6 +11,11 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     assert.deepEqual(ids, ['rainbow', 'unicorn', 'dino', 'space', 'ocean', 'sports', 'cars', 'jungle']);
     await p.evaluate(() => { openSettings(); show('settings'); });
     assert.equal(await p.locator('#themeBtns .grade-btn').count(), ids.length);
+    // colour buttons show a swatch, not a second animal; the app's own mascot is on the front page, whoever is playing
+    assert.equal(await p.locator('#themeBtns .skin-dot').count(), ids.length);
+    assert.doesNotMatch(await p.locator('#themeBtns').innerText(), /[🦖🦄🚀]/u);
+    assert.equal(await p.evaluate(() => CoreMascot.name), 'Professor Hoot');
+    assert.match(await p.locator('#splash [data-core-mascot] img.core-mascot').getAttribute('src'), /owl-teacher\.svg$/);
     const look = () => p.evaluate(() => {
       const css = getComputedStyle(document.body), btn = document.querySelector('#themeBtns .grade-btn.on');
       return { theme: css.getPropertyValue('--theme').trim(), bg: css.backgroundColor, on: getComputedStyle(btn).backgroundColor, cls: document.body.className };
