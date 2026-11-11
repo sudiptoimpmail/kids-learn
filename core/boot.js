@@ -1,10 +1,10 @@
 /* kids-core boot (ES module).
    1. Reads the app's config file (app.config.json): name, storage, voice, PIN, colours, data, scripts.
-   2. Applies the colour scheme from the config as CSS variables (light, and dark when given).
+   2. Applies the colour scheme from the config as CSS variables (light, and dark when given; dark follows the device only when no look is chosen).
    3. Loads the app's bundled JSON data (schema 1 namespaces) into ContentData.
    4. Loads the core scripts, then the app's own scripts, in order.
    Data is JSON, scripts contain only logic. No eval, no remote scripts. */
-const CORE_VERSION = '1.3.0';
+const CORE_VERSION = '1.4.0';
 const CORE_SCRIPTS = ['util.js', 'feature-flags.js', 'native.js', 'storage.js', 'voice.js', 'sounds.js', 'confetti.js',
   'parent-gate.js', 'progression.js', 'content-packs.js', 'offline.js'];
 const here = new URL('.', import.meta.url);           // …/core/
@@ -21,7 +21,7 @@ function themeCss(theme) {
   let css = `:root{${block(theme.light)}}`;
   if (isObj(theme.dark) && Object.keys(theme.dark).length) {
     const d = block(theme.dark) + 'color-scheme:dark;';
-    css += `@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){${d}}}:root[data-theme="dark"]{${d}}`;
+    css += `@media (prefers-color-scheme:dark){:root:not([data-theme]){${d}}}:root[data-theme="dark"]{${d}}`;
   }
   return css;
 }

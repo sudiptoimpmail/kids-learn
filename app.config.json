@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "core": "1.3.0",
+  "core": "1.4.0",
   "app": {
     "id": "kids-learn",
     "name": "Learn & Play",
@@ -109,24 +109,24 @@
       "update-ink": "#382266"
     },
     "dark": {
-      "theme-color": "#15121f",
-      "bg": "#15121f",
-      "ink": "#ece8f7",
-      "soft": "#b3abc9",
-      "card": "#24203a",
-      "theme": "#9a80ff",
+      "theme-color": "#1b1846",
+      "bg": "#1b1846",
+      "ink": "#f4f1ff",
+      "soft": "#c3bdf0",
+      "card": "#2a2766",
+      "theme": "#a48bff",
       "good": "#40c057",
       "bad": "#ff6b6b",
-      "pin-dot": "#9a80ff",
-      "pin-key": "#2e2848",
+      "pin-dot": "#a48bff",
+      "pin-key": "#2d2970",
       "pin-back": "#ffd43b",
       "pin-back-ink": "#3d2a00",
       "pin-back-shadow": "#c99700",
-      "shade": "#000000c0",
+      "shade": "#0b0a26c0",
       "warn-bg": "#3d3410",
       "warn-border": "#f59f00",
-      "update-bg": "#2a2445",
-      "update-border": "#9a80ff",
+      "update-bg": "#2a2766",
+      "update-border": "#a48bff",
       "update-ink": "#e5dcff"
     }
   },

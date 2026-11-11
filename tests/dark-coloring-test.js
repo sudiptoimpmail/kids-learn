@@ -12,10 +12,13 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     const bg = () => p.evaluate(() => getComputedStyle(document.body).backgroundColor);
     const light = await bg();
     await p.evaluate(() => { openSettings(); show('settings'); });
-    assert.equal(await p.locator('#schemeBtns .grade-btn').count(), 3);
+    assert.equal(await p.locator('#schemeBtns .grade-btn').count(), 4);
+    await p.locator('#schemeBtns [data-s="medium"]').click();
+    assert.equal(await p.evaluate(() => document.documentElement.dataset.theme), 'medium');
+    const medium = await bg(); assert.notEqual(medium, light, 'medium should change the page');
     await p.locator('#schemeBtns [data-s="dark"]').click();
     assert.equal(await p.evaluate(() => document.documentElement.dataset.theme), 'dark');
-    assert.notEqual(await bg(), light, 'dark background should change the page');
+    assert.notEqual(await bg(), light, 'dark background should change the page'); assert.notEqual(await bg(), medium);
     await p.reload(); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady);
     assert.equal(await p.evaluate(() => document.documentElement.dataset.theme), 'dark');
     await p.evaluate(() => CoreScheme.set('auto'));
