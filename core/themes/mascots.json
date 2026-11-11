@@ -1,0 +1,539 @@
+{
+ "schema": 1,
+ "id": "mascots",
+ "name": "Mascots",
+ "version": "1.0.0",
+ "description": "One look per mascot: each child picks a mascot and the whole app takes its colours (Dino greens, Space blues, Race Car reds, Unicorn pinks…), in Light, Medium and Night.",
+ "default": "rainbow",
+ "skins": {
+  "rainbow": {
+   "label": "Rainbow",
+   "mascot": "🌈",
+   "splash": [
+    "#f03e3e",
+    "#f59f00 30%",
+    "#40c057 55%",
+    "#339af0 80%",
+    "#7048e8"
+   ],
+   "light": {
+    "bg": "#fff8ec",
+    "bubbles": [
+     "#ffe3e3",
+     "#e3f3ff",
+     "#e7ffe3",
+     "#fff3bf"
+    ],
+    "colors": {
+     "theme": "#7c5cff",
+     "theme-deep": "#5a3fd1",
+     "theme-hi": "#ff6bb5",
+     "theme-ink": "#5f3dc4",
+     "theme-soft": "#f3edff",
+     "theme-line": "#d0bfff",
+     "theme-pop": "#e64980",
+     "soft": "#7a6f8f"
+    }
+   },
+   "medium": {
+    "bg": "#d6c9ff",
+    "bubbles": [
+     "#f49a9a",
+     "#9acdf4",
+     "#a7f49a",
+     "#f4e39a"
+    ],
+    "colors": {
+     "theme": "#7c5cff",
+     "theme-deep": "#5a3fd1",
+     "theme-hi": "#ff6bb5",
+     "theme-ink": "#5f3dc4",
+     "theme-soft": "#f3edff",
+     "theme-line": "#d0bfff",
+     "theme-pop": "#e64980",
+     "soft": "#564a72"
+    }
+   },
+   "dark": {
+    "bg": "#1b1846",
+    "bubbles": [
+     "#741b1b",
+     "#1b4e74",
+     "#28741b",
+     "#74631b"
+    ],
+    "colors": {
+     "theme": "#a48bff",
+     "theme-deep": "#5a3fd1",
+     "theme-hi": "#ff8cc6",
+     "theme-ink": "#d0bfff",
+     "theme-soft": "#2d2970",
+     "theme-line": "#5a52b0",
+     "theme-pop": "#ff8cc6",
+     "soft": "#c3bdf0",
+     "card": "#2a2766"
+    }
+   }
+  },
+  "unicorn": {
+   "label": "Unicorn",
+   "mascot": "🦄",
+   "splash": [
+    "#f06595",
+    "#cc5de8 60%",
+    "#b197fc"
+   ],
+   "light": {
+    "bg": "#fff0f8",
+    "bubbles": [
+     "#ffd6ec",
+     "#eadcff",
+     "#ffe8f5"
+    ],
+    "colors": {
+     "theme": "#e64980",
+     "theme-deep": "#a61e4d",
+     "theme-hi": "#b197fc",
+     "theme-ink": "#a61e4d",
+     "theme-soft": "#fff0f6",
+     "theme-line": "#fcc2d7",
+     "theme-pop": "#7048e8",
+     "soft": "#8f6f85"
+    }
+   },
+   "medium": {
+    "bg": "#ffc4e2",
+    "bubbles": [
+     "#f49aca",
+     "#be9af4",
+     "#f49acd"
+    ],
+    "colors": {
+     "theme": "#e64980",
+     "theme-deep": "#a61e4d",
+     "theme-hi": "#b197fc",
+     "theme-ink": "#a61e4d",
+     "theme-soft": "#fff0f6",
+     "theme-line": "#fcc2d7",
+     "theme-pop": "#7048e8",
+     "soft": "#6b3f5c"
+    }
+   },
+   "dark": {
+    "bg": "#2c1442",
+    "bubbles": [
+     "#741b4b",
+     "#3f1b74",
+     "#741b4d"
+    ],
+    "colors": {
+     "theme": "#f783ac",
+     "theme-deep": "#a61e4d",
+     "theme-hi": "#d0bfff",
+     "theme-ink": "#fcc2d7",
+     "theme-soft": "#4a1f45",
+     "theme-line": "#8a3b78",
+     "theme-pop": "#d0bfff",
+     "soft": "#f0c3dc",
+     "card": "#3d1b52"
+    }
+   }
+  },
+  "dino": {
+   "label": "Dino",
+   "mascot": "🦖",
+   "splash": [
+    "#2f9e44",
+    "#94d82d 60%",
+    "#ffa94d"
+   ],
+   "light": {
+    "bg": "#f1fbe8",
+    "bubbles": [
+     "#c3f0a8",
+     "#ffe0b2",
+     "#b2f2bb"
+    ],
+    "colors": {
+     "theme": "#2f9e44",
+     "theme-deep": "#1e6e2f",
+     "theme-hi": "#94d82d",
+     "theme-ink": "#1e6e2f",
+     "theme-soft": "#ebfbee",
+     "theme-line": "#b2f2bb",
+     "theme-pop": "#e8590c",
+     "soft": "#5f7a66"
+    }
+   },
+   "medium": {
+    "bg": "#c2eba6",
+    "bubbles": [
+     "#bcf49a",
+     "#f4d09a",
+     "#9af4a7"
+    ],
+    "colors": {
+     "theme": "#2f9e44",
+     "theme-deep": "#1e6e2f",
+     "theme-hi": "#94d82d",
+     "theme-ink": "#1e6e2f",
+     "theme-soft": "#ebfbee",
+     "theme-line": "#b2f2bb",
+     "theme-pop": "#e8590c",
+     "soft": "#3f5a45"
+    }
+   },
+   "dark": {
+    "bg": "#0f2b1f",
+    "bubbles": [
+     "#3c741b",
+     "#74501b",
+     "#1b7428"
+    ],
+    "colors": {
+     "theme": "#51cf66",
+     "theme-deep": "#1e6e2f",
+     "theme-hi": "#a9e34b",
+     "theme-ink": "#b2f2bb",
+     "theme-soft": "#173f2a",
+     "theme-line": "#2f7a4c",
+     "theme-pop": "#ffa94d",
+     "soft": "#b9e3c4",
+     "card": "#1a3a2b"
+    }
+   }
+  },
+  "space": {
+   "label": "Space",
+   "mascot": "🚀",
+   "splash": [
+    "#1b1f4a",
+    "#4c6ef5 60%",
+    "#22b8cf"
+   ],
+   "light": {
+    "bg": "#eef0ff",
+    "bubbles": [
+     "#d0d7ff",
+     "#c5f6fa",
+     "#e5dbff"
+    ],
+    "colors": {
+     "theme": "#4263eb",
+     "theme-deep": "#2a3fa8",
+     "theme-hi": "#22b8cf",
+     "theme-ink": "#2a3fa8",
+     "theme-soft": "#edf2ff",
+     "theme-line": "#bac8ff",
+     "theme-pop": "#e8590c",
+     "soft": "#5f6890"
+    },
+    "patternColor": "#a5b4fc"
+   },
+   "medium": {
+    "bg": "#c0c9ff",
+    "bubbles": [
+     "#9aa7f4",
+     "#9aedf4",
+     "#b39af4"
+    ],
+    "colors": {
+     "theme": "#4263eb",
+     "theme-deep": "#2a3fa8",
+     "theme-hi": "#22b8cf",
+     "theme-ink": "#2a3fa8",
+     "theme-soft": "#edf2ff",
+     "theme-line": "#bac8ff",
+     "theme-pop": "#e8590c",
+     "soft": "#3d4670"
+    },
+    "patternColor": "#7d8ff0"
+   },
+   "dark": {
+    "bg": "#0d1142",
+    "bubbles": [
+     "#1b2874",
+     "#1b6d74",
+     "#341b74"
+    ],
+    "colors": {
+     "theme": "#748ffc",
+     "theme-deep": "#2a3fa8",
+     "theme-hi": "#3bc9db",
+     "theme-ink": "#bac8ff",
+     "theme-soft": "#1f2a6b",
+     "theme-line": "#3d4fa8",
+     "theme-pop": "#ffa94d",
+     "soft": "#c0caf5",
+     "card": "#1a2260"
+    },
+    "patternColor": "#3a4a9a"
+   },
+   "pattern": "stars"
+  },
+  "ocean": {
+   "label": "Ocean",
+   "mascot": "🐬",
+   "splash": [
+    "#0b7285",
+    "#22b8cf 60%",
+    "#74c0fc"
+   ],
+   "light": {
+    "bg": "#e8fbff",
+    "bubbles": [
+     "#c5f6fa",
+     "#a5d8ff",
+     "#99e9f2"
+    ],
+    "colors": {
+     "theme": "#1098ad",
+     "theme-deep": "#0a6474",
+     "theme-hi": "#4dabf7",
+     "theme-ink": "#0b6b7d",
+     "theme-soft": "#e3fafc",
+     "theme-line": "#99e9f2",
+     "theme-pop": "#f76707",
+     "soft": "#4f7a86"
+    }
+   },
+   "medium": {
+    "bg": "#a9e6f5",
+    "bubbles": [
+     "#9aedf4",
+     "#9acdf4",
+     "#9aebf4"
+    ],
+    "colors": {
+     "theme": "#1098ad",
+     "theme-deep": "#0a6474",
+     "theme-hi": "#4dabf7",
+     "theme-ink": "#0b6b7d",
+     "theme-soft": "#e3fafc",
+     "theme-line": "#99e9f2",
+     "theme-pop": "#f76707",
+     "soft": "#2f5866"
+    }
+   },
+   "dark": {
+    "bg": "#06293b",
+    "bubbles": [
+     "#1b6d74",
+     "#1b4d74",
+     "#1b6b74"
+    ],
+    "colors": {
+     "theme": "#3bc9db",
+     "theme-deep": "#0a6474",
+     "theme-hi": "#74c0fc",
+     "theme-ink": "#99e9f2",
+     "theme-soft": "#0c4157",
+     "theme-line": "#1f6f8a",
+     "theme-pop": "#ffa94d",
+     "soft": "#b5e3ee",
+     "card": "#0e3a50"
+    }
+   }
+  },
+  "sports": {
+   "label": "Sports",
+   "mascot": "⚽",
+   "splash": [
+    "#1971c2",
+    "#2f9e44 60%",
+    "#fab005"
+   ],
+   "light": {
+    "bg": "#eefcf1",
+    "bubbles": [
+     "#b2f2bb",
+     "#d0ebff",
+     "#ffec99"
+    ],
+    "colors": {
+     "theme": "#1c7ed6",
+     "theme-deep": "#12538f",
+     "theme-hi": "#40c057",
+     "theme-ink": "#135a99",
+     "theme-soft": "#e7f5ff",
+     "theme-line": "#a5d8ff",
+     "theme-pop": "#e8590c",
+     "soft": "#4f7a6a"
+    },
+    "patternColor": "#ffffff55"
+   },
+   "medium": {
+    "bg": "#b5ecc1",
+    "bubbles": [
+     "#9af4a7",
+     "#9acef4",
+     "#f4e39a"
+    ],
+    "colors": {
+     "theme": "#1c7ed6",
+     "theme-deep": "#12538f",
+     "theme-hi": "#40c057",
+     "theme-ink": "#135a99",
+     "theme-soft": "#e7f5ff",
+     "theme-line": "#a5d8ff",
+     "theme-pop": "#e8590c",
+     "soft": "#2f5a4a"
+    },
+    "patternColor": "#ffffff66"
+   },
+   "dark": {
+    "bg": "#0c2a1d",
+    "bubbles": [
+     "#1b7428",
+     "#1b4e74",
+     "#74631b"
+    ],
+    "colors": {
+     "theme": "#4dabf7",
+     "theme-deep": "#12538f",
+     "theme-hi": "#69db7c",
+     "theme-ink": "#a5d8ff",
+     "theme-soft": "#123f30",
+     "theme-line": "#2f7a5c",
+     "theme-pop": "#ffa94d",
+     "soft": "#b6e0c8",
+     "card": "#163f31"
+    },
+    "patternColor": "#ffffff14"
+   },
+   "pattern": "stripes"
+  },
+  "cars": {
+   "label": "Race Cars",
+   "mascot": "🏎️",
+   "splash": [
+    "#c92a2a",
+    "#f76707 60%",
+    "#fab005"
+   ],
+   "light": {
+    "bg": "#f4f5f7",
+    "bubbles": [
+     "#ffc9c9",
+     "#d0ebff",
+     "#ffec99"
+    ],
+    "colors": {
+     "theme": "#e03131",
+     "theme-deep": "#9b1c1c",
+     "theme-hi": "#f76707",
+     "theme-ink": "#a51d1d",
+     "theme-soft": "#fff5f5",
+     "theme-line": "#ffc9c9",
+     "theme-pop": "#1971c2",
+     "soft": "#6a6e7a"
+    },
+    "patternColor": "#e9ecef"
+   },
+   "medium": {
+    "bg": "#cdd6ea",
+    "bubbles": [
+     "#f49a9a",
+     "#9acef4",
+     "#f4e39a"
+    ],
+    "colors": {
+     "theme": "#e03131",
+     "theme-deep": "#9b1c1c",
+     "theme-hi": "#f76707",
+     "theme-ink": "#a51d1d",
+     "theme-soft": "#fff5f5",
+     "theme-line": "#ffc9c9",
+     "theme-pop": "#1971c2",
+     "soft": "#4a4d5a"
+    },
+    "patternColor": "#b8c2d8"
+   },
+   "dark": {
+    "bg": "#191d3a",
+    "bubbles": [
+     "#741b1b",
+     "#1b4e74",
+     "#74631b"
+    ],
+    "colors": {
+     "theme": "#ff6b6b",
+     "theme-deep": "#9b1c1c",
+     "theme-hi": "#ffa94d",
+     "theme-ink": "#ffc9c9",
+     "theme-soft": "#3a2230",
+     "theme-line": "#4a5290",
+     "theme-pop": "#74c0fc",
+     "soft": "#d0d4ea",
+     "card": "#262b50"
+    },
+    "patternColor": "#2a3150"
+   },
+   "pattern": "checks"
+  },
+  "jungle": {
+   "label": "Jungle",
+   "mascot": "🦁",
+   "splash": [
+    "#2b8a3e",
+    "#66a80f 60%",
+    "#f59f00"
+   ],
+   "light": {
+    "bg": "#f3fbe9",
+    "bubbles": [
+     "#d8f5a2",
+     "#ffe8cc",
+     "#c0eb75"
+    ],
+    "colors": {
+     "theme": "#5c940d",
+     "theme-deep": "#3b6108",
+     "theme-hi": "#f59f00",
+     "theme-ink": "#3d6309",
+     "theme-soft": "#f4fce3",
+     "theme-line": "#c0eb75",
+     "theme-pop": "#d9480f",
+     "soft": "#6a7a4f"
+    }
+   },
+   "medium": {
+    "bg": "#cbe99c",
+    "bubbles": [
+     "#d4f49a",
+     "#f4cb9a",
+     "#d3f49a"
+    ],
+    "colors": {
+     "theme": "#5c940d",
+     "theme-deep": "#3b6108",
+     "theme-hi": "#f59f00",
+     "theme-ink": "#3d6309",
+     "theme-soft": "#f4fce3",
+     "theme-line": "#c0eb75",
+     "theme-pop": "#d9480f",
+     "soft": "#4a5a2f"
+    }
+   },
+   "dark": {
+    "bg": "#13290e",
+    "bubbles": [
+     "#55741b",
+     "#744c1b",
+     "#53741b"
+    ],
+    "colors": {
+     "theme": "#94d82d",
+     "theme-deep": "#3b6108",
+     "theme-hi": "#ffc078",
+     "theme-ink": "#d8f5a2",
+     "theme-soft": "#2a4a14",
+     "theme-line": "#5a8a2a",
+     "theme-pop": "#ffc078",
+     "soft": "#cfe5b3",
+     "card": "#23401a"
+    }
+   }
+  }
+ }
+}

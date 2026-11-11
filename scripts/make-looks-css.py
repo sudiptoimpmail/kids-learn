@@ -37,7 +37,8 @@ def to_dark_surface(c):
     r, g, b, a = parse(c)
     h, l, s = colorsys.rgb_to_hls(r, g, b)
     if l < 0.80: return None
-    if s <= 0.05 or l > 0.985: return fmt(*colorsys.hls_to_rgb(0.69, 0.27 + (1 - l) * 0.2, 0.45), a)   # white cards -> indigo
+    if (s <= 0.05 or l > 0.985) and not a: return 'var(--card)'                                         # white cards -> the skin's night card
+    if s <= 0.05 or l > 0.985: return fmt(*colorsys.hls_to_rgb(0.69, 0.27 + (1 - l) * 0.2, 0.45), a)
     return fmt(*colorsys.hls_to_rgb(h, 0.25 + (1 - l) * 0.25, max(0.35, min(s, 0.6))), a)            # tints keep their colour
 
 
@@ -155,7 +156,7 @@ body { background-color: var(--bg); color: #f4f1ff; }
 body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .75; background-image: radial-gradient(1.6px 1.6px at 12% 18%, #fff 50%, transparent 51%), radial-gradient(1.2px 1.2px at 32% 62%, #ffe066 50%, transparent 51%), radial-gradient(2px 2px at 58% 12%, #fff 50%, transparent 51%), radial-gradient(1.3px 1.3px at 76% 48%, #a5d8ff 50%, transparent 51%), radial-gradient(1.8px 1.8px at 88% 82%, #fff 50%, transparent 51%), radial-gradient(1.2px 1.2px at 44% 88%, #ffc9e8 50%, transparent 51%); background-size: 260px 260px; }
 .quest-go { background: #ffd43b; color: #3d2a00; }
 .rec-section h2, .catalog-section h2 { color: #ffe27a; }
-input, select, textarea { background: #2d2970; color: #f4f1ff; border-color: #5a52b0; }
+input, select, textarea { background: var(--theme-soft); color: #f4f1ff; border-color: var(--theme-line); }
 .pic, .dr-pad, .color-wrap svg { background: #fff; }
 .dr-choose .ref-svg { background: #fff; border-radius: 12px; }
 """
@@ -171,7 +172,7 @@ def scoped(sel_list, scope):
 
 
 MEDIUM_EXTRA = """
-:root { --bg: #d6c9ff; --soft: #564a72; }
+:root { --bg: #d6c9ff; --soft: #564a72; }   /* each mascot skin sets its own (kids-core theme pack) */
 body { background-color: var(--bg); }
 """
 

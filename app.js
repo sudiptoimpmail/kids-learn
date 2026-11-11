@@ -122,7 +122,7 @@ function show(id) {
 function renderHome() {
   $('#kidAvatar').textContent = state.avatar || '🦄';
   $('#kidBtn').classList.toggle('many', Store.kids().length > 1);
-  $('#hello').textContent = state.name ? `Hi, ${state.name}!` : 'Hi there!' + ' ' + ((THEMES[state.theme] || THEMES.rainbow).mascot);
+  $('#hello').textContent = state.name ? `Hi, ${state.name}!` : 'Hi there!' + ' ' + skinOf(state.theme).mascot;
   $('#starCount').textContent = state.stars;
   $('#stickerCount').textContent = state.stickers.length;
   $('#stickerLabel').textContent = state.stickers.length === 1 ? 'sticker' : 'stickers';
@@ -1067,16 +1067,11 @@ $('#diffCancel').onclick = () => ($('#diffSheet').hidden = true);
   b.addEventListener('pointerdown', down); ['pointerup', 'pointerleave', 'pointercancel'].forEach((ev) => b.addEventListener(ev, up));
 })();
 
-/* ---------- looks: themes with a mascot (unicorn, dino, space, ocean, sports, rainbow) ---------- */
-const THEMES = {
-  rainbow: { label: '🌈 Rainbow', mascot: '🌈' }, unicorn: { label: '🦄 Unicorn', mascot: '🦄' }, dino: { label: '🦖 Dino', mascot: '🦖' },
-  space: { label: '🚀 Space', mascot: '🚀' }, ocean: { label: '🐬 Ocean', mascot: '🐬' }, sports: { label: '⚽ Sports', mascot: '⚽' },
-  cars: { label: '🏎️ Race Cars', mascot: '🏎️' }, jungle: { label: '🦁 Jungle', mascot: '🦁' },
-};
+/* ---------- looks: mascot skins come from the kids-core theme pack (app.config.json → theme.pack) ---------- */
+const skinOf = (id) => { const k = CoreSkins.has(id) ? id : CoreSkins.default; return { id: k, ...(CoreSkins.list().find((x) => x.id === k) || { label: '', mascot: '' }) }; };
 function applyTheme() {
-  const t = THEMES[state.theme] ? state.theme : 'rainbow';
-  document.body.className = document.body.className.replace(/\btheme-\w+/g, '').trim() + ' theme-' + t;
-  $('#mascot').textContent = THEMES[t].mascot;
+  const t = CoreSkins.apply(state.theme);
+  $('#mascot').textContent = skinOf(t).mascot;
   document.body.classList.toggle('test-mode', isTestMode());
 }
 const SCHEMES = [['light', '☀️ Light'], ['medium', '🌤️ Medium'], ['dark', '🌙 Night'], ['auto', '📱 Same as device']];
@@ -1087,7 +1082,7 @@ function renderSchemes() {
   $$('#schemeBtns .grade-btn').forEach((b) => (b.onclick = () => { sfx.tap(); CoreScheme.set(b.dataset.s); renderSchemes(); }));
 }
 function renderThemes() {
-  $('#themeBtns').innerHTML = Object.entries(THEMES).map(([k, t]) => `<button class="grade-btn ${(state.theme || 'rainbow') === k ? 'on' : ''}" data-t="${k}">${t.label}</button>`).join('');
+  $('#themeBtns').innerHTML = CoreSkins.list().map((t) => `<button class="grade-btn ${skinOf(state.theme).id === t.id ? 'on' : ''}" data-t="${t.id}">${t.mascot} ${t.label}</button>`).join('');
   $$('#themeBtns .grade-btn').forEach((b) => (b.onclick = () => { sfx.tap(); state.theme = b.dataset.t; save(); applyTheme(); renderThemes(); }));
   renderSchemes();
 }
