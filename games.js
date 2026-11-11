@@ -8,7 +8,7 @@
 /* ---------- unlock rules ---------- */
 // Two rules a parent can pick in Settings:
 //  'rounds' (default): every N finished learning rounds earns a play break of M minutes
-//  'hourly': free play for up to K minutes in each clock hour (e.g. 15 min per hour)
+//  'hourly': up to K minutes of play in each clock hour (e.g. 15 min per hour), opened by finishing a learning round in that hour
 const roundsPerPlay = () => state.roundsPerPlay || 1;
 function gamePlayPolicy(id) { return GRADES[state.grade]?.playPolicy?.[id] || {}; }
 const playMinutes = () => state.playMinutes || 3;
@@ -17,6 +17,8 @@ const perHour = () => state.playPerHour || 15;
 const hourKey = () => { const d = new Date(); return `${d.toDateString()} ${d.getHours()}`; };
 const usedThisHour = () => (state.playUsed && state.playUsed.h === hourKey() ? state.playUsed.ms : 0);
 const hourLeftMs = () => Math.max(0, perHour() * 60000 - usedThisHour());
+// kids earn first: this hour's play opens only after a finished learning round in this hour
+const hourEarned = () => state.playHourEarned === hourKey();
 // Migrate the former wall-clock deadline once; remaining time belongs to this child.
 function playBalance() {
   if (state.playRemainingMs == null) {
@@ -25,14 +27,22 @@ function playBalance() {
   }
   return Math.max(0, state.playRemainingMs || 0);
 }
-const playOpen = () => !!state.playAlways || isTestMode() || (hourlyMode() ? hourLeftMs() > 0 : playBalance() > 0);
+const playOpen = () => !!state.playAlways || isTestMode() || (hourlyMode() ? hourEarned() && hourLeftMs() > 0 : playBalance() > 0);
 
 // Question activities deposit a fraction on each completed card. The default
 // argument preserves compatibility with full-round reward callers.
 function earnPlay(credit = ROUND_POLICY.creditUnitsPerRound) {
-  if (hourlyMode()) return false;
   const units = ROUND_POLICY.creditUnitsPerRound;
   const total = (state.learningPlayCredit || 0) + credit;
+  if (hourlyMode()) {
+    // a whole round's worth of cards in this hour opens the hour's play minutes
+    if (hourEarned()) return false;
+    const hour = state.playHourCredit && state.playHourCredit.h === hourKey() ? state.playHourCredit.units : 0;
+    const now = hour + credit;
+    if (now < units) { state.playHourCredit = { h: hourKey(), units: now }; save(); return false; }
+    state.playHourEarned = hourKey(); delete state.playHourCredit; save();
+    return true;
+  }
   state.learningPlayCredit = total % units;
   state.roundsSincePlay = (state.roundsSincePlay || 0) + Math.floor(total / units);
   const passes = Math.floor(state.roundsSincePlay / roundsPerPlay());
@@ -46,6 +56,7 @@ const nextHourLabel = () => { const d = new Date(); d.setHours(d.getHours() + 1,
 function playStatus() {
   if (state.playAlways) return { open: true, text: 'Always open' };
   if (hourlyMode()) {
+    if (!hourEarned()) return { open: false, text: state.playHourCredit && state.playHourCredit.h === hourKey() ? 'Progress saved · Keep learning to play' : 'Finish 1 round to play' };
     return hourLeftMs() > 0 ? { open: true, text: `${fmtLeft()} of play left this hour` } : { open: false, text: `Play again at ${nextHourLabel()}` };
   }
   if (playOpen()) return { open: true, text: `${fmtLeft()} left` };
