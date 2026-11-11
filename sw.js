@@ -930,6 +930,7 @@ const FILES = [
   "grade1.js",
   "app.js",
   "games.js",
+  "games-play.js",
   "pathmaze.js",
   "radialmaze.js",
   "wordgames.js",

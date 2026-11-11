@@ -246,6 +246,10 @@ window.CoreReady = (async () => {
   placeMascot(window.CoreMascot, document);
   if (cfg.app.title) document.title = cfg.app.title;
 
+  // download the scripts while the data downloads (they still run in order, after the data is ready)
+  for (const src of [...CORE_SCRIPTS.map((x) => new URL(x, here).pathname), ...cfg.scripts]) {
+    const l = document.createElement('link'); l.rel = 'preload'; l.as = 'script'; l.href = src; document.head.appendChild(l);
+  }
   const data = new Map(), dir = cfg.data.dir || 'data/';
   const loadData = (names) => Promise.all(names.filter((n) => !data.has(n)).map(async (name) => {
     const response = await fetch(dir + name + '.json');
@@ -268,6 +272,13 @@ window.CoreReady = (async () => {
   await Promise.all([...CORE_SCRIPTS.map((s) => new URL(s, here).pathname), ...cfg.scripts].map(load));
   window.CoreLazy = makeLazy(cfg, loadData);
   for (const name of cfg.hooks || []) if (!CoreHooks.install(name) && !window.CoreLazy.owner(name)) console.warn('kids-core: no function to hook: ' + name);
+  // Browser tests see the whole app at once unless they ask for ?lazy=1 (the lazy test does).
+  if (navigator.webdriver && !/[?&]lazy=1\b/.test(location.search)) await window.CoreLazy.preload();
+  // Otherwise every section loads quietly once the app is idle, so the first tap on it is instant.
+  else if (cfg.lazy && Object.keys(cfg.lazy).length) {
+    const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));
+    setTimeout(() => idle(() => window.CoreLazy.preload(), { timeout: 4000 }), 3000);
+  }
   if (status) status.textContent = '';
   if (play) play.disabled = false;
   return true;

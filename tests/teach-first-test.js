@@ -5,7 +5,7 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
   try {
     const p = await b.newPage({ viewport: { width: 1080, height: 810 } }); const errors = [];
     p.on('pageerror', (e) => errors.push(e.message)); p.on('console', (m) => { if (/Missing natural recording|hook for/.test(m.text())) errors.push(m.text()); });
-    await p.goto('http://localhost:8765/'); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady);
+    await p.goto('http://localhost:8765/?teach=1'); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady);
     await p.evaluate(() => { localStorage.removeItem(AppConfig.storage.key + '.qa'); document.getElementById('splash').style.display = 'none';
       state.name = 'Maya'; state.grade = 'k'; state.voice = true; state.taught = {}; state.testMode = false; save(); });
     const roundInfo = () => p.evaluate(() => ({ n: R.qs.length, lessons: R.qs.filter((q) => q.lesson).map((q) => q.lesson), kind: document.getElementById('teachBar')?.dataset.kind }));

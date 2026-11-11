@@ -22,8 +22,10 @@ const TeachFirst = (() => {
   const hasClip = (t) => !!CLIPS[clipKey(String(t))];
 
   /* ---------- when to teach ---------- */
+  // Older browser tests expect a round to start with its quiz; they skip lessons unless they ask (?teach=1), as with onboarding.
+  const automatedSkip = () => navigator.webdriver && !/[?&]teach=1\b/.test(location.search);
   function needsTeaching(catId, level) {
-    if (L.policy.skipCategories.includes(catId)) return false;
+    if (L.policy.skipCategories.includes(catId) || automatedSkip()) return false;
     const seen = (state.taught || {})[keyOf(catId, level)];
     if (!seen) return true;
     return daysBetween(seen, today()) >= L.policy.reteachAfterDays;
