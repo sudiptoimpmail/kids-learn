@@ -4,7 +4,7 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v163';
+const VERSION = PREFIX + 'v164';
 const AUDIO = PREFIX + 'audio';
 const FILES = [
   "library/little-red-hen/apple.svg",
@@ -175,6 +175,8 @@ const FILES = [
   "family-learning.js",
   "qa-questions.js",
   "grade-journey.js",
+  "teach.js",
+  "teach.css",
   "learning-framework.js",
   "library/three-little-pigs/book.json",
   "library/three-little-pigs/cover.webp",
@@ -211,6 +213,7 @@ const FILES = [
   "photos.js",
   "illustrations.js",
   "grade1words.js",
+  "decodable.js",
   "content.js",
   "thinking.js",
   "country.js",
@@ -927,6 +930,7 @@ const FILES = [
   "grade1.js",
   "app.js",
   "games.js",
+  "games-play.js",
   "pathmaze.js",
   "radialmaze.js",
   "wordgames.js",
@@ -1315,6 +1319,7 @@ const FILES = [
   "data/explorer-science.json",
   "explorer-engine.js",
   "data/curriculum-map.json",
+  "data/lessons.json",
   "app.config.json",
   "core/VERSION",
   "core/boot.js",
@@ -1323,6 +1328,7 @@ const FILES = [
   "assets/mascot/owl-teacher.svg",
   "core/core.css",
   "core/util.js",
+  "core/hooks.js",
   "core/feature-flags.js",
   "core/storage.js",
   "core/voice.js",
@@ -1337,6 +1343,8 @@ const FILES = [
 ];
 // voice clips cached right away (the rest are cached on first use, or all at once from Settings)
 const CORE_PHRASES = [
+      // Professor Hoot's teaching lines (data/lessons.json)
+      'watch me first','let\'s do one together','your turn','this one','i say each picture','i read each word','i listen to the first sound','i listen to the word','i say each sound','now i blend the sounds','i count them all','i count what is left','i clap each part','i look at the first letter','i read it slowly','tap the one that glows','yes now it\'s your turn','let\'s look again','read the sentence','then answer the question',
       'excellent','awesome job','great work','you did it','super star','fantastic',
       'way to go','amazing','wonderful','brilliant','try again','good try',
       'think about it','look carefully and try again','look at the picture',

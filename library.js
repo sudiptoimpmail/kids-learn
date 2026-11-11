@@ -201,5 +201,4 @@ $('#libHome').onclick = () => { sfx.tap(); stopReading(); if (LB.book) { LB.book
 $('#libRead').onclick = () => { sfx.tap(); if (LB.page >= 0) { LB.auto = true; readPage(); } };
 
 // Invalidate pending loads and feedback whenever any navigation leaves the reader.
-const originalReaderShow=show;
-show=function(id){if(id!=='library' && $('#library').classList.contains('active')){LB.request++;stopReading();}return originalReaderShow(id);};
+CoreHooks.before('show',(id)=>{if(id!=='library' && $('#library').classList.contains('active')){LB.request++;stopReading();}});

@@ -1,0 +1,270 @@
+{
+  "schema": 1,
+  "namespace": "lessons",
+  "datasets": {
+    "policy": {
+      "about": "Teach first: each new skill step opens with Professor Hoot modelling one card (I do), one guided card together (we do), then the quiz (you do). Lesson cards never count as evidence, stars or Play Zone time.",
+      "reteachAfterDays": 30,
+      "reteachAfterStepDown": true,
+      "skipCategories": [
+        "mix",
+        "placement"
+      ],
+      "guidedChoices": 2,
+      "guidedGlowAfterMs": 7000,
+      "genericHints": [
+        "think about it",
+        "look at the picture",
+        "look at the clues",
+        "sound it out",
+        "count them all",
+        "it starts with this letter",
+        "look at the yellow words read them",
+        "here is its flag",
+        "look at the orange place on the map",
+        "think about where each animal lives"
+      ]
+    },
+    "phrases": {
+      "watch": "Watch me first.",
+      "together": "Let's do one together.",
+      "turn": "Your turn!",
+      "thisOne": "This one!",
+      "eachPicture": "I say each picture.",
+      "eachWord": "I read each word.",
+      "firstSound": "I listen to the first sound.",
+      "listenWord": "I listen to the word.",
+      "eachSound": "I say each sound.",
+      "blend": "Now I blend the sounds.",
+      "countAll": "I count them all.",
+      "countLeft": "I count what is left.",
+      "clapParts": "I clap each part.",
+      "firstLetter": "I look at the first letter.",
+      "readSlowly": "I read it slowly.",
+      "tapGlow": "Tap the one that glows.",
+      "yesTurn": "Yes! Now it's your turn.",
+      "lookAgain": "Let's look again."
+    },
+    "labels": {
+      "model": "Watch me",
+      "guided": "Together",
+      "turn": "Your turn",
+      "again": "Again",
+      "go": "My turn"
+    },
+    "scripts": {
+      "default": [
+        "watch",
+        "q",
+        "hint",
+        "point",
+        "answer"
+      ],
+      "phonics": [
+        "watch",
+        "q",
+        "say:eachPicture",
+        "each",
+        "firstSound",
+        "point",
+        "answer"
+      ],
+      "cvc": [
+        "watch",
+        "q",
+        "sounds",
+        "point",
+        "answer"
+      ],
+      "w4": [
+        "watch",
+        "q",
+        "sounds",
+        "point",
+        "answer"
+      ],
+      "sight": [
+        "watch",
+        "q",
+        "say:listenWord",
+        "answer",
+        "firstLetter",
+        "point",
+        "answer"
+      ],
+      "syl": [
+        "watch",
+        "q",
+        "say:clapParts",
+        "claps",
+        "point",
+        "answer"
+      ],
+      "add": [
+        "watch",
+        "q",
+        "say:countAll",
+        "count",
+        "point",
+        "answer"
+      ],
+      "sub": [
+        "watch",
+        "q",
+        "hint",
+        "say:countLeft",
+        "countHint",
+        "point",
+        "answer"
+      ],
+      "sent": [
+        "watch",
+        "q",
+        "say:readSlowly",
+        "hint",
+        "point",
+        "answer"
+      ],
+      "story": [
+        "watch",
+        "q",
+        "say:readSlowly",
+        "hint",
+        "point",
+        "answer"
+      ],
+      "shape2": [
+        "watch",
+        "q",
+        "hint",
+        "point",
+        "answer"
+      ],
+      "vocab": [
+        "watch",
+        "q",
+        "hint",
+        "point",
+        "answer"
+      ]
+    },
+    "decodable": {
+      "about": "Reading words must use only spelling patterns the child has been taught. Each pattern stage includes the ones before it. A word with a pattern above its level is left out of that level's pool (reading, listening and spelling cards alike). Grade 1 spelling step 4 and up includes two-syllable picture words, so it is not limited.",
+      "stages": [
+        "short",
+        "digraphs",
+        "magicE",
+        "teams",
+        "any"
+      ],
+      "stageNames": {
+        "short": "Single letters with their first sound and short vowels (cat, ant, six)",
+        "digraphs": "Two letters, one sound (sh ch th wh ck ng ll ss ff zz qu) and blends (frog, drum, fish)",
+        "magicE": "Silent e makes the vowel say its name (cake, kite, bone)",
+        "teams": "Vowel teams, r-controlled vowels, y as a vowel and welded sounds (rain, tree, star, fly, ball)",
+        "any": "Irregular spellings (two, bear, lion)"
+      },
+      "levels": {
+        "cvc": {
+          "1": "short",
+          "2": "short",
+          "3": "short"
+        },
+        "spell": {
+          "1": "short",
+          "2": "short",
+          "3": "magicE",
+          "4": "any",
+          "5": "any"
+        },
+        "w4": {
+          "1": "digraphs",
+          "2": "digraphs",
+          "3": "magicE",
+          "4": "teams",
+          "5": "any"
+        }
+      },
+      "irregular": [
+        "two",
+        "of",
+        "the",
+        "was",
+        "said",
+        "bear",
+        "pear",
+        "wolf",
+        "shoe",
+        "swan",
+        "door",
+        "lion",
+        "tiger",
+        "woman",
+        "pizza",
+        "zebra",
+        "robot",
+        "puppy",
+        "apple",
+        "horse",
+        "yo-yo",
+        "blue",
+        "tube",
+        "eye",
+        "one",
+        "bread",
+        "nurse",
+        "girl",
+        "worm"
+      ],
+      "graphemes": {
+        "digraphs": [
+          "tch",
+          "sh",
+          "ch",
+          "th",
+          "wh",
+          "ph",
+          "ck",
+          "ng",
+          "nk",
+          "qu",
+          "ll",
+          "ss",
+          "ff",
+          "zz"
+        ],
+        "teams": [
+          "igh",
+          "eigh",
+          "air",
+          "ear",
+          "eer",
+          "ore",
+          "our",
+          "ee",
+          "ea",
+          "oa",
+          "ai",
+          "ay",
+          "oo",
+          "ou",
+          "ow",
+          "oy",
+          "oi",
+          "ie",
+          "ue",
+          "ew",
+          "ey",
+          "au",
+          "aw",
+          "ar",
+          "or",
+          "er",
+          "ir",
+          "ur",
+          "all"
+        ]
+      }
+    }
+  }
+}

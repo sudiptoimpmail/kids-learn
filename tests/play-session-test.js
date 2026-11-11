@@ -27,7 +27,7 @@ const {chromium} = require('playwright');
     assert.equal(await page.evaluate(()=>{let stopped=false;curSrc={stop(){stopped=true;}};show('settings');return stopped;}),true,'navigation stops playing clips');
     assert.equal(await page.evaluate(async()=>{let stopped=false;curSrc={stop(){stopped=true;}};state.voice=false;await say('Hello');return stopped;}),true,'muting also stops existing clips');
     assert.equal(await page.evaluate(async()=>{window.stale=false;later(()=>{window.stale=true;},20);show('game');show('home');await new Promise(r=>setTimeout(r,40));return window.stale;}),false,'leaving invalidates old game callbacks');
-    await page.evaluate(()=>{state.playMode='hourly';state.playUsed={h:hourKey(),ms:0};openPlayZone();clearInterval(playTimer);tickPlayTimer(lastTick+5000);});
+    await page.evaluate(()=>{state.playMode='hourly';state.playHourEarned=hourKey();state.playUsed={h:hourKey(),ms:0};openPlayZone();clearInterval(playTimer);tickPlayTimer(lastTick+5000);});
     assert.equal(await page.evaluate(()=>state.playUsed.ms),0,'hourly menu must also be free');
     await page.evaluate(()=>{openGame('color');clearInterval(playTimer);tickPlayTimer(lastTick+5000);});
     assert.equal(await page.evaluate(()=>state.playUsed.ms),0,'picture picker must be free');

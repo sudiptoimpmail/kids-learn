@@ -156,7 +156,9 @@ function similarWords(list, word, n, level) {
 }
 
 function genWords(list, level, kind) {
-  const wordPool = kind === 'cvc' && level <= 1 ? list.filter(([w]) => isSimpleCVC(w)) : list;
+  // only words whose spelling pattern is taught at this level (data/lessons.json "decodable"); step 1 stays strict CVC
+  const decodable = Decodable.filterPool(list, kind, level);
+  const wordPool = kind === 'cvc' && level <= 1 ? decodable.filter(([w]) => isSimpleCVC(w)) : decodable;
   const [w, e] = pick(wordPool);
   const n = numOpts(level) - 1;
   // workbook-style variety: read → picture, picture → word, listen → word, missing letter, unscramble
@@ -315,11 +317,14 @@ const LOOKALIKE = { b: 'dp', d: 'bp', p: 'bq', q: 'p', m: 'n', n: 'mu', u: 'n', 
 function genSpell(level) {
   let word, nBlank, nExtra, mode = 'pic', sentence = null;
   const r = Math.random();
-  if (level === 1) { word = pick(SPELL3.filter(isSimpleCVC)); nBlank = r < 0.5 ? 1 : 2; nExtra = 2; }
+  // spelling words, like reading words, use only the patterns taught at this level
+  const taught = (list) => { const f = Decodable.filterPool(list, 'spell', level); return f.length ? f : null; };
+  if (level === 1) { word = pick(SPELL3.filter(isSimpleCVC).filter((w) => Decodable.allowed(w, 'short'))); nBlank = r < 0.5 ? 1 : 2; nExtra = 2; }
   else if (level === 2) {
-    if (r < 0.5) { word = pick(SPELL3); nBlank = 3; nExtra = 3; }
-    else { word = pick(SPELL4); nBlank = 2; nExtra = 3; }
-  } else if (level === 3) { word = pick(SPELL4); nBlank = r < 0.75 ? 4 : 3; nExtra = 4; }
+    const four = taught(SPELL4);
+    if (r < 0.5 || !four) { word = pick(taught(SPELL3) || SPELL3.filter(isSimpleCVC)); nBlank = 3; nExtra = 3; }
+    else { word = pick(four); nBlank = 2; nExtra = 3; }
+  } else if (level === 3) { word = pick(taught(SPELL4) || SPELL4); nBlank = r < 0.75 ? 4 : 3; nExtra = 4; }
   else if (level === 4) {
     // Grade-one picture words are extra spelling practice, not added to Pre-K.
     if (r < 0.4) { word = pick(Math.random() < 0.45 ? G1_PICTURE_WORDS : SPELL5); nBlank = 2 + rand(2); nExtra = 4; }
@@ -1796,7 +1801,7 @@ const CATEGORIES = [
   { id: 'library', title: 'Story Time', sub: 'picture books read aloud', icon: '📚', color: '#c2410c', library: true },
   { id: 'trace', title: 'Letters & Numbers', sub: 'trace A–Z · a–z · 1–20', icon: '✍️', color: '#f76707', trace: true },
   { id: 'phonics', title: 'Letter Sounds', sub: 'starts with · rhymes · blends', icon: '🔠', color: '#7950f2', gen: (l) => genPhonicsPlus(l), maxLevel: 5 },
-  { id: 'cvc', title: 'Little Words', sub: 'cat · ant · bee', icon: '🐱', color: '#ff8787', gen: (l) => genWords(W3, l, 'cvc') },
+  { id: 'cvc', title: 'Little Words', sub: 'cat · ant · sun', icon: '🐱', color: '#ff8787', gen: (l) => genWords(W3, l, 'cvc') },
   { id: 'w4', title: 'Big Words', sub: 'frog · truck · tiger', icon: '🐸', color: '#69db7c', gen: (l) => genWords(bigWordList(l), l, 'w4'), maxLevel: 5 },
   { id: 'sight', title: 'Sight Words', sub: 'he · she · went', icon: '👀', color: '#e64980', gen: genSight, maxLevel: 4 },
   { id: 'spell', title: 'Spell It', sub: 'drag the letters', icon: '🔤', color: '#20c997', gen: genSpell, maxLevel: 5 },
