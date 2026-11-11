@@ -1079,7 +1079,7 @@ function applyTheme() {
   $('#mascot').textContent = THEMES[t].mascot;
   document.body.classList.toggle('test-mode', isTestMode());
 }
-const SCHEMES = [['light', '☀️ Light'], ['dark', '🌙 Dark'], ['auto', '📱 Same as device']];
+const SCHEMES = [['light', '☀️ Light'], ['medium', '🌤️ Medium'], ['dark', '🌙 Night'], ['auto', '📱 Same as device']];
 function renderSchemes() {
   const box = $('#schemeBtns'); if (!box || typeof CoreScheme === 'undefined') return;
   const cur = CoreScheme.get();
