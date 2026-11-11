@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "core": "1.4.0",
+  "core": "1.5.0",
   "app": {
     "id": "kids-learn",
     "name": "Learn & Play",
@@ -106,7 +106,13 @@
       "warn-border": "#f59f00",
       "update-bg": "#f2edff",
       "update-border": "#5d4097",
-      "update-ink": "#382266"
+      "update-ink": "#382266",
+      "theme-deep": "#5a3fd1",
+      "theme-hi": "#ff6bb5",
+      "theme-ink": "#5f3dc4",
+      "theme-soft": "#f3edff",
+      "theme-line": "#d0bfff",
+      "theme-pop": "#e64980"
     },
     "dark": {
       "theme-color": "#1b1846",
@@ -127,8 +133,15 @@
       "warn-border": "#f59f00",
       "update-bg": "#2a2766",
       "update-border": "#a48bff",
-      "update-ink": "#e5dcff"
-    }
+      "update-ink": "#e5dcff",
+      "theme-deep": "#5a3fd1",
+      "theme-hi": "#ff8cc6",
+      "theme-ink": "#d0bfff",
+      "theme-soft": "#2d2970",
+      "theme-line": "#5a52b0",
+      "theme-pop": "#ff8cc6"
+    },
+    "pack": "mascots"
   },
   "data": {
     "dir": "data/",
