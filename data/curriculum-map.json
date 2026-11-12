@@ -208,7 +208,8 @@
           "odd": "1-2",
           "sequence": "1-2",
           "check": "1-1",
-          "placement": "1-1"
+          "placement": "1-1",
+          "tables": "1-2"
         },
         "roundQuestions": 5,
         "activityPolicy": {
@@ -378,7 +379,8 @@
           "community": "1-1",
           "check": "1-1",
           "placement": "1-1",
-          "library": "1-1"
+          "library": "1-1",
+          "tables": "3-4"
         },
         "roundQuestions": 8
       },
@@ -458,7 +460,8 @@
           "region": "1-2",
           "check": "1-1",
           "placement": "1-1",
-          "library": "1-1"
+          "library": "1-1",
+          "tables": "5-7"
         },
         "roundQuestions": 10
       },
@@ -535,7 +538,8 @@
           "region": "2-3",
           "check": "1-1",
           "placement": "1-1",
-          "library": "1-1"
+          "library": "1-1",
+          "tables": "8-14"
         },
         "roundQuestions": 10
       }
@@ -1056,6 +1060,18 @@
             ],
             "approach": "play-and-practice",
             "bank": "mixed"
+          },
+          "tables": {
+            "levels": [
+              1,
+              2
+            ],
+            "skills": [
+              "skip-counting",
+              "equal-groups"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
           }
         }
       },
@@ -1444,6 +1460,18 @@
             ],
             "approach": "read-aloud",
             "bank": "authored"
+          },
+          "tables": {
+            "levels": [
+              3,
+              4
+            ],
+            "skills": [
+              "skip-counting",
+              "equal-groups"
+            ],
+            "approach": "play-and-practice",
+            "bank": "generated"
           }
         }
       },
@@ -1922,6 +1950,20 @@
             ],
             "approach": "read-aloud",
             "bank": "authored"
+          },
+          "tables": {
+            "levels": [
+              5,
+              7
+            ],
+            "skills": [
+              "equal-groups",
+              "arrays",
+              "skip-counting",
+              "multiplication-facts"
+            ],
+            "approach": "guided-investigation",
+            "bank": "generated"
           }
         }
       },
@@ -2382,6 +2424,19 @@
             ],
             "approach": "read-aloud",
             "bank": "authored"
+          },
+          "tables": {
+            "levels": [
+              8,
+              14
+            ],
+            "skills": [
+              "multiplication-facts",
+              "properties",
+              "unknown-factor"
+            ],
+            "approach": "reason-explain",
+            "bank": "generated"
           }
         }
       }
@@ -3679,14 +3734,17 @@
             "categories": [
               "add",
               "sub",
-              "story"
+              "story",
+              "tables"
             ],
             "requirements": [
               "add:1",
               "add:2",
               "sub:1",
               "sub:2",
-              "story:1"
+              "story:1",
+              "tables:1",
+              "tables:2"
             ]
           },
           {
@@ -3782,7 +3840,8 @@
             "categories": [
               "add",
               "sub",
-              "story"
+              "story",
+              "tables"
             ],
             "requirements": [
               "add:3",
@@ -3790,7 +3849,9 @@
               "sub:3",
               "sub:4",
               "story:2",
-              "story:3"
+              "story:3",
+              "tables:3",
+              "tables:4"
             ]
           },
           {
@@ -3891,7 +3952,8 @@
               "sub",
               "story",
               "mul",
-              "div"
+              "div",
+              "tables"
             ],
             "requirements": [
               "add:4",
@@ -3909,7 +3971,10 @@
               "mul:2",
               "mul:3",
               "div:1",
-              "div:2"
+              "div:2",
+              "tables:5",
+              "tables:6",
+              "tables:7"
             ]
           },
           {
@@ -4006,7 +4071,8 @@
               "sub",
               "story",
               "mul",
-              "div"
+              "div",
+              "tables"
             ],
             "requirements": [
               "add:6",
@@ -4023,7 +4089,14 @@
               "mul:6",
               "div:3",
               "div:4",
-              "div:5"
+              "div:5",
+              "tables:8",
+              "tables:9",
+              "tables:10",
+              "tables:11",
+              "tables:12",
+              "tables:13",
+              "tables:14"
             ]
           },
           {
@@ -4364,6 +4437,48 @@
             ],
             "gk:4": [
               "gk:4"
+            ],
+            "tables:1": [
+              "tables:1"
+            ],
+            "tables:2": [
+              "tables:2"
+            ],
+            "tables:3": [
+              "tables:3"
+            ],
+            "tables:4": [
+              "tables:4"
+            ],
+            "tables:5": [
+              "tables:5"
+            ],
+            "tables:6": [
+              "tables:6"
+            ],
+            "tables:7": [
+              "tables:7"
+            ],
+            "tables:8": [
+              "tables:8"
+            ],
+            "tables:9": [
+              "tables:9"
+            ],
+            "tables:10": [
+              "tables:10"
+            ],
+            "tables:11": [
+              "tables:11"
+            ],
+            "tables:12": [
+              "tables:12"
+            ],
+            "tables:13": [
+              "tables:13"
+            ],
+            "tables:14": [
+              "tables:14"
             ]
           }
         }
@@ -5108,6 +5223,62 @@
         "gk:4": {
           "category": "gk",
           "level": 4
+        },
+        "tables:1": {
+          "category": "tables",
+          "level": 1
+        },
+        "tables:2": {
+          "category": "tables",
+          "level": 2
+        },
+        "tables:3": {
+          "category": "tables",
+          "level": 3
+        },
+        "tables:4": {
+          "category": "tables",
+          "level": 4
+        },
+        "tables:5": {
+          "category": "tables",
+          "level": 5
+        },
+        "tables:6": {
+          "category": "tables",
+          "level": 6
+        },
+        "tables:7": {
+          "category": "tables",
+          "level": 7
+        },
+        "tables:8": {
+          "category": "tables",
+          "level": 8
+        },
+        "tables:9": {
+          "category": "tables",
+          "level": 9
+        },
+        "tables:10": {
+          "category": "tables",
+          "level": 10
+        },
+        "tables:11": {
+          "category": "tables",
+          "level": 11
+        },
+        "tables:12": {
+          "category": "tables",
+          "level": 12
+        },
+        "tables:13": {
+          "category": "tables",
+          "level": 13
+        },
+        "tables:14": {
+          "category": "tables",
+          "level": 14
         }
       },
       "family": {

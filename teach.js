@@ -38,12 +38,15 @@ const TeachFirst = (() => {
 
   /* ---------- which cards can be taught ---------- */
   const teachable = (q) => !!q && Array.isArray(q.options) && q.options.length >= 2 && !INTERACTIVE.some((k) => q[k]);
+  // Two cards for the lesson. Cards the quiz is not about to ask are preferred; a small skill (one times table has
+  // ten facts, and the quiz may use them all) may show a quiz card in the lesson first.
   function lessonCards(cat, level, taken) {
     const out = [];
-    for (let tries = 0; tries < 80 && out.length < 2; tries++) {
+    for (let tries = 0; tries < 120 && out.length < 2; tries++) {
       let q;
       try { q = cat.gen(level); } catch { continue; }
-      if (!teachable(q) || taken.has(q.key) || out.some((o) => o.key === q.key)) continue;
+      if (!teachable(q) || out.some((o) => o.key === q.key)) continue;
+      if (tries < 80 && taken.has(q.key)) continue;
       if (state.grade && typeof gradeFits === 'function' && !gradeFits(q, state.grade, cat.id)) continue;
       q.cat = cat; q.level = level; q.grades = [state.grade].filter(Boolean);
       out.push(q);
@@ -58,7 +61,11 @@ const TeachFirst = (() => {
     if (!needsTeaching(catId, level)) { markSeen(catId, level); return; }
     const cards = lessonCards(R.cat, level, new Set(R.qs.map((q) => q.key)));
     if (!cards) return;                                   // a skill with no tap-to-answer cards keeps its normal round
-    cards[0].lesson = 'model'; cards[1].lesson = 'guided';
+    // A skill may bring its own teaching card (the whole times table, read aloud): it takes the place of the modelled card.
+    const intro = typeof R.cat.teach === 'function' ? R.cat.teach(level) : null;
+    if (intro) { Object.assign(intro, { cat: R.cat, level, grades: [state.grade].filter(Boolean), lesson: 'intro' }); cards[0] = intro; }
+    else cards[0].lesson = 'model';
+    cards[1].lesson = 'guided';
     R.lesson = { catId, level, quiz: R.qs.length, showMe: !!$('#showMeBtn') && !$('#showMeBtn').hidden };
     R.qs = [...cards, ...R.qs];
     R.i = 0;
@@ -114,6 +121,7 @@ const TeachFirst = (() => {
     clearTimeout(TeachFirst.glowTimer);
     if (!q) return;
     if (q.lesson === 'model') { bar('model'); lessonProgress(); runModel(q); return; }
+    if (q.lesson === 'intro') { bar('model'); lessonProgress(); runIntro(q); return; }
     if (q.lesson === 'guided') { bar('guided'); lessonProgress(); runGuided(q); return; }
     if (R.turnIntro) {
       R.turnIntro = false; bar('turn');
@@ -144,12 +152,36 @@ const TeachFirst = (() => {
     sfx.yes();
     showModelButtons(q);
   }
-  function showModelButtons(q) {
+  // A skill's own teaching card: each step lights up one line, builds the dots beside it and is read aloud.
+  async function runIntro(q) {
+    $('#hintBtn').hidden = true;
+    const token = ++TeachFirst.run;
+    const alive = () => token === TeachFirst.run && R && R.qs[R.i] === q && $('#play').classList.contains('active');
+    const rows = $$('#qMain [data-row]'), arr = $('#qMain .tt-arr');
+    rows.forEach((r) => r.classList.remove('on', 'done')); if (arr) arr.innerHTML = '';
+    await sleep(320);
+    for (const step of q.steps) {
+      if (!alive()) return;
+      if (step.row) {
+        rows.forEach((r) => { if (r.classList.contains('on')) { r.classList.remove('on'); r.classList.add('done'); } });
+        const el = rows.find((r) => +r.dataset.row === step.row);
+        if (el) { el.classList.add('on'); el.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+        if (arr) arr.innerHTML = step.dots ? TimesTables.dots(step.dots[0], step.dots[1]) : '';
+      }
+      await say(step.say);
+      if (alive()) await sleep(step.row ? 220 : 120);
+    }
+    if (!alive()) return;
+    rows.forEach((r) => { r.classList.remove('on'); r.classList.add('done'); });
+    sfx.yes();
+    showModelButtons(q, runIntro);
+  }
+  function showModelButtons(q, rerun = runModel) {
     let box = $('#teachNext');
     if (!box) { box = document.createElement('div'); box.id = 'teachNext'; box.className = 'teach-next'; $('#play .card').appendChild(box); }   // under the question card
     box.innerHTML = `<button class="big-btn alt small" data-a="again">🔁 ${esc(L.labels.again)}</button><button class="big-btn" data-a="go">▶ ${esc(L.labels.go)}</button>`;
     box.hidden = false;
-    box.querySelector('[data-a="again"]').onclick = () => { sfx.tap(); box.hidden = true; clearMarks(); runModel(q); };
+    box.querySelector('[data-a="again"]').onclick = () => { sfx.tap(); box.hidden = true; clearMarks(); rerun(q); };
     box.querySelector('[data-a="go"]').onclick = () => { sfx.tap(); box.hidden = true; R.locked = true; next(); };
     box.querySelector('[data-a="go"]').focus({ preventScroll: true });
   }

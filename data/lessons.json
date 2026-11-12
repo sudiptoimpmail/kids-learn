@@ -43,7 +43,13 @@
       "readSlowly": "I read it slowly.",
       "tapGlow": "Tap the one that glows.",
       "yesTurn": "Yes! Now it's your turn.",
-      "lookAgain": "Let's look again."
+      "lookAgain": "Let's look again.",
+      "tableIntro": "This is the",
+      "tableName": "times table.",
+      "countBy2": "Count by twos.",
+      "countBy5": "Count by fives.",
+      "countBy10": "Count by tens.",
+      "sayWithMe": "Say it with me."
     },
     "labels": {
       "model": "Watch me",
@@ -264,6 +270,122 @@
           "ur",
           "all"
         ]
+      }
+    },
+    "tables": {
+      "about": "Times tables ladder. Each step is taught first (Professor Hoot reads the whole count or table aloud), then one card together, then the quiz. Kindergarten and 1st grade count in equal steps without the × sign; 2nd grade learns ×2, ×5 and ×10; 3rd grade learns the rest and finishes with all tables mixed. One table per step, in the order most curricula teach them.",
+      "levels": [
+        {
+          "kind": "skip",
+          "by": 10,
+          "upTo": 100,
+          "title": "Count by 10s",
+          "grade": "k",
+          "standard": "K.CC.1 count to 100 by tens"
+        },
+        {
+          "kind": "skip",
+          "by": 2,
+          "upTo": 10,
+          "groups": 5,
+          "title": "Count by 2s to 10",
+          "grade": "k",
+          "standard": "K.CC equal groups of 2 (pairs) within 10"
+        },
+        {
+          "kind": "skip",
+          "by": 5,
+          "upTo": 50,
+          "groups": 4,
+          "title": "Count by 5s",
+          "grade": "g1",
+          "standard": "1.NBT.1 counting patterns; skip counting by 5s"
+        },
+        {
+          "kind": "skip",
+          "by": 2,
+          "upTo": 20,
+          "groups": 6,
+          "title": "Count by 2s to 20",
+          "grade": "g1",
+          "standard": "1.OA doubles; skip counting by 2s"
+        },
+        {
+          "kind": "table",
+          "n": 2,
+          "title": "2 times table",
+          "grade": "g2",
+          "standard": "2.OA.3-4 equal groups, arrays; 2.NBT.2 skip counting"
+        },
+        {
+          "kind": "table",
+          "n": 5,
+          "title": "5 times table",
+          "grade": "g2",
+          "standard": "2.NBT.2 skip count by 5s; 2.OA.4"
+        },
+        {
+          "kind": "table",
+          "n": 10,
+          "title": "10 times table",
+          "grade": "g2",
+          "standard": "2.NBT.2 skip count by 10s; 2.OA.4"
+        },
+        {
+          "kind": "table",
+          "n": 3,
+          "title": "3 times table",
+          "grade": "g3",
+          "standard": "3.OA.7 multiply within 100"
+        },
+        {
+          "kind": "table",
+          "n": 4,
+          "title": "4 times table",
+          "grade": "g3",
+          "standard": "3.OA.7"
+        },
+        {
+          "kind": "table",
+          "n": 6,
+          "title": "6 times table",
+          "grade": "g3",
+          "standard": "3.OA.7"
+        },
+        {
+          "kind": "table",
+          "n": 7,
+          "title": "7 times table",
+          "grade": "g3",
+          "standard": "3.OA.7"
+        },
+        {
+          "kind": "table",
+          "n": 8,
+          "title": "8 times table",
+          "grade": "g3",
+          "standard": "3.OA.7"
+        },
+        {
+          "kind": "table",
+          "n": 9,
+          "title": "9 times table",
+          "grade": "g3",
+          "standard": "3.OA.7"
+        },
+        {
+          "kind": "mixed",
+          "title": "All tables mixed",
+          "grade": "g3",
+          "standard": "3.OA.7 know from memory all products of two one-digit numbers; 3.OA.4 unknown factor"
+        }
+      ],
+      "quiz": {
+        "reviewShare": 0.25,
+        "turnaroundShare": 0.35,
+        "turnaroundFromLevel": 8,
+        "missingShare": 0.2,
+        "missingFromLevel": 10
       }
     }
   }

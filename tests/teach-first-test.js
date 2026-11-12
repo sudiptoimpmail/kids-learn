@@ -14,7 +14,8 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     let r = await roundInfo(); assert.deepEqual(r.lessons, ['model', 'guided']); assert.equal(r.n, 7);
     assert.equal(await p.evaluate(() => getComputedStyle(document.querySelector('#options .opt')).pointerEvents), 'none', 'the child only watches the model');
     await p.waitForSelector('#teachNext:not([hidden]) [data-a="go"]', { timeout: 40000 });
-    assert.ok(await p.evaluate(() => document.querySelectorAll('#qMain .teach-count').length >= 1), 'Professor Hoot counts the objects');
+    // when the card shows objects to count, Professor Hoot counts them (some addition cards show only numbers)
+    assert.ok(await p.evaluate(() => !document.querySelector('#qMain .obj') || document.querySelectorAll('#qMain .teach-count').length >= 1), 'Professor Hoot counts the objects');
     const before = await p.evaluate(() => ({ days: JSON.stringify(state.stats && state.stats.days), play: JSON.stringify([state.playBank, state.playEarned, state.playRounds]) }));
     await p.click('#teachNext [data-a="go"]');
     r = await roundInfo(); assert.equal(r.kind, 'guided');

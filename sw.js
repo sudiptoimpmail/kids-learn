@@ -214,6 +214,7 @@ const FILES = [
   "illustrations.js",
   "grade1words.js",
   "decodable.js",
+  "tables.js",
   "content.js",
   "thinking.js",
   "country.js",

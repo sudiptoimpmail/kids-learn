@@ -23,3 +23,19 @@
 .teach-next[hidden] { display: none; }
 .teach-dot { font-size: 18px; }
 @media (prefers-reduced-motion: reduce) { .teach-owl, .teach-hand, .opt.teach-point, .teach-bar.teach-in { animation: none; } }
+/* Times tables teaching card (tables.js) */
+.tt-teach { display: flex; gap: 18px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.tt-table { display: grid; grid-template-rows: repeat(5, auto); grid-auto-flow: column; gap: 6px 22px; font-size: clamp(20px, 3.4vw, 30px); font-weight: 800; }
+.tt-row { padding: 4px 14px; border-radius: 12px; color: var(--soft); white-space: nowrap; transition: transform .2s, background .2s; }
+.tt-row b { font-weight: 900; }
+.tt-row.done { color: var(--ink); }
+.tt-row.on { background: var(--theme, #7c5cff); color: #fff; transform: scale(1.12); }
+.tt-strip { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.tt-strip span { min-width: 54px; padding: 8px 10px; border-radius: 14px; background: var(--theme-soft, #f3edff); color: var(--soft); font-size: clamp(22px, 3.6vw, 32px); font-weight: 900; text-align: center; transition: transform .2s, background .2s; }
+.tt-strip span.done { color: var(--theme-ink, #5f3dc4); }
+.tt-strip span.on { background: var(--theme, #7c5cff); color: #fff; transform: scale(1.18); }
+.tt-strip span.q { background: #fff3bf; color: #8a5a00; outline: 3px dashed #ffd43b; }
+.tt-arr { min-width: 120px; min-height: 60px; display: grid; place-items: center; }
+.tt-dots { gap: 5px; width: max-content; max-width: 240px; }
+.tt-dots i { width: 14px; height: 14px; border-radius: 50%; background: var(--theme-pop, #e64980); display: block; }
+@media (prefers-reduced-motion: reduce) { .tt-row, .tt-strip span { transition: none; } }

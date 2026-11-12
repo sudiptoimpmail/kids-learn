@@ -1815,6 +1815,7 @@ const CATEGORIES = [
   { id: 'sub', title: 'Subtraction', sub: '5 − 2 · 642 − 358', icon: '➖', color: '#f783ac', gen: genSub, maxLevel: 8 },
   { id: 'story', title: 'Word Problems', sub: 'math stories', icon: '📝', color: '#4c6ef5', gen: genWordProblem, maxLevel: 5 },
   { id: 'cmp', title: 'Compare', sub: '7 > 3 · 2 < 9', icon: '🐊', color: '#40c057', gen: genCompare, maxLevel: 5 },
+  { id: 'tables', title: 'Times Tables', sub: 'count by 2s · 2 × 3 = 6', icon: '🔢', color: '#e8590c', gen: (l) => TimesTables.gen(l), teach: (l) => TimesTables.teach(l), maxLevel: 14 },
   { id: 'mul', title: 'Multiply', sub: '3 × 4 = ?', icon: '✖️', color: '#fa5252', gen: (l) => genMulPlus(l), maxLevel: 6 },
   { id: 'div', title: 'Divide', sub: 'share equally', icon: '➗', color: '#15aabf', gen: genDiv, maxLevel: 5 },
   { id: 'clock', title: 'Clock', sub: 'tell the time', icon: '🕐', color: '#7950f2', gen: (l) => genClockPlus(l), maxLevel: 6 },
