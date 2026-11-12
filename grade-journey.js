@@ -18,7 +18,7 @@ function gradeSummaryHTML(child = false) {
   const rows = gradeGoalRows();
   return `<h3>${child ? 'My learning journey' : 'Grade skill summary'} · ${esc(gradeName(state.grade))}</h3>
     <p class="note">${child ? 'Choose something to practise. Each small step counts!' : 'Based on practice in this app for the current grade. These broad goals do not cover the entire school curriculum. Unassessed skills are not weaknesses.'}</p>
-    <div class="grade-goals">${rows.map((r) => `<article class="grade-goal"><b>${esc(r.label)}</b><span>${r.status}</span><small>${r.n ? `${r.n} practice answers recorded` : 'More evidence needed'}${!r.categories.length ? ' · Explore together through drawing, writing and conversation' : ''}</small>${r.categories.length ? `<button type="button" class="big-btn small" data-goal="${r.id}">Practise</button>` : ''}</article>`).join('')}</div>`;
+    <div class="grade-goals">${rows.map((r) => `<article class="grade-goal"><b>${esc(r.label)}</b><span>${r.categories.length ? r.status : 'Do together'}</span><small>${!r.categories.length ? 'Not scored in the app. Explore together through drawing, writing and conversation' : r.n ? `${r.n} practice answers recorded` : 'More evidence needed'}</small>${r.categories.length ? `<button type="button" class="big-btn small" data-goal="${r.id}">Practise</button>` : ''}</article>`).join('')}</div>`;
 }
 function bindGoalButtons(root) {
   root.querySelectorAll('[data-goal]').forEach(
@@ -27,7 +27,8 @@ function bindGoalButtons(root) {
         const goal = gradeGoals(state.grade).find((g) => g.id === b.dataset.goal);
         const candidates = goal.requirements
           .map((source) => ({ source, activity: learningConfig.activities[source] }))
-          .filter((x) => x.activity && visibleGames().some((c) => c.id === x.activity.category && c.gen));
+          // Compare has no tile of its own (its cards live inside Adding) but a goal can still start a Compare round
+          .filter((x) => x.activity && CATEGORIES.some((c) => c.id === x.activity.category && c.gen) && (x.activity.category === 'cmp' || visibleGames().some((c) => c.id === x.activity.category)));
         const target = candidates.find((x) => !state.skillEvidence?.[JSON.stringify([state.grade, x.source])]) || candidates[0];
         if (target) startRound(target.activity.category, 5, false, target.activity.level);
       }),

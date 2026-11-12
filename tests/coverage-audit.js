@@ -64,7 +64,7 @@ const OUT = arg('--out', 'tests/out/coverage.json');   // docs/coverage/coverage
             R.qs.forEach((q) => seenBefore.add(fp(q)));
             try { document.querySelector('#quitBtn').click(); } catch {}
           }
-          levels[lv] = { cards: n, distinct: fps.size, repeats, kinds, families: fams.size, hints, spoken, pics, below, emptyRounds: empty,
+          levels[lv] = { named: !!(typeof SKILLS !== 'undefined' && SKILLS[c.id] && SKILLS[c.id][lv - 1]), cards: n, distinct: fps.size, repeats, kinds, families: fams.size, hints, spoken, pics, below, emptyRounds: empty,
             badAnswers: bad.slice(0, 5), badCount: bad.length, unfit: unfit.slice(0, 5), unfitCount: unfit.length, sample: keys.slice(0, 4) };
         }
         out.grades[g].sections[c.id] = { range: [lo, hi], levels };
@@ -80,11 +80,18 @@ const OUT = arg('--out', 'tests/out/coverage.json');   // docs/coverage/coverage
   data.seed = SEED; data.pageErrors = errs.slice(0, 10);
   fs.mkdirSync(require('node:path').dirname(OUT), { recursive: true });
   fs.writeFileSync(OUT, JSON.stringify(data, null, 1) + '\n');
-  let cells = 0, bad = 0, unfit = 0, empty = 0;
-  for (const g of Object.values(data.grades)) for (const s of Object.values(g.sections)) for (const l of Object.values(s.levels)) {
+  let cells = 0, bad = 0, unfit = 0, empty = 0; const fellBack = [], unnamed = [], short = [];
+  for (const [gid, g] of Object.entries(data.grades)) for (const [sid, s] of Object.entries(g.sections)) for (const [lv, l] of Object.entries(s.levels)) {
     cells++; bad += l.badCount; unfit += l.unfitCount; if (!l.cards) empty++;
+    // a step whose own cards are all rejected quietly borrows the step below: that step has no questions of its own
+    if (l.cards && l.below === l.cards) fellBack.push(`${gid}/${sid}:${lv}`);
+    if (!l.named) unnamed.push(`${gid}/${sid}:${lv}`);
+    if (l.cards < ROUNDS * 10) short.push(`${gid}/${sid}:${lv} (${l.cards}/${ROUNDS * 10})`);
   }
   console.log(`coverage: ${cells} grade×section×level cells, ${bad} broken answer keys, ${unfit} grade-fit failures, ${empty} empty cells, ${errs.length} page errors`);
+  if (fellBack.length) console.log('steps with no questions of their own: ' + fellBack.join(', '));
+  if (unnamed.length) console.log('steps without a name: ' + unnamed.join(', '));
+  if (short.length) console.log('steps that gave short rounds: ' + short.join(', '));
   await b.close();
-  if (CHECK && (bad || unfit || empty || errs.length)) process.exitCode = 1;
+  if (CHECK && (bad || unfit || empty || errs.length || fellBack.length || unnamed.length)) process.exitCode = 1;
 })().catch((e) => { console.error(e); process.exit(1); });

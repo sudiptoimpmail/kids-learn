@@ -363,7 +363,7 @@
           "add": "3-4",
           "sub": "3-4",
           "story": "2-3",
-          "cmp": "2-4",
+          "cmp": "3-4",
           "clock": "1-2",
           "shape2": "2-3",
           "jobs": "2-3",
@@ -1267,7 +1267,7 @@
           },
           "cmp": {
             "levels": [
-              2,
+              3,
               4
             ],
             "skills": [
@@ -3612,21 +3612,25 @@
             "id": "1",
             "label": "Recognise sounds and rhyme",
             "categories": [
-              "phonics"
+              "phonics",
+              "syl"
             ],
             "requirements": [
               "phonics:1",
-              "phonics:2"
+              "phonics:2",
+              "syl:1"
             ]
           },
           {
             "id": "2",
             "label": "Understand everyday words",
             "categories": [
-              "vocab"
+              "vocab",
+              "match"
             ],
             "requirements": [
-              "vocab:1"
+              "vocab:1",
+              "match:1"
             ]
           },
           {
@@ -3691,7 +3695,9 @@
             "categories": [
               "phonics",
               "cvc",
-              "spell"
+              "spell",
+              "sight",
+              "syl"
             ],
             "requirements": [
               "phonics:1",
@@ -3700,7 +3706,11 @@
               "cvc:2",
               "cvc:3",
               "spell:1",
-              "spell:2"
+              "spell:2",
+              "sight:1",
+              "sight:2",
+              "syl:1",
+              "syl:2"
             ]
           },
           {
@@ -3708,13 +3718,16 @@
             "label": "Understand short sentences",
             "categories": [
               "vocab",
-              "sent"
+              "sent",
+              "match"
             ],
             "requirements": [
               "vocab:1",
               "vocab:2",
               "sent:1",
-              "sent:2"
+              "sent:2",
+              "match:1",
+              "match:2"
             ]
           },
           {
@@ -3793,7 +3806,10 @@
               "phonics",
               "cvc",
               "spell",
-              "words"
+              "words",
+              "w4",
+              "sight",
+              "syl"
             ],
             "requirements": [
               "phonics:3",
@@ -3803,7 +3819,14 @@
               "spell:3",
               "spell:4",
               "words:1",
-              "words:2"
+              "words:2",
+              "w4:2",
+              "w4:3",
+              "w4:4",
+              "sight:2",
+              "sight:3",
+              "syl:2",
+              "syl:3"
             ]
           },
           {
@@ -3811,12 +3834,15 @@
             "label": "Understand a short story",
             "categories": [
               "vocab",
-              "sent"
+              "sent",
+              "match"
             ],
             "requirements": [
               "vocab:2",
               "sent:2",
-              "sent:3"
+              "sent:3",
+              "match:2",
+              "match:3"
             ]
           },
           {
@@ -3827,7 +3853,6 @@
               "numsense"
             ],
             "requirements": [
-              "cmp:2",
               "cmp:3",
               "cmp:4",
               "numsense:1",
@@ -3903,7 +3928,10 @@
             "categories": [
               "phonics",
               "spell",
-              "words"
+              "words",
+              "w4",
+              "sight",
+              "gp"
             ],
             "requirements": [
               "phonics:4",
@@ -3912,7 +3940,13 @@
               "spell:5",
               "words:2",
               "words:3",
-              "words:4"
+              "words:4",
+              "w4:4",
+              "w4:5",
+              "sight:3",
+              "sight:4",
+              "gp:1",
+              "gp:2"
             ]
           },
           {
@@ -3920,13 +3954,16 @@
             "label": "Find meaning and evidence in stories",
             "categories": [
               "vocab",
-              "sent"
+              "sent",
+              "match"
             ],
             "requirements": [
               "vocab:2",
               "vocab:3",
               "sent:3",
-              "sent:4"
+              "sent:4",
+              "match:3",
+              "match:4"
             ]
           },
           {
@@ -3934,14 +3971,16 @@
             "label": "Understand place value and fractions",
             "categories": [
               "cmp",
-              "numsense"
+              "numsense",
+              "frac"
             ],
             "requirements": [
               "cmp:4",
               "cmp:5",
               "numsense:2",
               "numsense:3",
-              "numsense:4"
+              "numsense:4",
+              "frac:1"
             ]
           },
           {
@@ -3983,7 +4022,8 @@
             "categories": [
               "shape2",
               "pattern",
-              "clock"
+              "clock",
+              "measure"
             ],
             "requirements": [
               "shape2:3",
@@ -3992,7 +4032,10 @@
               "pattern:4",
               "clock:2",
               "clock:3",
-              "clock:4"
+              "clock:4",
+              "measure:1",
+              "measure:2",
+              "measure:3"
             ]
           },
           {
@@ -4027,12 +4070,15 @@
             "label": "Use word parts and vocabulary",
             "categories": [
               "spell",
-              "words"
+              "words",
+              "gp"
             ],
             "requirements": [
               "spell:5",
               "words:4",
-              "words:5"
+              "words:5",
+              "gp:2",
+              "gp:3"
             ]
           },
           {
@@ -4040,13 +4086,16 @@
             "label": "Understand and explain longer passages",
             "categories": [
               "vocab",
-              "sent"
+              "sent",
+              "match"
             ],
             "requirements": [
               "vocab:3",
               "vocab:4",
               "sent:5",
-              "sent:6"
+              "sent:6",
+              "match:4",
+              "match:5"
             ]
           },
           {
@@ -4054,13 +4103,17 @@
             "label": "Reason with place value and fractions",
             "categories": [
               "cmp",
-              "numsense"
+              "numsense",
+              "frac"
             ],
             "requirements": [
               "cmp:5",
               "numsense:3",
               "numsense:4",
-              "numsense:5"
+              "numsense:5",
+              "frac:2",
+              "frac:3",
+              "frac:4"
             ]
           },
           {
@@ -4096,7 +4149,8 @@
               "tables:11",
               "tables:12",
               "tables:13",
-              "tables:14"
+              "tables:14",
+              "div:2"
             ]
           },
           {
@@ -4105,7 +4159,8 @@
             "categories": [
               "shape2",
               "pattern",
-              "clock"
+              "clock",
+              "measure"
             ],
             "requirements": [
               "shape2:4",
@@ -4113,7 +4168,10 @@
               "pattern:5",
               "clock:4",
               "clock:5",
-              "clock:6"
+              "clock:6",
+              "measure:2",
+              "measure:3",
+              "measure:4"
             ]
           },
           {
@@ -4130,7 +4188,8 @@
               "sci:4",
               "gk:4",
               "sequence:3",
-              "odd:3"
+              "odd:3",
+              "sequence:4"
             ]
           },
           {
@@ -4479,6 +4538,90 @@
             ],
             "tables:14": [
               "tables:14"
+            ],
+            "match:1": [
+              "match:1"
+            ],
+            "syl:1": [
+              "syl:1"
+            ],
+            "match:2": [
+              "match:2"
+            ],
+            "sight:1": [
+              "sight:1"
+            ],
+            "sight:2": [
+              "sight:2"
+            ],
+            "syl:2": [
+              "syl:2"
+            ],
+            "match:3": [
+              "match:3"
+            ],
+            "w4:2": [
+              "w4:2"
+            ],
+            "w4:3": [
+              "w4:3"
+            ],
+            "w4:4": [
+              "w4:4"
+            ],
+            "sight:3": [
+              "sight:3"
+            ],
+            "syl:3": [
+              "syl:3"
+            ],
+            "match:4": [
+              "match:4"
+            ],
+            "w4:5": [
+              "w4:5"
+            ],
+            "sight:4": [
+              "sight:4"
+            ],
+            "frac:1": [
+              "frac:1"
+            ],
+            "measure:1": [
+              "measure:1"
+            ],
+            "measure:2": [
+              "measure:2"
+            ],
+            "measure:3": [
+              "measure:3"
+            ],
+            "gp:1": [
+              "gp:1"
+            ],
+            "gp:2": [
+              "gp:2"
+            ],
+            "match:5": [
+              "match:5"
+            ],
+            "sequence:4": [
+              "sequence:4"
+            ],
+            "frac:2": [
+              "frac:2"
+            ],
+            "frac:3": [
+              "frac:3"
+            ],
+            "frac:4": [
+              "frac:4"
+            ],
+            "measure:4": [
+              "measure:4"
+            ],
+            "gp:3": [
+              "gp:3"
             ]
           }
         }
@@ -5279,6 +5422,118 @@
         "tables:14": {
           "category": "tables",
           "level": 14
+        },
+        "match:1": {
+          "category": "match",
+          "level": 1
+        },
+        "syl:1": {
+          "category": "syl",
+          "level": 1
+        },
+        "match:2": {
+          "category": "match",
+          "level": 2
+        },
+        "sight:1": {
+          "category": "sight",
+          "level": 1
+        },
+        "sight:2": {
+          "category": "sight",
+          "level": 2
+        },
+        "syl:2": {
+          "category": "syl",
+          "level": 2
+        },
+        "match:3": {
+          "category": "match",
+          "level": 3
+        },
+        "w4:2": {
+          "category": "w4",
+          "level": 2
+        },
+        "w4:3": {
+          "category": "w4",
+          "level": 3
+        },
+        "w4:4": {
+          "category": "w4",
+          "level": 4
+        },
+        "sight:3": {
+          "category": "sight",
+          "level": 3
+        },
+        "syl:3": {
+          "category": "syl",
+          "level": 3
+        },
+        "match:4": {
+          "category": "match",
+          "level": 4
+        },
+        "w4:5": {
+          "category": "w4",
+          "level": 5
+        },
+        "sight:4": {
+          "category": "sight",
+          "level": 4
+        },
+        "frac:1": {
+          "category": "frac",
+          "level": 1
+        },
+        "measure:1": {
+          "category": "measure",
+          "level": 1
+        },
+        "measure:2": {
+          "category": "measure",
+          "level": 2
+        },
+        "measure:3": {
+          "category": "measure",
+          "level": 3
+        },
+        "gp:1": {
+          "category": "gp",
+          "level": 1
+        },
+        "gp:2": {
+          "category": "gp",
+          "level": 2
+        },
+        "match:5": {
+          "category": "match",
+          "level": 5
+        },
+        "sequence:4": {
+          "category": "sequence",
+          "level": 4
+        },
+        "frac:2": {
+          "category": "frac",
+          "level": 2
+        },
+        "frac:3": {
+          "category": "frac",
+          "level": 3
+        },
+        "frac:4": {
+          "category": "frac",
+          "level": 4
+        },
+        "measure:4": {
+          "category": "measure",
+          "level": 4
+        },
+        "gp:3": {
+          "category": "gp",
+          "level": 3
         }
       },
       "family": {
@@ -5542,7 +5797,23 @@
             "g3"
           ]
         }
-      ]
+      ],
+      "outsideGoals": {
+        "library": "Reading books is not scored",
+        "trace": "Tracing is practised, not scored",
+        "placement": "Finds the starting step",
+        "check": "Mixed practice from other sections",
+        "body": "Explore section",
+        "anatomy": "Explore section",
+        "jobs": "Explore section",
+        "animals": "Explore section",
+        "places": "Explore section",
+        "flags": "Explore section",
+        "maps": "Explore section",
+        "home": "Explore section",
+        "community": "Explore section",
+        "region": "Explore section"
+      }
     }
   }
 }

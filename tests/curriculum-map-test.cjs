@@ -94,6 +94,13 @@ for(const name of names){
     assert.ok(range[0]>=1&&range[1]>=range[0]&&range[1]<=MAX_LEVEL,'Invalid range '+name+'/'+section);
     sections.add(section);
   }
+  // every section a grade offers counts towards a goal, or is listed as outside the goals with a reason
+  { const lf=map.learningFramework, inGoal=new Set(lf.grades[name].flatMap(g=>g.requirements));
+    for(const [section,r] of Object.entries(map.GRADES[name].g)){
+      if(lf.outsideGoals[section]) continue;
+      const [a,b]=r.split('-').map(Number);
+      for(let lv=a;lv<=b;lv++) assert.ok(inGoal.has(section+':'+lv),name+'/'+section+':'+lv+' is in no goal');
+    } }
   assert.deepEqual(Object.keys(map.PROFILES[name].sections).sort(),
     Object.keys(map.GRADES[name].g).sort(),'Unmatched grade sections '+name);
 }

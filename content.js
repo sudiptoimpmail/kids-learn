@@ -608,7 +608,8 @@ function mathHint(op, a, b, e) {
 function genAdd(level) {
   // Comparison is a math activity, not a separate category: mix age-appropriate
   // more/fewer and symbol comparisons into ordinary addition practice.
-  if (Math.random() < 0.13) return genCompare(Math.min(level, 5));
+  // (the card still counts towards the grade's Compare goal, at the matching Compare step)
+  if (Math.random() < 0.13) { const lv = Math.min(level, 5), q = genCompare(lv); q.learningSource = 'cmp:' + lv; return q; }
   const [a, b] = addPair(level);
   const ans = a + b;
   const [e, things] = pick(THINGS);
@@ -721,7 +722,25 @@ function genComparePics(level) {
   };
 }
 
+// two written numbers, no signs: "Which number is more?" (Kindergarten: compare numerals 1 to 10; later to 20)
+function genCompareNumbers(level) {
+  const max = level <= 2 ? 10 : 20;
+  let a, b; do { a = 1 + rand(max); b = 1 + rand(max); } while (a === b);
+  const more = Math.random() < 0.6, ans = more ? Math.max(a, b) : Math.min(a, b);
+  const row = (n) => `<div class="cmpn-row"><b>${n}</b><span>${'●'.repeat(n)}</span></div>`;
+  return {
+    key: `cmpn-${a}-${b}-${more ? 'm' : 'l'}`, text: more ? 'Which number is <b>more</b>?' : 'Which number is <b>less</b>?',
+    say: more ? 'Which number is more?' : 'Which number is less?',
+    main: `<div class="equation cmp-eq">${a} <span class="cmpn-or">·</span> ${b}</div>`,
+    options: [a, b].map((v) => ({ v, html: String(v) })), answer: ans, optClass: 'opt-num two',
+    hint: { html: `<div class="hint-note cmpn-hint">${row(a)}${row(b)}</div>`, say: 'Count each group!' },
+  };
+}
+
 function genCompare(level) {
+  // comparing two written numbers comes before the signs (the only step 2 cards Kindergarten gets)
+  if (level === 2 && Math.random() < 0.5) return genCompareNumbers(level);
+  if (level === 3 && Math.random() < 0.15) return genCompareNumbers(level);
   // picture comparisons teach what the signs mean: often early, now and then later
   if (Math.random() < (level === 1 ? 0.5 : level === 2 ? 0.45 : 0.15)) return genComparePics(level);
   if (level === 1) {
