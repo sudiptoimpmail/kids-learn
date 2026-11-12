@@ -23,7 +23,7 @@ Live scorecard: `docs/coverage/index.html` (rebuild with `node tests/coverage-au
 | First run asks who's learning and their grade, offers the placement check; Start today's 10 minutes; All done for today; zero as a picture; parent-ready progress page | Shipped (PR #80) |
 | Story Time library for Pre-K and K, first book *Little Red Riding Hood* (painted pages, read-aloud with lit words, tap a word, picture questions) | Shipped |
 | Release gates per grade: landmark photos block 1st–3rd only; the 3D anatomy model is optional | Shipped |
-| Connect Four playable by keyboard and screen reader; README game lists match the app | Shipped |
+| Four in a Row playable by keyboard and screen reader; README game lists match the app | Shipped |
 | 1st–3rd grade home: recommended row first, the full catalog behind Explore | Shipped |
 | Build-it cards: ten frame (Pre-K/K), place-value blocks, arrays, fraction shading, set the clock; multi-format levels 111 → 120 of 240 | Shipped |
 | More books; grade map; show-me demos before a new skill; read-along stories for 1st grade | Next |

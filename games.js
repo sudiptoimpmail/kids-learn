@@ -172,14 +172,14 @@ const GAMES = [
   { id: 'memory', title: 'Memory Match', icon: '🃏', color: '#4dabf7', start: (...a) => startMemory(...a) },
   { id: 'pop', title: 'Pop the Balloons', icon: '🎈', color: '#f783ac', start: (...a) => startPop(...a) },
   { id: 'color', title: 'Coloring Book', icon: '🖍️', color: '#ffa94d', start: (...a) => startColorPicker(...a) },
-  { id: 'c4', title: 'Connect Four', icon: '🔴', color: '#845ef7', start: (...a) => startC4(...a) },
+  { id: 'c4', title: 'Four in a Row', icon: '🔴', color: '#845ef7', start: (...a) => startC4(...a) },
   { id: 'sudoku', title: 'Sudoku', icon: '🔢', color: '#20c997', start: (...a) => startSudokuMenu(...a) },
   { id: 'puzzle', title: 'Picture Puzzle', icon: '🧩', color: '#fab005', start: (...a) => startPuzzleMenu(...a) },
   { id: 'ball', title: 'Rolling Ball 3D', icon: BALL_ICON, color: '#339af0', start: (...a) => startBall(...a) },
   { id: 'pinball', title: '3D Pinball', icon: '🎯', color: '#7048e8', start: (...a) => startPinball(...a) },
   { id: 'maze', title: 'Ball Maze', icon: '🟫', color: '#c0874f', start: (...a) => startBallMaze(...a) },
   { id: 'path', title: 'Finger Maze', icon: '🐥', color: '#f59f00', start: () => startPathMaze() },
-  { id: 'whack', title: 'Whack-a-Mole', icon: '🐹', color: '#a9734a', start: (...a) => startWhack(...a), max: 5 },
+  { id: 'whack', title: 'Tap the Mole', icon: '🐹', color: '#a9734a', start: (...a) => startWhack(...a), max: 5 },
   { id: 'draw', title: 'Draw & Copy', icon: '✏️', color: '#e8590c', start: (...a) => drawChooser(...a) },
   { id: 'moves', title: 'Silly Moves', icon: '🤸', color: '#12b886', start: (...a) => startMoves(...a) },
 ];
@@ -187,7 +187,7 @@ const GAMES = [
 const GAME_MAX = { path: 11, pinball: 5, draw: 4, ttt: 3, memory: 5, pop: 5, c4: 3, puzzle: 5, ball: 8, maze: 8, whack: 5 };
 // Brain Teasers: puzzle games shown with the thinking lessons on the home screen.
 // They are learning, so they never need earned play time (Tic-Tac-Toe and Ball Maze stay in the Play Zone).
-const BRAIN_GAME_IDS = new Set(['memory', 'puzzle', 'sudoku']);   // Finger Maze and Connect Four live with the regular games
+const BRAIN_GAME_IDS = new Set(['memory', 'puzzle', 'sudoku']);   // Finger Maze and Four in a Row live with the regular games
 const BRAIN_MIN_GRADE = { path: 'prek', memory: 'prek', puzzle: 'prek', sudoku: 'k', c4: 'g1' };
 const BRAIN_GRADE_ORDER = ['prek', 'k', 'g1', 'g2', 'g3'];
 let brainMode = false;

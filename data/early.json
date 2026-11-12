@@ -1,0 +1,570 @@
+{
+  "schema": 1,
+  "namespace": "early",
+  "datasets": {
+    "about": "First measuring and first science for Pre-K and Kindergarten. Every card is a picture card: the child compares what they see (size) or sorts a pictured thing (liquid or solid). Words are spoken, never required reading.",
+    "size": {
+      "levels": [
+        {
+          "title": "Bigger or smaller",
+          "grade": "prek",
+          "standard": "Pre-K measurement: compare two objects by size"
+        },
+        {
+          "title": "Biggest or smallest",
+          "grade": "prek",
+          "standard": "Pre-K measurement: order three objects by size"
+        },
+        {
+          "title": "Taller, longer, heavier",
+          "grade": "k",
+          "standard": "K.MD.2 directly compare two objects: taller/shorter, longer/shorter, heavier/lighter"
+        }
+      ],
+      "things": [
+        "🐘",
+        "🐻",
+        "🐶",
+        "🐱",
+        "🐟",
+        "🦋",
+        "⚽",
+        "🎈",
+        "🍎",
+        "🍓",
+        "🌻",
+        "⭐",
+        "🚗",
+        "🚌",
+        "🏠",
+        "🧸",
+        "🎁",
+        "🍪",
+        "🐢",
+        "🦆",
+        "🍉",
+        "🚀",
+        "🐞",
+        "🧁"
+      ],
+      "tall": [
+        "🌳",
+        "🦒",
+        "🌵",
+        "🏢",
+        "🌷",
+        "🗼",
+        "🧍",
+        "🕯️"
+      ],
+      "long": [
+        [
+          "pencil",
+          "#f59f00"
+        ],
+        [
+          "ribbon",
+          "#e64980"
+        ],
+        [
+          "snake",
+          "#37b24d"
+        ],
+        [
+          "train",
+          "#1c7ed6"
+        ]
+      ],
+      "heavy": [
+        [
+          "🐘",
+          "🐭"
+        ],
+        [
+          "🚗",
+          "🚲"
+        ],
+        [
+          "🪨",
+          "🪶"
+        ],
+        [
+          "🍉",
+          "🍓"
+        ],
+        [
+          "🐻",
+          "🐥"
+        ],
+        [
+          "🚌",
+          "🛴"
+        ],
+        [
+          "🐄",
+          "🐱"
+        ],
+        [
+          "🧱",
+          "🍃"
+        ],
+        [
+          "🚂",
+          "🧸"
+        ],
+        [
+          "🐳",
+          "🐟"
+        ],
+        [
+          "🏠",
+          "🎈"
+        ],
+        [
+          "🛋️",
+          "🧦"
+        ]
+      ]
+    },
+    "matter": {
+      "levels": [
+        {
+          "title": "Liquid or solid",
+          "grade": "prek",
+          "standard": "Pre-K science: describe and sort materials by what they are like"
+        },
+        {
+          "title": "Find the liquid, find the solid",
+          "grade": "k",
+          "standard": "K physical science (NGSS K-2 matter): sort objects by observable properties"
+        }
+      ],
+      "liquid": [
+        [
+          "milk",
+          "🥛"
+        ],
+        [
+          "juice",
+          "🧃"
+        ],
+        [
+          "water",
+          "💧"
+        ],
+        [
+          "rain",
+          "🌧️"
+        ],
+        [
+          "soup",
+          "🍲"
+        ],
+        [
+          "honey",
+          "🍯"
+        ],
+        [
+          "tea",
+          "🍵"
+        ],
+        [
+          "the sea",
+          "🌊"
+        ],
+        [
+          "lemonade",
+          "🍹"
+        ],
+        [
+          "shampoo",
+          "🧴"
+        ],
+        [
+          "hot chocolate",
+          "☕"
+        ],
+        [
+          "a milkshake",
+          "🥤"
+        ]
+      ],
+      "solid": [
+        [
+          "a rock",
+          "🪨"
+        ],
+        [
+          "a ball",
+          "⚽"
+        ],
+        [
+          "a brick",
+          "🧱"
+        ],
+        [
+          "an apple",
+          "🍎"
+        ],
+        [
+          "a book",
+          "📕"
+        ],
+        [
+          "a spoon",
+          "🥄"
+        ],
+        [
+          "a chair",
+          "🪑"
+        ],
+        [
+          "an ice cube",
+          "🧊"
+        ],
+        [
+          "a teddy bear",
+          "🧸"
+        ],
+        [
+          "a shoe",
+          "👟"
+        ],
+        [
+          "a key",
+          "🔑"
+        ],
+        [
+          "a pencil",
+          "✏️"
+        ],
+        [
+          "a car",
+          "🚗"
+        ],
+        [
+          "a cookie",
+          "🍪"
+        ],
+        [
+          "a hat",
+          "🧢"
+        ],
+        [
+          "a bone",
+          "🦴"
+        ]
+      ]
+    },
+    "pictures": {
+      "about": "Pictures for Pre-K and Kindergarten cards that had none. 'topics' are matched against the whole question; 'words' add to the reading word lists (matched after a, the, my, a number... or as a plural). A picture is never used for a word that is one of the answer choices. 'notNouns' are spelled like a picture word but are usually an action or a helper word in a sentence. 'topics' are tried first, then picture words, then 'fallback' (actions and feelings).",
+      "topics": [
+        [
+          "elephant",
+          "🐘"
+        ],
+        [
+          "ice",
+          "🧊"
+        ],
+        [
+          "juice",
+          "🧃"
+        ],
+        [
+          "shoes",
+          "👟"
+        ],
+        [
+          "cookie",
+          "🍪"
+        ],
+        [
+          "spider",
+          "🕷️"
+        ],
+        [
+          "days are in a week",
+          "📅"
+        ],
+        [
+          "emergency",
+          "🚑"
+        ],
+        [
+          "how many eyes",
+          "👀"
+        ],
+        [
+          "fingers",
+          "🖐️"
+        ],
+        [
+          "lungs",
+          "🫁"
+        ],
+        [
+          "toes",
+          "🦶"
+        ],
+        [
+          "ears",
+          "👂"
+        ],
+        [
+          "party",
+          "🎉"
+        ],
+        [
+          "good job",
+          "👍"
+        ],
+        [
+          "brother",
+          "👦"
+        ],
+        [
+          "sister",
+          "👧"
+        ],
+        [
+          "rug",
+          "🧶"
+        ],
+        [
+          "red means",
+          "🚦"
+        ],
+        [
+          "green means",
+          "🚦"
+        ],
+        [
+          "school",
+          "🏫"
+        ],
+        [
+          "park",
+          "🛝"
+        ],
+        [
+          "rain",
+          "🌧️"
+        ],
+        [
+          "snow",
+          "❄️"
+        ],
+        [
+          "book",
+          "📖"
+        ],
+        [
+          "ball",
+          "⚽"
+        ],
+        [
+          "mom",
+          "👩"
+        ],
+        [
+          "dad",
+          "👨"
+        ],
+        [
+          "baby",
+          "👶"
+        ],
+        [
+          "bed",
+          "🛏️"
+        ],
+        [
+          "bus",
+          "🚌"
+        ],
+        [
+          "tree",
+          "🌳"
+        ],
+        [
+          "bird",
+          "🐦"
+        ],
+        [
+          "cake",
+          "🎂"
+        ],
+        [
+          "milk",
+          "🥛"
+        ],
+        [
+          "friend",
+          "🧑‍🤝‍🧑"
+        ],
+        [
+          "moon",
+          "🌙"
+        ],
+        [
+          "star",
+          "⭐"
+        ],
+        [
+          "water",
+          "💧"
+        ],
+        [
+          "shoe",
+          "👟"
+        ],
+        [
+          "toy",
+          "🧸"
+        ],
+        [
+          "box",
+          "📦"
+        ]
+      ],
+      "words": [
+        [
+          "bugs",
+          "🐞"
+        ],
+        [
+          "hens",
+          "🐔"
+        ],
+        [
+          "kids",
+          "🧒"
+        ],
+        [
+          "cats",
+          "🐱"
+        ]
+      ],
+      "notNouns": [
+        "can",
+        "saw",
+        "top",
+        "tie",
+        "fly",
+        "pat",
+        "tap",
+        "tip",
+        "dig",
+        "hop",
+        "hug",
+        "sit",
+        "nap",
+        "cut",
+        "mix",
+        "jog",
+        "hit",
+        "win",
+        "pop",
+        "zip",
+        "wag",
+        "sip",
+        "hum",
+        "tug",
+        "rub",
+        "beg",
+        "fix",
+        "two",
+        "one",
+        "six",
+        "ten",
+        "see",
+        "go",
+        "up",
+        "no",
+        "yes",
+        "is",
+        "it",
+        "in",
+        "on",
+        "at",
+        "am",
+        "we",
+        "he",
+        "she",
+        "me",
+        "my"
+      ],
+      "fallback": [
+        [
+          "fast",
+          "🏃"
+        ],
+        [
+          "sit with me",
+          "🪑"
+        ],
+        [
+          "job",
+          "👍"
+        ],
+        [
+          "home",
+          "🏠"
+        ],
+        [
+          "play",
+          "🧸"
+        ],
+        [
+          "jump",
+          "🤸"
+        ],
+        [
+          "run",
+          "🏃"
+        ],
+        [
+          "swim",
+          "🏊"
+        ],
+        [
+          "eat",
+          "🍽️"
+        ],
+        [
+          "sleep",
+          "😴"
+        ],
+        [
+          "look",
+          "👀"
+        ],
+        [
+          "hot",
+          "🌡️"
+        ],
+        [
+          "cold",
+          "🧊"
+        ],
+        [
+          "happy",
+          "😊"
+        ],
+        [
+          "sad",
+          "😢"
+        ],
+        [
+          "up",
+          "⬆️"
+        ],
+        [
+          "down",
+          "⬇️"
+        ]
+      ]
+    }
+  }
+}
