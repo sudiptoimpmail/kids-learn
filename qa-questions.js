@@ -37,7 +37,9 @@
   function describe(q, ctx) {
     const kind = kindOf(q), multi = Array.isArray(q.multi) ? q.multi.map(String) : null;
     const options = (q.options || []).map((o) => {
-      const text = plain(o.html != null ? o.html : o.v);
+      // picture choices that differ only in drawn size (Big & Small) are described by that size
+      const drawn = /--(?:sz|w):\s*([\d.]+%?)/.exec(String(o.html || ''));
+      const text = plain(o.html != null ? o.html : o.v) + (drawn ? ` (size ${drawn[1]})` : '');
       const correct = multi ? multi.includes(String(o.v)) : q.answer != null && typeof q.answer !== 'object' && String(o.v) === String(q.answer);
       return { text, correct };
     });
