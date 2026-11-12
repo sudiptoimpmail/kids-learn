@@ -263,7 +263,8 @@
       ],
       "data": [
         "drawings",
-        "game-themes"
+        "game-themes",
+        "coloring-themes"
       ],
       "entry": [
         "openGame"
