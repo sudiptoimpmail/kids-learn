@@ -49,6 +49,7 @@ const TeachFirst = (() => {
       if (tries < 80 && taken.has(q.key)) continue;
       if (state.grade && typeof gradeFits === 'function' && !gradeFits(q, state.grade, cat.id)) continue;
       q.cat = cat; q.level = level; q.grades = [state.grade].filter(Boolean);
+      if (typeof EarlyPictures !== 'undefined' && EarlyPictures.forGrade(state.grade)) EarlyPictures.add(q);
       out.push(q);
     }
     return out.length === 2 ? out : null;

@@ -57,7 +57,7 @@ Open **Brain Games** on Home for Memory Match, Picture Puzzle and Sudoku (each f
 Pattern recognition, Odd One Out and What Comes Next? are **education lessons**, found under **Thinking Skills** in the learning catalog, and included in alternating daily quests.
 
 ## 🎮 Play Zone (reward games)
-The Play Zone contains arcade and creativity activities (Tic-Tac-Toe, Connect Four, Finger Maze, Balloons, Coloring, Rolling Ball 3D, Pinball, Ball Maze, Whack-a-Mole, Draw & Copy, Silly Moves). Brain Games listed below are available separately on Home. Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (default: every 2 finished learning rounds earn a 3-minute break) or **Minutes every hour** (free play for up to 15 minutes in each clock hour — only time actually spent playing counts). Or set "Always open". Every game shows its **level** (badge on the tile) and winning moves her up. A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
+The Play Zone contains arcade and creativity activities (Tic-Tac-Toe, Four in a Row, Finger Maze, Balloons, Coloring, Rolling Ball 3D, Pinball, Ball Maze, Tap the Mole, Draw & Copy, Silly Moves). Brain Games listed below are available separately on Home. Two rules to choose from in ⚙️ → Play time rule: **Earn by rounds** (default: every 2 finished learning rounds earn a 3-minute break) or **Minutes every hour** (free play for up to 15 minutes in each clock hour — only time actually spent playing counts). Or set "Always open". Every game shows its **level** (badge on the tile) and winning moves her up. A timer shows the time left; when it ends she is sent back to learning (coloring is saved).
 
 | Game | Notes |
 |---|---|
@@ -67,13 +67,13 @@ The Play Zone contains arcade and creativity activities (Tic-Tac-Toe, Connect Fo
 | 🖍️ Coloring Book | Big picture with a slim color strip (a color column on iPad). **Pinch to zoom** (or ＋ －) and drag to move around tiny parts. 81 pictures, none locked: Scenes, Seasons & Cartoons (flower vase, pumpkin night, Christmas tree, beach, mountain lake, farm, under the sea, robot, super kitty…), then Easy → Medium → Tricky → Expert mandalas. 👀 Peek shows the original colors |
 | ✏️ Draw & Copy | Trace a dark guide → a faint guide → copy simple pictures → copy detailed ones. Colors, brush sizes, eraser, undo; drawings saved in 🖼️ My drawings |
 | 🎯 3D Pinball | A real-looking machine: wood cabinet, chrome rails, glossy playfield, dot-matrix score display. **6 different tables** (a random one each game, or 🎰 New table): Space Station, Pirate Cove, Candy Carnival, Jungle Temple, Dino Volcano, Ice Castle — each with its own layout of pop bumpers, **ramps** the ball rides up and around, drop-target banks, spinners, saucers that catch and kick the ball, stand-up targets and rollover lanes. Every hit shows its points (+100, +750 RAMP…); lighting all lanes raises the multiplier (up to ×5). Ball saver, auto-nudge if the ball ever stops. 5 levels with higher target scores |
-| 🔴 Connect Four | vs the robot — 3 levels |
+| 🔴 Four in a Row | vs the robot — 3 levels |
 | 🔢 Sudoku | Pictures, Numbers, or **Word Sudoku** (letters of a spelling word). Level 1 4×4 with 4 blanks → level 5 6×6 with 20 blanks; every 2 wins makes it harder. Every puzzle has exactly one solution. 💡 Hint fills a square |
 | 🤸 Silly Moves | Roll the dice → act it out for 10 seconds: hop like a bunny, walk like a robot, make your silliest face… 40 moves |
 | 🧩 Picture Puzzle | Swap tiles to rebuild a picture — 5 levels: 2×2 → 3×3 → 4×4 → 5×5 → 6×6. Uses her own colored pictures when she has them |
 | 🔵 Rolling Ball 3D | 3D sky-track runner (like mobile rolling games, built with three.js): the ball rolls forward on its own — drag left/right or tilt to steer, tap to jump. 8 levels: faster, longer, more gaps, red blocks, jump gaps from level 3, **ramps that fly you over a broken bridge** (level 2+) **or a waterfall canyon** (level 4+), narrow plank bridges (level 5+), sliding purple blocks (level 6+). Collect 💎, checkpoints every 15 rows, every track has a guaranteed safe path |
 | 🟫 Ball Maze | The original top-down maze: drag or tilt to roll to the 🚩 — 8 mazes with walls and holes |
-| 🐹 Whack-a-Mole | 30 seconds, 5 levels (faster moles, more at once, don't tap the 🌸 from level 3) |
+| 🐹 Tap the Mole | 30 seconds, 5 levels (faster moles, more at once, don't tap the 🌸 from level 3) |
 
 ## Looks
 ⚙️ → **Look**: 🌈 Rainbow, 🦄 Unicorn, 🦖 Dino, 🚀 Space, 🐬 Ocean, ⚽ Sports, 🏎️ Race Cars, 🦁 Jungle — changes the colors, the splash screen and the mascot. Game tiles have glossy 3D-style icons.

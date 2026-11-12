@@ -10,6 +10,8 @@
 // what each game level practices (shown to grown-ups)
 const SKILLS = {
   tables: TimesTables.levels.map((d) => d.title),
+  size: EarlyLearning.sizeLevels.map((d) => d.title),
+  matter: EarlyLearning.matterLevels.map((d) => d.title),
   trace: ['Trace capital letters', 'Trace small letters', 'Trace numbers 1–20'],
   phonics: ['First letter of a word', 'Rhyming words', 'Ending letters and blending', 'Short vowel (middle) sounds', 'Blends and digraphs (sh, ch, tr…)'],
   cvc: ['Read 3-letter words', 'Hear and find 3-letter words', 'Missing vowels'],
@@ -57,7 +59,7 @@ const localSkill = (t) => {
 };
 const skillName = (cat, lv) => localSkill((SKILLS[cat] && SKILLS[cat][lv - 1]) || `${(CATEGORIES.find((c) => c.id === cat) || {}).title || cat} · level ${lv}`);
 const SUBJECT = (cat) => (['pattern', 'odd', 'sequence'].includes(cat) ? 'Brain teasers'
-  : ['add', 'sub', 'story', 'cmp', 'mul', 'div', 'clock', 'shape2', 'numsense', 'match', 'tables', 'frac', 'measure'].includes(cat) ? 'Math'
+  : ['add', 'sub', 'story', 'cmp', 'mul', 'div', 'clock', 'shape2', 'numsense', 'match', 'tables', 'frac', 'measure', 'size'].includes(cat) ? 'Math'
   : ['phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'syl', 'trace', 'words', 'gp'].includes(cat) ? 'Reading & words' : 'Science & world');
 const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const DAILY_GOAL = () => state.dailyGoal || 20;

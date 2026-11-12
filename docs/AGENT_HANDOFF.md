@@ -8,8 +8,8 @@
 ## Product decisions
 
 1. Pattern recognition, odd-one-out/classification, and event sequencing are **educational lessons**, not earned reward games.
-2. Memory Match, Picture Puzzle, Sudoku, Tic-Tac-Toe, Connect Four, and Ball Maze are **Brain Games**, available without an arcade play-time pass.
-3. Pinball, Balloons, Coloring, Rolling Ball 3D, Whack-a-Mole, Draw & Copy, and Silly Moves remain in the time-gated **Play Zone**. These are still available at parents' chosen play-time rules.
+2. Memory Match, Picture Puzzle, Sudoku, Tic-Tac-Toe, Four in a Row, and Ball Maze are **Brain Games**, available without an arcade play-time pass.
+3. Pinball, Balloons, Coloring, Rolling Ball 3D, Tap the Mole, Draw & Copy, and Silly Moves remain in the time-gated **Play Zone**. These are still available at parents' chosen play-time rules.
 4. Launch audience remains approximately ages 4–7, with Pre-K to Grade 3 material. Difficulty and puzzle visibility depend on grade; parents can override with "Show all games".
 
 ## Implemented changes
@@ -21,7 +21,7 @@
 - `games.js`: Picture Puzzle updates only swapped tile elements instead of rebuilding all 4–36 SVG tiles after each move. **Still embeds full SVG in each tile initially**; more optimization may be warranted.
 - `games.js`: asynchronous 3D Ball/Pinball imports verify the original `gameSession` and game ID before starting or showing an error.
 - `games.js`: Sudoku defaults to grade-specific difficulty (Pre-K/K 1, Grade 1 2, Grade 2 3, Grade 3 4).
-- `games.js`: `brainMode` separates untimed educational puzzle access from timed arcade access; no reward pass is needed. Age filters: Memory, Tic-Tac-Toe and Picture Puzzle in Pre-K; Sudoku and Ball Maze from Kindergarten; Connect Four from Grade 1. Parent "Show all games" overrides.
+- `games.js`: `brainMode` separates untimed educational puzzle access from timed arcade access; no reward pass is needed. Age filters: Memory, Tic-Tac-Toe and Picture Puzzle in Pre-K; Sudoku and Ball Maze from Kindergarten; Four in a Row from Grade 1. Parent "Show all games" overrides.
 
 ### Phase B — educational reasoning content and child UI
 
@@ -65,12 +65,12 @@ Tests use a local static HTTP server on port **8765**. Existing test scripts may
 
 | Area | Test |
 | --- | --- |
-| Pre-K / K | Home shows phonics, simple patterns, classification, short sequences; Sudoku/Connect Four not shown below their minimum grade |
+| Pre-K / K | Home shows phonics, simple patterns, classification, short sequences; Sudoku/Four in a Row not shown below their minimum grade |
 | Grades 1–3 | Correct difficulty for patterns, number sequences, Sudoku and other games; override via "Show all games" |
 | Brain vs Arcade | Brain Games available when Play Zone is locked; arcade timers do not appear on Brain Games |
 | Sudoku | Fill incorrect values; use hints; complete grid; repeatedly tap after solving; reward count changes exactly once |
 | Picture Puzzle | Solve 2×2 and 6×6; tap after completion; restart; choose another picture before result animation ends |
-| Memory / Tic-Tac-Toe / Connect Four | Test wins, draws, loss, rapid inputs and navigation |
+| Memory / Tic-Tac-Toe / Four in a Row | Test wins, draws, loss, rapid inputs and navigation |
 | 3D Ball / Pinball | Navigate away while modules load; open another game; ensure no late canvas/renderer/error overlays |
 | iPhone / iPad | Portrait and landscape; no clipping; large touch targets; parent settings back/save; scroll restoration |
 | Offline | Install, load new curriculum JS/CSS offline after update, verify audio behavior |

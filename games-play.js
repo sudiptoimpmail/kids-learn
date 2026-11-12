@@ -1,4 +1,4 @@
-/* Play Zone games (Tic-Tac-Toe, Memory, Pop, Whack, mazes, Connect Four, coloring, sudoku, puzzles, moves, drawing).
+/* Play Zone games (Tic-Tac-Toe, Memory, Pop, Whack, mazes, Four in a Row, coloring, sudoku, puzzles, moves, drawing).
    Loaded on demand the first time a game opens (app.config.json "lazy": "games"); the play time rules are in games.js. */
 const gameFullOff = () => { document.body.classList.remove('immersive'); const b = $('#gameFull'); if (b) { b.setAttribute('aria-pressed', 'false'); b.setAttribute('aria-label', 'Full screen'); } try { if (document.fullscreenElement) document.exitFullscreen(); } catch {} };
 $('#gameFull').onclick = () => {
@@ -566,7 +566,7 @@ function startC4() {
   // a real button per column (tap, keyboard or screen reader), plus a spoken-word record of each move
   area.innerHTML = `<div class="g-msg">You are 🔴 · Get four in a row!</div>
     <div class="c4-drops" role="toolbar" aria-label="Pick a column">${Array.from({ length: C7 }, (_, c) => `<button class="c4-drop" data-c="${c}" aria-label="Drop in column ${c + 1}">⬇</button>`).join('')}</div>
-    <div class="c4-board" role="img" aria-label="Connect Four board">${
+    <div class="c4-board" role="img" aria-label="Four in a Row board">${
     Array.from({ length: R6 * C7 }, (_, k) => `<div class="c4-cell" data-r="${Math.floor(k / C7)}" data-c="${k % C7}" aria-hidden="true"><i></i></div>`).join('')}</div>
     <div class="sr-only" aria-live="polite" id="c4Live"></div>`;
   const live = (t) => { const l = $('#c4Live', area); if (l) l.textContent = t; };

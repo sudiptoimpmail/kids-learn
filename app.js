@@ -134,9 +134,9 @@ function renderHome() {
   const groups = [
     ['📝 Practice', ['check']],
     ['📖 Reading & Words', ['library', 'trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'gp', 'match', 'syl']],
-    ['🔢 Math', ['add', 'sub', 'story', 'cmp', 'numsense', 'tables', 'frac', 'measure', 'mul', 'div', 'clock', 'shape2']],
+    ['🔢 Math', ['size', 'add', 'sub', 'story', 'cmp', 'numsense', 'tables', 'frac', 'measure', 'mul', 'div', 'clock', 'shape2']],
     ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], 'brain'],
-    ['🌍 Science & World', ['sci', 'home', 'region', 'community', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
+    ['🌍 Science & World', ['matter', 'sci', 'home', 'region', 'community', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
   ];
   const visible = visibleGames();
   const makeTile = (c) => {
@@ -248,7 +248,10 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
     const tooHard = (!browse && state.grade && !state.showAll && !q.grades.includes(state.grade)) ||
       (!browse && state.grade && c.id !== 'placement' && typeof gradeFits === 'function' && !gradeFits(q, state.grade, c.id));
     if (tooHard) { if (++misses >= 40 && lv > 1) { drop++; misses = 0; } continue; }
-    misses = 0; seen.add(q.key); seenContent.add(contentId); q.cat = c; q.level = lv; qs.push(q);
+    misses = 0; seen.add(q.key); seenContent.add(contentId); q.cat = c; q.level = lv;
+    // Pre-K and Kindergarten: every card has a picture
+    if (typeof EarlyPictures !== 'undefined' && EarlyPictures.forGrade(state.grade)) EarlyPictures.add(q);
+    qs.push(q);
     if (reviewedQuestion === q) { reviewed++; q.reviewScheduled = true; }
   }
   if (!browse && !isTestMode() && catId !== 'placement') {

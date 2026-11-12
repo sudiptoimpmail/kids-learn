@@ -186,7 +186,8 @@
       "coloring-4",
       "coloring-5",
       "coloring-landmarks",
-      "lessons"
+      "lessons",
+      "early"
     ]
   },
   "scripts": [
@@ -204,6 +205,7 @@
     "tables.js",
     "content.js",
     "thinking.js",
+    "early.js",
     "country.js",
     "levels.js",
     "gradefit.js",

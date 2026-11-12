@@ -1924,3 +1924,44 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .cmpn-row { display: flex; align-items: center; gap: 10px; }
 .cmpn-row b { min-width: 1.6em; text-align: right; color: var(--ink); }
 .cmpn-row span { letter-spacing: 2px; color: var(--accent, #f76707); overflow-wrap: anywhere; }
+
+/* Big & Small and Liquid or Solid? (Pre-K and Kindergarten picture cards, early.js) */
+.sz-opts .opt { align-items: center; justify-content: flex-end; min-height: 168px; padding-bottom: 14px; overflow: hidden; }
+.sz-opts.three .sz-pic { font-size: calc(var(--sz, 1) * 1.15em); }
+.sz-pic { font-size: calc(var(--sz, 1) * 1.45em); line-height: 1; display: inline-block; }
+.sz-bars { grid-template-columns: 1fr !important; }
+.sz-bars .opt { min-height: 84px; align-items: flex-start; justify-content: center; padding: 0 18px; }
+.sz-bar { display: block; height: 26px; width: var(--w, 50%); border-radius: 13px; background: var(--c, #f59f00); box-shadow: inset 0 -5px 0 rgba(0, 0, 0, .14); }
+.sz-hint { text-align: center; font-weight: 800; }
+.sz-row { display: flex; align-items: flex-end; justify-content: center; gap: 18px; font-size: 34px; margin-top: 6px; }
+.sz-stack { display: grid; gap: 8px; margin-top: 8px; justify-items: start; }
+.sz-stack .sz-bar { height: 14px; }
+.sz-seesaw { display: flex; align-items: flex-end; justify-content: center; gap: 0; font-size: 40px; }
+.sz-seesaw span:first-child { transform: translateY(-16px); }
+.sz-seesaw i { width: 110px; height: 8px; border-radius: 4px; background: #adb5bd; transform: rotate(8deg); margin: 0 4px 14px; }
+.mt-thing { display: grid; justify-items: center; gap: 2px; }
+.mt-pic { font-size: 96px; line-height: 1.1; }
+.mt-name { font-size: 26px; font-weight: 800; color: var(--ink); }
+.mt-opts .opt { display: grid; justify-items: center; gap: 2px; min-height: 120px; }
+.mt-ico { font-size: 52px; line-height: 1; }
+.mt-word { font-size: 26px; font-weight: 800; }
+.mt-hint { display: grid; gap: 6px; text-align: left; }
+
+/* Pictures added to Pre-K and Kindergarten cards that had none (EarlyPictures in early.js) */
+.ep-pic { font-size: 64px; line-height: 1.15; text-align: center; margin-top: 4px; }
+.ep-frames { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 8px; }
+.ep-tf { display: grid; grid-template-columns: repeat(5, 26px); gap: 3px; padding: 4px; border-radius: 8px; background: #dee2e6; }
+.ep-tf i { width: 26px; height: 26px; border-radius: 5px; background: #fff; position: relative; }
+.ep-tf i.a::after, .ep-tf i.b::after, .ep-tf i.x::after { content: ''; position: absolute; inset: 4px; border-radius: 50%; background: #f76707; }
+.ep-tf i.b::after { background: #1c7ed6; }
+.ep-tf i.x::after { background: #ced4da; }
+.ep-tf i.x::before { content: '✕'; position: absolute; inset: 0; display: grid; place-items: center; font: 900 16px/1 system-ui; color: #e03131; z-index: 1; font-style: normal; }
+.ep-line { display: flex; justify-content: center; gap: 3px; margin-top: 10px; flex-wrap: nowrap; }
+.ep-line span { min-width: 24px; height: 28px; border-radius: 8px; background: #f1f3f5; color: #868e96; font-size: 14px; font-weight: 800; display: grid; place-items: center; }
+.ep-line.long span { min-width: 15px; font-size: 10px; }
+.ep-line span.on { background: #ffd43b; color: var(--ink); transform: scale(1.18); }
+.ep-bundles { display: flex; justify-content: center; align-items: flex-end; gap: 10px; margin-top: 8px; }
+.ep-bundle { display: inline-flex; gap: 3px; }
+.ep-bundle i { width: 14px; height: 14px; border-radius: 50%; background: #f76707; }
+.ep-bundle.by10 { width: 10px; height: 60px; border-radius: 3px; background: repeating-linear-gradient(#f76707 0 5px, #ffd8a8 5px 6px); }
+.ep-bundle.next { opacity: .28; }
