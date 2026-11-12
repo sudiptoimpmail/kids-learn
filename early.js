@@ -119,8 +119,8 @@ const EarlyPictures = (() => {
   };
   const numberLine = (a, b) => { const max = Math.max(a, b) > 10 ? 20 : 10;
     return `<div class="ep-line${max > 10 ? ' long' : ''}">${Array.from({ length: max }, (_, i) => `<span class="${i + 1 === a || i + 1 === b ? 'on' : ''}">${i + 1}</span>`).join('')}</div>`; };
-  const bundles = (by, shown) => `<div class="ep-bundles">${Array.from({ length: shown + 1 }, (_, i) =>
-    `<span class="ep-bundle by${by}${i === shown ? ' next' : ''}">${by === 10 ? '' : Array.from({ length: by }, () => '<i></i>').join('')}</span>`).join('')}</div>`;
+  const bundles = (by, shown, next = true) => `<div class="ep-bundles">${Array.from({ length: shown + (next ? 1 : 0) }, (_, i) =>
+    `<span class="ep-bundle by${by}${next && i === shown ? ' next' : ''}">${by === 10 ? '' : Array.from({ length: by }, () => '<i></i>').join('')}</span>`).join('')}</div>`;
   const DET = /^(a|an|the|my|his|her|our|your|this|that|some|no|one|two|three|four|five|six|seven|eight|nine|ten|many|\d+)$/;
   function about(q) {
     const text = (plain(q.text) + ' ' + plain(q.main) + ' ' + plain(q.readQ)).toLowerCase(), d = words();
@@ -145,7 +145,8 @@ const EarlyPictures = (() => {
     if ((m = /^add-(\d+)-(\d+)$/.exec(key)) && +m[1] + +m[2] <= 20) extra = frames([...Array(+m[1]).fill('a'), ...Array(+m[2]).fill('b')]);
     else if ((m = /^sub-(\d+)-(\d+)$/.exec(key)) && +m[1] <= 20) extra = frames([...Array(m[1] - m[2]).fill('a'), ...Array(+m[2]).fill('x')]);
     else if ((m = /^cmpn-(\d+)-(\d+)-/.exec(key))) extra = numberLine(+m[1], +m[2]);
-    else if ((m = /^tbl-next-(\d+)-(\d+)$/.exec(key)) && (+m[1] === 2 || +m[1] === 10)) extra = bundles(+m[1], m[2] - 1);   // one bundle for each group counted so far, and a faint one for the next
+    else if ((m = /^tbl-next-(\d+)-(\d+)$/.exec(key)) && (+m[1] <= 5 || +m[1] === 10)) extra = bundles(+m[1], m[2] - 1);   // one bundle for each group counted so far, and a faint one for the next
+    else if ((m = /^tbl-(\d+)x(\d+)$/.exec(key)) && m[1] * m[2] <= 30) extra = bundles(+m[1], +m[2], false);                  // 1 × 3: three groups of one
     else if ((m = /^cvc-miss-([a-z]+)$/.exec(key))) { words(); const e = all.get(m[1]); if (e) extra = `<div class="ep-pic">${e}</div>`; }
     else { const e = about(q); if (e) extra = `<div class="ep-pic">${e}</div>`; }
     if (extra) { q.main = (q.main || '') + extra; if (q.mainClass === 'empty') q.mainClass = ''; q.earlyPic = true; }

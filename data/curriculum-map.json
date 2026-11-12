@@ -384,7 +384,7 @@
           "check": "1-1",
           "placement": "1-1",
           "library": "1-1",
-          "tables": "3-4"
+          "tables": "1-5"
         },
         "roundQuestions": 8
       },
@@ -465,7 +465,7 @@
           "check": "1-1",
           "placement": "1-1",
           "library": "1-1",
-          "tables": "5-7"
+          "tables": "2-10"
         },
         "roundQuestions": 10
       },
@@ -543,7 +543,7 @@
           "check": "1-1",
           "placement": "1-1",
           "library": "1-1",
-          "tables": "8-14"
+          "tables": "3-11"
         },
         "roundQuestions": 10
       }
@@ -1511,8 +1511,8 @@
           },
           "tables": {
             "levels": [
-              3,
-              4
+              1,
+              5
             ],
             "skills": [
               "skip-counting",
@@ -2001,8 +2001,8 @@
           },
           "tables": {
             "levels": [
-              5,
-              7
+              2,
+              10
             ],
             "skills": [
               "equal-groups",
@@ -2475,8 +2475,8 @@
           },
           "tables": {
             "levels": [
-              8,
-              14
+              3,
+              11
             ],
             "skills": [
               "multiplication-facts",
@@ -3934,8 +3934,11 @@
               "sub:4",
               "story:2",
               "story:3",
+              "tables:1",
+              "tables:2",
               "tables:3",
-              "tables:4"
+              "tables:4",
+              "tables:5"
             ]
           },
           {
@@ -4070,9 +4073,15 @@
               "mul:3",
               "div:1",
               "div:2",
+              "tables:2",
+              "tables:3",
+              "tables:4",
               "tables:5",
               "tables:6",
-              "tables:7"
+              "tables:7",
+              "tables:8",
+              "tables:9",
+              "tables:10"
             ]
           },
           {
@@ -4202,14 +4211,16 @@
               "div:3",
               "div:4",
               "div:5",
+              "div:2",
+              "tables:3",
+              "tables:4",
+              "tables:5",
+              "tables:6",
+              "tables:7",
               "tables:8",
               "tables:9",
               "tables:10",
-              "tables:11",
-              "tables:12",
-              "tables:13",
-              "tables:14",
-              "div:2"
+              "tables:11"
             ]
           },
           {
@@ -4588,15 +4599,6 @@
             ],
             "tables:11": [
               "tables:11"
-            ],
-            "tables:12": [
-              "tables:12"
-            ],
-            "tables:13": [
-              "tables:13"
-            ],
-            "tables:14": [
-              "tables:14"
             ],
             "match:1": [
               "match:1"
@@ -5484,18 +5486,6 @@
         "tables:11": {
           "category": "tables",
           "level": 11
-        },
-        "tables:12": {
-          "category": "tables",
-          "level": 12
-        },
-        "tables:13": {
-          "category": "tables",
-          "level": 13
-        },
-        "tables:14": {
-          "category": "tables",
-          "level": 14
         },
         "match:1": {
           "category": "match",

@@ -875,10 +875,21 @@ function applyRoundProgression(id, level, round) {
   const record = state.progressionStreaks[id];
   const previous = record && record.grade === state.grade && record.level === level
     ? record : {};
-  const outcome = progressionOutcome(rule, range, level, round, previous);
+  // Times Tables take long, repeated practice: the next table opens only after several strong rounds on several days
+  const slow = id === 'tables' && typeof TimesTables !== 'undefined' && TimesTables.practice;
+  let outcome = progressionOutcome(slow ? { ...rule, promote: { ...rule.promote, rounds: Infinity } } : rule, range, level, round, previous);
+  let days = slow && outcome.counts.mastery ? (previous.days || []).slice() : [];
+  if (slow && outcome.status === 'building') {
+    const day = new Date().toISOString().slice(0, 10);
+    if (!days.includes(day)) days.push(day);
+    if (outcome.counts.mastery >= slow.promoteRounds && days.length >= slow.promoteDays) {
+      outcome = { level: level < range[1] ? level + 1 : level, counts: { mastery: 0, support: 0 }, status: level < range[1] ? 'promoted' : 'top' };
+      days = [];
+    }
+  }
   state.progressionStreaks[id] = {
     grade: state.grade || null, level: outcome.level,
-    mastery: outcome.counts.mastery, support: outcome.counts.support
+    mastery: outcome.counts.mastery, support: outcome.counts.support, ...(slow ? { days } : {})
   };
   if (outcome.level !== level) state.levels[id] = outcome.level;
   return outcome.status;

@@ -3,7 +3,7 @@
   "namespace": "lessons",
   "datasets": {
     "policy": {
-      "about": "Teach first: each new skill step opens with Professor Hoot modelling one card (I do), one guided card together (we do), then the quiz (you do). Lesson cards never count as evidence, stars or Play Zone time.",
+      "about": "Teach first: each new skill step opens with Professor Hoot modelling one card (I do), one guided card together (we do), then the quiz (you do). Lesson cards never count as evidence, stars or Play Zone time. Times Tables are recited again on the first round of every day.",
       "reteachAfterDays": 30,
       "reteachAfterStepDown": true,
       "skipCategories": [
@@ -23,7 +23,10 @@
         "here is its flag",
         "look at the orange place on the map",
         "think about where each animal lives"
-      ]
+      ],
+      "reteachDaysByCategory": {
+        "tables": 1
+      }
     },
     "phrases": {
       "watch": "Watch me first.",
@@ -273,105 +276,77 @@
       }
     },
     "tables": {
-      "about": "Times tables ladder. Each step is taught first (Professor Hoot reads the whole count or table aloud), then one card together, then the quiz. Kindergarten and 1st grade count in equal steps without the × sign; 2nd grade learns ×2, ×5 and ×10; 3rd grade learns the rest and finishes with all tables mixed. One table per step, in the order most curricula teach them.",
+      "about": "Times tables ladder, in counting order: the 1 times table, then 2, then 3 ... up to 10, then all tables mixed. Each step is taught first (Professor Hoot reads the whole table aloud, 1 × 1, 1 × 2 ...), then one card together, then the quiz. Younger grades get picture cards (equal groups, what comes next) among the facts, and Kindergarten is quizzed only on answers up to 10.",
       "levels": [
         {
-          "kind": "skip",
-          "by": 10,
-          "upTo": 100,
-          "title": "Count by 10s",
+          "kind": "table",
+          "n": 1,
+          "title": "1 times table",
           "grade": "k",
-          "standard": "K.CC.1 count to 100 by tens"
-        },
-        {
-          "kind": "skip",
-          "by": 2,
-          "upTo": 10,
-          "groups": 5,
-          "title": "Count by 2s to 10",
-          "grade": "k",
-          "standard": "K.CC equal groups of 2 (pairs) within 10"
-        },
-        {
-          "kind": "skip",
-          "by": 5,
-          "upTo": 50,
-          "groups": 4,
-          "title": "Count by 5s",
-          "grade": "g1",
-          "standard": "1.NBT.1 counting patterns; skip counting by 5s"
-        },
-        {
-          "kind": "skip",
-          "by": 2,
-          "upTo": 20,
-          "groups": 6,
-          "title": "Count by 2s to 20",
-          "grade": "g1",
-          "standard": "1.OA doubles; skip counting by 2s"
+          "standard": "3.OA.7 multiply within 100 (begun early, in counting order, at the family's request); 2.OA.4 equal groups; 2.NBT.2 skip counting"
         },
         {
           "kind": "table",
           "n": 2,
           "title": "2 times table",
-          "grade": "g2",
-          "standard": "2.OA.3-4 equal groups, arrays; 2.NBT.2 skip counting"
+          "grade": "k",
+          "standard": "3.OA.7 multiply within 100 (begun early, in counting order, at the family's request); 2.OA.4 equal groups; 2.NBT.2 skip counting"
+        },
+        {
+          "kind": "table",
+          "n": 3,
+          "title": "3 times table",
+          "grade": "g1",
+          "standard": "3.OA.7 multiply within 100 (begun early, in counting order, at the family's request); 2.OA.4 equal groups; 2.NBT.2 skip counting"
+        },
+        {
+          "kind": "table",
+          "n": 4,
+          "title": "4 times table",
+          "grade": "g1",
+          "standard": "3.OA.7 multiply within 100 (begun early, in counting order, at the family's request); 2.OA.4 equal groups; 2.NBT.2 skip counting"
         },
         {
           "kind": "table",
           "n": 5,
           "title": "5 times table",
+          "grade": "g1",
+          "standard": "3.OA.7 multiply within 100 (begun early, in counting order, at the family's request); 2.OA.4 equal groups; 2.NBT.2 skip counting"
+        },
+        {
+          "kind": "table",
+          "n": 6,
+          "title": "6 times table",
           "grade": "g2",
-          "standard": "2.NBT.2 skip count by 5s; 2.OA.4"
+          "standard": "3.OA.7 multiply within 100 (begun early, in counting order, at the family's request); 2.OA.4 equal groups; 2.NBT.2 skip counting"
+        },
+        {
+          "kind": "table",
+          "n": 7,
+          "title": "7 times table",
+          "grade": "g2",
+          "standard": "3.OA.7 multiply within 100 (begun early, in counting order, at the family's request); 2.OA.4 equal groups; 2.NBT.2 skip counting"
+        },
+        {
+          "kind": "table",
+          "n": 8,
+          "title": "8 times table",
+          "grade": "g2",
+          "standard": "3.OA.7 multiply within 100 (begun early, in counting order, at the family's request); 2.OA.4 equal groups; 2.NBT.2 skip counting"
+        },
+        {
+          "kind": "table",
+          "n": 9,
+          "title": "9 times table",
+          "grade": "g2",
+          "standard": "3.OA.7 multiply within 100 (begun early, in counting order, at the family's request); 2.OA.4 equal groups; 2.NBT.2 skip counting"
         },
         {
           "kind": "table",
           "n": 10,
           "title": "10 times table",
           "grade": "g2",
-          "standard": "2.NBT.2 skip count by 10s; 2.OA.4"
-        },
-        {
-          "kind": "table",
-          "n": 3,
-          "title": "3 times table",
-          "grade": "g3",
-          "standard": "3.OA.7 multiply within 100"
-        },
-        {
-          "kind": "table",
-          "n": 4,
-          "title": "4 times table",
-          "grade": "g3",
-          "standard": "3.OA.7"
-        },
-        {
-          "kind": "table",
-          "n": 6,
-          "title": "6 times table",
-          "grade": "g3",
-          "standard": "3.OA.7"
-        },
-        {
-          "kind": "table",
-          "n": 7,
-          "title": "7 times table",
-          "grade": "g3",
-          "standard": "3.OA.7"
-        },
-        {
-          "kind": "table",
-          "n": 8,
-          "title": "8 times table",
-          "grade": "g3",
-          "standard": "3.OA.7"
-        },
-        {
-          "kind": "table",
-          "n": 9,
-          "title": "9 times table",
-          "grade": "g3",
-          "standard": "3.OA.7"
+          "standard": "3.OA.7 multiply within 100 (begun early, in counting order, at the family's request); 2.OA.4 equal groups; 2.NBT.2 skip counting"
         },
         {
           "kind": "mixed",
@@ -381,11 +356,29 @@
         }
       ],
       "quiz": {
-        "reviewShare": 0.25,
+        "reviewShare": 0.35,
         "turnaroundShare": 0.35,
-        "turnaroundFromLevel": 8,
+        "turnaroundFromLevel": 3,
         "missingShare": 0.2,
-        "missingFromLevel": 10
+        "missingFromLevel": 6,
+        "pictureShare": {
+          "k": 0.4,
+          "g1": 0.35,
+          "g2": 0.15,
+          "g3": 0
+        },
+        "maxProduct": {
+          "k": 10
+        },
+        "noMissingOrTurnaround": [
+          "k",
+          "g1"
+        ]
+      },
+      "practice": {
+        "about": "Tables are learned by saying and practising them again and again, over months. A child moves to the next table only after this many strong rounds, on this many different days. Earlier tables keep coming back in every quiz.",
+        "promoteRounds": 6,
+        "promoteDays": 4
       }
     }
   }
