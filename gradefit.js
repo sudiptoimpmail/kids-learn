@@ -64,6 +64,7 @@ function gradeFits(q, grade, catId) {
   // × and ÷ are 2nd–3rd grade ideas: never on a Pre-K or K card, not even inside Match It
   if (
     (grade === 'prek' || grade === 'k') &&
+    !/^tbl-/.test(key) && // except the Times Tables section itself, which starts at 1 × 1 in Kindergarten
     /[×÷]/.test(
       fitText(q.main) +
         fitText(q.text) +

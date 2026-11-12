@@ -29,7 +29,8 @@ const TeachFirst = (() => {
     if (L.policy.skipCategories.includes(catId) || automatedSkip()) return false;
     const seen = (state.taught || {})[keyOf(catId, level)];
     if (!seen) return true;
-    return daysBetween(seen, today()) >= L.policy.reteachAfterDays;
+    // Times Tables are recited again on the first round of each day (policy.reteachDaysByCategory)
+    return daysBetween(seen, today()) >= ((L.policy.reteachDaysByCategory || {})[catId] || L.policy.reteachAfterDays);
   }
   function markSeen(catId, level) {
     state.taught = state.taught || {};
@@ -170,7 +171,7 @@ const TeachFirst = (() => {
         if (arr) arr.innerHTML = step.dots ? TimesTables.dots(step.dots[0], step.dots[1]) : '';
       }
       await say(step.say);
-      if (alive()) await sleep(step.row ? 220 : 120);
+      if (alive()) await sleep(step.slow ? 550 : step.row ? 220 : 120);   // a table is said slowly, with a breath between lines
     }
     if (!alive()) return;
     rows.forEach((r) => { r.classList.remove('on'); r.classList.add('done'); });
