@@ -1,6 +1,7 @@
 /* kids-core: release feature flags (values come from app.config.json "features").
    Production: testMode=false. Local Playwright browser tests may opt in on localhost,
    but a saved testMode=true value can never enable debugging on production. */
+(() => {
 const APP_FEATURES = Object.freeze({
   testMode: !!(AppConfig.features && AppConfig.features.testMode),
   localTestAutomation: !(AppConfig.features && AppConfig.features.localTestAutomation === false)
@@ -18,3 +19,7 @@ const testFeatureAvailable = () => APP_FEATURES.testMode || qaUnlocked() ||
   (APP_FEATURES.localTestAutomation && /^https?:$/.test(location.protocol) && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
     && !(window.Capacitor && typeof Capacitor.isNativePlatform === 'function' && Capacitor.isNativePlatform()));
 const isTestMode = () => testFeatureAvailable() && typeof state !== 'undefined' && !!state.testMode;
+
+// the only names other scripts may use (CONTRACT.md); everything else in this file is private
+Object.assign(globalThis, { APP_FEATURES, QA_KEY, qaUnlocked, testFeatureAvailable, isTestMode });
+})();

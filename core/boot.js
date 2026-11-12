@@ -12,7 +12,7 @@
    5. Sections that are not needed at start ("lazy": { group: { scripts, data, entry } }) load the first time one of
       their entry functions is called (CoreLazy). Their files are still saved for offline use by the service worker.
    Data is JSON, scripts contain only logic. No eval, no remote scripts. */
-const CORE_VERSION = '1.8.0';
+const CORE_VERSION = '1.10.0';
 const CORE_SCRIPTS = ['util.js', 'hooks.js', 'feature-flags.js', 'native.js', 'storage.js', 'voice.js', 'sounds.js', 'confetti.js',
   'parent-gate.js', 'progression.js', 'content-packs.js', 'offline.js'];
 const here = new URL('.', import.meta.url);           // …/core/
@@ -239,7 +239,9 @@ window.CoreReady = (async () => {
   if (cfg.core !== CORE_VERSION) console.warn(`App was built for kids-core ${cfg.core} but core/ is ${CORE_VERSION}`);
   window.AppConfig = deepFreeze(cfg);
   const fetchJson = async (u) => { try { const r = await fetch(u); return r.ok ? await r.json() : null; } catch { return null; } };
-  const pack = await loadPack(cfg.theme, fetchJson);
+  // colours are decoration: a theme pack that cannot be read leaves the app on its base colours instead of stopping it
+  let pack = null;
+  try { pack = await loadPack(cfg.theme, fetchJson); } catch (e) { console.error('kids-core: theme pack not used', e); }
   applyTheme(cfg.theme, pack);
   window.CoreSkins = makeSkins(pack);
   window.CoreMascot = mascotOf(cfg);
@@ -269,11 +271,21 @@ window.CoreReady = (async () => {
     namespaces: () => [...data.keys()]
   });
 
-  await Promise.all([...CORE_SCRIPTS.map((s) => new URL(s, here).pathname), ...cfg.scripts].map(load));
+  // A script that cannot be read as code, or that fails while it starts, would leave a half-working app with Play
+  // switched on. Such an error stops the start instead, and names the file.
+  const failed = [];
+  const onScriptError = (e) => { if (e && e.filename) failed.push(`${e.filename.replace(/^.*\//, '')}: ${e.message}`); };
+  addEventListener('error', onScriptError);
+  try { await Promise.all([...CORE_SCRIPTS.map((s) => new URL(s, here).pathname), ...cfg.scripts].map(load)); }
+  finally { removeEventListener('error', onScriptError); }
+  if (failed.length) throw Error('A script failed while loading: ' + failed.join('; '));
+  // the app's side of CONTRACT.md: core's voice, PIN and offline code use these
+  if (typeof state !== 'object' || !state || typeof save !== 'function') console.error('kids-core: the app must define a global state object and save() (see CONTRACT.md)');
   window.CoreLazy = makeLazy(cfg, loadData);
   for (const name of cfg.hooks || []) if (!CoreHooks.install(name) && !window.CoreLazy.owner(name)) console.warn('kids-core: no function to hook: ' + name);
-  // Browser tests see the whole app at once unless they ask for ?lazy=1 (the lazy test does).
-  if (navigator.webdriver && !/[?&]lazy=1\b/.test(location.search)) await window.CoreLazy.preload();
+  // Browser tests on a developer's computer see the whole app at once unless they ask for ?lazy=1.
+  // Only where test tools are available (never the website or the native app), so real devices always take the real path.
+  if (navigator.webdriver && testFeatureAvailable() && !/[?&]lazy=1\b/.test(location.search)) await window.CoreLazy.preload();
   // Otherwise every section loads quietly once the app is idle, so the first tap on it is instant.
   else if (cfg.lazy && Object.keys(cfg.lazy).length) {
     const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1));

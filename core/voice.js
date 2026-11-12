@@ -5,6 +5,7 @@
    - Several languages: a part can be { text, lang } to use another language's clip map.
    - Device speech is never used for content. Only parts marked { device: true } (a child's name)
      may use it, and only when the config sets voice.deviceVoiceForNames. */
+(() => {
 const VOICE_CFG = AppConfig.voice;
 const AUDIO_DIR = VOICE_CFG.dir || 'audio/';
 const VOICE_LANG = VOICE_CFG.lang;
@@ -14,8 +15,11 @@ const clipKey = VOICE_CFG.keys === 'unicode'
 const splitSentences = (t) => (String(t).match(/[^.!?]+[.!?]*/g) || []).map((x) => x.trim()).filter((x) => clipKey(x));
 let CLIPS = {};                       // the main language's clip map (phrase key → file)
 const CLIPS_BY_LANG = {};
+const loadClipMap = (lang, file) => fetch(file).then((r) => { if (!r.ok) throw Error(r.status); return r.json(); })
+  .then((j) => { CLIPS_BY_LANG[lang] = j; if (lang === VOICE_LANG) CLIPS = j; });
+// a clip map that does not arrive is asked for once more a little later, so one bad moment does not leave the app silent
 const clipsReady = Promise.all(Object.entries(VOICE_CFG.clips).map(([lang, file]) =>
-  fetch(file).then((r) => r.json()).then((j) => { CLIPS_BY_LANG[lang] = j; if (lang === VOICE_LANG) CLIPS = j; }).catch(() => {})));
+  loadClipMap(lang, file).catch(() => sleep(3000).then(() => loadClipMap(lang, file))).catch(() => {})));
 // a preview build may ship every clip in one file: { file, index } (index = file name → [offset, length])
 const VOICE_PACK = VOICE_CFG.pack || null;
 let packIndex = null, packData = null;
@@ -82,8 +86,10 @@ function stopClip() {
 function htmlPlay(file, token = sayToken, rate = 1) {
   if (token !== sayToken) return Promise.resolve();
   return (async () => {
+    // The clip's bytes come through an ordinary request, which the offline service worker answers from its saved files.
+    // (Giving <audio> the address makes the browser ask for byte ranges, which bypass the saved files: silent offline.)
     let src = AUDIO_DIR + file, blob = null;
-    if (VOICE_PACK) { try { blob = URL.createObjectURL(new Blob([await clipBytes(file)], { type: 'audio/mpeg' })); src = blob; } catch {} }
+    try { blob = URL.createObjectURL(new Blob([await clipBytes(file)], { type: 'audio/mpeg' })); src = blob; } catch {}
     if (token !== sayToken) { if (blob) URL.revokeObjectURL(blob); return; }
     await new Promise((res) => {
       let done = false; const fin = () => { if (!done) { done = true; if (blob) setTimeout(() => URL.revokeObjectURL(blob), 1000); res(); } };
@@ -145,12 +151,41 @@ async function say(text, opts = {}) {
     }
     return;
   }
+  noteMissing(text, parts, files);
   return deviceSay(text, opts, my);
 }
 
-function deviceSay(text) {
+// A sentence with a part that has no recording is not spoken (the words stay on screen). Each one is remembered,
+// with the parts that are missing, so the test screen and voice audits can list them: CoreVoice.missing().
+const missingLog = new Map(), MISSING_MAX = 300;
+function noteMissing(text, parts, files) {
+  const key = String(text).slice(0, 200);
+  const gaps = parts.filter((p, i) => !files[i] && !(typeof p === 'object' && p.device)).map((p) => (typeof p === 'object' ? p.text : p));
+  const row = missingLog.get(key) || { text: key, parts: gaps, count: 0 };
+  row.count++; missingLog.delete(key); missingLog.set(key, row);
+  while (missingLog.size > MISSING_MAX) missingLog.delete(missingLog.keys().next().value);
+}
+const CoreVoice = Object.freeze({
+  missing: () => [...missingLog.values()].map((r) => ({ ...r, parts: r.parts.slice() })),
+  clearMissing: () => missingLog.clear(),
+  // true when every part of the text has a recording (or is a child's name)
+  canSay: (text) => { const parts = sayParts(text); return !!parts.length && parts.every((p) => partFile(p) || (typeof p === 'object' && p.device)); },
+});
+let deviceSay = function (text) {
   // Non-robotic fallback: the question and options are still visible.
-  // This hook is intentionally retained for voice audits to report missing clips.
+  // Voice audits replace this function to collect missing clips.
   if (typeof testFeatureAvailable === 'function' && testFeatureAvailable()) console.warn('Missing natural recording:', text);
   return Promise.resolve();
-}
+};
+
+// the only names other scripts may use (CONTRACT.md); everything else in this file is private
+Object.assign(globalThis, { say, stopClip, prefetch, clipKey, sayParts, splitSentences, VoiceHooks, CoreVoice, playClip, getBuf, unlockAudio,
+  clipsReady, CLIPS_BY_LANG, lastAudio, partFile, AUDIO_DIR, ctx });
+// values that change, or that voice audits and tests replace
+const live = (name, get, set) => Object.defineProperty(globalThis, name, { get, set, configurable: true });
+live('CLIPS', () => CLIPS);
+live('sayToken', () => sayToken, (v) => { sayToken = v; });
+live('curSrc', () => curSrc, (v) => { curSrc = v; });
+live('actx', () => actx);
+live('deviceSay', () => deviceSay, (v) => { deviceSay = v; });
+})();

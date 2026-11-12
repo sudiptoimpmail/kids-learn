@@ -1099,7 +1099,10 @@ function renderThemes() {
 function renderTestInfo() {
   const clips = Object.keys(CLIPS).length;
   const gl = (() => { try { const c = document.createElement('canvas'); return !!(c.getContext('webgl2') || c.getContext('webgl')); } catch { return false; } })();
-  $('#testInfo').textContent = `Voice clips: ${clips} · 3D: ${gl ? 'yes' : 'no'} · Grade: ${state.grade || 'none'} · Screen: ${innerWidth}×${innerHeight}`;
+  // sentences that were not spoken because a recording is missing (kids-core keeps the list for this visit)
+  const missing = CoreVoice.missing();
+  $('#testInfo').textContent = `Voice clips: ${clips} · 3D: ${gl ? 'yes' : 'no'} · Grade: ${state.grade || 'none'} · Screen: ${innerWidth}×${innerHeight}`
+    + (missing.length ? ` · Not spoken (no recording): ${missing.length}: ${missing.slice(-5).map((m) => '“' + m.text + '”').join(' ')}` : ' · Not spoken: 0');
 }
 // QA unlocked by the ?qa=1 link: a grown-up can lock it again here (same as opening ?qa=0)
 $('#qaLock').onclick = () => { try { localStorage.removeItem(QA_KEY); } catch {} state.testMode = false; save(); applyTheme(); $('#testSection').hidden = !testFeatureAvailable(); };

@@ -1,7 +1,8 @@
 /* kids-core: little sound effects (no files needed) */
+(() => {
 function tone(freqs, { dur = 0.12, type = 'sine', gap = 0.09, vol = 0.18 } = {}) {
   try {
-    ctx();
+    const actx = ctx();
     freqs.forEach((f, i) => {
       const o = actx.createOscillator(), g = actx.createGain();
       const t = actx.currentTime + i * gap;
@@ -17,3 +18,7 @@ const sfx = {
   no: () => tone([300, 240], { type: 'sine', gap: 0.12, vol: 0.12 }),
   win: () => tone([523, 659, 784, 1047, 784, 1047, 1319], { type: 'triangle', gap: 0.11, dur: 0.16 }),
 };
+
+// the only names other scripts may use (CONTRACT.md); everything else in this file is private
+Object.assign(globalThis, { tone, sfx });
+})();

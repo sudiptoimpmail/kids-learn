@@ -52,7 +52,8 @@ const CoreHooks = (() => {
   // wrap the global function `name` (once); returns false when there is no such function yet
   function install(name) {
     const g = globalThis[name];
-    if (typeof g !== 'function') return false;
+    // a load-on-demand stand-in is not the function: it is wrapped when its section has loaded (once, so hooks run once)
+    if (typeof g !== 'function' || g.coreStub) return false;
     if (!g[WRAPPED]) globalThis[name] = wrap(name, g);
     entry(name);
     return true;

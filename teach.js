@@ -23,7 +23,8 @@ const TeachFirst = (() => {
 
   /* ---------- when to teach ---------- */
   // Older browser tests expect a round to start with its quiz; they skip lessons unless they ask (?teach=1), as with onboarding.
-  const automatedSkip = () => navigator.webdriver && !/[?&]teach=1\b/.test(location.search);
+  // Only where test tools are available (a developer's computer): real devices always get the lessons.
+  const automatedSkip = () => navigator.webdriver && testFeatureAvailable() && !/[?&]teach=1\b/.test(location.search);
   function needsTeaching(catId, level) {
     if (L.policy.skipCategories.includes(catId) || automatedSkip()) return false;
     const seen = (state.taught || {})[keyOf(catId, level)];
