@@ -20,13 +20,18 @@ const SKILLS = {
   sent: ['Read short sentences', 'Read longer sentences', '1st-grade stories', '2nd-grade stories', '3rd-grade passages', 'Long passages'],
   match: ['Match words and pictures', 'Match numbers and amounts', 'Match problems and answers', 'Match (harder)', 'Match ×/÷ and long words'],
   syl: ['Clap syllables (1–3)', 'Clap syllables (up to 4)', 'Clap syllables (long words)'],
-  add: ['Add within 5', 'Add within 10', 'Add within 20', 'Add 2-digit + 1-digit', 'Add with regrouping'],
-  sub: ['Take away within 5', 'Take away within 10', 'Take away within 20', 'Subtract 2-digit − 1-digit', 'Subtract with regrouping'],
+  add: ['Add within 5', 'Add within 10', 'Add within 20', 'Add 2-digit + 1-digit', 'Add with regrouping', 'Add two 2-digit numbers', 'Add 3-digit numbers', 'Add 3-digit numbers with regrouping'],
+  sub: ['Take away within 5', 'Take away within 10', 'Take away within 20', 'Subtract 2-digit − 1-digit', 'Subtract with regrouping', 'Subtract two 2-digit numbers', 'Subtract 3-digit numbers', 'Subtract 3-digit numbers with regrouping'],
   story: ['Word problems within 10', 'Word problems within 20', 'Two-digit word problems', '"How many more?" problems', 'Two-step word problems'],
   cmp: ['More / fewer with pictures', 'Compare numbers to 10', 'Compare numbers to 20', 'Compare 2-digit numbers', 'Compare sums and differences'],
-  mul: ['Equal groups', 'Times 2, 5 and 10', 'Times tables to 5', 'Times tables to 10', 'Missing factors and stories'],
+  mul: ['Equal groups', 'Times 2, 5 and 10', 'Times tables to 5', 'Times tables to 10', 'Missing factors and stories', 'Times tens and two-step problems'],
   div: ['Share equally', 'Divide by 2, 5 and 10', 'Divide within 25', 'Divide within 100', 'Division stories'],
-  clock: ["O'clock", 'Half past', 'Quarter past and to', 'Five minutes'],
+  clock: ["O'clock", 'Half past', 'Quarter past and to', 'Five minutes', 'To the minute', 'How long it takes'],
+  frac: ['Equal parts, halves and quarters', 'Name and show fractions', 'Fractions on a number line', 'Equal fractions and fractions of a group'],
+  measure: ['Measure length', 'Compare lengths and read graphs', 'Area, perimeter and change', 'Units, area and bigger graphs'],
+  gp: ['Capital letters, end marks and apostrophes', 'The right word and commas', 'Speech marks and joining words'],
+  community: ['Rules, maps and timelines', 'How our community is run', 'Community, maps and choices'],
+  region: ['My state: first facts', 'My state: places and capital', 'My state: more facts'],
   shape2: ['Name flat shapes', 'Flat and 3D shapes', 'Sides and solids', '3D shapes in real life'],
   words: ['Nouns and verbs', 'Plurals and opposites', 'Past tense and compound words', 'Contractions and synonyms', 'Prefixes, suffixes and sound-alikes'],
   numsense: ['Even, odd and tens', 'Place value and rounding', 'Hundreds and money', 'Fractions', 'Fractions of numbers and money'],
@@ -42,12 +47,18 @@ const SKILLS = {
   maps: ['Continents', 'Countries on the map', 'Countries and capitals'],
   pattern: ['AB patterns', 'AAB and ABB patterns', 'Three-symbol patterns', 'Number patterns', 'Growing number patterns'],
   odd: ['Recognize categories', 'Categorize by traits', 'Group by function and features'],
-  sequence: ['Everyday order', 'Cause and effect', 'Multi-step sequences'],
+  sequence: ['Everyday order', 'Cause and effect', 'Multi-step sequences', 'Five-step chains (food, history)'],
 };
-const skillName = (cat, lv) => (SKILLS[cat] && SKILLS[cat][lv - 1]) || `${(CATEGORIES.find((c) => c.id === cat) || {}).title || cat} · level ${lv}`;
+// step names follow the family's country: "My province", "colours", "Maths"
+const localSkill = (t) => {
+  const word = typeof REGION_WORD !== 'undefined' && typeof countryCode === 'function' && REGION_WORD[countryCode()];
+  if (word) t = t.replace('My state', 'My ' + word.toLowerCase());
+  return typeof locText === 'function' ? locText(t) : t;
+};
+const skillName = (cat, lv) => localSkill((SKILLS[cat] && SKILLS[cat][lv - 1]) || `${(CATEGORIES.find((c) => c.id === cat) || {}).title || cat} · level ${lv}`);
 const SUBJECT = (cat) => (['pattern', 'odd', 'sequence'].includes(cat) ? 'Brain teasers'
-  : ['add', 'sub', 'story', 'cmp', 'mul', 'div', 'clock', 'shape2', 'numsense', 'match'].includes(cat) ? 'Math'
-  : ['phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'syl', 'trace', 'words'].includes(cat) ? 'Reading & words' : 'Science & world');
+  : ['add', 'sub', 'story', 'cmp', 'mul', 'div', 'clock', 'shape2', 'numsense', 'match', 'tables', 'frac', 'measure'].includes(cat) ? 'Math'
+  : ['phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'syl', 'trace', 'words', 'gp'].includes(cat) ? 'Reading & words' : 'Science & world');
 const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 const DAILY_GOAL = () => state.dailyGoal || 20;
 

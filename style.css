@@ -1917,3 +1917,10 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 /* Draw & Copy tray: thin and thick look the same, the thin one smaller */
 .cb-pop .dr-tools2 [data-s="3"], .cb-pop .dr-tools2 [data-s="14"] { font-size: clamp(18px, 2.2vw, 24px); }
 .cb-pop .dr-tools2 [data-s="7"], .cb-pop .dr-tools2 [data-s="28"] { font-size: clamp(34px, 4.6vw, 50px); }
+
+/* Compare two written numbers (no signs): the hint shows each number as a row of dots */
+.cmpn-or { opacity: .35; margin: 0 .35em; }
+.cmpn-hint { display: grid; gap: 6px; text-align: left; }
+.cmpn-row { display: flex; align-items: center; gap: 10px; }
+.cmpn-row b { min-width: 1.6em; text-align: right; color: var(--ink); }
+.cmpn-row span { letter-spacing: 2px; color: var(--accent, #f76707); overflow-wrap: anywhere; }
