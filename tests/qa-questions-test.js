@@ -9,9 +9,9 @@ const fail = (m) => { console.error('FAIL ' + m); process.exitCode = 1; };
   await p.locator('#startBtn').click(); await p.waitForTimeout(300);
   const before = await p.evaluate(() => JSON.stringify([state.grade, state.levels]));
   // the programmatic collector, one grade, quick settings
-  const r = await p.evaluate(async () => { const d = await QAQuestions.collect({ grades: ['k'], maxRounds: 2, patience: 1 }); return { n: d.count, bad: d.questions.filter((q) => q.autoIssues && q.autoIssues.length).length, sample: d.questions[0], hasRubric: /accuracy/.test(d.rubric), md: QAQuestions.toMarkdown(d).length, books: d.questions.filter((q) => q.section === 'library').length }; });
+  const r = await p.evaluate(async () => { const d = await QAQuestions.collect({ grades: ['k'], maxRounds: 2, patience: 1 }); return { n: d.count, bad: d.questions.filter((q) => q.autoIssues && q.autoIssues.length).length, flagged: d.questions.filter((q) => q.autoIssues && q.autoIssues.length).slice(0, 5).map((q) => q.id + ': ' + q.autoIssues.join('; ') + ' | ' + q.prompt + ' | ' + JSON.stringify(q.options)), sample: d.questions[0], hasRubric: /accuracy/.test(d.rubric), md: QAQuestions.toMarkdown(d).length, books: d.questions.filter((q) => q.section === 'library').length }; });
   if (r.n < 100) fail('too few questions: ' + r.n);
-  if (r.bad) fail('auto-flagged cards: ' + r.bad);
+  if (r.bad) fail('auto-flagged cards: ' + r.bad + '\n' + r.flagged.join('\n'));
   if (!r.hasRubric || r.md < 1000) fail('rubric / markdown missing');
   if (!r.sample.options || !r.sample.prompt && !r.sample.main) fail('question not described');
   if (before !== await p.evaluate(() => JSON.stringify([state.grade, state.levels]))) fail('collector changed the child\'s grade/levels');
