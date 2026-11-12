@@ -3,6 +3,7 @@
    - Apps on the same website can share one PIN: app.config.json "pin.shareWith" lists their storage keys.
      The PIN is read from this app first, then from those apps; setting or changing it updates all of them.
    - The app provides the global `state` (with state.pinHash) and `save()`. */
+(() => {
 const PIN_CFG = AppConfig.pin;
 const pinHash = (p) => { let h = 5381; for (const ch of (PIN_CFG.salt || 'lp:') + p) h = ((h * 33) ^ ch.charCodeAt(0)) >>> 0; return h.toString(36); };
 const PIN_SHARE = (PIN_CFG.shareWith || []).filter((k) => typeof k === 'string' && k !== AppConfig.storage.key);
@@ -124,3 +125,7 @@ function askPin(onOk, change = false, verified = false) {
   typed = ''; paint(); sheet.hidden = false;
   if (mode() === 'check') kidNote();
 }
+
+// the only names other scripts may use (CONTRACT.md); everything else in this file is private
+Object.assign(globalThis, { askPin, pinHash, currentPinHash, pinIsShared });
+})();

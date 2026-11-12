@@ -10,6 +10,12 @@ const ContentPacks = (() => {
   const MAX_PACK_BYTES = 2_000_000;
   const GRADES_ALLOWED = (PACK_CFG.grades || ['prek', 'k', 'g1', 'g2', 'g3']).slice();
   const installed = new Map();
+  // Which packs this family may use. "packs.requireEntitlement": true serves a pack only when its entitlement is
+  // free ("packs.freeEntitlements") or has been granted by the purchase code: ContentPacks.grant([...]).
+  // Without that setting every installed pack is served, as before.
+  const REQUIRE = PACK_CFG.requireEntitlement === true;
+  const owned = new Set((PACK_CFG.freeEntitlements || []).filter((e) => typeof e === 'string'));
+  const allowed = (pack) => !REQUIRE || owned.has(pack.entitlement);
   let ready = null;
   const plain = (s) => String(s).replace(/[&<>"']/g, (c) =>
     ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -112,6 +118,7 @@ const ContentPacks = (() => {
     if (!ready) { void load(); return null; }
     const options = [];
     for (const pack of installed.values()) {
+      if (!allowed(pack)) continue;
       for (const q of pack.questions) {
         if (q.category === category && q.level === level && q.grades.includes(grade) &&
             !exclude.includes('pack:' + pack.id + ':' + q.id)) options.push({pack, q});
@@ -130,7 +137,13 @@ const ContentPacks = (() => {
     };
   }
   function summary() {
-    return [...installed.values()].map((p) => ({id:p.id, title:p.title, version:p.version, questions:p.questions.length}));
+    return [...installed.values()].map((p) => ({id:p.id, title:p.title, version:p.version, questions:p.questions.length, entitlement:p.entitlement, allowed:allowed(p)}));
   }
-  return Object.freeze({load, validate, installVerified, choose, summary});
+  // called by the trusted purchase code with the entitlements the store has confirmed (replaces the earlier grant)
+  function grant(list) {
+    owned.clear();
+    for (const e of [...(PACK_CFG.freeEntitlements || []), ...(Array.isArray(list) ? list : [])]) if (isSlug(e)) owned.add(e);
+    return owned.size;
+  }
+  return Object.freeze({load, validate, installVerified, choose, summary, grant});
 })();

@@ -1,4 +1,5 @@
 /* kids-core: confetti (the canvas is added if the page has none) */
+(() => {
 if (!document.getElementById('confetti')) { const c = document.createElement('canvas'); c.id = 'confetti'; c.setAttribute('aria-hidden', 'true'); document.body.prepend(c); }
 const cv = $('#confetti'), cx = cv.getContext('2d');
 let parts = [], raf = 0;
@@ -26,3 +27,7 @@ function step() {
   parts = parts.filter((p) => p.life > 0 && p.y < cv.height + 50);
   raf = parts.length ? requestAnimationFrame(step) : (cx.clearRect(0, 0, cv.width, cv.height), 0);
 }
+
+// the only names other scripts may use (CONTRACT.md); everything else in this file is private
+Object.assign(globalThis, { confetti });
+})();

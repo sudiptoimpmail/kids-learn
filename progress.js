@@ -9,6 +9,7 @@
    ========================================================= */
 // what each game level practices (shown to grown-ups)
 const SKILLS = {
+  tables: TimesTables.levels.map((d) => d.title),
   trace: ['Trace capital letters', 'Trace small letters', 'Trace numbers 1–20'],
   phonics: ['First letter of a word', 'Rhyming words', 'Ending letters and blending', 'Short vowel (middle) sounds', 'Blends and digraphs (sh, ch, tr…)'],
   cvc: ['Read 3-letter words', 'Hear and find 3-letter words', 'Missing vowels'],

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "core": "1.8.0",
+  "core": "1.10.0",
   "app": {
     "id": "kids-learn",
     "name": "Learn & Play",
@@ -12,7 +12,7 @@
     "qaKey": "learnplay.qa",
     "backupName": "learn-and-play-backup",
     "maxKids": 4,
-    "maxLevel": 9,
+    "maxLevel": 14,
     "deviceKeys": [
       "voice",
       "pinHash",
@@ -201,6 +201,7 @@
     "photos.js",
     "illustrations.js",
     "decodable.js",
+    "tables.js",
     "content.js",
     "thinking.js",
     "country.js",

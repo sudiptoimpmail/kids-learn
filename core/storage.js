@@ -7,6 +7,7 @@
    restored from there if the web storage is ever empty.
    See docs/launch-architecture.md for the full plan.
    ========================================================= */
+(() => {
 const STORE_CFG = AppConfig.storage;
 const STORE_KEY = STORE_CFG.key;
 const SCHEMA = 3;            // bump when the shape of the saved data changes, and add a step to migrate()
@@ -23,13 +24,30 @@ const profileDefaults = () => Object.assign({ name: '', avatar: AVATARS[0], star
      device: { voice, pinHash, play-time rules … },
      profiles: { p1: { name, avatar, grade, theme, levels, stars, stickers, … }, p2: { … } } }
    The app works with one flat `state` object = device settings + the active child's data. */
+const SNAPSHOT_MAX = 400000;   // characters: bigger saves (many drawings) are not copied, to leave room in storage
+// a side copy next to the saved data; never allowed to break saving (storage may be full)
+function keepCopy(suffix, raw) { try { localStorage.setItem(STORE_KEY + suffix, raw); return true; } catch { try { localStorage.removeItem(STORE_KEY + suffix); } catch {} return false; } }
 const Store = {
   ok: true,                  // false when the last save failed (storage full or blocked)
   onError: null,             // the app shows a note to grown-ups when saving fails
   root: null,
   load() {
-    let data = {};
-    try { data = JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch {}
+    let data = {}, raw = null;
+    try { raw = localStorage.getItem(STORE_KEY); } catch {}
+    try { data = JSON.parse(raw) || {}; }
+    catch {
+      // saved data that cannot be read is kept aside before a fresh start writes over it
+      if (raw) keepCopy('.unreadable', raw);
+    }
+    if (data && typeof data === 'object') {
+      // saved by a newer version of the app: keep an untouched copy, because this version may not know every field
+      if (Number.isInteger(data.schema) && data.schema > SCHEMA) { Store.newer = true; keepCopy('.newer', raw); }
+      // one known-good copy a day (small saves only), so a bad save can be undone: Store.lastGood()
+      else if (raw && raw.length <= SNAPSHOT_MAX && data.profiles) {
+        let at = 0; try { at = +localStorage.getItem(STORE_KEY + '.lastgood.at') || 0; } catch {}
+        if (Date.now() - at > 86400000 && keepCopy('.lastgood', raw)) { try { localStorage.setItem(STORE_KEY + '.lastgood.at', String(Date.now())); } catch {} }
+      }
+    }
     Store.loadedAt = data.savedAt || 0;          // what the app started with (saves made at start-up don't count)
     Store.root = Store.migrate(data);
     return Store.flat();
@@ -137,6 +155,7 @@ const Store = {
         if (!value) return;
         const theirs = JSON.parse(value);
         if (Store.loadedAt == null) { try { Store.loadedAt = (JSON.parse(localStorage.getItem(STORE_KEY)) || {}).savedAt || 0; } catch { Store.loadedAt = 0; } }
+        if (Number.isInteger(theirs.schema) && theirs.schema > SCHEMA) return;   // written by a newer version: leave it alone
         if ((theirs.savedAt || 0) > Store.loadedAt) {
           // Startup had already rendered the web copy. Replace it atomically and restart.
           // Clear queued older writes, so they cannot overwrite the recovered native copy.
@@ -149,6 +168,8 @@ const Store = {
       } catch {}
     })();
   },
+  // yesterday's known-good copy, when there is one: { at, json }
+  lastGood() { try { const json = localStorage.getItem(STORE_KEY + '.lastgood'); return json ? { at: +localStorage.getItem(STORE_KEY + '.lastgood.at') || 0, json } : null; } catch { return null; } },
   // a grown-up can download a backup and load it on another device (same file format in every kids-core app)
   exportJSON: () => localStorage.getItem(STORE_KEY) || '{}',
   backupName: () => `${STORE_CFG.backupName || AppConfig.app.id + '-backup'}-${new Date().toISOString().slice(0, 10)}.json`,
@@ -166,9 +187,23 @@ const Store = {
     if (d && typeof d === 'object' && typeof d.app === 'string' && d.app !== AppConfig.app.id) throw new Error('backup from another app');
     // only a real backup from this app: an object with the fields the app saves
     if (typeof d !== 'object' || !d || Array.isArray(d) || !('profiles' in d || 'levels' in d || 'stars' in d)) throw new Error('not a backup');
+    // a backup made by a newer version may hold things this version would drop
+    if (Number.isInteger(d.schema) && d.schema > SCHEMA) throw new Error('backup from a newer version');
     const m = Store.migrate(d); m.savedAt = Date.now();
-    Store.frozen = true;
-    localStorage.setItem(STORE_KEY, JSON.stringify(m));
+    localStorage.setItem(STORE_KEY, JSON.stringify(m));   // if this fails (storage full) saving carries on as before
+    Store.frozen = true;                                  // loaded: the app reloads, and must not write over it first
   },
 };
 Store.ready = Store.restoreIfNeeded();
+// The app open twice (two tabs, or a tab and the Home Screen app): when the one in use saves, a copy in the background
+// stops saving, so it cannot write its older data over the newer data, and starts again with the new data when it is
+// next looked at. The copy on screen is the one in use: it carries on, and its next save is the newest.
+if (typeof addEventListener === 'function') addEventListener('storage', (e) => {
+  if (e.key !== STORE_KEY || e.newValue == null || e.newValue === e.oldValue || Store.frozen || !document.hidden) return;
+  Store.frozen = true; Store.pending = null;
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) location.reload(); });
+});
+
+// the only names other scripts may use (CONTRACT.md); everything else in this file is private
+Object.assign(globalThis, { Store, STORE_KEY, AVATARS, MAX_KIDS, MAX_LEVEL, DEVICE_KEYS, profileDefaults });
+})();

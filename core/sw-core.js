@@ -6,17 +6,43 @@
      const CORE_PHRASES = [ ... ];        // optional: voice clips cached right away (by phrase)
      const LEGACY_CACHES = /^$/;          // optional: older cache names to remove
      const AUDIO_MAPS = ['audio/clips.json'];   // optional: every voice clip map
+     const AUDIO_PATH = 'audio/';         // optional: the voice folder, when app.config.json "voice.dir" is not audio/
      importScripts('core/sw-core.js');
    • App files: one cache per version. A new version downloads completely, then WAITS;
      the app switches to it only when a grown-up taps the update note on the home screen.
    • Voice clips: one cache shared by all versions (a changed clip gets a new file name). */
 const LEGACY = typeof LEGACY_CACHES !== 'undefined' ? LEGACY_CACHES : /^$/;
 const CLIP_MAPS = typeof AUDIO_MAPS !== 'undefined' ? AUDIO_MAPS : ['audio/clips.json'];
+const CLIP_DIR = typeof AUDIO_PATH !== 'undefined' ? AUDIO_PATH : 'audio/';
+const CLIP_PATH = new URL(CLIP_DIR, self.location).pathname;   // e.g. /kids-learn/audio/
+const isClipPath = (pathname) => pathname.startsWith(CLIP_PATH) && pathname.endsWith('.mp3');
 const SCOPE = new URL('./', self.location).pathname;   // e.g. /kids-learn/ — never touch other apps on the same site
 
-self.addEventListener('install', (e) => {
-  e.waitUntil(caches.open(VERSION).then((c) => c.addAll(FILES.map((f) => new Request(f, { cache: 'reload' })))));   // all or nothing
-});
+// Optional: REVISIONS = { file: content hash } (made by tools/sw-revisions.mjs, loaded by the app's sw.js with
+// importScripts('sw-revisions.js') before this file). A new version then copies every unchanged file from the
+// newest older version's cache and downloads only the files that changed. Without it, every file is downloaded.
+const REVS = typeof REVISIONS !== 'undefined' ? REVISIONS : null;
+const MANIFEST = new URL('__kids-core-revisions.json', self.location).href;
+async function installFiles() {
+  const c = await caches.open(VERSION);
+  if (!REVS) return c.addAll(FILES.map((f) => new Request(f, { cache: 'reload' })));   // all or nothing
+  // the newest older version of this app that recorded its revisions
+  let old = null, oldRevs = {};
+  for (const k of (await caches.keys()).filter((k) => k.startsWith(PREFIX) && k !== VERSION && k !== AUDIO).reverse()) {
+    const oc = await caches.open(k), m = await oc.match(MANIFEST);
+    if (m) { old = oc; try { oldRevs = await m.json(); } catch { oldRevs = {}; } break; }
+  }
+  const reuse = [], download = [];
+  for (const f of FILES) {
+    const hit = old && REVS[f] && oldRevs[f] === REVS[f] ? await old.match(new URL(f, self.location).href) : null;
+    if (hit) reuse.push([f, hit]); else download.push(f);
+  }
+  await c.addAll(download.map((f) => new Request(f, { cache: 'reload' })));       // still all or nothing for what changed
+  for (const [f, res] of reuse) await c.put(new URL(f, self.location).href, res);
+  await c.put(MANIFEST, new Response(JSON.stringify(REVS), { headers: { 'content-type': 'application/json' } }));
+  return { reused: reuse.length, downloaded: download.length };
+}
+self.addEventListener('install', (e) => { e.waitUntil(installFiles()); });
 self.addEventListener('activate', (e) => {
   e.waitUntil((async () => {
     const keys = await caches.keys();
@@ -25,7 +51,7 @@ self.addEventListener('activate', (e) => {
     if (!(await audio.keys()).length) {
       for (const k of keys.filter((k) => (k.startsWith(PREFIX) || LEGACY.test(k)) && k !== VERSION && k !== AUDIO)) {
         const oc = await caches.open(k);
-        for (const req of await oc.keys()) if (new URL(req.url).pathname.includes('/audio/') && req.url.endsWith('.mp3')) { const r = await oc.match(req); if (r) await audio.put(req, r); }
+        for (const req of await oc.keys()) if (isClipPath(new URL(req.url).pathname)) { const r = await oc.match(req); if (r) await audio.put(req, r); }
       }
     }
     // remove only this app's older caches (other apps on the same site keep theirs)
@@ -38,7 +64,7 @@ self.addEventListener('fetch', (e) => {
   if (e.request.headers.has('range')) return;          // let the browser stream <audio> itself (iOS needs real 206 responses)
   const url = new URL(e.request.url);
   if (url.origin !== self.location.origin || !url.pathname.startsWith(SCOPE)) return;
-  const isClip = url.pathname.includes('/audio/') && url.pathname.endsWith('.mp3');
+  const isClip = isClipPath(url.pathname);
   e.respondWith((async () => {
     const c = await caches.open(isClip ? AUDIO : VERSION);
     const hit = await c.match(e.request, { ignoreSearch: true });
@@ -68,9 +94,9 @@ self.addEventListener('message', (e) => {
     const corePhrases = typeof CORE_PHRASES !== 'undefined' ? CORE_PHRASES : [];
     const core = new Set([...corePhrases, ...Array.from({ length: 21 }, (_, i) => String(i)), ...'abcdefghijklmnopqrstuvwxyz']);
     const entries = Object.entries(manifest).filter(([key]) => e.data.type === 'fill-audio-all' || core.has(key.slice(key.indexOf('|') + 1)));
-    const want = [...new Set(entries.map(([, file]) => new URL('audio/' + file, self.registration.scope).href))];
+    const want = [...new Set(entries.map(([, file]) => new URL(CLIP_DIR + file, self.registration.scope).href))];
     // drop clips the app no longer uses (a changed clip gets a new file name)
-    const all = new Set(Object.values(manifest).map((file) => new URL('audio/' + file, self.registration.scope).href));
+    const all = new Set(Object.values(manifest).map((file) => new URL(CLIP_DIR + file, self.registration.scope).href));
     for (const req of await audio.keys()) if (!all.has(req.url)) await audio.delete(req);
     const have = new Set((await audio.keys()).map((req) => req.url));
     const missing = want.filter((url) => !have.has(url));
