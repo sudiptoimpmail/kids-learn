@@ -3,6 +3,7 @@
 /* Deterministic, dependency-free grade, section, skill and question routing audit. */
 const assert=require('node:assert/strict');
 const fs=require('node:fs');
+const MAX_LEVEL=JSON.parse(fs.readFileSync('app.config.json','utf8')).storage.maxLevel; // the highest step any section may use
 const read=name=>{
   const o=JSON.parse(fs.readFileSync('data/'+name+'.json','utf8'));
   assert.equal(o.schema,1);
@@ -90,7 +91,7 @@ for(const name of names){
     assert.ok(Array.isArray(profile.skills)&&profile.skills.length>0,'Missing skills '+name+'/'+section);
     const range=r.split('-').map(Number);
     assert.deepEqual(profile.levels,range,'Range mismatch '+name+'/'+section);
-    assert.ok(range[0]>=1&&range[1]>=range[0]&&range[1]<=8,'Invalid range '+name+'/'+section);
+    assert.ok(range[0]>=1&&range[1]>=range[0]&&range[1]<=MAX_LEVEL,'Invalid range '+name+'/'+section);
     sections.add(section);
   }
   assert.deepEqual(Object.keys(map.PROFILES[name].sections).sort(),
