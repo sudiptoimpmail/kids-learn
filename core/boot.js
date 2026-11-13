@@ -12,9 +12,9 @@
    5. Sections that are not needed at start ("lazy": { group: { scripts, data, entry } }) load the first time one of
       their entry functions is called (CoreLazy). Their files are still saved for offline use by the service worker.
    Data is JSON, scripts contain only logic. No eval, no remote scripts. */
-const CORE_VERSION = '1.10.0';
+const CORE_VERSION = '1.11.0';
 const CORE_SCRIPTS = ['util.js', 'hooks.js', 'feature-flags.js', 'native.js', 'storage.js', 'voice.js', 'sounds.js', 'confetti.js',
-  'parent-gate.js', 'progression.js', 'content-packs.js', 'offline.js'];
+  'parent-gate.js', 'progression.js', 'question-bank.js', 'content-packs.js', 'offline.js'];
 const here = new URL('.', import.meta.url);           // …/core/
 const status = document.getElementById('loadStatus');
 const play = document.getElementById('startBtn');
@@ -181,6 +181,8 @@ export function checkConfig(cfg) {
     && Array.isArray(v.scripts) && v.scripts.every(localJs) && !v.scripts.some((x) => cfg.scripts.includes(x))
     && (v.data == null || (Array.isArray(v.data) && v.data.every((n) => typeof n === 'string' && !cfg.data.namespaces.includes(n))))
     && Array.isArray(v.entry) && v.entry.length && v.entry.every(ident))), 'lazy groups need scripts (not also in scripts), entry function names and optional data not loaded at start');
+  need(cfg.banks == null || (Array.isArray(cfg.banks) && cfg.banks.every((b) => typeof b === 'string' && /^[a-z0-9][a-z0-9._-]{0,95}$/.test(b)) && new Set(cfg.banks).size === cfg.banks.length),
+    'banks must list question bank ids (files in banks/)');
   return cfg;
 }
 
@@ -260,6 +262,12 @@ window.CoreReady = (async () => {
     if (payload.schema !== 1 || payload.namespace !== name || !isObj(payload.datasets)) throw Error('Invalid offline data: ' + name);
     data.set(name, payload.datasets);
   }));
+  // question banks (banks/<id>.json) download with the data; they are checked and registered once core has loaded
+  const bankFiles = (cfg.banks || []).map(async (id) => {
+    const response = await fetch('banks/' + id + '.json');
+    if (!response.ok) throw Error('Missing question bank: ' + id);
+    return [id, await response.json()];
+  });
   await loadData(cfg.data.namespaces);
   window.ContentData = Object.freeze({
     get(namespace, key) {
@@ -276,7 +284,15 @@ window.CoreReady = (async () => {
   const failed = [];
   const onScriptError = (e) => { if (e && e.filename) failed.push(`${e.filename.replace(/^.*\//, '')}: ${e.message}`); };
   addEventListener('error', onScriptError);
-  try { await Promise.all([...CORE_SCRIPTS.map((s) => new URL(s, here).pathname), ...cfg.scripts].map(load)); }
+  try {
+    // core first, so the app's question banks are checked and ready before any app script asks for them
+    await Promise.all(CORE_SCRIPTS.map((s) => new URL(s, here).pathname).map(load));
+    for (const [id, bank] of await Promise.all(bankFiles)) {
+      if (!failed.length && bank && bank.id !== id) throw Error(`Question bank file ${id}.json holds "${bank.id}"`);
+      if (!failed.length) QuestionBank.add(bank, { grades: cfg.packs && cfg.packs.grades });
+    }
+    await Promise.all(cfg.scripts.map(load));
+  }
   finally { removeEventListener('error', onScriptError); }
   if (failed.length) throw Error('A script failed while loading: ' + failed.join('; '));
   // the app's side of CONTRACT.md: core's voice, PIN and offline code use these

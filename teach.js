@@ -65,7 +65,11 @@ const TeachFirst = (() => {
     if (!cards) return;                                   // a skill with no tap-to-answer cards keeps its normal round
     // A skill may bring its own teaching card (the whole times table, read aloud): it takes the place of the modelled card.
     const intro = typeof R.cat.teach === 'function' ? R.cat.teach(level) : null;
-    if (intro) { Object.assign(intro, { cat: R.cat, level, grades: [state.grade].filter(Boolean), lesson: 'intro' }); cards[0] = intro; }
+    if (intro) {
+      Object.assign(intro, { cat: R.cat, level, grades: [state.grade].filter(Boolean), lesson: 'intro' }); cards[0] = intro;
+      // a lesson can name the question to do together
+      if (intro.guided && teachable(intro.guided)) cards[1] = Object.assign(intro.guided, { cat: R.cat, level, grades: [state.grade].filter(Boolean) });
+    }
     else cards[0].lesson = 'model';
     cards[1].lesson = 'guided';
     R.lesson = { catId, level, quiz: R.qs.length, showMe: !!$('#showMeBtn') && !$('#showMeBtn').hidden };

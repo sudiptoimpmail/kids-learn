@@ -92,12 +92,7 @@
       hint: { html: '', say: 'What happened first?' } };
   };
 
-  // community helpers and their tools: pictures on both sides, so pre-readers can play
-  const jobMatch = (level) => {
-    const pool = level === 1 ? JOBS.slice(0, 12) : JOBS;
-    const pairs = sample(pool, level === 1 ? 3 : 4).map((j) => [`<span class="m-pic">${j[1]}</span>`, `<span class="m-pic">${j[3]}</span>`, j[0], j[3]]);
-    return matchCard('vjob-' + pairsKey(pairs), pairs, 'Match each helper to their tools!', 'Match each helper to their tools!');
-  };
+  // (Jobs: match each helper to their tools now comes from the Jobs question bank, bank-cards.js)
   // fraction pictures and fraction numbers; never two equal fractions (1/2 and 2/4) in one card
   const fracMatch = (level) => {
     if (level < 2) return null;
@@ -110,7 +105,7 @@
     return pairs.length === 3 ? matchCard('vfrac-' + pairsKey(pairs), pairs, 'Match each picture to its fraction!', 'Match each picture to its fraction!') : null;
   };
 
-  const VARIANTS = { jobs: [0.2, jobMatch], frac: [0.2, fracMatch], add: [0.18, addMatch], sub: [0.18, subMatch], mul: [0.2, mulMatch], div: [0.2, divMatch],
+  const VARIANTS = { frac: [0.2, fracMatch], add: [0.18, addMatch], sub: [0.18, subMatch], mul: [0.2, mulMatch], div: [0.2, divMatch],
     clock: [0.2, clockMatch], flags: [0.2, flagMatch], sequence: [0.35, sequenceOrder] };
   for (const [id, [share, make]] of Object.entries(VARIANTS)) {
     const c = CATEGORIES.find((x) => x.id === id);

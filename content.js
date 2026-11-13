@@ -1484,7 +1484,7 @@ function genShape3(level) {
 }
 
 /* ---------------- JOBS ---------------- */
-const JOBS = ContentData.get('content','JOBS');
+// Jobs is served from its question bank (banks/learn-play.jobs.json) by bank-cards.js
 
 // one Shapes game: flat shapes first, then 3D shapes join in
 // look at real things: tap all the circles (like "color all the circles you see")
@@ -1505,38 +1505,6 @@ function genShapes(level) {
   if (level === 3) return Math.random() < 0.5 ? genShape2(3) : genShape3(2);
   return Math.random() < 0.65 ? genShape3(3) : genShape2(3);
 }
-function genJobs(level) {
-  const pool = level === 1 ? JOBS.slice(0, 12) : JOBS;
-  const j = pick(pool);
-  const [name, e, does, clue] = j;
-  const others = sample(pool, numOpts(level) - 1, [j]);
-  const type = level >= 2 ? pick(['who', 'who', 'name', 'does']) : pick(['who', 'name']);
-  const hint = { html: `<div class="hint-pic">${clue}</div>`, say: `This person ${does}.` };
-  const article = /^[aeiou]/.test(name) ? 'an' : 'a';
-  if (type === 'name') {
-    return {
-      key: `job-name-${name}`, text: 'Who is this?', say: 'Who is this?',
-      main: `<div class="big-emoji">${e}</div>`,
-      options: shuffle([j, ...others]).map((o) => ({ v: o[0], html: o[0] })),
-      answer: name, optClass: 'opt-text', hint,
-    };
-  }
-  if (type === 'does') {
-    return {
-      key: `job-does-${name}`, text: `What does ${article} ${name} do?`, say: `What does ${article} ${name} do?`,
-      main: `<div class="big-emoji">${e}</div>`,
-      options: shuffle([j, ...others]).map((o) => ({ v: o[0], html: o[2] })),
-      answer: name, optClass: 'opt-text', hint: { html: `<div class="hint-pic">${clue}</div>`, say: `Look at the clues!` },
-    };
-  }
-  return {
-    key: `job-who-${name}`, text: `Who ${does}?`, say: `Who ${does}?`,
-    main: `<div class="big-emoji muted">❓</div>`,
-    options: shuffle([j, ...others]).map((o) => ({ v: o[0], html: `<span class="oe">${o[1]}</span><span class="ot">${o[0]}</span>` })),
-    answer: name, optClass: 'opt-card', hint,
-  };
-}
-
 /* ---------------- FLAGS ---------------- */
 const FLAGS = ContentData.get('content','FLAGS');
 
@@ -1851,7 +1819,7 @@ const CATEGORIES = [
   { id: 'body', title: 'Body Parts', sub: 'nose · knees · elbows', icon: '🙋', color: '#ff8787', gen: genBody },
   { id: 'gk', title: 'Did You Know?', sub: 'general knowledge', icon: '💡', color: '#fab005', gen: genGK, maxLevel: 4 },
   { id: 'anatomy', title: 'Inside My Body', sub: 'organs · bones · veins', icon: '🫀', color: '#e64980', gen: genAnatomy, maxLevel: 4 },
-  { id: 'jobs', title: 'Jobs', sub: 'who helps us?', icon: '🧑‍🚒', color: '#ff922b', gen: genJobs },
+  { id: 'jobs', title: 'Jobs', sub: 'who helps us?', icon: '🧑‍🚒', color: '#ff922b', gen: (l) => JobsBank.gen(l) },
   { id: 'flags', title: 'Flags', sub: 'countries', icon: '🚩', color: '#ff6b6b', gen: genFlags },
   { id: 'animals', title: 'Animals of the World', sub: 'where do they live?', icon: '🐼', color: '#2f9e44', gen: genAnimals },
   { id: 'places', title: 'Famous Places', sub: 'landmarks', icon: '🗽', color: '#1c7ed6', gen: genPlaces },
