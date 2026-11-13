@@ -166,8 +166,9 @@ const TeachFirst = (() => {
       if (!alive()) return;
       if (step.row) {
         rows.forEach((r) => { if (r.classList.contains('on')) { r.classList.remove('on'); r.classList.add('done'); } });
-        const el = rows.find((r) => +r.dataset.row === step.row);
-        if (el) { el.classList.add('on'); el.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+        const lit = rows.filter((r) => +r.dataset.row === step.row);          // a row can be a line of a table, or a thing in a picture and its label
+        lit.forEach((el) => el.classList.add('on'));
+        if (lit[0] && lit[0].scrollIntoView) lit[0].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
         if (arr) arr.innerHTML = step.dots ? TimesTables.dots(step.dots[0], step.dots[1]) : '';
       }
       await say(step.say);

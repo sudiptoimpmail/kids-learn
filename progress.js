@@ -42,7 +42,7 @@ const SKILLS = {
   body: ['Big body parts', 'More body parts and what is inside', 'Small body parts'],
   gk: ['Animals and colors', 'Seasons, days, safety', 'Planets, plants, months', 'Continents, magnets, water'],
   anatomy: ['Main organs', 'More organs and big bones', 'Bones, kidneys, blood vessels', 'All bones and science facts'],
-  jobs: ['Who does what', 'Jobs and tools', 'More jobs'],
+  jobs: Helpers.levels,
   flags: ['Big countries\' flags', 'More flags', 'Flags of the world'],
   animals: ['Where animals live', 'Animals by country', 'Animals of the world (harder)'],
   places: ['Famous places', 'More famous places', 'Famous places of the world'],

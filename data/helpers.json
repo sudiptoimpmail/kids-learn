@@ -1,0 +1,528 @@
+{
+ "schema": 1,
+ "namespace": "helpers",
+ "datasets": {
+  "about": "Workers and the things they wear and use, built by scripts/make-helpers.py (self-authored pictures). Jobs step 1 is \"who helps us?\"; each step after it is one worker: the lesson names the worker and each thing, then the quiz. Pre-K meets the workers; Kindergarten learns the names of their things; 1st grade also learns what each thing is for.",
+  "levels": [
+   "Who helps us?",
+   "Firefighter: helmet, jacket ...",
+   "Doctor: white coat, stethoscope ...",
+   "Police officer: police cap, badge ...",
+   "Soldier: camouflage, helmet ...",
+   "Builder: safety vest, hard hat ...",
+   "Chef: chef hat, apron ...",
+   "Farmer: overalls, straw hat ...",
+   "Astronaut: space suit, space helmet ...",
+   "All the jobs"
+  ],
+  "quiz": {
+   "reviewShare": 0.3,
+   "tapShare": 0.4,
+   "whoShare": 0.2,
+   "useGrades": [
+    "g1",
+    "g2",
+    "g3"
+   ],
+   "useShare": 0.35
+  },
+  "WORKERS": [
+   {
+    "id": "firefighter",
+    "name": "firefighter",
+    "article": "a",
+    "does": "puts out fires",
+    "viewBox": "-20 -20 240 300",
+    "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"70\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#343a40\"/><rect x=\"103\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#343a40\"/><g data-val=\"boots\" data-row=\"3\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"boots\"><path d=\"M68 220H98V266H58V258Q58 248 68 246Z\" fill=\"#212529\"/><path d=\"M102 220H132V246Q142 248 142 258V266H102Z\" fill=\"#212529\"/><rect x=\"58\" y=\"258\" width=\"40\" height=\"8\" fill=\"#fcc419\"/><rect x=\"102\" y=\"258\" width=\"40\" height=\"8\" fill=\"#fcc419\"/></g><g data-val=\"jacket\" data-row=\"2\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"jacket\"><rect x=\"44\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(8 56 100)\" fill=\"#e8a33d\"/><rect x=\"132\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(-8 144 100)\" fill=\"#e8a33d\"/><path d=\"M66 108Q66 96 80 96H120Q134 96 134 108V184H66Z\" fill=\"#e8a33d\"/><rect x=\"66\" y=\"150\" width=\"68\" height=\"9\" fill=\"#fff3bf\"/><rect x=\"66\" y=\"166\" width=\"68\" height=\"9\" fill=\"#fff3bf\"/><rect x=\"44\" y=\"150\" width=\"24\" height=\"8\" transform=\"rotate(8 56 100)\" fill=\"#fff3bf\"/><rect x=\"132\" y=\"150\" width=\"24\" height=\"8\" transform=\"rotate(-8 144 100)\" fill=\"#fff3bf\"/><path d=\"M100 98V184\" stroke=\"#2b2140\" stroke-width=\"2.5\" fill=\"none\"/></g><rect x=\"92\" y=\"84\" width=\"16\" height=\"16\" fill=\"#f1c27d\"/><circle cx=\"70\" cy=\"62\" r=\"5\" fill=\"#f1c27d\"/><circle cx=\"130\" cy=\"62\" r=\"5\" fill=\"#f1c27d\"/><circle cx=\"100\" cy=\"60\" r=\"30\" fill=\"#f1c27d\"/><path d=\"M70 58Q68 28 100 28Q132 28 130 58Q120 42 100 44Q80 42 70 58Z\" fill=\"#5c3b1e\"/><circle cx=\"89\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"111\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><path d=\"M90 72q10 8 20 0\" fill=\"none\"/><circle cx=\"81\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><circle cx=\"119\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><g data-val=\"helmet\" data-row=\"1\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"helmet\"><path d=\"M66 46Q66 12 100 12Q134 12 134 46Z\" fill=\"#e03131\"/><path d=\"M56 45H144Q148 52 138 54H62Q52 52 56 45Z\" fill=\"#e03131\"/><path d=\"M100 20l10 5v9q0 7-10 10q-10-3-10-10v-9z\" fill=\"#fcc419\"/></g><circle cx=\"46\" cy=\"176\" r=\"10\" fill=\"#f1c27d\"/><circle cx=\"154\" cy=\"176\" r=\"10\" fill=\"#f1c27d\"/><g data-val=\"fire hose\" data-row=\"4\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"fire hose\"><path d=\"M152 182Q176 214 150 238Q134 254 166 262H206\" stroke=\"#2b2140\" stroke-width=\"14\" fill=\"none\"/><path d=\"M152 182Q176 214 150 238Q134 254 166 262H206\" stroke=\"#f59f00\" stroke-width=\"9\" fill=\"none\"/><path d=\"M146 170L182 150L190 164L154 184Z\" fill=\"#adb5bd\"/><path d=\"M180 148L192 142L200 158L188 164Z\" fill=\"#868e96\"/><circle cx=\"206\" cy=\"138\" r=\"4\" fill=\"#4dabf7\"/><circle cx=\"214\" cy=\"148\" r=\"3.5\" fill=\"#4dabf7\"/><circle cx=\"212\" cy=\"128\" r=\"3\" fill=\"#4dabf7\"/></g></g>",
+    "parts": [
+     {
+      "id": "helmet",
+      "name": "helmet",
+      "use": "keeps the head safe",
+      "ask": "Which one keeps the head safe?",
+      "box": [
+       50,
+       8,
+       100,
+       58
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M66 46Q66 12 100 12Q134 12 134 46Z\" fill=\"#e03131\"/><path d=\"M56 45H144Q148 52 138 54H62Q52 52 56 45Z\" fill=\"#e03131\"/><path d=\"M100 20l10 5v9q0 7-10 10q-10-3-10-10v-9z\" fill=\"#fcc419\"/></g>"
+     },
+     {
+      "id": "jacket",
+      "name": "jacket",
+      "use": "keeps the body safe from heat",
+      "ask": "Which one keeps the body safe from heat?",
+      "box": [
+       34,
+       90,
+       132,
+       100
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"44\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(8 56 100)\" fill=\"#e8a33d\"/><rect x=\"132\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(-8 144 100)\" fill=\"#e8a33d\"/><path d=\"M66 108Q66 96 80 96H120Q134 96 134 108V184H66Z\" fill=\"#e8a33d\"/><rect x=\"66\" y=\"150\" width=\"68\" height=\"9\" fill=\"#fff3bf\"/><rect x=\"66\" y=\"166\" width=\"68\" height=\"9\" fill=\"#fff3bf\"/><rect x=\"44\" y=\"150\" width=\"24\" height=\"8\" transform=\"rotate(8 56 100)\" fill=\"#fff3bf\"/><rect x=\"132\" y=\"150\" width=\"24\" height=\"8\" transform=\"rotate(-8 144 100)\" fill=\"#fff3bf\"/><path d=\"M100 98V184\" stroke=\"#2b2140\" stroke-width=\"2.5\" fill=\"none\"/></g>"
+     },
+     {
+      "id": "boots",
+      "name": "boots",
+      "use": "keep the feet safe and dry",
+      "ask": "Which ones keep the feet safe and dry?",
+      "box": [
+       50,
+       214,
+       100,
+       58
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M68 220H98V266H58V258Q58 248 68 246Z\" fill=\"#212529\"/><path d=\"M102 220H132V246Q142 248 142 258V266H102Z\" fill=\"#212529\"/><rect x=\"58\" y=\"258\" width=\"40\" height=\"8\" fill=\"#fcc419\"/><rect x=\"102\" y=\"258\" width=\"40\" height=\"8\" fill=\"#fcc419\"/></g>"
+     },
+     {
+      "id": "fire hose",
+      "name": "fire hose",
+      "use": "sprays water on the fire",
+      "ask": "Which one sprays water on the fire?",
+      "box": [
+       128,
+       118,
+       92,
+       154
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M152 182Q176 214 150 238Q134 254 166 262H206\" stroke=\"#2b2140\" stroke-width=\"14\" fill=\"none\"/><path d=\"M152 182Q176 214 150 238Q134 254 166 262H206\" stroke=\"#f59f00\" stroke-width=\"9\" fill=\"none\"/><path d=\"M146 170L182 150L190 164L154 184Z\" fill=\"#adb5bd\"/><path d=\"M180 148L192 142L200 158L188 164Z\" fill=\"#868e96\"/><circle cx=\"206\" cy=\"138\" r=\"4\" fill=\"#4dabf7\"/><circle cx=\"214\" cy=\"148\" r=\"3.5\" fill=\"#4dabf7\"/><circle cx=\"212\" cy=\"128\" r=\"3\" fill=\"#4dabf7\"/></g>"
+     }
+    ]
+   },
+   {
+    "id": "doctor",
+    "name": "doctor",
+    "article": "a",
+    "does": "helps sick people get better",
+    "viewBox": "-20 -20 240 300",
+    "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M68 54Q62 100 76 106H124Q138 100 132 54Z\" fill=\"#2b2140\"/><rect x=\"70\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#38d9a9\"/><rect x=\"103\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#38d9a9\"/><path d=\"M68 244H98V266H58V258Q58 248 68 246Z\" fill=\"#f1f3f5\"/><path d=\"M102 244H132V246Q142 248 142 258V266H102Z\" fill=\"#f1f3f5\"/><g data-val=\"white coat\" data-row=\"1\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"white coat\"><rect x=\"44\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(8 56 100)\" fill=\"#ffffff\"/><rect x=\"132\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(-8 144 100)\" fill=\"#ffffff\"/><path d=\"M66 108Q66 96 80 96H120Q134 96 134 108V206H66Z\" fill=\"#ffffff\"/><path d=\"M86 96L100 126L114 96Z\" fill=\"#a5d8ff\"/><path d=\"M86 96L100 126L114 96\" stroke=\"#2b2140\" stroke-width=\"2.5\" fill=\"none\"/><path d=\"M100 126V206\" stroke=\"#2b2140\" stroke-width=\"2.5\" fill=\"none\"/><rect x=\"108\" y=\"150\" width=\"18\" height=\"18\" rx=\"2\" fill=\"#ffffff\"/><circle cx=\"94\" cy=\"150\" r=\"2\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"94\" cy=\"170\" r=\"2\" stroke=\"none\" fill=\"#2b2140\"/></g><rect x=\"92\" y=\"84\" width=\"16\" height=\"16\" fill=\"#c68642\"/><circle cx=\"70\" cy=\"62\" r=\"5\" fill=\"#c68642\"/><circle cx=\"130\" cy=\"62\" r=\"5\" fill=\"#c68642\"/><circle cx=\"100\" cy=\"60\" r=\"30\" fill=\"#c68642\"/><path d=\"M70 58Q68 28 100 28Q132 28 130 58Q120 42 100 44Q80 42 70 58Z\" fill=\"#2b2140\"/><circle cx=\"89\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"111\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><path d=\"M90 72q10 8 20 0\" fill=\"none\"/><circle cx=\"81\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><circle cx=\"119\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><g data-val=\"thermometer\" data-row=\"4\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"thermometer\"><g transform=\"rotate(24 154 176)\"><rect x=\"148\" y=\"118\" width=\"12\" height=\"58\" rx=\"6\" fill=\"#ffffff\"/><path d=\"M154 128V160\" stroke=\"#e03131\" stroke-width=\"4\" fill=\"none\"/><circle cx=\"154\" cy=\"122\" r=\"8\" fill=\"#e03131\"/><path d=\"M160 138h-4M160 146h-4M160 154h-4\" stroke=\"#2b2140\" stroke-width=\"1.6\" fill=\"none\"/></g></g><circle cx=\"46\" cy=\"176\" r=\"10\" fill=\"#c68642\"/><circle cx=\"154\" cy=\"176\" r=\"10\" fill=\"#c68642\"/><g data-val=\"stethoscope\" data-row=\"2\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"stethoscope\"><path d=\"M84 100Q80 138 100 142Q120 138 116 100\" stroke=\"#2b2140\" stroke-width=\"8\" fill=\"none\"/><path d=\"M84 100Q80 138 100 142Q120 138 116 100\" stroke=\"#74c0fc\" stroke-width=\"4\" fill=\"none\"/><path d=\"M100 142V158\" stroke=\"#2b2140\" stroke-width=\"8\" fill=\"none\"/><path d=\"M100 142V158\" stroke=\"#74c0fc\" stroke-width=\"4\" fill=\"none\"/><circle cx=\"100\" cy=\"166\" r=\"10\" fill=\"#ced4da\"/><circle cx=\"100\" cy=\"166\" r=\"4\" fill=\"#868e96\"/><circle cx=\"84\" cy=\"98\" r=\"4\" fill=\"#495057\"/><circle cx=\"116\" cy=\"98\" r=\"4\" fill=\"#495057\"/></g><g data-val=\"doctor's bag\" data-row=\"3\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"doctor's bag\"><path d=\"M32 190q14 -20 28 0\" stroke=\"#2b2140\" stroke-width=\"8\" fill=\"none\"/><path d=\"M32 190q14 -20 28 0\" stroke=\"#8d5a2b\" stroke-width=\"4\" fill=\"none\"/><rect x=\"16\" y=\"188\" width=\"60\" height=\"44\" rx=\"8\" fill=\"#a0522d\"/><circle cx=\"46\" cy=\"210\" r=\"13\" fill=\"#ffffff\"/><path d=\"M46 201v18M37 210h18\" stroke=\"#e03131\" stroke-width=\"6\" fill=\"none\"/></g></g>",
+    "parts": [
+     {
+      "id": "white coat",
+      "name": "white coat",
+      "use": "keeps the doctor clean",
+      "ask": "Which one keeps the doctor clean?",
+      "box": [
+       34,
+       90,
+       132,
+       122
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"44\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(8 56 100)\" fill=\"#ffffff\"/><rect x=\"132\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(-8 144 100)\" fill=\"#ffffff\"/><path d=\"M66 108Q66 96 80 96H120Q134 96 134 108V206H66Z\" fill=\"#ffffff\"/><path d=\"M86 96L100 126L114 96Z\" fill=\"#a5d8ff\"/><path d=\"M86 96L100 126L114 96\" stroke=\"#2b2140\" stroke-width=\"2.5\" fill=\"none\"/><path d=\"M100 126V206\" stroke=\"#2b2140\" stroke-width=\"2.5\" fill=\"none\"/><rect x=\"108\" y=\"150\" width=\"18\" height=\"18\" rx=\"2\" fill=\"#ffffff\"/><circle cx=\"94\" cy=\"150\" r=\"2\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"94\" cy=\"170\" r=\"2\" stroke=\"none\" fill=\"#2b2140\"/></g>"
+     },
+     {
+      "id": "stethoscope",
+      "name": "stethoscope",
+      "use": "lets the doctor hear your heart",
+      "ask": "Which one lets the doctor hear your heart?",
+      "box": [
+       70,
+       88,
+       60,
+       94
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M84 100Q80 138 100 142Q120 138 116 100\" stroke=\"#2b2140\" stroke-width=\"8\" fill=\"none\"/><path d=\"M84 100Q80 138 100 142Q120 138 116 100\" stroke=\"#74c0fc\" stroke-width=\"4\" fill=\"none\"/><path d=\"M100 142V158\" stroke=\"#2b2140\" stroke-width=\"8\" fill=\"none\"/><path d=\"M100 142V158\" stroke=\"#74c0fc\" stroke-width=\"4\" fill=\"none\"/><circle cx=\"100\" cy=\"166\" r=\"10\" fill=\"#ced4da\"/><circle cx=\"100\" cy=\"166\" r=\"4\" fill=\"#868e96\"/><circle cx=\"84\" cy=\"98\" r=\"4\" fill=\"#495057\"/><circle cx=\"116\" cy=\"98\" r=\"4\" fill=\"#495057\"/></g>"
+     },
+     {
+      "id": "doctor's bag",
+      "name": "doctor's bag",
+      "use": "holds the doctor's tools",
+      "ask": "Which one holds the doctor's tools?",
+      "box": [
+       8,
+       166,
+       76,
+       72
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M32 190q14 -20 28 0\" stroke=\"#2b2140\" stroke-width=\"8\" fill=\"none\"/><path d=\"M32 190q14 -20 28 0\" stroke=\"#8d5a2b\" stroke-width=\"4\" fill=\"none\"/><rect x=\"16\" y=\"188\" width=\"60\" height=\"44\" rx=\"8\" fill=\"#a0522d\"/><circle cx=\"46\" cy=\"210\" r=\"13\" fill=\"#ffffff\"/><path d=\"M46 201v18M37 210h18\" stroke=\"#e03131\" stroke-width=\"6\" fill=\"none\"/></g>"
+     },
+     {
+      "id": "thermometer",
+      "name": "thermometer",
+      "use": "shows if you have a fever",
+      "ask": "Which one shows if you have a fever?",
+      "box": [
+       150,
+       100,
+       60,
+       84
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"rotate(24 154 176)\"><rect x=\"148\" y=\"118\" width=\"12\" height=\"58\" rx=\"6\" fill=\"#ffffff\"/><path d=\"M154 128V160\" stroke=\"#e03131\" stroke-width=\"4\" fill=\"none\"/><circle cx=\"154\" cy=\"122\" r=\"8\" fill=\"#e03131\"/><path d=\"M160 138h-4M160 146h-4M160 154h-4\" stroke=\"#2b2140\" stroke-width=\"1.6\" fill=\"none\"/></g></g>"
+     }
+    ]
+   },
+   {
+    "id": "police officer",
+    "name": "police officer",
+    "article": "a",
+    "does": "keeps people safe",
+    "viewBox": "-20 -20 240 300",
+    "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"70\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#1f3270\"/><rect x=\"103\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#1f3270\"/><path d=\"M68 244H98V266H58V258Q58 248 68 246Z\" fill=\"#212529\"/><path d=\"M102 244H132V246Q142 248 142 258V266H102Z\" fill=\"#212529\"/><rect x=\"44\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(8 56 100)\" fill=\"#27408b\"/><rect x=\"132\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(-8 144 100)\" fill=\"#27408b\"/><path d=\"M66 108Q66 96 80 96H120Q134 96 134 108V180H66Z\" fill=\"#27408b\"/><path d=\"M100 98V166\" stroke=\"#2b2140\" stroke-width=\"2.5\" fill=\"none\"/><path d=\"M86 96L100 112L114 96\" fill=\"none\"/><rect x=\"66\" y=\"166\" width=\"68\" height=\"13\" fill=\"#212529\"/><rect x=\"92\" y=\"164\" width=\"16\" height=\"17\" rx=\"2\" fill=\"#fcc419\"/><g data-val=\"badge\" data-row=\"2\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"badge\"><path d=\"M118 106l11 5v9q0 9-11 13q-11-4-11-13v-9z\" fill=\"#fcc419\"/><circle cx=\"118\" cy=\"119\" r=\"3.5\" stroke=\"none\" fill=\"#f08c00\"/></g><g data-val=\"radio\" data-row=\"3\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"radio\"><path d=\"M78 108V90\" stroke=\"#2b2140\" stroke-width=\"3\" fill=\"none\"/><rect x=\"72\" y=\"106\" width=\"16\" height=\"26\" rx=\"3\" fill=\"#343a40\"/><path d=\"M76 114h8M76 119h8\" stroke=\"#adb5bd\" stroke-width=\"1.8\" fill=\"none\"/><circle cx=\"80\" cy=\"126\" r=\"2.4\" stroke=\"none\" fill=\"#e03131\"/></g><rect x=\"92\" y=\"84\" width=\"16\" height=\"16\" fill=\"#ffdbac\"/><circle cx=\"70\" cy=\"62\" r=\"5\" fill=\"#ffdbac\"/><circle cx=\"130\" cy=\"62\" r=\"5\" fill=\"#ffdbac\"/><circle cx=\"100\" cy=\"60\" r=\"30\" fill=\"#ffdbac\"/><path d=\"M70 58Q68 28 100 28Q132 28 130 58Q120 42 100 44Q80 42 70 58Z\" fill=\"#8d5a2b\"/><circle cx=\"89\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"111\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><path d=\"M90 72q10 8 20 0\" fill=\"none\"/><circle cx=\"81\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><circle cx=\"119\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><g data-val=\"police cap\" data-row=\"1\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"police cap\"><path d=\"M66 40Q66 12 100 10Q134 12 134 40Z\" fill=\"#27408b\"/><rect x=\"66\" y=\"34\" width=\"68\" height=\"10\" fill=\"#1f3270\"/><path d=\"M66 44H134Q142 54 100 54Q58 54 66 44Z\" fill=\"#212529\"/><circle cx=\"100\" cy=\"24\" r=\"7\" fill=\"#fcc419\"/></g><circle cx=\"46\" cy=\"176\" r=\"10\" fill=\"#ffdbac\"/><circle cx=\"154\" cy=\"176\" r=\"10\" fill=\"#ffdbac\"/><g data-val=\"flashlight\" data-row=\"4\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"flashlight\"><g transform=\"rotate(-24 154 176)\"><path d=\"M190 166L212 154V198L190 186Z\" stroke=\"none\" opacity=\".85\" fill=\"#ffe066\"/><rect x=\"148\" y=\"169\" width=\"32\" height=\"14\" rx=\"4\" fill=\"#495057\"/><path d=\"M180 166H190V186H180Z\" fill=\"#868e96\"/><circle cx=\"160\" cy=\"176\" r=\"2.6\" stroke=\"none\" fill=\"#fcc419\"/></g></g></g>",
+    "parts": [
+     {
+      "id": "police cap",
+      "name": "police cap",
+      "use": "keeps the sun out of the officer's eyes",
+      "ask": "Which one keeps the sun out of the officer's eyes?",
+      "box": [
+       52,
+       8,
+       96,
+       60
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M66 40Q66 12 100 10Q134 12 134 40Z\" fill=\"#27408b\"/><rect x=\"66\" y=\"34\" width=\"68\" height=\"10\" fill=\"#1f3270\"/><path d=\"M66 44H134Q142 54 100 54Q58 54 66 44Z\" fill=\"#212529\"/><circle cx=\"100\" cy=\"24\" r=\"7\" fill=\"#fcc419\"/></g>"
+     },
+     {
+      "id": "badge",
+      "name": "badge",
+      "use": "shows the officer's name and number",
+      "ask": "Which one shows the officer's name and number?",
+      "box": [
+       100,
+       100,
+       36,
+       40
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M118 106l11 5v9q0 9-11 13q-11-4-11-13v-9z\" fill=\"#fcc419\"/><circle cx=\"118\" cy=\"119\" r=\"3.5\" stroke=\"none\" fill=\"#f08c00\"/></g>"
+     },
+     {
+      "id": "radio",
+      "name": "radio",
+      "use": "lets the officer call for help",
+      "ask": "Which one lets the officer call for help?",
+      "box": [
+       58,
+       82,
+       44,
+       58
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M78 108V90\" stroke=\"#2b2140\" stroke-width=\"3\" fill=\"none\"/><rect x=\"72\" y=\"106\" width=\"16\" height=\"26\" rx=\"3\" fill=\"#343a40\"/><path d=\"M76 114h8M76 119h8\" stroke=\"#adb5bd\" stroke-width=\"1.8\" fill=\"none\"/><circle cx=\"80\" cy=\"126\" r=\"2.4\" stroke=\"none\" fill=\"#e03131\"/></g>"
+     },
+     {
+      "id": "flashlight",
+      "name": "flashlight",
+      "use": "helps the officer see in the dark",
+      "ask": "Which one helps the officer see in the dark?",
+      "box": [
+       140,
+       110,
+       80,
+       80
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"rotate(-24 154 176)\"><path d=\"M190 166L212 154V198L190 186Z\" stroke=\"none\" opacity=\".85\" fill=\"#ffe066\"/><rect x=\"148\" y=\"169\" width=\"32\" height=\"14\" rx=\"4\" fill=\"#495057\"/><path d=\"M180 166H190V186H180Z\" fill=\"#868e96\"/><circle cx=\"160\" cy=\"176\" r=\"2.6\" stroke=\"none\" fill=\"#fcc419\"/></g></g>"
+     }
+    ]
+   },
+   {
+    "id": "soldier",
+    "name": "soldier",
+    "article": "a",
+    "does": "keeps the country safe",
+    "viewBox": "-20 -20 240 300",
+    "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g data-val=\"boots\" data-row=\"3\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"boots\"><path d=\"M68 220H98V266H58V258Q58 248 68 246Z\" fill=\"#a67c52\"/><path d=\"M102 220H132V246Q142 248 142 258V266H102Z\" fill=\"#a67c52\"/><path d=\"M70 230h20M70 238h20M110 230h20M110 238h20\" stroke=\"#5c3b1e\" stroke-width=\"2\" fill=\"none\"/><rect x=\"58\" y=\"259\" width=\"40\" height=\"7\" fill=\"#5c3b1e\"/><rect x=\"102\" y=\"259\" width=\"40\" height=\"7\" fill=\"#5c3b1e\"/></g><g data-val=\"camouflage\" data-row=\"1\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"camouflage\"><rect x=\"70\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#7a8b45\"/><rect x=\"103\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#7a8b45\"/><rect x=\"44\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(8 56 100)\" fill=\"#7a8b45\"/><rect x=\"132\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(-8 144 100)\" fill=\"#7a8b45\"/><path d=\"M66 108Q66 96 80 96H120Q134 96 134 108V180H66Z\" fill=\"#7a8b45\"/><path d=\"M100 98V180\" stroke=\"#2b2140\" stroke-width=\"2.5\" fill=\"none\"/><rect x=\"110\" y=\"112\" width=\"18\" height=\"14\" rx=\"2\" fill=\"#7a8b45\"/><ellipse cx=\"78\" cy=\"116\" rx=\"8\" ry=\"5\" transform=\"rotate(-30 78 116)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"96\" cy=\"140\" rx=\"9\" ry=\"5\" transform=\"rotate(7 96 140)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"120\" cy=\"150\" rx=\"8\" ry=\"5\" transform=\"rotate(-16 120 150)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"84\" cy=\"164\" rx=\"9\" ry=\"5\" transform=\"rotate(21 84 164)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"118\" cy=\"134\" rx=\"6\" ry=\"4\" transform=\"rotate(-2 118 134)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"52\" cy=\"126\" rx=\"5\" ry=\"8\" transform=\"rotate(-25 52 126)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"50\" cy=\"154\" rx=\"5\" ry=\"7\" transform=\"rotate(12 50 154)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"148\" cy=\"124\" rx=\"5\" ry=\"8\" transform=\"rotate(-11 148 124)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"150\" cy=\"152\" rx=\"5\" ry=\"7\" transform=\"rotate(26 150 152)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"82\" cy=\"196\" rx=\"7\" ry=\"9\" transform=\"rotate(3 82 196)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"86\" cy=\"226\" rx=\"6\" ry=\"8\" transform=\"rotate(-20 86 226)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"116\" cy=\"190\" rx=\"7\" ry=\"8\" transform=\"rotate(17 116 190)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"118\" cy=\"222\" rx=\"6\" ry=\"9\" transform=\"rotate(-6 118 222)\" stroke=\"none\" fill=\"#b3bd7a\"/></g><rect x=\"92\" y=\"84\" width=\"16\" height=\"16\" fill=\"#e0ac69\"/><circle cx=\"70\" cy=\"62\" r=\"5\" fill=\"#e0ac69\"/><circle cx=\"130\" cy=\"62\" r=\"5\" fill=\"#e0ac69\"/><circle cx=\"100\" cy=\"60\" r=\"30\" fill=\"#e0ac69\"/><path d=\"M70 58Q68 28 100 28Q132 28 130 58Q120 42 100 44Q80 42 70 58Z\" fill=\"#2b2140\"/><circle cx=\"89\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"111\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><path d=\"M90 72q10 8 20 0\" fill=\"none\"/><circle cx=\"81\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><circle cx=\"119\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><g data-val=\"helmet\" data-row=\"2\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"helmet\"><path d=\"M70 54Q76 94 100 96Q124 94 130 54\" stroke=\"#2b2140\" stroke-width=\"7\" fill=\"none\"/><path d=\"M70 54Q76 94 100 96Q124 94 130 54\" stroke=\"#5c4a2a\" stroke-width=\"3.5\" fill=\"none\"/></g><g data-val=\"helmet\" data-row=\"2\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"helmet\"><path d=\"M62 47Q60 10 100 10Q140 10 138 47Q138 54 130 54H70Q62 54 62 47Z\" fill=\"#5f7332\"/><ellipse cx=\"82\" cy=\"30\" rx=\"9\" ry=\"5\" transform=\"rotate(-30 82 30)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"108\" cy=\"22\" rx=\"8\" ry=\"5\" transform=\"rotate(7 108 22)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"122\" cy=\"40\" rx=\"8\" ry=\"4\" transform=\"rotate(-16 122 40)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"94\" cy=\"44\" rx=\"7\" ry=\"4\" transform=\"rotate(21 94 44)\" stroke=\"none\" fill=\"#4b5d23\"/></g><circle cx=\"46\" cy=\"176\" r=\"10\" fill=\"#e0ac69\"/><circle cx=\"154\" cy=\"176\" r=\"10\" fill=\"#e0ac69\"/><g data-val=\"backpack\" data-row=\"4\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"backpack\"><rect x=\"-12\" y=\"196\" width=\"56\" height=\"68\" rx=\"12\" fill=\"#5f7332\"/><rect x=\"-6\" y=\"184\" width=\"44\" height=\"18\" rx=\"9\" fill=\"#8a7a4f\"/><rect x=\"0\" y=\"222\" width=\"32\" height=\"24\" rx=\"4\" fill=\"#4b5d23\"/><path d=\"M-2 196v20M34 196v20\" stroke=\"#3b4a1c\" stroke-width=\"5\" fill=\"none\"/><rect x=\"10\" y=\"230\" width=\"12\" height=\"6\" rx=\"2\" fill=\"#b3bd7a\"/></g></g>",
+    "parts": [
+     {
+      "id": "camouflage",
+      "name": "camouflage",
+      "use": "helps a soldier hide",
+      "ask": "Which one helps a soldier hide?",
+      "box": [
+       34,
+       90,
+       132,
+       162
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"70\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#7a8b45\"/><rect x=\"103\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#7a8b45\"/><rect x=\"44\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(8 56 100)\" fill=\"#7a8b45\"/><rect x=\"132\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(-8 144 100)\" fill=\"#7a8b45\"/><path d=\"M66 108Q66 96 80 96H120Q134 96 134 108V180H66Z\" fill=\"#7a8b45\"/><path d=\"M100 98V180\" stroke=\"#2b2140\" stroke-width=\"2.5\" fill=\"none\"/><rect x=\"110\" y=\"112\" width=\"18\" height=\"14\" rx=\"2\" fill=\"#7a8b45\"/><ellipse cx=\"78\" cy=\"116\" rx=\"8\" ry=\"5\" transform=\"rotate(-30 78 116)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"96\" cy=\"140\" rx=\"9\" ry=\"5\" transform=\"rotate(7 96 140)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"120\" cy=\"150\" rx=\"8\" ry=\"5\" transform=\"rotate(-16 120 150)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"84\" cy=\"164\" rx=\"9\" ry=\"5\" transform=\"rotate(21 84 164)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"118\" cy=\"134\" rx=\"6\" ry=\"4\" transform=\"rotate(-2 118 134)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"52\" cy=\"126\" rx=\"5\" ry=\"8\" transform=\"rotate(-25 52 126)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"50\" cy=\"154\" rx=\"5\" ry=\"7\" transform=\"rotate(12 50 154)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"148\" cy=\"124\" rx=\"5\" ry=\"8\" transform=\"rotate(-11 148 124)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"150\" cy=\"152\" rx=\"5\" ry=\"7\" transform=\"rotate(26 150 152)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"82\" cy=\"196\" rx=\"7\" ry=\"9\" transform=\"rotate(3 82 196)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"86\" cy=\"226\" rx=\"6\" ry=\"8\" transform=\"rotate(-20 86 226)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"116\" cy=\"190\" rx=\"7\" ry=\"8\" transform=\"rotate(17 116 190)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"118\" cy=\"222\" rx=\"6\" ry=\"9\" transform=\"rotate(-6 118 222)\" stroke=\"none\" fill=\"#b3bd7a\"/></g>"
+     },
+     {
+      "id": "helmet",
+      "name": "helmet",
+      "use": "keeps the head safe",
+      "ask": "Which one keeps the head safe?",
+      "box": [
+       50,
+       6,
+       100,
+       96
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M70 54Q76 94 100 96Q124 94 130 54\" stroke=\"#2b2140\" stroke-width=\"7\" fill=\"none\"/><path d=\"M70 54Q76 94 100 96Q124 94 130 54\" stroke=\"#5c4a2a\" stroke-width=\"3.5\" fill=\"none\"/><path d=\"M62 47Q60 10 100 10Q140 10 138 47Q138 54 130 54H70Q62 54 62 47Z\" fill=\"#5f7332\"/><ellipse cx=\"82\" cy=\"30\" rx=\"9\" ry=\"5\" transform=\"rotate(-30 82 30)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"108\" cy=\"22\" rx=\"8\" ry=\"5\" transform=\"rotate(7 108 22)\" stroke=\"none\" fill=\"#4b5d23\"/><ellipse cx=\"122\" cy=\"40\" rx=\"8\" ry=\"4\" transform=\"rotate(-16 122 40)\" stroke=\"none\" fill=\"#b3bd7a\"/><ellipse cx=\"94\" cy=\"44\" rx=\"7\" ry=\"4\" transform=\"rotate(21 94 44)\" stroke=\"none\" fill=\"#4b5d23\"/></g>"
+     },
+     {
+      "id": "boots",
+      "name": "boots",
+      "use": "keep the feet safe on long walks",
+      "ask": "Which ones keep the feet safe on long walks?",
+      "box": [
+       50,
+       214,
+       100,
+       58
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M68 220H98V266H58V258Q58 248 68 246Z\" fill=\"#a67c52\"/><path d=\"M102 220H132V246Q142 248 142 258V266H102Z\" fill=\"#a67c52\"/><path d=\"M70 230h20M70 238h20M110 230h20M110 238h20\" stroke=\"#5c3b1e\" stroke-width=\"2\" fill=\"none\"/><rect x=\"58\" y=\"259\" width=\"40\" height=\"7\" fill=\"#5c3b1e\"/><rect x=\"102\" y=\"259\" width=\"40\" height=\"7\" fill=\"#5c3b1e\"/></g>"
+     },
+     {
+      "id": "backpack",
+      "name": "backpack",
+      "use": "carries food, water and tools",
+      "ask": "Which one carries food, water and tools?",
+      "box": [
+       -18,
+       176,
+       68,
+       94
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"-12\" y=\"196\" width=\"56\" height=\"68\" rx=\"12\" fill=\"#5f7332\"/><rect x=\"-6\" y=\"184\" width=\"44\" height=\"18\" rx=\"9\" fill=\"#8a7a4f\"/><rect x=\"0\" y=\"222\" width=\"32\" height=\"24\" rx=\"4\" fill=\"#4b5d23\"/><path d=\"M-2 196v20M34 196v20\" stroke=\"#3b4a1c\" stroke-width=\"5\" fill=\"none\"/><rect x=\"10\" y=\"230\" width=\"12\" height=\"6\" rx=\"2\" fill=\"#b3bd7a\"/></g>"
+     }
+    ]
+   },
+   {
+    "id": "builder",
+    "name": "builder",
+    "article": "a",
+    "does": "builds houses",
+    "viewBox": "-20 -20 240 300",
+    "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"70\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#3b5bdb\"/><rect x=\"103\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#3b5bdb\"/><path d=\"M68 220H98V266H58V258Q58 248 68 246Z\" fill=\"#8d5a2b\"/><path d=\"M102 220H132V246Q142 248 142 258V266H102Z\" fill=\"#8d5a2b\"/><rect x=\"44\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(8 56 100)\" fill=\"#74c0fc\"/><rect x=\"132\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(-8 144 100)\" fill=\"#74c0fc\"/><path d=\"M66 108Q66 96 80 96H120Q134 96 134 108V180H66Z\" fill=\"#74c0fc\"/><g data-val=\"safety vest\" data-row=\"1\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"safety vest\"><path d=\"M70 96H88L100 116L112 96H130Q134 100 134 108V172H66V108Q66 100 70 96Z\" fill=\"#fd7e14\"/><rect x=\"74\" y=\"100\" width=\"9\" height=\"72\" fill=\"#fff3bf\"/><rect x=\"117\" y=\"100\" width=\"9\" height=\"72\" fill=\"#fff3bf\"/><rect x=\"66\" y=\"146\" width=\"68\" height=\"9\" fill=\"#fff3bf\"/><path d=\"M100 116V172\" stroke=\"#2b2140\" stroke-width=\"2.5\" fill=\"none\"/></g><g data-val=\"tool belt\" data-row=\"4\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"tool belt\"><rect x=\"62\" y=\"170\" width=\"76\" height=\"13\" fill=\"#8d5a2b\"/><rect x=\"93\" y=\"168\" width=\"14\" height=\"17\" rx=\"2\" fill=\"#fcc419\"/><rect x=\"68\" y=\"180\" width=\"22\" height=\"26\" rx=\"4\" fill=\"#a9713d\"/><rect x=\"112\" y=\"180\" width=\"20\" height=\"24\" rx=\"4\" fill=\"#a9713d\"/><rect x=\"74\" y=\"166\" width=\"5\" height=\"18\" rx=\"2\" fill=\"#e03131\"/><rect x=\"82\" y=\"168\" width=\"4\" height=\"16\" rx=\"2\" fill=\"#adb5bd\"/><path d=\"M118 180v-12h8v12\" fill=\"#ced4da\"/></g><rect x=\"92\" y=\"84\" width=\"16\" height=\"16\" fill=\"#8d5524\"/><circle cx=\"70\" cy=\"62\" r=\"5\" fill=\"#8d5524\"/><circle cx=\"130\" cy=\"62\" r=\"5\" fill=\"#8d5524\"/><circle cx=\"100\" cy=\"60\" r=\"30\" fill=\"#8d5524\"/><path d=\"M70 58Q68 28 100 28Q132 28 130 58Q120 42 100 44Q80 42 70 58Z\" fill=\"#2b2140\"/><circle cx=\"89\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"111\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><path d=\"M90 72q10 8 20 0\" fill=\"none\"/><circle cx=\"81\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><circle cx=\"119\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><g data-val=\"hard hat\" data-row=\"2\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"hard hat\"><path d=\"M68 44Q68 12 100 12Q132 12 132 44Z\" fill=\"#fcc419\"/><path d=\"M93 12h14v32h-14z\" fill=\"#f59f00\"/><path d=\"M58 43H142V48Q142 54 136 54H64Q58 54 58 48Z\" fill=\"#fcc419\"/></g><g data-val=\"hammer\" data-row=\"3\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"hammer\"><g transform=\"rotate(18 154 176)\"><rect x=\"150\" y=\"112\" width=\"9\" height=\"70\" rx=\"3\" fill=\"#b9774a\"/><path d=\"M136 100H170Q178 100 178 108V116H166V112H148V118H136Z\" fill=\"#868e96\"/></g></g><circle cx=\"46\" cy=\"176\" r=\"10\" fill=\"#8d5524\"/><circle cx=\"154\" cy=\"176\" r=\"10\" fill=\"#8d5524\"/></g>",
+    "parts": [
+     {
+      "id": "safety vest",
+      "name": "safety vest",
+      "use": "helps drivers see the builder",
+      "ask": "Which one helps drivers see the builder?",
+      "box": [
+       58,
+       90,
+       84,
+       88
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M70 96H88L100 116L112 96H130Q134 100 134 108V172H66V108Q66 100 70 96Z\" fill=\"#fd7e14\"/><rect x=\"74\" y=\"100\" width=\"9\" height=\"72\" fill=\"#fff3bf\"/><rect x=\"117\" y=\"100\" width=\"9\" height=\"72\" fill=\"#fff3bf\"/><rect x=\"66\" y=\"146\" width=\"68\" height=\"9\" fill=\"#fff3bf\"/><path d=\"M100 116V172\" stroke=\"#2b2140\" stroke-width=\"2.5\" fill=\"none\"/></g>"
+     },
+     {
+      "id": "hard hat",
+      "name": "hard hat",
+      "use": "keeps the head safe",
+      "ask": "Which one keeps the head safe?",
+      "box": [
+       50,
+       8,
+       100,
+       58
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M68 44Q68 12 100 12Q132 12 132 44Z\" fill=\"#fcc419\"/><path d=\"M93 12h14v32h-14z\" fill=\"#f59f00\"/><path d=\"M58 43H142V48Q142 54 136 54H64Q58 54 58 48Z\" fill=\"#fcc419\"/></g>"
+     },
+     {
+      "id": "hammer",
+      "name": "hammer",
+      "use": "hits nails into wood",
+      "ask": "Which one hits nails into wood?",
+      "box": [
+       140,
+       90,
+       74,
+       100
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"rotate(18 154 176)\"><rect x=\"150\" y=\"112\" width=\"9\" height=\"70\" rx=\"3\" fill=\"#b9774a\"/><path d=\"M136 100H170Q178 100 178 108V116H166V112H148V118H136Z\" fill=\"#868e96\"/></g></g>"
+     },
+     {
+      "id": "tool belt",
+      "name": "tool belt",
+      "use": "holds the tools",
+      "ask": "Which one holds the tools?",
+      "box": [
+       54,
+       158,
+       92,
+       56
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"62\" y=\"170\" width=\"76\" height=\"13\" fill=\"#8d5a2b\"/><rect x=\"93\" y=\"168\" width=\"14\" height=\"17\" rx=\"2\" fill=\"#fcc419\"/><rect x=\"68\" y=\"180\" width=\"22\" height=\"26\" rx=\"4\" fill=\"#a9713d\"/><rect x=\"112\" y=\"180\" width=\"20\" height=\"24\" rx=\"4\" fill=\"#a9713d\"/><rect x=\"74\" y=\"166\" width=\"5\" height=\"18\" rx=\"2\" fill=\"#e03131\"/><rect x=\"82\" y=\"168\" width=\"4\" height=\"16\" rx=\"2\" fill=\"#adb5bd\"/><path d=\"M118 180v-12h8v12\" fill=\"#ced4da\"/></g>"
+     }
+    ]
+   },
+   {
+    "id": "chef",
+    "name": "chef",
+    "article": "a",
+    "does": "cooks yummy food",
+    "viewBox": "-20 -20 240 300",
+    "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M68 54Q62 100 76 106H124Q138 100 132 54Z\" fill=\"#b9774a\"/><rect x=\"70\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#343a40\"/><rect x=\"103\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#343a40\"/><path d=\"M68 244H98V266H58V258Q58 248 68 246Z\" fill=\"#212529\"/><path d=\"M102 244H132V246Q142 248 142 258V266H102Z\" fill=\"#212529\"/><rect x=\"44\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(8 56 100)\" fill=\"#f8f9fa\"/><rect x=\"132\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(-8 144 100)\" fill=\"#f8f9fa\"/><path d=\"M66 108Q66 96 80 96H120Q134 96 134 108V180H66Z\" fill=\"#f8f9fa\"/><path d=\"M100 98V150\" stroke=\"#2b2140\" stroke-width=\"2.5\" fill=\"none\"/><circle cx=\"90\" cy=\"112\" r=\"2.4\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"90\" cy=\"128\" r=\"2.4\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"90\" cy=\"144\" r=\"2.4\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"110\" cy=\"112\" r=\"2.4\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"110\" cy=\"128\" r=\"2.4\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"110\" cy=\"144\" r=\"2.4\" stroke=\"none\" fill=\"#2b2140\"/><path d=\"M86 96L100 110L114 96\" fill=\"none\"/><g data-val=\"apron\" data-row=\"2\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"apron\"><path d=\"M68 152H132V228Q100 236 68 228Z\" fill=\"#74c0fc\"/><rect x=\"64\" y=\"148\" width=\"72\" height=\"9\" fill=\"#4dabf7\"/><path d=\"M64 152Q54 158 50 168M136 152Q146 158 150 168\" fill=\"none\"/><rect x=\"86\" y=\"176\" width=\"28\" height=\"22\" rx=\"4\" fill=\"#a5d8ff\"/></g><rect x=\"92\" y=\"84\" width=\"16\" height=\"16\" fill=\"#ffdbac\"/><circle cx=\"70\" cy=\"62\" r=\"5\" fill=\"#ffdbac\"/><circle cx=\"130\" cy=\"62\" r=\"5\" fill=\"#ffdbac\"/><circle cx=\"100\" cy=\"60\" r=\"30\" fill=\"#ffdbac\"/><path d=\"M70 58Q68 28 100 28Q132 28 130 58Q120 42 100 44Q80 42 70 58Z\" fill=\"#b9774a\"/><circle cx=\"89\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"111\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><path d=\"M90 72q10 8 20 0\" fill=\"none\"/><circle cx=\"81\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><circle cx=\"119\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><g data-val=\"chef hat\" data-row=\"1\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"chef hat\"><path d=\"M70 34Q48 26 60 6Q70 -10 90 0Q100 -12 112 0Q132 -8 140 8Q150 26 130 34Z\" fill=\"#ffffff\"/><rect x=\"72\" y=\"30\" width=\"56\" height=\"16\" fill=\"#ffffff\"/><path d=\"M86 12v14M100 8v18M114 12v14\" stroke=\"#ced4da\" stroke-width=\"2\" fill=\"none\"/></g><g data-val=\"ladle\" data-row=\"3\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"ladle\"><g transform=\"rotate(16 154 176)\"><rect x=\"151\" y=\"108\" width=\"7\" height=\"70\" rx=\"3\" fill=\"#adb5bd\"/><path d=\"M138 94Q138 116 154 116Q170 116 170 94Z\" fill=\"#ced4da\"/><path d=\"M140 96Q154 104 168 96\" fill=\"none\"/></g></g><circle cx=\"46\" cy=\"176\" r=\"10\" fill=\"#ffdbac\"/><circle cx=\"154\" cy=\"176\" r=\"10\" fill=\"#ffdbac\"/><g data-val=\"pot\" data-row=\"4\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"pot\"><path d=\"M26 170q-6 -10 2 -18M44 168q-6 -10 2 -18\" stroke=\"#adb5bd\" stroke-width=\"3\" fill=\"none\"/><rect x=\"12\" y=\"186\" width=\"62\" height=\"40\" rx=\"6\" fill=\"#868e96\"/><rect x=\"6\" y=\"178\" width=\"74\" height=\"11\" rx=\"5\" fill=\"#adb5bd\"/><rect x=\"0\" y=\"196\" width=\"14\" height=\"8\" rx=\"3\" fill=\"#495057\"/><rect x=\"72\" y=\"196\" width=\"14\" height=\"8\" rx=\"3\" fill=\"#495057\"/></g></g>",
+    "parts": [
+     {
+      "id": "chef hat",
+      "name": "chef hat",
+      "use": "keeps hair out of the food",
+      "ask": "Which one keeps hair out of the food?",
+      "box": [
+       44,
+       -16,
+       112,
+       68
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M70 34Q48 26 60 6Q70 -10 90 0Q100 -12 112 0Q132 -8 140 8Q150 26 130 34Z\" fill=\"#ffffff\"/><rect x=\"72\" y=\"30\" width=\"56\" height=\"16\" fill=\"#ffffff\"/><path d=\"M86 12v14M100 8v18M114 12v14\" stroke=\"#ced4da\" stroke-width=\"2\" fill=\"none\"/></g>"
+     },
+     {
+      "id": "apron",
+      "name": "apron",
+      "use": "keeps the clothes clean",
+      "ask": "Which one keeps the clothes clean?",
+      "box": [
+       44,
+       140,
+       112,
+       100
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M68 152H132V228Q100 236 68 228Z\" fill=\"#74c0fc\"/><rect x=\"64\" y=\"148\" width=\"72\" height=\"9\" fill=\"#4dabf7\"/><path d=\"M64 152Q54 158 50 168M136 152Q146 158 150 168\" fill=\"none\"/><rect x=\"86\" y=\"176\" width=\"28\" height=\"22\" rx=\"4\" fill=\"#a5d8ff\"/></g>"
+     },
+     {
+      "id": "ladle",
+      "name": "ladle",
+      "use": "scoops the soup",
+      "ask": "Which one scoops the soup?",
+      "box": [
+       136,
+       78,
+       70,
+       106
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g transform=\"rotate(16 154 176)\"><rect x=\"151\" y=\"108\" width=\"7\" height=\"70\" rx=\"3\" fill=\"#adb5bd\"/><path d=\"M138 94Q138 116 154 116Q170 116 170 94Z\" fill=\"#ced4da\"/><path d=\"M140 96Q154 104 168 96\" fill=\"none\"/></g></g>"
+     },
+     {
+      "id": "pot",
+      "name": "pot",
+      "use": "cooks the soup",
+      "ask": "Which one cooks the soup?",
+      "box": [
+       -6,
+       146,
+       98,
+       88
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M26 170q-6 -10 2 -18M44 168q-6 -10 2 -18\" stroke=\"#adb5bd\" stroke-width=\"3\" fill=\"none\"/><rect x=\"12\" y=\"186\" width=\"62\" height=\"40\" rx=\"6\" fill=\"#868e96\"/><rect x=\"6\" y=\"178\" width=\"74\" height=\"11\" rx=\"5\" fill=\"#adb5bd\"/><rect x=\"0\" y=\"196\" width=\"14\" height=\"8\" rx=\"3\" fill=\"#495057\"/><rect x=\"72\" y=\"196\" width=\"14\" height=\"8\" rx=\"3\" fill=\"#495057\"/></g>"
+     }
+    ]
+   },
+   {
+    "id": "farmer",
+    "name": "farmer",
+    "article": "a",
+    "does": "grows food and feeds animals",
+    "viewBox": "-20 -20 240 300",
+    "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"44\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(8 56 100)\" fill=\"#e03131\"/><rect x=\"132\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(-8 144 100)\" fill=\"#e03131\"/><path d=\"M66 108Q66 96 80 96H120Q134 96 134 108V180H66Z\" fill=\"#e03131\"/><path d=\"M52 118l10 2M50 140l10 2M48 160l10 2M138 120l10 -2M140 142l10 -2M142 162l10 -2\" stroke=\"#ffa8a8\" stroke-width=\"2\" fill=\"none\"/><g data-val=\"overalls\" data-row=\"1\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"overalls\"><rect x=\"70\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#3b5bdb\"/><rect x=\"103\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#3b5bdb\"/><rect x=\"66\" y=\"150\" width=\"68\" height=\"32\" fill=\"#3b5bdb\"/><rect x=\"80\" y=\"118\" width=\"40\" height=\"40\" rx=\"4\" fill=\"#3b5bdb\"/><path d=\"M84 120L78 96M116 120L122 96\" stroke=\"#2b2140\" stroke-width=\"11\" fill=\"none\"/><path d=\"M84 120L78 96M116 120L122 96\" stroke=\"#3b5bdb\" stroke-width=\"6.5\" fill=\"none\"/><circle cx=\"85\" cy=\"124\" r=\"3.5\" fill=\"#fcc419\"/><circle cx=\"115\" cy=\"124\" r=\"3.5\" fill=\"#fcc419\"/><rect x=\"90\" y=\"132\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#5c7cfa\"/></g><g data-val=\"boots\" data-row=\"4\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"boots\"><path d=\"M68 220H98V266H58V258Q58 248 68 246Z\" fill=\"#2f9e44\"/><path d=\"M102 220H132V246Q142 248 142 258V266H102Z\" fill=\"#2f9e44\"/><rect x=\"66\" y=\"220\" width=\"34\" height=\"8\" fill=\"#40c057\"/><rect x=\"100\" y=\"220\" width=\"34\" height=\"8\" fill=\"#40c057\"/></g><rect x=\"92\" y=\"84\" width=\"16\" height=\"16\" fill=\"#f1c27d\"/><circle cx=\"70\" cy=\"62\" r=\"5\" fill=\"#f1c27d\"/><circle cx=\"130\" cy=\"62\" r=\"5\" fill=\"#f1c27d\"/><circle cx=\"100\" cy=\"60\" r=\"30\" fill=\"#f1c27d\"/><path d=\"M70 58Q68 28 100 28Q132 28 130 58Q120 42 100 44Q80 42 70 58Z\" fill=\"#e8590c\"/><circle cx=\"89\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"111\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><path d=\"M90 72q10 8 20 0\" fill=\"none\"/><circle cx=\"81\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><circle cx=\"119\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><g data-val=\"straw hat\" data-row=\"2\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"straw hat\"><path d=\"M74 40Q72 8 100 8Q128 8 126 40Z\" fill=\"#f0c27b\"/><path d=\"M74 30h52v9H74z\" fill=\"#c92a2a\"/><ellipse cx=\"100\" cy=\"43\" rx=\"54\" ry=\"10\" fill=\"#f0c27b\"/><path d=\"M60 43q40 7 80 0\" stroke=\"#d9a441\" stroke-width=\"2\" fill=\"none\"/></g><g data-val=\"pitchfork\" data-row=\"3\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"pitchfork\"><rect x=\"151\" y=\"58\" width=\"7\" height=\"206\" rx=\"3\" fill=\"#b9774a\"/><path d=\"M138 62V30M154.5 62V22M171 62V30\" stroke=\"#2b2140\" stroke-width=\"8\" fill=\"none\"/><path d=\"M138 62V30M154.5 62V22M171 62V30\" stroke=\"#adb5bd\" stroke-width=\"4\" fill=\"none\"/><rect x=\"134\" y=\"58\" width=\"41\" height=\"9\" rx=\"3\" fill=\"#868e96\"/></g><circle cx=\"46\" cy=\"176\" r=\"10\" fill=\"#f1c27d\"/><circle cx=\"154\" cy=\"176\" r=\"10\" fill=\"#f1c27d\"/></g>",
+    "parts": [
+     {
+      "id": "overalls",
+      "name": "overalls",
+      "use": "keep the clothes clean on the farm",
+      "ask": "Which ones keep the clothes clean on the farm?",
+      "box": [
+       56,
+       90,
+       88,
+       162
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"70\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#3b5bdb\"/><rect x=\"103\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#3b5bdb\"/><rect x=\"66\" y=\"150\" width=\"68\" height=\"32\" fill=\"#3b5bdb\"/><rect x=\"80\" y=\"118\" width=\"40\" height=\"40\" rx=\"4\" fill=\"#3b5bdb\"/><path d=\"M84 120L78 96M116 120L122 96\" stroke=\"#2b2140\" stroke-width=\"11\" fill=\"none\"/><path d=\"M84 120L78 96M116 120L122 96\" stroke=\"#3b5bdb\" stroke-width=\"6.5\" fill=\"none\"/><circle cx=\"85\" cy=\"124\" r=\"3.5\" fill=\"#fcc419\"/><circle cx=\"115\" cy=\"124\" r=\"3.5\" fill=\"#fcc419\"/><rect x=\"90\" y=\"132\" width=\"20\" height=\"14\" rx=\"2\" fill=\"#5c7cfa\"/></g>"
+     },
+     {
+      "id": "straw hat",
+      "name": "straw hat",
+      "use": "keeps the sun off the face",
+      "ask": "Which one keeps the sun off the face?",
+      "box": [
+       40,
+       4,
+       120,
+       58
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M74 40Q72 8 100 8Q128 8 126 40Z\" fill=\"#f0c27b\"/><path d=\"M74 30h52v9H74z\" fill=\"#c92a2a\"/><ellipse cx=\"100\" cy=\"43\" rx=\"54\" ry=\"10\" fill=\"#f0c27b\"/><path d=\"M60 43q40 7 80 0\" stroke=\"#d9a441\" stroke-width=\"2\" fill=\"none\"/></g>"
+     },
+     {
+      "id": "pitchfork",
+      "name": "pitchfork",
+      "use": "lifts the hay",
+      "ask": "Which one lifts the hay?",
+      "box": [
+       124,
+       14,
+       62,
+       256
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"151\" y=\"58\" width=\"7\" height=\"206\" rx=\"3\" fill=\"#b9774a\"/><path d=\"M138 62V30M154.5 62V22M171 62V30\" stroke=\"#2b2140\" stroke-width=\"8\" fill=\"none\"/><path d=\"M138 62V30M154.5 62V22M171 62V30\" stroke=\"#adb5bd\" stroke-width=\"4\" fill=\"none\"/><rect x=\"134\" y=\"58\" width=\"41\" height=\"9\" rx=\"3\" fill=\"#868e96\"/></g>"
+     },
+     {
+      "id": "boots",
+      "name": "boots",
+      "use": "keep the feet dry in the mud",
+      "ask": "Which ones keep the feet dry in the mud?",
+      "box": [
+       50,
+       214,
+       100,
+       58
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M68 220H98V266H58V258Q58 248 68 246Z\" fill=\"#2f9e44\"/><path d=\"M102 220H132V246Q142 248 142 258V266H102Z\" fill=\"#2f9e44\"/><rect x=\"66\" y=\"220\" width=\"34\" height=\"8\" fill=\"#40c057\"/><rect x=\"100\" y=\"220\" width=\"34\" height=\"8\" fill=\"#40c057\"/></g>"
+     }
+    ]
+   },
+   {
+    "id": "astronaut",
+    "name": "astronaut",
+    "article": "an",
+    "does": "goes into space",
+    "viewBox": "-20 -20 240 300",
+    "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><g data-val=\"space helmet\" data-row=\"2\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"space helmet\"><circle cx=\"100\" cy=\"60\" r=\"44\" fill=\"#f8f9fa\"/><rect x=\"74\" y=\"96\" width=\"52\" height=\"12\" rx=\"6\" fill=\"#ced4da\"/></g><g data-val=\"moon boots\" data-row=\"4\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"moon boots\"><path d=\"M66 222H98V268H54V256Q54 246 66 244Z\" fill=\"#adb5bd\"/><path d=\"M102 222H134V244Q146 246 146 256V268H102Z\" fill=\"#adb5bd\"/><rect x=\"54\" y=\"260\" width=\"44\" height=\"8\" fill=\"#495057\"/><rect x=\"102\" y=\"260\" width=\"44\" height=\"8\" fill=\"#495057\"/></g><g data-val=\"space suit\" data-row=\"1\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"space suit\"><rect x=\"70\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#f8f9fa\"/><rect x=\"103\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#f8f9fa\"/><rect x=\"44\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(8 56 100)\" fill=\"#f8f9fa\"/><rect x=\"132\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(-8 144 100)\" fill=\"#f8f9fa\"/><path d=\"M66 108Q66 96 80 96H120Q134 96 134 108V180H66Z\" fill=\"#f8f9fa\"/><rect x=\"66\" y=\"164\" width=\"68\" height=\"10\" fill=\"#ced4da\"/><rect x=\"82\" y=\"114\" width=\"36\" height=\"28\" rx=\"5\" fill=\"#dee2e6\"/><circle cx=\"92\" cy=\"124\" r=\"4\" fill=\"#e03131\"/><circle cx=\"104\" cy=\"124\" r=\"4\" fill=\"#40c057\"/><rect x=\"88\" y=\"132\" width=\"24\" height=\"5\" rx=\"2\" fill=\"#4dabf7\"/><rect x=\"70\" y=\"204\" width=\"27\" height=\"8\" fill=\"#ced4da\"/><rect x=\"103\" y=\"204\" width=\"27\" height=\"8\" fill=\"#ced4da\"/><rect x=\"44\" y=\"136\" width=\"24\" height=\"8\" transform=\"rotate(8 56 100)\" fill=\"#ced4da\"/><rect x=\"132\" y=\"136\" width=\"24\" height=\"8\" transform=\"rotate(-8 144 100)\" fill=\"#ced4da\"/></g><rect x=\"92\" y=\"84\" width=\"16\" height=\"16\" fill=\"#c68642\"/><circle cx=\"70\" cy=\"62\" r=\"5\" fill=\"#c68642\"/><circle cx=\"130\" cy=\"62\" r=\"5\" fill=\"#c68642\"/><circle cx=\"100\" cy=\"60\" r=\"30\" fill=\"#c68642\"/><path d=\"M70 58Q68 28 100 28Q132 28 130 58Q120 42 100 44Q80 42 70 58Z\" fill=\"#2b2140\"/><circle cx=\"89\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><circle cx=\"111\" cy=\"60\" r=\"3.2\" stroke=\"none\" fill=\"#2b2140\"/><path d=\"M90 72q10 8 20 0\" fill=\"none\"/><circle cx=\"81\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><circle cx=\"119\" cy=\"70\" r=\"4.5\" opacity=\".45\" stroke=\"none\" fill=\"#ff8787\"/><g data-val=\"space helmet\" data-row=\"2\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"space helmet\"><ellipse cx=\"100\" cy=\"60\" rx=\"34\" ry=\"32\" fill-opacity=\".22\" fill=\"#a5d8ff\"/><path d=\"M78 44Q86 32 100 30\" stroke=\"#ffffff\" stroke-width=\"4\" fill=\"none\"/></g><g data-val=\"gloves\" data-row=\"3\" class=\"hw-part\" role=\"button\" tabindex=\"0\" aria-label=\"gloves\"><circle cx=\"46\" cy=\"178\" r=\"15\" fill=\"#adb5bd\"/><circle cx=\"154\" cy=\"178\" r=\"15\" fill=\"#adb5bd\"/><rect x=\"34\" y=\"160\" width=\"26\" height=\"9\" rx=\"3\" transform=\"rotate(8 46 164)\" fill=\"#868e96\"/><rect x=\"140\" y=\"160\" width=\"26\" height=\"9\" rx=\"3\" transform=\"rotate(-8 154 164)\" fill=\"#868e96\"/></g></g>",
+    "parts": [
+     {
+      "id": "space suit",
+      "name": "space suit",
+      "use": "keeps the body safe in space",
+      "ask": "Which one keeps the body safe in space?",
+      "box": [
+       34,
+       90,
+       132,
+       162
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"70\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#f8f9fa\"/><rect x=\"103\" y=\"170\" width=\"27\" height=\"78\" rx=\"8\" fill=\"#f8f9fa\"/><rect x=\"44\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(8 56 100)\" fill=\"#f8f9fa\"/><rect x=\"132\" y=\"98\" width=\"24\" height=\"76\" rx=\"12\" transform=\"rotate(-8 144 100)\" fill=\"#f8f9fa\"/><path d=\"M66 108Q66 96 80 96H120Q134 96 134 108V180H66Z\" fill=\"#f8f9fa\"/><rect x=\"66\" y=\"164\" width=\"68\" height=\"10\" fill=\"#ced4da\"/><rect x=\"82\" y=\"114\" width=\"36\" height=\"28\" rx=\"5\" fill=\"#dee2e6\"/><circle cx=\"92\" cy=\"124\" r=\"4\" fill=\"#e03131\"/><circle cx=\"104\" cy=\"124\" r=\"4\" fill=\"#40c057\"/><rect x=\"88\" y=\"132\" width=\"24\" height=\"5\" rx=\"2\" fill=\"#4dabf7\"/><rect x=\"70\" y=\"204\" width=\"27\" height=\"8\" fill=\"#ced4da\"/><rect x=\"103\" y=\"204\" width=\"27\" height=\"8\" fill=\"#ced4da\"/><rect x=\"44\" y=\"136\" width=\"24\" height=\"8\" transform=\"rotate(8 56 100)\" fill=\"#ced4da\"/><rect x=\"132\" y=\"136\" width=\"24\" height=\"8\" transform=\"rotate(-8 144 100)\" fill=\"#ced4da\"/></g>"
+     },
+     {
+      "id": "space helmet",
+      "name": "space helmet",
+      "use": "gives the astronaut air",
+      "ask": "Which one gives the astronaut air?",
+      "box": [
+       50,
+       10,
+       100,
+       102
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"100\" cy=\"60\" r=\"44\" fill=\"#f8f9fa\"/><rect x=\"74\" y=\"96\" width=\"52\" height=\"12\" rx=\"6\" fill=\"#ced4da\"/><ellipse cx=\"100\" cy=\"60\" rx=\"34\" ry=\"32\" fill-opacity=\".22\" fill=\"#a5d8ff\"/><path d=\"M78 44Q86 32 100 30\" stroke=\"#ffffff\" stroke-width=\"4\" fill=\"none\"/></g>"
+     },
+     {
+      "id": "gloves",
+      "name": "gloves",
+      "use": "keep the hands safe and warm",
+      "ask": "Which ones keep the hands safe and warm?",
+      "box": [
+       22,
+       152,
+       50,
+       46
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"46\" cy=\"178\" r=\"15\" fill=\"#adb5bd\"/><circle cx=\"154\" cy=\"178\" r=\"15\" fill=\"#adb5bd\"/><rect x=\"34\" y=\"160\" width=\"26\" height=\"9\" rx=\"3\" transform=\"rotate(8 46 164)\" fill=\"#868e96\"/><rect x=\"140\" y=\"160\" width=\"26\" height=\"9\" rx=\"3\" transform=\"rotate(-8 154 164)\" fill=\"#868e96\"/></g>"
+     },
+     {
+      "id": "moon boots",
+      "name": "moon boots",
+      "use": "grip the ground on the moon",
+      "ask": "Which ones grip the ground on the moon?",
+      "box": [
+       46,
+       214,
+       108,
+       60
+      ],
+      "svg": "<g stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M66 222H98V268H54V256Q54 246 66 244Z\" fill=\"#adb5bd\"/><path d=\"M102 222H134V244Q146 246 146 256V268H102Z\" fill=\"#adb5bd\"/><rect x=\"54\" y=\"260\" width=\"44\" height=\"8\" fill=\"#495057\"/><rect x=\"102\" y=\"260\" width=\"44\" height=\"8\" fill=\"#495057\"/></g>"
+     }
+    ]
+   }
+  ]
+ }
+}
