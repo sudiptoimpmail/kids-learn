@@ -1968,3 +1968,6 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 
 .ep-bundles { flex-wrap: wrap; }
 .ep-bundle:not(.by10) { padding: 3px; border-radius: 9px; background: #fff4e6; flex-wrap: wrap; max-width: 56px; }
+
+/* flag and holiday coloring pages: drawn details that are not coloured (stars on a flag, the wheel, the outline) */
+.pic .deco { pointer-events: none; }

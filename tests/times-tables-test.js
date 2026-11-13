@@ -58,7 +58,7 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     // repetition: the table is recited again the next day, and the next table opens only after 6 strong rounds on 4 days
     const rep = await p.evaluate(() => {
       const out = {}; document.querySelector('#quitBtn').click();
-      out.sameDay = TeachFirst.needsTeaching('tables', 1); state.taught['tables:1'] = new Date(Date.now() - 864e5).toISOString().slice(0, 10); out.nextDay = TeachFirst.needsTeaching('tables', 1);
+      out.sameDay = TeachFirst.needsTeaching('tables', 1); state.taught['tables:1'] = dayKey(new Date(Date.now() - 864e5)); out.nextDay = TeachFirst.needsTeaching('tables', 1);
       state.levels.tables = 1; state.progressionStreaks = {}; const good = { total: 5, firstTry: 5, mistakes: 0 }, RealDate = Date; out.levels = [];
       for (let i = 0; i < 8; i++) { const day = Math.floor(i / 2);   // two strong rounds a day
         globalThis.Date = class extends RealDate { constructor(...a) { super(...(a.length ? a : [RealDate.now() + day * 864e5])); } static now() { return RealDate.now(); } };

@@ -817,6 +817,7 @@ const GEN_PAGES = [
   { id: 'mand5', name: 'Magic Mandala', svg: () => mandalaSVG(6, 10, 5) },
   { id: 'mand6', name: 'Royal Mandala', svg: () => mandalaSVG(7, 12, 7) },
 ];
+const THEME_PAGES = ContentData.get('coloring-themes', 'THEME_PAGES'), THEME_ALSO = ContentData.get('coloring-themes', 'ALSO');
 // every coloring page in one list, simplest first (no locks — she can pick any)
 const countParts = (svg) => (svg.match(/class="r"/g) || []).length;
 const ALL_PICS = [
@@ -825,7 +826,10 @@ const ALL_PICS = [
     svg: () => `<rect class="r bg" x="-4" y="-4" width="80" height="80"/>${p.c}<g class="oml">${p.l}</g>` })),
   ...GEN_PAGES.map((p) => ({ ...p, vb: 200 })),
   ...SCENE_PAGES.map((p) => ({ ...p, vb: 200, scene: true })),
-].map((p) => ({ ...p, n: countParts(p.svg()) })).sort((a, b) => a.n - b.n);
+  // flags and holidays (data/coloring-themes.json): each has its real colours for the 👀 peek
+  ...THEME_PAGES.map((p) => ({ id: p.id, name: p.name, vb: 200, group: p.group, orig: p.orig, svg: () => p.svg })),
+].map((p) => (THEME_ALSO[p.id] ? { ...p, group: THEME_ALSO[p.id], scene: false } : p)).map((p) => ({ ...p, n: countParts(p.svg()) })).sort((a, b) => a.n - b.n);
+const THEME_GROUPS = ContentData.get('coloring-themes', 'GROUPS');
 const COLOR_GROUPS = [['⭐ Easy', 0, 5], ['⭐⭐ Medium', 6, 10], ['⭐⭐⭐ Tricky', 11, 19], ['🏆 Expert', 20, 999]];
 
 // Coloring fills are a colour ("#ff6b6b") or a texture over a colour ("glitter|#ff6b6b").
@@ -858,8 +862,10 @@ function startColorPicker() {
   const done = state.colored || [];
   const area = $('#gameArea');
   area.innerHTML = `<div class="g-msg">Pick a picture to color! <small>${ALL_PICS.length} pictures · ⭐ = colored</small></div>` +
-    [['🌟 Scenes, Seasons & Cartoons', -1, -1], ...COLOR_GROUPS].map(([label, lo, hi]) => {
-      const list = lo < 0 ? ALL_PICS.filter((p) => p.scene) : ALL_PICS.filter((p) => !p.scene && p.n >= lo && p.n <= hi);
+    [...THEME_GROUPS.map(([id, label]) => [label, id]), ['🌟 Scenes, Seasons & Cartoons', -1, -1], ...COLOR_GROUPS].map(([label, lo, hi]) => {
+      const order = (p) => { const i = THEME_PAGES.findIndex((t) => t.id === p.id); return i < 0 ? 999 : i; };   // flags and holidays keep the order they were written in
+      const list = typeof lo === 'string' ? ALL_PICS.filter((p) => p.group === lo).sort((x, y) => order(x) - order(y))
+        : lo < 0 ? ALL_PICS.filter((p) => p.scene) : ALL_PICS.filter((p) => !p.group && !p.scene && p.n >= lo && p.n <= hi);
       return list.length ? `<div class="pic-group">${label}</div><div class="pic-grid">${list.map((p) =>
         `<button class="pic-pick" data-p="${p.id}">${picSVG(p, (state.art || {})[p.id])}<span>${done.includes(p.id) ? '⭐ ' : ''}${p.name}</span></button>`).join('')}</div>` : '';
     }).join('');
