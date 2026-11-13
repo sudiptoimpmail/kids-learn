@@ -880,7 +880,7 @@ function applyRoundProgression(id, level, round) {
   let outcome = progressionOutcome(slow ? { ...rule, promote: { ...rule.promote, rounds: Infinity } } : rule, range, level, round, previous);
   let days = slow && outcome.counts.mastery ? (previous.days || []).slice() : [];
   if (slow && outcome.status === 'building') {
-    const day = new Date().toISOString().slice(0, 10);
+    const day = dayKey();   // the family's own calendar day
     if (!days.includes(day)) days.push(day);
     if (outcome.counts.mastery >= slow.promoteRounds && days.length >= slow.promoteDays) {
       outcome = { level: level < range[1] ? level + 1 : level, counts: { mastery: 0, support: 0 }, status: level < range[1] ? 'promoted' : 'top' };
