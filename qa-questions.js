@@ -39,7 +39,9 @@
     const options = (q.options || []).map((o) => {
       // picture choices that differ only in drawn size (Big & Small) are described by that size
       const drawn = /--(?:sz|w):\s*([\d.]+%?)/.exec(String(o.html || ''));
-      const text = plain(o.html != null ? o.html : o.v) + (drawn ? ` (size ${drawn[1]})` : '');
+      // a choice that is only a drawing is described by its label
+      const named = /aria-label="([^"]+)"/.exec(String(o.html || ''));
+      const text = (plain(o.html != null ? o.html : o.v) || (named ? named[1] : '')) + (drawn ? ` (size ${drawn[1]})` : '');
       const correct = multi ? multi.includes(String(o.v)) : q.answer != null && typeof q.answer !== 'object' && String(o.v) === String(q.answer);
       return { text, correct };
     });

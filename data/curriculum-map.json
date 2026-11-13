@@ -202,7 +202,7 @@
           "story": "1-1",
           "cmp": "1-2",
           "shape2": "1-2",
-          "jobs": "1-2",
+          "jobs": "1-5",
           "flags": "1-2",
           "maps": "1-1",
           "home": "1-1",
@@ -370,7 +370,7 @@
           "cmp": "3-4",
           "clock": "1-2",
           "shape2": "2-3",
-          "jobs": "2-3",
+          "jobs": "2-10",
           "flags": "2-2",
           "maps": "2-2",
           "words": "1-2",
@@ -989,7 +989,7 @@
           "jobs": {
             "levels": [
               1,
-              2
+              5
             ],
             "skills": [
               "identify-and-match"
@@ -1349,7 +1349,7 @@
           "jobs": {
             "levels": [
               2,
-              3
+              10
             ],
             "skills": [
               "read-and-apply"
@@ -4698,6 +4698,36 @@
             ],
             "matter:2": [
               "matter:2"
+            ],
+            "jobs:1": [
+              "jobs:1"
+            ],
+            "jobs:2": [
+              "jobs:2"
+            ],
+            "jobs:3": [
+              "jobs:3"
+            ],
+            "jobs:4": [
+              "jobs:4"
+            ],
+            "jobs:5": [
+              "jobs:5"
+            ],
+            "jobs:6": [
+              "jobs:6"
+            ],
+            "jobs:7": [
+              "jobs:7"
+            ],
+            "jobs:8": [
+              "jobs:8"
+            ],
+            "jobs:9": [
+              "jobs:9"
+            ],
+            "jobs:10": [
+              "jobs:10"
             ]
           }
         }
@@ -5618,6 +5648,46 @@
         "matter:2": {
           "category": "matter",
           "level": 2
+        },
+        "jobs:1": {
+          "category": "jobs",
+          "level": 1
+        },
+        "jobs:2": {
+          "category": "jobs",
+          "level": 2
+        },
+        "jobs:3": {
+          "category": "jobs",
+          "level": 3
+        },
+        "jobs:4": {
+          "category": "jobs",
+          "level": 4
+        },
+        "jobs:5": {
+          "category": "jobs",
+          "level": 5
+        },
+        "jobs:6": {
+          "category": "jobs",
+          "level": 6
+        },
+        "jobs:7": {
+          "category": "jobs",
+          "level": 7
+        },
+        "jobs:8": {
+          "category": "jobs",
+          "level": 8
+        },
+        "jobs:9": {
+          "category": "jobs",
+          "level": 9
+        },
+        "jobs:10": {
+          "category": "jobs",
+          "level": 10
         }
       },
       "family": {
@@ -5898,6 +5968,70 @@
         "community": "Explore section",
         "region": "Explore section"
       }
+    },
+    "combinedSections": {
+      "about": "Related sections share one tile on the Learn screen. A tap opens the list of its parts; each part keeps its own step, stars and progress. A grade that has only one of the parts sees that section's own tile. titleFrom: the tile takes its name from that part, so a country's own name for it is kept (EVS · Science in India).",
+      "groups": [
+        {
+          "id": "words",
+          "title": "Read Words",
+          "sub": "little words · big words",
+          "icon": "📖",
+          "color": "#ff8787",
+          "parts": [
+            "cvc",
+            "w4"
+          ]
+        },
+        {
+          "id": "thinking",
+          "title": "Patterns & Puzzles",
+          "sub": "patterns · odd one out · what comes next",
+          "icon": "🧩",
+          "color": "#7048e8",
+          "parts": [
+            "pattern",
+            "odd",
+            "sequence"
+          ]
+        },
+        {
+          "id": "science",
+          "title": "Science",
+          "sub": "liquid or solid · living things · did you know?",
+          "icon": "🔬",
+          "color": "#1098ad",
+          "parts": [
+            "matter",
+            "sci",
+            "gk"
+          ],
+          "titleFrom": "sci"
+        },
+        {
+          "id": "people",
+          "title": "Jobs & Community",
+          "sub": "who helps us · our community",
+          "icon": "🧑‍🚒",
+          "color": "#ff922b",
+          "parts": [
+            "jobs",
+            "community"
+          ]
+        },
+        {
+          "id": "world",
+          "title": "Flags, Maps & Places",
+          "sub": "flags · world map · famous places",
+          "icon": "🌍",
+          "color": "#1c7ed6",
+          "parts": [
+            "flags",
+            "maps",
+            "places"
+          ]
+        }
+      ]
     }
   }
 }

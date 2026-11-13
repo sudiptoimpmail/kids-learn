@@ -1971,3 +1971,34 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 
 /* flag and holiday coloring pages: drawn details that are not coloured (stars on a flag, the wheel, the outline) */
 .pic .deco { pointer-events: none; }
+
+/* Jobs: illustrated workers and their things (helpers.js) */
+.hw-fig { height: min(46vh, 380px); width: auto; max-width: 100%; display: block; margin: 0 auto; overflow: visible; }
+.hw-fig .hw-part { cursor: pointer; }
+.hw-fig.mini { height: 190px; }
+.hw-fig.opt { height: 150px; }
+.hw-fig.has-hl .hw-part.hl, .hw-fig .hw-part.on { filter: drop-shadow(0 0 5px #ffd43b) drop-shadow(0 0 10px #fab005); }
+.hw-fig .hw-part.on { animation: hwPulse .9s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+@keyframes hwPulse { from { transform: scale(1); } to { transform: scale(1.06); } }
+@media (prefers-reduced-motion: reduce) { .hw-fig .hw-part.on { animation: none; } }
+.hw-icon { width: 100%; height: 108px; display: block; overflow: visible; }
+.hw-ask .hw-icon { height: 150px; }
+.hw-opts .opt { padding: 8px; min-height: 124px; display: flex; align-items: center; justify-content: center; }
+.hw-hint { display: flex; justify-content: center; }
+.hw-teach { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+.hw-teach .hw-fig { height: min(44vh, 360px); }
+.hw-labels { display: grid; gap: 8px; }
+.hw-label { padding: 8px 14px; border-radius: 14px; background: #f1f3f5; font-weight: 800; font-size: 20px; color: var(--soft); text-align: center; }
+.hw-label.on { background: #ffd43b; color: var(--ink); transform: scale(1.06); }
+.hw-label.done { background: #fff3bf; color: var(--ink); }
+.q-main.hw-main { min-height: 0; overflow: visible; }
+
+/* a tile that holds several related sections, and the list that opens from it */
+.tile.combo .combo-n { position: absolute; right: 10px; top: 10px; display: flex; gap: 2px; font-size: 18px; z-index: 1; }
+.tile.combo .combo-n i { font-style: normal; background: #ffffffd9; border-radius: 10px; padding: 2px 4px; line-height: 1.1; }
+.combo-sheet { position: fixed; inset: 0; z-index: 80; background: #2b214080; display: grid; place-items: center; padding: 18px; animation: comboIn .16s ease-out; }
+.combo-card { position: relative; width: min(560px, 100%); max-height: 90vh; overflow: auto; background: var(--bg, #fff9f0); border-radius: 28px; padding: 20px 18px 22px; box-shadow: 0 18px 50px #0005; }
+.combo-card h2 { margin: 0 44px 14px 4px; font-size: 24px; color: var(--ink); }
+.combo-close { position: absolute; right: 12px; top: 12px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: #fff; font-size: 20px; font-weight: 900; color: var(--ink); box-shadow: 0 3px 0 #0002; cursor: pointer; }
+@keyframes comboIn { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .combo-sheet { animation: none; } }

@@ -48,7 +48,7 @@ def flag_us():
         n = 6 if row % 2 == 0 else 5
         for i in range(n):
             x = FX + cw / 12 * (1 + 2 * i + (0 if row % 2 == 0 else 1)); yy = y0 + ch / 10 * (row + 1)
-            stars += f'<polygon points="{star(x, yy, 2.6, 1.05)}" fill="#fff"/>'
+            stars += f'<polygon points="{star(x, yy, 2.7, 1.1)}" fill="#fff" stroke="{INK}" stroke-width=".7" stroke-linejoin="round"/>'
     return page('flag-us', 'United States 🇺🇸', 'flags', shapes, deco=stars + frame(y0, h))
 
 MAPLE = [(0, -50), (7, -37), (16, -41), (12, -15), (24, -26), (27, -19), (40, -22), (36, -8), (43, -4), (25, 12), (28, 21), (3, 18), (3, 40)]
