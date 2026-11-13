@@ -139,20 +139,23 @@ function renderHome() {
     ['🌍 Science & World', ['matter', 'sci', 'home', 'region', 'community', 'body', 'gk', 'anatomy', 'jobs', 'flags', 'animals', 'places', 'maps', 'mix']]
   ];
   const visible = visibleGames();
-  const makeTile = (c) => {
-    const best = Math.min(3, state.best[c.id] || 0);
-    const lv = c.id === 'mix' || c.trace ? '' : stepDots(c.id);
-    const icon = c.id === 'home' && typeof myCountry === 'function' && myCountry() ? myCountry().flag : c.icon;
-    return `<button class="tile" data-cat="${c.id}" style="--c:${c.color}">
-      ${lv}<span class="ti">${icon}</span><span class="tt">${typeof editionTitle === 'function' ? editionTitle(c.id, localTileTitle(c.id, c.title)) : c.title}</span><span class="ts">${typeof editionSub === 'function' ? editionSub(c.id, gradeSub(c.id, c.sub)) : gradeSub(c.id, c.sub)}</span>
-      <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
+  const makeTile = sectionTile;
+  // related sections share one tile (curriculum-map "combinedSections"); a grade with only one of the parts sees that part's own tile
+  const tiles = (cats) => {
+    const out = [], used = new Set();
+    for (const c of cats) {
+      const combo = COMBINED.find((k) => k.parts.includes(c.id)), parts = combo ? cats.filter((x) => combo.parts.includes(x.id)) : [];
+      if (!combo || parts.length < 2) out.push(makeTile(c));
+      else if (!used.has(combo.id)) { used.add(combo.id); out.push(comboTile(combo, parts)); }
+    }
+    return out.join('');
   };
   // brain games (memory, puzzles, mazes …) sit right inside Brain Teasers: a tap opens the game
   const gameTile = (g) => `<button class="tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span><span class="ts">puzzle game</span></button>`;
   const catalog = groups.map(([title, ids, brain]) => {
     const cats = visible.filter((c) => ids.includes(c.id));
     const games = brain === 'brain' && typeof brainGames === 'function' ? brainGames() : [];
-    return cats.length || games.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${cats.map(makeTile).join('')}${games.map(gameTile).join('')}</div></section>` : '';
+    return cats.length || games.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${tiles(cats)}${games.map(gameTile).join('')}</div></section>` : '';
   }).join('');
   // 1st–3rd grade see 28–35 activities: show a short recommended row first and fold the rest behind "Explore"
   const fold = ['g1', 'g2', 'g3'].includes(state.grade) && !isTestMode();
@@ -168,6 +171,54 @@ function renderHome() {
     <details class="explore"${open ? ' open' : ''}><summary>🧭 Explore all ${total} activities</summary>${catalog}</details>`);
   const d = $('#grid .explore');
   d.addEventListener('toggle', () => { state.exploreOpen = d.open; save(); });
+}
+
+/* ---------- section tiles, and tiles that hold several related sections ---------- */
+const COMBINED = (ContentData.get('curriculum-map', 'combinedSections') || { groups: [] }).groups;
+function sectionTile(c) {
+  const best = Math.min(3, state.best[c.id] || 0);
+  const lv = c.id === 'mix' || c.trace ? '' : stepDots(c.id);
+  const icon = c.id === 'home' && typeof myCountry === 'function' && myCountry() ? myCountry().flag : c.icon;
+  return `<button class="tile" data-cat="${c.id}" style="--c:${c.color}">
+      ${lv}<span class="ti">${icon}</span><span class="tt">${typeof editionTitle === 'function' ? editionTitle(c.id, localTileTitle(c.id, c.title)) : c.title}</span><span class="ts">${typeof editionSub === 'function' ? editionSub(c.id, gradeSub(c.id, c.sub)) : gradeSub(c.id, c.sub)}</span>
+      <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
+}
+// a combined tile can take its name from one of its parts, so a country's own name for it is kept
+const comboTitle = (combo) => (combo.titleFrom && typeof editionTitle === 'function' ? editionTitle(combo.titleFrom, combo.title) : combo.title);
+function comboTile(combo, parts) {
+  const best = Math.min(3, ...parts.map((c) => state.best[c.id] || 0));       // its stars are those of the part that needs the most practice
+  return `<button class="tile combo" data-combo="${combo.id}" aria-haspopup="dialog" style="--c:${combo.color}">
+      <span class="combo-n">${parts.map((c) => `<i>${c.icon}</i>`).join('')}</span><span class="ti">${combo.icon}</span><span class="tt">${comboTitle(combo)}</span><span class="ts">${parts.length} activities</span>
+      <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
+}
+// open one section (from its own tile, or from the list inside a combined tile)
+function openSection(catId) {
+  if (catId === 'vocab') return openLearn();
+  if (catId === 'trace') { TR.quest = null; return openTrace(); }
+  if (catId === 'library') return openLibrary();
+  startRound(catId);
+}
+function closeCombo() { const s = $('#comboSheet'); if (s) s.remove(); }
+// the list of parts inside a combined tile
+function openCombo(id) {
+  const combo = COMBINED.find((k) => k.id === id); if (!combo) return;
+  const parts = visibleGames().filter((c) => combo.parts.includes(c.id)).sort((a, b) => combo.parts.indexOf(a.id) - combo.parts.indexOf(b.id));
+  if (parts.length === 1) return openSection(parts[0].id);
+  closeCombo();
+  const sheet = document.createElement('div');
+  sheet.id = 'comboSheet'; sheet.className = 'combo-sheet';
+  sheet.innerHTML = `<div class="combo-card" role="dialog" aria-modal="true" aria-label="${esc(comboTitle(combo))}">
+    <button class="combo-close" aria-label="Close">✕</button>
+    <h2><span>${combo.icon}</span> ${esc(comboTitle(combo))}</h2>
+    <div class="grid">${typeof locHTML === 'function' ? locHTML(parts.map(sectionTile).join('')) : parts.map(sectionTile).join('')}</div></div>`;
+  sheet.addEventListener('click', (e) => {
+    const t = e.target.closest('.tile');
+    if (t && t.dataset.cat) { sfx.tap(); closeCombo(); return openSection(t.dataset.cat); }
+    if (e.target === sheet || e.target.closest('.combo-close')) { sfx.tap(); closeCombo(); }
+  });
+  sheet.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCombo(); });
+  document.body.appendChild(sheet);
+  const first = sheet.querySelector('.tile'); if (first) first.focus();
 }
 
 /* ---------- a round ---------- */
@@ -1151,11 +1202,9 @@ $('#grid').addEventListener('click', (e) => {
   const t = e.target.closest('.tile'); if (!t) return;
   sfx.tap();
   if (t.dataset.game) return openBrainGame(t.dataset.game);
+  if (t.dataset.combo) return openCombo(t.dataset.combo);
   if (!t.dataset.cat) return;
-  if (t.dataset.cat === 'vocab') return openLearn();
-  if (t.dataset.cat === 'trace') { TR.quest = null; return openTrace(); }
-  if (t.dataset.cat === 'library') return openLibrary();
-  startRound(t.dataset.cat);
+  openSection(t.dataset.cat);
 });
 $('#hintBtn').onclick = () => { sfx.tap(); showHint(R.qs[R.i]); };
 $('#sayBtn').onclick = () => { sfx.tap(); const q = R.qs[R.i]; say((q.say && q.say.length) ? q.say : q.readQ || q.text.replace(/<[^>]+>/g, '')); };

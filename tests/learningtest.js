@@ -50,7 +50,7 @@ const { chromium } = require('playwright');
       const sections = [...document.querySelectorAll('#grid .catalog-section h2')].map(e => e.textContent);
       if (!sections.some(s => s.includes('Brain Teasers')))
         throw new Error('Brain Teasers missing from home');
-      if (!document.querySelector('#grid [data-cat="pattern"]'))
+      if (!document.querySelector('#grid [data-combo="thinking"]'))
         throw new Error('Pattern activity missing from home');
       // brain games sit inside Brain Teasers on the home screen, filtered by age
       const tiles = () => [...document.querySelectorAll('#grid [data-game]')].map(x => x.dataset.game);

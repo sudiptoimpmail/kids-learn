@@ -1992,3 +1992,13 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .hw-label.on { background: #ffd43b; color: var(--ink); transform: scale(1.06); }
 .hw-label.done { background: #fff3bf; color: var(--ink); }
 .q-main.hw-main { min-height: 0; overflow: visible; }
+
+/* a tile that holds several related sections, and the list that opens from it */
+.tile.combo .combo-n { position: absolute; right: 10px; top: 10px; display: flex; gap: 2px; font-size: 18px; z-index: 1; }
+.tile.combo .combo-n i { font-style: normal; background: #ffffffd9; border-radius: 10px; padding: 2px 4px; line-height: 1.1; }
+.combo-sheet { position: fixed; inset: 0; z-index: 80; background: #2b214080; display: grid; place-items: center; padding: 18px; animation: comboIn .16s ease-out; }
+.combo-card { position: relative; width: min(560px, 100%); max-height: 90vh; overflow: auto; background: var(--bg, #fff9f0); border-radius: 28px; padding: 20px 18px 22px; box-shadow: 0 18px 50px #0005; }
+.combo-card h2 { margin: 0 44px 14px 4px; font-size: 24px; color: var(--ink); }
+.combo-close { position: absolute; right: 12px; top: 12px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: #fff; font-size: 20px; font-weight: 900; color: var(--ink); box-shadow: 0 3px 0 #0002; cursor: pointer; }
+@keyframes comboIn { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .combo-sheet { animation: none; } }

@@ -5968,6 +5968,70 @@
         "community": "Explore section",
         "region": "Explore section"
       }
+    },
+    "combinedSections": {
+      "about": "Related sections share one tile on the Learn screen. A tap opens the list of its parts; each part keeps its own step, stars and progress. A grade that has only one of the parts sees that section's own tile. titleFrom: the tile takes its name from that part, so a country's own name for it is kept (EVS · Science in India).",
+      "groups": [
+        {
+          "id": "words",
+          "title": "Read Words",
+          "sub": "little words · big words",
+          "icon": "📖",
+          "color": "#ff8787",
+          "parts": [
+            "cvc",
+            "w4"
+          ]
+        },
+        {
+          "id": "thinking",
+          "title": "Patterns & Puzzles",
+          "sub": "patterns · odd one out · what comes next",
+          "icon": "🧩",
+          "color": "#7048e8",
+          "parts": [
+            "pattern",
+            "odd",
+            "sequence"
+          ]
+        },
+        {
+          "id": "science",
+          "title": "Science",
+          "sub": "liquid or solid · living things · did you know?",
+          "icon": "🔬",
+          "color": "#1098ad",
+          "parts": [
+            "matter",
+            "sci",
+            "gk"
+          ],
+          "titleFrom": "sci"
+        },
+        {
+          "id": "people",
+          "title": "Jobs & Community",
+          "sub": "who helps us · our community",
+          "icon": "🧑‍🚒",
+          "color": "#ff922b",
+          "parts": [
+            "jobs",
+            "community"
+          ]
+        },
+        {
+          "id": "world",
+          "title": "Flags, Maps & Places",
+          "sub": "flags · world map · famous places",
+          "icon": "🌍",
+          "color": "#1c7ed6",
+          "parts": [
+            "flags",
+            "maps",
+            "places"
+          ]
+        }
+      ]
     }
   }
 }
