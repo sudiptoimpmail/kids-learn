@@ -184,7 +184,7 @@ function sectionTile(c) {
       <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
 }
 // a combined tile can take its name from one of its parts, so a country's own name for it is kept
-const comboTitle = (combo) => (combo.titleFrom && typeof editionTitle === 'function' ? editionTitle(combo.titleFrom, combo.title) : combo.title);
+const comboTitle = (combo) => (combo.titleFrom && typeof localTileTitle === 'function' ? localTileTitle(combo.titleFrom, combo.title) : combo.title);
 function comboTile(combo, parts) {
   const best = Math.min(3, ...parts.map((c) => state.best[c.id] || 0));       // its stars are those of the part that needs the most practice
   return `<button class="tile combo" data-combo="${combo.id}" aria-haspopup="dialog" style="--c:${combo.color}">
