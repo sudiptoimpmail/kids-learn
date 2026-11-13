@@ -11,7 +11,7 @@ const { chromium } = require('playwright');
   const r = await p.evaluate(() => {
     const bad = [], seen = {}, txt = (h) => { const d = document.createElement('div'); d.innerHTML = h; return d.textContent.trim(); };
     const cases = [['prek', 'add', 1], ['k', 'add', 2], ['g3', 'add', 8], ['prek', 'sub', 1], ['g2', 'sub', 7], ['g2', 'mul', 1], ['g3', 'mul', 6],
-      ['g2', 'div', 1], ['g3', 'div', 5], ['g1', 'clock', 2], ['g3', 'clock', 5], ['g1', 'flags', 2], ['k', 'flags', 1], ['prek', 'jobs', 1], ['g1', 'jobs', 3],
+      ['g2', 'div', 1], ['g3', 'div', 5], ['g1', 'clock', 2], ['g3', 'clock', 5], ['g1', 'flags', 2], ['k', 'flags', 1],
       ['g2', 'frac', 2], ['g3', 'frac', 4], ['prek', 'sequence', 1], ['g3', 'sequence', 3]];
     for (const [g, id, lv] of cases) {
       state.grade = g;

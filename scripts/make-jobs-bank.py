@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Builds data/helpers.json: illustrated workers and the things they wear and use (self-authored SVG).
+"""Builds banks/learn-play.jobs.json, the Jobs question bank (kids-core/question-bank format, see kids-core QUESTION-FORMAT.md):
+illustrated workers and the things they wear and use (self-authored SVG), their lessons and every Jobs question.
 
 Each worker is one picture (viewBox -20 -20 240 300). Every named thing (helmet, fire hose, stethoscope ...) is its
 own group: <g data-val="fire hose" data-row="4" class="hw-part">, so a child can tap it, a lesson can light it up,
 and it can be shown alone as an answer picture (parts[].svg with its own viewBox).
-Run:  python3 scripts/make-helpers.py
+Run:  python3 scripts/make-jobs-bank.py   then   node ../kids-core/tools/check-bank.mjs --grades prek,k,g1,g2,g3 banks/learn-play.jobs.json
 """
 import json, os
 
@@ -203,18 +204,112 @@ def astronaut():
     return w.build()
 
 WORKERS = [firefighter(), doctor(), police(), soldier(), builder(), chef(), farmer(), astronaut()]
-OUT = {
-    'schema': 1, 'namespace': 'helpers',
-    'datasets': {
-        'about': ('Workers and the things they wear and use, built by scripts/make-helpers.py (self-authored pictures). '
-                  'Jobs step 1 is "who helps us?"; each step after it is one worker: the lesson names the worker and each thing, then the quiz. '
-                  'Pre-K meets the workers; Kindergarten learns the names of their things; 1st grade also learns what each thing is for.'),
-        'levels': ['Who helps us?'] + [w['name'][0].upper() + w['name'][1:] + ': ' + ', '.join(p['name'] for p in w['parts'][:2]) + ' ...' for w in WORKERS] + ['All the jobs'],
-        'quiz': {'reviewShare': 0.3, 'tapShare': 0.4, 'whoShare': 0.2, 'useGrades': ['g1', 'g2', 'g3'], 'useShare': 0.35},
-        'WORKERS': WORKERS,
-    },
+
+# every job a child meets in "who helps us?" and "all the jobs": name, picture, what they do, their tools
+JOBS = [["firefighter", "🧑‍🚒", "puts out fires", "🔥🚒"], ["doctor", "🧑‍⚕️", "helps sick people get better", "🩺💊"], ["teacher", "🧑‍🏫", "teaches children at school", "📚✏️"],
+        ["chef", "🧑‍🍳", "cooks yummy food", "🍲🥘"], ["farmer", "🧑‍🌾", "grows food and feeds animals", "🌽🐄"], ["police officer", "👮", "keeps people safe", "🚓🚨"],
+        ["pilot", "🧑‍✈️", "flies airplanes", "✈️☁️"], ["astronaut", "🧑‍🚀", "goes into space", "🚀🌙"], ["mechanic", "🧑‍🔧", "fixes cars", "🚗🔧"],
+        ["artist", "🧑‍🎨", "paints pictures", "🎨🖌️"], ["scientist", "🧑‍🔬", "does experiments", "🧪🔬"], ["builder", "👷", "builds houses", "🏗️🧱"],
+        ["singer", "🧑‍🎤", "sings songs", "🎤🎵"], ["judge", "🧑‍⚖️", "decides what is fair in court", "⚖️🏛️"], ["coder", "🧑‍💻", "writes programs for computers", "💻⌨️"],
+        ["dentist", "🦷", "takes care of our teeth", "🪥😁"], ["mail carrier", "📬", "brings letters to our homes", "✉️📦"], ["baker", "🧁", "bakes bread and cakes", "🍞🎂"],
+        ["vet", "🐾", "takes care of sick animals", "🐶🐱"], ["bus driver", "🚌", "drives kids to school", "🚏🧒"], ["soldier", "🪖", "keeps the country safe", "🎖️🥾"],
+        ["librarian", "📚", "helps us find books", "📖🔎"], ["garbage collector", "🚛", "takes away the trash", "🗑️♻️"], ["lifeguard", "🏊", "keeps swimmers safe", "🛟🏖️"]]
+
+# ------------------------------------------------------------------ the bank (kids-core/question-bank, schema 2)
+import random, re
+TODAY = '2026-11-12'
+slug = lambda t: re.sub(r'[^a-z0-9]+', '-', t.lower().replace("'", '')).strip('-')
+cap = lambda t: t[0].upper() + t[1:]
+kind = lambda n: n.split(' ')[-1]                      # boots and moon boots are the same kind of thing
+plural = lambda n: n.endswith('s') and not re.search(r'(camouflage|radio)$', n)
+tell = lambda p: f"The {p['name']} {p['use']}."
+pic = lambda w: 'helpers/' + slug(w['id'])
+letters = 'abcdef'
+def picks(rng, pool, n, ok=lambda x: True):
+    pool = [x for x in pool if ok(x)]; rng.shuffle(pool); return pool[:n]
+def choice_q(qid, step, grades, text, say, right, wrong, rng, picture=None, hint=None, explain=None):
+    opts = [right] + wrong; rng.shuffle(opts)
+    q = {'id': qid, 'section': 'jobs', 'step': step, 'grades': grades, 'countries': ['*'], 'interaction': 'choice', 'prompt': {'text': text, 'say': say}}
+    if picture: q['picture'] = picture
+    q['choices'] = [dict(id=letters[i], **o) for i, o in enumerate(opts)]
+    q['answer'] = [letters[opts.index(right)]]
+    if hint: q['hint'] = hint
+    if explain: q['explain'] = explain
+    q['status'] = 'published'; q['updated'] = TODAY
+    return q
+
+pictures, lessons, questions = [], [], []
+steps = [{'section': 'jobs', 'step': 1, 'title': 'Who helps us?'}]
+for n, w in enumerate(WORKERS):
+    step = n + 2
+    steps.append({'section': 'jobs', 'step': step, 'title': cap(w['name'])})
+    pictures.append({'id': pic(w), 'alt': w['name'], 'viewBox': w['viewBox'], 'svg': w['svg'],
+                     'tags': [{'id': slug(p['name']), 'label': p['name'], 'area': {'group': p['name']}, 'box': p['box']} for p in w['parts']]})
+steps.append({'section': 'jobs', 'step': len(WORKERS) + 2, 'title': 'All the jobs'})
+LAST = len(WORKERS) + 2
+
+for n, w in enumerate(WORKERS):
+    step, ws = n + 2, slug(w['id'])
+    rng = random.Random('find' + ws)
+    # step 1: find the worker among three pictures (Pre-K meets the first six)
+    pool = WORKERS[:6] if n < 6 else WORKERS
+    questions.append(choice_q(f'jobs.find.{ws}', 1, ['prek', 'k'] if n < 6 else ['k'], f"Find the **{w['name']}**!", ['Find the', f"{w['name']}!"],
+                              {'label': w['name'], 'picture': pic(w)}, [{'label': x['name'], 'picture': pic(x)} for x in picks(rng, pool, 2, lambda x: x is not w)], rng,
+                              hint={'picture': pic(w), 'say': f"This person {w['does']}."}))
+    # the lesson: the worker, then each thing by name and what it is for
+    lessons.append({'id': f'jobs.{ws}.lesson', 'section': 'jobs', 'step': step, 'grades': ['k', 'g1'], 'title': cap(w['name']), 'picture': pic(w),
+                    'lines': [{'say': f"This is {w['article']} {w['name']}."}, {'say': f"{cap(w['article'])} {w['name']} {w['does']}."}] +
+                             [line for p in w['parts'] for line in ({'say': p['name'], 'light': slug(p['name'])}, {'say': tell(p), 'light': slug(p['name'])})],
+                    'together': f"jobs.{ws}.pick.{slug(w['parts'][0]['name'])}"})
+    others = [(x, p) for x in WORKERS if x is not w for p in x['parts']]
+    for p in w['parts']:
+        ps = slug(p['name']); rng = random.Random(ws + ps)
+        lit = {'picture': f'{pic(w)}?light={ps}'}
+        part = lambda x, q: {'label': q['name'], 'picture': f"{pic(x)}#{slug(q['name'])}"}
+        questions.append({'id': f'jobs.{ws}.tap.{ps}', 'section': 'jobs', 'step': step, 'grades': ['k', 'g1'], 'countries': ['*'], 'interaction': 'tap',
+                          'prompt': {'text': f"Tap the **{p['name']}**!", 'say': ['Tap the', f"{p['name']}!"]}, 'picture': pic(w), 'answer': [ps],
+                          'hint': dict(lit, say='Look for the part that is glowing!'), 'status': 'published', 'updated': TODAY})
+        own = picks(rng, w['parts'], 2, lambda q: kind(q['name']) != kind(p['name']))
+        taken = {kind(p['name'])} | {kind(q['name']) for q in own}
+        far = picks(rng, others, 1, lambda xq: kind(xq[1]['name']) not in taken)
+        ask = f"Which ones are the **{p['name']}**?" if plural(p['name']) else f"Which one is the **{p['name']}**?"
+        questions.append(choice_q(f'jobs.{ws}.pick.{ps}', step, ['k', 'g1'], ask, ['Which ones are the' if plural(p['name']) else 'Which one is the', f"{p['name']}?"],
+                                  part(w, p), [part(w, q) for q in own] + [part(x, q) for x, q in far], rng, hint=dict(lit, say=tell(p)), explain=tell(p)))
+        questions.append(choice_q(f'jobs.{ws}.whose.{ps}', step, ['k', 'g1'], 'Who uses this?', 'Who uses this?', {'label': w['name'], 'picture': pic(w)},
+                                  [{'label': x['name'], 'picture': pic(x)} for x in picks(rng, WORKERS, 2, lambda x: x is not w and all(q['name'] != p['name'] for q in x['parts']))], rng,
+                                  picture=f'{pic(w)}#{ps}', hint=dict(lit, say=f"This person {w['does']}.")))
+        # 1st grade: what is it for? asked among this worker's own things, so only one answer can be right
+        questions.append(choice_q(f'jobs.{ws}.use.{ps}', step, ['g1'], p['ask'], p['ask'], part(w, p), [part(w, q) for q in w['parts'] if q is not p], rng,
+                                  hint=dict(lit, say=tell(p)), explain=tell(p)))
+
+def job_questions(step, grades, pool, n_wrong, kinds, tag):
+    for j in pool:
+        name, e, does, clue = j; js = slug(name); rng = random.Random(tag + js)
+        article = 'an' if name[0] in 'aeiou' else 'a'
+        wrong = picks(rng, pool, n_wrong, lambda x: x is not j)
+        clues = {'picture': f'emoji/{clue}'}
+        if 'who' in kinds:
+            questions.append(choice_q(f'jobs.who.{js}.{tag}', step, grades, f'Who {does}?', f'Who {does}?', {'text': name, 'picture': f'emoji/{e}'},
+                                      [{'text': x[0], 'picture': f'emoji/{x[1]}'} for x in wrong], rng, picture='emoji/❓', hint=dict(clues, say=f'This person {does}.')))
+        if 'name' in kinds:
+            questions.append(choice_q(f'jobs.name.{js}.{tag}', step, grades, 'Who is this?', 'Who is this?', {'text': name}, [{'text': x[0]} for x in wrong], rng,
+                                      picture=f'emoji/{e}', hint=dict(clues, say=f'This person {does}.')))
+        if 'does' in kinds:
+            questions.append(choice_q(f'jobs.does.{js}.{tag}', step, grades, f'What does {article} {name} do?', f'What does {article} {name} do?', {'text': does},
+                                      [{'text': x[2]} for x in wrong], rng, picture=f'emoji/{e}', hint=dict(clues, say='Look at the clues!')))
+    questions.append({'id': f'jobs.match.tools.{tag}', 'section': 'jobs', 'step': step, 'grades': grades, 'countries': ['*'], 'interaction': 'match',
+                      'prompt': {'text': 'Match each helper to their tools!', 'say': 'Match each helper to their tools!'},
+                      'pairs': [{'left': {'picture': f'emoji/{j[1]}', 'label': j[0]}, 'right': {'picture': f'emoji/{j[3]}', 'label': f'{j[0]} tools'}} for j in pool],
+                      'show': n_wrong + 1, 'hint': {'say': 'Look carefully, and try again!'}, 'status': 'published', 'updated': TODAY})
+job_questions(1, ['prek', 'k'], JOBS[:12], 2, ['who'], 's1')
+job_questions(LAST, ['g1'], JOBS, 3, ['who', 'name', 'does'], 'all')
+
+BANK = {
+    'format': 'kids-core/question-bank', 'schema': 2, 'id': 'learn-play.jobs', 'title': 'Jobs', 'version': 1, 'language': 'en-US', 'entitlement': 'free',
+    'steps': steps, 'lessons': lessons, 'questions': questions, 'pictures': pictures,
 }
 here = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(here, '..', 'data', 'helpers.json'), 'w') as f:
-    json.dump(OUT, f, ensure_ascii=False, indent=1); f.write('\n')
-print(len(WORKERS), 'workers,', sum(len(w['parts']) for w in WORKERS), 'things')
+os.makedirs(os.path.join(here, '..', 'banks'), exist_ok=True)
+with open(os.path.join(here, '..', 'banks', 'learn-play.jobs.json'), 'w') as f:
+    json.dump(BANK, f, ensure_ascii=False, indent=1); f.write('\n')
+print(len(pictures), 'pictures,', len(lessons), 'lessons,', len(questions), 'questions')

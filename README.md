@@ -137,4 +137,5 @@ Learn & Play and [Palabritas](https://github.com/sudiptoimpmail/palabritas) run 
 
 - `app.config.json` holds everything app-specific that isn't code: storage key, voices, the grown-up PIN (shared with Palabritas), content packs and **colours** (`theme`).
 - `core/` holds saved data, the PIN, voice, sounds, confetti, adaptive levels, content packs (schema 1) and offline support.
+- `banks/` holds **question banks** in kids-core's common format (see kids-core `QUESTION-FORMAT.md`): questions, lessons and tagged pictures as plain data, listed in `app.config.json` `"banks"`. Jobs is the first section served this way (`bank-cards.js` draws the cards; `scripts/make-jobs-bank.py` builds the file). Check a bank with `node ../kids-core/tools/check-bank.mjs --grades prek,k,g1,g2,g3 banks/<id>.json`.
 - The rest of this repo is Learn & Play's own games, questions and cards.

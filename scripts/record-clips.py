@@ -28,15 +28,36 @@ def lesson_phrases():
         return list(json.load(f)['datasets']['phrases'].values())
 
 
+def bank_phrases(path):
+    """Every sentence a kids-core question bank says (the same list as QuestionBank.spoken)."""
+    with open(path) as f:
+        bank = json.load(f)
+    out = []
+    def add(v):
+        for s in (v if isinstance(v, list) else [v]):
+            if isinstance(s, str) and s.strip() and s not in out:
+                out.append(s)
+    for q in bank.get('questions', []):
+        prompt = q.get('prompt', {})
+        add(prompt['say'] if prompt.get('say') is not None else prompt.get('text', '').replace('**', ''))
+        hint = q.get('hint') or {}
+        add(hint['say'] if hint.get('say') is not None else hint.get('text'))
+        add(q.get('explain'))
+    for lesson in bank.get('lessons', []):
+        for line in lesson.get('lines', []):
+            add(line.get('say'))
+    return out
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('phrases', nargs='*')
     ap.add_argument('--lessons', action='store_true')
+    ap.add_argument('--bank', action='append', default=[], help='a question bank file: record every sentence it says (prompts, hints, explanations, lesson lines)')
     ap.add_argument('--force', action='store_true')
     ap.add_argument('--voice', default='af_heart')
     ap.add_argument('--speed', type=float, default=1.0)
     a = ap.parse_args()
-    phrases = a.phrases + (lesson_phrases() if a.lessons else [])
+    phrases = a.phrases + (lesson_phrases() if a.lessons else []) + [p for f in a.bank for p in bank_phrases(f)]
     if not phrases:
         sys.exit('nothing to record')
     with open(CLIPS) as f:

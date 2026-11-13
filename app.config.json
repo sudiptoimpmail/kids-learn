@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "core": "1.10.0",
+  "core": "1.11.0",
   "app": {
     "id": "kids-learn",
     "name": "Learn & Play",
@@ -72,6 +72,9 @@
       "palabritas.v1"
     ]
   },
+  "banks": [
+    "learn-play.jobs"
+  ],
   "packs": {
     "db": "kids-learn-content-packs",
     "grades": [
@@ -187,8 +190,7 @@
       "coloring-5",
       "coloring-landmarks",
       "lessons",
-      "early",
-      "helpers"
+      "early"
     ]
   },
   "scripts": [
@@ -207,7 +209,7 @@
     "content.js",
     "thinking.js",
     "early.js",
-    "helpers.js",
+    "bank-cards.js",
     "country.js",
     "levels.js",
     "gradefit.js",
