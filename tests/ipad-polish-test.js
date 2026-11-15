@@ -103,7 +103,7 @@ const { chromium } = require('playwright');
       state.gameLv.draw = 2;
       openGame('draw'); document.querySelector('#gameArea [data-a="surprise"]')?.click();
       const pad = document.querySelector('.dr-pad').getBoundingClientRect();
-      const done = document.querySelector('.g-draw [data-a="done"]');
+      const done = document.querySelector('.g-draw [data-a="gallery"]');   // the last button on the rail (drawings save by themselves now)
       done.scrollIntoView({block:'end'});
       return {padWidth:pad.width,doneBottom:done.getBoundingClientRect().bottom,
         viewport:innerHeight,documentHeight:document.documentElement.scrollHeight};

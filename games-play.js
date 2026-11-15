@@ -29,7 +29,7 @@ function openGame(id) {
   // Inspect the rendered screen before charging: a picture picker is not a round.
   if (!brainMode) startPlayTimer();
 }
-function stopGame() { try { gameFullOff(); } catch {} sayToken++; stopClip(); gameSession++; if (gameStart) { playActive += Date.now() - gameStart; gameStart = 0; } if (playActive) { logPlay(playActive / 1000); playActive = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
+function stopGame() { try { drawFlush(); } catch {} drawAutosave = drawFlush = () => {}; try { gameFullOff(); } catch {} sayToken++; stopClip(); gameSession++; if (gameStart) { playActive += Date.now() - gameStart; gameStart = 0; } if (playActive) { logPlay(playActive / 1000); playActive = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
 let gameStart = 0, playActive = 0;   // play time for the grown-ups' numbers: only while the app is on screen
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && gameStart) { playActive += Date.now() - gameStart; gameStart = 0; }
@@ -861,7 +861,10 @@ function picSVG(p, fills = {}, cls = '') {
 function startColorPicker() {
   const done = state.colored || [];
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Pick a picture to color! <small>${ALL_PICS.length} pictures · ⭐ = colored</small></div>` +
+  // Color by Number comes first: a picture in many segments, each with a short sum (colornumbers.js)
+  const byNumber = `<div class="pic-group">🔢 Color by Number</div><div class="pic-grid">${CBN_PAGES.map((p) =>
+    `<button class="pic-pick" data-n="${p.id}">${cbnSVG(p, (state.cbn || {})[p.id])}<span>${done.includes(p.id) ? '⭐ ' : ''}${p.name}</span></button>`).join('')}</div>`;
+  area.innerHTML = `<div class="g-msg">Pick a picture to color! <small>${ALL_PICS.length + CBN_PAGES.length} pictures · ⭐ = colored</small></div>` + byNumber +
     [...THEME_GROUPS.map(([id, label]) => [label, id]), ['🌟 Scenes, Seasons & Cartoons', -1, -1], ...COLOR_GROUPS].map(([label, lo, hi]) => {
       const order = (p) => { const i = THEME_PAGES.findIndex((t) => t.id === p.id); return i < 0 ? 999 : i; };   // flags and holidays keep the order they were written in
       const list = typeof lo === 'string' ? ALL_PICS.filter((p) => p.group === lo).sort((x, y) => order(x) - order(y))
@@ -870,7 +873,7 @@ function startColorPicker() {
         `<button class="pic-pick" data-p="${p.id}">${picSVG(p, (state.art || {})[p.id])}<span>${done.includes(p.id) ? '⭐ ' : ''}${p.name}</span></button>`).join('')}</div>` : '';
     }).join('');
   say('Pick a picture to color!');
-  $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); startColoring(ALL_PICS.find((p) => p.id === b.dataset.p)); }));
+  $$('.pic-pick', area).forEach((b) => (b.onclick = () => { sfx.tap(); if (b.dataset.n) startColorByNumber(CBN_PAGES.find((p) => p.id === b.dataset.n)); else startColoring(ALL_PICS.find((p) => p.id === b.dataset.p)); }));
 }
 
 // pinch (two fingers) to zoom, drag with one finger when zoomed in; taps still go through
@@ -933,7 +936,7 @@ function startColoring(p) {
   area.innerHTML = `<div class="cb">
     <div class="cb-pic"><div class="color-wrap cz-view"><div class="cz-inner">${picSVG(p, fills, 'big')}</div></div></div>
     <div class="cb-rail" role="toolbar" aria-label="Coloring tools">
-      <div class="cb-row"><button class="cb-btn cb-done" data-a="done" aria-label="I'm done">✔</button><button class="cb-btn" data-a="pics" aria-label="Pictures">🖼️</button></div>
+      <button class="cb-btn" data-a="pics" aria-label="Pictures">🖼️</button>
       <button class="cb-round" data-a="tool" aria-label="Choose a tool">${swatch(tool, cur)}</button>
       <button class="cb-round cb-color" data-a="color" aria-label="Choose a colour" style="--c:${cur}"></button>
       <button class="cb-round" data-a="erase" aria-label="Eraser">🧽</button>
@@ -983,7 +986,7 @@ function startColoring(p) {
     if (pops.some((x) => !x.hidden)) { closePops(); return; }
     const v = erase ? '#ffffff' : tool === 'fill' ? cur : `${tool}|${cur}`;
     undo.push([r, fills[r.dataset.k]]); if (undo.length > 60) undo.shift();
-    paint(r, v); save();
+    paint(r, v); save(); finished();
     r.classList.remove('splash'); void r.getBoundingClientRect(); r.classList.add('splash');
     paintRipple(r, tool === 'rainbow' && !erase ? '#ffd43b' : erase ? '#ffffff' : cur);
     tone([500 + Math.random() * 400], { dur: 0.05, vol: 0.08 });
@@ -1002,12 +1005,11 @@ function startColoring(p) {
     peekTimer = later(endPeek, 2000);
   };
   area.querySelector('[data-a="pics"]').onclick = () => { sfx.tap(); startColorPicker(); };
-  area.querySelector('[data-a="done"]').onclick = () => {
+  // nothing to press when she is done: every tap is saved, and a picture with every part coloured celebrates once
+  const finished = () => {
     state.colored = state.colored || [];
-    if (!state.colored.includes(p.id)) state.colored.push(p.id);
-    save();
-    gameWin('Beautiful picture!');
-    endPanel('Beautiful picture!', '🎨', startColorPicker);
+    if (state.colored.includes(p.id) || !$$('.color-wrap .r', area).every((r) => fills[r.dataset.k])) return;
+    state.colored.push(p.id); save(); gameWin('Beautiful picture!');
   };
   refresh();
 }
@@ -1448,7 +1450,7 @@ function startDraw(refIndex) {
       <button class="cb-round cb-color" data-a="drcolor" aria-label="Choose a colour" style="--c:${CB_COLORS[0]}"></button>
       <button class="cb-round dr-tool" data-t="erase" aria-label="Eraser">🧽</button>
       <div class="cb-row"><button class="cb-btn dr-tool" data-t="undo" aria-label="Undo">↩️</button><button class="cb-btn dr-tool" data-t="clear" aria-label="Start over">🗑️</button></div>
-      <div class="cb-row"><button class="cb-btn cb-done" data-a="done" aria-label="Save my drawing">✔</button><button class="cb-btn" data-a="gallery" aria-label="My drawings">🎨</button></div>
+      <button class="cb-btn" data-a="gallery" aria-label="My drawings">🎨</button>
     </div>
     <div class="cb-pop" data-pop="color" hidden><div class="cb-colors">${CB_COLORS.map((c, i) => `<button class="dr-ink cb-c ${c === CB_COLORS[0] ? 'on' : ''}" data-c="${c}" style="--c:${c};--sw:${c}" aria-label="colour ${c}"></button>`).join('')}</div></div>
     <div class="cb-pop" data-pop="tool" hidden><div class="cb-tools dr-tools2"><button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✏<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
@@ -1553,7 +1555,7 @@ function startDraw(refIndex) {
     }
     if (bucket) {                                            // pour paint instead of drawing
       const [bx, by] = pt(e), op = { fill: true, x: bx, y: by, color: erase ? null : color };
-      if (fillAt(op)) { strokes.push(op); sfx.tap(); tone([330, 440, 587], { dur: 0.05, gap: 0.04, vol: 0.08 }); pad.classList.remove('poured'); void pad.offsetWidth; pad.classList.add('poured'); }
+      if (fillAt(op)) { strokes.push(op); drawAutosave(); sfx.tap(); tone([330, 440, 587], { dur: 0.05, gap: 0.04, vol: 0.08 }); pad.classList.remove('poured'); void pad.offsetWidth; pad.classList.add('poured'); }
       else { sfx.no(); say(fillAt.open ? 'Draw a shape with no gaps, then pour paint inside it!' : 'Tap inside a shape to pour paint.'); }
       touches.delete(e.pointerId);
       return;
@@ -1582,6 +1584,7 @@ function startDraw(refIndex) {
   });
   const end = e => {
     touches.delete(e.pointerId);
+    if (cur) drawAutosave();
     cur = null;
     if (touches.size < 2) gesture = null;
   };
@@ -1592,7 +1595,7 @@ function startDraw(refIndex) {
   $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; tool = b.dataset.tool || 'pencil'; bucket = false; $('[data-t="bucket"]', area).classList.remove('on'); sfx.tap(); }));
   $('[data-t="erase"]', area).onclick = (e) => { erase = !erase; e.currentTarget.classList.toggle('on', erase); sfx.tap(); };
   $('[data-t="bucket"]', area).onclick = (e) => { bucket = !bucket; e.currentTarget.classList.toggle('on', bucket); if (bucket) $$('.dr-size', area).forEach((x) => x.classList.remove('on')); sfx.tap(); say(bucket ? 'Tap a shape to pour paint in!' : 'Draw with your finger!'); };
-  $('[data-t="undo"]', area).onclick = () => { strokes.pop(); replay(); sfx.tap(); };
+  $('[data-t="undo"]', area).onclick = () => { strokes.pop(); replay(); sfx.tap(); drawAutosave(); };
   // rail: pop-up trays for colours and tools; the round buttons show what is chosen
   const pops = $$('.cb-pop', area), cbx = area.querySelector('.cb'), rail = area.querySelector('.cb-rail');
   const openPop = (name) => {
@@ -1611,20 +1614,29 @@ function startDraw(refIndex) {
   $$('.dr-ink, .dr-tools2 button', area).forEach((b) => b.addEventListener('click', () => { closePops(); refreshRail(); }));
   pad.addEventListener('pointerdown', closePops, true);
   refreshRail();
-  $('[data-t="clear"]', area).onclick = () => { strokes = []; replay(); sfx.tap(); };
-  area.querySelector('[data-a="choose"]').onclick = () => { sfx.tap(); drawChooser(); };
-  area.querySelector('[data-a="gallery"]').onclick = () => { sfx.tap(); drawGallery(); };
-  area.querySelector('[data-a="done"]').onclick = () => {
-    if (!strokes.length) { say('Draw something first!'); return; }
-    // save a small copy on a white background
+  $('[data-t="clear"]', area).onclick = () => { strokes = []; replay(); sfx.tap(); drawAutosave(); };
+  // Saved as she draws: a small copy goes into My drawings a moment after each stroke (no button to press).
+  // One drawing is one entry; an empty pad removes it. A drawing with a few strokes counts once towards the next level.
+  const entryId = Date.now(); let saveTimer = 0, counted = false;
+  const keepDrawing = () => {
+    saveTimer = 0;
+    const others = (state.drawings || []).filter((d) => d.id !== entryId);
+    if (!strokes.length) { state.drawings = others; save(); return; }
     const t = document.createElement('canvas'); t.width = t.height = 240;
     const tc = t.getContext('2d'); tc.fillStyle = '#fff'; tc.fillRect(0, 0, 240, 240); tc.drawImage(fc, 0, 0, 240, 240); tc.drawImage(cv, 0, 0, 240, 240);
-    state.drawings = [{ img: t.toDataURL('image/jpeg', 0.7), name: ref.name }, ...(state.drawings || [])].slice(0, 12);
-    const up = gameLevelUp('draw', 3);
-    gameWin(pick(['Beautiful drawing!', 'What a great drawing!', 'Awesome job!']));
-    endPanel(`What a great ${ref.name}!${up ? '' : '<br><small>Saved in My drawings 🖼️</small>'}`, '🎨', () => drawChooser(), up);
+    state.drawings = [{ id: entryId, img: t.toDataURL('image/jpeg', 0.7), name: ref.name }, ...others].slice(0, 12);
+    if (!counted && strokes.length >= 4) { counted = true; gameLevelUp('draw', 3); } else save();
   };
+  const autosave = (now = false) => { clearTimeout(saveTimer); if (now) keepDrawing(); else saveTimer = setTimeout(keepDrawing, 600); };
+  drawAutosave = autosave; drawFlush = () => { if (saveTimer) autosave(true); };
+  // leaving the pad (another picture, the gallery, Home) saves what is there straight away
+  const leave = (go) => () => { sfx.tap(); if (saveTimer) autosave(true); go(); };
+  area.querySelector('[data-a="choose"]').onclick = leave(drawChooser);
+  area.querySelector('[data-a="gallery"]').onclick = leave(drawGallery);
+  if (testFeatureAvailable()) window.__draw = { strokes: () => strokes.length, add: (pts) => { strokes.push({ color, size, tool: 'pencil', erase: false, pts }); replay(); autosave(); }, saveNow: () => autosave(true), entryId };
 }
+// the drawing pad's "save a moment from now"; the pad's own events call it
+let drawAutosave = () => {}, drawFlush = () => {};
 // pick what to draw
 function drawChooser() {
   const area = $('#gameArea'), refs = drawRefs(GL('draw'));
@@ -1639,7 +1651,7 @@ function drawChooser() {
 function drawGallery() {
   const area = $('#gameArea');
   const list = state.drawings || [];
-  area.innerHTML = `<div class="g-msg">🖼️ My drawings <small>${list.length ? 'Your last ' + list.length + ' drawings' : 'Finish a drawing to see it here!'}</small></div>
+  area.innerHTML = `<div class="g-msg">🖼️ My drawings <small>${list.length ? 'Your last ' + list.length + ' drawings' : 'Draw a picture and it is kept here by itself!'}</small></div>
     <div class="dr-gal">${list.map((d) => `<figure><img src="${d.img}" alt=""><figcaption>${d.name}</figcaption></figure>`).join('')}</div>
     <div class="color-btns"><button class="big-btn small ico" data-a="back" aria-label="Draw more">✏️ Draw</button></div>`;
   area.querySelector('[data-a="back"]').onclick = () => { sfx.tap(); drawChooser(); };

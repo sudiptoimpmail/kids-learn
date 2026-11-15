@@ -1,23 +1,53 @@
 /* ======================= FINGER MAZE (Brain Teasers) =======================
    Trace a path with your finger: take the duckling to mama duck, the kid home …
-   The maze is made fresh each time (a "perfect" maze: exactly one way through).
-   Level 1 is a tiny 3×4 maze; each level adds rows and columns. */
+   The maze is made fresh each time: exactly one way through, and side paths that lead nowhere, so a child can
+   take a wrong turn, get a little lost, and find the way back. Level 1 is a small 4×5 maze; each level adds rows and columns. */
 const PATH_THEMES = ContentData.get('game-themes','PATH_THEMES');
-const PATH_SIZES = [[3, 4], [4, 5], [6, 7], [7, 9], [8, 10], [9, 12], [11, 13], [12, 15], [13, 17], [15, 19], [17, 23]];   // columns × rows per level
-function makeMaze(cols, rows) {
+const PATH_SIZES = [[4, 5], [5, 6], [6, 7], [7, 9], [8, 10], [9, 12], [11, 13], [12, 15], [13, 17], [15, 19], [17, 23]];   // columns × rows per level
+// One maze with exactly one way through, but plenty of ways to go wrong.
+// A "growing tree": carving on from the newest cell makes long winding corridors; carving on from a random
+// earlier cell makes side paths. `branchy` is how often it starts a side path.
+function carveMaze(cols, rows, branchy) {
   // walls[r][c] = { n, e, s, w } — true means a wall
   const W = Array.from({ length: rows }, () => Array.from({ length: cols }, () => ({ n: true, e: true, s: true, w: true })));
   const seen = Array.from({ length: rows }, () => Array(cols).fill(false));
-  const stack = [[0, 0]]; seen[0][0] = true;
+  const active = [[0, 0]]; seen[0][0] = true;
   const D = { n: [0, -1, 's'], e: [1, 0, 'w'], s: [0, 1, 'n'], w: [-1, 0, 'e'] };
-  while (stack.length) {
-    const [c, r] = stack[stack.length - 1];
+  while (active.length) {
+    const at = Math.random() < branchy ? Math.floor(Math.random() * active.length) : active.length - 1;
+    const [c, r] = active[at];
     const next = Object.entries(D).filter(([, [dx, dy]]) => { const x = c + dx, y = r + dy; return x >= 0 && y >= 0 && x < cols && y < rows && !seen[y][x]; });
-    if (!next.length) { stack.pop(); continue; }
+    if (!next.length) { active.splice(at, 1); continue; }
     const [d, [dx, dy, back]] = next[Math.floor(Math.random() * next.length)];
-    W[r][c][d] = false; W[r + dy][c + dx][back] = false; seen[r + dy][c + dx] = true; stack.push([c + dx, r + dy]);
+    W[r][c][d] = false; W[r + dy][c + dx][back] = false; seen[r + dy][c + dx] = true; active.push([c + dx, r + dy]);
   }
   return W;
+}
+// the wrong turns a child can take: for each fork on the way, how many cells the wrong branch leads into
+function mazeWrongTurns(W, from, to) {
+  const route = mazeRoute(W, from, to), on = new Set(route.map((p) => p.join()));
+  const D = { n: [0, -1], e: [1, 0], s: [0, 1], w: [-1, 0] }, out = [];
+  for (const [c, r] of route.slice(0, -1)) for (const [d, [dx, dy]] of Object.entries(D)) {
+    if (W[r][c][d] || on.has([c + dx, r + dy].join())) continue;
+    // size of the side path that starts here
+    const seen = new Set([[c, r].join(), [c + dx, r + dy].join()]), q = [[c + dx, r + dy]]; let size = 0;
+    while (q.length) { const [x, y] = q.pop(); size++; for (const [e, [ex, ey]] of Object.entries(D)) { const k = [x + ex, y + ey].join(); if (!W[y][x][e] && !seen.has(k) && !on.has(k)) { seen.add(k); q.push([x + ex, y + ey]); } } }
+    out.push(size);
+  }
+  return out;
+}
+// Try several mazes and keep the one with the most real wrong turns (side paths long enough to get lost in),
+// then the longest way through. Small mazes need side paths of 2 cells; big ones of 4 or more.
+function makeMaze(cols, rows) {
+  const from = [0, 0], to = [cols - 1, rows - 1], deep = cols * rows < 30 ? 2 : cols * rows < 80 ? 3 : 4;
+  let best = null, bestScore = -1;
+  for (let attempt = 0; attempt < 24; attempt++) {
+    const W = carveMaze(cols, rows, 0.25 + Math.random() * 0.3);
+    const turns = mazeWrongTurns(W, from, to).filter((n) => n >= deep).length;
+    const score = turns * 1000 + mazeRoute(W, from, to).length;
+    if (score > bestScore) { best = W; bestScore = score; }
+  }
+  return best;
 }
 // the one way from start to goal (used for the hint)
 function mazeRoute(W, from, to) {
@@ -53,7 +83,7 @@ function startPathMaze() {
   area.querySelector('[data-a="zoom-in"]').onclick = () => zoom.by(1.4);
   area.querySelector('[data-a="zoom-out"]').onclick = () => zoom.by(1 / 1.4);
   const mid = ([x, y]) => [ox + (x + 0.5) * cell, oy + (y + 0.5) * cell];
-  let path = [start], drawing = false, done = false, hint = null;
+  let path = [start], drawing = false, done = false, hint = null, toldDeadEnd = false;
   const loadIcon = file => {
     const img = new Image();
     img.onload = () => { if (gameSession === session) draw(); };
@@ -127,6 +157,8 @@ function startPathMaze() {
         .sort((a, b) => dist(a, t) - dist(b, t))[0];
       if (!best) break;                                                        // a wall is in the way
       path.push(best); tone([520 + Math.min(path.length, 40) * 12], { dur: 0.04, vol: 0.05 });
+      // the end of a wrong path: say so once, then she finds her own way back
+      if (!toldDeadEnd && !same(best, goal) && Object.values(W[best[1]][best[0]]).filter((wall) => !wall).length === 1) { toldDeadEnd = true; say('Oops, a dead end! Go back and try another way.'); }
     }
     draw();
     if (same(path[path.length - 1], goal) && !done) win();
@@ -152,5 +184,5 @@ function startPathMaze() {
   area.querySelector('[data-a="new"]').onclick = () => { sfx.tap(); gameSession++; startPathMaze(); };
   draw();
   // for automated tests
-  if (testFeatureAvailable()) window.__pathMaze = { route: () => mazeRoute(W, start, goal), go: (cells) => { for (const t of cells) moveTo(t); }, done: () => done, session };
+  if (testFeatureAvailable()) window.__pathMaze = { route: () => mazeRoute(W, start, goal), wrongTurns: () => mazeWrongTurns(W, start, goal), walls: () => W, path: () => path.map((p) => p.slice()), go: (cells) => { for (const t of cells) moveTo(t); }, done: () => done, session };
 }
