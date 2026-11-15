@@ -26,7 +26,7 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     await p.evaluate(() => CoreScheme.set('light'));
     // coloring: every textured fill points at a pattern that exists before it is used; peek never eats her colours
     await p.evaluate(() => { document.getElementById('splash').style.display = 'none'; state.playAlways = true; openGame('color'); });
-    await p.waitForSelector('.pic-pick'); await p.locator('.pic-pick').nth(2).click(); await p.waitForSelector('.cb');
+    await p.waitForSelector('.pic-pick:not([data-n])'); await p.locator('.pic-pick:not([data-n])').nth(2).click(); await p.waitForSelector('.cb');
     const r = await p.evaluate(async () => {
       const tap = (x) => x.dispatchEvent(new MouseEvent('click', { bubbles: true }));
       const area = document.getElementById('gameArea'), regs = [...area.querySelectorAll('.color-wrap .r')], seen = [];

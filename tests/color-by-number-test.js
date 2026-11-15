@@ -93,6 +93,12 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     }
     const circ = await p.evaluate(() => { openGame('path'); startCircularMaze(9); const m = window.__pathMaze; return { circular: !!m.circular, turns: m.wrongTurns ? m.wrongTurns() : null }; });
     assert.ok(circ.circular && circ.turns >= 2, 'the circular maze has wrong turns too: ' + JSON.stringify(circ));
+    // ---- a word path starts with a tap on its first word (it used to ignore that tap)
+    const wp = await p.evaluate(() => { state.grade = 'g1'; const q = genVowelPath(); q.tries = 0; R = { qs: [q], i: 0, locked: false, mistakes: 0, streak: 0 }; document.getElementById('qMain').innerHTML = ''; renderLetterPath(q);
+      const lp = window.__letterPath, cells = document.querySelectorAll('#qMain .lp-cell'), before = cells[lp.idx[0]].classList.contains('on');
+      lp.step(lp.idx[0]); const after = cells[lp.idx[0]].classList.contains('on'); lp.step(lp.idx[1]);
+      return { before, after, next: cells[lp.idx[1]].classList.contains('on'), tries: q.tries }; });
+    assert.deepEqual(wp, { before: false, after: true, next: true, tries: 0 });
     assert.deepEqual(errors, []);
     console.log('PASS color by number: 6 pages, right sums for 5 grades, room for every sum, saves by itself; drawings and coloring need no button; mazes have real wrong turns');
   } finally { await b.close(); }

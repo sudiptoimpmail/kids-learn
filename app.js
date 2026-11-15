@@ -699,12 +699,13 @@ function renderLetterPath(q) {
   const cell = (k) => box.children[k];
   if (q.letterPath.words) cell(idx[0]).insertAdjacentHTML('afterbegin', `<span class="lp-start">${hero}</span>`);
   else cell(idx[0]).innerHTML = `<span class="lp-pic">${hero}</span>`;
-  cell(idx[0]).classList.add('on');
+  // word paths start with a tap on the first word (she reaches for it first); letter paths start on the picture
+  if (!q.letterPath.words) cell(idx[0]).classList.add('on');
   cell(idx[idx.length - 1]).insertAdjacentHTML('beforeend', `<span class="lp-home">${home}</span>`);
-  let at = 0;
+  let at = q.letterPath.words ? -1 : 0;
   const step = (k) => {
     if (R.locked || R.qs[R.i] !== q) return;
-    if (k === idx[at] || box.children[k].classList.contains('on')) return;
+    if ((at >= 0 && k === idx[at]) || box.children[k].classList.contains('on')) return;
     if (k === idx[at + 1]) {
       at++; const c = cell(k); c.classList.add('on'); sfx.tap();
       if (at === idx.length - 1) { if (!q.letterPath.words) c.innerHTML = `<span class="lp-pic">${hero}</span><span class="lp-home">${home}</span>`; matchDone(q); }
