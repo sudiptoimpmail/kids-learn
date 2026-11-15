@@ -2002,3 +2002,22 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .combo-close { position: absolute; right: 12px; top: 12px; width: 44px; height: 44px; border-radius: 50%; border: 0; background: #fff; font-size: 20px; font-weight: 900; color: var(--ink); box-shadow: 0 3px 0 #0002; cursor: pointer; }
 @keyframes comboIn { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .combo-sheet { animation: none; } }
+
+/* Color by Number (colornumbers.js): the legend is the paint box; each segment carries a short sum */
+.cbn-pic .cbn-labels { pointer-events: none; }
+.cbn-pic .cbn-labels text { text-anchor: middle; dominant-baseline: central; font-family: 'Fredoka', system-ui, sans-serif; font-weight: 700; fill: #2b2140; }
+.pic-pick .cbn-labels { display: none; }
+.cbn-pic .r { stroke-width: 2.2; }
+.cbn-pic .r.cbn-no { animation: cbnNo .35s; }
+.cbn-pic .cbn-labels text.cbn-look { animation: cbnLook .7s; }
+.cbn-pic .r.cbn-glow { animation: cbnGlow 1.6s; }
+@keyframes cbnNo { 0%, 100% { fill: #ffffff; } 40% { fill: #ffe3e3; } }
+@keyframes cbnLook { 0%, 100% { fill: #2b2140; } 30%, 70% { fill: #e03131; } }
+@keyframes cbnGlow { 0%, 100% { fill: #ffffff; } 25%, 75% { fill: #fff3bf; } 50% { fill: #ffe066; } }
+.cbn-legend { display: grid; grid-template-columns: repeat(2, auto); gap: 8px; }
+.cbn-sw { width: clamp(46px, 6.6vh, 62px); height: clamp(46px, 6.6vh, 62px); border-radius: 50%; padding: 0; background: var(--c); color: var(--ink); box-shadow: 0 4px 0 #0003, inset 0 0 0 3px #fff, inset 0 -6px 10px #0002; display: grid; place-items: center; }
+.cbn-sw b { font-size: clamp(20px, 3vh, 28px); font-weight: 900; line-height: 1; }
+.cbn-sw.on { box-shadow: 0 4px 0 #f08c00, 0 0 0 5px #fcc419, inset 0 0 0 3px #fff; transform: scale(1.08); }
+.cbn-count { align-self: center; font-weight: 900; font-size: 15px; color: var(--soft); min-width: 54px; text-align: center; }
+@media (orientation: portrait) { .cbn-legend { grid-template-columns: repeat(8, auto); gap: 6px; } .cbn-sw { width: clamp(36px, 9.4vw, 58px); height: clamp(36px, 9.4vw, 58px); } }
+@media (prefers-reduced-motion: reduce) { .cbn-pic .r.cbn-no, .cbn-pic .r.cbn-glow, .cbn-pic .cbn-labels text.cbn-look { animation: none; } }

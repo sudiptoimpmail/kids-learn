@@ -27,23 +27,32 @@ function radialRoute(links, start, goal) {
 }
 function makeRadialMaze(rings, sectors) {
   const start = (rings - 1) * sectors, goal = Math.floor(sectors / 2), count = rings * sectors;
-  let best = null, longest = 0;
-  // Generate several perfect mazes and select the one with the most challenging
-  // start-to-goal route, so older children do not receive a trivial shortcut.
-  for (let attempt = 0; attempt < 14; attempt++) {
+  let best = null, bestScore = -1;
+  // Make several mazes with exactly one way through and keep the one with the most real wrong turns
+  // (side paths of three or more cells that lead nowhere), then the longest way through.
+  for (let attempt = 0; attempt < 40; attempt++) {
     const links = Array.from({ length: count }, () => new Set());
-    const visited = new Set([start]), stack = [start];
-    while (stack.length) {
-      const from = stack[stack.length - 1];
+    const visited = new Set([start]), active = [start], branchy = 0.08 + Math.random() * 0.3;
+    while (active.length) {
+      // carving on from the newest cell winds a corridor; from an earlier one starts a side path
+      const at = Math.random() < branchy ? Math.floor(Math.random() * active.length) : active.length - 1, from = active[at];
       const possible = radialNeighbors(from, rings, sectors).filter((n) => !visited.has(n));
-      if (!possible.length) { stack.pop(); continue; }
+      if (!possible.length) { active.splice(at, 1); continue; }
       const to = possible[Math.floor(Math.random() * possible.length)];
       links[from].add(to); links[to].add(from);
-      visited.add(to); stack.push(to);
+      visited.add(to); active.push(to);
     }
-    const route = radialRoute(links, start, goal);
-    if (route.length > longest) { longest = route.length; best = { rings, sectors, start, goal, links, route }; }
-    if (route.length >= count * 0.45) break;
+    const route = radialRoute(links, start, goal), on = new Set(route);
+    let turns = 0;
+    for (const node of route.slice(0, -1)) for (const side of links[node]) {
+      if (on.has(side)) continue;
+      const seen = new Set([node, side]), q = [side]; let size = 0;
+      while (q.length) { const x = q.pop(); size++; for (const n of links[x]) if (!seen.has(n) && !on.has(n)) { seen.add(n); q.push(n); } }
+      if (size >= 3) turns++;
+    }
+    // a way through that is too short is no puzzle: prefer mazes whose route covers a quarter of the cells or more
+    const score = Math.min(route.length, Math.ceil(count * 0.25)) * 1e5 + Math.min(turns, 6) * 1000 + route.length;
+    if (score > bestScore) { bestScore = score; best = { rings, sectors, start, goal, links, route, wrongTurns: turns }; }
   }
   return best;
 }
@@ -171,7 +180,7 @@ function startCircularMaze(level = GL('path')) {
   area.querySelector('[data-a="new"]').onclick = () => { gameSession++; startCircularMaze(level); };
   draw();
   if (testFeatureAvailable()) window.__pathMaze = {
-    circular: true, route: () => route.map((n) => n),
+    circular: true, route: () => route.map((n) => n), wrongTurns: () => model.wrongTurns,
     go: (cells) => { for (const id of cells) moveTo(id); },
     done: () => done, session, model
   };

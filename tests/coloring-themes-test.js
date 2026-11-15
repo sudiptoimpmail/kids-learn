@@ -10,7 +10,7 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     await p.waitForSelector('.pic-pick[data-p="flag-us"]', { timeout: 20000 });
     const r = await p.evaluate(() => {
       const out = { bad: [] };
-      out.groups = [...document.querySelectorAll('.pic-group')].slice(0, 4).map((g) => [g.textContent.replace(/[^A-Za-z ]/g, '').trim(), [...g.nextElementSibling.querySelectorAll('.pic-pick')].map((x) => x.dataset.p)]);
+      out.groups = [...document.querySelectorAll('.pic-group')].slice(1, 5).map((g) => [g.textContent.replace(/[^A-Za-z ]/g, '').trim(), [...g.nextElementSibling.querySelectorAll('.pic-pick')].map((x) => x.dataset.p)]);
       const ids = ALL_PICS.map((x) => x.id); if (new Set(ids).size !== ids.length) out.bad.push('two pages share an id');
       for (const t of THEME_PAGES) {
         const page = ALL_PICS.find((x) => x.id === t.id), regions = (t.svg.match(/class="r( bg)?"/g) || []);

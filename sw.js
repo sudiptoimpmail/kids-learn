@@ -4,7 +4,7 @@
 // • Voice clips: one cache shared by all versions. Clip file names never change their content
 //   (a changed clip gets a new name), so updates never re-download or copy them.
 const PREFIX = 'kids-learn-';
-const VERSION = PREFIX + 'v172';
+const VERSION = PREFIX + 'v173';
 const AUDIO = PREFIX + 'audio';
 const FILES = [
   "library/little-red-hen/apple.svg",
@@ -933,6 +933,7 @@ const FILES = [
   "grade1.js",
   "app.js",
   "games.js",
+  "colornumbers.js",
   "games-play.js",
   "pathmaze.js",
   "radialmaze.js",
@@ -1175,6 +1176,7 @@ const FILES = [
   "data/coloring-5.json",
   "data/coloring-landmarks.json",
   "data/coloring-themes.json",
+  "data/coloring-numbers.json",
   "data/landmark-drawings.json",
   "assets/landmarks/liberty.svg",
   "assets/landmarks/eiffel.svg",

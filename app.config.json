@@ -261,6 +261,7 @@
   "lazy": {
     "games": {
       "scripts": [
+        "colornumbers.js",
         "games-play.js",
         "pathmaze.js",
         "radialmaze.js"
@@ -268,7 +269,8 @@
       "data": [
         "drawings",
         "game-themes",
-        "coloring-themes"
+        "coloring-themes",
+        "coloring-numbers"
       ],
       "entry": [
         "openGame"
