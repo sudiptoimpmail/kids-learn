@@ -122,9 +122,15 @@ tap_all('all.four-sides.s4', 4, 'Tap **all** the shapes with four sides!', [flat
 tap_all('all.circle-face.s4', 4, 'Tap **all** the solid shapes with a flat circle!', [solid('a', 'cone'), solid('b', 'cube'), solid('c', 'cylinder'), solid('d', 'pyramid'), solid('e', 'sphere')], ['a', 'c'], 'Look for a round, flat face.')
 
 # ---- lessons: an animation, read out line by line
+# a lesson can be just a picture and an article: the article is read out one sentence at a time
+pictures.append({'id': 'flats/set', 'alt': 'a circle, a square, a triangle and a rectangle', 'viewBox': '0 0 420 120', 'tags': [], 'svg': G
+    + '<circle cx="55" cy="60" r="42" fill="#ff6b6b"/><rect x="118" y="20" width="80" height="80" rx="3" fill="#4dabf7"/><path d="M262 18 L306 102 H218 Z" fill="#51cf66"/><rect x="326" y="34" width="84" height="54" rx="3" fill="#ffd43b"/></g>'})
+q('flat.round', 1, GRADES[1], 'choice', 'Which shape is **round**?', choices=choices(flat('a', 'circle'), flat('b', 'square'), flat('c', 'triangle')), answer=['a'], hint={'say': 'A round shape has no corners.'}, explain='A circle is round.')
+q('flat.three-sides', 1, GRADES[1], 'choice', 'Which shape has **three** sides?', choices=choices(flat('a', 'triangle'), flat('b', 'circle'), flat('c', 'square')), answer=['a'], hint={'say': 'Count the sides of each shape.'}, explain='A triangle has three sides.')
+lessons.append({'id': 'geo.lesson.flat-shapes', 'section': S, 'step': 1, 'grades': GRADES[1], 'countries': ['*'], 'title': 'Flat shapes', 'picture': 'flats/set',
+    'article': 'A circle is round. A square has four equal sides. A triangle has three sides. A rectangle has two long sides and two short sides.', 'together': 'geo.flat.round'})
 lessons.append({'id': 'geo.lesson.cone-cylinder', 'section': S, 'step': 2, 'grades': GRADES[2], 'countries': ['*'], 'title': 'Solid shapes and flat shapes',
     'animation': {'kind': 'solid-to-flat', 'solids': ['cone', 'cylinder']},
-    'article': 'A cone and a cylinder are solid shapes. Look at them from the side or from below, and you see flat shapes.',
     'lines': [
         {'say': 'This is a cone.', 'show': 'cone'},
         {'say': 'A cone is a solid shape. You can hold it.', 'show': 'cone'},
@@ -137,7 +143,6 @@ lessons.append({'id': 'geo.lesson.cone-cylinder', 'section': S, 'step': 2, 'grad
     ], 'together': 'geo.view.cone-side'})
 lessons.append({'id': 'geo.lesson.cube-ball-pyramid', 'section': S, 'step': 3, 'grades': GRADES[3], 'countries': ['*'], 'title': 'More solid shapes',
     'animation': {'kind': 'solid-to-flat', 'solids': ['cube', 'sphere', 'pyramid']},
-    'article': 'A cube, a ball and a pyramid are solid shapes. Each one shows a flat shape when you look at it from one side.',
     'lines': [
         {'say': 'This is a cube.', 'show': 'cube'},
         {'say': 'Look at the cube from the side. You see a square!', 'show': 'cube-side'},
@@ -151,7 +156,9 @@ lessons.append({'id': 'geo.lesson.cube-ball-pyramid', 'section': S, 'step': 3, '
         {'say': 'Solid shapes have flat shapes hiding inside!', 'show': 'all'},
     ], 'together': 'geo.view.cube-face'})
 
-bank = {'format': 'kids-core/question-bank', 'schema': 2, 'id': 'learn-play.geometry', 'title': 'Shapes', 'version': 2, 'language': 'en-US', 'entitlement': 'free',
+for l in lessons:   # with lines, the article is the same text as one paragraph
+    if 'lines' in l: l['article'] = ' '.join(x['say'] for x in l['lines'])
+bank = {'format': 'kids-core/question-bank', 'schema': 2, 'id': 'learn-play.geometry', 'title': 'Shapes', 'version': 3, 'language': 'en-US', 'entitlement': 'free',
         'steps': [{'section': S, 'step': 1, 'title': 'Flat shapes'}, {'section': S, 'step': 2, 'title': 'Cone and cylinder'}, {'section': S, 'step': 3, 'title': 'Cube, ball and pyramid'}, {'section': S, 'step': 4, 'title': 'Shape detective'}],
         'lessons': lessons, 'questions': questions, 'pictures': pictures}
 out = os.path.join(os.path.dirname(__file__), '..', 'banks', 'learn-play.geometry.json')

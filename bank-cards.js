@@ -85,11 +85,20 @@ const BankCards = (() => {
   }
   // the lesson: its picture, a label for each part it names, and one spoken line at a time
   function intro(lesson) {
-    if (lesson.animation) {                                   // an animated scene: one moment and one caption for each spoken line
-      const draw = animations[lesson.animation.kind]; if (!draw) throw new Error('This app has no "' + lesson.animation.kind + '" animation: ' + lesson.id);
+    const art = QuestionBank.article(lesson);
+    if (lesson.animation || art) {
+      // A lesson is a picture or an animation, then its article. The article is read one sentence at a time (each lights up
+      // as it is said), or from the article's own recording. Lines, when given, say what the picture or animation shows.
+      const lines = lesson.lines || art.sentences.map((say) => ({ say })), oneRecording = !lesson.lines && art && art.audio;
       const guidedQ = lesson.together && QuestionBank.question(lesson.together);
-      return { key: lesson.id, bank: true, text: QuestionBank.html(lesson.title), options: [], answer: null, main: draw(lesson), mainClass: 'anim-main',
-        steps: lesson.lines.map((l, i) => ({ row: i + 1, say: l.say, slow: true })), ...(guidedQ ? { guided: card(guidedQ) } : {}) };
+      let media = '';
+      if (lesson.animation) { const draw = animations[lesson.animation.kind]; if (!draw) throw new Error('This app has no "' + lesson.animation.kind + '" animation: ' + lesson.id); media = draw({ ...lesson, lines }); }
+      else if (lesson.picture) { const r = QuestionBank.picture(lesson.picture), rows = {};
+        lines.forEach((l, i) => { const t = l.light && r.picture.tags.find((x) => x.id === l.light); if (t && !rows[t.area.group]) rows[t.area.group] = i + 1; });
+        media = `<div class="les-pic">${r.emoji ? `<span class="bk-emoji">${r.emoji}</span>` : whole(r.picture, { rows })}</div>`; }
+      const text = `<p class="les-article${oneRecording ? ' one' : ''}">${lines.map((l, i) => `<span class="les-sent" data-row="${oneRecording ? 1 : i + 1}">${QuestionBank.html(l.say)}</span>`).join(' ')}</p>`;
+      return { key: lesson.id, bank: true, text: QuestionBank.html(lesson.title), options: [], answer: null, main: `<div class="les">${media}${text}</div>`, mainClass: 'anim-main',
+        steps: oneRecording ? [{ row: 1, say: '', audio: art.audio }] : lines.map((l, i) => ({ row: i + 1, say: l.say, slow: true })), ...(guidedQ ? { guided: card(guidedQ) } : {}) };
     }
     const r = lesson.picture ? QuestionBank.picture(lesson.picture) : null, p = r && r.picture;
     const lit = [...new Set(lesson.lines.map((l) => l.light).filter(Boolean))], tagOf = (id) => p.tags.find((t) => t.id === id);
