@@ -3,7 +3,7 @@
  "schema": 2,
  "id": "learn-play.geometry",
  "title": "Shapes",
- "version": 1,
+ "version": 2,
  "language": "en-US",
  "entitlement": "free",
  "steps": [
@@ -118,6 +118,14 @@
     {
      "say": "This is a ball. It is also called a sphere.",
      "show": "sphere"
+    },
+    {
+     "say": "Cut a ball in half. Each cut side is a circle!",
+     "show": "sphere-halves"
+    },
+    {
+     "say": "Turn the two halves and join them. They make a ball again!",
+     "show": "sphere-join"
     },
     {
      "say": "Look at the ball from any side. You see a circle!",

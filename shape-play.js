@@ -144,6 +144,7 @@ const ShapePlay = (() => {
   function scene(show, solids) {
     const fig = (ref, cls) => `<div class="s2f-fig ${cls}">${BankCards.pic(ref)}</div>`;
     if (show === 'all') return `<div class="s2f-all">${solids.map((s) => `<div class="s2f-pair">${fig('solids/' + s, 's2f-sm')}<span class="s2f-arrow">➜</span>${Object.values(FLAT_OF[s]).filter((f, i, all) => all.indexOf(f) === i).map((f) => fig('flats/' + f, 's2f-sm s2f-flat')).join('')}</div>`).join('')}</div>`;
+    if (show === 'sphere-halves' || show === 'sphere-join') return halves(show === 'sphere-join');
     const [solid, view] = show.split('-');
     if (!FLAT_OF[solid]) return '';
     if (!view) return `<div class="s2f-one">${fig('solids/' + solid, 's2f-spin')}<span class="s2f-name">${SOLID_NAME[solid]}</span></div>`;
@@ -151,6 +152,16 @@ const ShapePlay = (() => {
     return `<div class="s2f-turn"><div class="s2f-col">${fig('solids/' + solid, 's2f-look-' + view)}<span class="s2f-name">${SOLID_NAME[solid]}</span></div>
       <div class="s2f-eye"><span>${LOOK[view][0]}</span><small>${LOOK[view][1]}</small><span class="s2f-arrow">➜</span></div>
       <div class="s2f-col">${fig('flats/' + flat, 's2f-flat s2f-pop')}<span class="s2f-name s2f-pop">${flat}</span></div></div>`;
+  }
+  // A ball cut in half. Each half first shows its cut side, a circle, facing you. With `join` the halves then turn
+  // (the circle narrows as the round back comes into view), slide together, and the cut closes: a ball again.
+  // Drawn shapes moved by CSS (style.css, .s2f-cut), so it is a few hundred letters, sharp at any size, and works offline.
+  function halves(join) {
+    const half = (side) => { const cx = side === 'l' ? 84 : 216, sweep = side === 'l' ? 0 : 1;
+      return `<g class="s2f-half ${side}"><path class="s2f-dome" d="M${cx} 22 A48 48 0 0 ${sweep} ${cx} 118"/><ellipse class="s2f-face" cx="${cx}" cy="70" rx="48" ry="48"/></g>`; };
+    return `<div class="s2f-cut${join ? ' join' : ''}"><svg viewBox="0 0 300 140" role="img" aria-label="${join ? 'Two halves of a ball turn and join into a ball' : 'A ball cut in half: each cut side is a circle'}">
+      ${half('l')}${half('r')}<path class="s2f-shine" d="M126 44 A32 32 0 0 1 150 32"/></svg>
+      <span class="s2f-name">${join ? 'two halves make a ball' : 'the cut side is a circle'}</span></div>`;
   }
   // one scene and one caption per spoken line: the lesson card lights them one at a time
   function lessonHTML(lesson) {

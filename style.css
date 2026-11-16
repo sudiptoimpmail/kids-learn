@@ -2069,3 +2069,22 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 @media (prefers-reduced-motion: reduce) { .s2f-scene.on .s2f-spin, .s2f-scene.on .s2f-look-side, .s2f-scene.on .s2f-look-below, .s2f-scene.on .s2f-look-top, .s2f-scene.on .s2f-pop { animation: none; } }
 /* whole pictures used as one side of a matching pair stay small enough for four pairs */
 .m-item .m-pic .hw-fig { width: 84px; height: 84px; max-height: 11vh; display: block; }
+
+/* a ball cut in half: the cut sides are circles; turned and joined they are a ball again */
+.s2f-cut { display: flex; flex-direction: column; align-items: center; gap: 2px; } .s2f-cut svg { width: min(340px, 80vw); height: auto; display: block; overflow: visible; }
+.s2f-half > * { stroke: #2b2140; stroke-width: 3; stroke-linejoin: round; transform-box: fill-box; }
+.s2f-dome { fill: #f783ac; transform: scaleX(0); } .s2f-half.l .s2f-dome { transform-origin: 100% 50%; } .s2f-half.r .s2f-dome { transform-origin: 0% 50%; }
+.s2f-face { fill: #ffdeeb; transform-origin: 50% 50%; } .s2f-shine { fill: none; stroke: #fff; stroke-width: 6; stroke-linecap: round; opacity: 0; }
+.s2f-scene.on .s2f-cut:not(.join) .s2f-face { animation: s2f-face-pulse 1.6s ease-in-out infinite; } @keyframes s2f-face-pulse { 50% { fill: #fcc2d7; } }
+/* 0-20% circles facing you · 20-55% each half turns · 55-80% they slide together · 80-100% the cut closes */
+.s2f-scene.on .s2f-cut.join .s2f-face, .s2f-scene.done .s2f-cut.join .s2f-face { animation: s2f-face-turn 5s ease-in-out both; }
+.s2f-scene.on .s2f-cut.join .s2f-dome, .s2f-scene.done .s2f-cut.join .s2f-dome { animation: s2f-dome-turn 5s ease-in-out both; }
+.s2f-scene.on .s2f-cut.join .s2f-half.l, .s2f-scene.done .s2f-cut.join .s2f-half.l { animation: s2f-join-l 5s ease-in-out both; }
+.s2f-scene.on .s2f-cut.join .s2f-half.r, .s2f-scene.done .s2f-cut.join .s2f-half.r { animation: s2f-join-r 5s ease-in-out both; }
+.s2f-scene.on .s2f-cut.join .s2f-shine, .s2f-scene.done .s2f-cut.join .s2f-shine { animation: s2f-shine 5s ease-in-out both; }
+@keyframes s2f-face-turn { 0%, 20% { transform: scaleX(1); opacity: 1; } 55%, 80% { transform: scaleX(.26); opacity: 1; } 100% { transform: scaleX(.26); opacity: 0; } }
+@keyframes s2f-dome-turn { 0%, 20% { transform: scaleX(0); } 55%, 100% { transform: scaleX(1); } }
+@keyframes s2f-join-l { 0%, 55% { transform: translateX(0); } 80%, 100% { transform: translateX(66px); } }
+@keyframes s2f-join-r { 0%, 55% { transform: translateX(0); } 80%, 100% { transform: translateX(-66px); } }
+@keyframes s2f-shine { 0%, 85% { opacity: 0; } 100% { opacity: .7; } }
+@media (prefers-reduced-motion: reduce) { .s2f-cut.join .s2f-face, .s2f-cut.join .s2f-dome, .s2f-cut.join .s2f-half, .s2f-cut.join .s2f-shine { animation-duration: .01s !important; } }
