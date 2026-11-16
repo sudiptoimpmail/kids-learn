@@ -81,6 +81,7 @@ function renderPlayBanner() {
 }
 
 function openPlayZone() {
+  parentMode = false;
   let earned = false;
   if (!playOpen()) {
     if (!hourlyMode() && state.playPasses > 0) {
@@ -97,6 +98,7 @@ function openPlayZone() {
   }
   brainMode = false;
   renderPZ();
+  $('#pzTitle').textContent = '🎮 Play Zone';
   $$('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = false));
   document.body.style.setProperty('--theme', '#ff6bb5');
   show('playzone');
@@ -110,7 +112,7 @@ function openPlayZone() {
 const PLAY_FINISH_GRACE_MS = 120000;
 let playTimer = 0, lastTick = 0, lastPlaySave = 0, playGraceMs = 0;
 function activeArcadeRound() {
-  return !brainMode && !!curGame && $('#game').classList.contains('active') &&
+  return !brainMode && !parentMode && !!curGame && $('#game').classList.contains('active') &&
     !$('#gameArea .end-panel, #gameArea .wm-final, #gameArea .pic-pick, #gameArea .sdk-mode') && $('#timeUp').hidden;
 }
 function tickPlayTimer(now = performance.now()) {
@@ -139,7 +141,7 @@ function tickPlayTimer(now = performance.now()) {
   if (!['playzone', 'game'].some(id => $('#' + id).classList.contains('active'))) {
     save(); clearInterval(playTimer); return;
   }
-  if (!playOpen() && !brainMode && (!finishing || playGraceMs >= PLAY_FINISH_GRACE_MS)) {
+  if (!playOpen() && !brainMode && !parentMode && (!finishing || playGraceMs >= PLAY_FINISH_GRACE_MS)) {
     clearInterval(playTimer); timeUp();
   }
 }
@@ -191,6 +193,25 @@ const BRAIN_GAME_IDS = new Set(['memory', 'puzzle', 'sudoku']);   // Finger Maze
 const BRAIN_MIN_GRADE = { path: 'prek', memory: 'prek', puzzle: 'prek', sudoku: 'k', c4: 'g1' };
 const BRAIN_GRADE_ORDER = ['prek', 'k', 'g1', 'g2', 'g3'];
 let brainMode = false;
+// Drawing helper, 0 (off) to 1: how much the pad tidies her lines and keeps brush paint inside shapes.
+// Younger children get more help; a grown-up can set it in Settings.
+const DRAW_ASSIST = { prek: 0.9, k: 0.75, g1: 0.55, g2: 0.35, g3: 0.2 };
+const drawAssist = () => (state.drawAssist != null && state.drawAssist !== '' ? Math.max(0, Math.min(1, +state.drawAssist)) : DRAW_ASSIST[state.grade] ?? 0.6);
+// Parent mode (behind the grown-up PIN): a grown-up opens any game for the child, with no play clock,
+// and sits in as the other player in the turn-taking games instead of the robot.
+let parentMode = false;
+const DUO_GAME_IDS = ['ttt', 'c4', 'memory'];
+const duoPlay = () => parentMode && !!curGame && DUO_GAME_IDS.includes(curGame.id);
+const duoNames = () => ({ kid: esc(state.name || 'Kid'), kidIcon: state.avatar || '🦄', grown: 'Grown-up', grownIcon: '🧑' });
+function openParentPlay() {
+  parentMode = true; brainMode = false;
+  clearInterval(playTimer);
+  renderPZ();
+  $('#pzTitle').textContent = '🤝 Play Together';
+  $$('#playzone .play-clock, #game .play-clock').forEach((x) => (x.hidden = true));
+  document.body.style.setProperty('--theme', '#7048e8');
+  show('playzone');
+}
 function brainVisible(g) {
   return BRAIN_GAME_IDS.has(g.id) && (!!state.testMode || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') >= BRAIN_GRADE_ORDER.indexOf(BRAIN_MIN_GRADE[g.id]));
 }
@@ -200,7 +221,7 @@ const GAME_MAX_GRADE = { maze: 'k' };
 const gameForGrade = (g) => !GAME_MAX_GRADE[g.id] || !!state.showAll || !!state.testMode || BRAIN_GRADE_ORDER.indexOf(state.grade || 'k') <= BRAIN_GRADE_ORDER.indexOf(GAME_MAX_GRADE[g.id]);
 // open a brain game straight from its tile on the home screen (no play clock, back goes home)
 function openBrainGame(id) {
-  brainMode = true;
+  brainMode = true; parentMode = false;
   clearInterval(playTimer);
   $$('#game .play-clock').forEach((x) => (x.hidden = true));
   openGame(id);
@@ -252,6 +273,13 @@ function gameLevelUp(id, needWins = 1) {
 const gameStepDots = (id) => { const r = gameRange(id), lv = GL(id); if (!r) return gameDots(lv, GAME_MAX[id] || 5); const n = r[1] - r[0] + 1, s = Math.min(n, lv - r[0] + 1); return `<span class="lv steps" aria-label="Step ${s} of ${n}">${'●'.repeat(s)}${'○'.repeat(n - s)}</span>`; };
 const lvBadge = (id) => (GAME_MAX[id] || id === 'sudoku' ? gameStepDots(id) : '');
 function renderPZ() {
+  if (parentMode) {
+    // every game, whatever the grade: the two-player ones first
+    const tile = (g, duo) => `<button class="tile pz-tile${duo ? ' duo' : ''}" data-game="${g.id}" style="--c:${g.color}">${duo ? '<span class="pz-duo">👥 2 players</span>' : lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`;
+    $('#pzGrid').innerHTML = `<div class="pz-head">Play against each other</div>${DUO_GAME_IDS.map((id) => tile(GAMES.find((g) => g.id === id), true)).join('')}
+      <div class="pz-head">Open a game for ${esc(state.name || 'your child')}</div>${GAMES.filter((g) => !DUO_GAME_IDS.includes(g.id)).map((g) => tile(g, false)).join('')}`;
+    return;
+  }
   $('#pzGrid').innerHTML = GAMES.filter((g) => !BRAIN_GAME_IDS.has(g.id) && gameForGrade(g)).map((g) =>
     `<button class="tile pz-tile" data-game="${g.id}" style="--c:${g.color}">${lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`).join('');
 }
@@ -260,7 +288,7 @@ $('#pzGrid').addEventListener('click', (e) => {
   const t = e.target.closest('[data-game]'); if (!t) return;
   sfx.tap(); openGame(t.dataset.game);
 });
-$('#pzHome').onclick = () => { sayToken++; stopClip(); renderHome(); show('home'); };
+$('#pzHome').onclick = () => { parentMode = false; sayToken++; stopClip(); renderHome(); show('home'); };
 // Full screen: the browser's own full screen where it exists (iPad, desktop); otherwise a roomier layout
 
 // shared with games-play.js (loaded the first time a game opens): which game is running, and how to clean it up

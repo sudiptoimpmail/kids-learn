@@ -10,13 +10,13 @@ $('#gameFull').onclick = () => {
   setTimeout(() => dispatchEvent(new Event('resize')), 250);
 };
 document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && document.body.classList.contains('immersive')) gameFullOff(); setTimeout(() => dispatchEvent(new Event('resize')), 200); });
-$('#gameBack').onclick = () => { gameFullOff(); stopGame(); if (brainMode) { renderHome(); show('home'); return; } renderPZ(); show('playzone'); startPlayTimer(); };
+$('#gameBack').onclick = () => { gameFullOff(); stopGame(); if (brainMode) { renderHome(); show('home'); return; } renderPZ(); show('playzone'); if (!parentMode) startPlayTimer(); };
 
 function openGame(id) {
   stopGame();                      // never two games running at once
   const g = GAMES.find((x) => x.id === id);
-  if (!g || (brainMode && !brainVisible(g)) || !gameForGrade(g)) return;
-  if (!brainMode && !playOpen()) { timeUp(); return; }
+  if (!g || (brainMode && !brainVisible(g)) || (!parentMode && !gameForGrade(g))) return;
+  if (!brainMode && !parentMode && !playOpen()) { timeUp(); return; }
   playGraceMs = 0;
   curGame = g;
   document.body.style.setProperty('--theme', g.color);
@@ -24,16 +24,16 @@ function openGame(id) {
   $('#gameArea').innerHTML = '';
   $('#gameArea').className = 'game-area g-' + id;
   show('game');
-  gameStart = brainMode ? 0 : Date.now();
+  gameStart = brainMode || parentMode ? 0 : Date.now();
   g.start();
   // Inspect the rendered screen before charging: a picture picker is not a round.
-  if (!brainMode) startPlayTimer();
+  if (!brainMode && !parentMode) startPlayTimer();
 }
 function stopGame() { try { drawFlush(); } catch {} drawAutosave = drawFlush = () => {}; try { gameFullOff(); } catch {} sayToken++; stopClip(); gameSession++; if (gameStart) { playActive += Date.now() - gameStart; gameStart = 0; } if (playActive) { logPlay(playActive / 1000); playActive = 0; } if (gameCleanup) { const c = gameCleanup; gameCleanup = null; c(); } }
 let gameStart = 0, playActive = 0;   // play time for the grown-ups' numbers: only while the app is on screen
 document.addEventListener('visibilitychange', () => {
   if (document.hidden && gameStart) { playActive += Date.now() - gameStart; gameStart = 0; }
-  else if (!document.hidden && !brainMode && curGame && $('#game').classList.contains('active') && !gameStart) gameStart = Date.now();
+  else if (!document.hidden && !brainMode && !parentMode && curGame && $('#game').classList.contains('active') && !gameStart) gameStart = Date.now();
 });
 // a timer that is dropped if the child has left the game (so no old "You win!" panel pops up later)
 let gameSession = 0;
@@ -49,7 +49,7 @@ function endPanel(title, emoji, again, levelUp = false) {
   d.className = 'end-panel';
   d.innerHTML = `<div class="ep-card"><div class="ep-emoji">${emoji}</div><div class="ep-title">${title}</div>
     <div class="ep-btns"><button class="big-btn ico" data-a="again" aria-label="Again">🔁 Again</button><button class="big-btn alt ico" data-a="menu" aria-label="${brainMode ? 'Home' : 'Games'}">${brainMode ? '🏠 Home' : '🎮 Games'}</button></div></div>`;
-  d.querySelector('[data-a="again"]').onclick = () => { sfx.tap(); if (brainMode || playOpen()) { openGame(curGame.id); } else timeUp(); };
+  d.querySelector('[data-a="again"]').onclick = () => { sfx.tap(); if (brainMode || parentMode || playOpen()) { openGame(curGame.id); } else timeUp(); };
   d.querySelector('[data-a="menu"]').onclick = () => { sfx.tap(); $('#gameBack').onclick(); };
   $('#gameArea').appendChild(d);
   gameCleanupPanel = d;
@@ -58,11 +58,12 @@ function endPanel(title, emoji, again, levelUp = false) {
 /* ======================= TIC-TAC-TOE ======================= */
 const LINES3 = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 function startTTT() {
-  const ME = '🦄', BOT = '🤖';
+  const duo = duoPlay(), N = duoNames();
+  const ME = '🦄', BOT = duo ? N.grownIcon : '🤖';
   const b = Array(9).fill(null);
-  let busy = false, over = false;
+  let busy = false, over = false, turn = ME;
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">You are ${ME} · Get three in a row!</div><div class="ttt-board">${b.map((_, i) => `<button class="ttt-cell" data-i="${i}"></button>`).join('')}</div>`;
+  area.innerHTML = `<div class="g-msg">${duo ? `${ME} ${N.kid} goes first · Get three in a row!` : `You are ${ME} · Get three in a row!`}</div><div class="ttt-board">${b.map((_, i) => `<button class="ttt-cell" data-i="${i}"></button>`).join('')}</div>`;
   say('Get three in a row!');
   const cells = $$('.ttt-cell', area);
   const winner = () => { for (const l of LINES3) if (b[l[0]] && b[l[0]] === b[l[1]] && b[l[1]] === b[l[2]]) return l; return null; };
@@ -71,7 +72,8 @@ function startTTT() {
     const w = winner();
     if (w) {
       over = true; w.forEach((i) => { cells[i].classList.add('win'); sparkAt(cells[i], ['🎉', '✨', '⭐'], 7); });
-      if (b[w[0]] === ME) { const up = gameLevelUp('ttt', 2); gameWin('You win!'); later(() => endPanel('You win!', '🏆', startTTT, up), 1300); }
+      if (b[w[0]] === ME) { const up = duo ? false : gameLevelUp('ttt', 2); gameWin('You win!'); later(() => endPanel('You win!', '🏆', startTTT, up), 1300); }
+      else if (duo) { sfx.win(); say('Good game! Try again!'); later(() => endPanel(`${N.grown} wins this time!`, BOT, startTTT), 1300); }
       else { say('Good game! Try again!'); later(() => endPanel('Robot wins this time!', '🤖', startTTT), 1300); }
       return true;
     }
@@ -109,6 +111,11 @@ function startTTT() {
   }
   cells.forEach((c, i) => (c.onclick = () => {
     if (busy || over || b[i]) return;
+    if (duo) {   // two players, one screen: the grown-up taps for the other side
+      put(i, turn); sfx.tap(); if (check()) return;
+      turn = turn === ME ? BOT : ME; msg.innerHTML = turn === ME ? `${ME} ${N.kid}'s turn` : `${BOT} ${N.grown}'s turn`;
+      return;
+    }
     put(i, ME); sfx.tap();
     if (check()) return;
     busy = true;
@@ -132,26 +139,38 @@ function sparkAt(el, emojis = ['✨', '⭐', '💫'], n = 8) {
   }
 }
 function startMemory() {
-  const pairs = [3, 4, 6, 8, 10][GL('memory') - 1];
+  const pairs = Math.max(duoPlay() ? 6 : 0, [3, 4, 6, 8, 10][GL('memory') - 1]);   // two players need a board worth sharing
   const faces = shuffle(MEM_FACES).slice(0, pairs);
   const deck = shuffle(faces.concat(faces));
   let open = [], found = 0, moves = 0, lock = false;
+  const duo = duoPlay(), N = duoNames(), score = [0, 0]; let turn = 0;
+  const board = () => { if (duo) $('.g-msg', area).innerHTML = `<span class="duo-p${turn === 0 ? ' on' : ''}">${N.kidIcon} ${N.kid} ${score[0]}</span> <span class="duo-p${turn === 1 ? ' on' : ''}">${N.grownIcon} ${N.grown} ${score[1]}</span>`; };
   const area = $('#gameArea');
   const cols = deck.length <= 6 ? 3 : deck.length === 20 ? 5 : 4;
   area.innerHTML = `<div class="g-msg">Find the matching pairs! <span class="mem-moves"></span></div>
     <div class="mem-board" style="grid-template-columns:repeat(${cols},1fr)">${deck.map((f, i) =>
       `<button class="mem-card" data-i="${i}" style="--hue:${(MEM_FACES.indexOf(f) * 47) % 360}"><span class="back"><i>★</i></span><span class="front">${f}</span></button>`).join('')}</div>`;
-  say('Find the matching pairs!');
+  say('Find the matching pairs!'); board();
   const cards = $$('.mem-card', area);
   cards.forEach((c, i) => (c.onclick = () => {
     if (lock || c.classList.contains('flip') || c.classList.contains('done')) return;
     c.classList.add('flip'); sfx.tap(); open.push(i);
     if (open.length < 2) return;
-    moves++; $('.mem-moves').textContent = `· ${moves} tries`;
+    moves++; if (!duo) $('.mem-moves').textContent = `· ${moves} tries`;
     const [a, b] = open; open = [];
     if (deck[a] === deck[b]) {
       later(() => {
         cards[a].classList.add('done'); cards[b].classList.add('done'); sfx.yes(); found++; sparkAt(cards[a]); sparkAt(cards[b]);
+        if (duo) {   // a match scores and keeps the turn
+          score[turn]++; board();
+          if (found === pairs) {
+            const [k, g] = score;
+            if (k > g) { gameWin('You win!'); later(() => endPanel(`${N.kid} wins ${k} to ${g}!`, '🏆', startMemory), 1300); }
+            else if (k === g) { say("It's a tie!"); later(() => endPanel(`It's a tie! ${k} each`, '🤝', startMemory), 1000); }
+            else { sfx.win(); say('Good game! Try again!'); later(() => endPanel(`${N.grown} wins ${g} to ${k}!`, N.grownIcon, startMemory), 1300); }
+          }
+          return;
+        }
         if (found === pairs) {
           const up = gameLevelUp('memory', 1);
           gameWin(pick(['Awesome job!', 'You did it!', 'Amazing!']));
@@ -161,7 +180,7 @@ function startMemory() {
     } else {
       lock = true;
       cards[a].classList.add('nope'); cards[b].classList.add('nope');
-      later(() => { for (const k of [a, b]) cards[k].classList.remove('flip', 'nope'); lock = false; }, 900);
+      later(() => { for (const k of [a, b]) cards[k].classList.remove('flip', 'nope'); lock = false; if (duo) { turn = 1 - turn; board(); } }, 900);
     }
   }));
 }
@@ -559,12 +578,12 @@ function startBallMaze() {
 
 /* ======================= CONNECT FOUR ======================= */
 function startC4() {
-  const R6 = 6, C7 = 7, ME = 1, BOT = 2;
+  const R6 = 6, C7 = 7, ME = 1, BOT = 2, duo = duoPlay(), N = duoNames();
   const g = Array.from({ length: R6 }, () => Array(C7).fill(0));
-  let busy = false, over = false;
+  let busy = false, over = false, turn = ME;
   const area = $('#gameArea');
   // a real button per column (tap, keyboard or screen reader), plus a spoken-word record of each move
-  area.innerHTML = `<div class="g-msg">You are 🔴 · Get four in a row!</div>
+  area.innerHTML = `<div class="g-msg">${duo ? `🔴 ${N.kid} goes first · Get four in a row!` : 'You are 🔴 · Get four in a row!'}</div>
     <div class="c4-drops" role="toolbar" aria-label="Pick a column">${Array.from({ length: C7 }, (_, c) => `<button class="c4-drop" data-c="${c}" aria-label="Drop in column ${c + 1}">⬇</button>`).join('')}</div>
     <div class="c4-board" role="img" aria-label="Four in a Row board">${
     Array.from({ length: R6 * C7 }, (_, k) => `<div class="c4-cell" data-r="${Math.floor(k / C7)}" data-c="${k % C7}" aria-hidden="true"><i></i></div>`).join('')}</div>
@@ -598,7 +617,8 @@ function startC4() {
     if (line) {
       over = true; line.forEach(([rr, cc], k) => { const w = cell(rr, cc); w.style.animationDelay = `${k * 90}ms`; w.classList.add('win'); later(() => sparkAt(w, who === ME ? ['⭐', '✨', '🔴'] : ['✨', '🟡'], 6), 200 + k * 90); });
       $('.c4-board', area).classList.add('done');
-      if (who === ME) { const up = gameLevelUp('c4', 2); gameWin('You win!'); later(() => endPanel('Four in a row! You win!', '🏆', startC4, up), 1400); }
+      if (who === ME) { const up = duo ? false : gameLevelUp('c4', 2); gameWin('You win!'); later(() => endPanel('Four in a row! You win!', '🏆', startC4, up), 1400); }
+      else if (duo) { sfx.win(); say('Good game! Try again!'); later(() => endPanel(`${N.grown} got four this time!`, '🟡', startC4), 1400); }
       else { say('Good game! Try again!'); later(() => endPanel('Robot got four this time!', '🤖', startC4), 1400); }
       return true;
     }
@@ -620,6 +640,13 @@ function startC4() {
   }
   function play(c) {
     if (busy || over) return;
+    if (duo) {   // two players, one screen
+      const who = turn, rr = place(c, who); if (rr == null) { live(`Column ${c + 1} is full.`); return; }
+      if (after(rr, c, who)) return;
+      turn = who === ME ? BOT : ME;
+      const t = turn === ME ? `🔴 ${N.kid}'s turn` : `🟡 ${N.grown}'s turn`; $('.g-msg', area).innerHTML = t; live(`Dropped in column ${c + 1}. ${t.replace(/^\S+ /, '')}.`);
+      return;
+    }
     const r = place(c, ME); if (r == null) { live(`Column ${c + 1} is full.`); return; }
     live(`You dropped in column ${c + 1}.`);
     if (after(r, c, ME)) { live(over ? $('.g-msg', area).textContent : ''); return; }
@@ -1461,11 +1488,72 @@ function startDraw(refIndex) {
   const dpr = Math.min(devicePixelRatio || 1, 2);
   const W = pad.clientWidth;
   cv.width = cv.height = Math.round(W * dpr); cv.style.width = cv.style.height = W + 'px';
-  const c = cv.getContext('2d'); c.scale(dpr, dpr); c.lineCap = c.lineJoin = 'round';
+  let c = cv.getContext('2d'); c.scale(dpr, dpr); c.lineCap = c.lineJoin = 'round';
   // paint goes on its own layer under the guide and the pencil lines
   const fc = $('.dr-fill', area); fc.width = fc.height = cv.width; fc.style.width = fc.style.height = W + 'px';
   const fctx = fc.getContext('2d');
   let color = CB_COLORS[0], size = 7, tool = "pencil", erase = false, strokes = [], cur = null, bucket = false;
+  /* ---- drawing helper (0 to 1, more for younger children) ---- */
+  const assist = drawAssist();
+  // 1) when a line is finished it is tidied: nearly straight lines become straight, wobbles are smoothed into
+  //    curves, and a shape that almost closes is closed (so paint can be poured into it)
+  function tidy(s) {
+    const p = s.pts; if (!assist || s.erase || p.length < 3) return;
+    const d = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);
+    let len = 0; for (let i = 1; i < p.length; i++) len += d(p[i - 1], p[i]);
+    const a = p[0], z = p[p.length - 1], chord = d(a, z);
+    if (chord > 24 && len < chord * 1.5) {
+      let dev = 0; for (const q of p) dev = Math.max(dev, Math.abs((z[0] - a[0]) * (a[1] - q[1]) - (a[0] - q[0]) * (z[1] - a[1])) / chord);
+      if (dev < chord * (0.025 + 0.085 * assist)) { s.pts = [a, z]; return; }
+    }
+    // even spacing, then a few smoothing passes (ends stay where she put them)
+    const step = 4, out = [a]; let carry = 0;
+    for (let i = 1; i < p.length; i++) { let seg = d(p[i - 1], p[i]); if (!seg) continue; let t = step - carry;
+      while (t <= seg) { out.push([p[i - 1][0] + (p[i][0] - p[i - 1][0]) * t / seg, p[i - 1][1] + (p[i][1] - p[i - 1][1]) * t / seg]); t += step; }
+      carry = seg - (t - step); }
+    out.push(z);
+    const close = len > 80 && chord < W * (0.015 + 0.06 * assist);
+    for (let n = Math.min(Math.round(assist * 40), Math.floor(out.length / 3)); n > 0; n--) { const prev = out.map((q) => q.slice());
+      for (let i = 1; i < out.length - 1; i++) { out[i][0] = (prev[i - 1][0] + 2 * prev[i][0] + prev[i + 1][0]) / 4; out[i][1] = (prev[i - 1][1] + 2 * prev[i][1] + prev[i + 1][1]) / 4; } }
+    if (close) out.push(a.slice());
+    s.pts = out;
+  }
+  // 2) brush paint stays in the shape it starts in: the guide picture and her pencil lines are the walls.
+  //    More help means a smaller spill over the lines.
+  const LN = 300, guideImg = new Image(); let guideOk = false;
+  guideImg.onload = () => (guideOk = true);
+  guideImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(drawSVG(ref.d, 5).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" '));
+  const wallCv = document.createElement('canvas'); wallCv.width = wallCv.height = LN;
+  const layer = document.createElement('canvas'); layer.width = layer.height = cv.width;
+  function shapeAt(x, y, brush) {
+    if (!assist) return null;
+    const w = wallCv.getContext('2d', { willReadFrequently: true }), k = LN / W;
+    w.setTransform(1, 0, 0, 1, 0, 0); w.clearRect(0, 0, LN, LN); w.globalCompositeOperation = 'source-over';
+    if (guideOk) w.drawImage(guideImg, 0, 0, LN, LN);
+    w.setTransform(k, 0, 0, k, 0, 0); w.lineCap = w.lineJoin = 'round';
+    for (const s of strokes) { if (s.fill || s.tool === 'brush' || s === cur) continue;
+      w.globalCompositeOperation = s.erase ? 'destination-out' : 'source-over'; w.strokeStyle = w.fillStyle = '#000'; w.lineWidth = Math.max(s.size, 2 / k);
+      const p = s.pts; w.beginPath(); if (p.length === 1) { w.arc(p[0][0], p[0][1], s.size / 2, 0, 7); w.fill(); } else { w.moveTo(p[0][0], p[0][1]); for (let i = 1; i < p.length; i++) w.lineTo(p[i][0], p[i][1]); w.stroke(); } }
+    const data = w.getImageData(0, 0, LN, LN).data, wall = (i) => data[i * 4 + 3] > 70;
+    let sx = Math.round(x * k), sy = Math.round(y * k); if (sx < 0 || sy < 0 || sx >= LN || sy >= LN) return null;
+    if (wall(sy * LN + sx)) { let hit = false;
+      for (let r = 1; r <= 8 && !hit; r++) for (let dy = -r; dy <= r && !hit; dy++) for (let dx = -r; dx <= r && !hit; dx++) { const xx = sx + dx, yy = sy + dy; if (xx >= 0 && yy >= 0 && xx < LN && yy < LN && !wall(yy * LN + xx)) { sx = xx; sy = yy; hit = true; } }
+      if (!hit) return null; }
+    const mask = new Uint8Array(LN * LN), stack = [sy * LN + sx]; mask[stack[0]] = 1; let n = 0;
+    while (stack.length) { const q = stack.pop(), qx = q % LN, qy = (q - qx) / LN; n++;
+      for (const t of [qx > 0 ? q - 1 : -1, qx < LN - 1 ? q + 1 : -1, qy > 0 ? q - LN : -1, qy < LN - 1 ? q + LN : -1]) if (t >= 0 && !mask[t] && !wall(t)) { mask[t] = 1; stack.push(t); } }
+    if (n > LN * LN * 0.8) return null;                      // open page: nothing to stay inside
+    // let the paint reach under the line, plus a spill that shrinks as the help grows
+    const grow = Math.max(2, Math.round((3 + brush * 0.6 * (1 - assist)) * k)), m = document.createElement('canvas'); m.width = m.height = LN;
+    const mc = m.getContext('2d'), img = mc.createImageData(LN, LN);
+    for (let i = 0; i < LN * LN; i++) if (mask[i]) img.data[i * 4 + 3] = 255;
+    mc.putImageData(img, 0, 0);
+    const g = document.createElement('canvas'); g.width = g.height = LN; const gc = g.getContext('2d');
+    for (let a = 0; a < 12; a++) gc.drawImage(m, Math.cos(a * Math.PI / 6) * grow, Math.sin(a * Math.PI / 6) * grow);
+    gc.drawImage(m, 0, 0);
+    return g;
+  }
+
   // Keep gesture pointers separate from drawing strokes.
   let zoom = 1, panX = 0, panY = 0, gesture = null;
   const touches = new Map();
@@ -1524,6 +1612,15 @@ function startDraw(refIndex) {
   }
   function paint(s) {
     if (s.fill) return;
+    if (s.clip && !s.clipping) {                            // brush held inside its shape
+      const l = layer.getContext('2d'), main = c;
+      l.setTransform(1, 0, 0, 1, 0, 0); l.globalCompositeOperation = 'source-over'; l.clearRect(0, 0, layer.width, layer.height);
+      l.setTransform(dpr, 0, 0, dpr, 0, 0); l.lineCap = l.lineJoin = 'round';
+      s.clipping = true; c = l; try { paint(s); } finally { c = main; s.clipping = false; }
+      l.setTransform(1, 0, 0, 1, 0, 0); l.globalCompositeOperation = 'destination-in'; l.drawImage(s.clip, 0, 0, layer.width, layer.height);
+      main.save(); main.setTransform(1, 0, 0, 1, 0, 0); main.drawImage(layer, 0, 0); main.restore();
+      return;
+    }
     c.globalCompositeOperation = s.erase ? 'destination-out' : 'source-over';
     c.strokeStyle = s.color; c.fillStyle = s.color; c.lineWidth = s.size;
     c.globalAlpha = s.erase ? 1 : s.tool === "brush" ? 0.66 : 1;
@@ -1562,6 +1659,7 @@ function startDraw(refIndex) {
     }
     // One finger always draws; use two fingers to pan or zoom without ink.
     cur = { color, size: erase ? size * 2 : size, tool, erase, pts: [pt(e)] };
+    if (tool === 'brush' && !erase) { const clip = shapeAt(cur.pts[0][0], cur.pts[0][1], size); if (clip) cur.clip = clip; }
     strokes.push(cur);
     paint(cur);
   });
@@ -1584,7 +1682,7 @@ function startDraw(refIndex) {
   });
   const end = e => {
     touches.delete(e.pointerId);
-    if (cur) drawAutosave();
+    if (cur) { tidy(cur); redraw(); drawAutosave(); }
     cur = null;
     if (touches.size < 2) gesture = null;
   };
@@ -1633,7 +1731,7 @@ function startDraw(refIndex) {
   const leave = (go) => () => { sfx.tap(); if (saveTimer) autosave(true); go(); };
   area.querySelector('[data-a="choose"]').onclick = leave(drawChooser);
   area.querySelector('[data-a="gallery"]').onclick = leave(drawGallery);
-  if (testFeatureAvailable()) window.__draw = { strokes: () => strokes.length, add: (pts) => { strokes.push({ color, size, tool: 'pencil', erase: false, pts }); replay(); autosave(); }, saveNow: () => autosave(true), entryId };
+  if (testFeatureAvailable()) window.__draw = { assist, tidy: (pts) => { const s = { pts, size: 7 }; tidy(s); return s.pts; }, brush: (pts, sz = 26) => { const s = { color, size: sz, tool: 'brush', erase: false, pts }; const clip = shapeAt(pts[0][0], pts[0][1], sz); if (clip) s.clip = clip; strokes.push(s); replay(); autosave(); return !!clip; }, W, guideReady: () => guideOk, inkAt: (x, y) => c.getImageData(Math.round(x * dpr), Math.round(y * dpr), 1, 1).data[3], strokes: () => strokes.length, add: (pts) => { strokes.push({ color, size, tool: 'pencil', erase: false, pts }); replay(); autosave(); }, saveNow: () => autosave(true), entryId };
 }
 // the drawing pad's "save a moment from now"; the pad's own events call it
 let drawAutosave = () => {}, drawFlush = () => {};

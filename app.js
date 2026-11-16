@@ -1234,12 +1234,14 @@ function renderGrades() {
 }
 $('#gradeChip').onclick = () => $('#settingsBtn').onclick();
 $('#settingsBtn').onclick = () => askPin(openSettings);
+$('#parentPlayBtn').onclick = () => { sfx.tap(); askPin(openParentPlay); };
 function openSettings() {
   renderKids();
   renderGrades(); renderThemes(); $('#testMode').checked = isTestMode(); $('#testSection').hidden = !testFeatureAvailable();
   $('#countrySel').innerHTML = COUNTRY_ORDER.map((k) => `<option value="${k}">${COUNTRIES[k].flag} ${COUNTRIES[k].label}</option>`).join('') + '<option value="other">🌍 Somewhere else</option>';
   $('#countrySel').value = countryCode();
   fillRegions();
+  $('#drawAssist').value = state.drawAssist == null ? '' : String(state.drawAssist);
   $('#nameInput').value = state.name; $('#showAll').checked = !!state.showAll; $('#optClock').checked = !state.hideClock; $('#roundsPerPlay').value = String(state.roundsPerPlay || 1); $('#playMinutes').value = String(state.playMinutes || 3); $('#playAlways').checked = !!state.playAlways; $('#optAnatomy').checked = !!state.optAnatomy; $('#playMode').value = state.playMode || 'rounds'; $('#playPerHour').value = String(state.playPerHour || 15); syncPlayMode(); $('#voiceToggle').checked = state.voice;
   $('#levels').innerHTML = visibleGames().filter((c) => c.gen && c.id !== 'placement').map((c) =>
     `<label class="lvrow">${c.icon} ${c.title}<select data-id="${c.id}">${Array.from({ length: maxLevelOf(c.id) }, (_, k) => k + 1).map((l) => `<option value="${l}" ${levelOf(c.id) === l ? 'selected' : ''}>${((r) => r && l >= r[0] && l <= r[1] ? `Step ${l - r[0] + 1} of ${r[1] - r[0] + 1}` : `Library level ${l}`)(state.grade && gradeRange(state.grade, c.id))}</option>`).join('')}</select></label>`).join('');
@@ -1319,6 +1321,7 @@ function collectSettings() {
   if (countryChanged) { state.region = ''; fillRegions(); } else state.region = $('#regionSel').value;
   state.showAll = $('#showAll').checked;
   state.hideClock = !$('#optClock').checked;
+  if ($('#drawAssist').value === '') delete state.drawAssist; else state.drawAssist = +$('#drawAssist').value;
   state.roundsPerPlay = +$('#roundsPerPlay').value; state.playMinutes = +$('#playMinutes').value; state.playAlways = $('#playAlways').checked; state.optAnatomy = $('#optAnatomy').checked; state.playMode = $('#playMode').value; state.playPerHour = +$('#playPerHour').value;
   $$('#levels select').forEach((s) => {
     const level = +s.value, id = s.dataset.id;
@@ -1397,7 +1400,7 @@ $('#testVoiceBtn').onclick = async () => {
 $('#resetBtn').onclick = () => {
   if (!confirm('Reset all stars, stickers and levels?')) return;
   // keep the grown-up settings (name, grade, voice, PIN, play rules, look); clear everything the child earned
-  const KEEP = ['name', 'avatar', 'grade', 'country', 'region', 'dailyGoal', 'voice', 'pinHash', 'theme', 'showAll', 'hideClock', 'optAnatomy', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'testMode', 'schema'];
+  const KEEP = ['name', 'avatar', 'grade', 'country', 'region', 'dailyGoal', 'voice', 'pinHash', 'theme', 'showAll', 'hideClock', 'optAnatomy', 'playMode', 'playPerHour', 'roundsPerPlay', 'playMinutes', 'playAlways', 'drawAssist', 'testMode', 'schema'];
   for (const k of Object.keys(state)) if (!KEEP.includes(k)) delete state[k];
   Object.assign(state, { stars: 0, stickers: [], levels: {}, best: {} });
   if (state.grade && GRADES[state.grade]) Object.entries(GRADES[state.grade].g).forEach(([id, r]) => (state.levels[id] = gradeStart(r)));
