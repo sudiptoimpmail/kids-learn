@@ -142,6 +142,8 @@ lessons.append({'id': 'geo.lesson.cube-ball-pyramid', 'section': S, 'step': 3, '
         {'say': 'This is a cube.', 'show': 'cube'},
         {'say': 'Look at the cube from the side. You see a square!', 'show': 'cube-side'},
         {'say': 'This is a ball. It is also called a sphere.', 'show': 'sphere'},
+        {'say': 'Cut a ball in half. Each cut side is a circle!', 'show': 'sphere-halves'},
+        {'say': 'Turn the two halves and join them. They make a ball again!', 'show': 'sphere-join'},
         {'say': 'Look at the ball from any side. You see a circle!', 'show': 'sphere-side'},
         {'say': 'This is a pyramid.', 'show': 'pyramid'},
         {'say': 'Look at the pyramid from the side. You see a triangle!', 'show': 'pyramid-side'},
@@ -149,7 +151,7 @@ lessons.append({'id': 'geo.lesson.cube-ball-pyramid', 'section': S, 'step': 3, '
         {'say': 'Solid shapes have flat shapes hiding inside!', 'show': 'all'},
     ], 'together': 'geo.view.cube-face'})
 
-bank = {'format': 'kids-core/question-bank', 'schema': 2, 'id': 'learn-play.geometry', 'title': 'Shapes', 'version': 1, 'language': 'en-US', 'entitlement': 'free',
+bank = {'format': 'kids-core/question-bank', 'schema': 2, 'id': 'learn-play.geometry', 'title': 'Shapes', 'version': 2, 'language': 'en-US', 'entitlement': 'free',
         'steps': [{'section': S, 'step': 1, 'title': 'Flat shapes'}, {'section': S, 'step': 2, 'title': 'Cone and cylinder'}, {'section': S, 'step': 3, 'title': 'Cube, ball and pyramid'}, {'section': S, 'step': 4, 'title': 'Shape detective'}],
         'lessons': lessons, 'questions': questions, 'pictures': pictures}
 out = os.path.join(os.path.dirname(__file__), '..', 'banks', 'learn-play.geometry.json')
