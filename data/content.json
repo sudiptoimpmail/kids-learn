@@ -1089,7 +1089,7 @@
         2
       ],
       [
-        "A fish can ___ walk.",
+        "A fish does ___ walk.",
         "not",
         2
       ],
@@ -1784,7 +1784,7 @@
         ]
       ],
       [
-        "The baby can crawl, but she can not walk yet.",
+        "The baby can crawl, but she cannot walk yet.",
         "What can the baby do?",
         [
           "crawl 👶",
@@ -1820,7 +1820,7 @@
         ]
       ],
       [
-        "A bird can fly, but a fish can not.",
+        "A bird can fly, but a fish cannot.",
         "Who can fly?",
         [
           "a bird 🐦",
@@ -4528,7 +4528,7 @@
           "🧊"
         ],
         "level": 1,
-        "tip": "It is like a dice. All its faces are squares."
+        "tip": "It is like one of the dice in a game. All its faces are squares."
       },
       "sphere": {
         "real": [
@@ -5053,7 +5053,7 @@
       [
         "whisper",
         "🤫",
-        "talking very quietly",
+        "to talk very quietly",
         "We whisper in the library.",
         "Can you whisper your name?",
         "quiet"
@@ -5122,7 +5122,7 @@
       [
         "sticky",
         "🍯",
-        "things stay stuck to it",
+        "able to stick to things",
         "Honey is sticky.",
         "What else is sticky?"
       ],
@@ -5293,7 +5293,7 @@
       [
         "silent",
         "🤐",
-        "no sound at all",
+        "making no sound at all",
         "The room was silent.",
         "Can you be silent for five seconds?",
         "quiet"
@@ -5352,7 +5352,7 @@
       [
         "dangerous",
         "⚠️",
-        "something that could hurt you",
+        "able to hurt you",
         "Fire is dangerous.",
         "What is dangerous?"
       ],

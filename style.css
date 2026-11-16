@@ -2028,3 +2028,10 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .pz-duo { position: absolute; top: 8px; right: 10px; font-size: 13px; font-weight: 800; background: #fff; color: var(--c); border-radius: 999px; padding: 3px 9px; }
 .duo-p { display: inline-block; padding: 2px 12px; border-radius: 999px; opacity: .6; }
 .duo-p.on { opacity: 1; background: rgba(255,255,255,.28); box-shadow: 0 0 0 3px rgba(255,255,255,.6); }
+
+/* a sticker as her picture; picture and colours chosen together */
+.stk.have[data-s] { cursor: pointer; }
+.stk.mine { outline: 4px solid var(--theme); outline-offset: 2px; }
+.stk-pick { margin-top: -4px; } .stk-now { font-size: 1.5em; vertical-align: -4px; }
+.look-sub { margin: 12px 0 6px; font-weight: 700; }
+.avatar-row .av.earned { background: #fff7d6; }

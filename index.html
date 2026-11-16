@@ -204,6 +204,7 @@
       <span class="icon-btn ghost"></span>
     </header>
     <p id="stickerNote" class="note"></p>
+    <p id="stickerPick" class="note stk-pick"></p>
     <div id="stickerGrid" class="sticker-grid"></div>
   </section>
 
@@ -219,12 +220,13 @@
         <div id="kidChips" class="kid-chips"></div>
         <div class="kid-edit">
           <label class="lvrow">Name<input id="nameInput" maxlength="20" autocomplete="off" placeholder="e.g. Maya"></label>
-          <div id="avatarRow" class="avatar-row"></div>
           <button id="kidRemove" class="link-btn">Remove this child</button>
         </div>
       </div>
-      <div class="field">🎨 Colours <small>(for this child)</small>
+      <div class="field look-field">🎨 Picture and colors <small>(for this child — a look sets both)</small>
         <div id="themeBtns" class="grade-btns theme-btns"></div>
+        <div class="look-sub">Or keep the colors and pick another picture <small id="avatarNote"></small></div>
+        <div id="avatarRow" class="avatar-row"></div>
       </div>
       <div class="field">🌗 Background <small>(for this device)</small>
         <div id="schemeBtns" class="grade-btns"></div>

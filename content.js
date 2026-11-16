@@ -610,10 +610,12 @@ function genAdd(level) {
   // more/fewer and symbol comparisons into ordinary addition practice.
   // (the card still counts towards the grade's Compare goal, at the matching Compare step)
   if (Math.random() < 0.13) { const lv = Math.min(level, 5), q = genCompare(lv); q.learningSource = 'cmp:' + lv; return q; }
-  const [a, b] = addPair(level);
+  let [a, b] = addPair(level);
   const ans = a + b;
   const [e, things] = pick(THINGS);
-  const story = (level === 2 || level === 3) && Math.random() < 0.3;
+  let story = (level === 2 || level === 3) && Math.random() < 0.3;
+  // a story names the things ("3 apples"), so its first number is 2 or more: never "1 apples"
+  if (story && a < 2) { if (b >= 2) [a, b] = [b, a]; else story = false; }
   const storyText = `You have ${a} ${e}. You get ${b} more. How many now?`, text = story ? 'Story problem!' : 'Add them up!';   // the story itself is shown once, in the card
   return {
     key: `add-${a}-${b}`,
@@ -631,7 +633,7 @@ function genSub(level) {
   const [a, b] = subPair(level);
   const ans = a - b;
   const [e, things] = pick(THINGS);
-  const story = (level === 2 || level === 3) && Math.random() < 0.3;
+  const story = (level === 2 || level === 3) && a >= 2 && Math.random() < 0.3;   // never "1 apples"
   const storyText = `You have ${a} ${e}. You give away ${b}. How many are left?`, text = story ? 'Story problem!' : 'Take away!';   // the story itself is shown once, in the card
   return {
     key: `sub-${a}-${b}`,
@@ -665,7 +667,7 @@ function genWordProblem(level) {
   if (level === 4 && Math.random() < 0.6) {
     // comparison: how many more?
     const m = pick(NAMES.filter((x) => x !== n));
-    const big = 5 + rand(16), small = 1 + rand(big - 1);
+    const big = 5 + rand(16), small = 2 + rand(big - 2);   // 2 or more, so the plural name fits
     parts = [`${n} has`, big, `${t}.`, `${m} has`, small, `${t}.`, `How many more does ${n} have?`];
     ans = big - small; key = `wp-cmp-${big}-${small}`;
     hint = { html: `<div class="cmp"><div class="objs">${objects(e, big, small)}</div><div class="objs">${objects(e, small)}</div></div><div class="hint-note">Match them up. Count the extra ones!</div>`, say: 'Match them up. Count the extra ones!' };
@@ -679,7 +681,9 @@ function genWordProblem(level) {
   } else {
     const op = Math.random() < 0.5 ? '+' : '−';
     const lv = Math.min(level, 3);
-    const [a, b] = wpNumbers(lv, op);
+    let [a, b] = wpNumbers(lv, op);
+    // the first number sits next to the plural name ("4 shells"), so it is never 1
+    if (a < 2) { if (op === '+' && b >= 2) [a, b] = [b, a]; else { a = 2 + rand(3); if (op !== '+') b = Math.min(b, a); } }
     // The authored story templates live in data/content.json; JS only supplies numbers.
     const pattern = op === '+' ? pick(WP.add) : pick(WP.sub[kind]);
     const values = {name:n,a,b,item:t};
@@ -701,7 +705,7 @@ function genWordProblem(level) {
 // 1 more/fewer + picture vs picture with signs · 2 pictures and numbers to 10 · 3 to 20 · 4 two-digit · 5 sums and differences
 const SIGN_OPTS = [{ v: '>', html: '&gt;<small>greater</small>' }, { v: '<', html: '&lt;<small>less</small>' }, { v: '=', html: '=<small>equal</small>' }];
 const signOf = (a, b) => (a > b ? '>' : a < b ? '<' : '=');
-const gator = { html: '<div class="hint-pic sm">🐊</div><div class="hint-note">The alligator mouth opens to the bigger number!<br>7 &gt; 3 &nbsp; · &nbsp; 3 &lt; 7</div>', say: 'The alligator mouth opens to the bigger number!' };
+const gator = { html: '<div class="hint-pic sm">🐊</div><div class="hint-note">The alligator&#39;s mouth opens to the bigger number!<br>7 &gt; 3 &nbsp; · &nbsp; 3 &lt; 7</div>', say: "The alligator's mouth opens to the bigger number!" };
 
 // two picture groups with the sign box between them; counts shown under each group
 function genComparePics(level) {
@@ -717,7 +721,7 @@ function genComparePics(level) {
     options: SIGN_OPTS, answer: signOf(a, b), optClass: 'opt-num signs',
     hint: {
       html: `<div class="hint-pic sm">🐊</div><div class="hint-note">${a} ${a === b ? 'is the same as' : a > b ? 'is more than' : 'is less than'} ${b}<br>The mouth opens to the bigger group!<br><span class="sign-key">&gt; greater · &lt; less · = equal</span></div>`,
-      say: 'The alligator mouth opens to the bigger group!',
+      say: "The alligator's mouth opens to the bigger group!",
     },
   };
 }
@@ -1069,7 +1073,7 @@ function genBody(level) {
     const p = pick(withPic);
     const others = sample(withPic, numOpts(level) - 1, [p]);
     return {
-      key: `body-pic-${p[0]}`, text: `Find the picture of <b>${p[0]}</b>!`, say: ['Find the picture of', p[0]],
+      key: `body-pic-${p[0]}`, text: `Find the picture of the <b>${p[0]}</b>!`, say: ['Find the picture of the', p[0]],
       main: '', mainClass: 'empty', options: shuffle([p, ...others]).map((o) => ({ v: o[0], html: o[2] })),
       answer: p[0], optClass: 'opt-emoji', hint: { html: bodySVG(p[0]), say: 'Look at the picture!' },
     };
@@ -1151,7 +1155,7 @@ function genVisualRecognition(level) {
   // Recorded-word speech only. Do not synthesize a phrase that does not exist in audio/clips.json.
   const hasRecording = !!CLIPS[clipKey(correct.replace(/_/g,' '))];
   const spoken = hasRecording
-    ? ['Find the picture of', correct.replace(/_/g,' ')] : 'Look at the picture!';
+    ? ['Find the picture of the', correct.replace(/_/g,' ')] : 'Look at the picture!';
   return {
     key:'visual-'+group+'-'+correct, text:hasRecording ? 'Find the '+correct.replace(/_/g,' ')+'!' : 'Find the matching picture!',
     say:spoken, main:hasRecording
@@ -1174,7 +1178,7 @@ const genGK = (level) => {
     const pictureSpeech = { sunflower: ['sun','flower'], airplane: ['air','plane'],
       tulip: ['two','lip'], daisy: ['day','z'] };
     const parts = pictureSpeech[noun] || [noun];
-    q.say = parts.every(part => CLIPS[clipKey(part)]) ? ['Find the picture of', ...parts] : 'Look at the picture!';
+    q.say = parts.every(part => CLIPS[clipKey(part)]) ? ['Find the picture of the', ...parts] : 'Look at the picture!';
     q.optClass = 'gk-picture-choices';
     if (PHOTO_SET.has(noun)) {
       // All answers must be photographs from the same category, not a mixture of emoji and photos.
@@ -1710,7 +1714,7 @@ function genPlaces(level) {
     const poolCities=[...new Set(pool.filter(x=>x[3]!==city).map(x=>x[3]))];
     const wrong=sample(poolCities,n);
     if(wrong.length===n) return {
-      key:`lm-city-${id}`,text:`Which city or area is <b>${name}</b> in?`,
+      key:`lm-city-${id}`,text:`Which city or area is ${LM_NO_THE.has(id) ? '' : 'the '}<b>${name}</b> in?`,
       say:'Find the answer.',main:illustrated?illustrationNote:landmarkArt(id),
       mainClass:'lm-main',options:shuffle([city,...wrong]).map(v=>({v,html:v})),
       answer:city,optClass:'opt-text',hint:mapHint

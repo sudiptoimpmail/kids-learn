@@ -13,13 +13,15 @@ function logPortfolioWord(q, alone) {
   while (keys.length > familyConfig.portfolioLimit) delete words[keys.shift()];
 }
 CoreHooks.after('renderStickers', () => {
+  const scrollAt = document.scrollingElement ? document.scrollingElement.scrollTop : 0;
   $('#stickerGrid').style.display = 'block';
   $('#stickerGrid').innerHTML = learningConfig.collections
     .map((set) => {
       const have = set.items.filter((s) => state.stickers.includes(s));
-      return `<section class="panel"><h3>${set.icon || ''} ${esc(set.title)} · ${have.length}/${set.items.length}${have.length === set.items.length ? ' ✓' : ''}</h3><div class="collection-grid">${set.items.map((s) => `<div class="stk ${have.includes(s) ? 'have' : ''}" aria-label="${have.includes(s) ? 'Collected' : 'Not collected'}">${have.includes(s) ? s : '❔'}</div>`).join('')}</div></section>`;
+      return `<section class="panel"><h3>${set.icon || ''} ${esc(set.title)} · ${have.length}/${set.items.length}${have.length === set.items.length ? ' ✓' : ''}</h3><div class="collection-grid">${set.items.map((s) => `<div class="stk ${have.includes(s) ? 'have' : ''}${have.includes(s) && state.avatar === s ? ' mine' : ''}" ${have.includes(s) ? `data-s="${s}" role="button" tabindex="0"` : ''} aria-label="${have.includes(s) ? (state.avatar === s ? 'Your picture' : 'Collected. Tap to make it your picture') : 'Not collected'}">${have.includes(s) ? s : '❔'}</div>`).join('')}</div></section>`;
     })
     .join('');
+  if (document.scrollingElement) document.scrollingElement.scrollTop = scrollAt;
 });
 const portfolio = document.createElement('section');
 portfolio.id = 'portfolio';

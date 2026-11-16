@@ -100,7 +100,7 @@ function genFractions(level) {
     const cands = shuffle([[a, b], ...others]);
     return { key: `frac-pick-${a}-${b}`, text: `Which picture shows ${fracHTML(a, b)}?`, say: 'Which picture shows this fraction?',
       main: `<div class="ns-big">${fracHTML(a, b)}</div>`, mainClass: 'ph-main', answer: frac(a, b), optClass: 'opt-svg',
-      options: cands.map(([x, y]) => ({ v: frac(x, y), html: m23Bar(y, x) })), hint: { html: `<div class="hint-note">Count the parts: ${b}.<br>Colour ${a} of them.</div>`, say: 'Think about it!' } };
+      options: cands.map(([x, y]) => ({ v: frac(x, y), html: m23Bar(y, x) })), hint: { html: `<div class="hint-note">Count the parts: ${b}.<br>Color ${a} of them.</div>`, say: 'Think about it!' } };
   }
   if (level === 3) {
     if (t < 0.55) {
@@ -122,7 +122,7 @@ function genFractions(level) {
       main: `<div class="m23-eq">${m23Bar(b, a, false, '#51cf66')}<div class="ns-big">${fracHTML(a, b)} = ?</div>${m23Bar(b * m, a * m, false, '#51cf66')}</div>`, mainClass: 'ph-main',
       answer: frac(a * m, b * m), optClass: 'opt-num',
       options: shuffle([frac(a * m, b * m), frac(a + m, b + m), frac(a * m, b), frac(a, b * m)]).map((v) => ({ v, html: fracHTML(...v.split('/')) })),
-      hint: { html: '<div class="hint-note">The same amount is coloured in both bars.</div>', say: 'Think about it!' } };
+      hint: { html: '<div class="hint-note">The same amount is colored in both bars.</div>', say: 'Think about it!' } };
   }
   if (t < 0.7) {
     const b = pick([2, 3, 4, 6, 8]), w = pick([1, 1, 2, 3]);
@@ -218,7 +218,7 @@ function genMeasure(level) {
     let vals; do { vals = labels.map(() => scale * (1 + rand(8))); } while (new Set(vals).size < 3);
     const total = vals.reduce((s, v) => s + v, 0);
     return Math.random() < 0.5
-      ? m23Q(`ms-sbar-tot-${vals.join('-')}`, 'Pets owned by a class survey. How many pets in all?', 'How many in all?', m23BarGraph(labels, vals, scale), total,
+      ? m23Q(`ms-sbar-tot-${vals.join('-')}`, 'Pets owned by a class. How many pets in all?', 'How many in all?', m23BarGraph(labels, vals, scale), total,
         [total + scale, total - scale, Math.max(...vals), total + 1], level, 'opt-num')
       : m23Q(`ms-sbar-${vals.join('-')}`, `How many more ${labels[vals.indexOf(Math.max(...vals))]} than ${labels[vals.indexOf(Math.min(...vals))]}?`, 'How many more?',
         m23BarGraph(labels, vals, scale), Math.max(...vals) - Math.min(...vals), [Math.max(...vals), Math.min(...vals), Math.max(...vals) - Math.min(...vals) + scale, scale], level, 'opt-num');
@@ -271,7 +271,7 @@ function genMulPlus(level) {
     return { key: `mul6x-${a}-${b}`, text: 'Multiply!', say: ['What is', `${b}`, 'times', `${a}?`], main: `<div class="equation">${b} × ${a} = <span class="qmark">?</span></div>`,
       options: numberOptions(c, 6), answer: c, optClass: 'opt-num', hint: { html: `<div class="hint-note big">${b} × 10 = ${b * 10}<br>${b} × ${a - 10} = ${b * (a - 10)}<br>${b * 10} + ${b * (a - 10)} = ${c}</div>`, say: 'Count by groups!' } };
   }
-  const boxes = 3 + rand(6), each = 3 + rand(7), gone = 1 + rand(Math.min(9, boxes * each - 2)), ans = boxes * each - gone;
+  const boxes = 3 + rand(6), each = 3 + rand(7), gone = 2 + rand(Math.min(8, boxes * each - 3)), ans = boxes * each - gone;
   const [e, things] = pick(THINGS);
   return { key: `mul6s-${boxes}-${each}-${gone}`, text: '📝 Read the story',
     say: 'Read the story, then find the answer!',
