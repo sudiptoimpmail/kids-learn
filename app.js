@@ -1005,7 +1005,8 @@ function finish() {
 
 function renderStickers() {   // themed shelves come from family-learning.js (learning framework collections)
   $('#stickerGrid').innerHTML = STICKERS.map((s) =>
-    `<div class="stk ${state.stickers.includes(s) ? 'have' : ''}">${state.stickers.includes(s) ? s : '❔'}</div>`).join('');
+    `<div class="stk ${state.stickers.includes(s) ? 'have' : ''}${state.stickers.includes(s) && state.avatar === s ? ' mine' : ''}" ${state.stickers.includes(s) ? `data-s="${s}" role="button" tabindex="0"` : ''}>${state.stickers.includes(s) ? s : '❔'}</div>`).join('');
+  $('#stickerPick').innerHTML = state.stickers.length ? `Tap a sticker to make it your picture. Now: <b class="stk-now">${esc(state.avatar || '🦄')}</b>` : '';
   $('#stickerNote').textContent = `${state.stickers.length} of ${STICKERS.length} — finish a lesson to win a new one!`;
 }
 
@@ -1150,7 +1151,7 @@ function renderSchemes() {
 }
 function renderThemes() {
   $('#themeBtns').innerHTML = CoreSkins.list().map((t) => `<button class="grade-btn ${skinOf(state.theme).id === t.id ? 'on' : ''}" data-t="${t.id}"><i class="skin-dot" style="background:${skinDot(t.id)}"></i>${t.label}</button>`).join('');
-  $$('#themeBtns .grade-btn').forEach((b) => (b.onclick = () => { sfx.tap(); state.theme = b.dataset.t; save(); applyTheme(); renderThemes(); }));
+  $$('#themeBtns .grade-btn').forEach((b) => (b.onclick = () => { sfx.tap(); state.theme = b.dataset.t; const m = skinOf(b.dataset.t).mascot; if (m) state.avatar = m; save(); applyTheme(); renderThemes(); renderKids(); }));
   renderSchemes();
 }
 
@@ -1214,7 +1215,15 @@ $('#quitBtn').onclick = () => {
 $('#againBtn').onclick = () => startRound(R.cat.id);
 $('#homeBtn').onclick = () => { renderHome(); show('home'); };
 $('#stickersBtn').onclick = () => { sfx.tap(); renderStickers(); show('stickers'); };
-$('#stickersBack').onclick = () => show('home');
+$('#stickersBack').onclick = () => { renderHome(); show('home'); };
+// a sticker she has earned can be her picture: tap it in the sticker book (no grown-up needed)
+function pickStickerIcon(el) {
+  const s = el && el.dataset.s; if (!s || !state.stickers.includes(s)) return;
+  state.avatar = s; save(); sfx.yes(); renderStickers();
+  const now = [...$$('#stickers .stk.mine')][0]; if (now && typeof sparkAt === 'function') sparkAt(now);
+}
+$('#stickers').addEventListener('click', (e) => pickStickerIcon(e.target.closest('.stk.have[data-s]')));
+$('#stickers').addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { const t = e.target.closest('.stk.have[data-s]'); if (t) { e.preventDefault(); pickStickerIcon(t); } } });
 function syncPlayMode() {
   const hourly = $('#playMode').value === 'hourly';
   $$('.hourly-only').forEach((x) => (x.hidden = !hourly));
@@ -1370,7 +1379,12 @@ function renderKids() {
   const kids = Store.kids();
   $('#kidChips').innerHTML = kids.map((k) => `<button class="kid-chip ${k.id === Store.activeId() ? 'on' : ''}" data-id="${k.id}"><span>${esc(k.avatar || '🦄')}</span>${esc(k.name || 'Player')}</button>`).join('')
     + (kids.length < MAX_KIDS ? '<button class="kid-chip add" data-add="1">＋ Add a child</button>' : `<span class="kid-chip-note">Up to ${MAX_KIDS} children on this device</span>`);
-  $('#avatarRow').innerHTML = AVATARS.map((a) => `<button class="av ${state.avatar === a ? 'on' : ''}" data-a="${a}">${a}</button>`).join('');
+  // pictures to choose from: the animals, then every sticker this child has earned
+  const earned = (state.stickers || []).filter((s) => !AVATARS.includes(s));
+  const pics = [...new Set([...CoreSkins.list().map((t) => t.mascot).filter(Boolean), ...AVATARS])];
+  $('#avatarRow').innerHTML = pics.map((a) => `<button class="av ${state.avatar === a ? 'on' : ''}" data-a="${a}">${a}</button>`).join('')
+    + earned.map((a) => `<button class="av earned ${state.avatar === a ? 'on' : ''}" data-a="${a}" aria-label="Earned sticker ${a}">${a}</button>`).join('');
+  $('#avatarNote').textContent = earned.length ? `(${earned.length} earned sticker${earned.length === 1 ? '' : 's'} at the end)` : '(earned stickers show up here too)';
   $('#kidRemove').hidden = kids.length <= 1;
   $('#kidRemove').textContent = `Remove ${state.name || 'this child'}`;
   $$('#kidChips .kid-chip').forEach((b) => (b.onclick = () => {

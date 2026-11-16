@@ -32,7 +32,7 @@ const TimesTables = (() => {
     if (Math.random() < 0.5) {
       const [e] = pick(THINGS), g = Math.max(1, Math.min(kMax, n >= 5 ? 4 : 5, 1 + rand(5)));
       return {
-        key: `tbl-grp-${n}-${g}`, text: `${g} ${g === 1 ? 'group' : 'groups'} of ${n}. How many in all?`, say: [`${g}`, 'groups of', `${n}.`, 'How many in all?'],
+        key: `tbl-grp-${n}-${g}`, text: `${g} ${g === 1 ? 'group' : 'groups'} of ${n}. How many in all?`, say: [`${g}`, g === 1 ? 'group of' : 'groups of', `${n}.`, 'How many in all?'],
         main: groupsHTML(e, g, n), options: choices(g * n, [n, 1], nOpts(level)), answer: g * n, optClass: 'opt-num',
         hint: { html: `<div class="hint-note big">Count by ${n}s:</div>${strip(n, g)}`, say: 'Count by groups!' },
       };

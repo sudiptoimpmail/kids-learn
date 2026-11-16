@@ -23,7 +23,7 @@ function w23Compass() {
   const [a, b] = pick(pairs);
   const dir = a.r === b.r ? (a.c > b.c ? 'east' : 'west') : (a.r > b.r ? 'south' : 'north');
   const grid = Array.from({ length: 9 }, (_, i) => { const hit = at.find((x) => x.r * 3 + x.c === i); return `<span>${hit ? hit.p[0] : ''}</span>`; }).join('');
-  return { key: `com-dir-${a.p[1]}-${b.p[1]}-${dir}`, text: `The ${a.p[0]} ${a.p[1]} is which direction from the ${b.p[0]} ${b.p[1]}?`, say: 'Which direction is it?',
+  return { key: `com-dir-${a.p[1]}-${b.p[1]}-${dir}`, text: `Which direction is the ${a.p[0]} ${a.p[1]} from the ${b.p[0]} ${b.p[1]}?`, say: 'Which direction is it?',
     main: `<div class="w23-map"><div class="w23-grid">${grid}</div><div class="w23-rose" aria-label="Compass rose"><b class="n">N</b><b class="e">E</b><b class="s">S</b><b class="w">W</b><i>✦</i></div></div>`,
     mainClass: 'ph-main', answer: dir, optClass: 'opt-text', options: ['north', 'south', 'east', 'west'].map((v) => ({ v, html: v })),
     hint: { html: '<div class="hint-note">North is up. South is down. East is right. West is left.</div>', say: 'North is up!' } };
