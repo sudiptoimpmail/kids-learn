@@ -253,7 +253,7 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
   const recentContent = new Set(state.recentContent[cat.id] || []);
   const fingerprint = (q) => {
     // cards that keep their content outside main (Match It pairs, spelling, ordering, paths) are told apart by it
-    const body = q.match || q.order || q.fillIn || q.passageFill || q.letterPath || q.spell || '';
+    const body = q.match || q.order || q.fillIn || q.passageFill || q.letterPath || q.spell || q.activity || '';
     const raw = String(q.text || '') + '|' + String(q.answer) + '|' + String(q.main || '') + '|' + (body ? JSON.stringify(body).slice(0, 600) : '');
     let hash = 2166136261;
     for (let i = 0; i < raw.length; i++) hash = Math.imul(hash ^ raw.charCodeAt(i), 16777619);
@@ -394,6 +394,7 @@ function renderQ() {
   if (q.passageFill) renderPassageFill(q);
   if (q.order) renderOrder(q);
   if (q.build && typeof renderBuild === 'function') renderBuild(q);
+  if (q.activity) BankCards.activities[q.activity.kind](q);
   if (q.blend && typeof wireBlend === 'function') wireBlend(q);
   if (q.letterSound && typeof wireLetter === 'function') wireLetter(q);
   if (q.tap) $$('#qMain [data-val]').forEach((g) => {
@@ -431,6 +432,7 @@ function showHint(q, auto = false) {
   if (q.illustrated && q.illHint) { q.hintShown = true; q.illHint(); $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
   if (q.match) { matchHint(q); $('#hintBtn').classList.remove('glow'); return; }
   if (q.puzzle) { if (!R.locked && q.puzzleCtl) q.puzzleCtl.hint(); q.hintShown = true; $('#hintBtn').classList.remove('glow'); return; }
+  if (q.activity) { if (!R.locked && q.activityHint) q.activityHint(); q.hintShown = true; $('#hintBtn').classList.remove('glow'); speakHint(q); return; }
   if (q.fillIn || q.passageFill || q.order) { if (!R.locked && q.partHint) q.partHint(); q.hintShown = true; $('#hintBtn').classList.remove('glow'); speakHint(q); return; }
   if (q.letterPath) { if (!R.locked && q.pathHint) q.pathHint(); q.hintShown = true; $('#hintBtn').classList.remove('glow'); speakHint(q); return; }
   if (q.spell) { spellHint(q); $('#hintBtn').classList.remove('glow'); if (!auto) speakHint(q); return; }
@@ -729,7 +731,7 @@ const live = (q) => !R.locked && R.qs[R.i] === q;
 // Missing number / pattern cards: drag an answer onto the "?" (tapping an answer still works)
 function wireMissingSlot(q) {
   const slot = $('#qMain .think-missing');
-  if (!slot || q.spell || q.match || q.fillIn || q.passageFill || q.order || q.multi || q.puzzle || q.tap || q.illustrated) return;
+  if (!slot || q.spell || q.match || q.fillIn || q.passageFill || q.order || q.multi || q.puzzle || q.tap || q.activity || q.illustrated) return;
   slot.classList.add('drop-ready');
   const kids = [...$('#options').children];
   kids.forEach((b, k) => {

@@ -1,0 +1,2159 @@
+{
+ "format": "kids-core/question-bank",
+ "schema": 2,
+ "id": "learn-play.geometry",
+ "title": "Shapes",
+ "version": 1,
+ "language": "en-US",
+ "entitlement": "free",
+ "steps": [
+  {
+   "section": "shape2",
+   "step": 1,
+   "title": "Flat shapes"
+  },
+  {
+   "section": "shape2",
+   "step": 2,
+   "title": "Cone and cylinder"
+  },
+  {
+   "section": "shape2",
+   "step": 3,
+   "title": "Cube, ball and pyramid"
+  },
+  {
+   "section": "shape2",
+   "step": 4,
+   "title": "Shape detective"
+  }
+ ],
+ "lessons": [
+  {
+   "id": "geo.lesson.cone-cylinder",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "title": "Solid shapes and flat shapes",
+   "animation": {
+    "kind": "solid-to-flat",
+    "solids": [
+     "cone",
+     "cylinder"
+    ]
+   },
+   "article": "A cone and a cylinder are solid shapes. Look at them from the side or from below, and you see flat shapes.",
+   "lines": [
+    {
+     "say": "This is a cone.",
+     "show": "cone"
+    },
+    {
+     "say": "A cone is a solid shape. You can hold it.",
+     "show": "cone"
+    },
+    {
+     "say": "Look at the cone from the side. You see a triangle!",
+     "show": "cone-side"
+    },
+    {
+     "say": "Look at the cone from below. You see a circle!",
+     "show": "cone-below"
+    },
+    {
+     "say": "This is a cylinder.",
+     "show": "cylinder"
+    },
+    {
+     "say": "Look at the cylinder from the side. You see a rectangle!",
+     "show": "cylinder-side"
+    },
+    {
+     "say": "Look at the cylinder from the top. You see a circle!",
+     "show": "cylinder-top"
+    },
+    {
+     "say": "Solid shapes have flat shapes hiding inside!",
+     "show": "all"
+    }
+   ],
+   "together": "geo.view.cone-side"
+  },
+  {
+   "id": "geo.lesson.cube-ball-pyramid",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "title": "More solid shapes",
+   "animation": {
+    "kind": "solid-to-flat",
+    "solids": [
+     "cube",
+     "sphere",
+     "pyramid"
+    ]
+   },
+   "article": "A cube, a ball and a pyramid are solid shapes. Each one shows a flat shape when you look at it from one side.",
+   "lines": [
+    {
+     "say": "This is a cube.",
+     "show": "cube"
+    },
+    {
+     "say": "Look at the cube from the side. You see a square!",
+     "show": "cube-side"
+    },
+    {
+     "say": "This is a ball. It is also called a sphere.",
+     "show": "sphere"
+    },
+    {
+     "say": "Look at the ball from any side. You see a circle!",
+     "show": "sphere-side"
+    },
+    {
+     "say": "This is a pyramid.",
+     "show": "pyramid"
+    },
+    {
+     "say": "Look at the pyramid from the side. You see a triangle!",
+     "show": "pyramid-side"
+    },
+    {
+     "say": "Look at the pyramid from below. You see a square!",
+     "show": "pyramid-below"
+    },
+    {
+     "say": "Solid shapes have flat shapes hiding inside!",
+     "show": "all"
+    }
+   ],
+   "together": "geo.view.cube-face"
+  }
+ ],
+ "questions": [
+  {
+   "id": "geo.match-game.s1.1",
+   "section": "shape2",
+   "step": 1,
+   "grades": [
+    "prek",
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Drag each shape onto its **outline**!",
+    "say": "Drag each shape onto its outline!"
+   },
+   "activity": {
+    "kind": "shape-match",
+    "shapes": [
+     "circle",
+     "square",
+     "triangle",
+     "rectangle"
+    ]
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.match-game.s1.2",
+   "section": "shape2",
+   "step": 1,
+   "grades": [
+    "prek",
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Drag each shape onto its **outline**!",
+    "say": "Drag each shape onto its outline!"
+   },
+   "activity": {
+    "kind": "shape-match",
+    "shapes": [
+     "circle",
+     "triangle",
+     "star",
+     "heart"
+    ]
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.match-game.s2.1",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Drag each shape onto its **outline**!",
+    "say": "Drag each shape onto its outline!"
+   },
+   "activity": {
+    "kind": "shape-match",
+    "shapes": [
+     "oval",
+     "diamond",
+     "star",
+     "heart",
+     "rectangle"
+    ]
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.match-game.s2.2",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Drag each shape onto its **outline**!",
+    "say": "Drag each shape onto its outline!"
+   },
+   "activity": {
+    "kind": "shape-match",
+    "shapes": [
+     "semicircle",
+     "triangle",
+     "square",
+     "oval",
+     "diamond"
+    ]
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.match-game.s3.1",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Drag each shape onto its **outline**!",
+    "say": "Drag each shape onto its outline!"
+   },
+   "activity": {
+    "kind": "shape-match",
+    "shapes": [
+     "hexagon",
+     "pentagon",
+     "trapezoid",
+     "semicircle",
+     "diamond"
+    ]
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.match-game.s4.1",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Drag each shape onto its **outline**!",
+    "say": "Drag each shape onto its outline!"
+   },
+   "activity": {
+    "kind": "shape-match",
+    "shapes": [
+     "hexagon",
+     "pentagon",
+     "trapezoid",
+     "rtriangle",
+     "oval"
+    ]
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.tree.s1",
+   "section": "shape2",
+   "step": 1,
+   "grades": [
+    "prek",
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **tree** with shapes!",
+    "say": "Build a tree with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "tree",
+    "guide": "parts"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.house.s1",
+   "section": "shape2",
+   "step": 1,
+   "grades": [
+    "prek",
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **house** with shapes!",
+    "say": "Build a house with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "house",
+    "guide": "parts"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.boat.s1",
+   "section": "shape2",
+   "step": 1,
+   "grades": [
+    "prek",
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **boat** with shapes!",
+    "say": "Build a boat with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "boat",
+    "guide": "parts"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.house.s2",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **house** with shapes!",
+    "say": "Build a house with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "house",
+    "guide": "parts"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.car.s2",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **car** with shapes!",
+    "say": "Build a car with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "car",
+    "guide": "parts"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.train.s2",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **train** with shapes!",
+    "say": "Build a train with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "train",
+    "guide": "parts"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.boat.s2",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **boat** with shapes!",
+    "say": "Build a boat with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "boat",
+    "guide": "parts"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.rocket.s3",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **rocket** with shapes!",
+    "say": "Build a rocket with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "rocket",
+    "guide": "whole"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.robot.s3",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **robot** with shapes!",
+    "say": "Build a robot with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "robot",
+    "guide": "whole"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.train.s3",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **train** with shapes!",
+    "say": "Build a train with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "train",
+    "guide": "whole"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.castle.s3",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **castle** with shapes!",
+    "say": "Build a castle with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "castle",
+    "guide": "whole"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.butterfly.s4",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **butterfly** with shapes!",
+    "say": "Build a butterfly with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "butterfly",
+    "guide": "whole"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.castle.s4",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **castle** with shapes!",
+    "say": "Build a castle with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "castle",
+    "guide": "whole"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.build.robot.s4",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Build a **robot** with shapes!",
+    "say": "Build a robot with shapes!"
+   },
+   "activity": {
+    "kind": "shape-build",
+    "picture": "robot",
+    "guide": "whole"
+   },
+   "hint": {
+    "say": "Look at the outline. Which shape fits?"
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.puzzle.house.s3",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Turn the shapes to fill the **house**!",
+    "say": "Turn the shapes to fill the house!"
+   },
+   "activity": {
+    "kind": "shape-puzzle",
+    "picture": "house",
+    "guide": "parts"
+   },
+   "hint": {
+    "say": "Tap a shape to turn it. Then drag it into place."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.puzzle.boat.s3",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Turn the shapes to fill the **boat**!",
+    "say": "Turn the shapes to fill the boat!"
+   },
+   "activity": {
+    "kind": "shape-puzzle",
+    "picture": "boat",
+    "guide": "parts"
+   },
+   "hint": {
+    "say": "Tap a shape to turn it. Then drag it into place."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.puzzle.rocket.s3",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Turn the shapes to fill the **rocket**!",
+    "say": "Turn the shapes to fill the rocket!"
+   },
+   "activity": {
+    "kind": "shape-puzzle",
+    "picture": "rocket",
+    "guide": "parts"
+   },
+   "hint": {
+    "say": "Tap a shape to turn it. Then drag it into place."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.puzzle.robot.s4",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Turn the shapes to fill the **robot**!",
+    "say": "Turn the shapes to fill the robot!"
+   },
+   "activity": {
+    "kind": "shape-puzzle",
+    "picture": "robot",
+    "guide": "whole"
+   },
+   "hint": {
+    "say": "Tap a shape to turn it. Then drag it into place."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.puzzle.castle.s4",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Turn the shapes to fill the **castle**!",
+    "say": "Turn the shapes to fill the castle!"
+   },
+   "activity": {
+    "kind": "shape-puzzle",
+    "picture": "castle",
+    "guide": "whole"
+   },
+   "hint": {
+    "say": "Tap a shape to turn it. Then drag it into place."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.puzzle.butterfly.s4",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Turn the shapes to fill the **butterfly**!",
+    "say": "Turn the shapes to fill the butterfly!"
+   },
+   "activity": {
+    "kind": "shape-puzzle",
+    "picture": "butterfly",
+    "guide": "whole"
+   },
+   "hint": {
+    "say": "Tap a shape to turn it. Then drag it into place."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.puzzle.car.s4",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Turn the shapes to fill the **car**!",
+    "say": "Turn the shapes to fill the car!"
+   },
+   "activity": {
+    "kind": "shape-puzzle",
+    "picture": "car",
+    "guide": "whole"
+   },
+   "hint": {
+    "say": "Tap a shape to turn it. Then drag it into place."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.lines.side.s2",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "match",
+   "prompt": {
+    "text": "Match each solid shape to the flat shape you see from the **side**!",
+    "say": "Match each solid shape to the flat shape you see from the side!"
+   },
+   "pairs": [
+    {
+     "left": {
+      "picture": "solids/cone",
+      "label": "cone"
+     },
+     "right": {
+      "picture": "flats/triangle",
+      "label": "triangle"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/cylinder",
+      "label": "cylinder"
+     },
+     "right": {
+      "picture": "flats/rectangle",
+      "label": "rectangle"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/sphere",
+      "label": "ball"
+     },
+     "right": {
+      "picture": "flats/circle",
+      "label": "circle"
+     }
+    }
+   ],
+   "hint": {
+    "say": "Look at each solid shape from the side."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.lines.side.s3",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "match",
+   "prompt": {
+    "text": "Match each solid shape to the flat shape you see from the **side**!",
+    "say": "Match each solid shape to the flat shape you see from the side!"
+   },
+   "pairs": [
+    {
+     "left": {
+      "picture": "solids/cone",
+      "label": "cone"
+     },
+     "right": {
+      "picture": "flats/triangle",
+      "label": "triangle"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/cylinder",
+      "label": "cylinder"
+     },
+     "right": {
+      "picture": "flats/rectangle",
+      "label": "rectangle"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/sphere",
+      "label": "ball"
+     },
+     "right": {
+      "picture": "flats/circle",
+      "label": "circle"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/cube",
+      "label": "cube"
+     },
+     "right": {
+      "picture": "flats/square",
+      "label": "square"
+     }
+    }
+   ],
+   "hint": {
+    "say": "Look at each solid shape from the side."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.lines.names.s3",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "match",
+   "prompt": {
+    "text": "Match each solid shape to its **name**!",
+    "say": "Match each solid shape to its name!"
+   },
+   "pairs": [
+    {
+     "left": {
+      "picture": "solids/cone",
+      "label": "cone"
+     },
+     "right": {
+      "text": "cone",
+      "label": "cone"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/cylinder",
+      "label": "cylinder"
+     },
+     "right": {
+      "text": "cylinder",
+      "label": "cylinder"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/cube",
+      "label": "cube"
+     },
+     "right": {
+      "text": "cube",
+      "label": "cube"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/sphere",
+      "label": "ball"
+     },
+     "right": {
+      "text": "sphere",
+      "label": "sphere"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/pyramid",
+      "label": "pyramid"
+     },
+     "right": {
+      "text": "pyramid",
+      "label": "pyramid"
+     }
+    }
+   ],
+   "show": 4,
+   "hint": {
+    "say": "A cone has a point. A cube has square faces."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.lines.names.s4",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "match",
+   "prompt": {
+    "text": "Match each solid shape to its **name**!",
+    "say": "Match each solid shape to its name!"
+   },
+   "pairs": [
+    {
+     "left": {
+      "picture": "solids/cone",
+      "label": "cone"
+     },
+     "right": {
+      "text": "cone",
+      "label": "cone"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/cylinder",
+      "label": "cylinder"
+     },
+     "right": {
+      "text": "cylinder",
+      "label": "cylinder"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/cube",
+      "label": "cube"
+     },
+     "right": {
+      "text": "cube",
+      "label": "cube"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/sphere",
+      "label": "ball"
+     },
+     "right": {
+      "text": "sphere",
+      "label": "sphere"
+     }
+    },
+    {
+     "left": {
+      "picture": "solids/pyramid",
+      "label": "pyramid"
+     },
+     "right": {
+      "text": "pyramid",
+      "label": "pyramid"
+     }
+    }
+   ],
+   "show": 5,
+   "hint": {
+    "say": "A cone has a point. A cube has square faces."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.view.cone-side",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Look at a cone from the **side**. Which flat shape do you see?",
+    "say": "Look at a cone from the side. Which flat shape do you see?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    },
+    {
+     "id": "b",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "c",
+     "label": "square",
+     "picture": "flats/square"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "A cone has a point at the top."
+   },
+   "explain": "From the side, a cone looks like a triangle.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.view.cone-below",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Look at a cone from **below**. Which flat shape do you see?",
+    "say": "Look at a cone from below. Which flat shape do you see?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "b",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    },
+    {
+     "id": "c",
+     "label": "square",
+     "picture": "flats/square"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "The bottom of a cone is round."
+   },
+   "explain": "From below, a cone looks like a circle.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.view.cylinder-side",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Look at a cylinder from the **side**. Which flat shape do you see?",
+    "say": "Look at a cylinder from the side. Which flat shape do you see?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "rectangle",
+     "picture": "flats/rectangle"
+    },
+    {
+     "id": "b",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "c",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "The side of a cylinder is straight up and down."
+   },
+   "explain": "From the side, a cylinder looks like a rectangle.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.view.cylinder-top",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Look at a cylinder from the **top**. Which flat shape do you see?",
+    "say": "Look at a cylinder from the top. Which flat shape do you see?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "b",
+     "label": "rectangle",
+     "picture": "flats/rectangle"
+    },
+    {
+     "id": "c",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "The top of a cylinder is round."
+   },
+   "explain": "From the top, a cylinder looks like a circle.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.view.cube-face",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Which flat shape is every face of a cube?",
+    "say": "Which flat shape is every face of a cube?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "square",
+     "picture": "flats/square"
+    },
+    {
+     "id": "b",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "c",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    },
+    {
+     "id": "d",
+     "label": "oval",
+     "picture": "flats/oval"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "A cube is like a box with equal sides."
+   },
+   "explain": "Every face of a cube is a square.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.view.sphere",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Look at a ball from any side. Which flat shape do you see?",
+    "say": "Look at a ball from any side. Which flat shape do you see?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "b",
+     "label": "square",
+     "picture": "flats/square"
+    },
+    {
+     "id": "c",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    },
+    {
+     "id": "d",
+     "label": "oval",
+     "picture": "flats/oval"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "A ball is round all over."
+   },
+   "explain": "From every side, a ball looks like a circle.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.view.pyramid-side",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Look at a pyramid from the **side**. Which flat shape do you see?",
+    "say": "Look at a pyramid from the side. Which flat shape do you see?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    },
+    {
+     "id": "b",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "c",
+     "label": "square",
+     "picture": "flats/square"
+    },
+    {
+     "id": "d",
+     "label": "hexagon",
+     "picture": "flats/hexagon"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "A pyramid has a point at the top."
+   },
+   "explain": "From the side, a pyramid looks like a triangle.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.view.pyramid-below",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Look at this pyramid from **below**. Which flat shape do you see?",
+    "say": "Look at this pyramid from below. Which flat shape do you see?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "square",
+     "picture": "flats/square"
+    },
+    {
+     "id": "b",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    },
+    {
+     "id": "c",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "d",
+     "label": "hexagon",
+     "picture": "flats/hexagon"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "This pyramid sits on four equal sides."
+   },
+   "explain": "This pyramid sits on a square.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.solid.rolls",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Which solid shape can **roll** like a ball?",
+    "say": "Which solid shape can roll like a ball?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "ball",
+     "picture": "solids/sphere"
+    },
+    {
+     "id": "b",
+     "label": "cube",
+     "picture": "solids/cube"
+    },
+    {
+     "id": "c",
+     "label": "pyramid",
+     "picture": "solids/pyramid"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "A ball is round all over."
+   },
+   "explain": "A ball is a sphere. It rolls every way.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.solid.triangle-side",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Which solid shape looks like a **triangle** from the side and a **circle** from below?",
+    "say": "Which solid shape looks like a triangle from the side and a circle from below?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "cone",
+     "picture": "solids/cone"
+    },
+    {
+     "id": "b",
+     "label": "cylinder",
+     "picture": "solids/cylinder"
+    },
+    {
+     "id": "c",
+     "label": "cube",
+     "picture": "solids/cube"
+    },
+    {
+     "id": "d",
+     "label": "ball",
+     "picture": "solids/sphere"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "It has a point at the top and a round bottom."
+   },
+   "explain": "A cone looks like a triangle from the side and a circle from below.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.solid.two-circles",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Which solid shape has **two** flat circles?",
+    "say": "Which solid shape has two flat circles?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "cylinder",
+     "picture": "solids/cylinder"
+    },
+    {
+     "id": "b",
+     "label": "cone",
+     "picture": "solids/cone"
+    },
+    {
+     "id": "c",
+     "label": "ball",
+     "picture": "solids/sphere"
+    },
+    {
+     "id": "d",
+     "label": "cube",
+     "picture": "solids/cube"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "Think of a can of soup."
+   },
+   "explain": "A cylinder has a flat circle on the top and on the bottom.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.solid.six-squares",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Which solid shape has **six** square faces?",
+    "say": "Which solid shape has six square faces?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "cube",
+     "picture": "solids/cube"
+    },
+    {
+     "id": "b",
+     "label": "pyramid",
+     "picture": "solids/pyramid"
+    },
+    {
+     "id": "c",
+     "label": "cylinder",
+     "picture": "solids/cylinder"
+    },
+    {
+     "id": "d",
+     "label": "cone",
+     "picture": "solids/cone"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "It looks like a box."
+   },
+   "explain": "A cube has six square faces.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.all.solids.s2",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "multi",
+   "prompt": {
+    "text": "Tap **all** the solid shapes!",
+    "say": "Tap all the solid shapes!"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "cone",
+     "picture": "solids/cone"
+    },
+    {
+     "id": "b",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "c",
+     "label": "cube",
+     "picture": "solids/cube"
+    },
+    {
+     "id": "d",
+     "label": "square",
+     "picture": "flats/square"
+    },
+    {
+     "id": "e",
+     "label": "ball",
+     "picture": "solids/sphere"
+    },
+    {
+     "id": "f",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    }
+   ],
+   "answer": [
+    "a",
+    "c",
+    "e"
+   ],
+   "hint": {
+    "say": "A solid shape is not flat. You can hold it."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.all.flats.s2",
+   "section": "shape2",
+   "step": 2,
+   "grades": [
+    "k",
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "multi",
+   "prompt": {
+    "text": "Tap **all** the flat shapes!",
+    "say": "Tap all the flat shapes!"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    },
+    {
+     "id": "b",
+     "label": "cylinder",
+     "picture": "solids/cylinder"
+    },
+    {
+     "id": "c",
+     "label": "rectangle",
+     "picture": "flats/rectangle"
+    },
+    {
+     "id": "d",
+     "label": "cone",
+     "picture": "solids/cone"
+    },
+    {
+     "id": "e",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "f",
+     "label": "cube",
+     "picture": "solids/cube"
+    }
+   ],
+   "answer": [
+    "a",
+    "c",
+    "e"
+   ],
+   "hint": {
+    "say": "A flat shape can be drawn on paper."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.all.round.s3",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "multi",
+   "prompt": {
+    "text": "Tap **all** the shapes with no corners!",
+    "say": "Tap all the shapes with no corners!"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "b",
+     "label": "square",
+     "picture": "flats/square"
+    },
+    {
+     "id": "c",
+     "label": "oval",
+     "picture": "flats/oval"
+    },
+    {
+     "id": "d",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    },
+    {
+     "id": "e",
+     "label": "star",
+     "picture": "flats/star"
+    },
+    {
+     "id": "f",
+     "label": "hexagon",
+     "picture": "flats/hexagon"
+    }
+   ],
+   "answer": [
+    "a",
+    "c"
+   ],
+   "hint": {
+    "say": "A corner is a sharp point."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.all.roll.s3",
+   "section": "shape2",
+   "step": 3,
+   "grades": [
+    "g1",
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "multi",
+   "prompt": {
+    "text": "Tap **all** the solid shapes that can roll!",
+    "say": "Tap all the solid shapes that can roll!"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "ball",
+     "picture": "solids/sphere"
+    },
+    {
+     "id": "b",
+     "label": "cube",
+     "picture": "solids/cube"
+    },
+    {
+     "id": "c",
+     "label": "cylinder",
+     "picture": "solids/cylinder"
+    },
+    {
+     "id": "d",
+     "label": "pyramid",
+     "picture": "solids/pyramid"
+    },
+    {
+     "id": "e",
+     "label": "cone",
+     "picture": "solids/cone"
+    }
+   ],
+   "answer": [
+    "a",
+    "c",
+    "e"
+   ],
+   "hint": {
+    "say": "A shape with a round side can roll."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.all.four-sides.s4",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "multi",
+   "prompt": {
+    "text": "Tap **all** the shapes with four sides!",
+    "say": "Tap all the shapes with four sides!"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "square",
+     "picture": "flats/square"
+    },
+    {
+     "id": "b",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    },
+    {
+     "id": "c",
+     "label": "rectangle",
+     "picture": "flats/rectangle"
+    },
+    {
+     "id": "d",
+     "label": "hexagon",
+     "picture": "flats/hexagon"
+    },
+    {
+     "id": "e",
+     "label": "diamond",
+     "picture": "flats/diamond"
+    },
+    {
+     "id": "f",
+     "label": "circle",
+     "picture": "flats/circle"
+    }
+   ],
+   "answer": [
+    "a",
+    "c",
+    "e"
+   ],
+   "hint": {
+    "say": "Count the sides of each shape."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.all.circle-face.s4",
+   "section": "shape2",
+   "step": 4,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "multi",
+   "prompt": {
+    "text": "Tap **all** the solid shapes with a flat circle!",
+    "say": "Tap all the solid shapes with a flat circle!"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "cone",
+     "picture": "solids/cone"
+    },
+    {
+     "id": "b",
+     "label": "cube",
+     "picture": "solids/cube"
+    },
+    {
+     "id": "c",
+     "label": "cylinder",
+     "picture": "solids/cylinder"
+    },
+    {
+     "id": "d",
+     "label": "pyramid",
+     "picture": "solids/pyramid"
+    },
+    {
+     "id": "e",
+     "label": "ball",
+     "picture": "solids/sphere"
+    }
+   ],
+   "answer": [
+    "a",
+    "c"
+   ],
+   "hint": {
+    "say": "Look for a round, flat face."
+   },
+   "status": "published",
+   "updated": "2026-11-16"
+  }
+ ],
+ "pictures": [
+  {
+   "id": "solids/cone",
+   "alt": "cone",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M60 12 L18 96 A42 13 0 0 0 102 96 Z\" fill=\"#ffa94d\"/><path d=\"M18 96 A42 13 0 0 1 102 96\" fill=\"none\" stroke-dasharray=\"5 6\" opacity=\".55\"/><path d=\"M60 12 L44 100\" fill=\"none\" stroke=\"#fff\" stroke-width=\"5\" opacity=\".45\"/></g>",
+   "tags": []
+  },
+  {
+   "id": "solids/cylinder",
+   "alt": "cylinder",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M22 28 V94 A38 13 0 0 0 98 94 V28 Z\" fill=\"#74c0fc\"/><ellipse cx=\"60\" cy=\"28\" rx=\"38\" ry=\"13\" fill=\"#a5d8ff\"/><path d=\"M34 44 V98\" fill=\"none\" stroke=\"#fff\" stroke-width=\"5\" opacity=\".5\"/></g>",
+   "tags": []
+  },
+  {
+   "id": "solids/cube",
+   "alt": "cube",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M18 40 H82 V104 H18 Z\" fill=\"#69db7c\"/><path d=\"M18 40 L40 18 H104 L82 40 Z\" fill=\"#b2f2bb\"/><path d=\"M82 40 L104 18 V82 L82 104 Z\" fill=\"#40c057\"/></g>",
+   "tags": []
+  },
+  {
+   "id": "solids/sphere",
+   "alt": "ball",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"60\" cy=\"60\" r=\"46\" fill=\"#f783ac\"/><path d=\"M14 60 A46 15 0 0 0 106 60\" fill=\"none\" opacity=\".45\"/><path d=\"M36 34 A30 30 0 0 1 60 24\" fill=\"none\" stroke=\"#fff\" stroke-width=\"6\" opacity=\".6\"/></g>",
+   "tags": []
+  },
+  {
+   "id": "solids/pyramid",
+   "alt": "pyramid",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M56 12 L12 92 L70 108 Z\" fill=\"#ffd43b\"/><path d=\"M56 12 L70 108 L108 84 Z\" fill=\"#fab005\"/></g>",
+   "tags": []
+  },
+  {
+   "id": "flats/triangle",
+   "alt": "triangle",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M60 14 L106 104 H14 Z\" fill=\"#9775fa\"/></g>",
+   "tags": []
+  },
+  {
+   "id": "flats/circle",
+   "alt": "circle",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"60\" cy=\"60\" r=\"44\" fill=\"#9775fa\"/></g>",
+   "tags": []
+  },
+  {
+   "id": "flats/rectangle",
+   "alt": "rectangle",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"26\" y=\"12\" width=\"68\" height=\"96\" rx=\"3\" fill=\"#9775fa\"/></g>",
+   "tags": []
+  },
+  {
+   "id": "flats/square",
+   "alt": "square",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><rect x=\"18\" y=\"18\" width=\"84\" height=\"84\" rx=\"3\" fill=\"#9775fa\"/></g>",
+   "tags": []
+  },
+  {
+   "id": "flats/oval",
+   "alt": "oval",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><ellipse cx=\"60\" cy=\"60\" rx=\"50\" ry=\"32\" fill=\"#9775fa\"/></g>",
+   "tags": []
+  },
+  {
+   "id": "flats/star",
+   "alt": "star",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M60 10 L73 44 L110 46 L81 69 L91 105 L60 84 L29 105 L39 69 L10 46 L47 44 Z\" fill=\"#9775fa\"/></g>",
+   "tags": []
+  },
+  {
+   "id": "flats/hexagon",
+   "alt": "hexagon",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M34 16 H86 L110 60 L86 104 H34 L10 60 Z\" fill=\"#9775fa\"/></g>",
+   "tags": []
+  },
+  {
+   "id": "flats/diamond",
+   "alt": "diamond",
+   "viewBox": "0 0 120 120",
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M60 8 L100 60 L60 112 L20 60 Z\" fill=\"#9775fa\"/></g>",
+   "tags": []
+  }
+ ]
+}

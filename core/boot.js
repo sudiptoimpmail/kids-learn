@@ -12,7 +12,7 @@
    5. Sections that are not needed at start ("lazy": { group: { scripts, data, entry } }) load the first time one of
       their entry functions is called (CoreLazy). Their files are still saved for offline use by the service worker.
    Data is JSON, scripts contain only logic. No eval, no remote scripts. */
-const CORE_VERSION = '1.11.0';
+const CORE_VERSION = '1.12.0';
 const CORE_SCRIPTS = ['util.js', 'hooks.js', 'feature-flags.js', 'native.js', 'storage.js', 'voice.js', 'sounds.js', 'confetti.js',
   'parent-gate.js', 'progression.js', 'question-bank.js', 'content-packs.js', 'offline.js'];
 const here = new URL('.', import.meta.url);           // …/core/

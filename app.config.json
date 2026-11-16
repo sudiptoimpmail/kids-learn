@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "core": "1.11.0",
+  "core": "1.12.0",
   "app": {
     "id": "kids-learn",
     "name": "Learn & Play",
@@ -73,7 +73,8 @@
     ]
   },
   "banks": [
-    "learn-play.jobs"
+    "learn-play.jobs",
+    "learn-play.geometry"
   ],
   "packs": {
     "db": "kids-learn-content-packs",
@@ -210,6 +211,7 @@
     "thinking.js",
     "early.js",
     "bank-cards.js",
+    "shape-play.js",
     "country.js",
     "levels.js",
     "gradefit.js",

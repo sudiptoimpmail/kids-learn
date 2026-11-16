@@ -28,10 +28,10 @@
     d.querySelectorAll('br,p,div').forEach((n) => n.append(' '));
     return d.textContent.replace(/\s+/g, ' ').trim();
   };
-  const kindOf = (q) => q.build ? 'build' : q.spell ? 'spell' : q.passageFill ? 'passage-fill' : q.fillIn ? 'fill-in' : q.puzzle ? 'puzzle' : q.match ? 'match'
+  const kindOf = (q) => q.activity ? 'activity' : q.build ? 'build' : q.spell ? 'spell' : q.passageFill ? 'passage-fill' : q.fillIn ? 'fill-in' : q.puzzle ? 'puzzle' : q.match ? 'match'
     : q.multi ? 'pick-all' : q.letterPath ? 'letter-path' : q.order ? 'order' : q.illustrated ? 'scene' : q.tap ? 'tap' : q.trace ? 'trace' : q.body3d ? 'body' : q.options ? 'choice' : 'other';
   const safe = (v) => { try { return JSON.parse(JSON.stringify(v, (k, x) => (typeof x === 'function' ? undefined : x))); } catch { return String(v); } };
-  const bodyOf = (q) => { const b = q.match || q.order || q.fillIn || q.passageFill || q.letterPath || q.spell || q.build || q.tap || q.puzzle; return b == null ? undefined : safe(b); };
+  const bodyOf = (q) => { const b = q.match || q.order || q.fillIn || q.passageFill || q.letterPath || q.spell || q.build || q.tap || q.puzzle || q.activity; return b == null ? undefined : safe(b); };
   const fingerprint = (q) => [plain(q.text), plain(q.main), String(q.answer), JSON.stringify(bodyOf(q) || '').slice(0, 200), (q.options || []).map((o) => plain(o.html != null ? o.html : o.v)).join('/')].join('|');
 
   function describe(q, ctx) {
