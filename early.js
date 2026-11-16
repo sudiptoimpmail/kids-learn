@@ -98,7 +98,7 @@ const EarlyPictures = (() => {
   const EM = /\p{Extended_Pictographic}|\p{Regional_Indicator}/u;
   const plain = (h) => String(h == null ? '' : h).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
   const pictured = (h) => /<img|<svg|class="[^"]*\b(obj|clock|shape|ep-|sz-bar)/.test(h) || EM.test(String(h).replace(/[●○·]/g, ''));
-  const has = (q) => q.match || q.order || q.puzzle || q.tap || q.spell || q.build || q.letterPath || q.fillIn || q.passageFill || q.illustrated || q.body3d || q.lesson === 'intro' ||
+  const has = (q) => q.match || q.order || q.puzzle || q.tap || q.spell || q.build || q.activity || q.letterPath || q.fillIn || q.passageFill || q.illustrated || q.body3d || q.lesson === 'intro' ||
     pictured(q.main || '') || (q.options || []).some((o) => pictured(o.html != null ? o.html : ''));
   let dict = null, all = null;   // all: every picture word; dict: without the words that are usually not things in a sentence
   const words = () => {

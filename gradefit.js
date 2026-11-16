@@ -74,7 +74,7 @@ function gradeFits(q, grade, catId) {
   )
     return false;
   if (grade === 'prek') {
-    if (q.spell || q.fillIn || q.passageFill || q.puzzle) return false;
+    if (q.spell || q.fillIn || q.passageFill || q.puzzle || q.activity) return false;
     if (q.order && (q.order.pics || []).some((x) => fitWords(x).length)) return false; // picture order is fine, word order is not
     if (q.letterPath && q.letterPath.words) return false;
     if (q.match && JSON.stringify(q.match).includes('m-word')) return false;

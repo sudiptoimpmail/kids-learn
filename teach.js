@@ -14,7 +14,7 @@ const TeachFirst = (() => {
   };
   const P = (id) => L.phrases[id] || id;
   const GENERIC = new Set(L.policy.genericHints);
-  const INTERACTIVE = ['match', 'puzzle', 'multi', 'letterPath', 'fillIn', 'passageFill', 'order', 'build', 'spell', 'tap', 'illustrated', 'body3d', 'reveal'];
+  const INTERACTIVE = ['match', 'puzzle', 'multi', 'letterPath', 'fillIn', 'passageFill', 'order', 'build', 'spell', 'tap', 'illustrated', 'body3d', 'reveal', 'activity'];
   const keyOf = (catId, level) => `${catId}:${level}`;
   const today = () => dayKey();
   const daysBetween = (a, b) => Math.round((new Date(b) - new Date(a)) / 86400000);

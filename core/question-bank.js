@@ -18,7 +18,9 @@
    Core checks and stores banks. Drawing a question on screen is the app's job (its own card styles). */
 const QuestionBank = (() => {
   const FORMAT = 'kids-core/question-bank', SCHEMA = 2;
-  const INTERACTIONS = ['choice', 'multi', 'tap', 'match', 'order', 'spell'];
+  const INTERACTIONS = ['choice', 'multi', 'tap', 'match', 'order', 'spell', 'activity'];
+  // an app-drawn scene or game: { kind: 'shape-match', ... } with settings as plain data, small enough to store with the question
+  const sceneOk = (s) => isObj(s) && isId(s.kind) && JSON.stringify(s).length <= 4000;
   const STATUSES = ['draft', 'review', 'published', 'retired'];
   const banks = new Map();
 
@@ -180,7 +182,12 @@ const QuestionBank = (() => {
         items.forEach((it, j) => sideOk(it, `${where} item ${j + 1}`));
       } else if (q.interaction === 'spell') {
         if (!answer || answer.length !== 1 || !isText(answer[0], 40)) bad(`${where}: answer must be the one word to spell`);
+      } else if (q.interaction === 'activity') {
+        // a game the app draws (drag shapes, build a picture): the set names it and holds its settings, the app scores it
+        if (!sceneOk(q.activity)) bad(`${where}: activity needs a kind (a short id) and at most 4,000 letters of settings`);
+        if (q.answer != null) bad(`${where}: an activity has no answer field (finishing the activity is the answer)`);
       }
+      if (q.interaction !== 'activity' && q.activity != null) bad(`${where}: only an activity question has an activity field`);
     }
 
     // lessons: taught before the quiz, never scored
@@ -193,12 +200,15 @@ const QuestionBank = (() => {
       placeOk(l, where);
       if (!isText(l.title, 80)) bad(`${where}: title is required`);
       for (const g of Array.isArray(l.grades) ? l.grades : []) { const k = `${l.section}|${l.step}|${g}`; if (spots.has(k)) bad(`${where}: another lesson already teaches ${l.section} step ${l.step} for ${g}`); spots.add(k); }
+      if (l.animation != null && !sceneOk(l.animation)) bad(`${where}: animation needs a kind (a short id) and at most 4,000 letters of settings`);
+      if (l.article != null && !isText(l.article, 1500)) bad(`${where}: article must be up to 1,500 letters`);
       const r = l.picture == null ? null : refOk(l.picture, where, { plainOnly: true });
       const tags = r && r.id ? pics.get(r.id) : null;
       if (!Array.isArray(l.lines) || l.lines.length < 1 || l.lines.length > 40) bad(`${where}: needs 1 to 40 lines`);
       for (const [j, line] of (Array.isArray(l.lines) ? l.lines : []).entries()) {
         if (!isObj(line) || !isText(line.say, 350)) { bad(`${where} line ${j + 1}: say is required`); continue; }
         if (line.light != null && !(tags && tags.has(line.light))) bad(`${where} line ${j + 1}: the lesson picture has no part "${line.light}"`);
+        if (line.show != null && (!isId(line.show) || l.animation == null)) bad(`${where} line ${j + 1}: show names a scene of the lesson's animation`);
       }
       if (l.together != null && !qIds.has(l.together)) bad(`${where}: together must be the id of a question in this set`);
     }
@@ -277,7 +287,7 @@ const QuestionBank = (() => {
     for (const q of bank.questions || []) {
       t.questions.push({ set: bank.id, id: q.id, section: q.section, step: q.step, grades: join(q.grades), countries: join(q.countries || ['*']), interaction: q.interaction,
         promptText: q.prompt.text, promptSay: join(q.prompt.say), picture: q.picture || null, answer: join(q.answer), show: q.show || null, shuffle: q.shuffle !== false,
-        hintText: (q.hint && q.hint.text) || null, hintSay: join(q.hint && q.hint.say), hintPicture: (q.hint && q.hint.picture) || null, explain: q.explain || null,
+        hintText: (q.hint && q.hint.text) || null, hintSay: join(q.hint && q.hint.say), hintPicture: (q.hint && q.hint.picture) || null, explain: q.explain || null, activity: q.activity ? JSON.stringify(q.activity) : null,
         status: q.status || 'published', updated: q.updated || null });
       (q.choices || []).forEach((c, i) => t.choices.push({ question: q.id, position: i + 1, id: c.id, text: c.text || null, picture: c.picture || null, label: c.label || null }));
       (q.pairs || []).forEach((p, i) => t.pairs.push({ question: q.id, position: i + 1, leftText: p.left.text || null, leftPicture: p.left.picture || null, leftLabel: p.left.label || null,
@@ -286,8 +296,8 @@ const QuestionBank = (() => {
       (q.alignment || []).forEach((a) => t.alignments.push({ question: q.id, framework: a.framework, code: a.code, caseGuid: a.caseGuid || null }));
     }
     for (const l of bank.lessons || []) {
-      t.lessons.push({ set: bank.id, id: l.id, section: l.section, step: l.step, grades: join(l.grades), countries: join(l.countries || ['*']), title: l.title, picture: l.picture || null, together: l.together || null });
-      l.lines.forEach((line, i) => t.lessonLines.push({ lesson: l.id, position: i + 1, say: line.say, light: line.light || null }));
+      t.lessons.push({ set: bank.id, id: l.id, section: l.section, step: l.step, grades: join(l.grades), countries: join(l.countries || ['*']), title: l.title, picture: l.picture || null, animation: l.animation ? JSON.stringify(l.animation) : null, article: l.article || null, together: l.together || null });
+      l.lines.forEach((line, i) => t.lessonLines.push({ lesson: l.id, position: i + 1, say: line.say, light: line.light || null, show: line.show || null }));
     }
     for (const p of bank.pictures || []) {
       t.pictures.push({ set: bank.id, id: p.id, alt: p.alt, file: p.file || null, svg: p.svg || null, viewBox: p.viewBox || null });

@@ -1,6 +1,7 @@
 /* Draws kids-core question bank records (banks/<id>.json, QUESTION-FORMAT.md) as this app's cards.
    QuestionBank (core) checks and stores the banks; this file turns one question into a card the round engine can ask:
-   picture or text choices, tap a named part of a picture, match pairs, and the lesson taught before the quiz.
+   picture or text choices (one answer or every right answer), tap a named part of a picture, match pairs with lines,
+   games (activities) and the lesson taught before the quiz (a labelled picture or an animation).
      BankCards.card(question)            → a card
      BankCards.intro(lesson)             → the lesson card ("Watch me"), with its "together" question
      BankCards.serve('jobs', options)    → { gen(level), teach(level), baseGen(level) } for a section served from banks
@@ -46,6 +47,8 @@ const BankCards = (() => {
     return r.tag ? partOnly(r.picture, r.tag, opts.cls) : whole(r.picture, { ...opts, light: r.light });
   }
   const isEmoji = (ref) => /^emoji\//.test(ref || '');
+  // renderers this app has for the bank's games (activity.kind) and lesson animations (animation.kind)
+  const activities = {}, animations = {};
 
   function hintOf(q) {
     const h = q.hint; if (!h) return { html: '', say: 'Think about it!', remove: true };
@@ -65,18 +68,29 @@ const BankCards = (() => {
       return { ...base, key: `${q.id}~${chosen.map((x) => x.i).sort((a, b) => a - b).join('.')}`, main: '', mainClass: 'empty', options: [], answer: 'all', optClass: 'match-area',
         match: { left: shuffle(chosen.map((x, i) => ({ id: i, html: side(x.p.left) }))), right: shuffle(chosen.map((x, i) => ({ id: i, html: side(x.p.right) }))), kind: 'math' } };
     }
-    if (q.interaction !== 'choice') throw new Error('This app cannot draw a "' + q.interaction + '" question yet: ' + q.id);
+    if (q.interaction === 'activity') {                       // a game: the renderer registered for its kind draws and scores it
+      if (!activities[q.activity.kind]) throw new Error('This app has no "' + q.activity.kind + '" activity: ' + q.id);
+      return { ...base, main: '', mainClass: 'sp-main', options: [], answer: 'done', optClass: '', activity: q.activity };
+    }
+    if (q.interaction !== 'choice' && q.interaction !== 'multi') throw new Error('This app cannot draw a "' + q.interaction + '" question yet: ' + q.id);
     const both = q.choices.some((c) => c.picture && c.text), pictures = q.choices.every((c) => c.picture && !c.text), drawings = q.choices.some((c) => c.picture && !isEmoji(c.picture));
     const optHtml = (c) => (c.picture && c.text ? `<span class="oe">${isEmoji(c.picture) ? c.picture.slice(6) : pic(c.picture)}</span><span class="ot">${QuestionBank.html(c.text)}</span>`
       : c.picture ? (isEmoji(c.picture) ? c.picture.slice(6) : pic(c.picture, { cls: 'opt' })) : QuestionBank.html(c.text));
     const opts = q.choices.map((c) => ({ v: c.id, html: optHtml(c) }));
     const main = !q.picture ? '' : isEmoji(q.picture) ? `<div class="big-emoji${q.picture === 'emoji/❓' ? ' muted' : ''}">${q.picture.slice(6)}</div>`
       : QuestionBank.picture(q.picture).tag ? `<div class="hw-ask">${pic(q.picture)}</div>` : pic(q.picture);
-    return { ...base, main, ...(main ? {} : { mainClass: 'empty' }), options: q.shuffle === false ? opts : shuffle(opts), answer: q.answer[0],
-      optClass: both ? 'opt-card' : pictures ? (drawings ? 'opt-emoji hw-opts' : 'opt-emoji') : q.choices.some((c) => c.text.length > 14) ? 'opt-text' : 'opt-text four-ok' };
+    const many = q.interaction === 'multi';                   // every right answer must be tapped
+    return { ...base, main, ...(main ? {} : { mainClass: 'empty' }), options: q.shuffle === false ? opts : shuffle(opts), answer: many ? q.answer.join(',') : q.answer[0], ...(many ? { multi: q.answer.slice() } : {}),
+      optClass: both ? 'opt-card' : pictures ? (drawings ? 'opt-emoji hw-opts' : 'opt-emoji') + (q.choices.length > 4 ? ' six' : '') : q.choices.some((c) => c.text.length > 14) ? 'opt-text' : 'opt-text four-ok' };
   }
   // the lesson: its picture, a label for each part it names, and one spoken line at a time
   function intro(lesson) {
+    if (lesson.animation) {                                   // an animated scene: one moment and one caption for each spoken line
+      const draw = animations[lesson.animation.kind]; if (!draw) throw new Error('This app has no "' + lesson.animation.kind + '" animation: ' + lesson.id);
+      const guidedQ = lesson.together && QuestionBank.question(lesson.together);
+      return { key: lesson.id, bank: true, text: QuestionBank.html(lesson.title), options: [], answer: null, main: draw(lesson), mainClass: 'anim-main',
+        steps: lesson.lines.map((l, i) => ({ row: i + 1, say: l.say, slow: true })), ...(guidedQ ? { guided: card(guidedQ) } : {}) };
+    }
     const r = lesson.picture ? QuestionBank.picture(lesson.picture) : null, p = r && r.picture;
     const lit = [...new Set(lesson.lines.map((l) => l.light).filter(Boolean))], tagOf = (id) => p.tags.find((t) => t.id === id);
     const rows = Object.fromEntries(lit.map((id, i) => [tagOf(id).area.group, i + 1]));
@@ -110,7 +124,7 @@ const BankCards = (() => {
   }
   // the names of a section's steps, in order
   const stepTitles = (section) => { const out = []; for (let s = 1, t; (t = QuestionBank.stepTitle(section, s)); s++) out.push(t); return out; };
-  return Object.freeze({ card, intro, serve, pic, stepTitles });
+  return Object.freeze({ card, intro, serve, pic, stepTitles, activities, animations });
 })();
 
 /* ---------- sections served from banks ---------- */
