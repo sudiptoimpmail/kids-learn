@@ -163,10 +163,10 @@ const ShapePlay = (() => {
       ${half('l')}${half('r')}<path class="s2f-shine" d="M126 44 A32 32 0 0 1 150 32"/></svg>
       <span class="s2f-name">${join ? 'two halves make a ball' : 'the cut side is a circle'}</span></div>`;
   }
-  // one scene and one caption per spoken line: the lesson card lights them one at a time
+  // one scene per spoken line: the lesson card lights them one at a time, with the article underneath
   function lessonHTML(lesson) {
     const solids = (lesson.animation && lesson.animation.solids) || [];
-    return `<div class="s2f">${lesson.lines.map((l, i) => `<div class="s2f-scene${i === lesson.lines.length - 1 ? ' s2f-keep' : ''}" data-row="${i + 1}">${scene(l.show || 'all', solids)}<p class="s2f-cap">${QuestionBank.html(l.say)}</p></div>`).join('')}</div>`;
+    return `<div class="s2f">${lesson.lines.map((l, i) => `<div class="s2f-scene${i === lesson.lines.length - 1 ? ' s2f-keep' : ''}" data-row="${i + 1}">${scene(l.show || 'all', solids)}</div>`).join('')}</div>`;
   }
   return Object.freeze({ render, lessonHTML, PICTURES, DRAW, sameEvery });
 })();

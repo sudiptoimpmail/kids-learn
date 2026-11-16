@@ -3,7 +3,7 @@
  "schema": 2,
  "id": "learn-play.geometry",
  "title": "Shapes",
- "version": 2,
+ "version": 3,
  "language": "en-US",
  "entitlement": "free",
  "steps": [
@@ -30,6 +30,22 @@
  ],
  "lessons": [
   {
+   "id": "geo.lesson.flat-shapes",
+   "section": "shape2",
+   "step": 1,
+   "grades": [
+    "prek",
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "title": "Flat shapes",
+   "picture": "flats/set",
+   "article": "A circle is round. A square has four equal sides. A triangle has three sides. A rectangle has two long sides and two short sides.",
+   "together": "geo.flat.round"
+  },
+  {
    "id": "geo.lesson.cone-cylinder",
    "section": "shape2",
    "step": 2,
@@ -48,7 +64,6 @@
      "cylinder"
     ]
    },
-   "article": "A cone and a cylinder are solid shapes. Look at them from the side or from below, and you see flat shapes.",
    "lines": [
     {
      "say": "This is a cone.",
@@ -83,7 +98,8 @@
      "show": "all"
     }
    ],
-   "together": "geo.view.cone-side"
+   "together": "geo.view.cone-side",
+   "article": "This is a cone. A cone is a solid shape. You can hold it. Look at the cone from the side. You see a triangle! Look at the cone from below. You see a circle! This is a cylinder. Look at the cylinder from the side. You see a rectangle! Look at the cylinder from the top. You see a circle! Solid shapes have flat shapes hiding inside!"
   },
   {
    "id": "geo.lesson.cube-ball-pyramid",
@@ -105,7 +121,6 @@
      "pyramid"
     ]
    },
-   "article": "A cube, a ball and a pyramid are solid shapes. Each one shows a flat shape when you look at it from one side.",
    "lines": [
     {
      "say": "This is a cube.",
@@ -148,7 +163,8 @@
      "show": "all"
     }
    ],
-   "together": "geo.view.cube-face"
+   "together": "geo.view.cube-face",
+   "article": "This is a cube. Look at the cube from the side. You see a square! This is a ball. It is also called a sphere. Cut a ball in half. Each cut side is a circle! Turn the two halves and join them. They make a ball again! Look at the ball from any side. You see a circle! This is a pyramid. Look at the pyramid from the side. You see a triangle! Look at the pyramid from below. You see a square! Solid shapes have flat shapes hiding inside!"
   }
  ],
  "questions": [
@@ -2069,6 +2085,92 @@
    },
    "status": "published",
    "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.flat.round",
+   "section": "shape2",
+   "step": 1,
+   "grades": [
+    "prek",
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Which shape is **round**?",
+    "say": "Which shape is round?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "b",
+     "label": "square",
+     "picture": "flats/square"
+    },
+    {
+     "id": "c",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "A round shape has no corners."
+   },
+   "explain": "A circle is round.",
+   "status": "published",
+   "updated": "2026-11-16"
+  },
+  {
+   "id": "geo.flat.three-sides",
+   "section": "shape2",
+   "step": 1,
+   "grades": [
+    "prek",
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "choice",
+   "prompt": {
+    "text": "Which shape has **three** sides?",
+    "say": "Which shape has three sides?"
+   },
+   "choices": [
+    {
+     "id": "a",
+     "label": "triangle",
+     "picture": "flats/triangle"
+    },
+    {
+     "id": "b",
+     "label": "circle",
+     "picture": "flats/circle"
+    },
+    {
+     "id": "c",
+     "label": "square",
+     "picture": "flats/square"
+    }
+   ],
+   "answer": [
+    "a"
+   ],
+   "hint": {
+    "say": "Count the sides of each shape."
+   },
+   "explain": "A triangle has three sides.",
+   "status": "published",
+   "updated": "2026-11-16"
   }
  ],
  "pictures": [
@@ -2162,6 +2264,13 @@
    "viewBox": "0 0 120 120",
    "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><path d=\"M60 8 L100 60 L60 112 L20 60 Z\" fill=\"#9775fa\"/></g>",
    "tags": []
+  },
+  {
+   "id": "flats/set",
+   "alt": "a circle, a square, a triangle and a rectangle",
+   "viewBox": "0 0 420 120",
+   "tags": [],
+   "svg": "<g stroke=\"#2b2140\" stroke-width=\"3\" stroke-linejoin=\"round\" stroke-linecap=\"round\"><circle cx=\"55\" cy=\"60\" r=\"42\" fill=\"#ff6b6b\"/><rect x=\"118\" y=\"20\" width=\"80\" height=\"80\" rx=\"3\" fill=\"#4dabf7\"/><path d=\"M262 18 L306 102 H218 Z\" fill=\"#51cf66\"/><rect x=\"326\" y=\"34\" width=\"84\" height=\"54\" rx=\"3\" fill=\"#ffd43b\"/></g>"
   }
  ]
 }

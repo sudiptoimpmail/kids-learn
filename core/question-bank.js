@@ -201,10 +201,13 @@ const QuestionBank = (() => {
       if (!isText(l.title, 80)) bad(`${where}: title is required`);
       for (const g of Array.isArray(l.grades) ? l.grades : []) { const k = `${l.section}|${l.step}|${g}`; if (spots.has(k)) bad(`${where}: another lesson already teaches ${l.section} step ${l.step} for ${g}`); spots.add(k); }
       if (l.animation != null && !sceneOk(l.animation)) bad(`${where}: animation needs a kind (a short id) and at most 4,000 letters of settings`);
-      if (l.article != null && !isText(l.article, 1500)) bad(`${where}: article must be up to 1,500 letters`);
+      // the article: text under the picture or animation, read out sentence by sentence, or from one recording of its own
+      const art = l.article == null ? null : typeof l.article === 'string' ? { text: l.article } : l.article;
+      if (art != null && (!isObj(art) || !isText(art.text, 1500))) bad(`${where}: article needs text of up to 1,500 letters`);
+      else if (art && art.audio != null && !isFile(art.audio, 'mp3|m4a|ogg')) bad(`${where}: article.audio must be a recording inside the set`);
       const r = l.picture == null ? null : refOk(l.picture, where, { plainOnly: true });
       const tags = r && r.id ? pics.get(r.id) : null;
-      if (!Array.isArray(l.lines) || l.lines.length < 1 || l.lines.length > 40) bad(`${where}: needs 1 to 40 lines`);
+      if (l.lines == null ? art == null : !Array.isArray(l.lines) || l.lines.length < 1 || l.lines.length > 40) bad(`${where}: needs an article, or 1 to 40 lines`);
       for (const [j, line] of (Array.isArray(l.lines) ? l.lines : []).entries()) {
         if (!isObj(line) || !isText(line.say, 350)) { bad(`${where} line ${j + 1}: say is required`); continue; }
         if (line.light != null && !(tags && tags.has(line.light))) bad(`${where} line ${j + 1}: the lesson picture has no part "${line.light}"`);
@@ -267,6 +270,12 @@ const QuestionBank = (() => {
   const question = (id) => { for (const b of banks.values()) { const q = b.questions.find((x) => x.id === id); if (q) return q; } return null; };
 
   /* ---------- what needs a recording ---------- */
+  // a lesson's article: its text, its sentences (each one is read, and needs a recording), and its own recording if it has one
+  function article(lesson) {
+    const a = lesson && lesson.article; if (a == null) return null;
+    const text = typeof a === 'string' ? a : a.text;
+    return { text, audio: (typeof a === 'object' && a.audio) || null, sentences: plain(text).match(/[^.!?]+[.!?]+["')\]]*|[^.!?]+$/g).map((s) => s.trim()).filter(Boolean) };
+  }
   function spoken(bank) {
     const out = new Set(), add1 = (v) => sayList(v).forEach((s) => { if (typeof s === 'string' && s.trim()) out.add(s); });
     for (const q of bank.questions || []) {
@@ -274,7 +283,7 @@ const QuestionBank = (() => {
       if (q.hint) add1(q.hint.say != null ? q.hint.say : q.hint.text);
       add1(q.explain);
     }
-    for (const l of bank.lessons || []) for (const line of l.lines || []) add1(line.say);
+    for (const l of bank.lessons || []) { for (const line of l.lines || []) add1(line.say); const a = article(l); if (a && !l.lines && !a.audio) a.sentences.forEach(add1); }
     return [...out];
   }
 
@@ -296,8 +305,8 @@ const QuestionBank = (() => {
       (q.alignment || []).forEach((a) => t.alignments.push({ question: q.id, framework: a.framework, code: a.code, caseGuid: a.caseGuid || null }));
     }
     for (const l of bank.lessons || []) {
-      t.lessons.push({ set: bank.id, id: l.id, section: l.section, step: l.step, grades: join(l.grades), countries: join(l.countries || ['*']), title: l.title, picture: l.picture || null, animation: l.animation ? JSON.stringify(l.animation) : null, article: l.article || null, together: l.together || null });
-      l.lines.forEach((line, i) => t.lessonLines.push({ lesson: l.id, position: i + 1, say: line.say, light: line.light || null, show: line.show || null }));
+      t.lessons.push({ set: bank.id, id: l.id, section: l.section, step: l.step, grades: join(l.grades), countries: join(l.countries || ['*']), title: l.title, picture: l.picture || null, animation: l.animation ? JSON.stringify(l.animation) : null, article: l.article ? article(l).text : null, articleAudio: l.article ? article(l).audio : null, together: l.together || null });
+      (l.lines || []).forEach((line, i) => t.lessonLines.push({ lesson: l.id, position: i + 1, say: line.say, light: line.light || null, show: line.show || null }));
     }
     for (const p of bank.pictures || []) {
       t.pictures.push({ set: bank.id, id: p.id, alt: p.alt, file: p.file || null, svg: p.svg || null, viewBox: p.viewBox || null });
@@ -308,7 +317,7 @@ const QuestionBank = (() => {
   }
 
   return Object.freeze({
-    FORMAT, SCHEMA, INTERACTIONS, check, validate, add, questions, question, lesson, stepTitle, picture, parseRef, spoken, rows, plain, html,
+    FORMAT, SCHEMA, INTERACTIONS, check, validate, add, questions, question, lesson, article, stepTitle, picture, parseRef, spoken, rows, plain, html,
     get: (id) => banks.get(id) || null, all: () => [...banks.values()],
     remove: (id) => banks.delete(id),
   });

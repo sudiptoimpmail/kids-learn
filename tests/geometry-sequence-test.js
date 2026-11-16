@@ -18,7 +18,7 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
       for (const g of [['k', 2], ['g1', 3]]) { const l = QuestionBank.lesson('shape2', g[1], g[0]); for (const line of l.lines) if (!CoreVoice.canSay(line.say)) bad.push('not recorded: ' + line.say); }
       if (!CoreVoice.canSay('Tap a shape to turn it.')) bad.push('not recorded: turn tip');
       return { kinds, bad, lessons: [...new Set(lessons)], builds: [...new Set(all.filter((q) => q.activity && q.activity.kind !== 'shape-match').map((q) => q.activity.picture))].sort(), core: CORE_VERSION }; });
-    assert.equal(set.core, '1.12.0'); assert.deepEqual(set.bad.slice(0, 8), []);
+    assert.equal(set.core, '1.13.0'); assert.deepEqual(set.bad.slice(0, 8), []);
     assert.ok(set.kinds.activity >= 20 && set.kinds.match >= 4 && set.kinds.choice >= 10 && set.kinds.multi >= 6, JSON.stringify(set.kinds));
     assert.deepEqual(set.builds, ['boat', 'butterfly', 'car', 'castle', 'house', 'robot', 'rocket', 'train', 'tree']); assert.equal(set.lessons.length, 2);
     // ---- the Shapes section mixes them in, at every grade that has it
@@ -26,8 +26,8 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
       for (const [g, lv] of [['prek', 1], ['k', 2], ['g1', 3], ['g2', 4], ['g3', 4]]) { state.grade = g; const seen = new Set();
         for (let i = 0; i < 160; i++) { const q = c.gen(lv); seen.add(q.activity ? q.activity.kind : q.match ? 'lines' : q.multi && q.bank ? 'tap-all' : q.bank ? 'choice' : 'picture-card'); }
         out[g] = [...seen].sort(); }
-      state.grade = 'k'; return { out, teach: !!c.teach(2), noTeach: c.teach(1) }; });
-    assert.deepEqual(mix.out.prek, ['picture-card', 'shape-build', 'shape-match']);
+      state.grade = 'k'; return { out, teach: !!c.teach(2), noTeach: c.teach(4) }; });
+    assert.deepEqual(mix.out.prek, ['choice', 'picture-card', 'shape-build', 'shape-match']);
     assert.deepEqual(mix.out.k, ['choice', 'lines', 'picture-card', 'shape-build', 'shape-match', 'tap-all']);
     for (const g of ['g1', 'g2']) assert.deepEqual(mix.out[g], ['choice', 'lines', 'picture-card', 'shape-build', 'shape-match', 'shape-puzzle', 'tap-all'], g);
     assert.ok(mix.teach && mix.noTeach == null);
@@ -81,11 +81,19 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     // ---- the lesson: one scene and caption per line, a solid then its flat shape, then a question together
     const lesson = await p.evaluate(() => { state.grade = 'k'; const c = BankCards.intro(QuestionBank.lesson('shape2', 2, 'k')); const d = document.createElement('div'); d.innerHTML = c.main;
       const scenes = [...d.querySelectorAll('.s2f-scene')];
-      return { title: c.text, steps: c.steps.length, scenes: scenes.length, rows: scenes.map((s) => +s.dataset.row).join(), third: { solid: !!scenes[2].querySelector('.s2f-look-side svg'), flat: !!scenes[2].querySelector('.s2f-flat.s2f-pop svg'), names: [...scenes[2].querySelectorAll('.s2f-name')].map((n) => n.textContent), cap: scenes[2].querySelector('.s2f-cap').textContent },
+      return { title: c.text, steps: c.steps.length, scenes: scenes.length, rows: scenes.map((s) => +s.dataset.row).join(), third: { solid: !!scenes[2].querySelector('.s2f-look-side svg'), flat: !!scenes[2].querySelector('.s2f-flat.s2f-pop svg'), names: [...scenes[2].querySelectorAll('.s2f-name')].map((n) => n.textContent), cap: d.querySelector('.les-article .les-sent[data-row="3"]').textContent },
+        article: d.querySelectorAll('.les-article .les-sent').length, mediaFirst: d.querySelector('.les').firstElementChild.classList.contains('s2f'),
         last: scenes.at(-1).classList.contains('s2f-keep') && scenes.at(-1).querySelectorAll('.s2f-pair').length, guided: c.guided && c.guided.key }; });
     assert.equal(lesson.title, 'Solid shapes and flat shapes'); assert.equal(lesson.steps, 8); assert.equal(lesson.scenes, 8); assert.equal(lesson.rows, '1,2,3,4,5,6,7,8');
     assert.deepEqual(lesson.third, { solid: true, flat: true, names: ['cone', 'triangle'], cap: 'Look at the cone from the side. You see a triangle!' });
-    assert.equal(lesson.last, 2); assert.equal(lesson.guided, 'geo.view.cone-side');
+    assert.equal(lesson.last, 2); assert.equal(lesson.guided, 'geo.view.cone-side'); assert.equal(lesson.article, 8); assert.ok(lesson.mediaFirst, 'the animation, then the article');
+    // a lesson can also be just a picture and an article: read one sentence at a time, or from the article's own recording
+    const plain = await p.evaluate(() => { const l = QuestionBank.lesson('shape2', 1, 'prek'), c = BankCards.intro(l), d = document.createElement('div'); d.innerHTML = c.main;
+      const withAudio = BankCards.intro({ ...l, id: 'x.audio', article: { text: l.article, audio: 'audio/flat-shapes.mp3' } }), d2 = document.createElement('div'); d2.innerHTML = withAudio.main;
+      return { lines: l.lines == null, pic: !!d.querySelector('.les > .les-pic svg'), sentences: [...d.querySelectorAll('.les-sent')].map((x) => x.textContent), steps: c.steps.map((x) => x.say), recorded: c.steps.every((x) => CoreVoice.canSay(x.say)), guided: c.guided.key,
+        audio: { steps: withAudio.steps.length, file: withAudio.steps[0].audio, rows: [...new Set([...d2.querySelectorAll('.les-sent')].map((x) => x.dataset.row))].join() } }; });
+    assert.equal(plain.lines, true); assert.ok(plain.pic); assert.equal(plain.sentences.length, 4); assert.deepEqual(plain.steps, plain.sentences); assert.ok(plain.recorded); assert.equal(plain.guided, 'geo.flat.round');
+    assert.deepEqual(plain.audio, { steps: 1, file: 'audio/flat-shapes.mp3', rows: '1' });
     assert.deepEqual(errors, []);
     console.log('PASS geometry sequence: animated lesson, lines, one-answer and tap-all questions, Shape Match, Build a Picture (9 pictures) and Shape Puzzle, all from one question set', JSON.stringify(set.kinds));
   } finally { await b.close(); }

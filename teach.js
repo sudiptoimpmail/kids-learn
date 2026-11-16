@@ -159,6 +159,12 @@ const TeachFirst = (() => {
     showModelButtons(q);
   }
   // A skill's own teaching card: each step lights up one line, builds the dots beside it and is read aloud.
+  // an article with its own recording: play the file, and stop it if she leaves the lesson
+  const playRecording = (src, alive) => new Promise((done) => {
+    if (state.voice === false) return done();
+    const a = new Audio(src), watch = setInterval(() => { if (!alive()) { a.pause(); finish(); } }, 250), finish = () => { clearInterval(watch); done(); };
+    a.onended = a.onerror = finish; a.play().catch(finish);
+  });
   async function runIntro(q) {
     $('#hintBtn').hidden = true;
     const token = ++TeachFirst.run;
@@ -175,7 +181,7 @@ const TeachFirst = (() => {
         if (lit[0] && lit[0].scrollIntoView) lit[0].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
         if (arr) arr.innerHTML = step.dots ? TimesTables.dots(step.dots[0], step.dots[1]) : '';
       }
-      await say(step.say);
+      await (step.audio ? playRecording(step.audio, alive) : say(step.say));
       if (alive()) await sleep(step.slow ? 550 : step.row ? 220 : 120);   // a table is said slowly, with a breath between lines
     }
     if (!alive()) return;
