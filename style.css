@@ -2115,3 +2115,35 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .tile .ti.signs { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 5px; padding: 9px; box-sizing: border-box; font-size: 21px; line-height: 1; font-weight: 900; }
 .tile .ti.signs b { display: grid; place-items: center; border-radius: 8px; background: #fff; color: var(--c); box-shadow: 0 2px 0 rgba(0,0,0,.14); }
 @media (min-width: 700px) { .tile .ti.signs { font-size: 27px; padding: 11px; gap: 6px; } }
+
+/* adventure games: treasure map, shop and till */
+.adv { width: 100%; max-width: 760px; margin: 0 auto; }
+.adv-clue { display: flex; align-items: center; gap: 8px; justify-content: center; font-size: clamp(18px, 2.6vw, 24px); font-weight: 800; background: #fff9db; border: 2px solid #ffe066; border-radius: 16px; padding: 8px 12px; margin-bottom: 8px; }
+.adv-clue-n { opacity: .6; font-weight: 700; } .adv-say { border: 0; background: #fff; border-radius: 12px; font-size: 22px; padding: 4px 8px; cursor: pointer; box-shadow: 0 2px 0 rgba(0,0,0,.12); }
+.adv-map { width: 100%; max-height: 54vh; display: block; touch-action: manipulation; }
+.adv-paths path { stroke: #c9a66b; stroke-width: 9; stroke-linecap: round; stroke-dasharray: 2 15; fill: none; }
+.adv-trail path { stroke: #e03131; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 9 8; fill: none; }
+.adv-place { cursor: pointer; outline: none; } .adv-spot { fill: rgba(255,255,255,.55); stroke: transparent; stroke-width: 4; }
+.adv-place.here .adv-spot { fill: #fff; } .adv-place:focus-visible .adv-spot { stroke: var(--theme); }
+.adv-place.no { animation: sp-wobble .42s; } .adv-place.glow .adv-spot { stroke: #f59f00; fill: #fff3bf; animation: sp-glow .8s ease-in-out 3; }
+.adv-name, .adv-rose text { font: 800 12px system-ui, sans-serif; fill: #2b2140; } .adv-name { font-size: 11px; }
+.adv-hero { transition: transform .6s ease-in-out; } .adv-hero circle:nth-of-type(n+2) { fill: #2b2140; }
+.adv-treasure.found .adv-chest { animation: adv-pop .5s cubic-bezier(.2,1.6,.4,1) both; } @keyframes adv-pop { from { opacity: 0; scale: .3; } }
+.adv-chest { transform-box: fill-box; transform-origin: center; }
+.adv-treasure.found .adv-lid { animation: adv-lid .5s .35s ease-out both; transform-box: fill-box; transform-origin: 0% 100%; } @keyframes adv-lid { to { rotate: -55deg; } }
+.adv-coin { opacity: 0; } .adv-treasure.found .adv-coin { animation: adv-coin 1s calc(.5s + var(--i) * .12s) ease-out both; } @keyframes adv-coin { 0% { opacity: 0; translate: 0 6px; } 30% { opacity: 1; } 100% { opacity: 1; translate: calc((var(--i) - 1.5) * 9px) -30px; } }
+.shop-top { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; } .shop-list, .shop-basket { background: #fff; border: 2px solid #e9ecef; border-radius: 16px; padding: 8px 12px; text-align: left; font-size: clamp(18px, 2.6vw, 24px); }
+.shop-list b, .shop-basket > b { display: block; font-size: 16px; opacity: .7; margin-bottom: 2px; } .shop-n { font-weight: 900; font-size: 1.25em; }
+.shop-row { border-radius: 10px; padding: 1px 6px; } .shop-row.ok { background: #d3f9d8; } .shop-row.ok::after { content: " ✓"; color: #2b8a3e; font-weight: 900; } .shop-row.off { background: #ffe3e3; }
+.shop-word { font-size: .75em; font-weight: 700; } .shop-in { display: flex; flex-wrap: wrap; gap: 6px; min-height: 48px; align-items: center; } .shop-in small, .pay-given small { font-size: 14px; opacity: .65; }
+.shop-chip { border: 2px solid #dee2e6; background: #f8f9fa; border-radius: 14px; font-size: 26px; padding: 2px 8px; cursor: pointer; } .shop-chip b { font-size: 18px; margin-left: 2px; } .shop-chip.off { border-color: #ff8787; background: #ffe3e3; }
+.shop-chip.pop { animation: adv-pop .3s cubic-bezier(.2,1.6,.4,1); }
+.shop-shelf { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 12px 0; padding: 10px; background: #f1e3d0; border-radius: 16px; border-bottom: 8px solid #c9a66b; }
+.shop-item { width: 86px; height: 92px; border: 0; border-radius: 16px; background: #fff; font-size: 46px; cursor: pointer; box-shadow: 0 4px 0 rgba(0,0,0,.12); display: grid; place-items: center; line-height: 1; }
+.shop-item small { font-size: 15px; font-weight: 800; color: #2b2140; } .shop-item:active { translate: 0 3px; box-shadow: 0 1px 0 rgba(0,0,0,.12); } .shop-item:disabled { opacity: .5; }
+.shop-item.glow, .shop-done.glow, .pay-coin.glow, .pay-go.glow { box-shadow: 0 0 0 5px #ffd43b; } .shop-msg { text-align: center; font-weight: 800; min-height: 1.4em; margin: 6px 0 0; color: #c92a2a; } .adv.paid .shop-msg { color: #2b8a3e; }
+.pay-bill { display: flex; gap: 12px; align-items: center; justify-content: center; } .pay-keeper { font-size: 64px; line-height: 1; } .adv-pay.paid .pay-keeper { animation: adv-pop .5s cubic-bezier(.2,1.6,.4,1); }
+.pay-lines { background: #fff; border: 2px solid #e9ecef; border-radius: 16px; padding: 8px 14px; text-align: left; font-size: 20px; font-weight: 700; } .pay-lines small { opacity: .65; } .pay-total { display: block; font-size: 24px; border-top: 2px dashed #ced4da; margin-top: 4px; padding-top: 4px; }
+.pay-counter { background: #f1e3d0; border-radius: 16px; border-bottom: 8px solid #c9a66b; padding: 8px 12px; margin: 10px 0; font-size: 20px; } .pay-given { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; min-height: 54px; align-items: center; }
+.pay-purse { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 10px; }
+.pay-coin { border: 0; background: none; cursor: pointer; display: grid; justify-items: center; font-size: 16px; font-weight: 800; padding: 2px; border-radius: 50%; } .pay-coin img { width: 72px; height: 72px; display: block; } .pay-coin.sm img { width: 46px; height: 46px; }

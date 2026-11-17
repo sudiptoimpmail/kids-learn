@@ -21,6 +21,7 @@ const { chromium } = require('playwright');
     // 2. five-card round with 2 mistakes: not 3 stars, no level up
     state.grade = 'k'; state.levels.add = 2;
     startRound('add', 5);
+    R.qs.forEach((q, i) => { let n = 0; while (!q.options.length && n++ < 200) { const r = R.cat.baseGen(q.level); if (r.options && r.options.length && !R.qs.some((x) => x.key === r.key)) { r.cat = q.cat; r.level = q.level; r.grades = q.grades; R.qs[i] = r; break; } } });   // this test answers by tapping options: game cards (the shop) are swapped for question cards
     for (let k = 0; k < 5; k++) { const q = R.qs[R.i]; if (k < 2) { const w = q.options.find((o) => String(o.v) !== String(q.answer)); choose(q, w.v, document.createElement('i')); } R.locked = false; choose(q, q.answer, document.createElement('i')); await new Promise((r) => setTimeout(r, 5)); if (R.qs[R.i] === q) next(); }
     out.push(`5 cards, 2 mistakes → stars=${document.querySelectorAll('#resStars .rs.on').length} level=${state.levels.add}`);
     // 3. a hint before a right answer does not count toward mastery

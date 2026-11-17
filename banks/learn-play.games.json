@@ -1,0 +1,745 @@
+{
+ "format": "kids-core/question-bank",
+ "schema": 2,
+ "id": "learn-play.games",
+ "title": "Adventure games",
+ "version": 1,
+ "language": "en-US",
+ "entitlement": "free",
+ "lessons": [],
+ "questions": [
+  {
+   "id": "games.treasure.park.pattern1.prek",
+   "section": "pattern",
+   "step": 1,
+   "grades": [
+    "prek"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "park",
+    "steps": 2,
+    "clues": "places"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.island.pattern1.prek",
+   "section": "pattern",
+   "step": 1,
+   "grades": [
+    "prek"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "island",
+    "steps": 2,
+    "clues": "places"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.farm.pattern1.prek",
+   "section": "pattern",
+   "step": 1,
+   "grades": [
+    "prek"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "farm",
+    "steps": 2,
+    "clues": "places"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.park.maps1.k",
+   "section": "maps",
+   "step": 1,
+   "grades": [
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "park",
+    "steps": 3,
+    "clues": "places"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.island.maps1.k",
+   "section": "maps",
+   "step": 1,
+   "grades": [
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "island",
+    "steps": 3,
+    "clues": "places"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.farm.maps1.k",
+   "section": "maps",
+   "step": 1,
+   "grades": [
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "farm",
+    "steps": 3,
+    "clues": "places"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.park.maps2.g1",
+   "section": "maps",
+   "step": 2,
+   "grades": [
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "park",
+    "steps": 3,
+    "clues": "compass"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.island.maps2.g1",
+   "section": "maps",
+   "step": 2,
+   "grades": [
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "island",
+    "steps": 3,
+    "clues": "compass"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.farm.maps2.g1",
+   "section": "maps",
+   "step": 2,
+   "grades": [
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "farm",
+    "steps": 3,
+    "clues": "compass"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.park.maps2.g2",
+   "section": "maps",
+   "step": 2,
+   "grades": [
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "park",
+    "steps": 4,
+    "clues": "compass"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.island.maps2.g2",
+   "section": "maps",
+   "step": 2,
+   "grades": [
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "island",
+    "steps": 4,
+    "clues": "compass"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.farm.maps2.g2",
+   "section": "maps",
+   "step": 2,
+   "grades": [
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "farm",
+    "steps": 4,
+    "clues": "compass"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.park.maps3.g2-g3",
+   "section": "maps",
+   "step": 3,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "park",
+    "steps": 5,
+    "clues": "compass"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.island.maps3.g2-g3",
+   "section": "maps",
+   "step": 3,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "island",
+    "steps": 5,
+    "clues": "compass"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.treasure.farm.maps3.g2-g3",
+   "section": "maps",
+   "step": 3,
+   "grades": [
+    "g2",
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Follow the clues to the **treasure**!",
+    "say": "Follow the clues to the treasure!"
+   },
+   "activity": {
+    "kind": "treasure-map",
+    "map": "farm",
+    "steps": 5,
+    "clues": "compass"
+   },
+   "hint": {
+    "say": "Listen to the clue. Where should you go?"
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.shop.add1.prek",
+   "section": "add",
+   "step": 1,
+   "grades": [
+    "prek"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Fill the basket from the **shopping list**!",
+    "say": "Fill the basket from the shopping list!"
+   },
+   "activity": {
+    "kind": "shop",
+    "kinds": 2,
+    "max": 2,
+    "pay": false
+   },
+   "hint": {
+    "say": "Count each thing on the list."
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.shop.add1.k",
+   "section": "add",
+   "step": 1,
+   "grades": [
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Fill the basket from the **shopping list**!",
+    "say": "Fill the basket from the shopping list!"
+   },
+   "activity": {
+    "kind": "shop",
+    "kinds": 2,
+    "max": 3,
+    "pay": false
+   },
+   "hint": {
+    "say": "Count each thing on the list."
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.shop.add2.k",
+   "section": "add",
+   "step": 2,
+   "grades": [
+    "k"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Fill the basket from the **shopping list**!",
+    "say": "Fill the basket from the shopping list!"
+   },
+   "activity": {
+    "kind": "shop",
+    "kinds": 3,
+    "max": 3,
+    "pay": false
+   },
+   "hint": {
+    "say": "Count each thing on the list."
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.shop.add3.g1",
+   "section": "add",
+   "step": 3,
+   "grades": [
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Fill the basket from the **shopping list**!",
+    "say": "Fill the basket from the shopping list!"
+   },
+   "activity": {
+    "kind": "shop",
+    "kinds": 2,
+    "max": 3,
+    "pay": true
+   },
+   "hint": {
+    "say": "Count each thing on the list."
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.shop.add4.g1",
+   "section": "add",
+   "step": 4,
+   "grades": [
+    "g1"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Fill the basket from the **shopping list**!",
+    "say": "Fill the basket from the shopping list!"
+   },
+   "activity": {
+    "kind": "shop",
+    "kinds": 2,
+    "max": 3,
+    "pay": true
+   },
+   "hint": {
+    "say": "Count each thing on the list."
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.shop.add4.g2",
+   "section": "add",
+   "step": 4,
+   "grades": [
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Fill the basket from the **shopping list**!",
+    "say": "Fill the basket from the shopping list!"
+   },
+   "activity": {
+    "kind": "shop",
+    "kinds": 3,
+    "max": 3,
+    "pay": true
+   },
+   "hint": {
+    "say": "Count each thing on the list."
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.shop.add5.g2",
+   "section": "add",
+   "step": 5,
+   "grades": [
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Fill the basket from the **shopping list**!",
+    "say": "Fill the basket from the shopping list!"
+   },
+   "activity": {
+    "kind": "shop",
+    "kinds": 3,
+    "max": 3,
+    "pay": true
+   },
+   "hint": {
+    "say": "Count each thing on the list."
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.shop.add6.g2",
+   "section": "add",
+   "step": 6,
+   "grades": [
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Fill the basket from the **shopping list**!",
+    "say": "Fill the basket from the shopping list!"
+   },
+   "activity": {
+    "kind": "shop",
+    "kinds": 3,
+    "max": 3,
+    "pay": true
+   },
+   "hint": {
+    "say": "Count each thing on the list."
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.shop.add7.g2",
+   "section": "add",
+   "step": 7,
+   "grades": [
+    "g2"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Fill the basket from the **shopping list**!",
+    "say": "Fill the basket from the shopping list!"
+   },
+   "activity": {
+    "kind": "shop",
+    "kinds": 3,
+    "max": 3,
+    "pay": true
+   },
+   "hint": {
+    "say": "Count each thing on the list."
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.shop.add6.g3",
+   "section": "add",
+   "step": 6,
+   "grades": [
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Fill the basket from the **shopping list**!",
+    "say": "Fill the basket from the shopping list!"
+   },
+   "activity": {
+    "kind": "shop",
+    "kinds": 3,
+    "max": 4,
+    "pay": true
+   },
+   "hint": {
+    "say": "Count each thing on the list."
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.shop.add7.g3",
+   "section": "add",
+   "step": 7,
+   "grades": [
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Fill the basket from the **shopping list**!",
+    "say": "Fill the basket from the shopping list!"
+   },
+   "activity": {
+    "kind": "shop",
+    "kinds": 3,
+    "max": 4,
+    "pay": true
+   },
+   "hint": {
+    "say": "Count each thing on the list."
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  },
+  {
+   "id": "games.shop.add8.g3",
+   "section": "add",
+   "step": 8,
+   "grades": [
+    "g3"
+   ],
+   "countries": [
+    "*"
+   ],
+   "interaction": "activity",
+   "prompt": {
+    "text": "Fill the basket from the **shopping list**!",
+    "say": "Fill the basket from the shopping list!"
+   },
+   "activity": {
+    "kind": "shop",
+    "kinds": 3,
+    "max": 4,
+    "pay": true
+   },
+   "hint": {
+    "say": "Count each thing on the list."
+   },
+   "status": "published",
+   "updated": "2026-11-17"
+  }
+ ],
+ "pictures": []
+}
