@@ -116,8 +116,9 @@ const ShapePlay = (() => {
     const point = (e) => { const m = svg.getScreenCTM(); return m ? { x: (e.clientX - m.e) / m.a, y: (e.clientY - m.f) / m.d } : { x: 0, y: 0 }; };
     pieces.forEach((p) => {
       let start = null, moved = false;
-      p.el.addEventListener('pointerdown', (e) => { if (R.locked || p.slot != null) return; e.preventDefault(); try { p.el.setPointerCapture(e.pointerId); } catch { /* no capture */ }
-        const at = point(e); start = { dx: p.x - at.x, dy: p.y - at.y, x: at.x, y: at.y }; moved = false; loose.appendChild(p.el); });
+      p.el.addEventListener('pointerdown', (e) => { if (R.locked || p.slot != null) return; e.preventDefault(); loose.appendChild(p.el);      // on top first: moving an element lets go of a captured finger
+        try { p.el.setPointerCapture(e.pointerId); } catch { /* no capture */ }
+        const at = point(e); start = { dx: p.x - at.x, dy: p.y - at.y, x: at.x, y: at.y }; moved = false; });
       p.el.addEventListener('pointermove', (e) => { if (!start) return; const at = point(e);
         if (!moved && Math.hypot(at.x - start.x, at.y - start.y) < 5) return;
         if (!moved) { moved = true; p.scale = 1; p.el.classList.add('drag'); start.dx = 0; start.dy = 0; }      // picked up: full size, under the finger

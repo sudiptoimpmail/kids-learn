@@ -24,7 +24,7 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     // ---- the Shapes section mixes them in, at every grade that has it
     const mix = await p.evaluate(() => { const c = CATEGORIES.find((x) => x.id === 'shape2'), out = {};
       for (const [g, lv] of [['prek', 1], ['k', 2], ['g1', 3], ['g2', 4], ['g3', 4]]) { state.grade = g; const seen = new Set();
-        for (let i = 0; i < 160; i++) { const q = c.gen(lv); seen.add(q.activity ? q.activity.kind : q.match ? 'lines' : q.multi && q.bank ? 'tap-all' : q.bank ? 'choice' : 'picture-card'); }
+        for (let i = 0; i < 800; i++) { const q = c.gen(lv); seen.add(q.activity ? q.activity.kind : q.match ? 'lines' : q.multi && q.bank ? 'tap-all' : q.bank ? 'choice' : 'picture-card'); }
         out[g] = [...seen].sort(); }
       state.grade = 'k'; return { out, teach: !!c.teach(2), noTeach: c.teach(4) }; });
     assert.deepEqual(mix.out.prek, ['choice', 'picture-card', 'shape-build', 'shape-match']);
