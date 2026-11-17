@@ -203,6 +203,18 @@ let parentMode = false;
 const DUO_GAME_IDS = ['ttt', 'c4', 'memory'];
 const duoPlay = () => parentMode && !!curGame && DUO_GAME_IDS.includes(curGame.id);
 const duoNames = () => ({ kid: esc(state.name || 'Kid'), kidIcon: state.avatar || '🦄', grown: 'Grown-up', grownIcon: '🧑' });
+// A grown-up's gift of play time (parent mode): it is added to what she has earned
+const giftStatus = () => (state.playAlways ? 'Play Zone is always open' : `Now: ${fmtClock(hourlyMode() ? (hourEarned() ? hourLeftMs() : 0) : playBalance())}`);
+function fmtClock(ms) { const s = Math.ceil(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; }
+function giftPlay(minutes) {
+  const ms = minutes * 60000;
+  if (hourlyMode()) {                                   // open this hour and widen it by the gift
+    state.playHourEarned = hourKey();
+    state.playUsed = { h: hourKey(), ms: usedThisHour() - ms };
+  } else state.playRemainingMs = playBalance() + ms;
+  state.playGifts = [...(state.playGifts || []), { at: new Date().toISOString(), minutes }].slice(-20);
+  save();
+}
 function openParentPlay() {
   parentMode = true; brainMode = false;
   clearInterval(playTimer);
@@ -276,7 +288,7 @@ function renderPZ() {
   if (parentMode) {
     // every game, whatever the grade: the two-player ones first
     const tile = (g, duo) => `<button class="tile pz-tile${duo ? ' duo' : ''}" data-game="${g.id}" style="--c:${g.color}">${duo ? '<span class="pz-duo">👥 2 players</span>' : lvBadge(g.id)}<span class="ti">${g.icon}</span><span class="tt">${g.title}</span></button>`;
-    $('#pzGrid').innerHTML = `<div class="pz-head">Play against each other</div>${DUO_GAME_IDS.map((id) => tile(GAMES.find((g) => g.id === id), true)).join('')}
+    $('#pzGrid').innerHTML = `<div class="pz-gift"><span>🎁 Give ${esc(state.name || 'your child')} play time</span>${[5, 10, 15].map((m) => `<button class="big-btn alt small" data-gift="${m}">+${m} min</button>`).join('')}<b class="pz-gift-now" role="status">${giftStatus()}</b></div><div class="pz-head">Play against each other</div>${DUO_GAME_IDS.map((id) => tile(GAMES.find((g) => g.id === id), true)).join('')}
       <div class="pz-head">Open a game for ${esc(state.name || 'your child')}</div>${GAMES.filter((g) => !DUO_GAME_IDS.includes(g.id)).map((g) => tile(g, false)).join('')}`;
     return;
   }
@@ -285,6 +297,8 @@ function renderPZ() {
 }
 
 $('#pzGrid').addEventListener('click', (e) => {
+  const gift = e.target.closest('[data-gift]');
+  if (gift && parentMode) { giftPlay(+gift.dataset.gift); sfx.yes(); $('.pz-gift-now').textContent = `Added ${gift.dataset.gift} minutes. ${giftStatus()}`; return; }
   const t = e.target.closest('[data-game]'); if (!t) return;
   sfx.tap(); openGame(t.dataset.game);
 });

@@ -82,6 +82,8 @@ self.addEventListener('message', (e) => {
   if (!e.data) return;
   // the app says it is on the home screen: switch to the waiting new version now
   if (e.data.type === 'update-now') { self.skipWaiting(); return; }
+  // the page asks which version is running, to show it to a grown-up
+  if (e.data.type === 'version') { try { e.source && e.source.postMessage({ type: 'version', version: VERSION }); } catch {} return; }
   // Default: cache a small starter pack and cache everything else on first use.
   // An adult may explicitly request the complete (large) recorded voice library.
   if (e.data.type === 'fill-audio' || e.data.type === 'fill-audio-all') e.waitUntil((async () => {

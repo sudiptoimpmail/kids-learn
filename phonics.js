@@ -178,9 +178,11 @@ function genPhonics(level) {
     const wrong = sample(P.cvc.filter(([w]) => w.slice(1) !== a[0].slice(1)), n);
     const opts = shuffle([b, ...wrong]);
     return {
-      key: `ph-rhyme-${a[0]}-${b[0]}`, text: `Which picture rhymes with <b>${a[0]}</b>?`, say: ['Which picture rhymes with', `${a[0]}?`],
+      key: `ph-rhyme-${a[0]}-${b[0]}`, text: `Which picture rhymes with <b>${a[0]}</b>?`, say: ((names) => (CoreVoice.canSay(names) ? ['Which picture rhymes with', `${a[0]}?`, ...names] : ['Which picture rhymes with', `${a[0]}?`]))(opts.map((x) => x[0])),
       main: `<div class="ph-word"><span class="ph-e">${a[1]}</span>${a[0]}</div>`, mainClass: 'ph-main',
-      options: opts.map(picOpt), answer: b[0], optClass: 'opt-emoji', hint: namesHint(opts, 'Say each picture. Listen to the end!'),
+      // a picture can be read two ways (a bear, or a cub?), so each one carries its word and the words are said aloud
+      options: opts.map((x) => ({ v: x[0], html: `${x[1]}<small class="ph-name">${x[0]}</small>` })), answer: b[0], optClass: 'opt-emoji named', hint: namesHint(opts, 'Say each picture. Listen to the end!'),
+      sayNames: opts.map((x) => x[0]),
     };
   }
   // ---- level 1: first letter

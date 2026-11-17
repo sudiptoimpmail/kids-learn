@@ -6644,8 +6644,8 @@
    ],
    "interaction": "choice",
    "prompt": {
-    "text": "Who keeps people safe?",
-    "say": "Who keeps people safe?"
+    "text": "Who makes sure people follow the law?",
+    "say": "Who makes sure people follow the law?"
    },
    "picture": "emoji/❓",
    "choices": [
@@ -6670,7 +6670,7 @@
    ],
    "hint": {
     "picture": "emoji/🚓🚨",
-    "say": "This person keeps people safe."
+    "say": "This person makes sure people follow the law."
    },
    "status": "published",
    "updated": "2026-11-12"
@@ -6713,7 +6713,7 @@
     "b"
    ],
    "hint": {
-    "picture": "emoji/✈️☁️",
+    "picture": "emoji/✈️🎧",
     "say": "This person flies airplanes."
    },
    "status": "published",
@@ -7022,7 +7022,7 @@
       "label": "pilot"
      },
      "right": {
-      "picture": "emoji/✈️☁️",
+      "picture": "emoji/✈️🎧",
       "label": "pilot tools"
      }
     },
@@ -7339,7 +7339,7 @@
     },
     {
      "id": "c",
-     "text": "keeps people safe"
+     "text": "makes sure people follow the law"
     },
     {
      "id": "d",
@@ -7776,8 +7776,8 @@
    ],
    "interaction": "choice",
    "prompt": {
-    "text": "Who keeps people safe?",
-    "say": "Who keeps people safe?"
+    "text": "Who makes sure people follow the law?",
+    "say": "Who makes sure people follow the law?"
    },
    "picture": "emoji/❓",
    "choices": [
@@ -7807,7 +7807,7 @@
    ],
    "hint": {
     "picture": "emoji/🚓🚨",
-    "say": "This person keeps people safe."
+    "say": "This person makes sure people follow the law."
    },
    "status": "published",
    "updated": "2026-11-12"
@@ -7851,7 +7851,7 @@
    ],
    "hint": {
     "picture": "emoji/🚓🚨",
-    "say": "This person keeps people safe."
+    "say": "This person makes sure people follow the law."
    },
    "status": "published",
    "updated": "2026-11-12"
@@ -7875,7 +7875,7 @@
    "choices": [
     {
      "id": "a",
-     "text": "keeps people safe"
+     "text": "makes sure people follow the law"
     },
     {
      "id": "b",
@@ -7942,7 +7942,7 @@
     "a"
    ],
    "hint": {
-    "picture": "emoji/✈️☁️",
+    "picture": "emoji/✈️🎧",
     "say": "This person flies airplanes."
    },
    "status": "published",
@@ -7986,7 +7986,7 @@
     "d"
    ],
    "hint": {
-    "picture": "emoji/✈️☁️",
+    "picture": "emoji/✈️🎧",
     "say": "This person flies airplanes."
    },
    "status": "published",
@@ -8011,7 +8011,7 @@
    "choices": [
     {
      "id": "a",
-     "text": "keeps people safe"
+     "text": "makes sure people follow the law"
     },
     {
      "id": "b",
@@ -8030,7 +8030,7 @@
     "c"
    ],
    "hint": {
-    "picture": "emoji/✈️☁️",
+    "picture": "emoji/✈️🎧",
     "say": "Look at the clues!"
    },
    "status": "published",
@@ -8555,7 +8555,7 @@
    "choices": [
     {
      "id": "a",
-     "text": "keeps people safe"
+     "text": "makes sure people follow the law"
     },
     {
      "id": "b",
@@ -9111,7 +9111,7 @@
     },
     {
      "id": "d",
-     "text": "keeps people safe"
+     "text": "makes sure people follow the law"
     }
    ],
    "answer": [
@@ -10430,7 +10430,7 @@
       "label": "pilot"
      },
      "right": {
-      "picture": "emoji/✈️☁️",
+      "picture": "emoji/✈️🎧",
       "label": "pilot tools"
      }
     },

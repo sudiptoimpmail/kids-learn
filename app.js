@@ -45,7 +45,7 @@ const belowGrade = (id) => {
 // Pre-K (pre-readers) always stays inside its own band
 const liftTop = (id) => { const r = gradeRange(state.grade, id); return state.grade === 'prek' ? r[1] : Math.min(gameMax(id), r[1] + 1); };
 const openRange = (id) => { const r = state.grade && gradeRange(state.grade, id); return r ? (state.showAll ? [r[0], Math.max(r[1], liftTop(id))] : r) : null; };
-const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CATEGORIES.filter((c) => c.id !== 'placement' && !belowGrade(c.id)) : CATEGORIES.filter((c) => c.id !== 'cmp' && c.id !== 'placement' && !belowGrade(c.id) // comparisons are mixed into math, not shown as a separate game
+const visibleGames = () => isTestMode() && (state.showAll || !state.grade) ? CATEGORIES.filter((c) => c.id !== 'placement' && !belowGrade(c.id)) : CATEGORIES.filter((c) => c.id !== 'cmp' && !belowGrade(c.id) // comparisons are mixed into math, not shown as a separate game
   && !sectionOff(c.id)
   && !(c.id === 'home' && typeof myCountry === 'function' && !myCountry())
   && !(c.id === 'region' && typeof myRegion === 'function' && !myRegion())
@@ -132,7 +132,7 @@ function renderHome() {
   if (typeof renderToday === 'function') renderToday();
   if (typeof renderQuest === 'function') renderQuest();
   const groups = [
-    ['📝 Practice', ['check']],
+    ['📝 Practice', ['placement', 'check']],
     ['📖 Reading & Words', ['library', 'trace', 'phonics', 'cvc', 'w4', 'sight', 'spell', 'vocab', 'sent', 'words', 'gp', 'match', 'syl']],
     ['🔢 Math', ['size', 'add', 'sub', 'story', 'cmp', 'numsense', 'tables', 'frac', 'measure', 'mul', 'div', 'clock', 'shape2']],
     ['🧩 Brain Teasers', ['pattern', 'odd', 'sequence'], 'brain'],
@@ -196,6 +196,7 @@ function openSection(catId) {
   if (catId === 'vocab') return openLearn();
   if (catId === 'trace') { TR.quest = null; return openTrace(); }
   if (catId === 'library') return openLibrary();
+  if (catId === 'placement' && typeof startPlacement === 'function') return startPlacement();
   startRound(catId);
 }
 function closeCombo() { const s = $('#comboSheet'); if (s) s.remove(); }
@@ -1436,7 +1437,19 @@ applyTheme();
 renderHome();
 // A service-worker upgrade can reload this tab; never ask the child to press Let's Play twice.
 try { if (sessionStorage.getItem('learnplay.started') === '1') $('#splash').classList.add('gone'); } catch {}
+// a new card clears the last card's celebration, so it never sits on top of a picture she has to tap
+CoreHooks.after('renderQ', () => { const pop = $('#pop'); if (pop && R && !R.locked) pop.classList.remove('show'); });
 CoreOffline.start();   // offline cache + parent-approved updates (core/offline.js)
+// the version in use, shown small on the home page and in Settings (asked from the offline worker; read from sw.js before one is active)
+(function showVersion() {
+  let shown = false;
+  const set = (v) => { const n = String(v).replace(/^.*-v/, ''); if (!n) return; shown = true; $('#appVersion').textContent = `Learn & Play version ${n} · engine ${CORE_VERSION}`; $('#homeVersion').textContent = `v${n}`; };
+  try {
+    navigator.serviceWorker.addEventListener('message', (e) => { if (e.data && e.data.type === 'version') set(e.data.version); });
+    navigator.serviceWorker.ready.then((r) => r.active && r.active.postMessage({ type: 'version' })).catch(() => {});
+  } catch { /* no offline worker here */ }
+  fetch('sw.js').then((r) => r.text()).then((t) => { const m = /PREFIX \+ 'v(\d+)'/.exec(t); if (m && !shown) set(m[1]); }).catch(() => {});
+})();
 
 // quick placement check, started by a grown-up from Settings
 $('#placeBtn').onclick = () => { sfx.tap(); collectSettings(); startPlacement(); };

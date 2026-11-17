@@ -7,11 +7,11 @@ const fail = (m) => { console.error('FAIL ' + m); process.exitCode = 1; };
   const errs = []; p.on('pageerror', (e) => errs.push(e.message));
   await p.goto('http://localhost:8765/index.html'); await p.waitForFunction(() => !!window.KidsLearnReady); await p.evaluate(() => window.KidsLearnReady);
   await p.locator('#startBtn').click(); await p.waitForTimeout(300);
-  for (const [g, n] of [['prek', 4], ['k', 5], ['g1', 5], ['g2', 6], ['g3', 6]]) {
+  for (const [g, n] of [['prek', 2], ['k', 4], ['g1', 5], ['g2', 6], ['g3', 6]]) {
     const got = await p.evaluate((g) => { state.grade = g; state.playAlways = true; openGame('puzzle'); startPuzzle(ALL_PICS[0]); return document.querySelectorAll('.pzl-tile').length; }, g);
     if (got !== n * n) fail(`${g}: expected ${n * n} pieces, got ${got}`);
   }
-  await p.evaluate(() => { state.grade = 'prek'; openGame('puzzle'); startPuzzle(ALL_PICS[0]); });
+  await p.evaluate(() => { state.grade = 'k'; openGame('puzzle'); startPuzzle(ALL_PICS[0]); });   // a 4 × 4 board
   const order = () => p.evaluate(() => [...document.querySelectorAll('.pzl-tile')].map((e) => e.dataset.piece).join(','));
   const before = await order();
   const t0 = await p.locator('.pzl-tile').nth(0).boundingBox(), t5 = await p.locator('.pzl-tile').nth(5).boundingBox();

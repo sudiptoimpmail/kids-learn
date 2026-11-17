@@ -143,6 +143,7 @@ async function readPage() {
     raf = requestAnimationFrame(tick);
     await playClip(file, my, rate);
     cancelAnimationFrame(raf);
+    if (my !== sayToken || !LB.book) return;                // she left the page or the book while this line was playing
     spans.forEach((w) => { w.classList.remove('on'); w.classList.add('read'); });
     // Let children absorb each line; suspense and a change of speaker get a longer beat.
     const next = sents[si + 1] || '';

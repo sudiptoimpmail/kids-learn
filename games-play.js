@@ -44,7 +44,7 @@ function gameWin(text = 'You win!') {
   say(text);
 }
 function endPanel(title, emoji, again, levelUp = false) {
-  if (levelUp) title += `<div class="ep-up">⬆️ Level up! Now level ${GL(curGame.id)}</div>`;
+  if (levelUp) title += `<div class="ep-up">⬆️ You moved up a step! Now step ${GL(curGame.id)}</div>`;
   const d = document.createElement('div');
   d.className = 'end-panel';
   d.innerHTML = `<div class="ep-card"><div class="ep-emoji">${emoji}</div><div class="ep-title">${title}</div>
@@ -202,18 +202,25 @@ function startPop() {
   const lv = GL('pop');
   const policy=gamePlayPolicy('pop'), duration=policy.seconds || 30;
   const target = policy.target || [8, 12, 15, 18, 22][lv - 1];
+  // Every balloon carries a number. Only the number asked for pops, and treats burst out of it; any other balloon
+  // just bounces and floats on (no score lost). The number asked for changes every few pops.
+  const NUMS = { prek: 5, k: 10 }[state.grade] || 20, TREATS = ['🍬', '🍭', '🧸', '🎁', '🍪', '⭐', '🎀', '🍓'];
+  let ask = 1 + rand(NUMS), sinceChange = 0;
+  const sayAsk = () => { const t = ['Pop the number', String(ask)]; say(CoreVoice.canSay(t) ? t : 'Pop the balloons!'); };
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Pop ${target} balloons! <b class="pop-score">0</b> 🎈 · <span class="pop-time">${duration}</span>s <small class="pop-speed">Speed 🐢</small></div><div class="cv-wrap"><canvas class="game-cv pop-cv"></canvas></div>`;
-  say('Pop the balloons!');
+  area.innerHTML = `<div class="g-msg">Pop the number <b class="pop-ask">${ask}</b>! <b class="pop-score">0</b> / ${target} 🎈 · <span class="pop-time">${duration}</span>s <small class="pop-speed" hidden></small></div><div class="cv-wrap"><canvas class="game-cv pop-cv"></canvas></div>`;
+  sayAsk();
   const cv = $('.pop-cv', area);
   let { c, w, h } = fitCanvas(cv);
   const colors = ['#ff6b6b', '#ffd43b', '#51cf66', '#4dabf7', '#cc5de8', '#ff922b', '#f783ac', '#20c997'];
   const balloons = [], bits = [];
   let score = 0, alive = true, raf = 0, last = 0, elapsed = 0, spawnIn = 0;
   function spawn() {
-    const r = (lv <= 2 ? 40 : lv <= 4 ? 34 : 30) + Math.random() * 10;
-    const star = Math.random() < 0.1;
-    balloons.push({ x: r + Math.random() * (w - 2 * r), y: h + r, r, color: star ? '#fcc419' : pick(colors),
+    const r = (lv <= 2 ? 48 : lv <= 4 ? 42 : 38) + Math.random() * 8;
+    const star = false;
+    // about half carry the number asked for, and there is always one on its way
+    const wanted = Math.random() < 0.5 || !balloons.some((b) => b.n === ask); let n = ask; while (!wanted && n === ask) n = 1 + rand(NUMS);
+    balloons.push({ n, boing: 0, x: r + Math.random() * (w - 2 * r), y: h + r, r, color: pick(colors),
       vy: 0.9 * ((55 + lv * 20) * (policy.speedScale || 1) * (0.85 + Math.random() * 0.4) * (policy.accelerate === false ? 1 : Math.min(2.6, 1 + score * 0.06)) + (policy.accelerate === false ? 0 : elapsed * 1.5)), wob: Math.random() * 6, star });
   }
   const clouds = Array.from({ length: 5 }, (_, k) => ({ x: Math.random() * 1.2, y: 0.08 + k * 0.13 + Math.random() * 0.05, s: 0.6 + Math.random() * 0.8, v: 0.004 + Math.random() * 0.006 })), pops = [];
@@ -235,16 +242,16 @@ function startPop() {
     for (const b of balloons) {
       const x = b.x + Math.sin(b.wob) * 8, ry = b.r * 1.15, tilt = Math.cos(b.wob) * 0.12;
       c.strokeStyle = '#8889'; c.lineWidth = 1.5; c.beginPath(); c.moveTo(x, b.y + ry + 4); c.quadraticCurveTo(x - 8, b.y + ry + b.r * 0.6, x + 3, b.y + ry + b.r * 1.3); c.stroke();
-      c.save(); c.translate(x, b.y); c.rotate(tilt);
+      c.save(); c.translate(x, b.y); c.rotate(tilt + Math.sin(b.boing * 18) * b.boing * 0.5); if (b.boing > 0) c.scale(1 + b.boing * 0.18, 1 - b.boing * 0.12);
       const bg = c.createRadialGradient(-b.r * 0.35, -b.r * 0.4, b.r * 0.1, 0, 0, b.r * 1.3); bg.addColorStop(0, '#ffffffcc'); bg.addColorStop(0.25, '#ffffff00'); bg.addColorStop(1, '#00000026');
       c.fillStyle = b.color; c.beginPath(); c.ellipse(0, 0, b.r, ry, 0, 0, Math.PI * 2); c.fill();
       c.fillStyle = bg; c.beginPath(); c.ellipse(0, 0, b.r, ry, 0, 0, Math.PI * 2); c.fill();
       c.fillStyle = b.color; c.beginPath(); c.moveTo(-6, ry + 6); c.lineTo(6, ry + 6); c.lineTo(0, ry - 2); c.fill();
       c.fillStyle = '#ffffff99'; c.beginPath(); c.ellipse(-b.r * 0.38, -b.r * 0.42, b.r * 0.16, b.r * 0.3, -0.5, 0, Math.PI * 2); c.fill();
-      if (b.star) { c.font = `${b.r}px system-ui`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText('⭐', 0, 2); }
+      c.font = `800 ${Math.round(b.r * 0.95)}px system-ui`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineWidth = 5; c.strokeStyle = '#2b2140'; c.strokeText(b.n, 0, 2); c.fillStyle = '#fff'; c.fillText(b.n, 0, 2);
       c.restore();
     }
-    for (const p of bits) { c.globalAlpha = Math.max(0, p.life); c.fillStyle = p.color; c.save(); c.translate(p.x, p.y); c.rotate(p.life * 8); c.fillRect(-4, -2.5, 8, 5); c.restore(); }
+    for (const p of bits) { c.globalAlpha = Math.max(0, Math.min(1, p.life * 2)); c.save(); c.translate(p.x, p.y); c.rotate(p.life * 5); if (p.treat) { c.font = '30px system-ui'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(p.treat, 0, 0); } else { c.fillStyle = p.color; c.fillRect(-4, -2.5, 8, 5); } c.restore(); }
     for (let k = pops.length - 1; k >= 0; k--) { const p = pops[k]; p.life -= 0.04; if (p.life <= 0) { pops.splice(k, 1); continue; }
       c.globalAlpha = p.life; c.strokeStyle = p.color; c.lineWidth = 4 * p.life; c.beginPath(); c.arc(p.x, p.y, (1 - p.life) * p.r * 1.8 + 6, 0, 7); c.stroke();
       c.fillStyle = '#fff'; c.strokeStyle = '#2b2140'; c.lineWidth = 3; c.font = '800 22px system-ui'; c.textAlign = 'center'; c.strokeText(p.txt, p.x, p.y - (1 - p.life) * 40); c.fillText(p.txt, p.x, p.y - (1 - p.life) * 40); }
@@ -258,31 +265,43 @@ function startPop() {
     $('.pop-time', area).textContent = Math.ceil(left);
     spawnIn -= dt;
     if (spawnIn <= 0) { spawn(); spawnIn = Math.max(0.22, (1.0 - lv * 0.1) - elapsed * 0.01 - score * 0.015); }
-    for (const b of balloons) { b.y -= b.vy * dt; b.wob += dt * 2; }
+    for (const b of balloons) { b.y -= b.vy * dt; b.wob += dt * 2; if (b.boing > 0) b.boing = Math.max(0, b.boing - dt * 2.2); }
     for (let k = balloons.length - 1; k >= 0; k--) if (balloons[k].y < -balloons[k].r * 3) balloons.splice(k, 1);
-    for (const p of bits) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 300 * dt; p.life -= dt * 2; }
+    for (const p of bits) { p.x += p.vx * dt; p.y += p.vy * dt; p.vy += 300 * dt; p.life -= dt * (p.treat ? 0.9 : 2); }
     for (let k = bits.length - 1; k >= 0; k--) if (bits[k].life <= 0) bits.splice(k, 1);
     draw();
     if (left <= 0) return finish();
     raf = requestAnimationFrame(frame);
   }
+  function tapAt(x, y) {
+    // the nearest balloon under the finger, with room to spare for little fingers and for a balloon that is moving
+    let best = null, bestD = Infinity;
+    for (const b of balloons) { const bx = b.x + Math.sin(b.wob) * 8, d = Math.hypot(x - bx, (y - b.y) / 1.15) / (b.r * 1.5); if (d < 1 && d < bestD) { best = b; bestD = d; } }
+    if (!best) return 'miss';
+    const b = best, bx = b.x + Math.sin(b.wob) * 8;
+    if (b.n !== ask) {                                        // not the one asked for: it bounces, nothing is lost
+      b.boing = 1; b.vy *= 1.08; tone([330, 392], { dur: 0.07, type: 'sine', gap: 0.05, vol: 0.1 });
+      pops.push({ x: bx, y: b.y - b.r, r: b.r, life: 1, color: '#ffffff00', txt: `Find ${ask}!` });
+      return 'bounce';
+    }
+    balloons.splice(balloons.indexOf(b), 1);
+    score++; sinceChange++; $('.pop-score', area).textContent = score;
+    pops.push({ x: bx, y: b.y, r: b.r, life: 1, color: b.color, txt: '' });
+    // sweets and toys burst out
+    for (let n = 0; n < 7; n++) { const a = -Math.PI / 2 + (Math.random() - 0.5) * 2.6, v = 170 + Math.random() * 150; bits.push({ x: bx, y: b.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 1, color: b.color, treat: pick(TREATS) }); }
+    for (let n = 0; n < 8; n++) { const a = Math.random() * 6.3; bits.push({ x: bx, y: b.y, vx: Math.cos(a) * 160, vy: Math.sin(a) * 160, life: 1, color: b.color }); }
+    tone([700 + Math.random() * 300, 1050, 1320], { dur: 0.06, type: 'square', gap: 0.05, vol: 0.12 });
+    if (sinceChange >= 3 && NUMS > 1) { sinceChange = 0; let next = ask; while (next === ask) next = 1 + rand(NUMS); ask = next; $('.pop-ask', area).textContent = ask; sayAsk(); }
+    return 'pop';
+  }
   function hit(e) {
     e.preventDefault();
     if (!alive) return;
+    // the canvas may be drawn at a different size than it was measured: map the finger onto the game's own grid
     const r = cv.getBoundingClientRect();
-    const x = e.clientX - r.left, y = e.clientY - r.top;
-    for (let k = balloons.length - 1; k >= 0; k--) {
-      const b = balloons[k], bx = b.x + Math.sin(b.wob) * 8;
-      if (Math.hypot((x - bx) / 1.0, (y - b.y) / 1.15) < b.r * 1.25) {     // generous for little fingers
-        balloons.splice(k, 1);
-        score += b.star ? 3 : 1; $('.pop-score', area).textContent = score;
-        $('.pop-speed', area).textContent = policy.accelerate === false ? 'Speed: Gentle' : 'Speed ' + (score < 6 ? '🐢' : score < 12 ? '🐇' : score < 20 ? '🐆' : '🚀');
-        pops.push({ x: bx, y: b.y, r: b.r, life: 1, color: b.color, txt: b.star ? '+3' : '+1' }); for (let n = 0; n < 12; n++) { const a = Math.random() * 6.3; bits.push({ x: bx, y: b.y, vx: Math.cos(a) * 160, vy: Math.sin(a) * 160, life: 1, color: b.color }); }
-        tone([b.star ? 1200 : 650 + Math.random() * 350, 280], { dur: 0.05, type: 'square', gap: 0.04, vol: 0.12 });
-        return;
-      }
-    }
+    tapAt((e.clientX - r.left) * (w / (r.width || w)), (e.clientY - r.top) * (h / (r.height || h)));
   }
+  window.__pop = { ask: () => ask, balloons: () => balloons.map((b) => ({ n: b.n, x: b.x + Math.sin(b.wob) * 8, y: b.y, r: b.r })), tapAt, score: () => score, treats: () => bits.filter((p) => p.treat).length, target };
   cv.addEventListener('pointerdown', hit);
   const onResize = () => { ({ c, w, h } = fitCanvas(cv)); };
   addEventListener('resize', onResize);
@@ -292,7 +311,7 @@ function startPop() {
     const won = score >= target;
     const up = won ? gameLevelUp('pop', 1) : (save(), false);
     gameWin(won ? 'Amazing!' : 'Great job!');
-    endPanel(`You popped ${score} balloons!${won ? '' : `<br><small>Pop ${target} to reach the next level</small>`}<br><small>Best: ${state.popBest}</small>`, '🎈', startPop, up);
+    endPanel(`You popped ${score} balloon${score === 1 ? '' : 's'}!${won ? '' : `<br><small>Pop ${target} to reach the next level</small>`}<br><small>Best: ${state.popBest}</small>`, '🎈', startPop, up);
   }
   raf = requestAnimationFrame(frame);
   gameCleanup = () => { alive = false; cancelAnimationFrame(raf); removeEventListener('resize', onResize); };
@@ -344,6 +363,7 @@ function startWhack() {
     later(() => h.classList.remove('bonk', 'oops'), 300);
     if (m.flower) { score = Math.max(0, score - 1); sfx.no(); } else { score++; tone([520, 780], { dur: 0.05, gap: 0.05, vol: 0.12, type: 'square' }); }
     $('.wm-score', area).textContent = score;
+    if (score >= target && alive) { later(finish, 500); }      // caught them all: the round ends now, with a cheer
   }));
   // Begin with a visible target; the first interaction must not depend on a random roll.
   popUp();
@@ -360,7 +380,7 @@ function startWhack() {
     const won = score >= target;
     const lvUp = won ? gameLevelUp('whack', 1) : false;
     gameWin(won ? 'Awesome job!' : 'Great job!');
-    area.innerHTML = `<div class="wm-final" role="status"><div class="wm-final-icon">🐹</div><h2>Time’s up!</h2><div class="wm-final-score">${score}</div><p>Moles caught</p><button class="big-btn" data-a="again">Play again</button><button class="big-btn alt" data-a="back">Back to games</button></div>`;
+    area.innerHTML = `<div class="wm-final" role="status"><div class="wm-final-icon">🐹</div><h2>${won ? 'You caught them all!' : 'Time’s up!'}</h2><div class="wm-final-score">${score}</div><p>Moles caught</p><button class="big-btn" data-a="again">Play again</button><button class="big-btn alt" data-a="back">Back to games</button></div>`;
     area.querySelector('[data-a="again"]').onclick = () => openGame('whack');
     area.querySelector('[data-a="back"]').onclick = () => $('#gameBack').click();
   }
@@ -392,8 +412,8 @@ async function startPinball() {
 // Board is 10 × 14 units. Walls are [x, y, w, h]; holes send you back to the start.
 const MAZES = [
   // movers: friendly beach balls sliding between two points (a bump just bounces you away); pads: speed boosts [x, y, dirX, dirY]
-  { start: [5, 12.5], goal: [5, 1.6], walls: [], holes: [], stars: [[2, 10.2], [8, 8.6], [2, 7], [8, 5.4], [5, 3.6]],
-    movers: [{ a: [1.6, 7.9], b: [8.4, 7.9], t: 7 }], pads: [] },
+  { start: [5, 12.5], goal: [5, 1.6], walls: [[0, 9.4, 6, 0.6], [4, 5.2, 6, 0.6]], holes: [], stars: [[2, 11.2], [8, 8.2], [2, 7.2], [8, 3.6], [5, 3.2]],
+    movers: [], pads: [] },
   { start: [5, 12.5], goal: [5, 1.6], walls: [[0, 6.8, 7, 0.6]], holes: [], stars: [[8.5, 8.6], [1.5, 10.6], [1.5, 4.2], [8.5, 4.2], [5, 2.8], [8.6, 12.4]],
     movers: [{ a: [1.6, 9.6], b: [8.4, 9.6], t: 6 }, { a: [8.4, 3.4], b: [1.6, 3.4], t: 6.5 }], pads: [[8.2, 6.6, 0, -1]] },
   { start: [1.6, 12.4], goal: [8.4, 1.6], walls: [[3, 4.4, 7, 0.6], [0, 9, 7, 0.6]], holes: [], stars: [[8.5, 11], [1.5, 6.7], [5, 6.9], [1.5, 2.2], [5, 2.2], [8.5, 7.2]],
@@ -408,10 +428,9 @@ const MAZES = [
 function startBallMaze() {
   const lv = GL('maze'), M = MAZES[lv - 1];
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Roll the ball to the flag! 🚩<small>Drag your finger — the ball follows. ${M.holes.length ? 'Watch out for holes!' : ''}</small><span class="maze-hud">⭐ <b class="mz-got">0</b> / ${M.stars.length}</span></div>
+  area.innerHTML = `<div class="g-msg"><span class="mz-ask">Crush the number <b class="mz-n"></b> blocks! <small>(<b class="mz-ask-left"></b> left)</small></span> Then roll to the flag 🚩<small>Drag your finger — the ball follows. Other numbers bounce you back. ${M.holes.length ? 'Watch out for holes!' : ''}</small><span class="maze-hud">⭐ <b class="mz-got">0</b> / ${M.stars.length}</span></div>
     <div class="cv-wrap"><canvas class="game-cv ball-cv"></canvas></div>
     <div class="color-btns"><button class="big-btn alt small ico" data-a="tilt" aria-label="Tilt to play">📱 Tilt</button></div>`;
-  say(M.holes.length ? ['Roll the ball to the flag!', 'Watch out for holes!'] : 'Roll the ball to the flag!');
   const cv = $('.ball-cv', area);
   let { c, w, h } = fitCanvas(cv, 380);
   let u = Math.min(w / 10, h / 14);        // pixels per unit
@@ -420,6 +439,21 @@ function startBallMaze() {
   const ball = { x: M.start[0], y: M.start[1], vx: 0, vy: 0, s: 1 };
   const stars = M.stars.map((p) => ({ x: p[0], y: p[1], got: false }));
   let finger = null, tilt = null, alive = true, raf = 0, last = 0, falling = 0, won = false;
+  // Number blocks stand in the way. Rolling into a block with the number asked for crushes it; every other block
+  // bounces the ball back. The flag opens once all the asked blocks are crushed.
+  const NUMS = { prek: 5, k: 10 }[state.grade] || 20, askN = 1 + rand(NUMS), blocks = [];
+  (() => {
+    const clear = (x, y) => Math.hypot(x - M.start[0], y - M.start[1]) > 2.4 && Math.hypot(x - M.goal[0], y - M.goal[1]) > 2 && !blocks.some((b) => Math.hypot(b.x - x, b.y - y) < 2)
+      && !M.walls.some(([wx, wy, ww, wh]) => x > wx - 0.9 && x < wx + ww + 0.9 && y > wy - 0.9 && y < wy + wh + 0.9) && !M.holes.some(([hx, hy]) => Math.hypot(hx - x, hy - y) < 1.5)
+      && !M.stars.some(([sx, sy]) => Math.hypot(sx - x, sy - y) < 1) && !(M.pads || []).some(([px, py]) => Math.hypot(px - x, py - y) < 1.3);
+    const want = lv <= 2 ? 3 : 4, others = lv <= 2 ? 3 : 4;
+    for (let tries = 0; tries < 900 && blocks.length < want + others; tries++) { const x = 1.2 + Math.random() * 7.6, y = 2.6 + Math.random() * 9;
+      if (!clear(x, y)) continue; let n = askN; if (blocks.length >= want) while (n === askN) n = 1 + rand(NUMS); blocks.push({ x, y, n, hit: 0, gone: false }); }
+  })();
+  const blocksLeft = () => blocks.filter((b) => b.n === askN && !b.gone).length;
+  $('.mz-n', area).textContent = askN; $('.mz-ask-left', area).textContent = blocksLeft();
+  { const t = ['Crush the number', String(askN), 'Then roll the ball to the flag!']; say(CoreVoice.canSay(t) ? t : 'Roll the ball to the flag!'); }
+  window.__ballMaze = { ask: askN, blocks, ball, left: blocksLeft, won: () => won };
   // beach-ball bumpers glide back and forth; speed pads shoot the ball along an arrow
   const movers = (M.movers || []).map((m) => ({ ...m, x: m.a[0], y: m.a[1], spin: 0 }));
   const pads = (M.pads || []).map(([x, y, dx, dy]) => ({ x, y, dx, dy }));
@@ -484,7 +518,13 @@ function startBallMaze() {
     for (let k = 0; k < n; k++) { ball.x += ball.vx * dt / n; ball.y += ball.vy * dt / n; collide(); }
     for (const s of stars) if (!s.got && Math.hypot(s.x - ball.x, s.y - ball.y) < 0.75) { s.got = true; for (let k = 0; k < 10; k++) { const an = k / 10 * 6.28; parts.push({ x: s.x, y: s.y, vx: Math.cos(an) * 0.08, vy: Math.sin(an) * 0.08 - 0.03, life: 1 }); } combo = comboT > 0 ? combo + 1 : 1; comboT = 2.5; const n = stars.filter((q) => q.got).length; if (hudGot) hudGot.textContent = n; const f = 880 * Math.pow(1.122, Math.min(combo - 1, 6)); tone([f, f * 1.5], { dur: 0.06, gap: 0.06, vol: 0.1 }); }
     for (const [hx, hy] of M.holes) if (Math.hypot(hx - ball.x, hy - ball.y) < 0.45) { falling = 1; sfx.no(); say('Oops! Try again.'); }
-    if (Math.hypot(M.goal[0] - ball.x, M.goal[1] - ball.y) < 0.6) win();
+    for (const b of blocks) { b.hit = Math.max(0, b.hit - dt * 3); if (b.gone) continue;
+      const dx = ball.x - b.x, dy = ball.y - b.y, d = Math.hypot(dx, dy) || 1; if (d > R + 0.62) continue;
+      if (b.n === askN) { b.gone = true; flash = 0.2; for (let k = 0; k < 12; k++) { const an = k / 12 * 6.28; parts.push({ x: b.x, y: b.y, vx: Math.cos(an) * 0.1, vy: Math.sin(an) * 0.1 - 0.03, life: 1 }); }
+        tone([520, 780, 1040], { dur: 0.06, gap: 0.05, vol: 0.12, type: 'square' }); const left = blocksLeft(); $('.mz-ask-left', area).textContent = left;
+        if (!left) { $('.mz-ask', area).classList.add('done'); sfx.yes(); } }
+      else { ball.x = b.x + dx / d * (R + 0.62); ball.y = b.y + dy / d * (R + 0.62); ball.vx = dx / d * 8; ball.vy = dy / d * 8; b.hit = 1; hits++; tone([240, 200], { dur: 0.06, gap: 0.04, vol: 0.09 }); } }
+    if (!blocksLeft() && Math.hypot(M.goal[0] - ball.x, M.goal[1] - ball.y) < 0.6) win();
   }
   const trail = [], parts = [];
   const starPath = (x, y, ro, ri) => { c.beginPath(); for (let k = 0; k < 10; k++) { const a = -Math.PI / 2 + k * Math.PI / 5, r = k % 2 ? ri : ro; c.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r); } c.closePath(); };
@@ -511,6 +551,12 @@ function startBallMaze() {
       c.save(); c.translate(x, y); c.rotate(a + Math.PI / 2); c.fillStyle = '#74c0fc66'; c.beginPath(); c.arc(0, 0, u * 0.62, 0, 7); c.fill();
       for (let k = 0; k < 2; k++) { c.strokeStyle = `rgba(25,113,194,${0.45 + 0.4 * (k ? pl : 1 - pl)})`; c.lineWidth = u * 0.14; c.lineCap = 'round'; c.lineJoin = 'round'; c.beginPath(); c.moveTo(-u * 0.3, u * (0.12 - k * 0.26)); c.lineTo(0, -u * (0.14 + k * 0.26)); c.lineTo(u * 0.3, u * (0.12 - k * 0.26)); c.stroke(); }
       c.restore(); }
+    // number blocks: the asked number is crushed, the others bounce the ball away
+    for (const b of blocks) { if (b.gone) continue; const x = ox + b.x * u + Math.sin(b.hit * 20) * b.hit * u * 0.12, y = oy + b.y * u, sz = u * 1.08;
+      c.fillStyle = '#00000022'; c.beginPath(); c.roundRect(x - sz / 2 + 2, y - sz / 2 + 4, sz, sz, u * 0.2); c.fill();
+      c.fillStyle = ['#ff8787', '#74c0fc', '#8ce99a', '#ffd43b', '#da77f2'][b.n % 5]; c.strokeStyle = '#2b2140'; c.lineWidth = 3; c.beginPath(); c.roundRect(x - sz / 2, y - sz / 2, sz, sz, u * 0.2); c.fill(); c.stroke();
+      c.fillStyle = '#2b2140'; c.font = `800 ${Math.round(u * 0.66)}px system-ui`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(b.n, x, y + 1); }
+    if (blocksLeft()) { c.globalAlpha = 0.45; }          // the flag waits, faded, until the asked blocks are crushed
     // goal: glowing pad with a flag
     const gx = ox + M.goal[0] * u, gy = oy + M.goal[1] * u, pulse = 1 + Math.sin(T * 3) * 0.06;
     const gg = c.createRadialGradient(gx, gy, u * 0.1, gx, gy, u * 0.95 * pulse); gg.addColorStop(0, '#b2f2bb'); gg.addColorStop(0.6, '#69db7c88'); gg.addColorStop(1, '#69db7c00');
@@ -526,6 +572,7 @@ function startBallMaze() {
       c.fillStyle = wgr; rr(wx, wy, ww2, hh2, 5); c.fill();
       c.fillStyle = '#ffffff30'; rr(wx + 2, wy + 2, Math.max(0, ww2 - 4), Math.min(4, hh2 / 3), 3); c.fill(); }
     // stars: bobbing, glowing
+    c.globalAlpha = 1;
     for (const s of stars) if (!s.got) { const x = ox + s.x * u, y = oy + s.y * u + Math.sin(T * 3 + s.x * 2) * u * 0.07, sg = c.createRadialGradient(x, y, 0, x, y, u * 0.6);
       sg.addColorStop(0, '#ffe06688'); sg.addColorStop(1, '#ffe06600'); c.fillStyle = sg; c.beginPath(); c.arc(x, y, u * 0.6, 0, 7); c.fill();
       starPath(x, y, u * 0.38, u * 0.17); c.fillStyle = '#ffd43b'; c.fill(); c.strokeStyle = '#f08c00'; c.lineWidth = 2; c.lineJoin = 'round'; c.stroke();
@@ -629,6 +676,12 @@ function startC4() {
     const cols = [...Array(C7).keys()].filter((c) => dropRow(c) >= 0);
     const tryWin = (who) => cols.find((c) => { const r = dropRow(c); g[r][c] = who; const w = lineAt(r, c, who); g[r][c] = 0; return w; });
     const lv = GL('c4');   // 1: playful robot · 2: blocks often · 3: careful robot
+    // For Pre-K and K at the first level the robot is a playmate, not a rival: it drops anywhere, never blocks,
+    // and does not finish its own four while it has another move.
+    if (lv === 1 && (state.grade === 'prek' || state.grade === 'k')) {
+      const safe = cols.filter((cc) => { const r = dropRow(cc); g[r][cc] = BOT; const w = lineAt(r, cc, BOT); g[r][cc] = 0; return !w; });
+      return pick(safe.length ? safe : cols);
+    }
     let c = Math.random() < [0.6, 0.95, 1][lv - 1] ? tryWin(BOT) : null;
     if (c == null && Math.random() < [0.35, 0.75, 0.95][lv - 1]) c = tryWin(ME);
     if (c == null) {
@@ -1099,7 +1152,7 @@ function sdkPuzzle(level) {
 function startSudokuMenu() {
   const lv = sdkLevel();
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Sudoku · Level ${lv} of 5</div>
+  area.innerHTML = `<div class="g-msg">Sudoku · Step ${lv} of 5</div>
     <div class="sdk-modes">
       <button class="sdk-mode" data-m="pics"><span>🍎🍌</span>Pictures</button>
       <button class="sdk-mode" data-m="nums"><span>1 2</span>Numbers</button>
@@ -1160,7 +1213,7 @@ function startSudoku(mode) {
       save();
     }
     gameWin(pick(['Awesome job!', 'Excellent!', 'You did it!']));
-    later(() => endPanel(state.sdkLevel > lv ? `Solved! Next puzzles are harder (level ${state.sdkLevel})` : 'Solved!', '🧩', () => startSudoku(mode)), 1300);
+    later(() => endPanel(state.sdkLevel > lv ? `Solved! Next puzzles are harder (step ${state.sdkLevel})` : 'Solved!', '🧩', () => startSudoku(mode)), 1300);
   }
   area.querySelector('.sdk-board').addEventListener('click', (e) => {
     const t = e.target.closest('.sdk-cell'); if (!t) return;
@@ -1199,7 +1252,8 @@ function puzzleFills(p) {
   if (p.orig) { const f = { 0: '#d0ebff' }; p.orig.forEach((c, i) => (f[i + 1] = c)); return f; }
   const f = {}; for (let k = 0; k < 40; k++) f[k] = AUTO_FILL[k % AUTO_FILL.length]; return f;
 }
-const puzzleSize = () => ({ prek: 4, k: 5, g1: 5, g2: 6, g3: 6 }[state.grade] || 4); // pre-K 4×4, K and 1st 5×5, 2nd and 3rd 6×6
+// Pre-K starts with 4 pieces, then 9 once she has finished two puzzles; K 4×4, 1st 5×5, 2nd and 3rd 6×6
+const puzzleSize = () => (state.grade === 'prek' ? ((state.gameWins || {}).puzzle || 0) < 2 ? 2 : 3 : { k: 4, g1: 5, g2: 6, g3: 6 }[state.grade] || 4);
 
 const puzSrc = (p) => p.url || visualPath(p.photo || p.art), puzImg = (p) => !!(p.photo || p.art || p.url);
 function startPuzzleMenu() {

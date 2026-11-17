@@ -18,7 +18,7 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
       for (const g of [['k', 2], ['g1', 3]]) { const l = QuestionBank.lesson('shape2', g[1], g[0]); for (const line of l.lines) if (!CoreVoice.canSay(line.say)) bad.push('not recorded: ' + line.say); }
       if (!CoreVoice.canSay('Tap a shape to turn it.')) bad.push('not recorded: turn tip');
       return { kinds, bad, lessons: [...new Set(lessons)], builds: [...new Set(all.filter((q) => q.activity && q.activity.kind !== 'shape-match').map((q) => q.activity.picture))].sort(), core: CORE_VERSION }; });
-    assert.equal(set.core, '1.13.0'); assert.deepEqual(set.bad.slice(0, 8), []);
+    assert.equal(set.core, '1.13.1'); assert.deepEqual(set.bad.slice(0, 8), []);
     assert.ok(set.kinds.activity >= 20 && set.kinds.match >= 4 && set.kinds.choice >= 10 && set.kinds.multi >= 6, JSON.stringify(set.kinds));
     assert.deepEqual(set.builds, ['boat', 'butterfly', 'car', 'castle', 'house', 'robot', 'rocket', 'train', 'tree']); assert.equal(set.lessons.length, 2);
     // ---- the Shapes section mixes them in, at every grade that has it

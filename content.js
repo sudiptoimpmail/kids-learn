@@ -1205,12 +1205,14 @@ const genGK = (level) => {
 function organSVG(highlight) {
   // The offline anatomical diagram is an educational illustration, not a scan
   // or a photograph. Hotspots align with its drawn organ locations.
-  const zones = [
+  const all = [
     ['brain',100,48,33,28],['lungs',76,158,19,39],['lungs',124,158,19,39],
     ['heart',110,173,18,22],['liver',81,206,30,19],['stomach',127,219,20,23],
     ['kidneys',78,228,13,18],['kidneys',125,240,13,18],
     ['spine',100,125,8,22],['intestines',101,262,28,22]
   ];
+  // only the organs this grade learns can be tapped or named (Pre-K: brain, heart, lungs, stomach)
+  const zones = all.filter(([name]) => organForGrade(name) || name === highlight);
   const label = highlight ? `<text x="100" y="295" text-anchor="middle" font-size="13"
     font-weight="700" fill="#123c60">${highlight.replace(/[^a-z]/g,'')}</text>` : '';
   return `<svg viewBox="0 0 200 310" class="organ-fig" role="group"
@@ -1754,8 +1756,10 @@ const vocabPool = (level) => {
 };
 // learn cards: this level's words first, then the ones before
 const vocabLearnList = (level) => {
-  const pool = vocabPool(level);
-  return pool.filter(v => VOCAB_LEVEL.get(v) === level).concat(pool.filter(v => VOCAB_LEVEL.get(v) < level));
+  const pool = vocabPool(level), seen = state.vocabSeen || {};
+  const list = pool.filter(v => VOCAB_LEVEL.get(v) === level).concat(pool.filter(v => VOCAB_LEVEL.get(v) < level));
+  // words she has not met yet come first, so the cards do not open with the same three every time
+  return list.filter((v) => !seen[v[0]]).concat(list.filter((v) => seen[v[0]]));
 };
 
 function vocabDistractors(v, pool, n) {
@@ -1767,10 +1771,15 @@ function vocabDistractors(v, pool, n) {
 
 function genVocab(level) {
   const pool = vocabPool(level), exact = pool.filter((x) => VOCAB_LEVEL.get(x) === level);
-  const v = pick(exact.length && Math.random() < 0.7 ? exact : pool);
+  // the quiz asks about words she has met on the learn cards; until she has met a few, the first ones on the cards
+  const seen = state.vocabSeen || {}, met = pool.filter((x) => seen[x[0]]);
+  const ask = met.length >= 4 ? met : vocabLearnList(level).slice(0, 6);
+  const askExact = ask.filter((x) => exact.includes(x));
+  const v = pick(askExact.length && Math.random() < 0.7 ? askExact : ask);
   const [word, pic, gloss] = v;
   const others = vocabDistractors(v, pool, numOpts(level) - 1);
-  const meaningHint = { html: `<div class="hint-note">${vocabMeaning(v)}</div>`, say: vocabMeaning(v) };
+  // the hint shows the picture with its meaning, so it points at an answer instead of leaving a guess
+  const meaningHint = { html: `<div class="hint-pic">${pic}</div><div class="hint-note">${vocabMeaning(v)}</div>`, say: vocabMeaning(v) };
   if (activityPolicy('vocab').pictureAnswers || Math.random() < 0.5) {
     return {
       key: `voc-pic-${word}`, text: `Which picture shows <b>${word}</b>?`, say: `Which picture shows ${word}?`,

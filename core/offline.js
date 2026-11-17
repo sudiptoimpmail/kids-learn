@@ -33,7 +33,10 @@ const CoreOffline = (() => {
         const btn = document.createElement('button');
         btn.id = 'updateAvailable'; btn.type = 'button'; btn.className = 'update-available';
         btn.textContent = 'A new version is ready. Tap to restart when you are finished.';
-        btn.onclick = () => { restartApproved = true; btn.disabled = true; btn.textContent = 'Updating…'; reg.waiting.postMessage({ type: 'update-now' }); };
+        btn.onclick = () => { restartApproved = true; btn.disabled = true; btn.textContent = 'Updating…';
+          try { reg.waiting && reg.waiting.postMessage({ type: 'update-now' }); } catch {}
+          // the new version normally takes over within a second and the page restarts; if that never arrives, restart anyway
+          setTimeout(() => location.reload(), OFF_CFG.updateRestartMs || 4000); };
         host.appendChild(btn);
       };
       reg.addEventListener('updatefound', () => {

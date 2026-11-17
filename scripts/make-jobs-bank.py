@@ -207,8 +207,8 @@ WORKERS = [firefighter(), doctor(), police(), soldier(), builder(), chef(), farm
 
 # every job a child meets in "who helps us?" and "all the jobs": name, picture, what they do, their tools
 JOBS = [["firefighter", "🧑‍🚒", "puts out fires", "🔥🚒"], ["doctor", "🧑‍⚕️", "helps sick people get better", "🩺💊"], ["teacher", "🧑‍🏫", "teaches children at school", "📚✏️"],
-        ["chef", "🧑‍🍳", "cooks yummy food", "🍲🥘"], ["farmer", "🧑‍🌾", "grows food and feeds animals", "🌽🐄"], ["police officer", "👮", "keeps people safe", "🚓🚨"],
-        ["pilot", "🧑‍✈️", "flies airplanes", "✈️☁️"], ["astronaut", "🧑‍🚀", "goes into space", "🚀🌙"], ["mechanic", "🧑‍🔧", "fixes cars", "🚗🔧"],
+        ["chef", "🧑‍🍳", "cooks yummy food", "🍲🥘"], ["farmer", "🧑‍🌾", "grows food and feeds animals", "🌽🐄"], ["police officer", "👮", "makes sure people follow the law", "🚓🚨"],
+        ["pilot", "🧑‍✈️", "flies airplanes", "✈️🎧"], ["astronaut", "🧑‍🚀", "goes into space", "🚀🌙"], ["mechanic", "🧑‍🔧", "fixes cars", "🚗🔧"],
         ["artist", "🧑‍🎨", "paints pictures", "🎨🖌️"], ["scientist", "🧑‍🔬", "does experiments", "🧪🔬"], ["builder", "👷", "builds houses", "🏗️🧱"],
         ["singer", "🧑‍🎤", "sings songs", "🎤🎵"], ["judge", "🧑‍⚖️", "decides what is fair in court", "⚖️🏛️"], ["coder", "🧑‍💻", "writes programs for computers", "💻⌨️"],
         ["dentist", "🦷", "takes care of our teeth", "🪥😁"], ["mail carrier", "📬", "brings letters to our homes", "✉️📦"], ["baker", "🧁", "bakes bread and cakes", "🍞🎂"],

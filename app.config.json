@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "core": "1.13.0",
+  "core": "1.13.1",
   "app": {
     "id": "kids-learn",
     "name": "Learn & Play",

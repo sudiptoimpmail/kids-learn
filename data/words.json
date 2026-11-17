@@ -117,7 +117,7 @@
         ],
         [
           "share",
-          "🍪",
+          "🤝",
           "to let others have some too",
           "I share my blocks with my friend.",
           "What do you like to share?"
@@ -168,7 +168,7 @@
         ],
         [
           "dirty",
-          "🟤",
+          "<svg viewBox=\"0 0 64 64\" class=\"voc-svg\" role=\"img\" aria-label=\"a dirty shirt\"><path d=\"M20 8 L8 18 L15 28 L20 24 V56 H44 V24 L49 28 L56 18 L44 8 C40 14 24 14 20 8 Z\" fill=\"#f8f9fa\" stroke=\"#2b2140\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/><g fill=\"#8b5a2b\"><circle cx=\"27\" cy=\"30\" r=\"5\"/><circle cx=\"33\" cy=\"27\" r=\"2.5\"/><circle cx=\"38\" cy=\"42\" r=\"6\"/><circle cx=\"30\" cy=\"46\" r=\"2.5\"/><circle cx=\"26\" cy=\"38\" r=\"1.8\"/><circle cx=\"41\" cy=\"31\" r=\"2\"/></g></svg>",
           "not clean",
           "My shoes are dirty from the mud.",
           "How do we clean dirty hands?",
