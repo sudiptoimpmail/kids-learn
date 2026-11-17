@@ -2098,3 +2098,15 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .les-sent.done { opacity: 1; } .les-sent.on { opacity: 1; background: #fff3bf; }
 
 @media (min-width: 700px) { .pv-row { max-width: 520px; } .pv-h { --c: 12px; width: 120px; height: 120px; } .pv-t { width: 28px; height: 180px; background: repeating-linear-gradient(0deg, #4dabf7 0 16.5px, #1971c2 16.5px 18px); } .pv-o { width: 30px; height: 30px; } }
+
+/* parent mode: a gift of play time */
+.pz-gift { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; background: #fff; border-radius: 18px; padding: 10px 14px; box-shadow: 0 3px 0 rgba(0,0,0,.08); font-weight: 800; }
+.pz-gift-now { margin-left: auto; font-weight: 700; opacity: .8; }
+.mz-ask { display: block; } .mz-ask.done { opacity: .5; text-decoration: line-through; }
+
+/* pictures that carry their word (rhymes), a drawn vocabulary picture, and a body diagram that fits the card */
+.opt-emoji.named .ph-name, .named .ph-name { display: block; font-size: clamp(16px, 2.4vw, 24px); font-weight: 800; line-height: 1.1; color: #2b2140; }
+.voc-svg { width: 1em; height: 1em; display: inline-block; vertical-align: -0.12em; }
+.q-main.body-main .organ-fig, .q-main.body-main .body-fig { max-height: 46vh; width: auto; max-width: 100%; }
+
+.home-version { text-align: center; font-size: 12px; opacity: .45; margin: 14px 0 4px; }

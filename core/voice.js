@@ -77,7 +77,10 @@ const sayParts = (text) => (Array.isArray(text) ? text.map((p) => (p && typeof p
   .map((p) => (typeof p === 'object' ? p : VoiceHooks.map.reduce((acc, fn) => fn(acc), p)));
 const partFile = (p) => (typeof p === 'object' ? (p.device ? null : (CLIPS_BY_LANG[p.lang || VOICE_LANG] || {})[clipKey(p.text)]) : CLIPS[clipKey(p)]);
 function prefetch(text) { if (text) sayParts(text).forEach((p) => { const f = partFile(p); if (f) getBuf(f).catch(() => {}); }); }
+const liveSrc = new Set();
 function stopClip() {
+  // every clip still sounding is stopped, not only the newest one (two can overlap for a moment)
+  for (const src of liveSrc) { try { src.stop(); } catch {} } liveSrc.clear();
   try { curSrc && curSrc.stop(); } catch {} curSrc = null;
   try { htmlPlayer.pause(); htmlPlayer.removeAttribute('src'); htmlPlayer.load(); } catch {}
   try { if (window.speechSynthesis && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel(); } catch {}
@@ -117,7 +120,7 @@ async function playClip(file, token = sayToken, rate = 1) {
     try {
       if (token !== sayToken) return fin();
       const src = c.createBufferSource(); src.buffer = buf; src.connect(c.destination);
-      src.onended = fin; curSrc = src; src.start();
+      src.onended = () => { liveSrc.delete(src); fin(); }; curSrc = src; liveSrc.add(src); src.start();
       lastAudio.path = 'webaudio';
       setTimeout(fin, buf.duration * 1000 + 400);
     } catch (e) { if (token !== sayToken) return fin(); lastAudio.err = String(e); htmlPlay(file, token).then(fin); }

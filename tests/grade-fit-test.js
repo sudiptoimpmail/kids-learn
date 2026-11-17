@@ -12,7 +12,7 @@ const { chromium } = require('playwright');
     const res = { sections: {}, cards: {} };
     for (const g of ['prek', 'k', 'g1', 'g2', 'g3']) {
       Object.assign(state, { grade: g, testMode: false, showAll: false, country: 'us', levels: {}, recent: {} });
-      res.sections[g] = visibleGames().filter((c) => c.gen && c.id !== 'mix').map((c) => c.id);
+      res.sections[g] = visibleGames().filter((c) => c.gen && c.id !== 'mix' && c.id !== 'placement').map((c) => c.id);   // Quick Check is built and grade-checked by its own plan (placement-test)
       res.cards[g] = [];
       for (const id of res.sections[g]) {
         const [lo, hi] = gradeRange(g, id) || [1, 1];
@@ -32,7 +32,7 @@ const { chromium } = require('playwright');
     for (const g of ['prek', 'k']) {
       Object.assign(state, { grade: g, showAll: true, levels: {}, recent: {}, recentContent: {} });
       for (const c of CATEGORIES) state.levels[c.id] = maxLevelOf(c.id);
-      res.older[g] = visibleGames().filter((c) => c.gen && c.id !== 'mix').map((c) => {
+      res.older[g] = visibleGames().filter((c) => c.gen && c.id !== 'mix' && c.id !== 'placement').map((c) => {
         R = null; startRound(c.id, 10);
         const out = { id: c.id, n: R ? R.qs.length : 0, top: gradeRange(g, c.id)[1], max: R ? Math.max(...R.qs.map((q) => q.level)) : 0,
           bad: R ? R.qs.filter((q) => !gradeFits(q, g, c.id)).length : 0, subs: [...document.querySelectorAll('#grid .tile[data-cat="add"] .ts')].map((e) => e.textContent).join('') };

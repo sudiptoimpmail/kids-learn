@@ -51,7 +51,7 @@ const { chromium } = require('playwright');
   }
   assert.equal(r.lv[r.secs[0]], r.ranges[r.secs[0]][1], 'all right → top of the grade');
   for (const s of r.secs.slice(1)) assert.equal(r.lv[s], r.ranges[s][0], 'none right → start of the grade');
-  assert.equal(r.homeHasPlacement, false, 'placement is not a home tile');
+  assert.equal(r.homeHasPlacement, true, 'Quick Check has a home tile');
   assert.deepEqual(errs, []);
   await b.close();
   console.log('PASS 8-card placement check sets each section to the start, middle or top of the grade');
