@@ -16,7 +16,9 @@ for (const f of files) {
   assert.deepEqual([...QuestionBank.check(bank, { grades: cfg.packs.grades })], [], f);
   assert.ok(sw.includes(`"banks/${f}"`), f + ' is not in sw.js, so it would be missing offline');
   for (const q of bank.questions) { assert.ok(!ids.has(q.id), 'two banks share the question id ' + q.id); ids.add(q.id); }
-  const unrecorded = [...QuestionBank.spoken(bank)].filter((s) => !map[key(s)]);
+  // the voice reads a line whole when it has that recording, otherwise sentence by sentence (as say() does)
+  const recorded = (s) => !!map[key(s)] || (() => { const parts = String(s).split(/(?<=[.!?])\s+/).filter((x) => key(x)); return parts.length > 1 && parts.every((x) => map[key(x)]); })();
+  const unrecorded = [...QuestionBank.spoken(bank)].filter((s) => !recorded(s));
   assert.deepEqual(unrecorded.slice(0, 10), [], f + ': sentences with no recording');
   const tables = QuestionBank.rows(bank);
   assert.equal(tables.questions.length, bank.questions.length);
