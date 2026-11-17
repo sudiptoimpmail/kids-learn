@@ -74,7 +74,8 @@
   },
   "banks": [
     "learn-play.jobs",
-    "learn-play.geometry"
+    "learn-play.geometry",
+    "learn-play.games"
   ],
   "packs": {
     "db": "kids-learn-content-packs",
@@ -212,6 +213,7 @@
     "early.js",
     "bank-cards.js",
     "shape-play.js",
+    "adventure-play.js",
     "country.js",
     "levels.js",
     "gradefit.js",
