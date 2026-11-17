@@ -52,8 +52,8 @@ const IllustratedActivities = (() => {
     const voice = mode==='letters' ? ['Help the baby zebra reach its family.','Follow only the letter Z.'] :
       mode==='longa' ? 'Follow only words with the long A sound to reach TAIL.' :
       mode==='sounds' ? ['Tap all the pictures that start with','A'] :
-      mode==='shapes' ? 'Tap all the circles you see.' :
-      mode==='squares' ? 'Look at the picture!' :
+      mode==='shapes' ? ['Trace the circle with your finger.','Then tap all the circles you see.'] :
+      mode==='squares' ? ['Trace the square with your finger.','Then tap all the squares you see.'] :
       mode==='forest' ? ['Find the word.', answer] : mode==='wordhunt' ? 'Find the word.' : ['Read the story.','What happened first?'];
     return {key:'ill-'+mode+(mode==='forest'?'-'+answer:''),text,say:voice,
       parts: ['shapes','squares','sounds','sequence','wordhunt'].includes(mode) ? 4 : 1,
@@ -68,11 +68,11 @@ const IllustratedActivities = (() => {
   function mountShapeTrace(host,stage,kind,q,onComplete){
     const isSquare=kind==='squares';
     const path=isSquare?'M40 19 L120 19 L120 99 L40 99 L40 19':
-      'M80 18 C121 18 122 98 80 98 C38 98 39 18 80 18';
+      'M80 18 A40 40 0 0 1 80 98 A40 40 0 0 1 80 18';      // a true circle, not an egg
     const box=document.createElement('div');
     box.className='ia-shape-step';
     box.innerHTML='<div class="ia-trace-heading"><b>1. Trace the '+(isSquare?'square':'circle')+'</b>'+
-      '<small>Start at the green dot. Follow the dots with your finger.</small></div>'+
+      '<small>👆 Put your finger on the green dot. Go all the way around the dots.</small></div>'+
       '<svg class="ia-trace-shape" viewBox="0 0 160 120" role="img" aria-label="Trace the '+(isSquare?'square':'circle')+' from the green starting dot" tabindex="0">'+
       '<path class="ia-trace-guide" d="'+path+'" fill="none" stroke="#9ca9bc" stroke-width="8" stroke-dasharray="3 11" stroke-linecap="round"/>'+
       '<path class="ia-trace-ink" d="'+path+'" fill="none" stroke="#2fa86a" stroke-width="9" stroke-linecap="round"/>'+
@@ -101,6 +101,9 @@ const IllustratedActivities = (() => {
       svg.classList.add('ia-trace-complete');
       box.querySelector('.ia-trace-assist').hidden=true;
       box.querySelector('.ia-trace-heading b').textContent='✓ Shape traced!';
+      // the second step is said and shown, so she knows what to do next
+      box.querySelector('.ia-trace-heading small').textContent=isSquare?'2. Now tap all the squares in the picture.':'2. Now tap all the circles in the picture.';
+      if(typeof say==='function')say(isSquare?'Tap all the squares you see.':'Tap all the circles you see.');
       stage.classList.remove('ia-shape-locked');
       onComplete();
     };
@@ -172,11 +175,11 @@ const IllustratedActivities = (() => {
         mountShapeTrace(host,stage,mode,q,()=>{
           traceReady=true;
           stage.querySelectorAll('.ia-hotspot').forEach(button=>button.disabled=false);
-          setFeedback(host,'Now find the '+info.correct.length+' matching shapes in the picture.');
+          setFeedback(host,'');
         });
       }
       note.textContent=mode==='forest'?'Find the '+q.answer+'.':
-        shapeTask?'Step 1: Trace the shape. Step 2: Find all four matching objects.':
+        shapeTask?'':                                    // the two steps are written in the box above the picture
         'Tap pictures to find all '+info.correct.length+'.';
     }else if(mode==='wordhunt'){
       const words=HIDDEN_CVC_WORDS.slice();
