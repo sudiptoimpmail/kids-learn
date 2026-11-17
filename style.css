@@ -256,15 +256,16 @@ button { font: inherit; color: inherit; cursor: pointer; border: 0; background: 
 .hint-box[hidden] { display: none; }
 
 /* base-ten blocks + word-problem hints */
-.b10 { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 4px; max-width: 320px; }
-.b10 .ten { width: 12px; height: 60px; border-radius: 3px; background: repeating-linear-gradient(to bottom, #ff922b 0 5px, #e8590c 5px 6px); box-shadow: 0 2px 0 #0002; }
-.b10 .one { width: 12px; height: 12px; border-radius: 3px; background: #4dabf7; box-shadow: 0 2px 0 #1864ab; position: relative; }
+/* tens rods and ones cubes: --u is the side of one cube, a rod is ten of them */
+.b10 { --u: 20px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: center; gap: 6px; max-width: min(96vw, calc(var(--u) * 26)); }
+.b10 .ten { width: var(--u); height: calc(var(--u) * 5); border-radius: 4px; background: repeating-linear-gradient(to bottom, #ff922b 0 calc(var(--u) / 2 - 1.5px), #e8590c calc(var(--u) / 2 - 1.5px) calc(var(--u) / 2)); box-shadow: 0 2px 0 #0002; }
+.b10 .one { width: var(--u); height: var(--u); border-radius: 4px; background: #4dabf7; box-shadow: 0 2px 0 #1864ab; position: relative; }
 .b10 .one.crossed { opacity: .35; }
-.b10 .one.crossed::after { content: "✕"; position: absolute; inset: -4px; color: var(--bad); font-weight: 900; font-size: 14px; display: grid; place-items: center; }
+.b10 .one.crossed::after { content: "✕"; position: absolute; inset: -4px; color: var(--bad); font-weight: 900; font-size: calc(var(--u) * 1.1); display: grid; place-items: center; }
 .hint-note.big { font-size: 30px; color: var(--ink); }
 .cmp { display: grid; gap: 6px; }
 .cmp .objs { justify-content: flex-start; }
-@media (min-width: 700px) { .b10 .ten { width: 16px; height: 80px; } .b10 .one { width: 16px; height: 16px; } .hint-note.big { font-size: 40px; } }
+@media (min-width: 700px) { .b10 { --u: 28px; } .hint-note.big { font-size: 40px; } }
 
 /* ---------- bigger pictures (easy to recognize) ---------- */
 .opt-emoji .opt { font-size: 84px; min-height: 132px; }
@@ -1487,10 +1488,10 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .tf-cell { aspect-ratio: 1; border: 2px solid #c9bdf5; border-radius: 8px; background: #faf8ff; font-size: 30px; cursor: pointer; }
 .tf-cell.on { background: #fff1f1; }
 .bld-blocks { display: flex; align-items: flex-end; gap: 22px; min-height: 120px; max-width: 100%; justify-content: center; padding: 8px; flex-wrap: wrap; }
-.pv-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 5px; max-width: 300px; min-width: 20px; }
-.pv-h { width: 64px; height: 64px; background: repeating-linear-gradient(90deg, #f59f00 0 8px, #e67700 8px 9px), #f59f00; border-radius: 4px; background-blend-mode: multiply; outline: 2px solid #b35900; }
-.pv-t { width: 12px; height: 110px; background: repeating-linear-gradient(0deg, #4dabf7 0 10px, #1971c2 10px 11px); border-radius: 3px; outline: 2px solid #1864ab; }
-.pv-o { width: 14px; height: 14px; background: #51cf66; border-radius: 3px; outline: 2px solid #2b8a3e; }
+.pv-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 7px; max-width: min(92vw, 420px); min-width: 20px; }
+.pv-h { --c: 7.6px; width: 76px; height: 76px; background: repeating-linear-gradient(90deg, transparent 0 calc(var(--c) - 1.5px), #d9480f calc(var(--c) - 1.5px) var(--c)), repeating-linear-gradient(0deg, transparent 0 calc(var(--c) - 1.5px), #d9480f calc(var(--c) - 1.5px) var(--c)), #f59f00; border-radius: 4px; background-blend-mode: normal; outline: 2px solid #b35900; }
+.pv-t { width: 18px; height: 120px; background: repeating-linear-gradient(0deg, #4dabf7 0 10.5px, #1971c2 10.5px 12px); border-radius: 3px; outline: 2px solid #1864ab; }
+.pv-o { width: 20px; height: 20px; background: #51cf66; border-radius: 4px; outline: 2px solid #2b8a3e; }
 .bld-ctrls { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 .bld-pair { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 16px; background: #fff; box-shadow: 0 3px 0 rgba(0,0,0,.08); }
 .bld-pair b { min-width: 3.5em; text-align: center; font-size: 18px; color: #3b2a6b; }
@@ -2095,3 +2096,5 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .les-article { margin: 0; max-width: 36em; font-size: 20px; font-weight: 700; line-height: 1.55; text-align: left; background: #fff; border: 2px solid #e9ecef; border-radius: 16px; padding: 10px 16px; }
 .les-sent { opacity: .45; transition: opacity .25s, background-color .25s; border-radius: 8px; padding: 1px 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .les-sent.done { opacity: 1; } .les-sent.on { opacity: 1; background: #fff3bf; }
+
+@media (min-width: 700px) { .pv-row { max-width: 520px; } .pv-h { --c: 12px; width: 120px; height: 120px; } .pv-t { width: 28px; height: 180px; background: repeating-linear-gradient(0deg, #4dabf7 0 16.5px, #1971c2 16.5px 18px); } .pv-o { width: 30px; height: 30px; } }
