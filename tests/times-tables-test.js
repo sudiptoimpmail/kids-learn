@@ -41,7 +41,7 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
       out.order = TimesTables.levels.map((d) => d.n || d.kind);
       return out;
     });
-    assert.deepEqual(r.ranges, { prek: null, k: [1, 2], g1: [1, 5], g2: [2, 10], g3: [3, 11] });
+    assert.deepEqual(r.ranges, { prek: null, k: [1, 2], g1: [1, 5], g2: [1, 10], g3: [1, 11] });   // every grade starts at the 1 times table
     assert.deepEqual(r.order, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'mixed']);
     assert.deepEqual([...new Set(r.bad)].slice(0, 12), []);
     // the round: the whole table is taught first, then one card together, then the quiz

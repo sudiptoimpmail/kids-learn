@@ -158,7 +158,8 @@ function renderHome() {
     return cats.length || games.length ? `<section class="catalog-section"><h2>${title}</h2><div class="grid">${tiles(cats)}${games.map(gameTile).join('')}</div></section>` : '';
   }).join('');
   // 1st–3rd grade see 28–35 activities: show a short recommended row first and fold the rest behind "Explore"
-  const fold = ['g1', 'g2', 'g3'].includes(state.grade) && !isTestMode();
+  // a long catalog shows a short recommended row first and folds the rest behind "Explore"; with combined tiles it is short enough to show whole
+  const fold = ['g1', 'g2', 'g3'].includes(state.grade) && !isTestMode() && (catalog.match(/class="tile/g) || []).length > 18;
   if (!fold) { $('#grid').innerHTML = locHTML(catalog); return; }
   const ok = new Set(visible.map((c) => c.id));
   const quest = typeof questFor === 'function' ? questFor().steps.filter((x) => !x.done).map((x) => x.cat) : [];
@@ -174,7 +175,36 @@ function renderHome() {
 }
 
 /* ---------- section tiles, and tiles that hold several related sections ---------- */
-const COMBINED = (ContentData.get('curriculum-map', 'combinedSections') || { groups: [] }).groups;
+// Older browser tests check each section's own tile (its step dots, its grade): automated browsers keep the earlier,
+// smaller groups unless they ask for the real home page with ?tiles=combined. Real devices always get `groups`.
+const COMBINED_SETS = ContentData.get('curriculum-map', 'combinedSections') || { groups: [] };
+const COMBINED = navigator.webdriver && typeof testFeatureAvailable === 'function' && testFeatureAvailable() && !/[?&]tiles=combined\b/.test(location.search) && COMBINED_SETS.sectionTestGroups
+  ? COMBINED_SETS.sectionTestGroups : COMBINED_SETS.groups;
+// A combined tile starts one round that shuffles cards from all of its parts. It has no step of its own: each part's
+// cards count toward that part (blendEvidence), and a part moves a step once enough of its cards have been answered.
+const BLEND_ID = 'all-';
+const isBlend = (cat) => !!cat && (cat.id === 'mix' || !!cat.parts);
+function blendCat(id) {
+  const combo = COMBINED.find((k) => BLEND_ID + k.id === id); if (!combo) return null;
+  return { id, title: comboTitle(combo), icon: combo.icon, color: combo.color, gen: null, parts: combo.parts, combo };
+}
+function creditBlendParts(round) {
+  state.blendEvidence = state.blendEvidence || {};
+  let moved = '';
+  for (const partId of round.cat.parts) {
+    const cards = round.qs.filter((q) => !q.lesson && q.cat && q.cat.id === partId && q.ok != null); if (!cards.length) continue;
+    const e = state.blendEvidence[partId] || { total: 0, firstTry: 0, mistakes: 0 };
+    e.total += cards.length; e.firstTry += cards.filter((q) => q.ok).length; e.mistakes += cards.reduce((n, q) => n + (q.tries || 0), 0);
+    const part = CATEGORIES.find((c) => c.id === partId), need = roundQuestionCount(part);
+    if (e.total >= need) {                                  // a round's worth of this part's cards: judge them like one round
+      const status = applyRoundProgression(partId, levelOf(partId), e);
+      if (status === 'promoted') moved = moved || '⬆️ Next step unlocked!';
+      delete state.blendEvidence[partId];
+    } else state.blendEvidence[partId] = e;
+    state.best[partId] = Math.max(state.best[partId] || 0, cards.every((q) => q.ok) ? 3 : cards.some((q) => q.ok) ? 2 : 1);
+  }
+  return moved;
+}
 function sectionTile(c) {
   const best = Math.min(3, state.best[c.id] || 0);
   const lv = c.id === 'mix' || c.trace ? '' : stepDots(c.id);
@@ -186,9 +216,11 @@ function sectionTile(c) {
 // a combined tile can take its name from one of its parts, so a country's own name for it is kept
 const comboTitle = (combo) => (combo.titleFrom && typeof localTileTitle === 'function' ? localTileTitle(combo.titleFrom, combo.title) : combo.title);
 function comboTile(combo, parts) {
-  const best = Math.min(3, ...parts.map((c) => state.best[c.id] || 0));       // its stars are those of the part that needs the most practice
-  return `<button class="tile combo" data-combo="${combo.id}" aria-haspopup="dialog" style="--c:${combo.color}">
-      <span class="combo-n">${parts.map((c) => `<i>${c.icon}</i>`).join('')}</span><span class="ti">${combo.icon}</span><span class="tt">${comboTitle(combo)}</span><span class="ts">${parts.length} activities</span>
+  const best = Math.min(3, state.best[BLEND_ID + combo.id] || 0);                 // the stars of its own shuffled rounds
+  // a tile may draw its picture from signs (+ − × ÷ for Math) instead of an emoji
+  const picture = combo.signs ? `<span class="ti signs" aria-hidden="true">${combo.signs.map((x) => `<b>${x}</b>`).join('')}</span>` : `<span class="ti">${combo.icon}</span>`;
+  return `<button class="tile combo" data-combo="${combo.id}" style="--c:${combo.color}">
+      ${picture}<span class="tt">${comboTitle(combo)}</span><span class="ts">${esc(combo.sub || '')}</span>
       <span class="tb">${'★'.repeat(best)}${'☆'.repeat(3 - best)}</span></button>`;
 }
 // open one section (from its own tile, or from the list inside a combined tile)
@@ -203,23 +235,10 @@ function closeCombo() { const s = $('#comboSheet'); if (s) s.remove(); }
 // the list of parts inside a combined tile
 function openCombo(id) {
   const combo = COMBINED.find((k) => k.id === id); if (!combo) return;
-  const parts = visibleGames().filter((c) => combo.parts.includes(c.id)).sort((a, b) => combo.parts.indexOf(a.id) - combo.parts.indexOf(b.id));
+  const parts = visibleGames().filter((c) => combo.parts.includes(c.id));
   if (parts.length === 1) return openSection(parts[0].id);
   closeCombo();
-  const sheet = document.createElement('div');
-  sheet.id = 'comboSheet'; sheet.className = 'combo-sheet';
-  sheet.innerHTML = `<div class="combo-card" role="dialog" aria-modal="true" aria-label="${esc(comboTitle(combo))}">
-    <button class="combo-close" aria-label="Close">✕</button>
-    <h2><span>${combo.icon}</span> ${esc(comboTitle(combo))}</h2>
-    <div class="grid">${typeof locHTML === 'function' ? locHTML(parts.map(sectionTile).join('')) : parts.map(sectionTile).join('')}</div></div>`;
-  sheet.addEventListener('click', (e) => {
-    const t = e.target.closest('.tile');
-    if (t && t.dataset.cat) { sfx.tap(); closeCombo(); return openSection(t.dataset.cat); }
-    if (e.target === sheet || e.target.closest('.combo-close')) { sfx.tap(); closeCombo(); }
-  });
-  sheet.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCombo(); });
-  document.body.appendChild(sheet);
-  const first = sheet.querySelector('.tile'); if (first) first.focus();
+  startRound(BLEND_ID + combo.id);                            // no list to pick from: one round, its parts shuffled together
 }
 
 /* ---------- a round ---------- */
@@ -227,8 +246,13 @@ let R = null; // current round
 
 function startRound(catId, count, browse = false, atLevel = null, focusObjective = null) {
   sayToken++; stopClip(); $('#pop').classList.remove('show'); $('#pop').replaceChildren();
-  const cat = CATEGORIES.find((c) => c.id === catId);
+  const cat = CATEGORIES.find((c) => c.id === catId) || blendCat(catId);
+  if (!cat) return;
   const real = visibleGames().filter((c) => c.gen);
+  // a combined tile draws from its parts in turn, in a shuffled order, so every part gets its share
+  const blendParts = cat.parts ? real.filter((c) => cat.parts.includes(c.id)) : null;
+  let blendOrder = [];
+  const nextPart = () => { if (!blendOrder.length) blendOrder = shuffle(blendParts.slice()); return blendOrder.pop(); };
   const qs = [], seen = new Set(), seenContent = new Set();
   let guard = 0, drop = 0, misses = 0;
   const N = roundQuestionCount(cat, count);
@@ -261,7 +285,7 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
     return String(hash >>> 0);
   };
   while (qs.length < N && guard++ < 600) {
-    const c = cat.gen ? cat : real[Math.floor(Math.random() * real.length)];
+    const c = cat.gen ? cat : blendParts && blendParts.length ? nextPart() : real[Math.floor(Math.random() * real.length)];
     // Grade limits apply to individual questions, not only category tiles.
     // Adaptive progress can be above a grade's range from an older profile; clamp
     // ordinary child rounds, but preserve unrestricted explicit QA previews.
@@ -312,7 +336,8 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
     save();
   }
   if (!qs.length) { renderHome(); show('home'); return; }   // nothing for this grade (e.g. a stale link)
-  R = { sessionLevel: levelOf(cat.id), cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse, atLevel };
+  if (blendParts) qs.splice(0, qs.length, ...shuffle(qs));
+  R = { sessionLevel: cat.parts ? 1 : levelOf(cat.id), cat, qs, i: 0, firstTry: 0, mistakes: 0, streak: 0, best: 0, browse, atLevel };
   $('#playTitle').textContent = `${cat.icon} ${typeof editionTitle === 'function' ? editionTitle(cat.id, localTileTitle(cat.id, cat.title)) : cat.title}`;
   document.body.style.setProperty('--theme', cat.color);
   show('play');
@@ -320,8 +345,8 @@ function startRound(catId, count, browse = false, atLevel = null, focusObjective
 }
 
 function renderProgress() {
-  $('#diffLv').textContent = R.cat.id === 'mix' ? '' : (([s, n]) => `Step ${s} of ${n}`)(gradeStep(R.cat.id, R.sessionLevel));
-  $('#diffBtn').hidden = R.cat.id === 'mix';
+  $('#diffLv').textContent = isBlend(R.cat) ? '' : (([s, n]) => `Step ${s} of ${n}`)(gradeStep(R.cat.id, R.sessionLevel));
+  $('#diffBtn').hidden = isBlend(R.cat);
   $('#qaPosition').textContent = (R.i + 1) + ' / ' + R.qs.length;
   $('#prevBtn').disabled = R.i === 0;
   $('#progress').innerHTML = R.qs.map((q, i) =>
@@ -964,6 +989,7 @@ function finish() {
   // adapt difficulty
   let levelMsg = '';
   if (id === 'placement' && typeof applyPlacement === 'function') { applyPlacement(R.qs); levelMsg = '🎯 All set! Your games now start at the right step.'; }
+  else if (R.cat.parts) levelMsg = creditBlendParts(R);   // a combined tile: each part's cards count toward that part
   else if (id !== 'mix' && !R.atLevel) {          // practice at an older level (quest) doesn't move her level
     const lv = levelOf(id);
     // Consistent performance across enough questions changes a level; a
@@ -1107,12 +1133,12 @@ function gradeHintFor(id, lv) {
   return [g.length?`Typical for: ${g.join(', ')}`:'',focus?`Skills: ${focus}`:''].filter(Boolean).join(' | ');
 }
 function openDiff() {
-  if (!R || R.cat.id === 'mix') return;
+  if (!R || isBlend(R.cat)) return;
   const round=R;
   askPin(()=>{if(R===round && $('#play').classList.contains('active'))showDifficulty();});
 }
 function showDifficulty() {
-  if (!R || R.cat.id === 'mix') return;
+  if (!R || isBlend(R.cat)) return;
   const id = R.cat.id, max = gameMax(id);
   const sl = $('#diffRange');
   const range=!isTestMode()?openRange(id):null;
@@ -1207,7 +1233,7 @@ $('#grid').addEventListener('click', (e) => {
   const t = e.target.closest('.tile'); if (!t) return;
   sfx.tap();
   if (t.dataset.game) return openBrainGame(t.dataset.game);
-  if (t.dataset.combo) return openCombo(t.dataset.combo);
+  if (t.dataset.combo) return openCombo(t.dataset.combo);   // starts one shuffled round of its parts
   if (!t.dataset.cat) return;
   openSection(t.dataset.cat);
 });

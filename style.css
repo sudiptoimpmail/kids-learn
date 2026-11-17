@@ -2110,3 +2110,8 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .q-main.body-main .organ-fig, .q-main.body-main .body-fig { max-height: 46vh; width: auto; max-width: 100%; }
 
 .home-version { text-align: center; font-size: 12px; opacity: .45; margin: 14px 0 4px; }
+
+/* a tile whose picture is made of signs (Math: + − × ÷) */
+.tile .ti.signs { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 5px; padding: 9px; box-sizing: border-box; font-size: 21px; line-height: 1; font-weight: 900; }
+.tile .ti.signs b { display: grid; place-items: center; border-radius: 8px; background: #fff; color: var(--c); box-shadow: 0 2px 0 rgba(0,0,0,.14); }
+@media (min-width: 700px) { .tile .ti.signs { font-size: 27px; padding: 11px; gap: 6px; } }

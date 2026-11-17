@@ -58,17 +58,21 @@ const TeachFirst = (() => {
 
   /* ---------- the round: insert the two lesson cards ---------- */
   CoreHooks.after('startRound', (result, catId, count, browse) => {
-    if (!R || browse || isTestMode() || !R.cat || R.cat.id !== catId || !R.cat.gen) return;
-    const level = R.sessionLevel;
+    if (!R || browse || isTestMode() || !R.cat || R.cat.id !== catId) return;
+    // a combined tile teaches one of its parts at a time: the first part in this round whose step is new to her
+    const lessonCat = R.cat.parts ? [...new Set(R.qs.map((q) => q.cat))].find((c) => c && c.gen && needsTeaching(c.id, levelOf(c.id))) : R.cat;
+    if (!lessonCat || !lessonCat.gen) return;
+    const whole = R.cat; catId = lessonCat.id;
+    const level = whole.parts ? levelOf(catId) : R.sessionLevel;
     if (!needsTeaching(catId, level)) { markSeen(catId, level); return; }
-    const cards = lessonCards(R.cat, level, new Set(R.qs.map((q) => q.key)));
+    const cards = lessonCards(lessonCat, level, new Set(R.qs.map((q) => q.key)));
     if (!cards) return;                                   // a skill with no tap-to-answer cards keeps its normal round
     // A skill may bring its own teaching card (the whole times table, read aloud): it takes the place of the modelled card.
-    const intro = typeof R.cat.teach === 'function' ? R.cat.teach(level) : null;
+    const intro = typeof lessonCat.teach === 'function' ? lessonCat.teach(level) : null;
     if (intro) {
-      Object.assign(intro, { cat: R.cat, level, grades: [state.grade].filter(Boolean), lesson: 'intro' }); cards[0] = intro;
+      Object.assign(intro, { cat: lessonCat, level, grades: [state.grade].filter(Boolean), lesson: 'intro' }); cards[0] = intro;
       // a lesson can name the question to do together
-      if (intro.guided && teachable(intro.guided)) cards[1] = Object.assign(intro.guided, { cat: R.cat, level, grades: [state.grade].filter(Boolean) });
+      if (intro.guided && teachable(intro.guided)) cards[1] = Object.assign(intro.guided, { cat: lessonCat, level, grades: [state.grade].filter(Boolean) });
     }
     else cards[0].lesson = 'model';
     cards[1].lesson = 'guided';
