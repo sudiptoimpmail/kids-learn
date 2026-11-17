@@ -45,7 +45,11 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
       return { winMine: Math.min(4, document.querySelectorAll('.c4-cell.win.me').length), robotWon: document.querySelectorAll('.c4-cell.win.bot').length }; });
     assert.deepEqual(c4, { winMine: 4, robotWon: 0 }, 'the child gets four: the playmate robot does not block or win');
     // ---- Picture Puzzle: Pre-K starts with 4 pieces, then 9
-    assert.deepEqual(await p.evaluate(() => { state.gameWins = {}; const a = puzzleSize(); state.gameWins = { puzzle: 2 }; const c = puzzleSize(); state.grade = 'k'; const k = puzzleSize(); state.grade = 'prek'; state.gameWins = {}; return [a, c, k]; }), [2, 3, 4]);
+    // the puzzle grows two wins at a time, and turned pieces arrive one by one only after the full size is mastered
+    assert.deepEqual(await p.evaluate(() => { const at = (g, w) => { state.grade = g; state.puzzleSolved = w; return [puzzleSize(), puzzleTurned()]; };
+      const out = [at('prek', 0), at('prek', 2), at('prek', 40), at('k', 0), at('k', 1), at('k', 2), at('k', 3), at('k', 4), at('k', 6), at('k', 40), at('g3', 0), at('g3', 6), at('g3', 8), at('g3', 60)];
+      state.grade = 'k'; state.puzzleSolved = 6; state.playAlways = true; openGame('puzzle'); startPuzzle(ALL_PICS[0]); const turned = document.querySelectorAll('#gameArea .pzl-tile [style*="rotate("]').length;
+      state.grade = 'prek'; state.puzzleSolved = 0; state.gameWins = {}; return JSON.stringify(out); }), JSON.stringify([[2, 0], [3, 0], [3, 0], [3, 0], [3, 0], [4, 0], [4, 0], [4, 1], [4, 2], [4, 5], [3, 0], [6, 0], [6, 1], [6, 11]]));
     // ---- parent mode: a gift of play time
     const gift = await p.evaluate(() => { state.playAlways = false; state.playMode = 'earn'; state.playRemainingMs = 0; const closed = !playOpen(); openParentPlay(); document.querySelector('[data-gift="10"]').click();
       const out = { closed, ms: state.playRemainingMs, open: playOpen(), text: document.querySelector('.pz-gift-now').textContent, logged: state.playGifts.at(-1).minutes };

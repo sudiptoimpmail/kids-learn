@@ -36,7 +36,7 @@ const { chromium } = require('playwright');
       if (state.sdkWins !== award) throw Error('Sudoku awarded repeated wins');
 
       state.gameLv = state.gameLv || {};
-      state.gameLv.puzzle = 1; state.grade = 'prek'; state.gameWins = { ...(state.gameWins || {}), puzzle: 2 };   // Pre-K's second size: 3 × 3, no turned pieces
+      state.gameLv.puzzle = 1; state.grade = 'prek'; state.puzzleSolved = 2;   // Pre-K's second size: 3 × 3, no turned pieces
       openGame('puzzle');
       startPuzzle(ALL_PICS[0]);
       const p = ALL_PICS[0], n = 3;

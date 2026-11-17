@@ -205,10 +205,25 @@ function startPop() {
   // Every balloon carries a number. Only the number asked for pops, and treats burst out of it; any other balloon
   // just bounces and floats on (no score lost). The number asked for changes every few pops.
   const NUMS = { prek: 5, k: 10 }[state.grade] || 20, TREATS = ['🍬', '🍭', '🧸', '🎁', '🍪', '⭐', '🎀', '🍓'];
-  let ask = 1 + rand(NUMS), sinceChange = 0;
-  const sayAsk = () => { const t = ['Pop the number', String(ask)]; say(CoreVoice.canSay(t) ? t : 'Pop the balloons!'); };
+  // From Kindergarten some rounds ask for a word instead of a number. From 1st grade a number balloon may show a
+  // little sum that makes the number (3+4 for 7); 3rd grade gets times facts too.
+  const G = state.grade, WORDS = (['g2', 'g3'].includes(G) ? ['frog', 'ship', 'star', 'tree', 'cake', 'moon', 'fish', 'duck', 'cat', 'sun'] : ['cat', 'dog', 'sun', 'hat', 'bug', 'pig', 'bed', 'cup', 'map', 'fox']).filter((w) => CoreVoice.canSay(['Pop the word', w]));
+  const isWord = (v) => typeof v === 'string';
+  const newAsk = (not) => { const words = G !== 'prek' && WORDS.length >= 4 && Math.random() < 0.3; let v; do { v = words ? pick(WORDS) : 1 + rand(NUMS); } while (v === not); return v; };
+  // a balloon that is not to be popped never shows the number asked for, nor an earlier one that can still be popped
+  const other = () => { const open = new Set([ask, ...balloons.filter((b) => b.still).map((b) => b.n)]), all = isWord(ask) ? WORDS : Array.from({ length: NUMS }, (_, k) => k + 1), free = all.filter((v) => !open.has(v)); return free.length ? pick(free) : ask; };
+  function labelFor(v) {
+    if (isWord(v) || G === 'prek' || G === 'k' || Math.random() < 0.35) return String(v);
+    const sums = [];
+    for (let a = 1; a < v; a++) sums.push(`${a}+${v - a}`);
+    if (G !== 'g1') for (let a = v + 1; a <= Math.min(20, v + 9); a++) sums.push(`${a}−${a - v}`);
+    if (G === 'g3') for (let a = 2; a <= 9; a++) if (v % a === 0 && v / a >= 2 && v / a <= 9) sums.push(`${a}×${v / a}`);
+    return sums.length ? pick(sums) : String(v);
+  }
+  let ask = newAsk(), sinceChange = 0;
+  const sayAsk = () => { const t = [isWord(ask) ? 'Pop the word' : 'Pop the number', String(ask)]; say(CoreVoice.canSay(t) ? t : 'Pop the balloons!'); };
   const area = $('#gameArea');
-  area.innerHTML = `<div class="g-msg">Pop the number <b class="pop-ask">${ask}</b>! <b class="pop-score">0</b> / ${target} 🎈 · <span class="pop-time">${duration}</span>s <small class="pop-speed" hidden></small></div><div class="cv-wrap"><canvas class="game-cv pop-cv"></canvas></div>`;
+  area.innerHTML = `<div class="g-msg"><span class="pop-kind">${isWord(ask) ? 'Pop the word' : 'Pop the number'}</span> <b class="pop-ask">${ask}</b>! <b class="pop-score">0</b> / ${target} 🎈 · <span class="pop-time">${duration}</span>s <small class="pop-speed" hidden></small></div><div class="cv-wrap"><canvas class="game-cv pop-cv"></canvas></div>`;
   sayAsk();
   const cv = $('.pop-cv', area);
   let { c, w, h } = fitCanvas(cv);
@@ -219,8 +234,8 @@ function startPop() {
     const r = (lv <= 2 ? 48 : lv <= 4 ? 42 : 38) + Math.random() * 8;
     const star = false;
     // about half carry the number asked for, and there is always one on its way
-    const wanted = Math.random() < 0.5 || !balloons.some((b) => b.n === ask); let n = ask; while (!wanted && n === ask) n = 1 + rand(NUMS);
-    balloons.push({ n, boing: 0, x: r + Math.random() * (w - 2 * r), y: h + r, r, color: pick(colors),
+    const wanted = Math.random() < 0.5 || !balloons.some((b) => b.n === ask); const n = wanted ? ask : other(), label = labelFor(n);
+    balloons.push({ n, label, boing: 0, x: r + Math.random() * (w - 2 * r), y: h + r, r, color: pick(colors),
       vy: 0.9 * ((55 + lv * 20) * (policy.speedScale || 1) * (0.85 + Math.random() * 0.4) * (policy.accelerate === false ? 1 : Math.min(2.6, 1 + score * 0.06)) + (policy.accelerate === false ? 0 : elapsed * 1.5)), wob: Math.random() * 6, star });
   }
   const clouds = Array.from({ length: 5 }, (_, k) => ({ x: Math.random() * 1.2, y: 0.08 + k * 0.13 + Math.random() * 0.05, s: 0.6 + Math.random() * 0.8, v: 0.004 + Math.random() * 0.006 })), pops = [];
@@ -248,7 +263,7 @@ function startPop() {
       c.fillStyle = bg; c.beginPath(); c.ellipse(0, 0, b.r, ry, 0, 0, Math.PI * 2); c.fill();
       c.fillStyle = b.color; c.beginPath(); c.moveTo(-6, ry + 6); c.lineTo(6, ry + 6); c.lineTo(0, ry - 2); c.fill();
       c.fillStyle = '#ffffff99'; c.beginPath(); c.ellipse(-b.r * 0.38, -b.r * 0.42, b.r * 0.16, b.r * 0.3, -0.5, 0, Math.PI * 2); c.fill();
-      c.font = `800 ${Math.round(b.r * 0.95)}px system-ui`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineWidth = 5; c.strokeStyle = '#2b2140'; c.strokeText(b.n, 0, 2); c.fillStyle = '#fff'; c.fillText(b.n, 0, 2);
+      c.font = `800 ${Math.round(b.r * (b.label.length <= 2 ? 0.95 : b.label.length === 3 ? 0.66 : 0.5))}px system-ui`; c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineWidth = 5; c.strokeStyle = '#2b2140'; c.strokeText(b.label, 0, 2); c.fillStyle = '#fff'; c.fillText(b.label, 0, 2);
       c.restore();
     }
     for (const p of bits) { c.globalAlpha = Math.max(0, Math.min(1, p.life * 2)); c.save(); c.translate(p.x, p.y); c.rotate(p.life * 5); if (p.treat) { c.font = '30px system-ui'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(p.treat, 0, 0); } else { c.fillStyle = p.color; c.fillRect(-4, -2.5, 8, 5); } c.restore(); }
@@ -279,7 +294,7 @@ function startPop() {
     for (const b of balloons) { const bx = b.x + Math.sin(b.wob) * 8, d = Math.hypot(x - bx, (y - b.y) / 1.15) / (b.r * 1.5); if (d < 1 && d < bestD) { best = b; bestD = d; } }
     if (!best) return 'miss';
     const b = best, bx = b.x + Math.sin(b.wob) * 8;
-    if (b.n !== ask) {                                        // not the one asked for: it bounces, nothing is lost
+    if (b.n !== ask && !b.still) {                            // not the one asked for: it bounces, nothing is lost
       b.boing = 1; b.vy *= 1.08; tone([330, 392], { dur: 0.07, type: 'sine', gap: 0.05, vol: 0.1 });
       pops.push({ x: bx, y: b.y - b.r, r: b.r, life: 1, color: '#ffffff00', txt: `Find ${ask}!` });
       return 'bounce';
@@ -291,7 +306,8 @@ function startPop() {
     for (let n = 0; n < 7; n++) { const a = -Math.PI / 2 + (Math.random() - 0.5) * 2.6, v = 170 + Math.random() * 150; bits.push({ x: bx, y: b.y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, life: 1, color: b.color, treat: pick(TREATS) }); }
     for (let n = 0; n < 8; n++) { const a = Math.random() * 6.3; bits.push({ x: bx, y: b.y, vx: Math.cos(a) * 160, vy: Math.sin(a) * 160, life: 1, color: b.color }); }
     tone([700 + Math.random() * 300, 1050, 1320], { dur: 0.06, type: 'square', gap: 0.05, vol: 0.12 });
-    if (sinceChange >= 3 && NUMS > 1) { sinceChange = 0; let next = ask; while (next === ask) next = 1 + rand(NUMS); ask = next; $('.pop-ask', area).textContent = ask; sayAsk(); }
+    // a new thing to pop every three; balloons already in the air with the old one can still be popped until they float away
+    if (sinceChange >= 3) { sinceChange = 0; for (const o of balloons) if (o.n === ask) o.still = true; ask = newAsk(ask); $('.pop-ask', area).textContent = ask; $('.pop-kind', area).textContent = isWord(ask) ? 'Pop the word' : 'Pop the number'; sayAsk(); }
     return 'pop';
   }
   function hit(e) {
@@ -301,7 +317,7 @@ function startPop() {
     const r = cv.getBoundingClientRect();
     tapAt((e.clientX - r.left) * (w / (r.width || w)), (e.clientY - r.top) * (h / (r.height || h)));
   }
-  window.__pop = { ask: () => ask, balloons: () => balloons.map((b) => ({ n: b.n, x: b.x + Math.sin(b.wob) * 8, y: b.y, r: b.r })), tapAt, score: () => score, treats: () => bits.filter((p) => p.treat).length, target };
+  window.__pop = { ask: () => ask, balloons: () => balloons.map((b) => ({ n: b.n, label: b.label, still: !!b.still, x: b.x + Math.sin(b.wob) * 8, y: b.y, r: b.r })), tapAt, spawn, label: labelFor, score: () => score, treats: () => bits.filter((p) => p.treat).length, target };
   cv.addEventListener('pointerdown', hit);
   const onResize = () => { ({ c, w, h } = fitCanvas(cv)); };
   addEventListener('resize', onResize);
@@ -1252,8 +1268,13 @@ function puzzleFills(p) {
   if (p.orig) { const f = { 0: '#d0ebff' }; p.orig.forEach((c, i) => (f[i + 1] = c)); return f; }
   const f = {}; for (let k = 0; k < 40; k++) f[k] = AUTO_FILL[k % AUTO_FILL.length]; return f;
 }
-// Pre-K starts with 4 pieces, then 9 once she has finished two puzzles; K 4×4, 1st 5×5, 2nd and 3rd 6×6
-const puzzleSize = () => (state.grade === 'prek' ? ((state.gameWins || {}).puzzle || 0) < 2 ? 2 : 3 : { k: 4, g1: 5, g2: 6, g3: 6 }[state.grade] || 4);
+// The puzzle grows as she solves: every two finished puzzles add a row and a column, from 2×2 (Pre-K) or 3×3 up
+// to the grade's full size (Pre-K 3×3, K 4×4, 1st 5×5, 2nd and 3rd 6×6). Turned pieces come only after two wins at
+// the full size: one piece first, then one more for every two wins. Pre-K never gets turned pieces.
+const PUZZLE_MAX = { prek: 3, k: 4, g1: 5, g2: 6, g3: 6 };
+const puzzleWins = () => state.puzzleSolved || 0, puzzleStart = () => (state.grade === 'prek' ? 2 : 3), puzzleMax = () => PUZZLE_MAX[state.grade] || 4;
+const puzzleSize = () => Math.min(puzzleMax(), puzzleStart() + Math.floor(puzzleWins() / 2));
+const puzzleTurned = () => { if (state.grade === 'prek') return 0; const n = puzzleSize(), steps = Math.floor((puzzleWins() - 2 * (puzzleMax() - puzzleStart())) / 2); return Math.max(0, Math.min(steps, Math.ceil(n * n * 0.28))); };
 
 const puzSrc = (p) => p.url || visualPath(p.photo || p.art), puzImg = (p) => !!(p.photo || p.art || p.url);
 function startPuzzleMenu() {
@@ -1289,8 +1310,8 @@ function startPuzzle(p) {
   let order;
   do { order = shuffle([...Array(N).keys()]); } while (order.every((v, i) => v === i));
   let pickA = null, solved = false;
-  // A handful of pieces begin rotated at harder levels; the child rotates by tapping a selected piece again.
-  const turns = Array.from({length:N}, () => state.grade !== 'prek' && Math.random() < 0.28 ? 1 + rand(3) : 0);
+  // Once she is good at the full-size puzzle a few pieces begin turned (see puzzleTurned).
+  const turns = Array(N).fill(0); for (const i of shuffle([...Array(N).keys()]).slice(0, puzzleTurned())) turns[i] = 1 + rand(3);
   const area = $('#gameArea');
   // Each photo/illustration fragment has an actual complementary tab/notch silhouette.
   // Shape is attached to the ORIGINAL image location, not the scrambled board position.
@@ -1337,6 +1358,7 @@ function startPuzzle(p) {
     if (!order.every((v, j) => v === j && turns[j] === 0)) return;
     solved = true;
     board.classList.add('solved');
+    state.puzzleSolved = (state.puzzleSolved || 0) + 1;
     const up = gameLevelUp('puzzle', 1);
     gameWin(pick(['Awesome job!', 'You did it!', 'Fantastic!']));
     later(() => endPanel(up ? 'You did it! Keep going!' : 'You did it!', '🧩', startPuzzleMenu, up), 1300);
@@ -1576,19 +1598,24 @@ function startDraw(refIndex) {
   //    More help means a smaller spill over the lines.
   const LN = 300, guideImg = new Image(); let guideOk = false;
   guideImg.onload = () => (guideOk = true);
-  guideImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(drawSVG(ref.d, 5).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" '));
+  guideImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(drawSVG(ref.d, DRAW_GUIDE[Math.min(4, Math.max(1, lv))][0]).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" '));
   const wallCv = document.createElement('canvas'); wallCv.width = wallCv.height = LN;
   const layer = document.createElement('canvas'); layer.width = layer.height = cv.width;
-  function shapeAt(x, y, brush) {
-    if (!assist) return null;
-    const w = wallCv.getContext('2d', { willReadFrequently: true }), k = LN / W;
-    w.setTransform(1, 0, 0, 1, 0, 0); w.clearRect(0, 0, LN, LN); w.globalCompositeOperation = 'source-over';
-    if (guideOk) w.drawImage(guideImg, 0, 0, LN, LN);
+  // The boundary lines, as pixels: the guide picture and her own pencil lines (never brush paint or poured paint).
+  // Brush and bucket both stop at them. `list` is the lines drawn so far.
+  function wallPixels(size, list) {
+    if (wallCv.width !== size) wallCv.width = wallCv.height = size;
+    const w = wallCv.getContext('2d', { willReadFrequently: true }), k = size / W;
+    w.setTransform(1, 0, 0, 1, 0, 0); w.clearRect(0, 0, size, size); w.globalCompositeOperation = 'source-over';
+    if (guideOk) w.drawImage(guideImg, size * 0.06, size * 0.06, size * 0.88, size * 0.88);   // the guide sits 6% in from each edge of the pad
     w.setTransform(k, 0, 0, k, 0, 0); w.lineCap = w.lineJoin = 'round';
-    for (const s of strokes) { if (s.fill || s.tool === 'brush' || s === cur) continue;
+    for (const s of list) { if (s.fill || s.tool === 'brush' || s === cur) continue;
       w.globalCompositeOperation = s.erase ? 'destination-out' : 'source-over'; w.strokeStyle = w.fillStyle = '#000'; w.lineWidth = Math.max(s.size, 2 / k);
       const p = s.pts; w.beginPath(); if (p.length === 1) { w.arc(p[0][0], p[0][1], s.size / 2, 0, 7); w.fill(); } else { w.moveTo(p[0][0], p[0][1]); for (let i = 1; i < p.length; i++) w.lineTo(p[i][0], p[i][1]); w.stroke(); } }
-    const data = w.getImageData(0, 0, LN, LN).data, wall = (i) => data[i * 4 + 3] > 70;
+    return w.getImageData(0, 0, size, size).data;
+  }
+  function shapeAt(x, y, brush) {
+    const k = LN / W, data = wallPixels(LN, strokes), wall = (i) => data[i * 4 + 3] > 70;
     let sx = Math.round(x * k), sy = Math.round(y * k); if (sx < 0 || sy < 0 || sx >= LN || sy >= LN) return null;
     if (wall(sy * LN + sx)) { let hit = false;
       for (let r = 1; r <= 8 && !hit; r++) for (let dy = -r; dy <= r && !hit; dy++) for (let dx = -r; dx <= r && !hit; dx++) { const xx = sx + dx, yy = sy + dy; if (xx >= 0 && yy >= 0 && xx < LN && yy < LN && !wall(yy * LN + xx)) { sx = xx; sy = yy; hit = true; } }
@@ -1598,7 +1625,8 @@ function startDraw(refIndex) {
       for (const t of [qx > 0 ? q - 1 : -1, qx < LN - 1 ? q + 1 : -1, qy > 0 ? q - LN : -1, qy < LN - 1 ? q + LN : -1]) if (t >= 0 && !mask[t] && !wall(t)) { mask[t] = 1; stack.push(t); } }
     if (n > LN * LN * 0.8) return null;                      // open page: nothing to stay inside
     // let the paint reach under the line, plus a spill that shrinks as the help grows
-    const grow = Math.max(2, Math.round((3 + brush * 0.6 * (1 - assist)) * k)), m = document.createElement('canvas'); m.width = m.height = LN;
+    // the paint may reach the edge of the line but never cross it
+    const grow = 1, m = document.createElement('canvas'); m.width = m.height = LN;
     const mc = m.getContext('2d'), img = mc.createImageData(LN, LN);
     for (let i = 0; i < LN * LN; i++) if (mask[i]) img.data[i * 4 + 3] = 255;
     mc.putImageData(img, 0, 0);
@@ -1629,8 +1657,8 @@ function startDraw(refIndex) {
   };
   // flood fill: pour paint into the closed shape under the finger; lines (guide or drawn) hold it in
   function fillAt(op) {
-    const N = cv.width, sd = c.getImageData(0, 0, N, N).data;
-    const blocked = (i) => sd[i * 4 + 3] > 60;     // only the child's own lines hold paint in, not the template
+    const N = cv.width, at = strokes.indexOf(op), sd = wallPixels(N, at >= 0 ? strokes.slice(0, at) : strokes);
+    const blocked = (i) => sd[i * 4 + 3] > 60;     // the guide picture and her own lines hold the paint in
     let sx = Math.round(op.x * dpr), sy = Math.round(op.y * dpr);
     if (sx < 0 || sy < 0 || sx >= N || sy >= N) return false;
     if (blocked(sy * N + sx)) {                       // landed on a line: use the nearest open spot
@@ -1649,7 +1677,7 @@ function startDraw(refIndex) {
     if (area > N * N * 0.82) { fillAt.open = true; return false; }     // not a closed shape: don't flood the whole page
     fillAt.open = false;
     // grow the paint a hair under the lines so no pale halo shows
-    const grown = new Uint8Array(mask); const g = Math.max(2, Math.round(2 * dpr));
+    const grown = new Uint8Array(mask); const g = Math.max(1, Math.round(dpr));   // just under the line's edge, never across it
     for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (mask[y * N + x]) for (let d = 1; d <= g; d++) {
       if (x + d < N) grown[y * N + x + d] = 1; if (x - d >= 0) grown[y * N + x - d] = 1; if (y + d < N) grown[(y + d) * N + x] = 1; if (y - d >= 0) grown[(y - d) * N + x] = 1;
     }
@@ -1743,10 +1771,12 @@ function startDraw(refIndex) {
   pad.addEventListener('pointerup', end);
   pad.addEventListener('pointercancel', end);
   function redrawLast() { redraw(); }
-  $$('.dr-ink', area).forEach((b) => (b.onclick = () => { $$('.dr-ink', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); color = b.dataset.c; $('[data-t="bucket"]', area).style.setProperty('--pour', color); erase = false; $('[data-t="erase"]', area).classList.remove('on'); sfx.tap(); }));
-  $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; tool = b.dataset.tool || 'pencil'; bucket = false; $('[data-t="bucket"]', area).classList.remove('on'); sfx.tap(); }));
-  $('[data-t="erase"]', area).onclick = (e) => { erase = !erase; e.currentTarget.classList.toggle('on', erase); sfx.tap(); };
-  $('[data-t="bucket"]', area).onclick = (e) => { bucket = !bucket; e.currentTarget.classList.toggle('on', bucket); if (bucket) $$('.dr-size', area).forEach((x) => x.classList.remove('on')); sfx.tap(); say(bucket ? 'Tap a shape to pour paint in!' : 'Draw with your finger!'); };
+  $$('.dr-ink', area).forEach((b) => (b.onclick = () => { $$('.dr-ink', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); color = b.dataset.c; eraserOff(); $('[data-t="bucket"]', area).style.setProperty('--pour', color); erase = false; $('[data-t="erase"]', area).classList.remove('on'); sfx.tap(); }));
+  $$('.dr-size', area).forEach((b) => (b.onclick = () => { $$('.dr-size', area).forEach((x) => x.classList.remove('on')); b.classList.add('on'); size = +b.dataset.s; tool = b.dataset.tool || 'pencil'; bucket = false; eraserOff(); $('[data-t="bucket"]', area).classList.remove('on'); sfx.tap(); }));
+  // choosing a pencil, a brush, the paint bucket or a colour puts the eraser away
+  const eraserOff = () => { erase = false; $('[data-t="erase"]', area).classList.remove('on'); };
+  $('[data-t="erase"]', area).onclick = (e) => { erase = !erase; e.currentTarget.classList.toggle('on', erase); if (erase && bucket) { bucket = false; $('[data-t="bucket"]', area).classList.remove('on'); } sfx.tap(); };
+  $('[data-t="bucket"]', area).onclick = (e) => { bucket = !bucket; if (bucket) eraserOff(); e.currentTarget.classList.toggle('on', bucket); if (bucket) $$('.dr-size', area).forEach((x) => x.classList.remove('on')); sfx.tap(); say(bucket ? 'Tap a shape to pour paint in!' : 'Draw with your finger!'); };
   $('[data-t="undo"]', area).onclick = () => { strokes.pop(); replay(); sfx.tap(); drawAutosave(); };
   // rail: pop-up trays for colours and tools; the round buttons show what is chosen
   const pops = $$('.cb-pop', area), cbx = area.querySelector('.cb'), rail = area.querySelector('.cb-rail');
@@ -1785,7 +1815,7 @@ function startDraw(refIndex) {
   const leave = (go) => () => { sfx.tap(); if (saveTimer) autosave(true); go(); };
   area.querySelector('[data-a="choose"]').onclick = leave(drawChooser);
   area.querySelector('[data-a="gallery"]').onclick = leave(drawGallery);
-  if (testFeatureAvailable()) window.__draw = { assist, tidy: (pts) => { const s = { pts, size: 7 }; tidy(s); return s.pts; }, brush: (pts, sz = 26) => { const s = { color, size: sz, tool: 'brush', erase: false, pts }; const clip = shapeAt(pts[0][0], pts[0][1], sz); if (clip) s.clip = clip; strokes.push(s); replay(); autosave(); return !!clip; }, W, guideReady: () => guideOk, inkAt: (x, y) => c.getImageData(Math.round(x * dpr), Math.round(y * dpr), 1, 1).data[3], strokes: () => strokes.length, add: (pts) => { strokes.push({ color, size, tool: 'pencil', erase: false, pts }); replay(); autosave(); }, saveNow: () => autosave(true), entryId };
+  if (testFeatureAvailable()) window.__draw = { pour: (x, y) => { const op = { fill: true, x, y, color }; const ok = fillAt(op); if (ok) strokes.push(op); return ok; }, wall: (x, y) => wallPixels(LN, strokes)[(Math.round(y * LN / W) * LN + Math.round(x * LN / W)) * 4 + 3] > 70, fillInk: (x, y) => fctx.getImageData(Math.round(x * dpr), Math.round(y * dpr), 1, 1).data[3], erasing: () => erase, bucketOn: () => bucket, assist, tidy: (pts) => { const s = { pts, size: 7 }; tidy(s); return s.pts; }, brush: (pts, sz = 26) => { const s = { color, size: sz, tool: 'brush', erase: false, pts }; const clip = shapeAt(pts[0][0], pts[0][1], sz); if (clip) s.clip = clip; strokes.push(s); replay(); autosave(); return !!clip; }, W, guideReady: () => guideOk, inkAt: (x, y) => c.getImageData(Math.round(x * dpr), Math.round(y * dpr), 1, 1).data[3], strokes: () => strokes.length, add: (pts) => { strokes.push({ color, size, tool: 'pencil', erase: false, pts }); replay(); autosave(); }, saveNow: () => autosave(true), entryId };
 }
 // the drawing pad's "save a moment from now"; the pad's own events call it
 let drawAutosave = () => {}, drawFlush = () => {};
