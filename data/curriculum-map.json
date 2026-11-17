@@ -465,7 +465,7 @@
           "check": "1-1",
           "placement": "1-1",
           "library": "1-1",
-          "tables": "2-10"
+          "tables": "1-10"
         },
         "roundQuestions": 10
       },
@@ -543,7 +543,7 @@
           "check": "1-1",
           "placement": "1-1",
           "library": "1-1",
-          "tables": "3-11"
+          "tables": "1-11"
         },
         "roundQuestions": 10
       }
@@ -5970,8 +5970,98 @@
       }
     },
     "combinedSections": {
-      "about": "Related sections share one tile on the Learn screen. A tap opens the list of its parts; each part keeps its own step, stars and progress. A grade that has only one of the parts sees that section's own tile. titleFrom: the tile takes its name from that part, so a country's own name for it is kept (EVS · Science in India).",
+      "about": "Related sections share one tile on the Learn screen. A tap starts one round that shuffles cards from all of its parts (no list to choose from). Each part keeps its own step: its cards are counted toward that part until there are enough to judge. A grade that has only one of the parts sees that section's own tile. titleFrom: the tile takes its name from that part, so a country's own name for it is kept (EVS · Science in India). signs: the tile's picture is drawn from these signs instead of an emoji. sectionTestGroups: the smaller groups used before; the automated browser tests that check each section's own tile, step dots and grade use them (the app shows `groups`; a test asks for them with ?tiles=combined).",
       "groups": [
+        {
+          "id": "reading",
+          "title": "Reading & Spelling",
+          "sub": "letter sounds · words · spelling · sentences",
+          "icon": "📖",
+          "color": "#7950f2",
+          "parts": [
+            "phonics",
+            "cvc",
+            "w4",
+            "sight",
+            "syl",
+            "match",
+            "spell",
+            "sent",
+            "words",
+            "gp"
+          ]
+        },
+        {
+          "id": "math",
+          "title": "Math",
+          "sub": "add · take away · times · share · numbers · measuring",
+          "icon": "➕",
+          "signs": [
+            "+",
+            "−",
+            "×",
+            "÷"
+          ],
+          "color": "#f76707",
+          "parts": [
+            "size",
+            "add",
+            "sub",
+            "mul",
+            "div",
+            "story",
+            "numsense",
+            "frac",
+            "measure",
+            "clock"
+          ]
+        },
+        {
+          "id": "thinking",
+          "title": "Patterns & Puzzles",
+          "sub": "patterns · odd one out · what comes next",
+          "icon": "🧩",
+          "color": "#7048e8",
+          "parts": [
+            "pattern",
+            "odd",
+            "sequence"
+          ]
+        },
+        {
+          "id": "science",
+          "title": "Science",
+          "sub": "liquid or solid · living things · my body · did you know?",
+          "icon": "🔬",
+          "color": "#1098ad",
+          "parts": [
+            "matter",
+            "sci",
+            "gk",
+            "body",
+            "anatomy"
+          ],
+          "titleFrom": "sci"
+        },
+        {
+          "id": "world",
+          "title": "Our World",
+          "sub": "jobs · community · country · flags · maps · animals",
+          "icon": "🌍",
+          "color": "#1c7ed6",
+          "parts": [
+            "jobs",
+            "community",
+            "home",
+            "region",
+            "flags",
+            "maps",
+            "places",
+            "animals"
+          ]
+        }
+      ],
+      "sectionTestGroups": [
         {
           "id": "words",
           "title": "Read Words",
