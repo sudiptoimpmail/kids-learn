@@ -33,7 +33,22 @@ const assert = require('node:assert/strict'), { chromium } = require('playwright
     await open('prek', 0);
     const off = await shapes();
     assert.equal(off.assist, 0); assert.equal(off.line, 41); assert.equal(off.bendAfter, off.bendBefore);
-    assert.deepEqual(await paintTest(), { held: false, inside: true, outside: true });
+    assert.deepEqual(await paintTest(), { held: true, inside: true, outside: false }, 'the brush stays inside the lines even with the helper off');
+    // ---- the paint bucket stops at the guide picture's lines and never colours over a line
+    await open('prek');
+    const pour = await p.evaluate(() => { const d = window.__draw, W = d.W, f = (x, y) => [W * x, W * y], n = 50, cells = [];
+      for (let y = 1; y < n; y++) for (let x = 1; x < n; x++) cells.push([W * x / n, W * y / n]);
+      const guideWalls = cells.filter(([x, y]) => d.wall(x, y)).length;                       // the guide picture's own lines are walls
+      d.add([f(0.03, 0.03), f(0.2, 0.03), f(0.2, 0.2), f(0.03, 0.2), f(0.03, 0.03)]);            // her own box in a corner
+      const ok = d.pour(W * 0.11, W * 0.11);
+      return { guideWalls, ok, inside: d.fillInk(W * 0.11, W * 0.11) > 0, onLine: [[0.03, 0.1], [0.2, 0.1], [0.1, 0.03], [0.1, 0.2]].filter(([x, y]) => d.fillInk(W * x, W * y) > 0).length, outside: d.fillInk(W * 0.26, W * 0.11) > 0 || d.fillInk(W * 0.11, W * 0.26) > 0 }; });
+    assert.ok(pour.guideWalls > 20, 'the guide picture holds paint in');
+    assert.deepEqual({ ok: pour.ok, inside: pour.inside, onLine: pour.onLine, outside: pour.outside }, { ok: true, inside: true, onLine: 0, outside: false }, 'poured paint fills the shape, stops at the line and does not cover it');
+    // ---- choosing a pencil, a brush, the bucket or a colour puts the eraser away
+    const tools = await p.evaluate(() => { const d = window.__draw, er = document.querySelector('#gameArea [data-t="erase"]'), out = [];
+      for (const sel of ['.dr-size:not([data-tool="brush"])', '.dr-size[data-tool="brush"]', '[data-t="bucket"]', '.dr-ink']) { if (!d.erasing()) er.click(); const on = d.erasing() && er.classList.contains('on'); document.querySelector('#gameArea ' + sel).click(); out.push([on, d.erasing(), er.classList.contains('on')].join()); }
+      if (!d.bucketOn()) document.querySelector('#gameArea [data-t="bucket"]').click(); er.click(); out.push('eraser on: bucket ' + d.bucketOn()); return out; });
+    assert.deepEqual(tools, ['true,false,false', 'true,false,false', 'true,false,false', 'true,false,false', 'eraser on: bucket false']);
     // ---- 3rd grade: only a light touch
     await open('g3');
     const lo = await shapes();
