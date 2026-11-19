@@ -35,7 +35,8 @@
   };
   const clock = (level) => {
     if (level > 5) return null;
-    const [h, m] = randTime(Math.min(level, 4));
+    // the hands start at 12:00, so never ask for 12:00 (it would already be done)
+    let h, m; do { [h, m] = randTime(Math.min(level, 4)); } while (h === 12 && m === 0);
     return card(`bld-ck-${h}-${m}`, 'Set the clock!', 'Set the clock!',
       { kind: 'clock', h, m, step: level <= 1 ? 60 : level === 2 ? 30 : level === 3 ? 15 : 5, show: `<span class="bld-num">${timeStr(h, m)}</span>` }, 'The short hand shows the hour. The long hand shows the minutes!');
   };
