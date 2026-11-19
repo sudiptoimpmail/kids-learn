@@ -1037,10 +1037,12 @@ function startColoring(p) {
       <button class="cb-round cb-color" data-a="color" aria-label="Choose a colour" style="--c:${cur}"></button>
       <button class="cb-round" data-a="erase" aria-label="Eraser">🧽</button>
       <div class="cb-row">${p.orig ? '<button class="cb-btn" data-a="peek" aria-label="Peek">👀</button>' : ''}<button class="cb-btn" data-a="undo" aria-label="Undo">↩️</button><button class="cb-btn" data-a="clear" aria-label="Start over">🗑️</button></div>
+      ${ArtMusic.html}
     </div>
     <div class="cb-pop" data-pop="color" hidden><div class="cb-colors">${CB_COLORS.map((c) => `<button class="cb-c" data-c="${c}" style="--c:${c}" aria-label="colour ${c}"></button>`).join('')}</div></div>
     <div class="cb-pop" data-pop="tool" hidden><div class="cb-tools">${CB_TOOLS.map((t) => `<button class="cb-t" data-t="${t}" aria-label="${CB_TOOL_INFO[t]}">${swatch(t, cur)}<small>${CB_TOOL_INFO[t]}</small></button>`).join('')}</div></div>
   </div>`;
+  ArtMusic.button(area);
   say('Pick a color, then tap the picture.');
   const svg = $('.color-wrap svg', area), defs = svg.querySelector('.cb-defs'), u = p.vb / 60;
   const refresh = () => {
@@ -1553,7 +1555,7 @@ function startDraw(refIndex) {
       <button class="cb-round cb-color" data-a="drcolor" aria-label="Choose a colour" style="--c:${CB_COLORS[0]}"></button>
       <button class="cb-round dr-tool" data-t="erase" aria-label="Eraser">🧽</button>
       <div class="cb-row"><button class="cb-btn dr-tool" data-t="undo" aria-label="Undo">↩️</button><button class="cb-btn dr-tool" data-t="clear" aria-label="Start over">🗑️</button></div>
-      <button class="cb-btn" data-a="gallery" aria-label="My drawings">🎨</button>
+      <div class="cb-row"><button class="cb-btn" data-a="gallery" aria-label="My drawings">🎨</button>${ArtMusic.html}</div>
     </div>
     <div class="cb-pop" data-pop="color" hidden><div class="cb-colors">${CB_COLORS.map((c, i) => `<button class="dr-ink cb-c ${c === CB_COLORS[0] ? 'on' : ''}" data-c="${c}" style="--c:${c};--sw:${c}" aria-label="colour ${c}"></button>`).join('')}</div></div>
     <div class="cb-pop" data-pop="tool" hidden><div class="cb-tools dr-tools2"><button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✏<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
@@ -1562,11 +1564,14 @@ function startDraw(refIndex) {
   say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
   const cv = $('.dr-cv', area), pad = $('.dr-pad', area);
   const dpr = Math.min(devicePixelRatio || 1, 2);
-  const W = pad.clientWidth;
-  cv.width = cv.height = Math.round(W * dpr); cv.style.width = cv.style.height = W + 'px';
+  // The paper is as big as the screen allows, so it is usually not square: W wide, H tall. The guide picture sits in
+  // the middle, in a square S across (at GX, GY), 6% in from that square's edges.
+  const W = pad.clientWidth, H = pad.clientHeight || W, S = Math.min(W, H), GX = (W - S) / 2, GY = (H - S) / 2;
+  cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  { const g = $('.dr-guide svg', area); if (g) { g.style.width = g.style.height = S * 0.88 + 'px'; } }
   let c = cv.getContext('2d'); c.scale(dpr, dpr); c.lineCap = c.lineJoin = 'round';
   // paint goes on its own layer under the guide and the pencil lines
-  const fc = $('.dr-fill', area); fc.width = fc.height = cv.width; fc.style.width = fc.style.height = W + 'px';
+  const fc = $('.dr-fill', area); fc.width = cv.width; fc.height = cv.height; fc.style.width = W + 'px'; fc.style.height = H + 'px';
   const fctx = fc.getContext('2d');
   let color = CB_COLORS[0], size = 7, tool = "pencil", erase = false, strokes = [], cur = null, bucket = false;
   /* ---- drawing helper (0 to 1, more for younger children) ---- */
@@ -1588,7 +1593,7 @@ function startDraw(refIndex) {
       while (t <= seg) { out.push([p[i - 1][0] + (p[i][0] - p[i - 1][0]) * t / seg, p[i - 1][1] + (p[i][1] - p[i - 1][1]) * t / seg]); t += step; }
       carry = seg - (t - step); }
     out.push(z);
-    const close = len > 80 && chord < W * (0.015 + 0.06 * assist);
+    const close = len > 80 && chord < S * (0.015 + 0.06 * assist);
     for (let n = Math.min(Math.round(assist * 40), Math.floor(out.length / 3)); n > 0; n--) { const prev = out.map((q) => q.slice());
       for (let i = 1; i < out.length - 1; i++) { out[i][0] = (prev[i - 1][0] + 2 * prev[i][0] + prev[i + 1][0]) / 4; out[i][1] = (prev[i - 1][1] + 2 * prev[i][1] + prev[i + 1][1]) / 4; } }
     if (close) out.push(a.slice());
@@ -1596,41 +1601,42 @@ function startDraw(refIndex) {
   }
   // 2) brush paint stays in the shape it starts in: the guide picture and her pencil lines are the walls.
   //    More help means a smaller spill over the lines.
-  const LN = 300, guideImg = new Image(); let guideOk = false;
+  const LN = 300, LH = Math.max(1, Math.round(LN * H / W)), guideImg = new Image(); let guideOk = false;
   guideImg.onload = () => (guideOk = true);
   guideImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(drawSVG(ref.d, DRAW_GUIDE[Math.min(4, Math.max(1, lv))][0]).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" '));
-  const wallCv = document.createElement('canvas'); wallCv.width = wallCv.height = LN;
-  const layer = document.createElement('canvas'); layer.width = layer.height = cv.width;
+  const wallCv = document.createElement('canvas'); wallCv.width = LN; wallCv.height = LH;
+  const layer = document.createElement('canvas'); layer.width = cv.width; layer.height = cv.height;
   // The boundary lines, as pixels: the guide picture and her own pencil lines (never brush paint or poured paint).
   // Brush and bucket both stop at them. `list` is the lines drawn so far.
-  function wallPixels(size, list) {
-    if (wallCv.width !== size) wallCv.width = wallCv.height = size;
+  function wallPixels(size, list) {             // `size` pixels wide; the height follows the paper's shape
+    const high = size === cv.width ? cv.height : Math.max(1, Math.round(size * H / W));
+    if (wallCv.width !== size || wallCv.height !== high) { wallCv.width = size; wallCv.height = high; }
     const w = wallCv.getContext('2d', { willReadFrequently: true }), k = size / W;
-    w.setTransform(1, 0, 0, 1, 0, 0); w.clearRect(0, 0, size, size); w.globalCompositeOperation = 'source-over';
-    if (guideOk) w.drawImage(guideImg, size * 0.06, size * 0.06, size * 0.88, size * 0.88);   // the guide sits 6% in from each edge of the pad
+    w.setTransform(1, 0, 0, 1, 0, 0); w.clearRect(0, 0, size, high); w.globalCompositeOperation = 'source-over';
+    if (guideOk) w.drawImage(guideImg, k * (GX + S * 0.06), k * (GY + S * 0.06), k * S * 0.88, k * S * 0.88);
     w.setTransform(k, 0, 0, k, 0, 0); w.lineCap = w.lineJoin = 'round';
     for (const s of list) { if (s.fill || s.tool === 'brush' || s === cur) continue;
       w.globalCompositeOperation = s.erase ? 'destination-out' : 'source-over'; w.strokeStyle = w.fillStyle = '#000'; w.lineWidth = Math.max(s.size, 2 / k);
       const p = s.pts; w.beginPath(); if (p.length === 1) { w.arc(p[0][0], p[0][1], s.size / 2, 0, 7); w.fill(); } else { w.moveTo(p[0][0], p[0][1]); for (let i = 1; i < p.length; i++) w.lineTo(p[i][0], p[i][1]); w.stroke(); } }
-    return w.getImageData(0, 0, size, size).data;
+    return w.getImageData(0, 0, size, high).data;
   }
   function shapeAt(x, y, brush) {
     const k = LN / W, data = wallPixels(LN, strokes), wall = (i) => data[i * 4 + 3] > 70;
-    let sx = Math.round(x * k), sy = Math.round(y * k); if (sx < 0 || sy < 0 || sx >= LN || sy >= LN) return null;
+    let sx = Math.round(x * k), sy = Math.round(y * k); if (sx < 0 || sy < 0 || sx >= LN || sy >= LH) return null;
     if (wall(sy * LN + sx)) { let hit = false;
-      for (let r = 1; r <= 8 && !hit; r++) for (let dy = -r; dy <= r && !hit; dy++) for (let dx = -r; dx <= r && !hit; dx++) { const xx = sx + dx, yy = sy + dy; if (xx >= 0 && yy >= 0 && xx < LN && yy < LN && !wall(yy * LN + xx)) { sx = xx; sy = yy; hit = true; } }
+      for (let r = 1; r <= 8 && !hit; r++) for (let dy = -r; dy <= r && !hit; dy++) for (let dx = -r; dx <= r && !hit; dx++) { const xx = sx + dx, yy = sy + dy; if (xx >= 0 && yy >= 0 && xx < LN && yy < LH && !wall(yy * LN + xx)) { sx = xx; sy = yy; hit = true; } }
       if (!hit) return null; }
-    const mask = new Uint8Array(LN * LN), stack = [sy * LN + sx]; mask[stack[0]] = 1; let n = 0;
+    const mask = new Uint8Array(LN * LH), stack = [sy * LN + sx]; mask[stack[0]] = 1; let n = 0;
     while (stack.length) { const q = stack.pop(), qx = q % LN, qy = (q - qx) / LN; n++;
-      for (const t of [qx > 0 ? q - 1 : -1, qx < LN - 1 ? q + 1 : -1, qy > 0 ? q - LN : -1, qy < LN - 1 ? q + LN : -1]) if (t >= 0 && !mask[t] && !wall(t)) { mask[t] = 1; stack.push(t); } }
-    if (n > LN * LN * 0.8) return null;                      // open page: nothing to stay inside
+      for (const t of [qx > 0 ? q - 1 : -1, qx < LN - 1 ? q + 1 : -1, qy > 0 ? q - LN : -1, qy < LH - 1 ? q + LN : -1]) if (t >= 0 && !mask[t] && !wall(t)) { mask[t] = 1; stack.push(t); } }
+    if (n > LN * LH * 0.8) return null;                      // open page: nothing to stay inside
     // let the paint reach under the line, plus a spill that shrinks as the help grows
     // the paint may reach the edge of the line but never cross it
-    const grow = 1, m = document.createElement('canvas'); m.width = m.height = LN;
-    const mc = m.getContext('2d'), img = mc.createImageData(LN, LN);
-    for (let i = 0; i < LN * LN; i++) if (mask[i]) img.data[i * 4 + 3] = 255;
+    const grow = 1, m = document.createElement('canvas'); m.width = LN; m.height = LH;
+    const mc = m.getContext('2d'), img = mc.createImageData(LN, LH);
+    for (let i = 0; i < LN * LH; i++) if (mask[i]) img.data[i * 4 + 3] = 255;
     mc.putImageData(img, 0, 0);
-    const g = document.createElement('canvas'); g.width = g.height = LN; const gc = g.getContext('2d');
+    const g = document.createElement('canvas'); g.width = LN; g.height = LH; const gc = g.getContext('2d');
     for (let a = 0; a < 12; a++) gc.drawImage(m, Math.cos(a * Math.PI / 6) * grow, Math.sin(a * Math.PI / 6) * grow);
     gc.drawImage(m, 0, 0);
     return g;
@@ -1652,43 +1658,43 @@ function startDraw(refIndex) {
     view();
   }
   const redraw = () => {
-    c.clearRect(0, 0, W, W);
+    c.clearRect(0, 0, W, H);
     for (const s of strokes) paint(s);
   };
   // flood fill: pour paint into the closed shape under the finger; lines (guide or drawn) hold it in
   function fillAt(op) {
-    const N = cv.width, at = strokes.indexOf(op), sd = wallPixels(N, at >= 0 ? strokes.slice(0, at) : strokes);
+    const N = cv.width, NH = cv.height, at = strokes.indexOf(op), sd = wallPixels(N, at >= 0 ? strokes.slice(0, at) : strokes);
     const blocked = (i) => sd[i * 4 + 3] > 60;     // the guide picture and her own lines hold the paint in
     let sx = Math.round(op.x * dpr), sy = Math.round(op.y * dpr);
-    if (sx < 0 || sy < 0 || sx >= N || sy >= N) return false;
+    if (sx < 0 || sy < 0 || sx >= N || sy >= NH) return false;
     if (blocked(sy * N + sx)) {                       // landed on a line: use the nearest open spot
       let found = false;
       for (let r = 1; r <= 6 * dpr && !found; r++) for (let dy = -r; dy <= r && !found; dy++) for (let dx = -r; dx <= r && !found; dx++) {
-        const x = sx + dx, y = sy + dy; if (x >= 0 && y >= 0 && x < N && y < N && !blocked(y * N + x)) { sx = x; sy = y; found = true; }
+        const x = sx + dx, y = sy + dy; if (x >= 0 && y >= 0 && x < N && y < NH && !blocked(y * N + x)) { sx = x; sy = y; found = true; }
       }
       if (!found) return false;
     }
-    const mask = new Uint8Array(N * N), stack = [sy * N + sx]; mask[sy * N + sx] = 1;
+    const mask = new Uint8Array(N * NH), stack = [sy * N + sx]; mask[sy * N + sx] = 1;
     while (stack.length) {
       const p = stack.pop(), x = p % N, y = (p - x) / N;
-      for (const q of [x > 0 ? p - 1 : -1, x < N - 1 ? p + 1 : -1, y > 0 ? p - N : -1, y < N - 1 ? p + N : -1]) if (q >= 0 && !mask[q] && !blocked(q)) { mask[q] = 1; stack.push(q); }
+      for (const q of [x > 0 ? p - 1 : -1, x < N - 1 ? p + 1 : -1, y > 0 ? p - N : -1, y < NH - 1 ? p + N : -1]) if (q >= 0 && !mask[q] && !blocked(q)) { mask[q] = 1; stack.push(q); }
     }
-    let area = 0; for (let i = 0; i < N * N; i++) area += mask[i];
-    if (area > N * N * 0.82) { fillAt.open = true; return false; }     // not a closed shape: don't flood the whole page
+    let area = 0; for (let i = 0; i < N * NH; i++) area += mask[i];
+    if (area > N * NH * 0.82) { fillAt.open = true; return false; }     // not a closed shape: don't flood the whole page
     fillAt.open = false;
     // grow the paint a hair under the lines so no pale halo shows
     const grown = new Uint8Array(mask); const g = Math.max(1, Math.round(dpr));   // just under the line's edge, never across it
-    for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (mask[y * N + x]) for (let d = 1; d <= g; d++) {
-      if (x + d < N) grown[y * N + x + d] = 1; if (x - d >= 0) grown[y * N + x - d] = 1; if (y + d < N) grown[(y + d) * N + x] = 1; if (y - d >= 0) grown[(y - d) * N + x] = 1;
+    for (let y = 0; y < NH; y++) for (let x = 0; x < N; x++) if (mask[y * N + x]) for (let d = 1; d <= g; d++) {
+      if (x + d < N) grown[y * N + x + d] = 1; if (x - d >= 0) grown[y * N + x - d] = 1; if (y + d < NH) grown[(y + d) * N + x] = 1; if (y - d >= 0) grown[(y - d) * N + x] = 1;
     }
-    const out = fctx.createImageData(N, N), rgb = op.color ? [parseInt(op.color.slice(1, 3), 16), parseInt(op.color.slice(3, 5), 16), parseInt(op.color.slice(5, 7), 16)] : [0, 0, 0];
-    for (let i = 0; i < N * N; i++) if (grown[i]) { out.data[i * 4] = rgb[0]; out.data[i * 4 + 1] = rgb[1]; out.data[i * 4 + 2] = rgb[2]; out.data[i * 4 + 3] = 255; }
-    const tmp = document.createElement('canvas'); tmp.width = tmp.height = N; tmp.getContext('2d').putImageData(out, 0, 0);
+    const out = fctx.createImageData(N, NH), rgb = op.color ? [parseInt(op.color.slice(1, 3), 16), parseInt(op.color.slice(3, 5), 16), parseInt(op.color.slice(5, 7), 16)] : [0, 0, 0];
+    for (let i = 0; i < N * NH; i++) if (grown[i]) { out.data[i * 4] = rgb[0]; out.data[i * 4 + 1] = rgb[1]; out.data[i * 4 + 2] = rgb[2]; out.data[i * 4 + 3] = 255; }
+    const tmp = document.createElement('canvas'); tmp.width = N; tmp.height = NH; tmp.getContext('2d').putImageData(out, 0, 0);
     fctx.save(); fctx.setTransform(1, 0, 0, 1, 0, 0); fctx.globalCompositeOperation = op.color ? 'source-over' : 'destination-out'; fctx.drawImage(tmp, 0, 0); fctx.restore();
     return true;
   }
   function replay() {              // after an undo or clear: rebuild strokes and paint in order
-    fctx.clearRect(0, 0, fc.width, fc.height); c.clearRect(0, 0, W, W);
+    fctx.clearRect(0, 0, fc.width, fc.height); c.clearRect(0, 0, W, H);
     const all = strokes.slice(); strokes = [];
     for (const s of all) { strokes.push(s); if (s.fill) fillAt(s); else paint(s); }
   }
@@ -1719,7 +1725,7 @@ function startDraw(refIndex) {
   const pt = e => {
     const r = pad.getBoundingClientRect();
     return [(e.clientX - r.left - panX) * W / r.width / zoom,
-            (e.clientY - r.top - panY) * W / r.height / zoom];
+            (e.clientY - r.top - panY) * H / r.height / zoom];
   };
   pad.addEventListener('pointerdown', e => {
     e.preventDefault();
@@ -1805,7 +1811,7 @@ function startDraw(refIndex) {
     const others = (state.drawings || []).filter((d) => d.id !== entryId);
     if (!strokes.length) { state.drawings = others; save(); return; }
     const t = document.createElement('canvas'); t.width = t.height = 240;
-    const tc = t.getContext('2d'); tc.fillStyle = '#fff'; tc.fillRect(0, 0, 240, 240); tc.drawImage(fc, 0, 0, 240, 240); tc.drawImage(cv, 0, 0, 240, 240);
+    const tc = t.getContext('2d'); tc.fillStyle = '#fff'; tc.fillRect(0, 0, 240, 240); { const k = 240 / Math.max(W, H), tw = W * k, th = H * k, tx = (240 - tw) / 2, ty = (240 - th) / 2; tc.drawImage(fc, tx, ty, tw, th); tc.drawImage(cv, tx, ty, tw, th); }   // the whole paper, fitted in
     state.drawings = [{ id: entryId, img: t.toDataURL('image/jpeg', 0.7), name: ref.name }, ...others].slice(0, 12);
     if (!counted && strokes.length >= 4) { counted = true; gameLevelUp('draw', 3); } else save();
   };
@@ -1815,8 +1821,50 @@ function startDraw(refIndex) {
   const leave = (go) => () => { sfx.tap(); if (saveTimer) autosave(true); go(); };
   area.querySelector('[data-a="choose"]').onclick = leave(drawChooser);
   area.querySelector('[data-a="gallery"]').onclick = leave(drawGallery);
-  if (testFeatureAvailable()) window.__draw = { pour: (x, y) => { const op = { fill: true, x, y, color }; const ok = fillAt(op); if (ok) strokes.push(op); return ok; }, wall: (x, y) => wallPixels(LN, strokes)[(Math.round(y * LN / W) * LN + Math.round(x * LN / W)) * 4 + 3] > 70, fillInk: (x, y) => fctx.getImageData(Math.round(x * dpr), Math.round(y * dpr), 1, 1).data[3], erasing: () => erase, bucketOn: () => bucket, assist, tidy: (pts) => { const s = { pts, size: 7 }; tidy(s); return s.pts; }, brush: (pts, sz = 26) => { const s = { color, size: sz, tool: 'brush', erase: false, pts }; const clip = shapeAt(pts[0][0], pts[0][1], sz); if (clip) s.clip = clip; strokes.push(s); replay(); autosave(); return !!clip; }, W, guideReady: () => guideOk, inkAt: (x, y) => c.getImageData(Math.round(x * dpr), Math.round(y * dpr), 1, 1).data[3], strokes: () => strokes.length, add: (pts) => { strokes.push({ color, size, tool: 'pencil', erase: false, pts }); replay(); autosave(); }, saveNow: () => autosave(true), entryId };
+  ArtMusic.button(area);
+  if (testFeatureAvailable()) window.__draw = { pour: (x, y) => { const op = { fill: true, x, y, color }; const ok = fillAt(op); if (ok) strokes.push(op); return ok; }, wall: (x, y) => wallPixels(LN, strokes)[(Math.min(LH - 1, Math.round(y * LN / W)) * LN + Math.min(LN - 1, Math.round(x * LN / W))) * 4 + 3] > 70, H, S, GX, GY, fillInk: (x, y) => fctx.getImageData(Math.round(x * dpr), Math.round(y * dpr), 1, 1).data[3], erasing: () => erase, bucketOn: () => bucket, assist, tidy: (pts) => { const s = { pts, size: 7 }; tidy(s); return s.pts; }, brush: (pts, sz = 26) => { const s = { color, size: sz, tool: 'brush', erase: false, pts }; const clip = shapeAt(pts[0][0], pts[0][1], sz); if (clip) s.clip = clip; strokes.push(s); replay(); autosave(); return !!clip; }, W, guideReady: () => guideOk, inkAt: (x, y) => c.getImageData(Math.round(x * dpr), Math.round(y * dpr), 1, 1).data[3], strokes: () => strokes.length, add: (pts) => { strokes.push({ color, size, tool: 'pencil', erase: false, pts }); replay(); autosave(); }, saveNow: () => autosave(true), entryId };
 }
+// A very quiet tune for the art screens (drawing and colouring). It is made in the browser from soft sine notes, so
+// there is no recording and nothing to download. It plays only while an art screen is open, dips while the voice
+// speaks, and the 🎵 button on the tool rail turns it off and on (remembered).
+const ArtMusic = (() => {
+  const NOTES = [196.0, 220.0, 261.63, 293.66, 329.63, 392.0, 440.0, 523.25, 587.33, 659.25];   // G3 A3 C4 D4 E4 G4 A4 C5 D5 E5
+  const BARS = [[[4, 5, 7, 5], 2], [[6, 5, 4, 3], 1], [[4, 5, 6, 8], 2], [[7, 5, 4, null], 0], [[3, 4, 5, 4], 1], [[6, 7, 8, 7], 2], [[5, 4, 3, 4], 0], [[2, 4, 5, null], 2]];
+  const BEAT = 0.9, VOL = 0.035;
+  let out = null, timer = 0, bar = 0, due = 0, bars = 0;
+  const wanted = () => state.artMusic !== false && !!document.querySelector('#game.active #gameArea .cb');
+  function note(a, f, t, dur, vol) {
+    const o = a.createOscillator(), g = a.createGain();
+    o.type = 'sine'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(vol, t + 0.12); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g).connect(out); o.start(t); o.stop(t + dur + 0.05);
+  }
+  function tick() {
+    if (!wanted()) return stop();
+    try {
+      const a = ctx(); if (a.state === 'suspended') a.resume?.();
+      if (!out) { out = a.createGain(); out.connect(a.destination); }
+      out.gain.setTargetAtTime(typeof CoreVoice !== 'undefined' && CoreVoice.speaking?.() ? 0.25 : 1, a.currentTime, 0.2);   // softer under the voice
+      if (due < a.currentTime) due = a.currentTime + 0.1;
+      while (due < a.currentTime + 1.2) {                      // keep a little more than a second queued
+        const [tune, low] = BARS[bar % BARS.length];
+        tune.forEach((n, i) => { if (n != null) note(a, NOTES[n], due + i * BEAT, BEAT * 2.2, VOL); });
+        note(a, NOTES[low] / 2, due, BEAT * 4.4, VOL * 0.8);
+        due += BEAT * 4; bar++; bars++;
+      }
+    } catch { /* no sound on this device */ }
+  }
+  function start() { if (timer || !wanted()) return; due = 0; tick(); timer = setInterval(tick, 500); }
+  function stop() { clearInterval(timer); timer = 0; if (out) { try { out.gain.setTargetAtTime(0, ctx().currentTime, 0.15); } catch { /* gone */ } out = null; } }
+  // the rail's 🎵 button
+  function button(area) {
+    const b = area.querySelector('[data-a="music"]'); if (!b) return;
+    const show = () => { b.classList.toggle('off', state.artMusic === false); b.setAttribute('aria-pressed', String(state.artMusic !== false)); };
+    b.onclick = () => { state.artMusic = state.artMusic === false; save(); show(); sfx.tap(); if (state.artMusic) start(); else stop(); };
+    show(); start();
+  }
+  return { start, stop, button, playing: () => !!timer, bars: () => bars, html: '<button class="cb-btn cb-music" data-a="music" aria-label="Music on or off">🎵</button>' };
+})();
 // the drawing pad's "save a moment from now"; the pad's own events call it
 let drawAutosave = () => {}, drawFlush = () => {};
 // pick what to draw

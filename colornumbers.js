@@ -93,9 +93,10 @@ function startColorByNumber(p) {
     <div class="cb-rail" role="toolbar" aria-label="Colours for each answer">
       <button class="cb-btn" data-a="pics" aria-label="Pictures">🖼️</button>
       <div class="cbn-legend">${order.map(sw).join('')}</div>
-      <div class="cb-row"><button class="cb-btn" data-a="hint" aria-label="Show me where this colour goes">💡</button><span class="cbn-count" aria-live="polite"></span></div>
+      <div class="cb-row"><button class="cb-btn" data-a="hint" aria-label="Show me where this colour goes">💡</button><span class="cbn-count" aria-live="polite"></span>${ArtMusic.html}</div>
     </div>
   </div>`;
+  ArtMusic.button(area);
   const svg = $('.color-wrap svg', area), regs = $$('.color-wrap .r', area), labels = svg.querySelector('.cbn-labels');
   const spots = cbnLabelSpots(svg, p);
   labels.innerHTML = regs.map((r, i) => {
