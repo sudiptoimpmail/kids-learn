@@ -2147,3 +2147,42 @@ img.fx { width:1.18em; height:1.18em; vertical-align:-0.22em; object-fit:contain
 .pay-counter { background: #f1e3d0; border-radius: 16px; border-bottom: 8px solid #c9a66b; padding: 8px 12px; margin: 10px 0; font-size: 20px; } .pay-given { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; min-height: 54px; align-items: center; }
 .pay-purse { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 10px; }
 .pay-coin { border: 0; background: none; cursor: pointer; display: grid; justify-items: center; font-size: 16px; font-weight: 800; padding: 2px; border-radius: 50%; } .pay-coin img { width: 72px; height: 72px; display: block; } .pay-coin.sm img { width: 46px; height: 46px; }
+
+/* ---- Art screens (Draw & Copy, Coloring Book, Color by Number): the paper takes most of the screen ----
+   The title is hidden, Back and the play clock float over the corners, and one slim rail holds the tools.
+   The drawing paper fills all the room it is given (80–85% of the screen); a colouring picture is square, so it
+   is as large as the shorter side allows. */
+#game:has(#gameArea .cb) .play-top { position: fixed; z-index: 30; top: max(10px, env(safe-area-inset-top)); left: max(10px, env(safe-area-inset-left)); right: max(10px, env(safe-area-inset-right)); margin: 0; padding: 0; min-height: 0; pointer-events: none; }
+#game:has(#gameArea .cb) .play-top > * { pointer-events: auto; }
+#game:has(#gameArea .cb) #gameTitle { visibility: hidden; }
+#game:has(#gameArea .cb) #gameBack { width: 52px; height: 52px; opacity: .94; }
+#game:has(#gameArea .cb) .play-clock { opacity: .94; }
+#game #gameArea .cb { position: fixed; z-index: 5; top: max(8px, env(safe-area-inset-top)); right: max(8px, env(safe-area-inset-right)); bottom: max(8px, env(safe-area-inset-bottom)); left: max(8px, env(safe-area-inset-left));
+  width: auto; max-width: none; margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: minmax(0, 1fr); gap: 10px; align-items: stretch; justify-content: stretch; }
+#game #gameArea .cb .cb-pic { width: auto; height: 100%; min-width: 0; min-height: 0; display: flex; align-items: center; justify-content: center; container-type: size; }
+#game #gameArea .cb .color-wrap.cz-view { width: min(100cqw, 100cqh) !important; max-width: none; aspect-ratio: 1; margin: 0; }
+#game #gameArea .dr .dr-pad { width: 100% !important; height: 100%; max-width: none; aspect-ratio: auto; }
+.dr .dr-guide { inset: 0; display: grid; place-items: center; }
+#game #gameArea .cb .cb-rail { align-self: center; max-height: 100%; overflow: auto; box-sizing: border-box; scrollbar-width: none; margin-top: 0; }
+#game #gameArea .cb .cb-rail::-webkit-scrollbar { display: none; }
+.cb-music.off { opacity: .45; filter: grayscale(1); }
+@media (orientation: landscape) {
+  #game #gameArea .cb .cb-rail { margin-top: 52px; max-height: calc(100% - 52px); }      /* the play clock sits above it */
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  #game #gameArea .cb { gap: 6px; }
+  #game #gameArea .cb .cb-rail { display: grid; grid-template-columns: auto auto; gap: 5px; padding: 5px; align-items: center; justify-items: center; border-radius: 16px; }
+  #game #gameArea .cb .cb-rail .cb-round, #game #gameArea .dr .cb-rail .cb-round.dr-tool { width: 46px; height: 46px; padding: 5px; font-size: 22px; }
+  #game #gameArea .cb .cb-rail .cb-btn, #game #gameArea .dr .cb-rail .cb-btn.dr-tool { width: 40px; height: 40px; font-size: 19px; }
+  #game #gameArea .cb .cb-row { grid-column: 1 / -1; gap: 5px; }
+}
+@media (orientation: portrait) {
+  #game #gameArea .cb { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+  #game #gameArea .cb .cb-rail { flex-direction: row; flex-wrap: nowrap; justify-content: center; width: 100%; max-height: none; align-self: end; }
+}
+@media (orientation: portrait) and (max-width: 500px) {
+  #game #gameArea .cb .cb-rail { gap: 5px; padding: 6px; }
+  #game #gameArea .cb .cb-row { gap: 5px; }
+  #game #gameArea .cb .cb-rail .cb-round, #game #gameArea .dr .cb-rail .cb-round.dr-tool { width: 50px; height: 50px; padding: 5px; font-size: 24px; }
+  #game #gameArea .cb .cb-rail .cb-btn, #game #gameArea .dr .cb-rail .cb-btn.dr-tool { width: 38px; height: 38px; font-size: 18px; }
+}
