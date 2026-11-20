@@ -55,11 +55,12 @@ async function openLibrary() {
   $('#libRead').hidden = true;
   const books = await Promise.all(availableBooks(state.grade).map((id) => loadBook(id).catch(() => null)));
   if(request!==LB.request || !$('#library').classList.contains('active'))return;
-  $('#libBody').innerHTML = `<div class="lib-shelf">${books.filter(Boolean).map((b) => `
+  const drawCard = drawStoriesFor().length ? `<button class="lib-book lib-draw" data-draw="1"><span class="lib-draw-art" aria-hidden="true"><i>📖</i><i>✏️</i></span><b>Draw the Story</b><small>listen, then draw</small></button>` : '';
+  $('#libBody').innerHTML = `<div class="lib-shelf">${drawCard}${books.filter(Boolean).map((b) => `
     <button class="lib-book" data-id="${b.id}"><img src="${libPath(b.id, b.cover)}" alt="" draggable="false"><b>${b.title}</b>
       ${(state.booksRead || {})[b.id] ? `<small>✓ read ${state.booksRead[b.id]} time${state.booksRead[b.id] === 1 ? '' : 's'}</small>` : '<small>New!</small>'}</button>`).join('')}
     </div>`;
-  $$('#libBody .lib-book').forEach((b) => (b.onclick = () => { sfx.tap(); openBook(b.dataset.id); }));
+  $$('#libBody .lib-book').forEach((b) => (b.onclick = () => { sfx.tap(); if (b.dataset.draw) openDrawStory(); else openBook(b.dataset.id); }));
   say('Story time! Pick a book.');
 }
 
@@ -198,8 +199,131 @@ function swipe(el, next, prev) {
   el.addEventListener('touchend', (e) => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null; if (Math.abs(dx) > 60) (dx < 0 ? next : prev)(); }, { passive: true });
 }
 
-$('#libHome').onclick = () => { sfx.tap(); stopReading(); if (LB.book) { LB.book = null; openLibrary(); } else { renderHome(); show('home'); } };
-$('#libRead').onclick = () => { sfx.tap(); if (LB.page >= 0) { LB.auto = true; readPage(); } };
+$('#libHome').onclick = () => { sfx.tap(); stopReading(); if (LB.book || DS.story) { LB.book = null; DS.story = null; openLibrary(); } else { renderHome(); show('home'); } };
+$('#libRead').onclick = () => { sfx.tap(); if (DS.story && DS.view === 'story') { readDrawStory(); return; } if (LB.page >= 0) { LB.auto = true; readPage(); } };
 
 // Invalidate pending loads and feedback whenever any navigation leaves the reader.
 CoreHooks.before('show',(id)=>{if(id!=='library' && $('#library').classList.contains('active')){LB.request++;stopReading();}});
+
+/* ---------- Draw the Story ----------
+   A new story is told with no pictures. Then one part of it (picked at random) is drawn on a blank page, with hints
+   if she wants them. Afterwards she taps the story details she put in her picture, and older children get a
+   question to talk about. Stories, scenes and hints are written for each grade (data/draw-stories.json):
+   Pre-K draws one thing they heard; 2nd and 3rd grade draw feelings, clues, or what might happen next. */
+const DRAW_STORIES = ContentData.get('draw-stories', 'STORIES'), DRAW_UI = ContentData.get('draw-stories', 'UI');
+const drawStoriesFor = (grade = state.grade) => DRAW_STORIES[grade] || [];
+const DS = { story: null, scene: -1, hint: 0, view: '', lastScene: {} };
+const youngDraw = () => ['prek', 'k'].includes(state.grade);
+// a list of lines, each split into sentences (each sentence has its own recording)
+const sayLines = (lines) => say(lines.filter(Boolean).flatMap((t) => splitSentences(t)));
+function openDrawStory(id) {
+  stopReading(); LB.request++; LB.book = null;
+  const list = drawStoriesFor(), done = state.storyDrawn || {};
+  // a story she has drawn least, so each visit brings a new one
+  const fewest = Math.min(...list.map((s) => done[s.id] || 0));
+  DS.story = id ? list.find((s) => s.id === id) : pick(list.filter((s) => (done[s.id] || 0) === fewest && s.id !== DS.lastStory) .concat(list.length === 1 ? list : []));
+  if (!DS.story) DS.story = list[0];
+  DS.lastStory = DS.story.id; DS.t0 = Date.now();
+  show('library'); renderDrawStory(true);
+}
+function renderDrawStory(read) {
+  const s = DS.story; DS.view = 'story';
+  $('#libTitle').textContent = s.title; $('#libRead').hidden = false;
+  $('#libBody').innerHTML = `<div class="lib-page ds-story ds-${esc(state.grade)}">
+      <div class="ds-ear" aria-hidden="true">👂</div>
+      <h2 class="lib-cover-title">${esc(s.title)}</h2>
+      <div class="lib-text ds-text">${s.text.map((t, si) => `<p class="${/["“]/.test(t) ? 'lib-dialogue' : ''}" data-s="${si}">${wordsHTML(t, si)}</p>`).join('')}</div>
+      <div class="lib-start"><button class="big-btn" data-a="draw">✏️ Draw a part</button><button class="big-btn alt" data-a="again">🔁 Hear it again</button></div>
+    </div>`;
+  $('[data-a="draw"]').onclick = () => { sfx.tap(); chooseDrawScene(); };
+  $('[data-a="again"]').onclick = () => { sfx.tap(); readDrawStory(); };
+  $$('#libBody .w').forEach((w) => { w.onclick = (e) => { e.stopPropagation(); const word = w.textContent.replace(/[^A-Za-z']/g, ''); if (CLIPS[clipKey(word)]) say(word); }; });
+  if (read) say(DRAW_UI.intro).then(() => { if (DS.view === 'story' && $('#library').classList.contains('active')) readDrawStory(); });
+}
+// read the story one sentence at a time, lighting each line as it is read
+async function readDrawStory() {
+  stopReading(); const my = ++sayToken, s = DS.story; LB.reading = true;
+  for (let i = 0; i < s.text.length; i++) {
+    if (my !== sayToken || DS.story !== s || DS.view !== 'story') return;
+    $$('#libBody .ds-text p').forEach((p, k) => { p.classList.toggle('ds-now', k === i); if (k < i) p.classList.add('ds-read'); });
+    for (const part of splitSentences(s.text[i])) {         // a line can hold two sentences ("Jay waved. "Good night, owl!"")
+      const file = CLIPS[clipKey(part)];
+      if (file && state.voice) await playClip(file, my); else await sleep(1200);
+      if (my !== sayToken) return;
+    }
+    if (my !== sayToken) return;
+    await sleep(350);
+  }
+  if (my === sayToken) { LB.reading = false; $$('#libBody .ds-text p').forEach((p) => { p.classList.remove('ds-now'); p.classList.add('ds-read'); }); $('#libBody [data-a="draw"]')?.classList.add('pulse'); }
+}
+// pick one part of the story to draw: Pre-K always starts with the first; after that a different one each time
+function chooseDrawScene(next) {
+  stopReading();
+  const s = DS.story, n = s.scenes.length, last = DS.lastScene[s.id];
+  let k = state.grade === 'prek' && last == null ? 0 : Math.floor(Math.random() * n);
+  if (n > 1 && (k === last || next)) k = (last == null ? k : last + 1 + Math.floor(Math.random() * (n - 1))) % n;
+  DS.scene = k; DS.lastScene[s.id] = k; DS.hint = 0; DS.view = 'scene';
+  renderScene(true);
+}
+function renderScene(speak) {
+  const s = DS.story, c = s.scenes[DS.scene], young = youngDraw();
+  $('#libTitle').textContent = s.title; $('#libRead').hidden = true;
+  // the youngest see the hints and picture clues straight away; older children ask for them one at a time
+  const shown = young ? c.hints.length : DS.hint;
+  $('#libBody').innerHTML = `<div class="lib-page ds-scene">
+      <div class="ds-paper" aria-hidden="true">🖍️</div>
+      <p class="lib-ask ds-ask">${esc(c.ask)}</p>
+      ${young ? `<div class="ds-clues">${c.check.map((x) => `<span class="ds-clue"><b>${x.icon}</b>${esc(x.label)}</span>`).join('')}</div>` : ''}
+      <ul class="ds-hints">${c.hints.slice(0, shown).map((h) => `<li>💡 ${esc(h)}</li>`).join('')}</ul>
+      <div class="lib-start"><button class="big-btn" data-a="start">🖍️ Start drawing</button>${!young && DS.hint < c.hints.length ? '<button class="big-btn alt" data-a="hint">💡 Need a hint?</button>' : ''}</div>
+      <div class="lib-nav"><button class="nav-btn" data-a="story" aria-label="Hear the story again">📖</button><button class="nav-btn" data-a="hear" aria-label="Hear it again">🔊</button></div>
+    </div>`;
+  $('[data-a="start"]').onclick = () => { sfx.tap(); startSceneDrawing(); };
+  $('[data-a="hint"]')?.addEventListener('click', () => { sfx.tap(); DS.hint++; renderScene(false); say(c.hints[DS.hint - 1]); });
+  $('[data-a="hear"]').onclick = () => { sfx.tap(); sayLines(young ? [c.ask, ...c.hints] : [c.ask]); };
+  $('[data-a="story"]').onclick = () => { sfx.tap(); renderDrawStory(false); readDrawStory(); };
+  if (speak) sayLines(young ? [DRAW_UI.go, c.ask, ...c.hints] : [DRAW_UI.go, c.ask]);
+}
+function startSceneDrawing() {
+  const s = DS.story, c = s.scenes[DS.scene]; DS.view = 'draw';
+  let h = 0;
+  openStoryDraw({
+    name: s.title, ask: c.ask,
+    onHint: () => { const t = c.hints[h++ % c.hints.length]; const box = document.querySelector('.sd-ask span'); if (box) box.innerHTML = `${esc(c.ask)}<small>💡 ${esc(t)}</small>`; say(t); },
+    onDone: (img) => { show('library'); checkDrawing(img); },
+    back: () => { show('library'); renderScene(false); },
+  });
+}
+// after drawing: tap the story details that are in the picture
+function checkDrawing(img) {
+  const s = DS.story, c = s.scenes[DS.scene]; DS.view = 'check';
+  $('#libTitle').textContent = s.title; $('#libRead').hidden = true;
+  const picked = new Set();
+  $('#libBody').innerHTML = `<div class="lib-page ds-check">
+      ${img ? `<img class="ds-mine" src="${img}" alt="My drawing">` : ''}
+      <p class="lib-ask">${esc(DRAW_UI.check)}</p>
+      <div class="ds-clues ds-pick">${c.check.map((x, i) => `<button class="ds-clue" data-i="${i}" aria-pressed="false"><b>${x.icon}</b>${esc(x.label)}</button>`).join('')}</div>
+      <div class="lib-start"><button class="big-btn" data-a="finish">⭐ I'm finished</button></div>
+    </div>`;
+  $$('#libBody .ds-pick .ds-clue').forEach((b) => (b.onclick = () => { const i = +b.dataset.i; if (picked.has(i)) picked.delete(i); else { picked.add(i); say(c.check[i].label); sfx.tap(); } b.classList.toggle('on', picked.has(i)); b.setAttribute('aria-pressed', String(picked.has(i))); }));
+  $('[data-a="finish"]').onclick = () => { sfx.tap(); finishDrawing(picked.size, img); };
+  say(DRAW_UI.check);
+}
+function finishDrawing(found, img) {
+  const s = DS.story, c = s.scenes[DS.scene]; DS.view = 'done'; $('#libRead').hidden = true;
+  state.storyDrawn = state.storyDrawn || {}; state.storyDrawn[s.id] = (state.storyDrawn[s.id] || 0) + 1;
+  const stars = 1 + Math.min(2, found); state.stars += stars;
+  if (typeof statsDay === 'function') { const d = statsDay(); d.books = (d.books || 0) + 1; d.secs += Math.min(1200, Math.round((Date.now() - DS.t0) / 1000)); }
+  save(); confetti(120, 0.3); sfx.win();
+  const talk = c.talk || (youngDraw() ? null : DRAW_UI.talk);
+  $('#libBody').innerHTML = `<div class="lib-page lib-done ds-done">
+      ${img ? `<img class="ds-mine" src="${img}" alt="My drawing">` : ''}
+      <h2>${esc(DRAW_UI.done)} 🎨</h2><p>⭐ +${stars}</p>
+      ${talk ? `<p class="ds-talk">💬 ${esc(talk)}</p>` : `<p class="ds-talk">💬 ${esc(DRAW_UI.talk)}</p>`}
+      <div class="lib-start">${s.scenes.length > 1 ? '<button class="big-btn" data-a="part">✏️ Draw another part</button>' : ''}<button class="big-btn alt" data-a="story">📖 Another story</button><button class="big-btn alt" data-a="shelf">📚 Library</button></div>
+    </div>`;
+  $('[data-a="part"]')?.addEventListener('click', () => { sfx.tap(); chooseDrawScene(true); });
+  $('[data-a="story"]').onclick = () => { sfx.tap(); openDrawStory(); };
+  $('[data-a="shelf"]').onclick = () => { sfx.tap(); DS.story = null; openLibrary(); };
+  sayLines([DRAW_UI.done, talk || DRAW_UI.talk]);
+}

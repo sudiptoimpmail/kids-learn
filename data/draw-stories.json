@@ -1,0 +1,1321 @@
+{
+  "schema": 1,
+  "namespace": "draw-stories",
+  "datasets": {
+    "STORIES": {
+      "prek": [
+        {
+          "id": "bo-ball",
+          "title": "Bo and the Red Ball",
+          "text": [
+            "Bo is a little brown dog.",
+            "Bo has a big red ball.",
+            "Bo kicks the ball up the hill.",
+            "The ball rolls down, and Bo runs after it!"
+          ],
+          "scenes": [
+            {
+              "ask": "Draw Bo the dog with his big red ball.",
+              "hints": [
+                "Bo is a little brown dog.",
+                "His ball is big and red."
+              ],
+              "check": [
+                {
+                  "label": "dog",
+                  "icon": "🐶"
+                },
+                {
+                  "label": "red ball",
+                  "icon": "🔴"
+                }
+              ]
+            },
+            {
+              "ask": "Draw the hill. Show the ball rolling down!",
+              "hints": [
+                "Make a hill, like a big bump.",
+                "Put the red ball on the hill."
+              ],
+              "check": [
+                {
+                  "label": "hill",
+                  "icon": "⛰️"
+                },
+                {
+                  "label": "red ball",
+                  "icon": "🔴"
+                },
+                {
+                  "label": "dog",
+                  "icon": "🐶"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "duck-rain",
+          "title": "Little Duck Likes Rain",
+          "text": [
+            "Drip, drop! It is raining.",
+            "Little Duck is happy.",
+            "She jumps in a big puddle.",
+            "Splash!"
+          ],
+          "scenes": [
+            {
+              "ask": "Draw Little Duck in the rain.",
+              "hints": [
+                "Little Duck is yellow.",
+                "Draw rain drops falling down."
+              ],
+              "check": [
+                {
+                  "label": "duck",
+                  "icon": "🦆"
+                },
+                {
+                  "label": "rain",
+                  "icon": "🌧️"
+                }
+              ]
+            },
+            {
+              "ask": "Draw the big puddle. Make a splash!",
+              "hints": [
+                "A puddle is a little pool of water.",
+                "Little Duck jumps in it."
+              ],
+              "check": [
+                {
+                  "label": "puddle",
+                  "icon": "💧"
+                },
+                {
+                  "label": "duck",
+                  "icon": "🦆"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "sun-moon",
+          "title": "Good Night, Sun",
+          "text": [
+            "The sun is going to bed.",
+            "The sky turns orange and pink.",
+            "The moon comes up.",
+            "Now the stars come out to play."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw the moon and the stars in the night sky.",
+              "hints": [
+                "The night sky is dark.",
+                "Draw a moon and lots of little stars."
+              ],
+              "check": [
+                {
+                  "label": "moon",
+                  "icon": "🌙"
+                },
+                {
+                  "label": "stars",
+                  "icon": "⭐"
+                }
+              ]
+            },
+            {
+              "ask": "Draw the sun going to bed.",
+              "hints": [
+                "The sun is low in the sky.",
+                "The sky is orange and pink."
+              ],
+              "check": [
+                {
+                  "label": "sun",
+                  "icon": "☀️"
+                },
+                {
+                  "label": "orange sky",
+                  "icon": "🟠"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cat-box",
+          "title": "Mimi and the Box",
+          "text": [
+            "Mimi the cat finds a box.",
+            "She looks in the box.",
+            "She jumps in the box.",
+            "Mimi takes a nap in her new bed."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw Mimi the cat in her box.",
+              "hints": [
+                "A box is a square.",
+                "Mimi is inside it."
+              ],
+              "check": [
+                {
+                  "label": "cat",
+                  "icon": "🐱"
+                },
+                {
+                  "label": "box",
+                  "icon": "📦"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "frog-lily",
+          "title": "Hop, Frog, Hop",
+          "text": [
+            "A green frog sits on a lily pad.",
+            "A bug flies by.",
+            "Hop! The frog jumps up high.",
+            "Then he sits on his lily pad again."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw the green frog on his lily pad.",
+              "hints": [
+                "The frog is green.",
+                "A lily pad is a big round leaf on the water."
+              ],
+              "check": [
+                {
+                  "label": "frog",
+                  "icon": "🐸"
+                },
+                {
+                  "label": "lily pad",
+                  "icon": "🍃"
+                },
+                {
+                  "label": "water",
+                  "icon": "💧"
+                }
+              ]
+            },
+            {
+              "ask": "Draw the frog jumping up high to see the bug.",
+              "hints": [
+                "The frog is up in the air.",
+                "Draw a little bug flying by."
+              ],
+              "check": [
+                {
+                  "label": "frog",
+                  "icon": "🐸"
+                },
+                {
+                  "label": "bug",
+                  "icon": "🐞"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "k": [
+        {
+          "id": "tess-garden",
+          "title": "Tess Grows a Sunflower",
+          "text": [
+            "Tess put a seed in the dirt.",
+            "She gave it water every day.",
+            "A little green sprout came up.",
+            "It grew and grew, taller than Tess!",
+            "One morning, a big yellow sunflower opened."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw Tess giving water to her seed.",
+              "hints": [
+                "What does Tess use to give water?",
+                "Is the seed under the dirt?"
+              ],
+              "check": [
+                {
+                  "label": "Tess",
+                  "icon": "👧"
+                },
+                {
+                  "label": "water",
+                  "icon": "💧"
+                },
+                {
+                  "label": "dirt",
+                  "icon": "🟫"
+                }
+              ]
+            },
+            {
+              "ask": "Draw the sunflower that is taller than Tess.",
+              "hints": [
+                "Make the flower taller than the girl.",
+                "The flower is big and yellow."
+              ],
+              "check": [
+                {
+                  "label": "sunflower",
+                  "icon": "🌻"
+                },
+                {
+                  "label": "Tess",
+                  "icon": "👧"
+                },
+                {
+                  "label": "taller",
+                  "icon": "📏"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ben-snow",
+          "title": "Ben's Snow Friend",
+          "text": [
+            "It snowed all night.",
+            "Ben put on his hat and his boots.",
+            "He rolled a big snowball, then a small one.",
+            "He gave his snowman two sticks for arms.",
+            "Ben waved, and he wished his snowman could wave back."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw Ben and his snowman.",
+              "hints": [
+                "A snowman has a big ball and a small ball.",
+                "Do not forget the stick arms!"
+              ],
+              "check": [
+                {
+                  "label": "Ben",
+                  "icon": "👦"
+                },
+                {
+                  "label": "snowman",
+                  "icon": "⛄"
+                },
+                {
+                  "label": "stick arms",
+                  "icon": "🪵"
+                }
+              ]
+            },
+            {
+              "ask": "Draw Ben getting ready to go out in the snow.",
+              "hints": [
+                "What did Ben put on?",
+                "Is it warm or cold outside?"
+              ],
+              "check": [
+                {
+                  "label": "hat",
+                  "icon": "🧢"
+                },
+                {
+                  "label": "boots",
+                  "icon": "🥾"
+                },
+                {
+                  "label": "snow",
+                  "icon": "❄️"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "lost-kite",
+          "title": "The Kite in the Tree",
+          "text": [
+            "Ana and Grandpa flew a kite at the park.",
+            "The wind blew hard.",
+            "Oh no! The kite got stuck in a tall tree.",
+            "Grandpa held Ana up high.",
+            "Ana pulled the string, and the kite came down."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw the kite stuck in the tall tree.",
+              "hints": [
+                "Where is the kite?",
+                "Make the tree very tall."
+              ],
+              "check": [
+                {
+                  "label": "tree",
+                  "icon": "🌳"
+                },
+                {
+                  "label": "kite",
+                  "icon": "🪁"
+                }
+              ]
+            },
+            {
+              "ask": "Draw Grandpa holding Ana up high to get the kite.",
+              "hints": [
+                "Who is up high?",
+                "Who is helping her?"
+              ],
+              "check": [
+                {
+                  "label": "Ana",
+                  "icon": "👧"
+                },
+                {
+                  "label": "Grandpa",
+                  "icon": "👴"
+                },
+                {
+                  "label": "kite",
+                  "icon": "🪁"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "pet-fish",
+          "title": "Max Gets a Fish",
+          "text": [
+            "Max got a little fish.",
+            "It was orange with a white stripe.",
+            "Max named his fish Bubbles.",
+            "He fed Bubbles every morning.",
+            "Bubbles swam to the top to say hello."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw Bubbles in the fish tank.",
+              "hints": [
+                "What color is Bubbles?",
+                "Does Bubbles have a stripe?"
+              ],
+              "check": [
+                {
+                  "label": "fish",
+                  "icon": "🐠"
+                },
+                {
+                  "label": "orange",
+                  "icon": "🟠"
+                },
+                {
+                  "label": "stripe",
+                  "icon": "⚪"
+                },
+                {
+                  "label": "tank",
+                  "icon": "🫙"
+                }
+              ]
+            },
+            {
+              "ask": "Draw Max feeding Bubbles in the morning.",
+              "hints": [
+                "How do we know it is morning?",
+                "What does Max give Bubbles?"
+              ],
+              "check": [
+                {
+                  "label": "Max",
+                  "icon": "👦"
+                },
+                {
+                  "label": "fish",
+                  "icon": "🐠"
+                },
+                {
+                  "label": "sun",
+                  "icon": "☀️"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "bus-ride",
+          "title": "The Big Blue Bus",
+          "text": [
+            "Sam rode the bus with Mom.",
+            "The bus was big and blue.",
+            "Sam sat by the window.",
+            "He saw a fire truck, a park, and a dog on a walk.",
+            "Ding! It was time to get off."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw what Sam saw from the bus window.",
+              "hints": [
+                "Sam saw three things.",
+                "Can you remember them all?"
+              ],
+              "check": [
+                {
+                  "label": "fire truck",
+                  "icon": "🚒"
+                },
+                {
+                  "label": "park",
+                  "icon": "🌳"
+                },
+                {
+                  "label": "dog",
+                  "icon": "🐕"
+                }
+              ]
+            },
+            {
+              "ask": "Draw the big blue bus with Sam inside.",
+              "hints": [
+                "Where did Sam sit?",
+                "What color is the bus?"
+              ],
+              "check": [
+                {
+                  "label": "blue bus",
+                  "icon": "🚌"
+                },
+                {
+                  "label": "window",
+                  "icon": "🪟"
+                },
+                {
+                  "label": "Sam",
+                  "icon": "👦"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "g1": [
+        {
+          "id": "lena-lemonade",
+          "title": "Lena's Lemonade Stand",
+          "text": [
+            "Lena wanted to buy a new book.",
+            "She made a lemonade stand with a big sign.",
+            "At first, no one stopped.",
+            "Then Lena had an idea.",
+            "She added cold ice and a smile, and she called out, \"Fresh lemonade!\"",
+            "Soon there was a long line of thirsty neighbors.",
+            "By the end of the day, Lena had enough money for her book."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw Lena's stand when there was a long line.",
+              "hints": [
+                "What was on her sign?",
+                "Who was waiting in line?",
+                "Is Lena smiling?"
+              ],
+              "check": [
+                {
+                  "label": "stand",
+                  "icon": "🛖"
+                },
+                {
+                  "label": "sign",
+                  "icon": "🪧"
+                },
+                {
+                  "label": "line of people",
+                  "icon": "👥"
+                },
+                {
+                  "label": "lemonade",
+                  "icon": "🍋"
+                }
+              ]
+            },
+            {
+              "ask": "Draw the part when no one stopped at the stand.",
+              "hints": [
+                "How did Lena feel then?",
+                "How can you show that in her face?"
+              ],
+              "check": [
+                {
+                  "label": "Lena",
+                  "icon": "👧"
+                },
+                {
+                  "label": "stand",
+                  "icon": "🛖"
+                },
+                {
+                  "label": "sad face",
+                  "icon": "😟"
+                }
+              ]
+            },
+            {
+              "ask": "Draw the end of the story.",
+              "hints": [
+                "What did Lena buy with her money?",
+                "How does she feel now?"
+              ],
+              "check": [
+                {
+                  "label": "Lena",
+                  "icon": "👧"
+                },
+                {
+                  "label": "book",
+                  "icon": "📕"
+                },
+                {
+                  "label": "happy face",
+                  "icon": "😊"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "owl-noise",
+          "title": "The Noise in the Night",
+          "text": [
+            "Jay heard a noise outside his window.",
+            "Hoo, hoo!",
+            "He was a little scared.",
+            "Dad turned on the flashlight.",
+            "In the tree sat a round, gray owl with big yellow eyes.",
+            "Jay waved. \"Good night, owl!\""
+          ],
+          "scenes": [
+            {
+              "ask": "Draw what Jay and Dad saw in the tree.",
+              "hints": [
+                "What did the owl look like?",
+                "What color were its eyes?",
+                "Is it day or night?"
+              ],
+              "check": [
+                {
+                  "label": "owl",
+                  "icon": "🦉"
+                },
+                {
+                  "label": "tree",
+                  "icon": "🌳"
+                },
+                {
+                  "label": "yellow eyes",
+                  "icon": "🟡"
+                },
+                {
+                  "label": "night sky",
+                  "icon": "🌙"
+                }
+              ]
+            },
+            {
+              "ask": "Draw Jay when he first heard the noise.",
+              "hints": [
+                "Where was Jay?",
+                "How did he feel?"
+              ],
+              "check": [
+                {
+                  "label": "Jay",
+                  "icon": "👦"
+                },
+                {
+                  "label": "window",
+                  "icon": "🪟"
+                },
+                {
+                  "label": "scared face",
+                  "icon": "😨"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "rain-picnic",
+          "title": "The Picnic Inside",
+          "text": [
+            "Mia and her brother planned a picnic at the park.",
+            "They packed sandwiches, apples, and a blanket.",
+            "Then dark clouds rolled in, and it began to pour.",
+            "Mia frowned, but her brother had a plan.",
+            "They put the blanket on the living room floor.",
+            "They had a picnic inside while the rain tapped on the windows."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw the picnic inside the house.",
+              "hints": [
+                "Where did they put the blanket?",
+                "What food did they pack?",
+                "What is happening outside the window?"
+              ],
+              "check": [
+                {
+                  "label": "blanket",
+                  "icon": "🧺"
+                },
+                {
+                  "label": "food",
+                  "icon": "🥪"
+                },
+                {
+                  "label": "window with rain",
+                  "icon": "🌧️"
+                },
+                {
+                  "label": "Mia and her brother",
+                  "icon": "👧"
+                }
+              ]
+            },
+            {
+              "ask": "Draw the moment the rain started.",
+              "hints": [
+                "What did the sky look like?",
+                "How did Mia feel?"
+              ],
+              "check": [
+                {
+                  "label": "dark clouds",
+                  "icon": "☁️"
+                },
+                {
+                  "label": "rain",
+                  "icon": "🌧️"
+                },
+                {
+                  "label": "Mia",
+                  "icon": "👧"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "big-race",
+          "title": "Turtle's Plan",
+          "text": [
+            "The animals had a race to the big oak tree.",
+            "Rabbit zoomed ahead.",
+            "Turtle was slow, but he had a plan.",
+            "He walked and walked and never stopped.",
+            "Rabbit took a nap under a bush.",
+            "When Rabbit woke up, Turtle was at the oak tree!"
+          ],
+          "scenes": [
+            {
+              "ask": "Draw Rabbit napping while Turtle keeps going.",
+              "hints": [
+                "Where did Rabbit nap?",
+                "Where is Turtle going?"
+              ],
+              "check": [
+                {
+                  "label": "Rabbit",
+                  "icon": "🐇"
+                },
+                {
+                  "label": "bush",
+                  "icon": "🌿"
+                },
+                {
+                  "label": "Turtle",
+                  "icon": "🐢"
+                }
+              ]
+            },
+            {
+              "ask": "Draw the end of the race.",
+              "hints": [
+                "Who got to the oak tree first?",
+                "How does Rabbit feel?"
+              ],
+              "check": [
+                {
+                  "label": "Turtle",
+                  "icon": "🐢"
+                },
+                {
+                  "label": "oak tree",
+                  "icon": "🌳"
+                },
+                {
+                  "label": "Rabbit",
+                  "icon": "🐇"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "g2": [
+        {
+          "id": "robot-garden",
+          "title": "The Robot Who Loved Flowers",
+          "text": [
+            "In a busy city lived a small robot named Bolt.",
+            "Bolt's job was to sweep the sidewalks every night.",
+            "One night, he found a tiny plant growing in a crack.",
+            "Bolt swept around it very carefully.",
+            "He came back every night to give it a drop of water.",
+            "Weeks later, the plant bloomed into a bright purple flower.",
+            "People stopped to smile at it, and Bolt felt proud."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw the moment Bolt felt proud.",
+              "hints": [
+                "What made Bolt proud?",
+                "Who is looking at the flower?",
+                "How can a robot show a feeling?"
+              ],
+              "check": [
+                {
+                  "label": "Bolt",
+                  "icon": "🤖"
+                },
+                {
+                  "label": "purple flower",
+                  "icon": "🌸"
+                },
+                {
+                  "label": "people smiling",
+                  "icon": "😊"
+                },
+                {
+                  "label": "city",
+                  "icon": "🏙️"
+                }
+              ],
+              "talk": "Why do you think Bolt took care of the plant?"
+            },
+            {
+              "ask": "Draw the night Bolt found the tiny plant.",
+              "hints": [
+                "Where was the plant growing?",
+                "What time of day was it?",
+                "What was Bolt doing when he found it?"
+              ],
+              "check": [
+                {
+                  "label": "Bolt",
+                  "icon": "🤖"
+                },
+                {
+                  "label": "crack in the sidewalk",
+                  "icon": "〰️"
+                },
+                {
+                  "label": "tiny plant",
+                  "icon": "🌱"
+                },
+                {
+                  "label": "night",
+                  "icon": "🌙"
+                }
+              ],
+              "talk": "What clues tell you it was night?"
+            }
+          ]
+        },
+        {
+          "id": "map-attic",
+          "title": "The Map in the Attic",
+          "text": [
+            "Omar and Grandma were cleaning the dusty attic.",
+            "Inside an old trunk, Omar found a folded map.",
+            "It showed the backyard, a big rock, and a red X.",
+            "They counted ten steps from the rock to the X.",
+            "Omar dug until his shovel hit something hard.",
+            "It was a tin box full of Grandma's old marbles and photos from when she was a girl.",
+            "Grandma laughed. \"I hid that box sixty years ago!\""
+          ],
+          "scenes": [
+            {
+              "ask": "Draw what was inside the tin box.",
+              "hints": [
+                "What did the story say was inside?",
+                "What might the old photos show?"
+              ],
+              "check": [
+                {
+                  "label": "tin box",
+                  "icon": "📦"
+                },
+                {
+                  "label": "marbles",
+                  "icon": "🔵"
+                },
+                {
+                  "label": "old photos",
+                  "icon": "🖼️"
+                }
+              ],
+              "talk": "How do you think Grandma felt when she saw the box again?"
+            },
+            {
+              "ask": "Draw the map Omar found.",
+              "hints": [
+                "What three things were on the map?",
+                "How can you show ten steps?"
+              ],
+              "check": [
+                {
+                  "label": "backyard",
+                  "icon": "🏡"
+                },
+                {
+                  "label": "big rock",
+                  "icon": "🪨"
+                },
+                {
+                  "label": "red X",
+                  "icon": "❌"
+                },
+                {
+                  "label": "steps",
+                  "icon": "👣"
+                }
+              ],
+              "talk": "Why would someone hide a box and make a map?"
+            }
+          ]
+        },
+        {
+          "id": "lost-mitten",
+          "title": "Whose Mitten?",
+          "text": [
+            "Zoe found one red mitten in the snow by the school gate.",
+            "It had a white star sewn on the thumb.",
+            "She did not know whose it was.",
+            "At recess, she looked at everyone's hands.",
+            "A boy named Leo had one red mitten with a white star, and one cold bare hand.",
+            "Zoe ran over and gave him the mitten."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw how Zoe solved the mystery.",
+              "hints": [
+                "What clue on the mitten helped her?",
+                "How was Leo's other hand?"
+              ],
+              "check": [
+                {
+                  "label": "Zoe",
+                  "icon": "👧"
+                },
+                {
+                  "label": "Leo",
+                  "icon": "👦"
+                },
+                {
+                  "label": "red mitten",
+                  "icon": "🧤"
+                },
+                {
+                  "label": "white star",
+                  "icon": "⭐"
+                }
+              ],
+              "talk": "What clues did Zoe use? What would you have done?"
+            },
+            {
+              "ask": "Draw what happens the next day.",
+              "hints": [
+                "The story does not say. You decide!",
+                "Would Leo and Zoe play together?"
+              ],
+              "check": [
+                {
+                  "label": "Zoe",
+                  "icon": "👧"
+                },
+                {
+                  "label": "Leo",
+                  "icon": "👦"
+                },
+                {
+                  "label": "something new",
+                  "icon": "✨"
+                }
+              ],
+              "talk": "What makes you think that would happen?"
+            }
+          ]
+        },
+        {
+          "id": "storm-boat",
+          "title": "The Fishing Boat",
+          "text": [
+            "Captain Rosa took her boat out early in the morning.",
+            "The sea was calm and blue.",
+            "By lunch, gray clouds covered the sky, and the waves grew tall.",
+            "Rosa saw the lighthouse blinking on the cliff.",
+            "She steered toward the light and reached the harbor safely.",
+            "That night she thanked the lighthouse keeper with a basket of fish."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw the sea after lunch.",
+              "hints": [
+                "How did the sky change?",
+                "What happened to the waves?",
+                "What helped Rosa?"
+              ],
+              "check": [
+                {
+                  "label": "tall waves",
+                  "icon": "🌊"
+                },
+                {
+                  "label": "gray clouds",
+                  "icon": "☁️"
+                },
+                {
+                  "label": "boat",
+                  "icon": "⛵"
+                },
+                {
+                  "label": "lighthouse",
+                  "icon": "🗼"
+                }
+              ],
+              "talk": "How do you think Rosa felt during the storm?"
+            },
+            {
+              "ask": "Draw the morning at the start of the story.",
+              "hints": [
+                "How was the sea in the morning?",
+                "Compare it with later in the story."
+              ],
+              "check": [
+                {
+                  "label": "calm sea",
+                  "icon": "🌊"
+                },
+                {
+                  "label": "boat",
+                  "icon": "⛵"
+                },
+                {
+                  "label": "sun",
+                  "icon": "☀️"
+                }
+              ],
+              "talk": "What changed between the morning and lunch?"
+            }
+          ]
+        }
+      ],
+      "g3": [
+        {
+          "id": "bridge-builders",
+          "title": "The Bridge Builders",
+          "text": [
+            "The creek behind Priya's house was too wide to jump.",
+            "On the other side was the best climbing tree in the neighborhood.",
+            "Priya and her friend Marcus decided to build a bridge.",
+            "Their first bridge was a single plank, and it bent and cracked in the middle.",
+            "Marcus suggested putting a big flat rock in the middle of the creek as a support.",
+            "They laid two planks side by side, resting on the rock.",
+            "This time the bridge held, and they crossed carefully, one at a time.",
+            "That afternoon they sat high in the climbing tree and planned their next project."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw the bridge that worked.",
+              "hints": [
+                "What did they put in the middle of the creek?",
+                "How many planks did they use?",
+                "Show how the planks rest on the rock."
+              ],
+              "check": [
+                {
+                  "label": "creek",
+                  "icon": "🏞️"
+                },
+                {
+                  "label": "rock support",
+                  "icon": "🪨"
+                },
+                {
+                  "label": "two planks",
+                  "icon": "🪵"
+                },
+                {
+                  "label": "Priya and Marcus",
+                  "icon": "👫"
+                }
+              ],
+              "talk": "Why did the second bridge work when the first one cracked?"
+            },
+            {
+              "ask": "Draw the problem in the story.",
+              "hints": [
+                "What went wrong the first time?",
+                "How can you show something bending and cracking?"
+              ],
+              "check": [
+                {
+                  "label": "single plank",
+                  "icon": "🪵"
+                },
+                {
+                  "label": "crack",
+                  "icon": "⚡"
+                },
+                {
+                  "label": "creek",
+                  "icon": "🏞️"
+                }
+              ],
+              "talk": "What would you have tried next?"
+            },
+            {
+              "ask": "Draw their next project.",
+              "hints": [
+                "The story does not say what it is. Use your imagination!",
+                "Use what they learned about building."
+              ],
+              "check": [
+                {
+                  "label": "Priya and Marcus",
+                  "icon": "👫"
+                },
+                {
+                  "label": "a new building plan",
+                  "icon": "📐"
+                }
+              ],
+              "talk": "What did they learn that would help them next time?"
+            }
+          ]
+        },
+        {
+          "id": "night-market",
+          "title": "The Night Market",
+          "text": [
+            "Every summer, the town square turned into a night market.",
+            "Strings of paper lanterns glowed red and gold above the stalls.",
+            "Ravi could smell roasted corn and hear a drummer near the fountain.",
+            "His job was to help his aunt sell handmade kites.",
+            "When a little girl could not afford a kite, Ravi gave her a small one he had made himself.",
+            "Later, the girl came back with her father, who bought three kites.",
+            "Ravi's aunt winked at him. \"Kindness is good business,\" she said."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw the night market using the story's details.",
+              "hints": [
+                "What lights hung above the stalls?",
+                "What could Ravi smell and hear?",
+                "Where was the drummer?"
+              ],
+              "check": [
+                {
+                  "label": "lanterns",
+                  "icon": "🏮"
+                },
+                {
+                  "label": "stalls",
+                  "icon": "🛖"
+                },
+                {
+                  "label": "roasted corn",
+                  "icon": "🌽"
+                },
+                {
+                  "label": "drummer",
+                  "icon": "🥁"
+                },
+                {
+                  "label": "fountain",
+                  "icon": "⛲"
+                }
+              ],
+              "talk": "Which details helped you picture the market?"
+            },
+            {
+              "ask": "Draw the moment that changed the story.",
+              "hints": [
+                "Which choice did Ravi make?",
+                "How did the little girl feel?"
+              ],
+              "check": [
+                {
+                  "label": "Ravi",
+                  "icon": "👦"
+                },
+                {
+                  "label": "little girl",
+                  "icon": "👧"
+                },
+                {
+                  "label": "small kite",
+                  "icon": "🪁"
+                }
+              ],
+              "talk": "What did the aunt mean by 'Kindness is good business'?"
+            }
+          ]
+        },
+        {
+          "id": "glacier-letter",
+          "title": "A Letter from the Glacier",
+          "text": [
+            "Dear Nora, I am writing from a research camp next to a glacier.",
+            "The ice is so blue it almost glows.",
+            "Every day we measure how far the edge of the glacier has moved.",
+            "This year it moved back much farther than last year.",
+            "At night the sky fills with green ribbons of light called the northern lights.",
+            "I miss you, and I will bring you a smooth gray stone from the glacier's edge.",
+            "Love, Aunt June."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw Aunt June's camp next to the glacier.",
+              "hints": [
+                "What color is the ice?",
+                "What would a research camp need?",
+                "What does Aunt June measure?"
+              ],
+              "check": [
+                {
+                  "label": "glacier",
+                  "icon": "🧊"
+                },
+                {
+                  "label": "tents",
+                  "icon": "⛺"
+                },
+                {
+                  "label": "blue ice",
+                  "icon": "🔵"
+                },
+                {
+                  "label": "measuring tool",
+                  "icon": "📏"
+                }
+              ],
+              "talk": "Why would scientists measure the glacier every day?"
+            },
+            {
+              "ask": "Draw the night sky at the camp.",
+              "hints": [
+                "What did the letter say fills the sky?",
+                "What color are the ribbons of light?"
+              ],
+              "check": [
+                {
+                  "label": "northern lights",
+                  "icon": "🌌"
+                },
+                {
+                  "label": "green ribbons",
+                  "icon": "🟢"
+                },
+                {
+                  "label": "camp",
+                  "icon": "⛺"
+                }
+              ],
+              "talk": "How is this sky different from the sky where you live?"
+            }
+          ]
+        },
+        {
+          "id": "museum-mystery",
+          "title": "The Missing Dinosaur Tooth",
+          "text": [
+            "On a class trip, Mr. Diaz showed the class a fossil tooth in a glass case.",
+            "After lunch, the case was empty.",
+            "Ella noticed sand on the floor near the case and tiny footprints leading to the sandbox exhibit.",
+            "In the sandbox, a museum worker was showing kids how to dig for fossils.",
+            "She was using the real tooth by mistake instead of the plastic one!",
+            "Ella pointed out the mix-up, and the worker laughed and put the real tooth back."
+          ],
+          "scenes": [
+            {
+              "ask": "Draw the clues Ella found.",
+              "hints": [
+                "What was on the floor?",
+                "Where did the footprints lead?"
+              ],
+              "check": [
+                {
+                  "label": "empty case",
+                  "icon": "🫙"
+                },
+                {
+                  "label": "sand",
+                  "icon": "🟨"
+                },
+                {
+                  "label": "footprints",
+                  "icon": "👣"
+                },
+                {
+                  "label": "sandbox",
+                  "icon": "🏖️"
+                }
+              ],
+              "talk": "Which clue was the most important? Why?"
+            },
+            {
+              "ask": "Draw how the mystery was solved.",
+              "hints": [
+                "Who had the tooth?",
+                "Why did she have it?"
+              ],
+              "check": [
+                {
+                  "label": "museum worker",
+                  "icon": "🧑"
+                },
+                {
+                  "label": "tooth",
+                  "icon": "🦷"
+                },
+                {
+                  "label": "kids digging",
+                  "icon": "⛏️"
+                },
+                {
+                  "label": "Ella",
+                  "icon": "👧"
+                }
+              ],
+              "talk": "Was anyone really a thief? How do you know?"
+            }
+          ]
+        }
+      ]
+    },
+    "UI": {
+      "intro": "Listen to the story. Then you will draw a part of it!",
+      "go": "Now draw a part of the story!",
+      "hint": "Here is a hint.",
+      "check": "What did you draw? Tap the story details in your picture.",
+      "done": "Wonderful picture!",
+      "talk": "Tell a grown-up about your picture."
+    }
+  }
+}

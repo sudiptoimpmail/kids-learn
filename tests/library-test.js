@@ -18,7 +18,7 @@ const SHOTS = (() => { const i = process.argv.indexOf('--shots'); return i > 0 ?
   await p.evaluate(() => { state.grade = 'prek'; state.voice = true; state.stats = { days: {}, skills: {} }; renderHome(); });
   // 2. shelf → cover
   await p.locator('#grid .tile[data-cat="library"]').click();
-  try { await p.waitForSelector('.lib-book', { timeout: 8000 }); }
+  try { await p.waitForSelector('.lib-book[data-id]', { timeout: 8000 }); }
   catch (error) {
     const diag = await p.evaluate(async () => {
       let fetchResult;
@@ -32,7 +32,7 @@ const SHOTS = (() => { const i = process.argv.indexOf('--shots'); return i > 0 ?
     throw new Error('Story Time bookshelf did not become visible: '+JSON.stringify({diag,errors:errs,error:String(error)}));
   }
   if (SHOTS) await p.screenshot({ path: SHOTS + '/0-shelf.png' });
-  await p.locator('.lib-book').first().click(); await p.waitForSelector('.lib-cover');
+  await p.locator('.lib-book[data-id]').first().click(); await p.waitForSelector('.lib-cover');
   if (SHOTS) await p.screenshot({ path: SHOTS + '/1-cover.png' });
   // 3. read to me: words light up in turn on page 1
   await p.locator('[data-a="listen"]').click(); await p.waitForSelector('.lib-text .w');

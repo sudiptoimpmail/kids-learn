@@ -178,6 +178,7 @@
       "animal-photos",
       "landmark-online-previews",
       "upper-grade-stories",
+      "draw-stories",
       "explorer-math",
       "explorer-science",
       "country",
@@ -277,7 +278,8 @@
         "coloring-numbers"
       ],
       "entry": [
-        "openGame"
+        "openGame",
+        "openStoryDraw"
       ]
     }
   }
