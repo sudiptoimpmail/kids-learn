@@ -10,10 +10,23 @@ $('#gameFull').onclick = () => {
   setTimeout(() => dispatchEvent(new Event('resize')), 250);
 };
 document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && document.body.classList.contains('immersive')) gameFullOff(); setTimeout(() => dispatchEvent(new Event('resize')), 200); });
-$('#gameBack').onclick = () => { gameFullOff(); stopGame(); if (brainMode) { renderHome(); show('home'); return; } renderPZ(); show('playzone'); if (!parentMode) startPlayTimer(); };
+$('#gameBack').onclick = () => { gameFullOff(); stopGame(); if (storyDrawBack) { const back = storyDrawBack; storyDrawBack = null; back(); return; } if (brainMode) { renderHome(); show('home'); return; } renderPZ(); show('playzone'); if (!parentMode) startPlayTimer(); };
 
+// Draw the Story (from Story Time): a blank drawing page with the part of the story to draw. It is learning, not
+// play time, so it uses no play minutes; Back and Done return to the story.
+let storyDrawBack = null;
+function openStoryDraw(opts) {
+  stopGame(); curGame = null;
+  storyDrawBack = opts.back;
+  document.body.style.setProperty('--theme', '#c2410c');
+  $('#gameTitle').textContent = '✏️ ' + opts.name;
+  $('#gameArea').innerHTML = ''; $('#gameArea').className = 'game-area g-draw g-storydraw';
+  show('game');
+  startDraw(null, opts);
+}
 function openGame(id) {
   stopGame();                      // never two games running at once
+  storyDrawBack = null;
   const g = GAMES.find((x) => x.id === id);
   if (!g || (brainMode && !brainVisible(g)) || (!parentMode && !gameForGrade(g))) return;
   if (!brainMode && !parentMode && !playOpen()) { timeUp(); return; }
@@ -1540,17 +1553,19 @@ function drawRefs(lv) {
 const DRAW_GUIDE = { 1: [14, 0.45], 2: [9, 0.3], 3: [4, 0.2], 4: [3, 0.1] };
 const INK = ['#2b2140', '#ff6b6b', '#ff922b', '#fcc419', '#40c057', '#20c997', '#4dabf7', '#7950f2', '#f783ac', '#a0522d'];
 
-function startDraw(refIndex) {
+function startDraw(refIndex, story = null) {
   const lv = GL('draw');
   const refs = drawRefs(lv);
-  const ref = refs[refIndex != null ? refIndex % refs.length : Math.floor(Math.random() * refs.length)];
+  // a story page is blank: no picture to copy, the child's own idea
+  const ref = story ? { name: story.name, d: '' } : refs[refIndex != null ? refIndex % refs.length : Math.floor(Math.random() * refs.length)];
   const trace = lv <= 2;   // 2nd grade and up draw (copy); their guide lines are thin, then very faint
   const area = $('#gameArea');
   // same layout as the Coloring Book: the drawing pad takes the height, one rail holds everything else
   area.innerHTML = `<div class="cb dr">
-    <div class="cb-pic"><div class="dr-pad"><canvas class="dr-fill"></canvas>${(([w, o]) => `<div class="dr-guide dr-guide-${Math.min(4, lv)}" style="opacity:${o}">${drawSVG(ref.d, w)}</div>`)(DRAW_GUIDE[Math.min(4, Math.max(1, lv))])}<canvas class="dr-cv"></canvas></div></div>
+    <div class="cb-pic"><div class="dr-pad"><canvas class="dr-fill"></canvas>${story ? '' : (([w, o]) => `<div class="dr-guide dr-guide-${Math.min(4, lv)}" style="opacity:${o}">${drawSVG(ref.d, w)}</div>`)(DRAW_GUIDE[Math.min(4, Math.max(1, lv))])}<canvas class="dr-cv"></canvas>
+      ${story ? `<div class="sd-ask"><button class="sd-hear" data-a="ask" aria-label="Hear it again">🔊</button><span>${esc(story.ask)}</span></div>` : ''}</div></div>
     <div class="cb-rail" role="toolbar" aria-label="Drawing tools">
-      <button class="cb-btn" data-a="choose" aria-label="Pick another picture">🖼️</button>
+      ${story ? '<button class="cb-round sd-done" data-a="done" aria-label="I am done">✅</button><button class="cb-btn" data-a="hint" aria-label="Need a hint?">💡</button>' : '<button class="cb-btn" data-a="choose" aria-label="Pick another picture">🖼️</button>'}
       <button class="cb-round" data-a="drtool" aria-label="Choose a pencil, brush or paint">✏️</button>
       <button class="cb-round cb-color" data-a="drcolor" aria-label="Choose a colour" style="--c:${CB_COLORS[0]}"></button>
       <button class="cb-round dr-tool" data-t="erase" aria-label="Eraser">🧽</button>
@@ -1561,7 +1576,7 @@ function startDraw(refIndex) {
     <div class="cb-pop" data-pop="tool" hidden><div class="cb-tools dr-tools2"><button class="dr-size" data-s="3" data-tool="pencil" aria-label="Thin pencil">✏<small>Thin</small></button><button class="dr-size on" data-s="7" data-tool="pencil" aria-label="Thick pencil">✏<small>Thick</small></button><button class="dr-size" data-s="14" data-tool="brush" aria-label="Thin brush">🖌<small>Thin</small></button><button class="dr-size" data-s="28" data-tool="brush" aria-label="Thick brush">🖌<small>Thick</small></button>
       <button class="dr-tool" data-t="bucket" aria-label="Pour paint"><svg class="bk-ico" viewBox="0 0 36 36" aria-hidden="true"><g transform="rotate(-22 18 20)"><path d="M7 14h20l-2.4 15.2a2.4 2.4 0 0 1-2.4 2H11.8a2.4 2.4 0 0 1-2.4-2z" fill="#e9ecef" stroke="#495057" stroke-width="1.8" stroke-linejoin="round"/><path d="M7.6 17h18.8l-.6 4H8.2z" fill="var(--pour,#4dabf7)"/><path d="M8 14c0-5 4-8 9-8s9 3 9 8" fill="none" stroke="#495057" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="17" cy="14" rx="10" ry="2.2" fill="var(--pour,#4dabf7)" stroke="#495057" stroke-width="1.6"/></g><path d="M29 22c2.6 3.4 3.8 5.4 3.8 7a3.8 3.8 0 0 1-7.6 0c0-1.6 1.2-3.6 3.8-7z" fill="var(--pour,#4dabf7)" stroke="#495057" stroke-width="1.4"/></svg><small>Fill</small></button></div></div>
   </div>`;
-  say(trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
+  say(story ? story.ask : trace ? 'Trace the picture with your finger!' : 'Look at the picture, and draw your own!');
   const cv = $('.dr-cv', area), pad = $('.dr-pad', area);
   const dpr = Math.min(devicePixelRatio || 1, 2);
   // The paper is as big as the screen allows, so it is usually not square: W wide, H tall. The guide picture sits in
@@ -1603,7 +1618,7 @@ function startDraw(refIndex) {
   //    More help means a smaller spill over the lines.
   const LN = 300, LH = Math.max(1, Math.round(LN * H / W)), guideImg = new Image(); let guideOk = false;
   guideImg.onload = () => (guideOk = true);
-  guideImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(drawSVG(ref.d, DRAW_GUIDE[Math.min(4, Math.max(1, lv))][0]).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" '));
+  if (!story) guideImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(drawSVG(ref.d, DRAW_GUIDE[Math.min(4, Math.max(1, lv))][0]).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" '));
   const wallCv = document.createElement('canvas'); wallCv.width = LN; wallCv.height = LH;
   const layer = document.createElement('canvas'); layer.width = cv.width; layer.height = cv.height;
   // The boundary lines, as pixels: the guide picture and her own pencil lines (never brush paint or poured paint).
@@ -1813,13 +1828,18 @@ function startDraw(refIndex) {
     const t = document.createElement('canvas'); t.width = t.height = 240;
     const tc = t.getContext('2d'); tc.fillStyle = '#fff'; tc.fillRect(0, 0, 240, 240); { const k = 240 / Math.max(W, H), tw = W * k, th = H * k, tx = (240 - tw) / 2, ty = (240 - th) / 2; tc.drawImage(fc, tx, ty, tw, th); tc.drawImage(cv, tx, ty, tw, th); }   // the whole paper, fitted in
     state.drawings = [{ id: entryId, img: t.toDataURL('image/jpeg', 0.7), name: ref.name }, ...others].slice(0, 12);
-    if (!counted && strokes.length >= 4) { counted = true; gameLevelUp('draw', 3); } else save();
+    if (!story && !counted && strokes.length >= 4) { counted = true; gameLevelUp('draw', 3); } else save();
   };
   const autosave = (now = false) => { clearTimeout(saveTimer); if (now) keepDrawing(); else saveTimer = setTimeout(keepDrawing, 600); };
   drawAutosave = autosave; drawFlush = () => { if (saveTimer) autosave(true); };
   // leaving the pad (another picture, the gallery, Home) saves what is there straight away
   const leave = (go) => () => { sfx.tap(); if (saveTimer) autosave(true); go(); };
-  area.querySelector('[data-a="choose"]').onclick = leave(drawChooser);
+  if (story) {
+    area.querySelector('[data-a="ask"]').onclick = () => { sfx.tap(); say(story.ask); };
+    area.querySelector('[data-a="hint"]').onclick = () => { sfx.tap(); story.onHint?.(); };
+    area.querySelector('[data-a="done"]').onclick = () => { sfx.tap(); if (!strokes.length) { say('Draw a little more first!'); return; }
+      autosave(true); const entry = (state.drawings || []).find((d) => d.id === entryId); const back = storyDrawBack; storyDrawBack = null; stopGame(); story.onDone?.(entry && entry.img); if (!story.onDone && back) back(); };
+  } else area.querySelector('[data-a="choose"]').onclick = leave(drawChooser);
   area.querySelector('[data-a="gallery"]').onclick = leave(drawGallery);
   ArtMusic.button(area);
   if (testFeatureAvailable()) window.__draw = { pour: (x, y) => { const op = { fill: true, x, y, color }; const ok = fillAt(op); if (ok) strokes.push(op); return ok; }, wall: (x, y) => wallPixels(LN, strokes)[(Math.min(LH - 1, Math.round(y * LN / W)) * LN + Math.min(LN - 1, Math.round(x * LN / W))) * 4 + 3] > 70, H, S, GX, GY, fillInk: (x, y) => fctx.getImageData(Math.round(x * dpr), Math.round(y * dpr), 1, 1).data[3], erasing: () => erase, bucketOn: () => bucket, assist, tidy: (pts) => { const s = { pts, size: 7 }; tidy(s); return s.pts; }, brush: (pts, sz = 26) => { const s = { color, size: sz, tool: 'brush', erase: false, pts }; const clip = shapeAt(pts[0][0], pts[0][1], sz); if (clip) s.clip = clip; strokes.push(s); replay(); autosave(); return !!clip; }, W, guideReady: () => guideOk, inkAt: (x, y) => c.getImageData(Math.round(x * dpr), Math.round(y * dpr), 1, 1).data[3], strokes: () => strokes.length, add: (pts) => { strokes.push({ color, size, tool: 'pencil', erase: false, pts }); replay(); autosave(); }, saveNow: () => autosave(true), entryId };
