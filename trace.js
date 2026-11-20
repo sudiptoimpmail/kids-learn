@@ -28,12 +28,37 @@ const TRACE_LINES = [
 ];
 // Grade 1 handwriting combines spelling patterns and fine-motor formation in the existing trace engine.
 const TRACE_WORDS = ContentData.get('trace','TRACE_WORDS');
+const TRACE_WORDS_PREK = ContentData.get('trace','TRACE_WORDS_PREK'), TRACE_WORDS_K = ContentData.get('trace','TRACE_WORDS_K');
+const NUM_MAX = ContentData.get('trace','NUM_MAX'), NUM_START = ContentData.get('trace','NUM_START');
+// ---- the slow ladder ----
+// Each time an item is traced it counts once more (state.traced[set + item]). The guide fades with practice:
+// traced 0–1 times: the full gray letter with a dotted middle; 2–3 times: only the dotted middle; 4 or more: a faint
+// letter, to write on her own. Numbers open ten at a time: the next ten appears once 8 of the newest ten are traced.
+const traceCount = (set, ch) => +((state.traced || {})[set + ch] || 0);
+const guideStage = (set, ch) => { const c = traceCount(set, ch); return c >= 4 ? 2 : c >= 2 ? 1 : 0; };
+function numTop() {
+  const g = state.grade, max = NUM_MAX[g] || 20; let top = Math.min(max, NUM_START[g] || 20);
+  while (top < max) { let n = 0; for (let k = top - 9; k <= top; k++) if (traceCount('num', String(k))) n++; if (n < 8) break; top = Math.min(max, top + 10); }
+  return top;
+}
+// the child's own name, as she should write it: a capital first letter, then small letters (letters only)
+const traceName = () => { const n = (String(state.name || '').trim().split(/\s+/)[0] || '').replace(/[^A-Za-z]/g, ''); return n ? n[0].toUpperCase() + n.slice(1).toLowerCase() : ''; };
+const spellOut = (w) => [...w].map((x) => LETTER_SAY[x.toUpperCase()] || x).join('. ');
+const traceWordList = () => (state.grade === 'prek' ? TRACE_WORDS_PREK : state.grade === 'k' ? TRACE_WORDS_K : TRACE_WORDS);
+// two-digit numbers show base-ten blocks: a bar for each ten, a little square for each one
+const tensPic = (n) => `<span class="tr-tens">${'<i class="ten"></i>'.repeat(Math.floor(n / 10))}${'<i class="one"></i>'.repeat(n % 10)}</span>`;
+const tensWords = (n) => { const t = Math.floor(n / 10), o = n % 10; return `${t} ten${t === 1 ? '' : 's'}${o ? ` and ${o} one${o === 1 ? '' : 's'}` : ''}`; };
 // [shown character, sentence on screen, what the voice says, picture, count, path (lines only), start and end pictures]
 function traceItems(set) {
-  if (set === 'words') return TRACE_WORDS.map(([word, picture]) => [word, word, word, picture, 0]);
+  if (set === 'name') { const n = traceName(); if (!n) return [];
+    // her first letter on its own, then the whole name
+    return [[n[0], 'Your name starts with this letter.', `Your name starts with this letter. ${LETTER_SAY[n[0]]}.`, '🌟', 0],
+      ...(n.length > 1 ? [[n, n, `This is your name. ${spellOut(n)}.`, '🌟', 0]] : [])]; }
+  if (set === 'words') return traceWordList().map(([word, picture]) => [word, word, `${word}. ${spellOut(word)}.`, picture, 0]);
   if (set === 'lines') return TRACE_LINES.map(([chip, name, spoken, a, b, path]) => [chip, name, spoken, a && b ? `${a} ➜ ${b}` : chip, 0, path, a, b]);
-  if (set === 'num') return Array.from({ length: 20 }, (_, i) => {
-    const n = i + 1, [things, e] = NUM_THINGS[i % NUM_THINGS.length];
+  if (set === 'num') return Array.from({ length: numTop() }, (_, i) => {
+    const n = i + 1; if (n > 20) return [String(n), `${n} = ${tensWords(n)}`, `${n}.`, tensPic(n), 0, null, '', '', true];
+    const [things, e] = NUM_THINGS[i % NUM_THINGS.length];
     const w = n === 1 ? things.replace(/s$/, '') : things;
     return [String(n), `${n} ${w}`, `${capWord(NUM_WORDS[n])}. ${capWord(NUM_WORDS[n])} ${w}.`, e.repeat(n), n];
   });
@@ -41,7 +66,7 @@ function traceItems(set) {
   return list.map(([word, e], i) => {
     const L = String.fromCharCode(65 + i), ch = set === 'big' ? L : L.toLowerCase();
     const inWord = L === 'X';
-    const shown = inWord ? `${ch} is in ${word}` : `${ch} is for ${word}`;
+    const shown = `<span class="tr-pair" title="capital and small">${L}${L.toLowerCase()}</span> ${inWord ? `${ch} is in ${word}` : `${ch} is for ${word}`}`;
     const spoken = `${set === 'big' ? '' : 'Little '}${LETTER_SAY[L]}. ${LETTER_SAY[L]} ${inWord ? 'is in' : 'is for'} ${word}.`;
     return [ch, shown, spoken, e, 0];
   });
@@ -70,8 +95,13 @@ function thin(src, M) {
   return a;
 }
 const TRACE_FONT = '"Chalkboard SE", "Comic Sans MS", "Arial Rounded MT Bold", "Nunito", system-ui, sans-serif';
+// start on the item she has practised least (the first new one), so the work moves on by itself
+function traceStart(set) { const items = traceItems(set); let best = 0; items.forEach((x, k) => { if (traceCount(set, x[0]) < traceCount(set, items[best][0])) best = k; }); return best; }
 function openTrace() {
-  if (TR.set === 'words' && state.grade !== 'g1') TR.set = 'big';
+  // Pre-K and K open on their own name until it is well practised
+  if (!TR.picked && ['prek', 'k'].includes(state.grade) && traceName() && traceCount('name', traceName()) < 4) { TR.set = 'name'; TR.i = traceStart('name'); }
+  if (TR.set === 'name' && !traceName()) TR.set = 'big';
+  TR.i = Math.min(TR.i, Math.max(0, traceItems(TR.set).length - 1));
   stopClip && stopClip();
   show('trace');
   renderTrace(true);
@@ -81,13 +111,17 @@ function renderTrace(speak) {
   const items = traceItems(TR.set), it = items[TR.i];
   const [ch, shown, spoken, pic, n] = it;
   $$('#trace .tr-tab').forEach((b) => {
-    if (b.dataset.set === 'words') b.hidden = state.grade !== 'g1';
+    if (b.dataset.set === 'name') { b.hidden = !traceName(); b.textContent = '🌟 ' + (traceName() || 'Me'); }
     b.classList.toggle('on', b.dataset.set === TR.set);
   });
   $('#trWrite').classList.toggle('on', TR.write);
-  $('#trStrip').innerHTML = items.map((x, k) => `<button class="tr-chip ${k === TR.i ? 'now' : ''} ${traceDone(TR.set, x[0]) ? 'done' : ''}" data-k="${k}">${x[0]}</button>`).join('');
+  const lockedNext = TR.set === 'num' && items.length < (NUM_MAX[state.grade] || 20);
+  $('#trStrip').innerHTML = items.map((x, k) => `<button class="tr-chip ${x[0].length > 2 ? 'wide' : ''} ${k === TR.i ? 'now' : ''} ${traceDone(TR.set, x[0]) ? 'done' : ''} ${guideStage(TR.set, x[0]) === 2 ? 'own' : ''}" data-k="${k}">${x[0]}</button>`).join('')
+    + (lockedNext ? `<span class="tr-chip tr-lock" aria-label="More numbers open as you trace">🔒 ${items.length + 1}+</span>` : '');
   const now = $('#trStrip .now'); if (now) now.scrollIntoView({ block: 'nearest', inline: 'center' });
-  $('#trPic').innerHTML = `<div class="tr-emoji ${n > 5 ? 'many' : ''}">${pic}</div><div class="tr-word">${shown}</div>`;
+  const stage = TR.write ? 3 : guideStage(TR.set, ch);
+  $('#trPic').innerHTML = `<div class="tr-emoji ${n > 5 ? 'many' : ''} ${it[8] ? 'blocks' : ''}">${pic}</div><div class="tr-word">${shown}</div>`
+    + `<div class="tr-stage" data-stage="${stage}" aria-label="Practice step">${['Trace', 'Dots', 'On your own'].map((t, k) => `<i class="${k <= Math.min(stage, 2) ? 'on' : ''}">${t}</i>`).join('')}</div>`;
   const pad = $('#trPad'), cv = $('#trCv'), guide = $('#trGuide');
   // The existing stroke-validation engine stays in charge; an original scene sits
   // behind its canvas for pre-writing motion paths, not in a separate game.
@@ -103,14 +137,15 @@ function renderTrace(speak) {
   for (const c of [cv, guide]) { c.width = c.height = Math.round(W * dpr); c.style.width = c.style.height = W + 'px'; }
   // the guide: a big gray letter with a dotted middle line to follow
   const g = guide.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, W);
-  const fs = TR.set === 'words' ? W * (ch.length >= 6 ? 0.19 : ch.length >= 5 ? 0.22 : 0.29) : ch.length > 1 ? W * 0.62 : W * 0.86;
+  const wordy = TR.set === 'words' || (TR.set === 'name' && ch.length > 1);
+  const fs = wordy ? Math.min(W * 0.29, W * 1.45 / Math.max(2, ch.length)) : ch.length > 2 ? W * 0.5 : ch.length > 1 ? W * 0.62 : W * 0.86;
   g.font = `bold ${fs}px ${TRACE_FONT}`; g.textAlign = 'center'; g.textBaseline = 'middle';
   const path = it[5], stroke = (ctx, size, lw) => { ctx.lineCap = ctx.lineJoin = 'round'; ctx.lineWidth = lw; ctx.beginPath(); path.forEach(([x, y], k) => (k ? ctx.lineTo(x * size, y * size) : ctx.moveTo(x * size, y * size))); ctx.stroke(); };
   // the shape to follow: a letter, or a line/shape path (thick gray band with a dotted middle, start and end pictures)
   const drawShape = () => {
     if (!path) {
-      g.globalAlpha = TR.write ? 0.07 : 0.22; g.fillStyle = '#495057'; g.fillText(ch, W / 2, cy); g.globalAlpha = 1;
-      if (!TR.write) { g.setLineDash([3, 9]); g.lineCap = 'round'; g.lineWidth = 4; g.strokeStyle = '#868e96'; g.strokeText(ch, W / 2, cy); g.setLineDash([]); }
+      g.globalAlpha = stage >= 2 ? 0.07 : stage === 1 ? 0.09 : 0.22; g.fillStyle = '#495057'; g.fillText(ch, W / 2, cy); g.globalAlpha = 1;
+      if (stage <= 1) { g.setLineDash([3, 9]); g.lineCap = 'round'; g.lineWidth = 4; g.strokeStyle = '#868e96'; g.strokeText(ch, W / 2, cy); g.setLineDash([]); }
       return;
     }
     g.globalAlpha = TR.write ? 0.07 : 0.22; g.strokeStyle = '#495057'; stroke(g, W, W * 0.085); g.globalAlpha = 1;
@@ -167,7 +202,7 @@ function renderTrace(speak) {
   };
   // drawing
   const c = cv.getContext('2d'); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.lineCap = c.lineJoin = 'round';
-  const ink = TR.set === 'num' ? '#1c7ed6' : TR.set === 'big' ? '#e64980' : TR.set === 'lines' ? '#f76707' : '#2f9e44';
+  const ink = TR.set === 'num' ? '#1c7ed6' : TR.set === 'big' ? '#e64980' : TR.set === 'lines' ? '#f76707' : TR.set === 'name' ? '#7048e8' : '#2f9e44';
   const width = Math.max(22, W * 0.085);
   let strokes = [], cur = null, finished = false; const started = Date.now();
   const redraw = () => {
@@ -211,15 +246,19 @@ function renderTrace(speak) {
   }
   function win() {
     finished = true;
-    state.traced = state.traced || {}; state.traced[TR.set + ch] = 1;
+    state.traced = state.traced || {}; const topBefore = TR.set === 'num' ? numTop() : 0;
+    state.traced[TR.set + ch] = traceCount(TR.set, ch) + 1;      // practised once more: the guide fades with practice
+    const opened = TR.set === 'num' && numTop() > topBefore;
     if (typeof logTrace === 'function') logTrace((Date.now() - started) / 1000);   // real time spent on this letter
     // tracing as part of today's quest: 3 letters, then back home with a check mark
     if (TR.quest && --TR.quest.left <= 0 && typeof questStepDone === 'function') { const qi = TR.quest.i; TR.quest = null; questStepDone(qi); setTimeout(() => { renderHome(); show('home'); }, 2600); }
     save();
     sfx.yes(); confetti(70);
     $('#trPic').classList.remove('cheer'); void $('#trPic').offsetWidth; $('#trPic').classList.add('cheer');
-    say([pick(['Great tracing!', 'Beautiful!', 'You did it!', 'Super writing!']), spoken.split('. ')[1] || spoken]).then(() => {
-      setTimeout(() => { if ($('#trace').classList.contains('active') && items[TR.i] === it) { TR.i = (TR.i + 1) % items.length; renderTrace(true); } }, 500);
+    const parts = spoken.split('. '), echo = TR.set === 'name' || TR.set === 'words' ? parts[0] : parts[1] || parts[0];
+    say([pick(['Great tracing!', 'Beautiful!', 'You did it!', 'Super writing!']), echo.replace(/\.$/, '') + '.', ...(opened ? ['New numbers!'] : [])]).then(() => {
+      setTimeout(() => { if (!$('#trace').classList.contains('active') || items[TR.i] !== it) return;
+        const now = traceItems(TR.set); TR.i = (TR.i + 1) % now.length; renderTrace(true); }, 500);
     });
     renderStripOnly();
   }
@@ -236,8 +275,8 @@ $('#trHear').onclick = () => { sfx.tap(); const it = traceItems(TR.set)[TR.i]; s
 $('#trPrev').onclick = () => { sfx.tap(); const n = traceItems(TR.set).length; TR.i = (TR.i - 1 + n) % n; renderTrace(true); };
 $('#trNext').onclick = () => { sfx.tap(); const n = traceItems(TR.set).length; TR.i = (TR.i + 1) % n; renderTrace(true); };
 $('#trWrite').onclick = () => { sfx.tap(); TR.write = !TR.write; renderTrace(false); say(TR.write ? 'Now write it on your own!' : 'Trace the gray letter!'); };
-$$('#trace .tr-tab').forEach((b) => (b.onclick = () => { sfx.tap(); TR.set = b.dataset.set; TR.i = 0; renderTrace(true); }));
-$('#trStrip').onclick = (e) => { const b = e.target.closest('.tr-chip'); if (!b) return; sfx.tap(); TR.i = +b.dataset.k; renderTrace(true); };
+$$('#trace .tr-tab').forEach((b) => (b.onclick = () => { sfx.tap(); TR.picked = true; TR.set = b.dataset.set; TR.i = traceStart(TR.set); renderTrace(true); }));
+$('#trStrip').onclick = (e) => { const b = e.target.closest('.tr-chip[data-k]'); if (!b) return; sfx.tap(); TR.i = +b.dataset.k; renderTrace(true); };
 // Native touch panning plus mouse dragging for the long alphabet strip.
 (() => {
   const strip = $('#trStrip'); let drag = null, moved = false;
